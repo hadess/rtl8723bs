@@ -30,6 +30,7 @@
 #include <rtw_ioctl_set.h>
 
 #include <rtl8723b_hal.h>
+#include <rtw_wapi.h>
 
 #define MAX_H2C_BOX_NUMS	4
 #define MESSAGE_BOX_SIZE		4

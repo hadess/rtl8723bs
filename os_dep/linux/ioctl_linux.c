@@ -12379,7 +12379,9 @@ thread_return lbk_thread(thread_context context)
 	ok = 0;
 	fail = 0;
 
+	#ifdef daemonize
 	daemonize("%s", "RTW_LBK_THREAD");
+	#endif
 	allow_signal(SIGTERM);
 
 	do {
@@ -12500,8 +12502,8 @@ static void loopbackTest(PADAPTER padapter, u32 cnt, u32 size, u8* pmsg)
 	ploopback->bstop = _FALSE;
 	ploopback->cnt = cnt;
 	ploopback->size = size;
-	ploopback->lbkthread = kernel_thread(lbk_thread, padapter, CLONE_FS|CLONE_FILES);
-	if (ploopback->lbkthread < 0) {
+	ploopback->lbkthread = kthread_run(lbk_thread, padapter, "RTW_LBK_THREAD");
+	if (IS_ERR(ploopback->lbkthread)) {
 		freeLoopback(padapter);
 		sprintf(pmsg, "loopback start FAIL! cnt=%d", cnt);
 		return;

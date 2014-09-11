@@ -535,7 +535,10 @@ static __inline void thread_enter(char *name);
 static __inline void thread_enter(char *name)
 {
 #ifdef PLATFORM_LINUX
+	printk("%s", "RTKTHREAD_enter");
+	#ifdef daemonize
 	daemonize("%s", name);
+	#endif
 	allow_signal(SIGTERM);
 #endif
 #ifdef PLATFORM_FREEBSD

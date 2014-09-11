@@ -47,6 +47,8 @@
 #include <rtw_br_ext.h>
 #endif //CONFIG_BR_EXT
 
+#include <linux/kthread.h>
+
 #ifdef CONFIG_RF_GAIN_OFFSET
 #define		REG_RF_BB_GAIN_OFFSET	0x55
 #define		RF_GAIN_OFFSET_MASK		0xfffff
@@ -324,7 +326,8 @@ void rtw_proc_init_one(struct net_device *dev)
 		{
 			_rtw_memcpy(rtw_proc_name, RTW_PROC_NAME, sizeof(RTW_PROC_NAME));
 		}
-
+	}
+#if 0
 #if(LINUX_VERSION_CODE < KERNEL_VERSION(2,6,24))
 		rtw_proc=create_proc_entry(rtw_proc_name, S_IFDIR, proc_net);
 #else
@@ -611,7 +614,7 @@ void rtw_proc_init_one(struct net_device *dev)
 		return;
 	}
 	entry->write_proc = proc_set_rssi_disp;
-
+#endif
 }
 
 void rtw_proc_remove_one(struct net_device *dev)
@@ -995,7 +998,7 @@ static const struct net_device_ops rtw_netdev_ops = {
 	.ndo_stop = rtw_wifi_close,
 	.ndo_start_xmit = rtw_xmit_entry,
 #if (LINUX_VERSION_CODE>=KERNEL_VERSION(2,6,35))
-	.ndo_select_queue	= rtw_select_queue,
+	//.ndo_select_queue	= rtw_select_queue,
 #endif
 	.ndo_set_mac_address = rtw_net_set_mac_address,
 	.ndo_get_stats = rtw_net_get_stats,
@@ -1129,7 +1132,7 @@ u32 rtw_start_drv_threads(_adapter *padapter)
 #if defined(CONFIG_SDIO_HCI) && defined(CONFIG_CONCURRENT_MODE)
 	if(padapter->adapter_type == PRIMARY_ADAPTER){
 #endif
-	padapter->xmitThread = kernel_thread(rtw_xmit_thread, padapter, CLONE_FS|CLONE_FILES);
+	padapter->xmitThread = kthread_run(rtw_xmit_thread, padapter, "rtw_xmit_thread");
 	if (padapter->xmitThread < 0)
 		_status = _FAIL;
 	else
@@ -1149,7 +1152,7 @@ u32 rtw_start_drv_threads(_adapter *padapter)
 	if(padapter->isprimary == _TRUE)
 #endif //CONFIG_CONCURRENT_MODE
 	{
-		padapter->cmdThread = kernel_thread(rtw_cmd_thread, padapter, CLONE_FS|CLONE_FILES);
+		padapter->cmdThread = kthread_run(rtw_cmd_thread, padapter, "rtw_cmd_thread");
 		if(padapter->cmdThread < 0)
 			_status = _FAIL;
 		else

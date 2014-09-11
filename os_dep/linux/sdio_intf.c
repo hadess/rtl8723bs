@@ -942,7 +942,7 @@ static int rtw_sdio_suspend(struct device *dev)
 	LeaveAllPowerSaveMode(padapter);
 	//for power down during suspend, need leave ips mode before entering power down.
 	pwrpriv->bInSuspend = _TRUE;
-	pwrpriv->do_late_resume = _FALSE;
+	//pwrpriv->do_late_resume = _FALSE;
 
 	//padapter->net_closed = _TRUE;
 	//s1.
@@ -1199,7 +1199,7 @@ static int rtw_sdio_suspend(struct device *dev)
 	/* linked suspend->ap power off/on->resume disconnect-> */
 	/* nolinked suspend->resume->auto linked->suspend/resume */
 	/* will call resume_process because do_late_resume is wrong */
-	pwrpriv->do_late_resume = _FALSE;
+	//pwrpriv->do_late_resume = _FALSE;
 #ifdef CONFIG_WOWLAN
 	if (check_fwstate(pmlmepriv, _FW_LINKED) && (pwrpriv->bSupportRemoteWakeup == _TRUE))
 		pwrpriv->wowlan_mode = _TRUE;
@@ -1790,7 +1790,7 @@ static int rtw_sdio_resume(struct device *dev)
 			}
 #endif
 			//jeff: bypass resume here, do in late_resume
-			pwrpriv->do_late_resume = _TRUE;
+			//pwrpriv->do_late_resume = _TRUE;
 #if (!(defined ANDROID_2X) && (defined CONFIG_PLATFORM_SPRD))
 			//we should not suspend/resume softap, bcm also do like this
 			if(check_fwstate(pmlmepriv, WIFI_AP_STATE) == _TRUE)

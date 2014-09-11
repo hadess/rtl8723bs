@@ -87,7 +87,7 @@ int rtw_cfg80211_set_mgnt_wpsp2pie(struct net_device *net, char *buf, int len, i
 #define rtw_cfg80211_rx_mgmt(dev, freq, sig_dbm, buf, len, gfp) cfg80211_rx_mgmt(dev, freq, buf, len, gfp)
 #define rtw_cfg80211_send_rx_assoc(dev, bss, buf, len) cfg80211_send_rx_assoc(dev, buf, len)
 #else
-#define rtw_cfg80211_rx_mgmt(dev, freq, sig_dbm, buf, len, gfp) cfg80211_rx_mgmt(dev, freq, sig_dbm, buf, len, gfp)
+#define rtw_cfg80211_rx_mgmt(dev, freq, sig_dbm, buf, len, gfp) cfg80211_rx_mgmt(dev, freq, sig_dbm, buf, len, 0, gfp)
 #define rtw_cfg80211_send_rx_assoc(dev, bss, buf, len) cfg80211_send_rx_assoc(dev, bss, buf, len)
 #endif
 

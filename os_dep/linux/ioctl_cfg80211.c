@@ -467,7 +467,7 @@ static int rtw_cfg80211_inform_bss(_adapter *padapter, struct wlan_network *pnet
 	}
 */
 
-	cfg80211_put_bss(bss);
+	cfg80211_put_bss(wiphy, bss);
 
 exit:
 	return ret;
@@ -3264,7 +3264,8 @@ void rtw_cfg80211_indicate_sta_disassoc(_adapter *padapter, unsigned char *da, u
 	#elif (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,37)) && !defined(CONFIG_CFG80211_FORCE_COMPATIBLE_2_6_37_UNDER)
 	rtw_cfg80211_rx_mgmt(padapter->pnetdev, freq, 0, mgmt_buf, frame_len, GFP_ATOMIC);
 	#else //COMPAT_KERNEL_RELEASE
-	cfg80211_send_disassoc(padapter->pnetdev, mgmt_buf, frame_len);
+	cfg80211_tx_mlme_mgmt(padapter->pnetdev, mgmt_buf, frame_len);
+	//cfg80211_send_disassoc(padapter->pnetdev, mgmt_buf, frame_len);
 	//cfg80211_rx_action(padapter->pnetdev, freq, mgmt_buf, frame_len, GFP_ATOMIC);
 	#endif //COMPAT_KERNEL_RELEASE
 #endif /* defined(RTW_USE_CFG80211_STA_EVENT) */
@@ -5125,7 +5126,7 @@ static struct cfg80211_ops rtw_cfg80211_ops = {
 	.change_station = cfg80211_rtw_change_station,
 	.dump_station = cfg80211_rtw_dump_station,
 	.change_bss = cfg80211_rtw_change_bss,
-	.set_channel = cfg80211_rtw_set_channel,
+	//.set_channel = cfg80211_rtw_set_channel,
 	//.auth = cfg80211_rtw_auth,
 	//.assoc = cfg80211_rtw_assoc,
 #endif //CONFIG_AP_MODE

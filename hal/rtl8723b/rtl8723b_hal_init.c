@@ -23,6 +23,7 @@
 #include <rtw_byteorder.h>
 #include <rtw_efuse.h>
 #include <rtw_btcoex.h>
+#include <linux/kthread.h>
 
 #include <rtl8723b_hal.h>
 #include "rtw_bt_mp.h"
@@ -5947,7 +5948,7 @@ void rtl8723b_start_thread(_adapter *padapter)
 #ifndef CONFIG_SDIO_TX_TASKLET
 	struct xmit_priv *pxmitpriv= &padapter->xmitpriv;
 
-	pxmitpriv->SdioXmitThread = kernel_thread(rtl8723bs_xmit_thread, padapter, CLONE_FS|CLONE_FILES);
+	pxmitpriv->SdioXmitThread = kthread_run(rtl8723bs_xmit_thread, padapter, "RTW_XMIT_THREAD");
 	if (pxmitpriv->SdioXmitThread < 0) {
 		RT_TRACE(_module_hal_xmit_c_, _drv_err_, ("%s: start rtl8723bs_xmit_thread FAIL!!\n", __FUNCTION__));
 	} else {
