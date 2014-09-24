@@ -480,6 +480,8 @@ obj-m += $(MODULE_NAME).o
 all:
 	$(MAKE) -C $(KDIR) M=$(PWD) modules
 
+install: $(MODULE_NAME).ko $(MODULE_NAME).mod.c
+	$(MAKE) -C $(KDIR) SUBDIRS=$(PWD) modules_install
 
 clean: $(clean_more)
 	rm -fr *.mod.c *.mod *.o .*.cmd *.ko *~
