@@ -192,8 +192,10 @@ static const struct sdio_device_id sdio_ids[] = {
 #if defined(RTW_ENABLE_WIFI_CONTROL_FUNC) /* temporarily add this to accept all sdio wlan id */
 	{ SDIO_DEVICE_CLASS(SDIO_CLASS_WLAN) },
 #endif
-//	{ /* end: all zeroes */				},
+	{ /* end: all zeroes */				},
 };
+
+MODULE_DEVICE_TABLE(sdio, sdio_ids);
 
 static int rtw_drv_init(struct sdio_func *func, const struct sdio_device_id *id);
 static void rtw_dev_remove(struct sdio_func *func);
