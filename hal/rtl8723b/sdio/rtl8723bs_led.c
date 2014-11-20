@@ -19,7 +19,6 @@
  ******************************************************************************/
 #define _RTL8723BS_LED_C_
 
-#include "drv_types.h"
 #include "rtl8723b_hal.h"
 
 //================================================================================
@@ -40,9 +39,9 @@
 //		Turn on LED according to LedPin specified.
 //
 void
-SwLedOn(
+SwLedOn_8723BS(
 	_adapter			*padapter,
-	PLED_871x		pLed
+	PLED_SDIO		pLed
 )
 {
 	u8	LedCfg;
@@ -63,9 +62,9 @@ SwLedOn(
 //		Turn off LED according to LedPin specified.
 //
 void
-SwLedOff(
+SwLedOff_8723BS(
 	_adapter			*padapter,
-	PLED_871x		pLed
+	PLED_SDIO		pLed
 )
 {
 	u8	LedCfg;
@@ -98,11 +97,14 @@ rtl8723bs_InitSwLeds(
 	_adapter	*padapter
 	)
 {
+#if 0
 	struct led_priv *pledpriv = &(padapter->ledpriv);
 
-	pledpriv->LedControlHandler = LedControl871x;
-#if 0
+	pledpriv->LedControlHandler = LedControlSDIO;
 
+	pledpriv->SwLedOn = SwLedOn_8723BS;
+	pledpriv->SwLedOff = SwLedOff_8723BS;
+	
 	InitLed871x(padapter, &(pledpriv->SwLed0), LED_PIN_LED0);
 
 	InitLed871x(padapter,&(pledpriv->SwLed1), LED_PIN_LED1);

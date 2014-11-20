@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Copyright(c) 2007 - 2011 Realtek Corporation. All rights reserved.
- *
+ *                                        
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of version 2 of the GNU General Public License as
  * published by the Free Software Foundation.
@@ -19,14 +19,9 @@
  ******************************************************************************/
 #define _RTW_MP_IOCTL_C_
 
-#include <drv_conf.h>
-#include <osdep_service.h>
 #include <drv_types.h>
-#include <mlme_osdep.h>
-
-//#include <rtw_mp.h>
 #include <rtw_mp_ioctl.h>
-
+#include "../hal/OUTSRC/odm_precomp.h"
 
 //****************  oid_rtl_seg_81_85   section start ****************
 NDIS_STATUS oid_rt_wireless_mode_hdl(struct oid_par_priv *poid_par_priv)
@@ -404,8 +399,8 @@ _func_enter_;
 	bandwidth = *((u32*)poid_par_priv->information_buf);//4
 	channel_offset = HAL_PRIME_CHNL_OFFSET_DONT_CARE;
 
-	if (bandwidth != HT_CHANNEL_WIDTH_40)
-		bandwidth = HT_CHANNEL_WIDTH_20;
+	if (bandwidth != CHANNEL_WIDTH_40)
+		bandwidth = CHANNEL_WIDTH_20;
 	padapter->mppriv.bandwidth = (u8)bandwidth;
 	padapter->mppriv.prime_channel_offset = (u8)channel_offset;
 
@@ -1677,12 +1672,12 @@ _func_enter_;
 		return NDIS_STATUS_INVALID_LENGTH;
 
 	*poid_par_priv->bytes_rw = 8;
-	_rtw_memcpy(poid_par_priv->information_buf, &(Adapter->pwrctrlpriv.pwr_mode), 8);
+	_rtw_memcpy(poid_par_priv->information_buf, &(adapter_to_pwrctl(Adapter)->pwr_mode), 8);
 	*poid_par_priv->bytes_rw = poid_par_priv->information_buf_len;
 
 	RT_TRACE(_module_mp_, _drv_notice_,
 		 ("-oid_rt_pro_qry_pwrstate_hdl: pwr_mode=%d smart_ps=%d\n",
-		  Adapter->pwrctrlpriv.pwr_mode, Adapter->pwrctrlpriv.smart_ps));
+		  adapter_to_pwrctl(Adapter)->pwr_mode, adapter_to_pwrctl(Adapter)->smart_ps));
 
 _func_exit_;
 
@@ -2007,7 +2002,6 @@ NDIS_STATUS oid_rt_pro_dele_sta_info_hdl(struct oid_par_priv *poid_par_priv)
 }
 //------------------------------------------------------------------------------
 #if 0
-#include <sdio_osintf.h>
 static u32 mp_query_drv_var(_adapter *padapter, u8 offset, u32 var)
 {
 #ifdef CONFIG_SDIO_HCI
@@ -2903,7 +2897,7 @@ _func_enter_;
 	//CALL  the power_down function
 #ifdef PLATFORM_LINUX
 #if defined(CONFIG_RTL8712) //Linux MP insmod unknown symbol
-	dev_power_down(padapter,bpwrup);
+	dev_power_down(padapter,bpwrup); 
 #endif
 #endif
 	_irqlevel_changed_(&oldirql, RAISE);

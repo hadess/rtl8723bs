@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Copyright(c) 2007 - 2011 Realtek Corporation. All rights reserved.
- *
+ *                                        
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of version 2 of the GNU General Public License as
  * published by the Free Software Foundation.
@@ -20,8 +20,6 @@
 #ifndef __BASIC_TYPES_H__
 #define __BASIC_TYPES_H__
 
-#include <drv_conf.h>
-
 
 #define SUCCESS	0
 #define FAIL	(-1)
@@ -29,13 +27,13 @@
 #ifndef TRUE
 	#define _TRUE	1
 #else
-	#define _TRUE	TRUE
+	#define _TRUE	TRUE	
 #endif
-
-#ifndef FALSE
+		
+#ifndef FALSE		
 	#define _FALSE	0
 #else
-	#define _FALSE	FALSE
+	#define _FALSE	FALSE	
 #endif
 
 #ifdef PLATFORM_WINDOWS
@@ -48,7 +46,7 @@
 
 	typedef signed long s32;
 	typedef unsigned long u32;
-
+	
 	typedef unsigned int	uint;
 	typedef	signed int		sint;
 
@@ -57,7 +55,7 @@
 	typedef unsigned long long u64;
 
 	#ifdef NDIS50_MINIPORT
-
+	
 		#define NDIS_MAJOR_VERSION       5
 		#define NDIS_MINOR_VERSION       0
 
@@ -96,16 +94,60 @@
         #define UCHAR u8
 	#define USHORT u16
 	#define UINT u32
-	#define ULONG u32
+	#define ULONG u32	
 
 	typedef void (*proc_t)(void*);
 
-	typedef 	__kernel_size_t	SIZE_T;
+	typedef 	__kernel_size_t	SIZE_T;	
 	typedef	__kernel_ssize_t	SSIZE_T;
 	#define FIELD_OFFSET(s,field)	((SSIZE_T)&((s*)(0))->field)
-
+	
 #endif
 
+
+#ifdef PLATFORM_FREEBSD
+
+	typedef signed char s8;
+	typedef unsigned char u8;
+
+	typedef signed short s16;
+	typedef unsigned short u16;
+
+	typedef signed int s32;
+	typedef unsigned int u32;
+	
+	typedef unsigned int	uint;
+	typedef	signed int		sint;
+	typedef long atomic_t;
+
+	typedef signed long long s64;
+	typedef unsigned long long u64;
+	#define IN
+	#define OUT
+	#define VOID void
+	#define NDIS_OID uint
+	#define NDIS_STATUS uint
+	
+	#ifndef	PVOID
+	typedef void * PVOID;
+	//#define PVOID	(void *)
+	#endif
+	typedef u32 dma_addr_t;
+    #define UCHAR u8
+	#define USHORT u16
+	#define UINT u32
+	#define ULONG u32	
+
+	typedef void (*proc_t)(void*);
+  
+  typedef unsigned int __kernel_size_t;
+  typedef int __kernel_ssize_t;
+  
+	typedef 	__kernel_size_t	SIZE_T;	
+	typedef	__kernel_ssize_t	SSIZE_T;
+	#define FIELD_OFFSET(s,field)	((SSIZE_T)&((s*)(0))->field)
+	
+#endif
 
 #define MEM_ALIGNMENT_OFFSET	(sizeof (SIZE_T))
 #define MEM_ALIGNMENT_PADDING	(sizeof(SIZE_T) - 1)
@@ -126,7 +168,7 @@
 //
 // Byte Swapping routine.
 //
-#define EF1Byte
+#define EF1Byte	(u8)
 #define EF2Byte 	le16_to_cpu
 #define EF4Byte	le32_to_cpu
 
@@ -142,7 +184,7 @@
 //
 #define WriteEF1Byte(_ptr, _val)	(*((u8 *)(_ptr)))=EF1Byte(_val)
 #define WriteEF2Byte(_ptr, _val)	(*((u16 *)(_ptr)))=EF2Byte(_val)
-#define WriteEF4Byte(_ptr, _val)	(*((u32 *)(_ptr)))=EF4Byte(_val)
+#define WriteEF4Byte(_ptr, _val)	(*((u32 *)(_ptr)))=EF4Byte(_val)									
 
 //
 //	Example:
@@ -159,7 +201,7 @@
 //		BIT_OFFSET_LEN_MASK_32(16, 2) => 0x00030000
 //
 #define BIT_OFFSET_LEN_MASK_32(__BitOffset, __BitLen) \
-	(BIT_LEN_MASK_32(__BitLen) << (__BitOffset))
+	(BIT_LEN_MASK_32(__BitLen) << (__BitOffset)) 
 
 //
 //	Description:
@@ -183,7 +225,7 @@
 
 //
 //	Description:
-//		Mask subfield (continuous bits in little-endian) of 4-byte value in litten byte oredering
+//		Mask subfield (continuous bits in little-endian) of 4-byte value in litten byte oredering  
 //		and return the result in 4-byte value in host byte ordering.
 //
 #define LE_BITS_CLEARED_TO_4BYTE(__pStart, __BitOffset, __BitLen) \
@@ -195,7 +237,7 @@
 
 //
 //	Description:
-//		Set subfield of little-endian 4-byte value to specified value.
+//		Set subfield of little-endian 4-byte value to specified value.	
 //
 #define SET_BITS_TO_LE_4BYTE(__pStart, __BitOffset, __BitLen, __Value) \
 	*((u32 *)(__pStart)) = \
@@ -205,23 +247,23 @@
 			( (((u32)__Value) & BIT_LEN_MASK_32(__BitLen)) << (__BitOffset) ) \
 		);
 
-
+		
 #define BIT_LEN_MASK_16(__BitLen) \
 		(0xFFFF >> (16 - (__BitLen)))
-
+		
 #define BIT_OFFSET_LEN_MASK_16(__BitOffset, __BitLen) \
 	(BIT_LEN_MASK_16(__BitLen) << (__BitOffset))
-
+	
 #define LE_P2BYTE_TO_HOST_2BYTE(__pStart) \
 	(EF2Byte(*((u16 *)(__pStart))))
-
+	
 #define LE_BITS_TO_2BYTE(__pStart, __BitOffset, __BitLen) \
 	( \
 		( LE_P2BYTE_TO_HOST_2BYTE(__pStart) >> (__BitOffset) ) \
 		& \
 		BIT_LEN_MASK_16(__BitLen) \
 	)
-
+	
 #define LE_BITS_CLEARED_TO_2BYTE(__pStart, __BitOffset, __BitLen) \
 	( \
 		LE_P2BYTE_TO_HOST_2BYTE(__pStart) \
@@ -236,7 +278,7 @@
 			| \
 			( (((u16)__Value) & BIT_LEN_MASK_16(__BitLen)) << (__BitOffset) ) \
 		);
-
+			
 #define BIT_LEN_MASK_8(__BitLen) \
 		(0xFF >> (8 - (__BitLen)))
 
@@ -268,20 +310,32 @@
 			( (((u8)__Value) & BIT_LEN_MASK_8(__BitLen)) << (__BitOffset) ) \
 		);
 
-//pclint
+
+#define LE_BITS_CLEARED_TO_2BYTE_16BIT(__pStart, __BitOffset, __BitLen) \
+	( \
+		LE_P2BYTE_TO_HOST_2BYTE(__pStart) \
+	)
+
+#define SET_BITS_TO_LE_2BYTE_16BIT(__pStart, __BitOffset, __BitLen, __Value) \
+	*((u16 *)(__pStart)) = \
+		EF2Byte( \
+			LE_BITS_CLEARED_TO_2BYTE_16BIT(__pStart, __BitOffset, __BitLen) \
+			| \
+			( (u16)__Value) \
+		);
+
 #define LE_BITS_CLEARED_TO_1BYTE_8BIT(__pStart, __BitOffset, __BitLen) \
 	( \
 		LE_P1BYTE_TO_HOST_1BYTE(__pStart) \
 	)
 
-//pclint
 #define SET_BITS_TO_LE_1BYTE_8BIT(__pStart, __BitOffset, __BitLen, __Value) \
 { \
-	*((pu1Byte)(__pStart)) = \
+	*((u8 *)(__pStart)) = \
 		EF1Byte( \
 			LE_BITS_CLEARED_TO_1BYTE_8BIT(__pStart, __BitOffset, __BitLen) \
 			| \
-			((u1Byte)__Value) \
+			((u8)__Value) \
 		); \
 }
 
@@ -290,23 +344,11 @@
 
 typedef unsigned char	BOOLEAN,*PBOOLEAN;
 
-#define u1Byte		u8
-#define pu1Byte 		u8*
+#define TEST_FLAG(__Flag,__testFlag)		(((__Flag) & (__testFlag)) != 0)
+#define SET_FLAG(__Flag, __setFlag)			((__Flag) |= __setFlag)
+#define CLEAR_FLAG(__Flag, __clearFlag)		((__Flag) &= ~(__clearFlag))
+#define CLEAR_FLAGS(__Flag)					((__Flag) = 0)
+#define TEST_FLAGS(__Flag, __testFlags)		(((__Flag) & (__testFlags)) == (__testFlags))
 
-#define u2Byte		u16
-#define pu2Byte 		u16*
-
-#define u4Byte		u32
-#define pu4Byte 		u32*
-#define s1Byte		s8
-#define ps1Byte 		s8*
-
-#define s2Byte		s16
-#define ps2Byte 		s16*
-
-#define s4Byte		s32
-#define ps4Byte 		s32*
-#define RT_WORK_ITEM _workitem
-#define RT_THREAD _thread_hdl_
 #endif //__BASIC_TYPES_H__
 

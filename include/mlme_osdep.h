@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Copyright(c) 2007 - 2011 Realtek Corporation. All rights reserved.
- *
+ *                                        
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of version 2 of the GNU General Public License as
  * published by the Free Software Foundation.
@@ -20,9 +20,6 @@
 #ifndef	__MLME_OSDEP_H_
 #define __MLME_OSDEP_H_
 
-#include <drv_conf.h>
-#include <osdep_service.h>
-#include <drv_types.h>
 
 #if defined(PLATFORM_WINDOWS) || defined(PLATFORM_MPIXEL)
 extern int time_after(u32 now, u32 old);

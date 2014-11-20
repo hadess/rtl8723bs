@@ -21,10 +21,6 @@
 #define __SDIO_OSINTF_H__
 
 
-#include <drv_conf.h>
-#include <osdep_service.h>
-#include <drv_types.h>
-
 #ifdef PLATFORM_OS_CE
 extern NDIS_STATUS ce_sd_get_dev_hdl(PADAPTER padapter);
 SD_API_STATUS ce_sd_int_callback(SD_DEVICE_HANDLE hDevice, PADAPTER padapter);

@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Copyright(c) 2007 - 2012 Realtek Corporation. All rights reserved.
- *
+ *                                        
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of version 2 of the GNU General Public License as
  * published by the Free Software Foundation.
@@ -20,7 +20,6 @@
 #ifndef _WIFI_H_
 #define _WIFI_H_
 
-#include <rtw_byteorder.h>
 
 #ifdef BIT
 //#error	"BIT define occurred earlier elsewhere!\n"
@@ -49,10 +48,10 @@
 #define WLAN_MIN_ETHFRM_LEN	60
 #define WLAN_MAX_ETHFRM_LEN	1514
 #define WLAN_ETHHDR_LEN		14
+#define WLAN_WMM_LEN		24
 
 #define P80211CAPTURE_VERSION	0x80211001
 
-#define TRY_AP_TIMES	5
 // This value is tested by WiFi 11n Test Plan 5.2.3.
 // This test verifies the WLAN NIC can update the NAV through sending the CTS with large duration.
 #define	WiFiNavUpperUs				30000	// 30 ms
@@ -65,7 +64,7 @@ enum WIFI_FRAME_TYPE {
 	WIFI_MGT_TYPE  =	(0),
 	WIFI_CTRL_TYPE =	(BIT(2)),
 	WIFI_DATA_TYPE =	(BIT(3)),
-	WIFI_QOS_DATA_TYPE	= (BIT(7)|BIT(3)),	//!< QoS Data
+	WIFI_QOS_DATA_TYPE	= (BIT(7)|BIT(3)),	//!< QoS Data	
 };
 
 enum WIFI_FRAME_SUBTYPE {
@@ -83,8 +82,10 @@ enum WIFI_FRAME_SUBTYPE {
     WIFI_AUTH           = (BIT(7) | BIT(5) | BIT(4) | WIFI_MGT_TYPE),
     WIFI_DEAUTH         = (BIT(7) | BIT(6) | WIFI_MGT_TYPE),
     WIFI_ACTION         = (BIT(7) | BIT(6) | BIT(4) | WIFI_MGT_TYPE),
+    WIFI_ACTION_NOACK = (BIT(7) | BIT(6) | BIT(5) | WIFI_MGT_TYPE),
 
     // below is for control frame
+    WIFI_NDPA         = (BIT(6) | BIT(4) | WIFI_CTRL_TYPE),
     WIFI_PSPOLL         = (BIT(7) | BIT(5) | WIFI_CTRL_TYPE),
     WIFI_RTS            = (BIT(7) | BIT(5) | BIT(4) | WIFI_CTRL_TYPE),
     WIFI_CTS            = (BIT(7) | BIT(6) | WIFI_CTRL_TYPE),
@@ -194,7 +195,7 @@ enum WIFI_STATUS_CODE {
 #define WLAN_STATUS_AP_UNABLE_TO_HANDLE_NEW_STA 17
 #define WLAN_STATUS_ASSOC_DENIED_RATES 18
 #endif
-//entended
+//entended 
 /* IEEE 802.11b */
 #define WLAN_STATUS_ASSOC_DENIED_NOSHORT 19
 #define WLAN_STATUS_ASSOC_DENIED_NOPBCC 20
@@ -409,7 +410,7 @@ enum WIFI_REG_DOMAIN {
 #define SetAMsdu(pbuf, amsdu)	\
 	do	{	\
 		*(unsigned short *)(pbuf) |= cpu_to_le16( (amsdu & 1) << 7); \
-	} while(0)
+	} while(0)	
 
 #define GetAid(pbuf)	(cpu_to_le16(*(unsigned short *)((SIZE_PTR)(pbuf) + 2)) & 0x3fff)
 
@@ -438,6 +439,18 @@ __inline static int IS_MCAST(unsigned char *da)
 		return _FALSE;
 }
 
+__inline static unsigned char * get_ra(unsigned char *pframe)
+{
+	unsigned char 	*ra;
+	ra = GetAddr1Ptr(pframe);
+	return ra;
+}
+__inline static unsigned char * get_ta(unsigned char *pframe)
+{
+	unsigned char 	*ta;
+	ta = GetAddr2Ptr(pframe);
+	return ta;
+}
 
 __inline static unsigned char * get_da(unsigned char *pframe)
 {
@@ -488,7 +501,7 @@ __inline static unsigned char * get_sa(unsigned char *pframe)
 
 __inline static unsigned char * get_hdr_bssid(unsigned char *pframe)
 {
-	unsigned char 	*sa;
+	unsigned char 	*sa = NULL;
 	unsigned int	to_fr_ds	= (GetToDs(pframe) << 1) | GetFrDs(pframe);
 
 	switch (to_fr_ds) {
@@ -503,9 +516,6 @@ __inline static unsigned char * get_hdr_bssid(unsigned char *pframe)
 			break;
 		case 0x03:	// ToDs=1, FromDs=1
 			sa = GetAddr1Ptr(pframe);
-			break;
-		default:
-			sa =NULL; //???????
 			break;
 	}
 
@@ -571,10 +581,12 @@ __inline static int IsFrameTypeCtrl(unsigned char *pframe)
 #define _WAPI_IE_					68
 
 
-#define	EID_BSSCoexistence			72 // 20/40 BSS Coexistence
-#define	EID_BSSIntolerantChlReport	73
+//#define EID_BSSCoexistence			72 // 20/40 BSS Coexistence
+//#define EID_BSSIntolerantChlReport	73
 #define _RIC_Descriptor_IE_			75
-
+#ifdef CONFIG_IEEE80211W
+#define _MME_IE_					76 //802.11w Management MIC element
+#endif //CONFIG_IEEE80211W
 #define _LINK_ID_IE_					101
 #define _CH_SWITCH_TIMING_		104
 #define _PTI_BUFFER_STATUS_		106
@@ -582,6 +594,82 @@ __inline static int IsFrameTypeCtrl(unsigned char *pframe)
 #define _VENDOR_SPECIFIC_IE_		221
 
 #define	_RESERVED47_				47
+
+typedef	enum _ELEMENT_ID{
+	EID_SsId					= 0, /* service set identifier (0:32) */
+	EID_SupRates				= 1, /* supported rates (1:8) */
+	EID_FHParms				= 2, /* FH parameter set (5) */
+	EID_DSParms				= 3, /* DS parameter set (1) */
+	EID_CFParms				= 4, /* CF parameter set (6) */
+	EID_Tim						= 5, /* Traffic Information Map (4:254) */
+	EID_IbssParms				= 6, /* IBSS parameter set (2) */
+	EID_Country					= 7, /* */
+
+	// Form 7.3.2: Information elements in 802.11E/D13.0, page 46.
+	EID_QBSSLoad				= 11,
+	EID_EDCAParms				= 12,
+	EID_TSpec					= 13,
+	EID_TClass					= 14,
+	EID_Schedule				= 15,
+	//
+	
+	EID_Ctext					= 16, /* challenge text*/
+	EID_POWER_CONSTRAINT		= 32, /* Power Constraint*/
+
+	//vivi for WIFITest, 802.11h AP, 20100427
+	// 2010/12/26 MH The definition we can declare always!!
+	EID_PowerCap				= 33,
+	EID_SupportedChannels		= 36,
+	EID_ChlSwitchAnnounce		= 37,
+
+	EID_MeasureRequest			= 38, // Measurement Request
+	EID_MeasureReport			= 39, // Measurement Report
+	
+	EID_ERPInfo 				= 42,
+
+	// Form 7.3.2: Information elements in 802.11E/D13.0, page 46.
+	EID_TSDelay				= 43,
+	EID_TCLASProc				= 44,
+	EID_HTCapability			= 45,
+	EID_QoSCap					= 46,
+	//
+	
+	EID_WPA2					= 48,
+	EID_ExtSupRates			= 50,
+
+	EID_FTIE					= 55, // Defined in 802.11r
+	EID_Timeout				= 56, // Defined in 802.11r
+	
+	EID_SupRegulatory			= 59, // Supported Requlatory Classes 802.11y
+	EID_HTInfo 					= 61,
+	EID_SecondaryChnlOffset		= 62,
+	
+	EID_BSSCoexistence			= 72, // 20/40 BSS Coexistence
+	EID_BSSIntolerantChlReport	= 73,
+	EID_OBSS					= 74, // Overlapping BSS Scan Parameters
+	
+	EID_LinkIdentifier			= 101, // Defined in 802.11z
+	EID_WakeupSchedule		= 102, // Defined in 802.11z
+	EID_ChnlSwitchTimeing		= 104, // Defined in 802.11z
+	EID_PTIControl				= 105, // Defined in 802.11z
+	EID_PUBufferStatus			= 106, // Defined in 802.11z
+	
+	EID_EXTCapability			= 127, // Extended Capabilities
+	// From S19:Aironet IE and S21:AP IP address IE in CCX v1.13, p16 and p18.
+	EID_Aironet					= 133, // 0x85: Aironet Element for Cisco CCX
+	EID_CiscoIP					= 149, // 0x95: IP Address IE for Cisco CCX
+
+	EID_CellPwr					= 150, // 0x96: Cell Power Limit IE. Ref. 0x96.
+
+	EID_CCKM    					= 156, 
+
+	EID_Vendor					= 221, // 0xDD: Vendor Specific
+
+	EID_WAPI					= 68,
+	EID_VHTCapability 			= 191, // Based on 802.11ac D2.0
+	EID_VHTOperation 			= 192, // Based on 802.11ac D2.0
+	EID_OpModeNotification		= 199, // Based on 802.11ac D3.0
+}ELEMENT_ID, *PELEMENT_ID;
 
 /* ---------------------------------------------------------------------------
 					Below is the fixed elements...
@@ -632,6 +720,9 @@ __inline static int IsFrameTypeCtrl(unsigned char *pframe)
 #define _WEP_WPA_MIXED_PRIVACY_ 6	// WEP + WPA
 */
 
+#ifdef CONFIG_IEEE80211W
+#define _MME_IE_LENGTH_  18
+#endif //CONFIG_IEEE80211W				
 /*-----------------------------------------------------------------------------
 				Below is the definition for WMM
 ------------------------------------------------------------------------------*/
@@ -640,7 +731,7 @@ __inline static int IsFrameTypeCtrl(unsigned char *pframe)
 
 
 /*-----------------------------------------------------------------------------
-				Below is the definition for 802.11n
+				Below is the definition for 802.11n 
 ------------------------------------------------------------------------------*/
 
 //#ifdef CONFIG_80211N_HT
@@ -652,6 +743,7 @@ __inline static int IsFrameTypeCtrl(unsigned char *pframe)
 
 #define GetOrderBit(pbuf)	(((*(unsigned short *)(pbuf)) & le16_to_cpu(_ORDER_)) != 0)
 
+#define ACT_CAT_VENDOR				0x7F/* 127 */
 
 /**
  * struct rtw_ieee80211_bar - HT Block Ack Request
@@ -685,7 +777,7 @@ struct rtw_ieee80211_bar {
  * This structure refers to "HT capabilities element" as
  * described in 802.11n draft section 7.3.2.52
  */
-
+ 
 struct rtw_ieee80211_ht_cap {
 	unsigned short 	cap_info;
 	unsigned char 	ampdu_params_info;
@@ -713,9 +805,9 @@ struct ieee80211_ht_addt_info {
 struct HT_caps_element
 {
 	union
-	{
-		struct
-		{
+	{ 
+		struct 
+		{ 	
 			unsigned short	HT_caps_info;
 			unsigned char	AMPDU_para;
 			unsigned char	MCS_rate[16];
@@ -786,9 +878,9 @@ struct ieee80211_ht_addt_info {
 struct HT_caps_element
 {
 	union
-	{
-		struct
-		{
+	{ 
+		struct 
+		{ 	
 			unsigned short	HT_caps_info;
 			unsigned char	AMPDU_para;
 			unsigned char	MCS_rate[16];
@@ -838,17 +930,20 @@ typedef enum _HT_CAP_AMPDU_FACTOR {
 	MAX_AMPDU_FACTOR_8K		= 0,
 	MAX_AMPDU_FACTOR_16K	= 1,
 	MAX_AMPDU_FACTOR_32K	= 2,
-	MAX_AMPDU_FACTOR_64K	= 3,
+	MAX_AMPDU_FACTOR_64K	= 3,	
 }HT_CAP_AMPDU_FACTOR;
 
 /* 802.11n HT capabilities masks */
+#define IEEE80211_HT_CAP_LDPC_CODING		0x0001
 #define IEEE80211_HT_CAP_SUP_WIDTH		0x0002
 #define IEEE80211_HT_CAP_SM_PS			0x000C
 #define IEEE80211_HT_CAP_GRN_FLD		0x0010
 #define IEEE80211_HT_CAP_SGI_20			0x0020
 #define IEEE80211_HT_CAP_SGI_40			0x0040
 #define IEEE80211_HT_CAP_TX_STBC			0x0080
-#define IEEE80211_HT_CAP_RX_STBC		0x0300
+#define IEEE80211_HT_CAP_RX_STBC_1R		0x0100
+#define IEEE80211_HT_CAP_RX_STBC_2R		0x0200
+#define IEEE80211_HT_CAP_RX_STBC_3R		0x0300
 #define IEEE80211_HT_CAP_DELAY_BA		0x0400
 #define IEEE80211_HT_CAP_MAX_AMSDU		0x0800
 #define IEEE80211_HT_CAP_DSSSCCK40		0x1000
@@ -864,6 +959,11 @@ typedef enum _HT_CAP_AMPDU_FACTOR {
 #define IEEE80211_HT_CAP_MCS_TX_RX_DIFF		0x02
 #define IEEE80211_HT_CAP_MCS_TX_STREAMS		0x0C
 #define IEEE80211_HT_CAP_MCS_TX_UEQM		0x10
+/* 802.11n HT capability TXBF capability */
+#define IEEE80211_HT_CAP_TXBF_RX_NDP		0x00000008
+#define IEEE80211_HT_CAP_TXBF_TX_NDP		0x00000010
+#define IEEE80211_HT_CAP_TXBF_EXPLICIT_COMP_STEERING_CAP	0x00000400
+
 /* 802.11n HT IE masks */
 #define IEEE80211_HT_IE_CHA_SEC_OFFSET		0x03
 #define IEEE80211_HT_IE_CHA_SEC_NONE	 	0x00
@@ -1111,7 +1211,7 @@ typedef enum _HT_CAP_AMPDU_FACTOR {
 
 #define	P2P_FINDPHASE_EX_NONE				0	// default value, used when: (1)p2p disabed or (2)p2p enabled but only do 1 scan phase
 #define	P2P_FINDPHASE_EX_FULL				1	// used when p2p enabled and want to do 1 scan phase and P2P_FINDPHASE_EX_MAX-1 find phase
-#define	P2P_FINDPHASE_EX_SOCIAL_FIRST		(P2P_FINDPHASE_EX_FULL+1)
+#define	P2P_FINDPHASE_EX_SOCIAL_FIRST		(P2P_FINDPHASE_EX_FULL+1) 
 #define	P2P_FINDPHASE_EX_MAX					4
 #define	P2P_FINDPHASE_EX_SOCIAL_LAST		P2P_FINDPHASE_EX_MAX
 
@@ -1122,7 +1222,7 @@ typedef enum _HT_CAP_AMPDU_FACTOR {
 #define	P2P_TX_PRESCAN_TIMEOUT				100		//	100ms
 #define	P2P_INVITE_TIMEOUT					5000	//	5 seconds timeout for sending the invitation request
 #define	P2P_CONCURRENT_INVITE_TIMEOUT		3000	//	3 seconds timeout for sending the invitation request under concurrent mode
-
+#define	P2P_RESET_SCAN_CH						25000	//	25 seconds timeout to reset the scan channel ( based on channel plan )
 #define	P2P_MAX_INTENT						15
 
 #define	P2P_MAX_NOA_NUM						2
@@ -1145,7 +1245,7 @@ enum P2P_ROLE {
 	P2P_ROLE_DISABLE = 0,
 	P2P_ROLE_DEVICE = 1,
 	P2P_ROLE_CLIENT = 2,
-	P2P_ROLE_GO = 3
+	P2P_ROLE_GO = 3	
 };
 
 enum P2P_STATE {
@@ -1157,7 +1257,7 @@ enum P2P_STATE {
 	P2P_STATE_FIND_PHASE_SEARCH = 5,				//	In the search state of find phase
 	P2P_STATE_TX_PROVISION_DIS_REQ = 6,			//	In P2P provisioning discovery
 	P2P_STATE_RX_PROVISION_DIS_RSP = 7,
-	P2P_STATE_RX_PROVISION_DIS_REQ = 8,
+	P2P_STATE_RX_PROVISION_DIS_REQ = 8,	
 	P2P_STATE_GONEGO_ING = 9,						//	Doing the group owner negoitation handshake
 	P2P_STATE_GONEGO_OK = 10,						//	finish the group negoitation handshake with success
 	P2P_STATE_GONEGO_FAIL = 11,					//	finish the group negoitation handshake with failure
@@ -1165,10 +1265,13 @@ enum P2P_STATE {
 	P2P_STATE_PROVISIONING_ING = 13,				//	Doing the P2P WPS
 	P2P_STATE_PROVISIONING_DONE = 14,			//	Finish the P2P WPS
 	P2P_STATE_TX_INVITE_REQ = 15,					//	Transmit the P2P Invitation request
-	P2P_STATE_RX_INVITE_RESP = 16,				//	Receiving the P2P Invitation response
+	P2P_STATE_RX_INVITE_RESP_OK = 16,				//	Receiving the P2P Invitation response
 	P2P_STATE_RECV_INVITE_REQ_DISMATCH = 17,	//	receiving the P2P Inviation request and dismatch with the profile.
 	P2P_STATE_RECV_INVITE_REQ_GO = 18,			//	receiving the P2P Inviation request and this wifi is GO.
 	P2P_STATE_RECV_INVITE_REQ_JOIN = 19,			//	receiving the P2P Inviation request to join an existing P2P Group.
+	P2P_STATE_RX_INVITE_RESP_FAIL = 20,			//	recveing the P2P Inviation response with failure
+	P2P_STATE_RX_INFOR_NOREADY = 21, 			// receiving p2p negoitation response with information is not available
+	P2P_STATE_TX_INFOR_NOREADY = 22, 			// sending p2p negoitation response with information is not available
 };
 
 enum P2P_WPSINFO {
@@ -1185,20 +1288,30 @@ enum P2P_PROTO_WK_ID
 	P2P_FIND_PHASE_WK = 0,
 	P2P_RESTORE_STATE_WK = 1,
 	P2P_PRE_TX_PROVDISC_PROCESS_WK = 2,
-	P2P_PRE_TX_NEGOREQ_PROCESS_WK = 3,
+	P2P_PRE_TX_NEGOREQ_PROCESS_WK = 3,	
 	P2P_PRE_TX_INVITEREQ_PROCESS_WK = 4,
 	P2P_AP_P2P_CH_SWITCH_PROCESS_WK =5,
 	P2P_RO_CH_WK = 6,
 };
 
-enum P2P_PS
+#ifdef CONFIG_P2P_PS
+enum P2P_PS_STATE
 {
-	P2P_PS_DISABLE=0,
-	P2P_PS_ENABLE=1,
-	P2P_PS_SCAN=2,
-	P2P_PS_SCAN_DONE=3,
-	P2P_PS_ALLSTASLEEP=4, // for owner
+	P2P_PS_DISABLE = 0,
+	P2P_PS_ENABLE = 1,
+	P2P_PS_SCAN = 2,
+	P2P_PS_SCAN_DONE = 3,
+	P2P_PS_ALLSTASLEEP = 4, // for P2P GO
 };
+
+enum P2P_PS_MODE
+{
+	P2P_PS_NONE = 0,
+	P2P_PS_CTWINDOW = 1,
+	P2P_PS_NOA	 = 2,
+	P2P_PS_MIX = 3, // CTWindow and NoA
+};
+#endif // CONFIG_P2P_PS
 
 //	=====================WFD Section=====================
 //	For Wi-Fi Display
@@ -1213,18 +1326,37 @@ enum P2P_PS
 #define	WFD_DEVINFO_SOURCE					0x0000
 #define	WFD_DEVINFO_PSINK					0x0001
 #define	WFD_DEVINFO_SSINK					0x0002
+#define	WFD_DEVINFO_DUAL 					0x0003
 
 #define	WFD_DEVINFO_SESSION_AVAIL			0x0010
 #define	WFD_DEVINFO_WSD						0x0040
 #define	WFD_DEVINFO_PC_TDLS					0x0080
-
+#define	WFD_DEVINFO_HDCP_SUPPORT			0x0100
 
 #ifdef  CONFIG_TX_MCAST2UNI
 #define IP_MCAST_MAC(mac)		((mac[0]==0x01)&&(mac[1]==0x00)&&(mac[2]==0x5e))
 #define ICMPV6_MCAST_MAC(mac)	((mac[0]==0x33)&&(mac[1]==0x33)&&(mac[2]!=0xff))
 #endif	// CONFIG_TX_MCAST2UNI
 
+#ifdef CONFIG_IOCTL_CFG80211
+/* Regulatroy Domain */
+struct regd_pair_mapping {
+	u16 reg_dmnenum;
+	u16 reg_5ghz_ctl;
+	u16 reg_2ghz_ctl;
+};
 
+struct rtw_regulatory {
+	char alpha2[2];
+	u16 country_code;
+	u16 max_power_level;
+	u32 tp_scale;
+	u16 current_rd;
+	u16 current_rd_ext;
+	int16_t power_limit;
+	struct regd_pair_mapping *regpair;
+};
+#endif
 
 #ifdef CONFIG_WAPI_SUPPORT
 #ifndef IW_AUTH_WAPI_VERSION_1
@@ -1238,9 +1370,6 @@ enum P2P_PS
 #endif
 #ifndef IW_ENCODE_ALG_SM4
 #define IW_ENCODE_ALG_SM4			0x20
-#endif
-#ifndef WLAN_CIPHER_SUITE_SMS4
-#define WLAN_CIPHER_SUITE_SMS4			0x4
 #endif
 #endif
 

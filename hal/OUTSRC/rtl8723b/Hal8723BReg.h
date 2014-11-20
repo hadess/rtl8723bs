@@ -5,15 +5,15 @@
  *
  *
  * Note:	1. Define Mac register address and corresponding bit mask map
- *
+ *			
  *
  * Export:	Constants, macro, functions(API), global variables(None).
  *
- * Abbrev:
+ * Abbrev:	
  *
  * History:
- *		Data		Who		Remark
- *
+ *		Data		Who		Remark 
+ * 
  *****************************************************************************/
 #ifndef __INC_HAL8723BREG_H
 #define __INC_HAL8723BREG_H
@@ -62,6 +62,7 @@
 #define REG_FSISR_8723B					0x0054
 #define REG_HSIMR_8723B					0x0058
 #define REG_HSISR_8723B					0x005c
+#define REG_GPIO_EXT_CTRL				0x0060
 #define REG_MULTI_FUNC_CTRL_8723B		0x0068
 #define REG_GPIO_STATUS_8723B			0x006C
 #define REG_SDIO_CTRL_8723B				0x0070
@@ -73,6 +74,8 @@
 #define REG_HISR0_8723B					0x00B4
 #define REG_HIMR1_8723B					0x00B8
 #define REG_HISR1_8723B					0x00BC
+#define REG_PMC_DBG_CTRL2_8723B			0x00CC
+#define	REG_EFUSE_BURN_GNT_8723B		0x00CF
 #define REG_HPON_FSM_8723B				0x00EC
 #define REG_SYS_CFG_8723B				0x00F0
 #define REG_SYS_CFG1_8723B				0x00FC
@@ -132,11 +135,11 @@
 //-----------------------------------------------------
 #define REG_RQPN_8723B					0x0200
 #define REG_FIFOPAGE_8723B				0x0204
-#define REG_TDECTRL_8723B				0x0208
+#define REG_DWBCN0_CTRL_8723B			REG_TDECTRL
 #define REG_TXDMA_OFFSET_CHK_8723B	0x020C
-#define REG_TXDMA_STATUS_8723B			0x0210
-#define REG_RQPN_NPQ_8723B				0x0214
-#define REG_TDECTRL1_8723B				0x0228
+#define REG_TXDMA_STATUS_8723B		0x0210
+#define REG_RQPN_NPQ_8723B			0x0214
+#define REG_DWBCN1_CTRL_8723B			0x0228
 
 
 //-----------------------------------------------------
@@ -147,7 +150,7 @@
 #define REG_RXDMA_AGG_PG_TH_8723B		0x0280
 #define REG_FW_UPD_RDPTR_8723B		0x0284 // FW shall update this register before FW write RXPKT_RELEASE_POLL to 1
 #define REG_RXDMA_CONTROL_8723B		0x0286 // Control the RX DMA.
-#define REG_RXPKT_NUM_8723B			0x0287 // The number of packets in RXPKTBUF.
+#define REG_RXPKT_NUM_8723B			0x0287 // The number of packets in RXPKTBUF.	
 #define REG_RXDMA_STATUS_8723B			0x0288
 #define REG_RXDMA_PRO_8723B			0x0290
 #define REG_EARLY_MODE_CONTROL_8723B	0x02BC
@@ -161,7 +164,7 @@
 //
 //-----------------------------------------------------
 #define	REG_PCIE_CTRL_REG_8723B		0x0300
-#define	REG_INT_MIG_8723B				0x0304	// Interrupt Migration
+#define	REG_INT_MIG_8723B				0x0304	// Interrupt Migration 
 #define	REG_BCNQ_DESA_8723B			0x0308	// TX Beacon Descriptor Address
 #define	REG_HQ_DESA_8723B				0x0310	// TX High Queue Descriptor Address
 #define	REG_MGQ_DESA_8723B			0x0318	// TX Manage Queue Descriptor Address
@@ -174,7 +177,9 @@
 #define	REG_DBI_RDATA_8723B			0x034C	// DBI Read Data
 #define	REG_DBI_ADDR_8723B				0x0350	// DBI Address
 #define	REG_DBI_FLAG_8723B				0x0352	// DBI Read/Write Flag
-#define	REG_MDIO_8723B					0x0354	// MDIO for Access PCIE PHY
+#define	REG_MDIO_WDATA_8723B		0x0354	// MDIO for Write PCIE PHY
+#define	REG_MDIO_RDATA_8723B			0x0356	// MDIO for Reads PCIE PHY
+#define	REG_MDIO_CTL_8723B			0x0358	// MDIO for Control
 #define	REG_DBG_SEL_8723B				0x0360	// Debug Selection Register
 #define	REG_PCIE_HRPWM_8723B			0x0361	//PCIe RPWM
 #define	REG_PCIE_HCPWM_8723B			0x0363	//PCIe CPWM
@@ -233,6 +238,7 @@
 #define REG_BAR_MODE_CTRL_8723B		0x04CC
 #define REG_RA_TRY_RATE_AGG_LMT_8723B	0x04CF
 #define REG_MACID_PKT_DROP0_8723B		0x04D0
+#define REG_MACID_PKT_SLEEP_8723B		0x04D4
 
 //-----------------------------------------------------
 //
@@ -283,7 +289,7 @@
 #define REG_USTIME_TSF_8723B			0x055C
 #define REG_BCN_MAX_ERR_8723B			0x055D
 #define REG_RXTSF_OFFSET_CCK_8723B		0x055E
-#define REG_RXTSF_OFFSET_OFDM_8723B	0x055F
+#define REG_RXTSF_OFFSET_OFDM_8723B	0x055F	
 #define REG_TSFTR_8723B					0x0560
 #define REG_CTWND_8723B					0x0572
 #define REG_SECONDARY_CCA_CTRL_8723B	0x0577
@@ -355,31 +361,6 @@
 
 //-----------------------------------------------------
 //
-//	0xFE00h ~ 0xFE55h	USB Configuration
-//
-//-----------------------------------------------------
-/*
-#define REG_USB_INFO					0xFE17
-#define REG_USB_SPECIAL_OPTION		0xFE55
-#define REG_USB_DMA_AGG_TO			0xFE5B
-#define REG_USB_AGG_TO					0xFE5C
-#define REG_USB_AGG_TH					0xFE5D
-
-
-// For normal chip
-#define REG_NORMAL_SIE_VID				0xFE60		// 0xFE60~0xFE61
-#define REG_NORMAL_SIE_PID				0xFE62		// 0xFE62~0xFE63
-#define REG_NORMAL_SIE_OPTIONAL		0xFE64
-#define REG_NORMAL_SIE_EP				0xFE65		// 0xFE65~0xFE67
-#define REG_NORMAL_SIE_PHY			0xFE68		// 0xFE68~0xFE6B
-#define REG_NORMAL_SIE_OPTIONAL2		0xFE6C
-#define REG_NORMAL_SIE_GPS_EP			0xFE6D	// 0xFE6D, for RTL8723 only.
-#define REG_NORMAL_SIE_MAC_ADDR		0xFE70		// 0xFE70~0xFE75
-#define REG_NORMAL_SIE_STRING			0xFE80		// 0xFE80~0xFEDF
-*/
-
-//-----------------------------------------------------
-//
 //	Redifine 8192C register definition for compatibility
 //
 //-----------------------------------------------------
@@ -391,7 +372,7 @@
 #define	MSR_8723B							(REG_CR_8723B + 2)		// Media Status register
 #define	ISR_8723B							REG_HISR0_8723B
 #define	TSFR_8723B							REG_TSFTR_8723B			// Timing Sync Function Timer Register.
-
+					
 #define 	PBP_8723B							REG_PBP_8723B
 
 // Redifine MACID register, to compatible prior ICs.
@@ -408,213 +389,6 @@
 #define	CAMDBG_8723B						REG_CAMDBG_8723B
 #define	SECR_8723B							REG_SECCFG_8723B		//Security Configuration Register
 
-/*
-
-// Unused register
-#define	UnusedRegister					0x1BF
-#define	DCAM							UnusedRegister
-#define	PSR								UnusedRegister
-#define 	BBAddr							UnusedRegister
-#define	PhyDataR						UnusedRegister
-
-
-
-//----------------------------------------------------------------------------
-//       8192C Cmd9346CR bits					(Offset 0xA, 16bit)
-//----------------------------------------------------------------------------
-#define	CmdEEPROM_En					BIT5	 			// EEPROM enable when set 1
-#define	CmdEERPOMSEL					BIT4 			// System EEPROM select, 0: boot from E-FUSE, 1: The EEPROM used is 9346
-#define	Cmd9346CR_9356SEL				BIT4
-
-//----------------------------------------------------------------------------
-//       8192C GPIO MUX Configuration Register (offset 0x40, 4 byte)
-//----------------------------------------------------------------------------
-#define	GPIOSEL_GPIO					BIT0
-#define	GPIOSEL_ENBT					BIT5
-
-//----------------------------------------------------------------------------
-//       8192C GPIO PIN Control Register (offset 0x44, 4 byte)
-//----------------------------------------------------------------------------
-#define	GPIO_IN							REG_GPIO_PIN_CTRL_8195		// GPIO pins input value
-#define	GPIO_OUT						(REG_GPIO_PIN_CTRL_8195+1)	// GPIO pins output value
-#define	GPIO_IO_SEL					(REG_GPIO_PIN_CTRL_8195+2)	// GPIO pins output enable when a bit is set to "1"; otherwise, input is configured.
-#define	GPIO_MOD						(REG_GPIO_PIN_CTRL_8195+3)
-#define	HAL_8192C_HW_GPIO_WPS_BIT		BIT2
-
-//----------------------------------------------------------------------------
-//       8723/8188E Host System Interrupt Mask Register (offset 0x58, 32 byte)
-//----------------------------------------------------------------------------
-#define	HSIMR_GPIO12_0_INT_EN		BIT0
-#define	HSIMR_SPS_OCP_INT_EN			BIT5
-#define	HSIMR_RON_INT_EN				BIT6
-#define	HSIMR_PDN_INT_EN				BIT7
-#define	HSIMR_GPIO9_INT_EN			BIT25
-
-
-//----------------------------------------------------------------------------
-//       8723/8188E Host System Interrupt Status Register (offset 0x5C, 32 byte)
-//----------------------------------------------------------------------------
-#define	HSISR_GPIO12_0_INT			BIT0
-#define	HSISR_SPS_OCP_INT				BIT5
-#define	HSISR_RON_INT_EN				BIT6
-#define	HSISR_PDNINT					BIT7
-#define	HSISR_GPIO9_INT				BIT25
-
-//----------------------------------------------------------------------------
-//       8195 (MSR) Media Status Register	(Offset 0x4C, 8 bits)
-//----------------------------------------------------------------------------
-#define	MSR_NOLINK					0x00
-#define	MSR_ADHOC					0x01
-#define	MSR_INFRA					0x02
-#define	MSR_AP						0x03
-
-//----------------------------------------------------------------------------
-//       88EU (MSR) Media Status Register	(Offset 0x4C, 8 bits)
-//----------------------------------------------------------------------------
-#define	USB_INTR_CONTENT_HISR_OFFSET		48
-#define	USB_INTR_CONTENT_HISRE_OFFSET		52
-
-
-//
-// 6. Adaptive Control Registers  (Offset: 0x0160 - 0x01CF)
-//
-//----------------------------------------------------------------------------
-//       8192C Response Rate Set Register	(offset 0x181, 24bits)
-//----------------------------------------------------------------------------
-#define	RRSR_1M						BIT0
-#define	RRSR_2M						BIT1
-#define	RRSR_5_5M					BIT2
-#define	RRSR_11M					BIT3
-#define	RRSR_6M						BIT4
-#define	RRSR_9M						BIT5
-#define	RRSR_12M					BIT6
-#define	RRSR_18M					BIT7
-#define	RRSR_24M					BIT8
-#define	RRSR_36M					BIT9
-#define	RRSR_48M					BIT10
-#define	RRSR_54M					BIT11
-#define	RRSR_MCS0					BIT12
-#define	RRSR_MCS1					BIT13
-#define	RRSR_MCS2					BIT14
-#define	RRSR_MCS3					BIT15
-#define	RRSR_MCS4					BIT16
-#define	RRSR_MCS5					BIT17
-#define	RRSR_MCS6					BIT18
-#define	RRSR_MCS7					BIT19
-
-
-//----------------------------------------------------------------------------
-//       8192C Response Rate Set Register	(offset 0x1BF, 8bits)
-//----------------------------------------------------------------------------
-// WOL bit information
-#define	HAL92C_WOL_PTK_UPDATE_EVENT		BIT0
-#define	HAL92C_WOL_GTK_UPDATE_EVENT		BIT1
-
-
-//----------------------------------------------------------------------------
-//       8192C Rate Definition
-//----------------------------------------------------------------------------
-//CCK
-#define	RATR_1M						0x00000001
-#define	RATR_2M						0x00000002
-#define	RATR_55M					0x00000004
-#define	RATR_11M					0x00000008
-//OFDM
-#define	RATR_6M						0x00000010
-#define	RATR_9M						0x00000020
-#define	RATR_12M					0x00000040
-#define	RATR_18M					0x00000080
-#define	RATR_24M					0x00000100
-#define	RATR_36M					0x00000200
-#define	RATR_48M					0x00000400
-#define	RATR_54M					0x00000800
-//MCS 1 Spatial Stream
-#define	RATR_MCS0					0x00001000
-#define	RATR_MCS1					0x00002000
-#define	RATR_MCS2					0x00004000
-#define	RATR_MCS3					0x00008000
-#define	RATR_MCS4					0x00010000
-#define	RATR_MCS5					0x00020000
-#define	RATR_MCS6					0x00040000
-#define	RATR_MCS7					0x00080000
-//MCS 2 Spatial Stream
-#define	RATR_MCS8					0x00100000
-#define	RATR_MCS9					0x00200000
-#define	RATR_MCS10					0x00400000
-#define	RATR_MCS11					0x00800000
-#define	RATR_MCS12					0x01000000
-#define	RATR_MCS13					0x02000000
-#define	RATR_MCS14					0x04000000
-#define	RATR_MCS15					0x08000000
-
-
-// NOTE: For 92CU - Ziv
-//CCK
-#define RATE_1M						BIT(0)
-#define RATE_2M						BIT(1)
-#define RATE_5_5M						BIT(2)
-#define RATE_11M						BIT(3)
-//OFDM
-#define RATE_6M						BIT(4)
-#define RATE_9M						BIT(5)
-#define RATE_12M						BIT(6)
-#define RATE_18M						BIT(7)
-#define RATE_24M						BIT(8)
-#define RATE_36M						BIT(9)
-#define RATE_48M						BIT(10)
-#define RATE_54M						BIT(11)
-//MCS 1 Spatial Stream
-#define RATE_MCS0						BIT(12)
-#define RATE_MCS1						BIT(13)
-#define RATE_MCS2						BIT(14)
-#define RATE_MCS3						BIT(15)
-#define RATE_MCS4						BIT(16)
-#define RATE_MCS5						BIT(17)
-#define RATE_MCS6						BIT(18)
-#define RATE_MCS7						BIT(19)
-//MCS 2 Spatial Stream
-#define RATE_MCS8						BIT(20)
-#define RATE_MCS9						BIT(21)
-#define RATE_MCS10					BIT(22)
-#define RATE_MCS11					BIT(23)
-#define RATE_MCS12					BIT(24)
-#define RATE_MCS13					BIT(25)
-#define RATE_MCS14					BIT(26)
-#define RATE_MCS15					BIT(27)
-
-
-
-
-// ALL CCK Rate
-#define	RATE_ALL_CCK					RATR_1M|RATR_2M|RATR_55M|RATR_11M
-#define	RATE_ALL_OFDM_AG			RATR_6M|RATR_9M|RATR_12M|RATR_18M|RATR_24M|\
-									RATR_36M|RATR_48M|RATR_54M
-#define	RATE_ALL_OFDM_1SS			RATR_MCS0|RATR_MCS1|RATR_MCS2|RATR_MCS3 |\
-									RATR_MCS4|RATR_MCS5|RATR_MCS6	|RATR_MCS7
-#define	RATE_ALL_OFDM_2SS			RATR_MCS8|RATR_MCS9	|RATR_MCS10|RATR_MCS11|\
-									RATR_MCS12|RATR_MCS13|RATR_MCS14|RATR_MCS15
-
-#define RATE_BITMAP_ALL				0xFFFFF
-
-// Only use CCK 1M rate for ACK
-#define RATE_RRSR_CCK_ONLY_1M		0xFFFF1
-//----------------------------------------------------------------------------
-//       8192C BW_OPMODE bits					(Offset 0x203, 8bit)
-//----------------------------------------------------------------------------
-#define	BW_OPMODE_20MHZ			BIT2
-#define	BW_OPMODE_5G				BIT1
-
-//
-// 10. Power Save Control Registers	 (Offset: 0x0260 - 0x02DF)
-//
-#define	WOW_PMEN				BIT0 // Power management Enable.
-#define	WOW_WOMEN			BIT1 // WoW function on or off.
-#define	WOW_MAGIC				BIT2 // Magic packet
-#define	WOW_UWF				BIT3 // Unicast Wakeup frame.
-
-*/
-
-
 
 //----------------------------------------------------------------------------
 //       8195 IMR/ISR bits						(offset 0xB0,  8bits)
@@ -622,28 +396,28 @@
 #define	IMR_DISABLED_8723B					0
 // IMR DW0(0x00B0-00B3) Bit 0-31
 #define	IMR_TIMER2_8723B					BIT31		// Timeout interrupt 2
-#define	IMR_TIMER1_8723B					BIT30		// Timeout interrupt 1
+#define	IMR_TIMER1_8723B					BIT30		// Timeout interrupt 1	
 #define	IMR_PSTIMEOUT_8723B				BIT29		// Power Save Time Out Interrupt
-#define	IMR_GTINT4_8723B					BIT28		// When GTIMER4 expires, this bit is set to 1
-#define	IMR_GTINT3_8723B					BIT27		// When GTIMER3 expires, this bit is set to 1
-#define	IMR_TXBCN0ERR_8723B				BIT26		// Transmit Beacon0 Error
-#define	IMR_TXBCN0OK_8723B				BIT25		// Transmit Beacon0 OK
-#define	IMR_TSF_BIT32_TOGGLE_8723B		BIT24		// TSF Timer BIT32 toggle indication interrupt
-#define	IMR_BCNDMAINT0_8723B				BIT20		// Beacon DMA Interrupt 0
-#define	IMR_BCNDERR0_8723B				BIT16		// Beacon Queue DMA OK0
+#define	IMR_GTINT4_8723B					BIT28		// When GTIMER4 expires, this bit is set to 1	
+#define	IMR_GTINT3_8723B					BIT27		// When GTIMER3 expires, this bit is set to 1	
+#define	IMR_TXBCN0ERR_8723B				BIT26		// Transmit Beacon0 Error			
+#define	IMR_TXBCN0OK_8723B				BIT25		// Transmit Beacon0 OK			
+#define	IMR_TSF_BIT32_TOGGLE_8723B		BIT24		// TSF Timer BIT32 toggle indication interrupt			
+#define	IMR_BCNDMAINT0_8723B				BIT20		// Beacon DMA Interrupt 0			
+#define	IMR_BCNDERR0_8723B				BIT16		// Beacon Queue DMA OK0			
 #define	IMR_HSISR_IND_ON_INT_8723B		BIT15		// HSISR Indicator (HSIMR & HSISR is true, this bit is set to 1)
-#define	IMR_BCNDMAINT_E_8723B			BIT14		// Beacon DMA Interrupt Extension for Win7
+#define	IMR_BCNDMAINT_E_8723B			BIT14		// Beacon DMA Interrupt Extension for Win7			
 #define	IMR_ATIMEND_8723B				BIT12		// CTWidnow End or ATIM Window End
-#define	IMR_C2HCMD_8723B					BIT10		// CPU to Host Command INT Status, Write 1 clear
-#define	IMR_CPWM2_8723B					BIT9			// CPU power Mode exchange INT Status, Write 1 clear
-#define	IMR_CPWM_8723B					BIT8			// CPU power Mode exchange INT Status, Write 1 clear
-#define	IMR_HIGHDOK_8723B				BIT7			// High Queue DMA OK
-#define	IMR_MGNTDOK_8723B				BIT6			// Management Queue DMA OK
-#define	IMR_BKDOK_8723B					BIT5			// AC_BK DMA OK
-#define	IMR_BEDOK_8723B					BIT4			// AC_BE DMA OK
-#define	IMR_VIDOK_8723B					BIT3			// AC_VI DMA OK
-#define	IMR_VODOK_8723B					BIT2			// AC_VO DMA OK
-#define	IMR_RDU_8723B					BIT1			// Rx Descriptor Unavailable
+#define	IMR_C2HCMD_8723B					BIT10		// CPU to Host Command INT Status, Write 1 clear	
+#define	IMR_CPWM2_8723B					BIT9			// CPU power Mode exchange INT Status, Write 1 clear	
+#define	IMR_CPWM_8723B					BIT8			// CPU power Mode exchange INT Status, Write 1 clear	
+#define	IMR_HIGHDOK_8723B				BIT7			// High Queue DMA OK	
+#define	IMR_MGNTDOK_8723B				BIT6			// Management Queue DMA OK	
+#define	IMR_BKDOK_8723B					BIT5			// AC_BK DMA OK		
+#define	IMR_BEDOK_8723B					BIT4			// AC_BE DMA OK	
+#define	IMR_VIDOK_8723B					BIT3			// AC_VI DMA OK		
+#define	IMR_VODOK_8723B					BIT2			// AC_VO DMA OK	
+#define	IMR_RDU_8723B					BIT1			// Rx Descriptor Unavailable	
 #define	IMR_ROK_8723B					BIT0			// Receive DMA OK
 
 // IMR DW1(0x00B4-00B7) Bit 0-31
@@ -673,7 +447,7 @@
 
 /*===================================================================
 =====================================================================
-Here the register defines are for 92C. When the define is as same with 92C,
+Here the register defines are for 92C. When the define is as same with 92C, 
 we will use the 92C's define for the consistency
 So the following defines for 92C is not entire!!!!!!
 =====================================================================
@@ -733,7 +507,7 @@ Current IOREG MAP
 
 */
 //============================================================================
-//       8192C Regsiter Bit and Content definition
+//       8192C Regsiter Bit and Content definition 
 //============================================================================
 //-----------------------------------------------------
 //
@@ -948,7 +722,7 @@ Current IOREG MAP
 // For normal driver, 0x10C
 #define _TXDMA_HIQ_MAP(x) 	 		(((x)&0x3) << 14)
 #define _TXDMA_MGQ_MAP(x) 	 		(((x)&0x3) << 12)
-#define _TXDMA_BKQ_MAP(x) 	 		(((x)&0x3) << 10)
+#define _TXDMA_BKQ_MAP(x) 	 		(((x)&0x3) << 10)		
 #define _TXDMA_BEQ_MAP(x) 	 		(((x)&0x3) << 8 )
 #define _TXDMA_VIQ_MAP(x) 	 		(((x)&0x3) << 6 )
 #define _TXDMA_VOQ_MAP(x) 	 		(((x)&0x3) << 4 )
@@ -958,7 +732,7 @@ Current IOREG MAP
 #define QUEUE_HIGH					3
 
 
-//2 REG_C2HEVT_CLEAR 0x01AF
+//2 REG_C2HEVT_CLEAR 0x01AF 
 #define	C2H_EVT_HOST_CLOSE			0x00	// Set by driver and notify FW that the driver has read the C2H command message
 #define	C2H_EVT_FW_CLOSE			0xFF		// Set by FW indicating that FW had set the C2H command message and it's not yet read by driver.
 
@@ -1000,10 +774,10 @@ Current IOREG MAP
 // Write only. When this bit is set, RXDMA will decrease RX PKT counter by one. Before
 // this bit is polled, FW shall update RXFF_RD_PTR first. This register is write pulse and auto clear.
 #define	RXPKT_RELEASE_POLL			BIT(0)
-// Read only. When RXMA finishes on-going DMA operation, RXMDA will report idle state in
+// Read only. When RXMA finishes on-going DMA operation, RXMDA will report idle state in 
 // this bit. FW can start releasing packets after RXDMA entering idle mode.
-#define	RXDMA_IDLE					BIT(1)
-// When this bit is set, RXDMA will enter this mode after on-going RXDMA packet to host
+#define	RXDMA_IDLE					BIT(1)	
+// When this bit is set, RXDMA will enter this mode after on-going RXDMA packet to host 
 // completed, and stop DMA packet to host. RXDMA will then report Default: 0;
 #define	RW_RELEASE_EN				BIT(2)
 */
@@ -1026,7 +800,7 @@ Current IOREG MAP
 #define	HAL92C_MSDU_LIFE_TIME_UNIT		128		// in us, said by Tim.
 
 
-//2 SPEC SIFS 0x0428
+//2 SPEC SIFS 0x0428 
 #define _SPEC_SIFS_CCK(x)				((x) & 0xFF)
 #define _SPEC_SIFS_OFDM(x)				(((x) & 0xFF) << 8)
 
@@ -1093,7 +867,7 @@ Current IOREG MAP
 //----------------------------------------------------------------------------
 /*
 #define	RCR_APPFCS					BIT31		// WMAC append FCS after pauload
-#define	RCR_APP_MIC					BIT30		// MACRX will retain the MIC at the bottom of the packet.
+#define	RCR_APP_MIC					BIT30		// MACRX will retain the MIC at the bottom of the packet. 
 #define	RCR_APP_ICV					BIT29       // MACRX will retain the ICV at the bottom of the packet.
 #define	RCR_APP_PHYST_RXFF			BIT28       // HY Status is appended before RX packet in RXFF
 #define	RCR_APP_BA_SSN				BIT27		// SSN of previous TXBA is appended as after original RXDESC as the 4-th DW of RXDESC.
@@ -1115,16 +889,16 @@ Current IOREG MAP
 #define	RCR_ADF						BIT11		// Accept data type frame. This bit also regulates BA, BAR, and PS-Poll (AP mode only).
 */
 /*#define	RCR_AICV						BIT9		// Accept ICV error packet
-#define	RCR_ACRC32					BIT8		// Accept CRC32 error packet
+#define	RCR_ACRC32					BIT8		// Accept CRC32 error packet 
 #define	RCR_CBSSID_BCN				BIT7		// Accept BSSID match packet (Rx beacon, probe rsp)
 #define	RCR_CBSSID_DATA				BIT6		// Accept BSSID match packet (Data)
 #define	RCR_CBSSID					RCR_CBSSID_DATA		// Accept BSSID match packet
 #define	RCR_APWRMGT				BIT5		// Accept power management packet
 #define	RCR_ADD3					BIT4		// Accept address 3 match packet
-#define	RCR_AB						BIT3		// Accept broadcast packet
-#define	RCR_AM						BIT2		// Accept multicast packet
+#define	RCR_AB						BIT3		// Accept broadcast packet 
+#define	RCR_AM						BIT2		// Accept multicast packet 
 #define	RCR_APM					BIT1		// Accept physical match packet
-#define	RCR_AAP						BIT0		// Accept all unicast packet
+#define	RCR_AAP						BIT0		// Accept all unicast packet 
 
 #define AAP								BIT(0)
 #define APM								BIT(1)
@@ -1154,7 +928,7 @@ Current IOREG MAP
 
 //----------------------------------------------------------------------------
 //       8195 CAM Config Setting (offset 0x680, 1 byte)
-//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------      	       		
 /*
 #define	SCR_TxUseDK					BIT(0)			//Force Tx Use Default Key
 #define	SCR_RxUseDK					BIT(1)			//Force Rx Use Default Key
@@ -1171,13 +945,13 @@ Current IOREG MAP
 #define	CAM_AES						0x04
 #define	CAM_WEP104					0x05
 #define	CAM_SMS4						0x6
-
+        		
 #define	TOTAL_CAM_ENTRY				32
-#define	HALF_CAM_ENTRY				16
-
+#define	HALF_CAM_ENTRY				16	
+       		
 #define	CAM_CONFIG_USEDK				TRUE
 #define	CAM_CONFIG_NO_USEDK			FALSE
-
+       		
 
 #define	SCR_UseDK						0x01
 #define	SCR_TxSecEnable				0x02

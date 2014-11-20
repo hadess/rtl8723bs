@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Copyright(c) 2007 - 2011 Realtek Corporation. All rights reserved.
- *
+ *                                        
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of version 2 of the GNU General Public License as
  * published by the Free Software Foundation.
@@ -36,6 +36,9 @@
 //MAC REG
 #define	ODM_BB_RESET					0x002
 #define	ODM_DUMMY						0x4fe
+#define	RF_T_METER_OLD				0x24
+#define	RF_T_METER_NEW				0x42
+
 #define	ODM_EDCA_VO_PARAM			0x500
 #define	ODM_EDCA_VI_PARAM			0x504
 #define	ODM_EDCA_BE_PARAM			0x508
@@ -46,7 +49,6 @@
 #define	ODM_FPGA_PHY0_PAGE8			0x800
 #define	ODM_PSD_SETTING				0x808
 #define	ODM_AFE_SETTING				0x818
-#define	ODM_TXAGC_B_6_18				0x830
 #define	ODM_TXAGC_B_24_54			0x834
 #define	ODM_TXAGC_B_MCS32_5			0x838
 #define	ODM_TXAGC_B_MCS0_MCS3		0x83c

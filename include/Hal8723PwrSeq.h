@@ -22,7 +22,6 @@
 	TRANS_END
 */
 #include "HalPwrSeqCmd.h"
-#include "rtl8723a_spec.h"
 
 #define	RTL8723A_TRANS_CARDEMU_TO_ACT_STEPS	15
 #define	RTL8723A_TRANS_ACT_TO_CARDEMU_STEPS	15

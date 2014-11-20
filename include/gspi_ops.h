@@ -146,35 +146,27 @@ struct spi_more_data {
 	unsigned long len;
 };
 
-extern void spi_int_hdl(PADAPTER padapter);
-extern void spi_recv_work_callback(PADAPTER padapter);
-extern void spi_set_intf_ops(struct _io_ops *pops);
-
 #ifdef CONFIG_RTL8723A
+void rtl8723as_set_hal_ops(PADAPTER padapter);
+#define set_hal_ops rtl8723as_set_hal_ops
+#endif
+
+#ifdef CONFIG_RTL8188E
+void rtl8188es_set_hal_ops(PADAPTER padapter);
+#define set_hal_ops rtl8188es_set_hal_ops
+#endif
+extern void spi_set_chip_endian(PADAPTER padapter);
+extern void spi_set_intf_ops(_adapter *padapter,struct _io_ops *pops);
+extern void spi_set_chip_endian(PADAPTER padapter);
 extern void InitInterrupt8723ASdio(PADAPTER padapter);
 extern void InitSysInterrupt8723ASdio(PADAPTER padapter);
 extern void EnableInterrupt8723ASdio(PADAPTER padapter);
 extern void DisableInterrupt8723ASdio(PADAPTER padapter);
+extern void spi_int_hdl(PADAPTER padapter);
 extern u8 HalQueryTxBufferStatus8723ASdio(PADAPTER padapter);
-#ifdef CONFIG_WOWLAN
-extern void DisableInterruptButCpwm28723ASdio(PADAPTER padapter);
-extern void ClearInterrupt8723ASdio(PADAPTER padapter);
-extern u8 RecvOnePkt(PADAPTER padapter, u32 size);
-#endif //CONFIG_WOWLAN
-#endif
-
-#ifdef CONFIG_RTL8188E
 extern void InitInterrupt8188ESdio(PADAPTER padapter);
 extern void EnableInterrupt8188ESdio(PADAPTER padapter);
 extern void DisableInterrupt8188ESdio(PADAPTER padapter);
-extern u8 HalQueryTxBufferStatus8189ESdio(PADAPTER padapter);
-extern void UpdateInterruptMask8188ESdio(PADAPTER padapter, u32 AddMSR, u32 RemoveMSR);
-#ifdef CONFIG_WOWLAN
-extern void DisableInterruptButCpwm28189ESdio(PADAPTER padapter);
-extern u8 RecvOnePkt(PADAPTER padapter, u32 size);
-extern void ClearInterrupt8189ESdio(PADAPTER padapter);
-#endif //CONFIG_WOWLAN
-#endif
 #ifdef CONFIG_RTL8723B
 extern void InitInterrupt8723BSdio(PADAPTER padapter);
 extern void InitSysInterrupt8723BSdio(PADAPTER padapter);
@@ -182,4 +174,5 @@ extern void EnableInterrupt8723BSdio(PADAPTER padapter);
 extern void DisableInterrupt8723BSdio(PADAPTER padapter);
 extern u8 HalQueryTxBufferStatus8723BSdio(PADAPTER padapter);
 #endif
+
 #endif //__GSPI_OPS_H__

@@ -1,7 +1,7 @@
 /******************************************************************************
  *
- * Copyright(c) 2007 - 2012 Realtek Corporation. All rights reserved.
- *
+ * Copyright(c) 2007 - 2011 Realtek Corporation. All rights reserved.
+ *                                        
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of version 2 of the GNU General Public License as
  * published by the Free Software Foundation.
@@ -19,68 +19,6 @@
  ******************************************************************************/
 #ifndef _RTW_MP_H_
 #define _RTW_MP_H_
-
-#ifndef PLATFORM_WINDOWS
-//	00 - Success
-//	11 - Error
-#define STATUS_SUCCESS				(0x00000000L)
-#define STATUS_PENDING				(0x00000103L)
-
-#define STATUS_UNSUCCESSFUL			(0xC0000001L)
-#define STATUS_INSUFFICIENT_RESOURCES		(0xC000009AL)
-#define STATUS_NOT_SUPPORTED			(0xC00000BBL)
-
-#define NDIS_STATUS_SUCCESS			((NDIS_STATUS)STATUS_SUCCESS)
-#define NDIS_STATUS_PENDING			((NDIS_STATUS)STATUS_PENDING)
-#define NDIS_STATUS_NOT_RECOGNIZED		((NDIS_STATUS)0x00010001L)
-#define NDIS_STATUS_NOT_COPIED			((NDIS_STATUS)0x00010002L)
-#define NDIS_STATUS_NOT_ACCEPTED		((NDIS_STATUS)0x00010003L)
-#define NDIS_STATUS_CALL_ACTIVE			((NDIS_STATUS)0x00010007L)
-
-#define NDIS_STATUS_FAILURE			((NDIS_STATUS)STATUS_UNSUCCESSFUL)
-#define NDIS_STATUS_RESOURCES			((NDIS_STATUS)STATUS_INSUFFICIENT_RESOURCES)
-#define NDIS_STATUS_CLOSING			((NDIS_STATUS)0xC0010002L)
-#define NDIS_STATUS_BAD_VERSION			((NDIS_STATUS)0xC0010004L)
-#define NDIS_STATUS_BAD_CHARACTERISTICS		((NDIS_STATUS)0xC0010005L)
-#define NDIS_STATUS_ADAPTER_NOT_FOUND		((NDIS_STATUS)0xC0010006L)
-#define NDIS_STATUS_OPEN_FAILED			((NDIS_STATUS)0xC0010007L)
-#define NDIS_STATUS_DEVICE_FAILED		((NDIS_STATUS)0xC0010008L)
-#define NDIS_STATUS_MULTICAST_FULL		((NDIS_STATUS)0xC0010009L)
-#define NDIS_STATUS_MULTICAST_EXISTS		((NDIS_STATUS)0xC001000AL)
-#define NDIS_STATUS_MULTICAST_NOT_FOUND		((NDIS_STATUS)0xC001000BL)
-#define NDIS_STATUS_REQUEST_ABORTED		((NDIS_STATUS)0xC001000CL)
-#define NDIS_STATUS_RESET_IN_PROGRESS		((NDIS_STATUS)0xC001000DL)
-#define NDIS_STATUS_CLOSING_INDICATING		((NDIS_STATUS)0xC001000EL)
-#define NDIS_STATUS_NOT_SUPPORTED		((NDIS_STATUS)STATUS_NOT_SUPPORTED)
-#define NDIS_STATUS_INVALID_PACKET		((NDIS_STATUS)0xC001000FL)
-#define NDIS_STATUS_OPEN_LIST_FULL		((NDIS_STATUS)0xC0010010L)
-#define NDIS_STATUS_ADAPTER_NOT_READY		((NDIS_STATUS)0xC0010011L)
-#define NDIS_STATUS_ADAPTER_NOT_OPEN		((NDIS_STATUS)0xC0010012L)
-#define NDIS_STATUS_NOT_INDICATING		((NDIS_STATUS)0xC0010013L)
-#define NDIS_STATUS_INVALID_LENGTH		((NDIS_STATUS)0xC0010014L)
-#define NDIS_STATUS_INVALID_DATA		((NDIS_STATUS)0xC0010015L)
-#define NDIS_STATUS_BUFFER_TOO_SHORT		((NDIS_STATUS)0xC0010016L)
-#define NDIS_STATUS_INVALID_OID			((NDIS_STATUS)0xC0010017L)
-#define NDIS_STATUS_ADAPTER_REMOVED		((NDIS_STATUS)0xC0010018L)
-#define NDIS_STATUS_UNSUPPORTED_MEDIA		((NDIS_STATUS)0xC0010019L)
-#define NDIS_STATUS_GROUP_ADDRESS_IN_USE	((NDIS_STATUS)0xC001001AL)
-#define NDIS_STATUS_FILE_NOT_FOUND		((NDIS_STATUS)0xC001001BL)
-#define NDIS_STATUS_ERROR_READING_FILE		((NDIS_STATUS)0xC001001CL)
-#define NDIS_STATUS_ALREADY_MAPPED		((NDIS_STATUS)0xC001001DL)
-#define NDIS_STATUS_RESOURCE_CONFLICT		((NDIS_STATUS)0xC001001EL)
-#define NDIS_STATUS_NO_CABLE			((NDIS_STATUS)0xC001001FL)
-
-#define NDIS_STATUS_INVALID_SAP			((NDIS_STATUS)0xC0010020L)
-#define NDIS_STATUS_SAP_IN_USE			((NDIS_STATUS)0xC0010021L)
-#define NDIS_STATUS_INVALID_ADDRESS		((NDIS_STATUS)0xC0010022L)
-#define NDIS_STATUS_VC_NOT_ACTIVATED		((NDIS_STATUS)0xC0010023L)
-#define NDIS_STATUS_DEST_OUT_OF_ORDER		((NDIS_STATUS)0xC0010024L)  // cause 27
-#define NDIS_STATUS_VC_NOT_AVAILABLE		((NDIS_STATUS)0xC0010025L)  // cause 35,45
-#define NDIS_STATUS_CELLRATE_NOT_AVAILABLE	((NDIS_STATUS)0xC0010026L)  // cause 37
-#define NDIS_STATUS_INCOMPATABLE_QOS		((NDIS_STATUS)0xC0010027L)  // cause 49
-#define NDIS_STATUS_AAL_PARAMS_UNSUPPORTED	((NDIS_STATUS)0xC0010028L)  // cause 93
-#define NDIS_STATUS_NO_ROUTE_TO_DESTINATION	((NDIS_STATUS)0xC0010029L)  // cause 3
-#endif /* #ifndef PLATFORM_WINDOWS */
 
 #if 0
 #define MPT_NOOP			0
@@ -114,25 +52,6 @@
 #define MPT_READ_TSSI			32
 #define MPT_GET_THERMAL_METER		33
 #endif
-
-typedef enum _ANTENNA_PATH{
-		ANTENNA_NONE	= 0x00,
-		ANTENNA_D		,
-		ANTENNA_C		,
-		ANTENNA_CD		,
-		ANTENNA_B		,
-		ANTENNA_BD		,
-		ANTENNA_BC		,
-		ANTENNA_BCD 	,
-		ANTENNA_A		,
-		ANTENNA_AD		,
-		ANTENNA_AC		,
-		ANTENNA_ACD 	,
-		ANTENNA_AB		,
-		ANTENNA_ABD 	,
-		ANTENNA_ABC 	,
-		ANTENNA_ABCD
-} ANTENNA_PATH;
 
 
 #define MAX_MP_XMITBUF_SZ 	2048
@@ -208,32 +127,47 @@ struct mp_tx
 	u32 count, sended;
 	u8 payload;
 	struct pkt_attrib attrib;
-	struct tx_desc desc;
+	//struct tx_desc desc;
+	//u8 resvdtx[7];
+	u8 desc[TXDESC_SIZE];
 	u8 *pallocated_buf;
 	u8 *buf;
 	u32 buf_size, write_size;
-	_thread_hdl_	PktTxThread;
+	_thread_hdl_ PktTxThread;
 };
 
-#if defined(CONFIG_RTL8192C) || defined(CONFIG_RTL8192D) || defined(CONFIG_RTL8723A) || defined(CONFIG_RTL8188E) || defined(CONFIG_RTL8723B)
-#ifdef CONFIG_RTL8192C
-#include <Hal8192CPhyCfg.h>
-#endif
-#ifdef CONFIG_RTL8192D
-#include <Hal8192DPhyCfg.h>
-#endif
-#ifdef CONFIG_RTL8723A
-#include <Hal8723APhyCfg.h>
-#endif
-#ifdef CONFIG_RTL8188E
-#include <Hal8188EPhyCfg.h>
-#endif
-#ifdef CONFIG_RTL8723B
-#include <Hal8723BPhyCfg.h>
-#endif
+#if defined(CONFIG_RTL8192C) || defined(CONFIG_RTL8192D) || defined(CONFIG_RTL8723A) || defined(CONFIG_RTL8188E) || defined(CONFIG_RTL8812A) || defined(CONFIG_RTL8821A) ||defined(CONFIG_RTL8192E) || defined(CONFIG_RTL8723B)
 
 #define MP_MAX_LINES		1000
 #define MP_MAX_LINES_BYTES	256
+#define u1Byte u8
+#define s1Byte s8
+#define u4Byte u32
+#define s4Byte s32
+#define u1Byte		u8
+#define pu1Byte 		u8* 
+
+#define u2Byte		u16
+#define pu2Byte 		u16*		
+
+#define u4Byte		u32
+#define pu4Byte 		u32*	
+
+#define u8Byte		u64
+#define pu8Byte 		u64*
+
+#define s1Byte		s8
+#define ps1Byte 		s8* 
+
+#define s2Byte		s16
+#define ps2Byte 		s16*	
+
+#define s4Byte		s32
+#define ps4Byte 		s32*	
+
+#define s8Byte		s64
+#define ps8Byte 		s64*
+
 #define UCHAR u8
 #define USHORT u16
 #define UINT u32
@@ -258,7 +192,7 @@ typedef struct _MPT_CONTEXT
 	BOOLEAN		MptH2cRspEvent;
 	BOOLEAN		MptBtC2hEvent;
 	BOOLEAN		bMPh2c_timeout;
-
+	
 	/* 8190 PCI does not support NDIS_WORK_ITEM. */
 	// Work Item for Mass Production Test.
 	//NDIS_WORK_ITEM	MptWorkItem;
@@ -297,7 +231,7 @@ typedef struct _MPT_CONTEXT
 	u8			btMpOfdmTxPower;
 	// For MP Tx Power index
 	u8			TxPwrLevel[2];	// rf-A, rf-B
-
+	u32			RegTxPwrLimit;
 	// Content of RCR Regsiter for Mass Production Test.
 	ULONG			MptRCR;
 	// TRUE if we only receive packets with specific pattern.
@@ -334,20 +268,55 @@ typedef struct _MPT_CONTEXT
 	u8		backup0xc30;
 	u8 		backup0x52_RF_A;
 	u8 		backup0x52_RF_B;
-
+	
+	u4Byte			backup0x58_RF_A;	
+	u4Byte			backup0x58_RF_B;
+	
 	u1Byte			h2cReqNum;
-	u1Byte			c2hBuf[20];
+	u1Byte			c2hBuf[32];
 
     u1Byte          btInBuf[100];
 	ULONG			mptOutLen;
     u1Byte          mptOutBuf[100];
-
+    
 }MPT_CONTEXT, *PMPT_CONTEXT;
 #endif
 //#endif
 
+/* E-Fuse */
+#ifdef CONFIG_RTL8192D
+#define EFUSE_MAP_SIZE		256
+#endif
+#ifdef CONFIG_RTL8192C
+#define EFUSE_MAP_SIZE		128
+#endif
+#ifdef CONFIG_RTL8723A
+#define EFUSE_MAP_SIZE		256
+#endif
+#ifdef CONFIG_RTL8188E
+#define EFUSE_MAP_SIZE		512
+#endif
+#if defined(CONFIG_RTL8812A) || defined(CONFIG_RTL8821A)
+#define EFUSE_MAP_SIZE		512
+#endif
+#ifdef CONFIG_RTL8192E
+#define EFUSE_MAP_SIZE		512
+#endif
+#ifdef CONFIG_RTL8723B
+#define EFUSE_MAP_SIZE		512
+#endif
+
+#if defined(CONFIG_RTL8812A) || defined(CONFIG_RTL8821A)
+#define EFUSE_MAX_SIZE		1024
+#elif defined(CONFIG_RTL8188E)
+#define EFUSE_MAX_SIZE		256
+#else
+#define EFUSE_MAX_SIZE		512
+#endif
+/* end of E-Fuse */
+
 //#define RTPRIV_IOCTL_MP 					( SIOCIWFIRSTPRIV + 0x17)
-enum {
+enum {	  
 	WRITE_REG = 1,
 	READ_REG,
 	WRITE_RF,
@@ -363,9 +332,6 @@ enum {
 	MP_CTX,
 	MP_QUERY,
 	MP_ARX,
-#ifdef CONFIG_MP_MAC_FILTER
-	MP_ARX_MAC_FILTER,
-#endif  //CONFIG_MP_MAC_FILTER
 	MP_PSD,
 	MP_PWRTRK,
 	MP_THER,
@@ -378,11 +344,17 @@ enum {
 	MP_SetRFPathSwh,
 	MP_QueryDrvStats,
 	MP_SetBT,
-	TEST_CFG,
+	CTA_TEST,
+	MP_DISABLE_BT_COEXIST,
+	MP_PwrCtlDM,
+#ifdef CONFIG_WOWLAN
+	MP_WOW_ENABLE,
+#endif
+#ifdef CONFIG_AP_WOWLAN
+	MP_AP_WOW_ENABLE,
+#endif
 	MP_NULL,
 	MP_GET_TXPOWER_INX,
-	MP_SET_PREAMBLE,
-	MP_DISABLE_BT_COEXIST,
 };
 
 struct mp_priv
@@ -401,13 +373,16 @@ struct mp_priv
 	//Tx Section
 	u8 TID;
 	u32 tx_pktcount;
+	u32 pktInterval;
 	struct mp_tx tx;
 
 	//Rx Section
+	u32 rx_bssidpktcount;
 	u32 rx_pktcount;
+	u32 rx_pktcount_filter_out;
 	u32 rx_crcerrpktcount;
 	u32 rx_pktloss;
-
+	BOOLEAN  rx_bindicatePkt;
 	struct recv_stat rxstat;
 
 	//RF/BB relative
@@ -425,12 +400,15 @@ struct mp_priv
 	u16 antenna_tx;
 	u16 antenna_rx;
 //	u8 curr_rfpath;
-
+	
 	u8 check_mp_pkt;
 
 	u8 bSetTxPower;
 //	uint ForcedDataRate;
-
+	u8 mp_dm;
+	u8 mac_filter[ETH_ALEN];
+	u8 bmac_filter;
+	
 	struct wlan_network mp_network;
 	NDIS_802_11_MAC_ADDRESS network_macaddr;
 
@@ -463,8 +441,12 @@ struct mp_priv
 	u8 *pmp_xmtframe_buf;
 	_queue free_mp_xmitqueue;
 	u32 free_mp_xmitframe_cnt;
-
+	BOOLEAN bSetRxBssid;
+	BOOLEAN bTxBufCkFail;
+	
 	MPT_CONTEXT MptCtx;
+
+	u8		*TXradomBuffer;
 };
 
 typedef struct _IOCMD_STRUCT_ {
@@ -483,6 +465,28 @@ struct bb_reg_param {
 	u32 offset;
 	u32 value;
 };
+
+typedef struct _MP_FIRMWARE {
+	FIRMWARE_SOURCE eFWSource;
+#ifdef CONFIG_EMBEDDED_FWIMG
+	u8* 		szFwBuffer;
+#else
+	u8			szFwBuffer[0x8000];
+#endif
+	u32 		ulFwLength;
+
+#ifdef CONFIG_EMBEDDED_FWIMG
+	u8* 		szBTFwBuffer;
+	u8			myBTFwBuffer[0x8000];
+#else
+	u8			szBTFwBuffer[0x8000];
+#endif
+	u32 		ulBTFwLength;
+} RT_MP_FIRMWARE, *PRT_MP_FIRMWARE;
+
+
+
+
 //=======================================================================
 
 #define LOWER 	_TRUE
@@ -535,7 +539,7 @@ extern u8 mpdatarate[NumRates];
 typedef enum _MPT_RATE_INDEX
 {
 	/* CCK rate. */
-	MPT_RATE_1M,	/* 0 */
+	MPT_RATE_1M =0 ,	/* 0 */
 	MPT_RATE_2M,
 	MPT_RATE_55M,
 	MPT_RATE_11M,	/* 3 */
@@ -567,16 +571,29 @@ typedef enum _MPT_RATE_INDEX
 	MPT_RATE_MCS13,
 	MPT_RATE_MCS14,
 	MPT_RATE_MCS15,	/* 27 */
+	/* VHT rate. Total: 20*/
+	MPT_RATE_VHT1SS_MCS0 = 100,// To reserve MCS16~MCS31, the index starts from #100.
+	MPT_RATE_VHT1SS_MCS1, // #101
+	MPT_RATE_VHT1SS_MCS2,
+	MPT_RATE_VHT1SS_MCS3,
+	MPT_RATE_VHT1SS_MCS4,
+	MPT_RATE_VHT1SS_MCS5,
+	MPT_RATE_VHT1SS_MCS6, // #106
+	MPT_RATE_VHT1SS_MCS7,
+	MPT_RATE_VHT1SS_MCS8,
+	MPT_RATE_VHT1SS_MCS9,
+	MPT_RATE_VHT2SS_MCS0,
+	MPT_RATE_VHT2SS_MCS1, // #111
+	MPT_RATE_VHT2SS_MCS2,
+	MPT_RATE_VHT2SS_MCS3,
+	MPT_RATE_VHT2SS_MCS4,
+	MPT_RATE_VHT2SS_MCS5,
+	MPT_RATE_VHT2SS_MCS6, // #116
+	MPT_RATE_VHT2SS_MCS7,
+	MPT_RATE_VHT2SS_MCS8,
+	MPT_RATE_VHT2SS_MCS9,
 	MPT_RATE_LAST
 }MPT_RATE_E, *PMPT_RATE_E;
-
-#if 0
-// Represent Channel Width in HT Capabilities
-typedef enum _HT_CHANNEL_WIDTH {
-	HT_CHANNEL_WIDTH_20 = 0,
-	HT_CHANNEL_WIDTH_40 = 1,
-}HT_CHANNEL_WIDTH, *PHT_CHANNEL_WIDTH;
-#endif
 
 #define MAX_TX_PWR_INDEX_N_MODE 64	// 0x3F
 
@@ -584,6 +601,14 @@ typedef enum _POWER_MODE_ {
 	POWER_LOW = 0,
 	POWER_NORMAL
 }POWER_MODE;
+
+// The following enumeration is used to define the value of Reg0xD00[30:28] or JaguarReg0x914[18:16].
+typedef enum _OFDM_TX_MODE {
+	OFDM_ALL_OFF		= 0,	
+	OFDM_ContinuousTx	= 1,
+	OFDM_SingleCarrier	= 2,
+	OFDM_SingleTone 	= 4,
+} OFDM_TX_MODE;
 
 
 #define RX_PKT_BROADCAST	1
@@ -626,6 +651,17 @@ typedef enum _RXPHY_BITMASK_
 } RXPHY_BITMASK;
 #endif
 
+#define Mac_OFDM_OK 			0x00000000
+#define Mac_OFDM_Fail			0x10000000
+#define Mac_OFDM_FasleAlarm 	0x20000000
+#define Mac_CCK_OK				0x30000000
+#define Mac_CCK_Fail			0x40000000
+#define Mac_CCK_FasleAlarm		0x50000000
+#define Mac_HT_OK				0x60000000
+#define Mac_HT_Fail 			0x70000000
+#define Mac_HT_FasleAlarm		0x90000000
+#define Mac_DropPacket			0xA0000000
+
 typedef enum _ENCRY_CTRL_STATE_ {
 	HW_CONTROL,		//hw encryption& decryption
 	SW_CONTROL,		//sw encryption& decryption
@@ -633,15 +669,30 @@ typedef enum _ENCRY_CTRL_STATE_ {
 	SW_ENCRY_HW_DECRY	//sw encryption & hw decryption
 }ENCRY_CTRL_STATE;
 
+typedef enum	_MPT_TXPWR_DEF{
+	MPT_CCK,
+	MPT_OFDM, // L and HT OFDM
+	MPT_VHT_OFDM
+}MPT_TXPWR_DEF;
 
-typedef enum _PREAMBLE {
-		Long_Preamble	= 0x01,
-		Short_Preamble		  ,
-		Long_GI 			  ,
-		Short_GI
-} PREAMBLE;
+#ifdef CONFIG_RF_GAIN_OFFSET
 
+#if defined(CONFIG_RTL8723A)
+	#define 	REG_RF_BB_GAIN_OFFSET_CCK	0x0d
+	#define 	REG_RF_BB_GAIN_OFFSET_OFDM	0x0e
+	#define 	RF_GAIN_OFFSET_MASK 	0xfffff
+#elif defined(CONFIG_RTL8723B)
+	#define 	REG_RF_BB_GAIN_OFFSET	0x7f
+	#define 	RF_GAIN_OFFSET_MASK 	0xfffff
+#elif defined(CONFIG_RTL8188E)
+	#define 	REG_RF_BB_GAIN_OFFSET	0x55
+	#define 	RF_GAIN_OFFSET_MASK 	0xfffff
+#else
+	#define 	REG_RF_BB_GAIN_OFFSET	0x55
+	#define 	RF_GAIN_OFFSET_MASK 	0xfffff
+#endif	//CONFIG_RTL8723A
 
+#endif //CONFIG_RF_GAIN_OFFSET
 
 //=======================================================================
 //extern struct mp_xmit_frame *alloc_mp_xmitframe(struct mp_priv *pmp_priv);
@@ -679,7 +730,7 @@ extern void write_rfreg(PADAPTER padapter, u8 rfpath, u32 addr, u32 val);
 
 extern void	SetChannel(PADAPTER pAdapter);
 extern void	SetBandwidth(PADAPTER pAdapter);
-extern void	SetTxPower(PADAPTER pAdapter);
+extern int SetTxPower(PADAPTER pAdapter);
 extern void	SetAntennaPathPower(PADAPTER pAdapter);
 //extern void	SetTxAGCOffset(PADAPTER pAdapter, u32 ulTxAGCOffset);
 extern void	SetDataRate(PADAPTER pAdapter);
@@ -697,7 +748,7 @@ extern void	SetSingleToneTx(PADAPTER pAdapter, u8 bStart);
 extern void	SetCarrierSuppressionTx(PADAPTER pAdapter, u8 bStart);
 extern void PhySetTxPowerLevel(PADAPTER pAdapter);
 
-extern void	fill_txdesc_for_mp(PADAPTER padapter, struct tx_desc *ptxdesc);
+extern void	fill_txdesc_for_mp(PADAPTER padapter, u8 *ptxdesc);
 extern void	SetPacketTx(PADAPTER padapter);
 extern void	SetPacketRx(PADAPTER pAdapter, u8 bStartRx);
 
@@ -738,10 +789,11 @@ extern u8 Hal_ReadRFThermalMeter(PADAPTER pAdapter);
 extern void Hal_SetCCKContinuousTx(PADAPTER pAdapter, u8 bStart);
 extern void Hal_SetOFDMContinuousTx(PADAPTER pAdapter, u8 bStart);
 extern void Hal_ProSetCrystalCap (PADAPTER pAdapter , u32 CrystalCapVal);
-extern void _rtw_mp_xmit_priv(struct xmit_priv *pxmitpriv);
+//extern void _rtw_mp_xmit_priv(struct xmit_priv *pxmitpriv);
 extern void MP_PHY_SetRFPathSwitch(PADAPTER pAdapter ,BOOLEAN bMain);
-
-extern u32 mpt_ProQueryCalTxPower(PADAPTER pAdapter, u32 RfPath);
+extern ULONG mpt_ProQueryCalTxPower(PADAPTER	pAdapter,u8 RfPath);
+extern void MPT_PwrCtlDM(PADAPTER padapter, u32 bstart);
+extern u8 MptToMgntRate(u32	MptRateIdx);
 
 #endif //_RTW_MP_H_
 

@@ -24,6 +24,9 @@
 
 
 #if defined(CONFIG_SDIO_HCI) || defined(CONFIG_GSPI_HCI)
+#ifdef CONFIG_DIRECT_RECV
+void rtl8723as_recv(PADAPTER padapter, struct recv_buf *precvbuf);
+#endif
 s32 rtl8723as_init_recv_priv(PADAPTER padapter);
 void rtl8723as_free_recv_priv(PADAPTER padapter);
 #endif

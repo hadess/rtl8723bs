@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Copyright(c) 2007 - 2011 Realtek Corporation. All rights reserved.
- *
+ *                                        
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of version 2 of the GNU General Public License as
  * published by the Free Software Foundation.
@@ -17,11 +17,9 @@
  *
  *
  ******************************************************************************/
-#ifndef	__RTW_RF_H_
+#ifndef	__RTW_RF_H_ 
 #define __RTW_RF_H_
 
-#include <drv_conf.h>
-#include <rtw_cmd.h>
 
 #define OFDM_PHY		1
 #define MIXED_PHY		2
@@ -51,11 +49,11 @@
 
 //Country codes
 #define USA							0x555320
-#define EUROPE						0x1 //temp, should be provided later
-#define JAPAN						0x2 //temp, should be provided later
+#define EUROPE						0x1 //temp, should be provided later	
+#define JAPAN						0x2 //temp, should be provided later	
 
 struct	regulatory_class {
-	u32	starting_freq;					//MHz,
+	u32	starting_freq;					//MHz, 
 	u8	channel_set[MAX_CHANNEL_NUM];
 	u8	channel_cck_power[MAX_CHANNEL_NUM];//dbm
 	u8	channel_ofdm_power[MAX_CHANNEL_NUM];//dbm
@@ -117,26 +115,45 @@ typedef enum _RF90_RADIO_PATH{
 
 // Represent Channel Width in HT Capabilities
 //
-typedef enum _HT_CHANNEL_WIDTH {
-
-	HT_CHANNEL_WIDTH_20 = 0,
-	HT_CHANNEL_WIDTH_40 = 1,
-	HT_CHANNEL_WIDTH_80 = 2,
-	HT_CHANNEL_WIDTH_160 = 3,
-	HT_CHANNEL_WIDTH_10 = 4,
-
-}HT_CHANNEL_WIDTH, *PHT_CHANNEL_WIDTH;
+typedef enum _CHANNEL_WIDTH{
+	CHANNEL_WIDTH_20 = 0,
+	CHANNEL_WIDTH_40 = 1,
+	CHANNEL_WIDTH_80 = 2,
+	CHANNEL_WIDTH_160 = 3,
+	CHANNEL_WIDTH_80_80 = 4,
+	CHANNEL_WIDTH_MAX = 5,
+}CHANNEL_WIDTH, *PCHANNEL_WIDTH;
 
 //
 // Represent Extention Channel Offset in HT Capabilities
 // This is available only in 40Mhz mode.
 //
-typedef enum _HT_EXTCHNL_OFFSET{
-	HT_EXTCHNL_OFFSET_NO_EXT = 0,
-	HT_EXTCHNL_OFFSET_UPPER = 1,
-	HT_EXTCHNL_OFFSET_NO_DEF = 2,
-	HT_EXTCHNL_OFFSET_LOWER = 3,
-}HT_EXTCHNL_OFFSET, *PHT_EXTCHNL_OFFSET;
+typedef enum _EXTCHNL_OFFSET{
+	EXTCHNL_OFFSET_NO_EXT = 0,
+	EXTCHNL_OFFSET_UPPER = 1,
+	EXTCHNL_OFFSET_NO_DEF = 2,
+	EXTCHNL_OFFSET_LOWER = 3,
+}EXTCHNL_OFFSET, *PEXTCHNL_OFFSET;
+
+typedef enum _VHT_DATA_SC{
+	VHT_DATA_SC_DONOT_CARE = 0,
+	VHT_DATA_SC_20_UPPER_OF_80MHZ = 1,
+	VHT_DATA_SC_20_LOWER_OF_80MHZ = 2,
+	VHT_DATA_SC_20_UPPERST_OF_80MHZ = 3,
+	VHT_DATA_SC_20_LOWEST_OF_80MHZ = 4,
+	VHT_DATA_SC_20_RECV1 = 5,
+	VHT_DATA_SC_20_RECV2 = 6,
+	VHT_DATA_SC_20_RECV3 = 7,
+	VHT_DATA_SC_20_RECV4 = 8,
+	VHT_DATA_SC_40_UPPER_OF_80MHZ = 9,
+	VHT_DATA_SC_40_LOWER_OF_80MHZ = 10,
+}VHT_DATA_SC, *PVHT_DATA_SC_E;
+
+typedef enum _PROTECTION_MODE{
+	PROTECTION_MODE_AUTO = 0,
+	PROTECTION_MODE_FORCE_ENABLE = 1,
+	PROTECTION_MODE_FORCE_DISABLE = 2,
+}PROTECTION_MODE, *PPROTECTION_MODE;
 
 /* 2007/11/15 MH Define different RF type. */
 typedef	enum _RT_RF_TYPE_DEFINITION
@@ -146,7 +163,7 @@ typedef	enum _RT_RF_TYPE_DEFINITION
 	RF_2T2R = 2,
 	RF_1T1R = 3,
 	RF_2T2R_GREEN = 4,
-	RF_819X_MAX_TYPE = 5,
+	RF_MAX_TYPE = 5,
 }RT_RF_TYPE_DEF_E;
 
 

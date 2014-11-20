@@ -376,7 +376,7 @@ u8 rtw_wapi_is_wai_packet(_adapter* padapter,u8 *pkt_data)
 	PRT_WAPI_STA_INFO pWapiSta = NULL;
 	u8 WaiPkt = 0, *pTaddr, bFind = false;
 	u8 Offset_TypeWAI = 0 ;	// (mac header len + llc length)
-
+	
 	WAPI_TRACE(WAPI_TX|WAPI_RX, "===========> %s\n", __FUNCTION__);
 
 	if ((!padapter->WapiSupport) || (!pWapiInfo->bWapiEnable))
@@ -390,10 +390,10 @@ u8 rtw_wapi_is_wai_packet(_adapter* padapter,u8 *pkt_data)
 	//YJ,add,091103. Data frame may also have skb->data[30]=0x88 and skb->data[31]=0xb4.
 	if ((pkt_data[1]&0x40) !=0)
 	{
-		DBG_871X("data is privacy \n");
+		//DBG_871X("data is privacy \n");
 	    	return 0;
 	}
-
+	
 	pTaddr = GetAddr2Ptr(pkt_data);
 	if(list_empty(&pWapiInfo->wapiSTAUsedList)){
 		bFind = false;
@@ -952,18 +952,6 @@ void rtw_wapi_set_key(_adapter *padapter, RT_WAPI_KEY *pWapiKey, RT_WAPI_STA_INF
 					EncAlgo, //type
 					bGroupKey, //pairwise or group key
 					pWapiKey->micKey);
-
-#ifndef CONFIG_CONCURRENT_MODE
-#ifdef CONFIG_LPS
-	//wapi will update unicast key, so the first set key need follwing action
-	if (!bGroupKey && !padapter->securitypriv.binstallGrpkey)
-	{
-#ifdef CONFIG_BT_COEXIST
-		rtw_lps_ctrl_wk_cmd(padapter, LPS_CTRL_BT_WIFI_MEDIA_STATUS_NOTIFY, 0); //yangjun20130410
-#endif
-	}
-#endif
-#endif
 
 	WAPI_TRACE(WAPI_API, "Set Wapi Key :KeyId:%d,EntryId:%d,PairwiseKey:%d.\n",pWapiKey->keyId,EntryId,!bGroupKey);
 	WAPI_TRACE(WAPI_API, "===========> %s\n", __FUNCTION__);

@@ -20,12 +20,19 @@
 #ifndef __DRV_TYPES_GSPI_H__
 #define __DRV_TYPES_GSPI_H__
 
-#include <drv_conf.h>
-#include <basic_types.h>
-
 // SPI Header Files
 #ifdef PLATFORM_LINUX
-#include <linux/spi/spi.h>
+	#include <linux/platform_device.h>
+	#include <linux/spi/spi.h>
+	#include <linux/gpio.h>
+	//#include <mach/ldo.h>
+	#include <asm/mach-types.h>
+	#include <asm/gpio.h>
+	#include <asm/io.h>
+	#include <mach/board.h>
+	#include <mach/hardware.h>
+	#include <mach/irqs.h>
+	#include <custom_gpio.h>
 #endif
 
 
@@ -42,7 +49,6 @@ typedef struct gspi_data
 
 	struct workqueue_struct *priv_wq;
 	struct delayed_work irq_work;
-	struct delayed_work recv_work;
 #endif
 } GSPI_DATA, *PGSPI_DATA;
 

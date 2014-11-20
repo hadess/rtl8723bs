@@ -20,26 +20,14 @@
 #ifndef __RTL8188E_RF_H__
 #define __RTL8188E_RF_H__
 
-#define		RF6052_MAX_TX_PWR			0x3F
-#define		RF6052_MAX_REG				0x3F
-#define		RF6052_MAX_PATH				2
 
 
 int	PHY_RF6052_Config8188E(	IN	PADAPTER		Adapter	);
-void		rtl8188e_RF_ChangeTxPath(	IN	PADAPTER	Adapter,
+void		rtl8188e_RF_ChangeTxPath(	IN	PADAPTER	Adapter, 
 										IN	u16		DataRate);
-void		rtl8188e_PHY_RF6052SetBandwidth(
+void		rtl8188e_PHY_RF6052SetBandwidth(	
 										IN	PADAPTER				Adapter,
-										IN	HT_CHANNEL_WIDTH		Bandwidth);
-VOID	rtl8188e_PHY_RF6052SetCckTxPower(
-										IN	PADAPTER	Adapter,
-										IN	u8*		pPowerlevel);
-VOID	rtl8188e_PHY_RF6052SetOFDMTxPower(
-											IN	PADAPTER	Adapter,
-											IN	u8*		pPowerLevelOFDM,
-											IN	u8*		pPowerLevelBW20,
-											IN	u8*		pPowerLevelBW40,
-											IN	u8		Channel);
+										IN	CHANNEL_WIDTH		Bandwidth);
 
 #endif//__RTL8188E_RF_H__
 

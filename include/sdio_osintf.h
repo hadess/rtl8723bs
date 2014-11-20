@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Copyright(c) 2007 - 2011 Realtek Corporation. All rights reserved.
- *
+ *                                        
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of version 2 of the GNU General Public License as
  * published by the Free Software Foundation.
@@ -20,10 +20,6 @@
 #ifndef __SDIO_OSINTF_H__
 #define __SDIO_OSINTF_H__
 
-
-#include <drv_conf.h>
-#include <osdep_service.h>
-#include <drv_types.h>
 
 
 u8 sd_hal_bus_init(PADAPTER padapter);

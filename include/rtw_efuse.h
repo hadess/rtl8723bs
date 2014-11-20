@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Copyright(c) 2007 - 2011 Realtek Corporation. All rights reserved.
- *
+ *                                        
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of version 2 of the GNU General Public License as
  * published by the Free Software Foundation.
@@ -20,8 +20,6 @@
 #ifndef __RTW_EFUSE_H__
 #define __RTW_EFUSE_H__
 
-#include <drv_conf.h>
-#include <osdep_service.h>
 
 #define	EFUSE_ERROE_HANDLE		1
 
@@ -50,33 +48,8 @@ enum _EFUSE_DEF_TYPE {
 	TYPE_EFUSE_CONTENT_LEN_BANK			= 6,
 };
 
-/* E-Fuse */
-#ifdef CONFIG_RTL8192D
-#define EFUSE_MAP_SIZE		256
-#endif
-#ifdef CONFIG_RTL8192C
-#define EFUSE_MAP_SIZE		128
-#endif
-#ifdef CONFIG_RTL8723A
-#define EFUSE_MAP_SIZE		256
-#define EFUSE_WIFI_MAX_SECTION		32
-#endif
-#ifdef CONFIG_RTL8188E
-#define EFUSE_MAP_SIZE		512
-#endif
-#ifdef CONFIG_RTL8723B
-#define EFUSE_MAP_SIZE		512
-#define EFUSE_WIFI_MAX_SECTION		64
-#endif
+#define		EFUSE_MAX_MAP_LEN		512
 
-#ifdef CONFIG_RTL8188E
-#define EFUSE_MAX_SIZE		256
-#else
-#define EFUSE_MAX_SIZE		512
-#endif
-/* end of E-Fuse */
-
-#define		EFUSE_MAX_MAP_LEN		EFUSE_MAP_SIZE
 #define		EFUSE_MAX_HW_SIZE		512
 #define		EFUSE_MAX_SECTION_BASE	16
 
@@ -96,15 +69,15 @@ enum _EFUSE_DEF_TYPE {
 /*--------------------------Define Parameters-------------------------------*/
 #define		EFUSE_MAX_WORD_UNIT			4
 
-/*------------------------------Define structure----------------------------*/
+/*------------------------------Define structure----------------------------*/ 
 typedef struct PG_PKT_STRUCT_A{
 	u8 offset;
 	u8 word_en;
-	u8 data[8];
+	u8 data[8];	
 	u8 word_cnts;
 }PGPKT_STRUCT,*PPGPKT_STRUCT;
 
-/*------------------------------Define structure----------------------------*/
+/*------------------------------Define structure----------------------------*/ 
 typedef struct _EFUSE_HAL{
 	u8	fakeEfuseBank;
 	u32	fakeEfuseUsedBytes;
@@ -158,6 +131,7 @@ void	EFUSE_GetEfuseDefinition(PADAPTER pAdapter, u8 efuseType, u8 type, void *pO
 u8	efuse_OneByteRead(PADAPTER pAdapter, u16 addr, u8 *data, BOOLEAN	 bPseudoTest);
 u8	efuse_OneByteWrite(PADAPTER pAdapter, u16 addr, u8 data, BOOLEAN	 bPseudoTest);
 
+void	BTEfuse_PowerSwitch(PADAPTER pAdapter,u8	bWrite,u8	 PwrState);
 void	Efuse_PowerSwitch(PADAPTER pAdapter,u8	bWrite,u8	 PwrState);
 int 	Efuse_PgPacketRead(PADAPTER pAdapter, u8 offset, u8 *data, BOOLEAN bPseudoTest);
 int 	Efuse_PgPacketWrite(PADAPTER pAdapter, u8 offset, u8 word_en, u8 *data, BOOLEAN bPseudoTest);
@@ -167,6 +141,8 @@ u8	Efuse_WordEnableDataWrite(PADAPTER pAdapter, u16 efuse_addr, u8 word_en, u8 *
 u8	EFUSE_Read1Byte(PADAPTER pAdapter, u16 Address);
 void	EFUSE_ShadowMapUpdate(PADAPTER pAdapter, u8 efuseType, BOOLEAN bPseudoTest);
 void	EFUSE_ShadowRead(PADAPTER pAdapter, u8 Type, u16 Offset, u32 *Value);
+void Rtw_Hal_ReadMACAddrFromFile(PADAPTER padapter);
+u32 Rtw_Hal_readPGDataFromConfigFile(PADAPTER	padapter);
 
 #endif
 

@@ -24,13 +24,6 @@
 
 #define TX_RPT1_PKT_LEN 8
 
-typedef enum _RX_PACKET_TYPE{
-	NORMAL_RX,//Normal rx packet
-	TX_REPORT1,//CCX
-	TX_REPORT2,//TX RPT
-	HIS_REPORT,// USB HISR RPT
-}RX_PACKET_TYPE, *PRX_PACKET_TYPE;
-
 typedef struct rxreport_8188e
 {
 	//Offset 0
@@ -101,7 +94,7 @@ typedef struct rxreport_8188e
 	u32 pattern9match:1;
 	u32 patternamatch:1;
 	u32 patternbmatch:1;
-	u32 patterncmatch:1;
+	u32 patterncmatch:1;	
 	u32 rsvd1613:19;
 	*/
 	u32 rsvd16;
@@ -116,8 +109,7 @@ typedef struct rxreport_8188e
 } RXREPORT, *PRXREPORT;
 
 
-#if defined(CONFIG_SDIO_HCI) || defined(CONFIG_GSPI_HCI)
-
+#ifdef CONFIG_SDIO_HCI
 s32 rtl8188es_init_recv_priv(PADAPTER padapter);
 void rtl8188es_free_recv_priv(PADAPTER padapter);
 void rtl8188es_recv_hdl(PADAPTER padapter, struct recv_buf *precvbuf);

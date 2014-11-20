@@ -22,10 +22,10 @@
 #define __HAL_PHY_RF_8723B_H__
 
 /*--------------------------Define Parameters-------------------------------*/
-#define	IQK_DELAY_TIME_8723B		10		//ms
-#define	IQK_DEFERRED_TIME_8723B		4
+#define	IQK_DELAY_TIME_8723B		20		//ms
+#define IQK_DEFERRED_TIME_8723B		4
 #define	index_mapping_NUM_8723B		15
-#define	AVG_THERMAL_NUM_8723B		4
+#define AVG_THERMAL_NUM_8723B		4
 #define	RF_T_METER_8723B					0x42	//
 
 
@@ -36,7 +36,7 @@ void ConfigureTxpowerTrack_8723B(
 void DoIQK_8723B(
 	PDM_ODM_T	pDM_Odm,
 	u1Byte 		DeltaThermalIndex,
-	u1Byte		ThermalValue,
+	u1Byte		ThermalValue,	
 	u1Byte 		Threshold
 	);
 
@@ -50,55 +50,85 @@ ODM_TxPwrTrackSetPwr_8723B(
 
 //1 7.	IQK
 
-void
-PHY_IQCalibrate_8723B(
+void	
+PHY_IQCalibrate_8723B(	
 #if (DM_ODM_SUPPORT_TYPE & ODM_AP)
 	IN PDM_ODM_T		pDM_Odm,
 #else
 	IN PADAPTER	Adapter,
 #endif
-	IN	BOOLEAN 	bReCovery);
+	IN BOOLEAN	bReCovery,
+	IN BOOLEAN	bRestore,
+	IN BOOLEAN	Is2ant,
+	IN u1Byte	RF_Path);
 
+VOID
+ODM_SetIQCbyRFpath(
+//#if (DM_ODM_SUPPORT_TYPE & ODM_AP)
+	IN PDM_ODM_T		pDM_Odm,
+//#else
+	//IN	PADAPTER	pAdapter,
+//#endif
+    IN u4Byte RFpath
+	);
 
 //
 // LC calibrate
 //
-VOID
+void	
 PHY_LCCalibrate_8723B(
-#if (DM_ODM_SUPPORT_TYPE & ODM_AP)
 	IN PDM_ODM_T		pDM_Odm
-#else
-	IN	PADAPTER	pAdapter
-#endif
-	);
-
-VOID
-_PHY_LCCalibrate_8723B(
-	IN PDM_ODM_T		pDM_Odm
-	);
-
-
-void PHY_SetRFPathSwitch_8723B(
-#if (DM_ODM_SUPPORT_TYPE & ODM_AP)
-	IN PDM_ODM_T		pDM_Odm,
-#else
-	IN	PADAPTER	pAdapter,
-#endif
-	IN	BOOLEAN		bMain
-	);
-
+);
 
 //
 // AP calibrate
 //
-void
-PHY_APCalibrate_8723B(
+void	
+PHY_APCalibrate_8723B(		
 #if (DM_ODM_SUPPORT_TYPE & ODM_AP)
 	IN PDM_ODM_T		pDM_Odm,
 #else
 	IN	PADAPTER	pAdapter,
 #endif
 							IN 	s1Byte		delta);
+void	
+PHY_DigitalPredistortion_8723B(		IN	PADAPTER	pAdapter);
 
-#endif	// #ifndef __HAL_PHY_RF_8188E_H__
+
+VOID
+_PHY_SaveADDARegisters_8723B(
+#if (DM_ODM_SUPPORT_TYPE & ODM_AP)
+	IN PDM_ODM_T		pDM_Odm,
+#else
+	IN	PADAPTER	pAdapter,
+#endif
+	IN	pu4Byte		ADDAReg,
+	IN	pu4Byte		ADDABackup,
+	IN	u4Byte		RegisterNum
+	);
+
+VOID
+_PHY_PathADDAOn_8723B(
+#if (DM_ODM_SUPPORT_TYPE & ODM_AP)
+	IN PDM_ODM_T		pDM_Odm,
+#else
+	IN	PADAPTER	pAdapter,
+#endif
+	IN	pu4Byte		ADDAReg,
+	IN	BOOLEAN		isPathAOn,
+	IN	BOOLEAN		is2T
+	);
+
+VOID
+_PHY_MACSettingCalibration_8723B(
+#if (DM_ODM_SUPPORT_TYPE & ODM_AP)
+	IN PDM_ODM_T		pDM_Odm,
+#else
+	IN	PADAPTER	pAdapter,
+#endif
+	IN	pu4Byte		MACReg,
+	IN	pu4Byte		MACBackup	
+	);
+							
+#endif	// #ifndef __HAL_PHY_RF_8188E_H__								
 

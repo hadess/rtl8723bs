@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Copyright(c) 2007 - 2011 Realtek Corporation. All rights reserved.
- *
+ *                                        
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of version 2 of the GNU General Public License as
  * published by the Free Software Foundation.
@@ -22,19 +22,13 @@
 
 #define	DM_DIG_MIN_NIC_8723	0x1C
 
-
-VOID
+VOID 
 odm_DIG_8723(IN		PDM_ODM_T		pDM_Odm);
 
 s1Byte
 odm_CCKRSSI_8723B(
 	IN		u1Byte	LNA_idx,
 	IN		u1Byte	VGA_idx
-	);
-
-s1Byte
-odm_RSSIOFDM_8723B(
-	IN	s1Byte	rx_pwr_new
 	);
 
 

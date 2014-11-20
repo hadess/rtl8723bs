@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Copyright(c) 2007 - 2011 Realtek Corporation. All rights reserved.
- *
+ *                                        
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of version 2 of the GNU General Public License as
  * published by the Free Software Foundation.
@@ -20,17 +20,17 @@
 #ifndef __RTW_EEPROM_H__
 #define __RTW_EEPROM_H__
 
-#include <drv_conf.h>
-#include <osdep_service.h>
-#include <drv_types.h>
 
 #define	RTL8712_EEPROM_ID			0x8712
 //#define	EEPROM_MAX_SIZE			256
 
+#define	HWSET_MAX_SIZE_128		128
+#define	HWSET_MAX_SIZE_256		256
 #define	HWSET_MAX_SIZE_512		512
+
 #define	EEPROM_MAX_SIZE			HWSET_MAX_SIZE_512
 
-#define	CLOCK_RATE					50			//100us
+#define	CLOCK_RATE					50			//100us		
 
 //- EEPROM opcodes
 #define EEPROM_READ_OPCODE		06
@@ -41,7 +41,7 @@
 
 //Country codes
 #define USA							0x555320
-#define EUROPE						0x1 //temp, should be provided later
+#define EUROPE						0x1 //temp, should be provided later	
 #define JAPAN						0x2 //temp, should be provided later
 
 #ifdef CONFIG_SDIO_HCI
@@ -49,24 +49,10 @@
 #define eeprom_cis1_sz	50
 #endif
 
-#define	EEPROM_CID_DEFAULT			0x0
-#define	EEPROM_CID_ALPHA				0x1
-#define	EEPROM_CID_Senao				0x3
-#define	EEPROM_CID_NetCore				0x5
-#define	EEPROM_CID_CAMEO				0X8
-#define	EEPROM_CID_SITECOM				0x9
-#define	EEPROM_CID_COREGA				0xB
-#define	EEPROM_CID_EDIMAX_BELKIN		0xC
-#define	EEPROM_CID_SERCOMM_BELKIN		0xE
-#define	EEPROM_CID_CAMEO1				0xF
-#define	EEPROM_CID_WNC_COREGA		0x12
-#define	EEPROM_CID_CLEVO				0x13
-#define	EEPROM_CID_WHQL				0xFE // added by chiyoko for dtm, 20090108
-
 //
-// Customer ID, note that:
-// This variable is initiailzed through EEPROM or registry,
-// however, its definition may be different with that in EEPROM for
+// Customer ID, note that: 
+// This variable is initiailzed through EEPROM or registry, 
+// however, its definition may be different with that in EEPROM for 
 // EEPROM size consideration. So, we have to perform proper translation between them.
 // Besides, CustomerID of registry has precedence of that of EEPROM.
 // defined below. 060703, by rcnjko.
@@ -109,40 +95,44 @@ typedef enum _RT_CUSTOMER_ID
 	RT_CID_819x_DELL = 33,
 	RT_CID_819x_PRONETS = 34,
 	RT_CID_819x_Edimax_ASUS = 35,
-	RT_CID_819x_CAMEO_NETGEAR = 36,
+	RT_CID_NETGEAR = 36,
 	RT_CID_PLANEX = 37,
 	RT_CID_CC_C = 38,
 	RT_CID_819x_Xavi = 39,
-	RT_CID_819x_FUNAI_TV = 40,
-	RT_CID_819x_ALPHA_WD=41,
+	RT_CID_LENOVO_CHINA = 40,
+	RT_CID_INTEL_CHINA = 41,
+	RT_CID_TPLINK_HPWR = 42,
+	RT_CID_819x_Sercomm_Netgear = 43,
+	RT_CID_819x_ALPHA_Dlink = 44,//add by ylb 20121012 for customer led for alpha
+	RT_CID_WNC_NEC = 45,//add by page for NEC
+	RT_CID_DNI_BUFFALO = 46,//add by page for NEC
 }RT_CUSTOMER_ID, *PRT_CUSTOMER_ID;
 
-struct eeprom_priv
-{
+struct eeprom_priv 
+{    
 	u8		bautoload_fail_flag;
-	//u8		bempty;
-	//u8		sys_config;
-	u8		mac_addr[6];	//PermanentAddress
-	//u8		config0;
-	u16		channel_plan;
-	//u8		country_string[3];
-	//u8		tx_power_b[15];
-	//u8		tx_power_g[15];
-	//u8		tx_power_a[201];
-
+	u8		bloadfile_fail_flag;
+	u8		bloadmac_fail_flag;
 	u8		EepromOrEfuse;
 
-	u8		efuse_eeprom_data[HWSET_MAX_SIZE_512]; //92C:256bytes, 88E:512bytes, we use union set (512bytes)
+	u8		mac_addr[6];	//PermanentAddress
+
+	u16		channel_plan;
+	u16		CustomerID;
+
+	u8		efuse_eeprom_data[EEPROM_MAX_SIZE]; //92C:256bytes, 88E:512bytes, we use union set (512bytes)
+	u8		adjuseVoltageVal;
 
 #ifdef CONFIG_RF_GAIN_OFFSET
 	u8		EEPROMRFGainOffset;
+	u8		EEPROMRFGainVal;
 #endif //CONFIG_RF_GAIN_OFFSET
 
 #ifdef CONFIG_SDIO_HCI
-	u8		sdio_setting;
+	u8		sdio_setting;	
 	u32		ocr;
 	u8		cis0[eeprom_cis0_sz];
-	u8		cis1[eeprom_cis1_sz];
+	u8		cis1[eeprom_cis1_sz];	
 #endif
 };
 
@@ -150,7 +140,7 @@ struct eeprom_priv
 extern void eeprom_write16(_adapter *padapter, u16 reg, u16 data);
 extern u16 eeprom_read16(_adapter *padapter, u16 reg);
 extern void read_eeprom_content(_adapter *padapter);
-extern void eeprom_read_sz(_adapter * padapter, u16 reg,u8* data, u32 sz);
+extern void eeprom_read_sz(_adapter * padapter, u16 reg,u8* data, u32 sz); 
 
 extern void read_eeprom_content_by_attrib(_adapter *	padapter	);
 

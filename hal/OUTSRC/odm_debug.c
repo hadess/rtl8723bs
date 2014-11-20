@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Copyright(c) 2007 - 2011 Realtek Corporation. All rights reserved.
- *
+ *                                        
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of version 2 of the GNU General Public License as
  * published by the Free Software Foundation.
@@ -24,14 +24,15 @@
 
 #include "odm_precomp.h"
 
-VOID
+
+VOID 
 ODM_InitDebugSetting(
 	IN		PDM_ODM_T		pDM_Odm
 	)
 {
-pDM_Odm->DebugLevel				= 	ODM_DBG_TRACE;
+pDM_Odm->DebugLevel				= 	ODM_DBG_LOUD;
 
-pDM_Odm->DebugComponents			=
+pDM_Odm->DebugComponents			= 
 \
 #if DBG
 //BB Functions
@@ -48,17 +49,20 @@ pDM_Odm->DebugComponents			=
 //									ODM_COMP_PATH_DIV				|
 //									ODM_COMP_DYNAMIC_PRICCA		|
 //									ODM_COMP_RXHP					|
+//									ODM_COMP_MP 					|
+//									ODM_COMP_CFO_TRACKING		|
 
 //MAC Functions
 //									ODM_COMP_EDCA_TURBO			|
 //									ODM_COMP_EARLY_MODE			|
 //RF Functions
-//									ODM_COMP_TX_PWR_TRACK			|
+//									ODM_COMP_TX_PWR_TRACK		|
 //									ODM_COMP_RX_GAIN_TRACK		|
 //									ODM_COMP_CALIBRATION			|
 //Common
 //									ODM_COMP_COMMON				|
 //									ODM_COMP_INIT					|
+//									ODM_COMP_PSD					|
 #endif
 									0;
 }
@@ -89,16 +93,16 @@ ODM_DBGP_HEAD_T	ODM_DBGP_Head;
  *
  *---------------------------------------------------------------------------*/
 extern	void	ODM_DBGP_Flag_Init(void)
-{
+{    
     u1Byte i;
-
+    
 	for (i = 0; i < ODM_DBGP_TYPE_MAX; i++)
 	{
  		ODM_DBGP_Type[i] = 0;
 	}
-
+    
 #ifndef ADSL_AP_BUILD_WORKAROUND
-#if DBG
+#if DBG		
 	// 2010/06/02 MH Free build driver can not out any debug message!!!
 	// Init Debug flag enable condition
 
@@ -156,14 +160,14 @@ extern	void	ODM_DBGP_Flag_Init(void)
 //								DBG_CTRL_TRACE					|
 //								DBG_CTRL_INBAND_NOISE			|
 								0;
-
-	// 2011/07/20 MH Add for short cut
+	
+	// 2011/07/20 MH Add for short cut 
 	ODM_DBGP_Type[FSHORT_CUT] = 	\
-//								SHCUT_TX 						|
+//								SHCUT_TX 						| 
 //								SHCUT_RX						|
 								0;
-
-#endif
+	
+#endif	
 #endif
 	/* Define debug header of every service module. */
 	//ODM_DBGP_Head.pMANS	= "\n\r[MANS] ";
@@ -174,7 +178,7 @@ extern	void	ODM_DBGP_Flag_Init(void)
 	//ODM_DBGP_Head.pRAPD	= "\n\r[RAPD] ";
 	//ODM_DBGP_Head.pTXPB	= "\n\r[TXPB] ";
 	//ODM_DBGP_Head.pQUMG	= "\n\r[QUMG] ";
-
+    	
 }	/* DBGP_Flag_Init */
 
 #endif
@@ -238,7 +242,7 @@ u8Byte GlobalDebugComponents	= 	\
 //									COMP_CMD				|
 //									COMP_EFUSE				|
 //									COMP_MESH_INTERWORKING |
-//									COMP_CCX				|
+//									COMP_CCX				|	
 //									COMP_IOCTL				|
 //									COMP_GP 				|
 //									COMP_TXAGG				|
@@ -254,12 +258,10 @@ u8Byte GlobalDebugComponents	= 	\
 
 
 #else
-#define FuncEntry
-#define FuncExit
 u8Byte GlobalDebugComponents	= 0;
 #endif
 
-#if (RT_PLATFORM==PLATFORM_LINUX)
+#if (RT_PLATFORM==PLATFORM_LINUX) 
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,0))
 EXPORT_SYMBOL(GlobalDebugComponents);
 EXPORT_SYMBOL(GlobalDebugLevel);
@@ -291,15 +293,15 @@ DBGP_HEAD_T		DBGP_Head;
  *
  *---------------------------------------------------------------------------*/
 extern	void	DBGP_Flag_Init(void)
-{
+{    
     u1Byte	i;
-
+    
 	for (i = 0; i < DBGP_TYPE_MAX; i++)
 	{
  		DBGP_Type[i] = 0;
 	}
-
-#if DBG
+    
+#if DBG		
 	// 2010/06/02 MH Free build driver can not out any debug message!!!
 	// Init Debug flag enable condition
 
@@ -357,14 +359,14 @@ extern	void	DBGP_Flag_Init(void)
 //								DBG_CTRL_TRACE					|
 //								DBG_CTRL_INBAND_NOISE			|
 								0;
-
-	// 2011/07/20 MH Add for short cut
+	
+	// 2011/07/20 MH Add for short cut 
 	DBGP_Type[FSHORT_CUT] = 	\
-//								SHCUT_TX 						|
+//								SHCUT_TX 						| 
 //								SHCUT_RX						|
 								0;
-
-#endif
+	
+#endif	
 	/* Define debug header of every service module. */
 	DBGP_Head.pMANS	= "\n\r[MANS] ";
 	DBGP_Head.pRTOS	= "\n\r[RTOS] ";
@@ -374,7 +376,7 @@ extern	void	DBGP_Flag_Init(void)
 	DBGP_Head.pRAPD	= "\n\r[RAPD] ";
 	DBGP_Head.pTXPB	= "\n\r[TXPB] ";
 	DBGP_Head.pQUMG	= "\n\r[QUMG] ";
-
+    	
 }	/* DBGP_Flag_Init */
 
 
@@ -411,14 +413,14 @@ extern	void	DBG_PrintAllFlag(void)
 	ODM_RT_TRACE(pDM_Odm,COMP_CMD, DBG_LOUD, 	("DBGFLAG 13   FDM\n"));
 	ODM_RT_TRACE(pDM_Odm,COMP_CMD, DBG_LOUD, 	("DBGFLAG 14   FDBG_CTRL\n"));
 	ODM_RT_TRACE(pDM_Odm,COMP_CMD, DBG_LOUD, 	("DBGFLAG 15   FC2H\n"));
-	ODM_RT_TRACE(pDM_Odm,COMP_CMD, DBG_LOUD, 	("DBGFLAG 16   FBT\n"));
+	ODM_RT_TRACE(pDM_Odm,COMP_CMD, DBG_LOUD, 	("DBGFLAG 16   FBT\n"));			
 }	// DBG_PrintAllFlag
 
 
 extern	void	DBG_PrintAllComp(void)
 {
 	u1Byte	i;
-
+	
 	ODM_RT_TRACE(pDM_Odm,COMP_CMD, DBG_LOUD, 	("GlobalDebugComponents Definition\n"));
 	ODM_RT_TRACE(pDM_Odm,COMP_CMD, DBG_LOUD, 	("BIT0    COMP_TRACE\n"));
 	ODM_RT_TRACE(pDM_Odm,COMP_CMD, DBG_LOUD, 	("BIT1    COMP_DBG\n"));
@@ -464,8 +466,8 @@ extern	void	DBG_PrintAllComp(void)
 	ODM_RT_TRACE(pDM_Odm,COMP_CMD, DBG_LOUD, 	("BIT41   COMP_CMD\n"));
 	ODM_RT_TRACE(pDM_Odm,COMP_CMD, DBG_LOUD, 	("BIT42   COMP_EFUSE\n"));
 	ODM_RT_TRACE(pDM_Odm,COMP_CMD, DBG_LOUD, 	("BIT43   COMP_MESH_INTERWORKING\n"));
-	ODM_RT_TRACE(pDM_Odm,COMP_CMD, DBG_LOUD, 	("BIT43   COMP_CCX\n"));
-
+	ODM_RT_TRACE(pDM_Odm,COMP_CMD, DBG_LOUD, 	("BIT43   COMP_CCX\n"));		
+	
 	ODM_RT_TRACE(pDM_Odm,COMP_CMD, DBG_LOUD, 	("GlobalDebugComponents = %"i64fmt"x\n", GlobalDebugComponents));
 	ODM_RT_TRACE(pDM_Odm,COMP_CMD, DBG_LOUD, 	("Enable DBG COMP ="));
 	for (i = 0; i < 64; i++)
@@ -476,7 +478,7 @@ extern	void	DBG_PrintAllComp(void)
 		}
 	}
 	ODM_RT_TRACE(pDM_Odm,COMP_CMD, DBG_LOUD, 	("\n"));
-
+	
 }	// DBG_PrintAllComp
 
 
@@ -531,7 +533,7 @@ extern	void	DBG_PrintFlagEvent(u1Byte	DbgFlag)
 
 		case	FMLME:
 		ODM_RT_TRACE(pDM_Odm,COMP_CMD, DBG_LOUD, 	("BIT 0    MEDIA_STS\n"));
-		ODM_RT_TRACE(pDM_Odm,COMP_CMD, DBG_LOUD, 	("BIT 1    LINK_STS\n"));
+		ODM_RT_TRACE(pDM_Odm,COMP_CMD, DBG_LOUD, 	("BIT 1    LINK_STS\n"));		
 		break;
 
 		case	FRESOURCE:
@@ -540,7 +542,7 @@ extern	void	DBG_PrintFlagEvent(u1Byte	DbgFlag)
 
 		case	FBEACON:
 		ODM_RT_TRACE(pDM_Odm,COMP_CMD, DBG_LOUD, 	("BIT 0    BCN_SHOW\n"));
-		ODM_RT_TRACE(pDM_Odm,COMP_CMD, DBG_LOUD, 	("BIT 1    BCN_PEER\n"));
+		ODM_RT_TRACE(pDM_Odm,COMP_CMD, DBG_LOUD, 	("BIT 1    BCN_PEER\n"));		
 		break;
 
 		case	FISR:
@@ -562,15 +564,15 @@ extern	void	DBG_PrintFlagEvent(u1Byte	DbgFlag)
 		case	FMP:
 		ODM_RT_TRACE(pDM_Odm,COMP_CMD, DBG_LOUD, 	("BIT 0    MP_RX\n"));
 		break;
-
+		
 		case	FEEPROM:
 		ODM_RT_TRACE(pDM_Odm,COMP_CMD, DBG_LOUD, 	("BIT 0    EEPROM_W\n"));
-		ODM_RT_TRACE(pDM_Odm,COMP_CMD, DBG_LOUD, 	("BIT 1    EFUSE_PG\n"));
+		ODM_RT_TRACE(pDM_Odm,COMP_CMD, DBG_LOUD, 	("BIT 1    EFUSE_PG\n"));		
 		break;
-
+		
 		case	FPWR:
 		ODM_RT_TRACE(pDM_Odm,COMP_CMD, DBG_LOUD, 	("BIT 0    LPS\n"));
-		ODM_RT_TRACE(pDM_Odm,COMP_CMD, DBG_LOUD, 	("BIT 1    IPS\n"));
+		ODM_RT_TRACE(pDM_Odm,COMP_CMD, DBG_LOUD, 	("BIT 1    IPS\n"));		
 		ODM_RT_TRACE(pDM_Odm,COMP_CMD, DBG_LOUD, 	("BIT 2    PWRSW\n"));
 		ODM_RT_TRACE(pDM_Odm,COMP_CMD, DBG_LOUD, 	("BIT 3    PWRHW\n"));
 		ODM_RT_TRACE(pDM_Odm,COMP_CMD, DBG_LOUD, 	("BIT 4    PWRHAL\n"));
@@ -578,27 +580,27 @@ extern	void	DBG_PrintFlagEvent(u1Byte	DbgFlag)
 
 		case	FDM:
 		ODM_RT_TRACE(pDM_Odm,COMP_CMD, DBG_LOUD, 	("BIT 0    WA_IOT\n"));
-		ODM_RT_TRACE(pDM_Odm,COMP_CMD, DBG_LOUD, 	("BIT 1    DM_PWDB\n"));
-		ODM_RT_TRACE(pDM_Odm,COMP_CMD, DBG_LOUD, 	("BIT 2    DM_Monitor\n"));
-		ODM_RT_TRACE(pDM_Odm,COMP_CMD, DBG_LOUD, 	("BIT 3    DM_DIG\n"));
+		ODM_RT_TRACE(pDM_Odm,COMP_CMD, DBG_LOUD, 	("BIT 1    DM_PWDB\n"));		
+		ODM_RT_TRACE(pDM_Odm,COMP_CMD, DBG_LOUD, 	("BIT 2    DM_Monitor\n"));		
+		ODM_RT_TRACE(pDM_Odm,COMP_CMD, DBG_LOUD, 	("BIT 3    DM_DIG\n"));		
 		break;
 
 		case	FDBG_CTRL:
 		ODM_RT_TRACE(pDM_Odm,COMP_CMD, DBG_LOUD, 	("BIT 0    DBG_CTRL_TRACE\n"));
-		ODM_RT_TRACE(pDM_Odm,COMP_CMD, DBG_LOUD, 	("BIT 1    DBG_CTRL_INBAND_NOISE\n"));
+		ODM_RT_TRACE(pDM_Odm,COMP_CMD, DBG_LOUD, 	("BIT 1    DBG_CTRL_INBAND_NOISE\n"));		
 		break;
-
+		
 		case	FC2H:
 		ODM_RT_TRACE(pDM_Odm,COMP_CMD, DBG_LOUD, 	("BIT 0    C2H_Summary\n"));
-		ODM_RT_TRACE(pDM_Odm,COMP_CMD, DBG_LOUD, 	("BIT 1    C2H_PacketData\n"));
-		ODM_RT_TRACE(pDM_Odm,COMP_CMD, DBG_LOUD, 	("BIT 2    C2H_ContentData\n"));
+		ODM_RT_TRACE(pDM_Odm,COMP_CMD, DBG_LOUD, 	("BIT 1    C2H_PacketData\n"));		
+		ODM_RT_TRACE(pDM_Odm,COMP_CMD, DBG_LOUD, 	("BIT 2    C2H_ContentData\n"));		
 		break;
-
+		
 		case	FBT:
 		ODM_RT_TRACE(pDM_Odm,COMP_CMD, DBG_LOUD, 	("BIT 0    BT_TRACE\n"));
-		ODM_RT_TRACE(pDM_Odm,COMP_CMD, DBG_LOUD, 	("BIT 1    BT_RFPoll\n"));
-		break;
-
+		ODM_RT_TRACE(pDM_Odm,COMP_CMD, DBG_LOUD, 	("BIT 1    BT_RFPoll\n"));		
+		break;		
+		
 		default:
 			break;
 	}
@@ -606,9 +608,9 @@ extern	void	DBG_PrintFlagEvent(u1Byte	DbgFlag)
 }	// DBG_PrintFlagEvent
 
 
-extern	void	DBG_DumpMem(const u1Byte DbgComp,
-							const u1Byte DbgLevel,
-							pu1Byte pMem,
+extern	void	DBG_DumpMem(const u1Byte DbgComp, 
+							const u1Byte DbgLevel, 
+							pu1Byte pMem, 
 							u2Byte Len)
 {
 	u2Byte i;
@@ -618,7 +620,7 @@ extern	void	DBG_DumpMem(const u1Byte DbgComp,
 		ODM_RT_TRACE(pDM_Odm,DbgComp, DbgLevel, ("%02X %02X %02X %02X %02X %02X %02X %02X\n",
 					*(pMem+(i*8)), *(pMem+(i*8+1)), *(pMem+(i*8+2)), *(pMem+(i*8+3)),
 					*(pMem+(i*8+4)), *(pMem+(i*8+5)), *(pMem+(i*8+6)), *(pMem+(i*8+7))));
-
+		
 	}
 }
 

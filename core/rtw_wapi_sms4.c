@@ -341,6 +341,7 @@ u8 WapiIncreasePN(u8 *PN, u8 AddCount)
 
 	if (NULL == PN)
 		return 1;
+	//YJ,test,091102
 	/*
 	if(AddCount == 2){
 		DBG_8192C("############################%s(): PN[0]=0x%x\n", __FUNCTION__, PN[0]);
@@ -353,6 +354,7 @@ u8 WapiIncreasePN(u8 *PN, u8 AddCount)
 		}
 	}
 	*/
+	//YJ,test,091102,end
 
 	for (i=0; i<16; i++)
 	{

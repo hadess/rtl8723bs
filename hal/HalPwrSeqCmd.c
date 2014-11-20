@@ -34,11 +34,7 @@ Major Change History:
 
 --*/
 #include <HalPwrSeqCmd.h>
-#ifdef CONFIG_SDIO_HCI
-#include <sdio_ops.h>
-#elif defined(CONFIG_GSPI_HCI)
-#include <gspi_ops.h>
-#endif
+
 
 //
 //	Description:
@@ -119,8 +115,8 @@ u8 HalPwrSeqCmdParsing(
 						// Read the value from system register
 						value = rtw_read8(padapter, offset);
 
-						value &= ~(GET_PWR_CFG_MASK(PwrCfgCmd));
-						value |= (GET_PWR_CFG_VALUE(PwrCfgCmd) & GET_PWR_CFG_MASK(PwrCfgCmd));
+						value=value&(~(GET_PWR_CFG_MASK(PwrCfgCmd)));
+						value=value|(GET_PWR_CFG_VALUE(PwrCfgCmd)&GET_PWR_CFG_MASK(PwrCfgCmd));
 
 						// Write the value back to sytem register
 						rtw_write8(padapter, offset, value);
@@ -144,14 +140,14 @@ u8 HalPwrSeqCmdParsing(
 #endif
 							value = rtw_read8(padapter, offset);
 
-						value &= GET_PWR_CFG_MASK(PwrCfgCmd);
+						value=value&GET_PWR_CFG_MASK(PwrCfgCmd);
 						if (value == (GET_PWR_CFG_VALUE(PwrCfgCmd) & GET_PWR_CFG_MASK(PwrCfgCmd)))
 							bPollingBit = _TRUE;
 						else
 							rtw_udelay_os(10);
 
 						if (pollingCount++ > maxPollingCnt) {
-							DBG_871X("Fail to polling Offset[%#x]\n", offset);
+							DBG_871X("Fail to polling Offset[%#x]=%02x\n", offset, value);
 							return _FALSE;
 						}
 					} while (!bPollingBit);
