@@ -20,9 +20,7 @@
 #include <drv_types.h>
 
 extern void sdhci_bus_scan(void);
-#ifndef ANDROID_2X
 extern int sdhci_device_attached(void);
-#endif
 
 /*
  * Return:
@@ -53,9 +51,6 @@ int platform_wifi_power_on(void)
 	//YJ,test,130305
 	rtw_mdelay_os(1000);
 #endif
-#ifdef ANDROID_2X
-	rtw_mdelay_os(200);
-#else // !ANDROID_2X
 	if (1) {
 		int i = 0;
 
@@ -66,7 +61,6 @@ int platform_wifi_power_on(void)
 			printk("%s delay times:%d\n", __func__, i);
 		}
 	}
-#endif // !ANDROID_2X
 
 	return ret;
 }

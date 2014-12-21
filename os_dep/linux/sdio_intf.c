@@ -707,7 +707,7 @@ _func_enter_;
 		}
 	}
 
-#if defined(CONFIG_HAS_EARLYSUSPEND) || defined(CONFIG_ANDROID_POWER)
+#if defined(CONFIG_HAS_EARLYSUSPEND)
 	rtw_unregister_early_suspend(pwrctl);
 #endif
 

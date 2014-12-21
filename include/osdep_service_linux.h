@@ -370,8 +370,6 @@ static inline void rtw_merge_string(char *dst, int dst_len, char *src1, char *sr
 // Suspend lock prevent system from going suspend
 #ifdef CONFIG_WAKELOCK
 #include <linux/wakelock.h>
-#elif defined(CONFIG_ANDROID_POWER)
-#include <linux/android_power.h>
 #endif
 
 // limitation of path length

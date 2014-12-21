@@ -55,7 +55,7 @@
 
 //#define CONFIG_IOCTL_CFG80211
 
-#if defined(CONFIG_PLATFORM_SPRD) && !defined(ANDROID_2X)
+#if defined(CONFIG_PLATFORM_SPRD)
 	#ifndef CONFIG_IOCTL_CFG80211
 		#define CONFIG_IOCTL_CFG80211 1
 	#endif
@@ -301,11 +301,6 @@
  
 #undef CONFIG_SDIO_RX_COPY
 
-#ifdef ANDROID_2X
-
-#define CONFIG_SDIO_RX_COPY
-
-#else // !ANDROID_2X
 	#undef CONFIG_WOWLAN
 	#undef CONFIG_WOWLAN_8723
 //	#define CONFIG_SDIO_RX_COPY
@@ -327,7 +322,6 @@
 	#define CONFIG_CHECK_BT_HANG
 
 //	#define CONFIG_8723BS_TEST
-#endif // !ANDROID_2X
 
 #endif // CONFIG_PLATFORM_SPRD
 

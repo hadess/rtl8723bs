@@ -65,7 +65,6 @@ CONFIG_AP_WOWLAN = n
 CONFIG_RTW_SDIO_PM_KEEP_POWER = y
 ###################### Platform Related #######################
 CONFIG_PLATFORM_I386_PC = y
-CONFIG_PLATFORM_ANDROID_X86 = n
 CONFIG_PLATFORM_JB_X86 = n
 CONFIG_PLATFORM_MIPS_RMI = n
 CONFIG_PLATFORM_RTD2880B = n
@@ -750,7 +749,7 @@ INSTALL_PREFIX :=
 endif
 
 ifeq ($(CONFIG_PLATFORM_ACTIONS_ATM702X), y)
-EXTRA_CFLAGS += -DCONFIG_LITTLE_ENDIAN -DCONFIG_PLATFORM_ANDROID -DCONFIG_PLATFORM_ACTIONS_ATM702X
+EXTRA_CFLAGS += -DCONFIG_LITTLE_ENDIAN -DCONFIG_PLATFORM_ACTIONS_ATM702X
 #ARCH := arm
 ARCH := $(R_ARCH)
 #CROSS_COMPILE := arm-none-linux-gnueabi-
@@ -762,7 +761,7 @@ MODULE_NAME :=wlan
 endif
 
 ifeq ($(CONFIG_PLATFORM_TI_AM3517), y)
-EXTRA_CFLAGS += -DCONFIG_LITTLE_ENDIAN -DCONFIG_PLATFORM_ANDROID -DCONFIG_PLATFORM_SHUTTLE
+EXTRA_CFLAGS += -DCONFIG_LITTLE_ENDIAN -DCONFIG_PLATFORM_SHUTTLE
 CROSS_COMPILE := arm-eabi-
 KSRC := $(shell pwd)/../../../Android/kernel
 ARCH := arm
@@ -782,15 +781,6 @@ ARCH:=arm
 CROSS_COMPILE:= /usr/src/bin/arm-none-linux-gnueabi-
 KVER:= 3.1.10
 KSRC:= /usr/src/Mstar_kernel/3.1.10/
-endif
-
-ifeq ($(CONFIG_PLATFORM_ANDROID_X86), y)
-EXTRA_CFLAGS += -DCONFIG_LITTLE_ENDIAN
-SUBARCH := $(shell uname -m | sed -e s/i.86/i386/)
-ARCH := $(SUBARCH)
-CROSS_COMPILE := /media/DATA-2/android-x86/ics-x86_20120130/prebuilt/linux-x86/toolchain/i686-unknown-linux-gnu-4.2.1/bin/i686-unknown-linux-gnu-
-KSRC := /media/DATA-2/android-x86/ics-x86_20120130/out/target/product/generic_x86/obj/kernel
-MODULE_NAME :=wlan
 endif
 
 ifeq ($(CONFIG_PLATFORM_JB_X86), y)
