@@ -27,8 +27,6 @@
 
 #ifdef PLATFORM_LINUX
 #define rsprintf snprintf
-#elif defined(PLATFORM_WINDOWS)
-#define rsprintf sprintf_s
 #endif
 
 #define DCMD_Printf			DBG_BT_INFO

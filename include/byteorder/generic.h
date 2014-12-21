@@ -98,7 +98,7 @@
  */
 
 
-#if defined(PLATFORM_LINUX) || defined(PLATFORM_WINDOWS) || defined(PLATFORM_MPIXEL)
+#if defined(PLATFORM_LINUX) || defined(PLATFORM_MPIXEL)
 /*
  * inside the kernel, we can use nicknames;
  * outside of it, we must avoid POSIX namespace pollution...
@@ -194,16 +194,6 @@ extern unsigned short int	htons(unsigned short int);
 
 #endif /* OPTIMIZE */
 
-
-#if defined (PLATFORM_WINDOWS)
-
-#define htonl(x) __cpu_to_be32(x)
-#define ntohl(x) __be32_to_cpu(x)
-#define htons(x) __cpu_to_be16(x)
-#define ntohs(x) __be16_to_cpu(x)
-
-
-#endif
 
 #endif /* _LINUX_BYTEORDER_GENERIC_H */
 
