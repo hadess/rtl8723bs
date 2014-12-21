@@ -21,10 +21,6 @@
 
 #include <drv_types.h>
 
-#ifdef PLATFORM_FREEBSD
-#include <sys/unistd.h>		/* for RFHIGHPID */
-#endif
-
 #include "../hal/OUTSRC/odm_precomp.h"		
 #if defined(CONFIG_RTL8723A) || defined(CONFIG_RTL8723B) || defined(CONFIG_RTL8821A)
 #include <rtw_bt_mp.h>
@@ -1681,17 +1677,6 @@ void SetPacketTx(PADAPTER padapter)
 	pmp_priv->tx.PktTxThread = kthread_run(mp_xmit_packet_thread, pmp_priv, "RTW_MP_THREAD");
 	if (IS_ERR(pmp_priv->tx.PktTxThread))
 		DBG_871X("Create PktTx Thread Fail !!!!!\n");
-#endif
-#ifdef PLATFORM_FREEBSD
-{
-	struct proc *p;
-	struct thread *td;
-	pmp_priv->tx.PktTxThread = kproc_kthread_add(mp_xmit_packet_thread, pmp_priv,
-					&p, &td, RFHIGHPID, 0, "MPXmitThread", "MPXmitThread");
-
-	if (pmp_priv->tx.PktTxThread < 0)
-		DBG_871X("Create PktTx Thread Fail !!!!!\n");
-}
 #endif
 
 	Rtw_MPSetMacTxEDCA(padapter);
