@@ -1234,11 +1234,7 @@ _func_enter_;
 #ifdef CONFIG_WOWLAN
 	if(psmode == PS_MODE_DTIM)  //For WOWLAN LPS, DTIM = (awake_intvl - 1)
 	{
-#ifdef CONFIG_PLATFORM_ARM_SUN8I
-		awake_intvl = 4;//DTIM=3
-#else
 		awake_intvl = 3;//DTIM=2
-#endif
 		rlbm = 2;
 	}
 	else
@@ -1247,11 +1243,7 @@ _func_enter_;
 		if(pwrpriv->dtim > 0 && pwrpriv->dtim < 16)
 			awake_intvl = pwrpriv->dtim+1;//DTIM = (awake_intvl - 1)
 		else
-#ifdef CONFIG_PLATFORM_ARM_SUN8I
-			awake_intvl = 4;//DTIM=3
-#else
 			awake_intvl = 3;//DTIM=2
-#endif
 
 		rlbm = 2;
 	}	

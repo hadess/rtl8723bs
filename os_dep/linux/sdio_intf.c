@@ -167,11 +167,7 @@ static irqreturn_t gpio_hostwakeup_irq_thread(int irq, void *data)
 	/* Disable interrupt before calling handler */
 	//disable_irq_nosync(oob_irq);
 	rtw_lock_suspend_timeout(HZ/2);
-#ifdef CONFIG_PLATFORM_ARM_SUN6I
-	return 0;
-#else
 	return IRQ_HANDLED;
-#endif
 }
 
 static u8 gpio_hostwakeup_alloc_irq(PADAPTER padapter)
@@ -195,10 +191,8 @@ static u8 gpio_hostwakeup_alloc_irq(PADAPTER padapter)
 	} else {
 		DBG_871X("allocate gpio irq %d ok\n", oob_irq);
 	}
-	
-#ifndef CONFIG_PLATFORM_ARM_SUN8I	
+
 	enable_irq_wake(oob_irq);
-#endif
 	return _SUCCESS;
 }
 
@@ -206,10 +200,8 @@ static void gpio_hostwakeup_free_irq(PADAPTER padapter)
 {
 	if (oob_irq == 0)
 		return;
-		
-#ifndef CONFIG_PLATFORM_ARM_SUN8I
+
 	disable_irq_wake(oob_irq);
-#endif
 	free_irq(oob_irq, padapter);
 }
 #endif
@@ -567,12 +559,7 @@ static void rtw_sdio_if1_deinit(_adapter *if1)
 #endif
 
 #ifdef CONFIG_GPIO_WAKEUP
-#ifdef CONFIG_PLATFORM_ARM_SUN6I 
-        sw_gpio_eint_set_enable(gpio_eint_wlan, 0);
-        sw_gpio_irq_free(eint_wlan_handle);
-#else  
 	gpio_hostwakeup_free_irq(if1);
-#endif
 #endif
 
 	rtw_cancel_all_timer(if1);
@@ -661,15 +648,7 @@ static int rtw_drv_init(
 		goto free_if2;
 
 #ifdef	CONFIG_GPIO_WAKEUP
-#ifdef CONFIG_PLATFORM_ARM_SUN6I
-        eint_wlan_handle = sw_gpio_irq_request(gpio_eint_wlan, TRIG_EDGE_NEGATIVE,(peint_handle)gpio_hostwakeup_irq_thread, NULL);
-        if (!eint_wlan_handle) {
-               DBG_871X( "%s: request irq failed\n",__func__);
-               return -1;
-  }
-#else
 	gpio_hostwakeup_alloc_irq(if1);
-#endif
 #endif
 
 #ifdef CONFIG_GLOBAL_UI_PID
