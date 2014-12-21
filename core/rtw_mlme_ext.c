@@ -12407,12 +12407,7 @@ u8 disconnect_hdl(_adapter *padapter, unsigned char *pbuf)
 #ifdef CONFIG_DFS
 		if(padapter->mlmepriv.handle_dfs == _FALSE)
 #endif //CONFIG_DFS
-#ifdef CONFIG_PLATFORM_ROCKCHIPS
-			//To avoid connecting to AP fail during resume process, change retry count from 5 to 1
-			issue_deauth_ex(padapter, pnetwork->MacAddress, WLAN_REASON_DEAUTH_LEAVING, 1, 100);
-#else
 			issue_deauth_ex(padapter, pnetwork->MacAddress, WLAN_REASON_DEAUTH_LEAVING, param->deauth_timeout_ms/100, 100);
-#endif //CONFIG_PLATFORM_ROCKCHIPS
 	}
 
 #ifdef CONFIG_DFS
