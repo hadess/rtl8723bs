@@ -20,7 +20,6 @@
 #define _HCI_INTF_C_
 
 #include <drv_types.h>
-#include <platform_ops.h>
 #include <linux/jiffies.h>
 
 #ifndef CONFIG_SDIO_HCI
@@ -851,14 +850,6 @@ static int __init rtw_drv_entry(void)
 	DBG_871X_LEVEL(_drv_always_, DRV_NAME" BT-Coex version = %s\n", BTCOEXVERSION);
 #endif // BTCOEXVERSION
 
-	ret = platform_wifi_power_on();
-	if (ret)
-	{
-		DBG_871X("%s: power on failed!!(%d)\n", __FUNCTION__, ret);
-		ret = -1;
-		goto exit;
-	}
-
 	sdio_drvpriv.drv_registered = _TRUE;
 	rtw_suspend_lock_init();
 	rtw_drv_proc_init();
@@ -872,15 +863,12 @@ static int __init rtw_drv_entry(void)
 		rtw_drv_proc_deinit();
 		rtw_ndev_notifier_unregister();
 		DBG_871X("%s: register driver failed!!(%d)\n", __FUNCTION__, ret);
-		goto poweroff;
+		goto exit;
 	}
 
 	rtw_android_wifictrl_func_add();
 
 	goto exit;
-
-poweroff:
-	platform_wifi_power_off();
 
 exit:
 	DBG_871X_LEVEL(_drv_always_, "module init ret=%d\n", ret);
@@ -896,8 +884,6 @@ static void __exit rtw_drv_halt(void)
 	sdio_unregister_driver(&sdio_drvpriv.r871xs_drv);
 
 	rtw_android_wifictrl_func_del();
-
-	platform_wifi_power_off();
 
 	rtw_suspend_lock_uninit();
 	rtw_drv_proc_deinit();
