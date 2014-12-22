@@ -3211,7 +3211,6 @@ void rtw_cfg80211_indicate_sta_assoc(_adapter *padapter, u8 *pmgmt_frame, uint f
 
 	DBG_871X(FUNC_ADPT_FMT"\n", FUNC_ADPT_ARG(padapter));
 
-#if defined(RTW_USE_CFG80211_STA_EVENT) || defined(COMPAT_KERNEL_RELEASE)
 	{
 		struct station_info sinfo;
 		u8 ie_offset;
@@ -3226,16 +3225,6 @@ void rtw_cfg80211_indicate_sta_assoc(_adapter *padapter, u8 *pmgmt_frame, uint f
 		sinfo.assoc_req_ies_len = frame_len - WLAN_HDR_A3_LEN - ie_offset;
 		cfg80211_new_sta(ndev, GetAddr2Ptr(pmgmt_frame), &sinfo, GFP_ATOMIC);
 	}
-#else /* defined(RTW_USE_CFG80211_STA_EVENT) */
-	channel = pmlmeext->cur_channel;
-	if (channel <= RTW_CH_MAX_2G_CHANNEL)
-		freq = rtw_ieee80211_channel_to_frequency(channel, IEEE80211_BAND_2GHZ);
-	else
-		freq = rtw_ieee80211_channel_to_frequency(channel, IEEE80211_BAND_5GHZ);
-
-	rtw_cfg80211_rx_mgmt(padapter, freq, 0, pmgmt_frame, frame_len, GFP_ATOMIC);
-#endif /* defined(RTW_USE_CFG80211_STA_EVENT) */
-
 }
 
 void rtw_cfg80211_indicate_sta_disassoc(_adapter *padapter, unsigned char *da, unsigned short reason)
@@ -3253,39 +3242,7 @@ void rtw_cfg80211_indicate_sta_disassoc(_adapter *padapter, unsigned char *da, u
 	
 	DBG_871X(FUNC_ADPT_FMT"\n", FUNC_ADPT_ARG(padapter));
 
-#if defined(RTW_USE_CFG80211_STA_EVENT) || defined(COMPAT_KERNEL_RELEASE)
 	cfg80211_del_sta(ndev, da, GFP_ATOMIC);
-#else /* defined(RTW_USE_CFG80211_STA_EVENT) */
-	channel = pmlmeext->cur_channel;
-	if (channel <= RTW_CH_MAX_2G_CHANNEL)
-		freq = rtw_ieee80211_channel_to_frequency(channel, IEEE80211_BAND_2GHZ);
-	else
-		freq = rtw_ieee80211_channel_to_frequency(channel, IEEE80211_BAND_5GHZ);
-
-	pmgmt_frame = mgmt_buf;	
-	pwlanhdr = (struct rtw_ieee80211_hdr *)pmgmt_frame;
-
-	fctrl = &(pwlanhdr->frame_ctl);
-	*(fctrl) = 0;
-
-	//_rtw_memcpy(pwlanhdr->addr1, da, ETH_ALEN);
-	//_rtw_memcpy(pwlanhdr->addr2, myid(&(padapter->eeprompriv)), ETH_ALEN);
-	_rtw_memcpy(pwlanhdr->addr1, myid(&(padapter->eeprompriv)), ETH_ALEN);
-	_rtw_memcpy(pwlanhdr->addr2, da, ETH_ALEN);	
-	_rtw_memcpy(pwlanhdr->addr3, get_my_bssid(&(pmlmeinfo->network)), ETH_ALEN);
-
-	SetSeqNum(pwlanhdr, pmlmeext->mgnt_seq);
-	pmlmeext->mgnt_seq++;
-	SetFrameSubType(pmgmt_frame, WIFI_DEAUTH);
-
-	pmgmt_frame += sizeof(struct rtw_ieee80211_hdr_3addr);
-	frame_len = sizeof(struct rtw_ieee80211_hdr_3addr);
-
-	reason = cpu_to_le16(reason);
-	pmgmt_frame = rtw_set_fixed_ie(pmgmt_frame, _RSON_CODE_ , (unsigned char *)&reason, &frame_len);
-
-	rtw_cfg80211_rx_mgmt(padapter, freq, 0, mgmt_buf, frame_len, GFP_ATOMIC);
-#endif /* defined(RTW_USE_CFG80211_STA_EVENT) */
 }
 
 static int rtw_cfg80211_monitor_if_open(struct net_device *ndev)
