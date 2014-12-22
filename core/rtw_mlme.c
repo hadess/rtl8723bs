@@ -3634,7 +3634,7 @@ void rtw_joinbss_reset(_adapter *padapter)
 
 	phtpriv->ampdu_enable = _FALSE;//reset to disabled
 
-#if defined( CONFIG_USB_HCI) || defined (CONFIG_SDIO_HCI)
+#if defined (CONFIG_SDIO_HCI)
 	// TH=1 => means that invalidate usb rx aggregation
 	// TH=0 => means that validate usb rx aggregation, use init value.
 	if(phtpriv->ht_option)

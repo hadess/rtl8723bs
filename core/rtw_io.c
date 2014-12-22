@@ -34,10 +34,7 @@ Compiler Flag Option:
     a. USE_SYNC_IRP:  Only sync operations are provided.
     b. USE_ASYNC_IRP:Both sync/async operations are provided.
 
-2. CONFIG_USB_HCI:
-   a. USE_ASYNC_IRP: Both sync/async operations are provided.
-
-3. CONFIG_CFIO_HCI:
+2. CONFIG_CFIO_HCI:
    b. USE_SYNC_IRP: Only sync operations are provided.
 
 

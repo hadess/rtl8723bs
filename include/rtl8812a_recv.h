@@ -20,26 +20,7 @@
 #ifndef __RTL8812A_RECV_H__
 #define __RTL8812A_RECV_H__
 
-#if defined(CONFIG_USB_HCI)
-
-#ifndef MAX_RECVBUF_SZ
-#ifdef PLATFORM_OS_CE
-#define MAX_RECVBUF_SZ (8192+1024) // 8K+1k
-#else
-	#ifndef CONFIG_MINIMAL_MEMORY_USAGE
-		#define MAX_RECVBUF_SZ (32768) // 32k
-		//#define MAX_RECVBUF_SZ (24576) // 24k
-		//#define MAX_RECVBUF_SZ (20480) //20K
-		//#define MAX_RECVBUF_SZ (10240) //10K
-		//#define MAX_RECVBUF_SZ (15360) // 15k < 16k
-		//#define MAX_RECVBUF_SZ (8192+1024) // 8K+1k
-	#else
-		#define MAX_RECVBUF_SZ (4000) // about 4K
-	#endif
-#endif
-#endif //!MAX_RECVBUF_SZ
-
-#elif defined(CONFIG_SDIO_HCI)
+#if defined(CONFIG_SDIO_HCI)
 
 #ifdef CONFIG_SDIO_RX_COPY
 #define MAX_RECVBUF_SZ (10240)
@@ -129,16 +110,6 @@
 s32 InitRecvPriv8821AS(PADAPTER padapter);
 void FreeRecvPriv8821AS(PADAPTER padapter);
 #endif // CONFIG_SDIO_HCI
-
-#ifdef CONFIG_USB_HCI
-#define INTERRUPT_MSG_FORMAT_LEN 60
-void rtl8812au_init_recvbuf(_adapter *padapter, struct recv_buf *precvbuf);
-s32 rtl8812au_init_recv_priv(PADAPTER padapter);
-void rtl8812au_free_recv_priv(PADAPTER padapter);
-void rtl8812au_recv_hdl(PADAPTER padapter, struct recv_buf *precvbuf);
-void rtl8812au_recv_tasklet(void *priv);
-
-#endif
 
 void	rtl8812_query_rx_desc_status(union recv_frame *precvframe, u8 *pdesc);
 void	rtl8812_query_rx_phy_status(union recv_frame *prframe, u8 *pphy_stat);

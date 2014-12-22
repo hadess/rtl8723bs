@@ -229,9 +229,5 @@ s32 rtl8723as_xmit_buf_handler(PADAPTER padapter);
 thread_return rtl8723as_xmit_thread(thread_context context);
 #endif
 
-#ifdef CONFIG_USB_HCI
-s32	rtl8723au_hal_xmitframe_enqueue(_adapter *padapter, struct xmit_frame *pxmitframe);
-s32 rtl8723au_xmit_buf_handler(PADAPTER padapter);
-#endif
 #endif
 

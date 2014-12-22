@@ -97,24 +97,6 @@
 //       8192C EEPROM/EFUSE share register definition.
 //----------------------------------------------------------------------------
 
-#ifdef CONFIG_USB_HCI
-
-//should be renamed and moved to another file
-typedef	enum _BOARD_TYPE_8192CUSB{
-	BOARD_USB_DONGLE 			= 0,		// USB dongle
-	BOARD_USB_High_PA 		= 1,		// USB dongle with high power PA
-	BOARD_MINICARD		  	= 2,		// Minicard
-	BOARD_USB_SOLO 		 	= 3,		// USB solo-Slim module
-	BOARD_USB_COMBO			= 4,		// USB Combo-Slim module
-} BOARD_TYPE_8192CUSB, *PBOARD_TYPE_8192CUSB;
-
-#define	SUPPORT_HW_RADIO_DETECT(pHalData)	(pHalData->BoardType == BOARD_MINICARD||\
-													pHalData->BoardType == BOARD_USB_SOLO||\
-													pHalData->BoardType == BOARD_USB_COMBO)
-
-#endif
-
-
 #define EFUSE_ACCESS_ON			0x69	// For RTL8723 only.
 #define EFUSE_ACCESS_OFF			0x00	// For RTL8723 only.
 

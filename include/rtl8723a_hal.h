@@ -91,52 +91,6 @@
 
 #endif // CONFIG_SDIO_HCI
 
-#ifdef CONFIG_USB_HCI
-
-	//2TODO: We should define 8192S firmware related macro settings here!!
-	#define RTL819X_DEFAULT_RF_TYPE			RF_1T2R
-	#define RTL819X_TOTAL_RF_PATH				2
-
-	//TODO:  The following need to check!!
-	#define RTL8723_FW_UMC_IMG				"rtl8192CU\\rtl8723fw.bin"
-	#define RTL8723_FW_UMC_B_IMG			"rtl8192CU\\rtl8723fw_B.bin"
-	#define RTL8723_PHY_REG					"rtl8723S\\PHY_REG_1T.txt"
-	#define RTL8723_PHY_RADIO_A				"rtl8723S\\radio_a_1T.txt"
-	#define RTL8723_PHY_RADIO_B				"rtl8723S\\radio_b_1T.txt"
-	#define RTL8723_AGC_TAB					"rtl8723S\\AGC_TAB_1T.txt"
-	#define RTL8723_PHY_MACREG 				"rtl8723S\\MAC_REG.txt"
-	#define RTL8723_PHY_REG_PG				"rtl8723S\\PHY_REG_PG.txt"
-	#define RTL8723_PHY_REG_MP				"rtl8723S\\PHY_REG_MP.txt"
-
-//---------------------------------------------------------------------
-//		RTL8723S From header
-//---------------------------------------------------------------------
-
-	// Fw Array
-	#define Rtl8723_FwImageArray				Rtl8723UFwImgArray
-	#define Rtl8723_FwUMCBCutImageArrayWithBT		Rtl8723UFwUMCBCutImgArrayWithBT
-	#define Rtl8723_FwUMCBCutImageArrayWithoutBT	Rtl8723UFwUMCBCutImgArrayWithoutBT
-
-	#define Rtl8723_ImgArrayLength				Rtl8723UImgArrayLength
-	#define Rtl8723_UMCBCutImgArrayWithBTLength		Rtl8723UUMCBCutImgArrayWithBTLength
-	#define Rtl8723_UMCBCutImgArrayWithoutBTLength	Rtl8723UUMCBCutImgArrayWithoutBTLength
-
-	#define Rtl8723_PHY_REG_Array_PG 			Rtl8723UPHY_REG_Array_PG
-	#define Rtl8723_PHY_REG_Array_PGLength		Rtl8723UPHY_REG_Array_PGLength
-
-#if MP_DRIVER == 1
-	#define Rtl8723E_FwBTImgArray				Rtl8723EFwBTImgArray
-	#define Rtl8723E_FwBTImgArrayLength			Rtl8723EBTImgArrayLength
-
-	#define Rtl8723_FwUMCBCutMPImageArray		Rtl8723SFwUMCBCutMPImgArray
-	#define Rtl8723_UMCBCutMPImgArrayLength	    Rtl8723SUMCBCutMPImgArrayLength
-
-	#define Rtl8723_PHY_REG_Array_MP			Rtl8723UPHY_REG_Array_MP
-	#define Rtl8723_PHY_REG_Array_MPLength		Rtl8723UPHY_REG_Array_MPLength
-#endif
-#endif
-
-
 #define FW_8723A_SIZE			0x8000
 #define FW_8723A_START_ADDRESS	0x1000
 #define FW_8723A_END_ADDRESS		0x1FFF //0x5FFF

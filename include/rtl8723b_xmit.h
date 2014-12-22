@@ -468,22 +468,6 @@ thread_return rtl8723bs_xmit_thread(thread_context context);
 #define hal_xmit_handler rtl8723bs_xmit_buf_handler
 #endif
 
-#ifdef CONFIG_USB_HCI
-s32 rtl8723bu_xmit_buf_handler(PADAPTER padapter);
-#define hal_xmit_handler rtl8723bu_xmit_buf_handler
-
-
-s32 rtl8723bu_init_xmit_priv(PADAPTER padapter);
-void rtl8723bu_free_xmit_priv(PADAPTER padapter);
-s32 rtl8723bu_hal_xmit(PADAPTER padapter, struct xmit_frame *pxmitframe);
-s32 rtl8723bu_mgnt_xmit(PADAPTER padapter, struct xmit_frame *pmgntframe);
-s32	 rtl8723bu_hal_xmitframe_enqueue(_adapter *padapter, struct xmit_frame *pxmitframe);
-//s32 rtl8812au_xmit_buf_handler(PADAPTER padapter);
-void rtl8723bu_xmit_tasklet(void *priv);
-s32 rtl8723bu_xmitframe_complete(_adapter *padapter, struct xmit_priv *pxmitpriv, struct xmit_buf *pxmitbuf);
-void _dbg_dump_tx_info(_adapter	*padapter,int frame_tag,struct tx_desc *ptxdesc);
-#endif
-
 u8	BWMapping_8723B(PADAPTER Adapter, struct pkt_attrib *pattrib);
 u8	SCMapping_8723B(PADAPTER Adapter, struct pkt_attrib	*pattrib);
 

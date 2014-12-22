@@ -25,25 +25,6 @@
 #define RECV_BLK_CNT 16
 #define RECV_BLK_TH RECV_BLK_CNT
 
-#if defined(CONFIG_USB_HCI)
-
-#ifndef MAX_RECVBUF_SZ
-#ifdef PLATFORM_OS_CE
-#define MAX_RECVBUF_SZ (8192+1024) // 8K+1k
-#else
-	#ifndef CONFIG_MINIMAL_MEMORY_USAGE
-		//#define MAX_RECVBUF_SZ (32768) // 32k
-		//#define MAX_RECVBUF_SZ (16384) //16K
-		//#define MAX_RECVBUF_SZ (10240) //10K
-	        #define MAX_RECVBUF_SZ (15360) // 15k < 16k
-	#else
-		#define MAX_RECVBUF_SZ (4000) // about 4K
-	#endif
-#endif
-#endif //!MAX_RECVBUF_SZ
-
-#endif
-
 struct phy_stat
 {
 	unsigned int phydw0;
@@ -65,22 +46,6 @@ struct phy_stat
 
 // Rx smooth factor
 #define	Rx_Smooth_Factor (20)
-
-#ifdef CONFIG_USB_HCI
-typedef struct _INTERRUPT_MSG_FORMAT_EX{
-	unsigned int C2H_MSG0;
-	unsigned int C2H_MSG1;
-	unsigned int C2H_MSG2;
-	unsigned int C2H_MSG3;
-	unsigned int HISR; // from HISR Reg0x124, read to clear
-	unsigned int HISRE;// from HISRE Reg0x12c, read to clear
-	unsigned int  MSG_EX;
-}INTERRUPT_MSG_FORMAT_EX,*PINTERRUPT_MSG_FORMAT_EX;
-
-void rtl8192du_init_recvbuf(_adapter *padapter, struct recv_buf *precvbuf);
-int	rtl8192du_init_recv_priv(_adapter * padapter);
-void	rtl8192du_free_recv_priv(_adapter * padapter);
-#endif
 
 void rtl8192d_translate_rx_signal_stuff(union recv_frame *precvframe, struct phy_stat *pphy_status);
 void rtl8192d_query_rx_desc_status(union recv_frame *precvframe, struct recv_stat *pdesc);

@@ -291,10 +291,6 @@ typedef struct hal_com_data
 	//
 	u16	EEPROMVID;
 	u16	EEPROMSVID;
-#ifdef CONFIG_USB_HCI
-	u16	EEPROMPID;
-	u16	EEPROMSDID;
-#endif
 
 	u8	EEPROMCustomerID;
 	u8	EEPROMSubCustomerID;
@@ -530,34 +526,6 @@ typedef struct hal_com_data
 
 	u32			sdio_tx_max_len[SDIO_MAX_TX_QUEUE];// H, N, L, used for sdio tx aggregation max length per queue
 #endif //CONFIG_SDIO_HCI
-
-#ifdef CONFIG_USB_HCI
-	u32	UsbBulkOutSize;
-	BOOLEAN		bSupportUSB3;
-
-	// Interrupt relatd register information.
-	u32	IntArray[3];//HISR0,HISR1,HSISR
-	u32	IntrMask[3];
-	u8	C2hArray[16];
-	#ifdef CONFIG_USB_TX_AGGREGATION
-	u8	UsbTxAggMode;
-	u8	UsbTxAggDescNum;
-	#endif // CONFIG_USB_TX_AGGREGATION
-	
-	#ifdef CONFIG_USB_RX_AGGREGATION
-	u16	HwRxPageSize;				// Hardware setting
-	u32	MaxUsbRxAggBlock;
-
-	USB_RX_AGG_MODE	UsbRxAggMode;
-	u8	UsbRxAggBlockCount;		//FOR USB Mode, USB Block count. Block size is 512-byte in hight speed and 64-byte in full speed
-	u8	UsbRxAggBlockTimeout;
-	u8	UsbRxAggPageCount;			//FOR DMA Mode, 8192C DMA page count
-	u8	UsbRxAggPageTimeout;
-
-	u8	RegAcUsbDmaSize;
-	u8	RegAcUsbDmaTime;
-	#endif//CONFIG_USB_RX_AGGREGATION
-#endif //CONFIG_USB_HCI
 
 	struct dm_priv	dmpriv;
 	DM_ODM_T 		odmpriv;

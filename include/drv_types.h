@@ -614,37 +614,6 @@ struct dvobj_priv
 #ifdef INTF_DATA
 	INTF_DATA intf_data;
 #endif
-
-/*-------- below is for USB INTERFACE --------*/
-
-#ifdef CONFIG_USB_HCI
-
-	u8	usb_speed; // 1.1, 2.0 or 3.0
-	u8	nr_endpoint;
-	u8	RtNumInPipes;
-	u8	RtNumOutPipes;
-	int	ep_num[6]; //endpoint number
-
-	int	RegUsbSS;
-
-	_sema	usb_suspend_sema;
-
-#ifdef CONFIG_USB_VENDOR_REQ_MUTEX
-	_mutex  usb_vendor_req_mutex;
-#endif
-
-#ifdef CONFIG_USB_VENDOR_REQ_BUFFER_PREALLOC
-	u8 * usb_alloc_vendor_req_buf;
-	u8 * usb_vendor_req_buf;
-#endif
-
-#ifdef PLATFORM_LINUX
-	struct usb_interface *pusbintf;
-	struct usb_device *pusbdev;
-#endif//PLATFORM_LINUX
-
-#endif//CONFIG_USB_HCI
-
 };
 
 #define dvobj_to_pwrctl(dvobj) (&(dvobj->pwrctl_priv))
@@ -657,9 +626,6 @@ static struct device *dvobj_to_dev(struct dvobj_priv *dvobj)
 #ifdef RTW_DVOBJ_CHIP_HW_TYPE
 #endif
 
-#ifdef CONFIG_USB_HCI
-	return &dvobj->pusbintf->dev;
-#endif
 #ifdef CONFIG_SDIO_HCI
 	return &dvobj->intf_data.func->dev;
 #endif
@@ -984,12 +950,6 @@ __inline static u8 *myid(struct eeprom_priv *peepriv)
 }
 
 // HCI Related header file
-#ifdef CONFIG_USB_HCI
-#include <usb_osintf.h>
-#include <usb_ops.h>
-#include <usb_hal.h>
-#endif
-
 #ifdef CONFIG_SDIO_HCI
 #include <sdio_osintf.h>
 #include <sdio_ops.h>

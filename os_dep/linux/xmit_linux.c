@@ -137,41 +137,11 @@ int rtw_os_xmit_resource_alloc(_adapter *padapter, struct xmit_buf *pxmitbuf, u3
 #endif // CONFIG_USE_USB_BUFFER_ALLOC_TX
 	}
 
-	if (flag) {
-#ifdef CONFIG_USB_HCI
-		int i;
-		for(i=0; i<8; i++)
-	      	{
-	      		pxmitbuf->pxmit_urb[i] = usb_alloc_urb(0, GFP_KERNEL);
-	             if(pxmitbuf->pxmit_urb[i] == NULL) 
-	             {
-	             	DBG_871X("pxmitbuf->pxmit_urb[i]==NULL");
-		       	return _FAIL;	 
-	             }
-	      	}
-#endif
-	}
-
 	return _SUCCESS;	
 }
 
 void rtw_os_xmit_resource_free(_adapter *padapter, struct xmit_buf *pxmitbuf,u32 free_sz, u8 flag)
 {
-	if (flag) {
-#ifdef CONFIG_USB_HCI
-		int i;
-
-		for(i=0; i<8; i++)
-		{
-			if(pxmitbuf->pxmit_urb[i])
-			{
-				//usb_kill_urb(pxmitbuf->pxmit_urb[i]);
-				usb_free_urb(pxmitbuf->pxmit_urb[i]);
-			}
-		}
-#endif
-	}
-
 	if (free_sz > 0 ) {
 #ifdef CONFIG_USE_USB_BUFFER_ALLOC_TX
 		struct dvobj_priv	*pdvobjpriv = adapter_to_dvobj(padapter);

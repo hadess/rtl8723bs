@@ -118,27 +118,5 @@ void handle_txrpt_ccx_8192c(_adapter *adapter, void *buf);
 #define handle_txrpt_ccx_8192c(adapter, buf) do {} while(0)
 #endif
 
-#ifdef CONFIG_USB_HCI
-
-s32	rtl8192cu_init_xmit_priv(_adapter * padapter);
-
-void	rtl8192cu_free_xmit_priv(_adapter * padapter);
-
-void rtl8192cu_cal_txdesc_chksum(struct tx_desc	*ptxdesc);
-
-s32 rtl8192cu_xmitframe_complete(_adapter *padapter, struct xmit_priv *pxmitpriv, struct xmit_buf *pxmitbuf);
-
-s32 rtl8192cu_mgnt_xmit(_adapter *padapter, struct xmit_frame *pmgntframe);
-
-s32 rtl8192cu_hal_xmit(_adapter *padapter, struct xmit_frame *pxmitframe);
-
-s32	 rtl8192cu_hal_xmitframe_enqueue(_adapter *padapter, struct xmit_frame *pxmitframe);
-
-#ifdef CONFIG_HOSTAPD_MLME
-s32 rtl8192cu_hostap_mgnt_xmit_entry(_adapter *padapter, _pkt *pkt);
-#endif
-
-#endif
-
 #endif
 
