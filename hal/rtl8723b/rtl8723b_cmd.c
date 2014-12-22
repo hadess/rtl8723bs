@@ -841,13 +841,6 @@ static void ConstructProbeRsp(_adapter *padapter, u8 *pframe, u32 *pLength, u8 *
 	uint wps_ielen;
 	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
 #endif //#if defined (CONFIG_AP_MODE) && defined (CONFIG_NATIVEAP_MLME)
-#ifdef CONFIG_P2P
-	struct wifidirect_info	*pwdinfo = &(padapter->wdinfo);
-#ifdef CONFIG_WFD
-	u32 				wfdielen = 0;
-#endif //CONFIG_WFD
-#endif //CONFIG_P2P
-
 
 	//DBG_871X("%s\n", __FUNCTION__);
 
@@ -942,53 +935,7 @@ static void ConstructProbeRsp(_adapter *padapter, u8 *pframe, u32 *pLength, u8 *
 			pktlen += ssid_ielen_diff;
 		}
 	}
-	
-#ifdef CONFIG_P2P
-	if(rtw_p2p_chk_role(pwdinfo, P2P_ROLE_GO) /*&& is_valid_p2p_probereq*/)
-	{
-		u32 len;
-#ifdef CONFIG_IOCTL_CFG80211
-		if(adapter_wdev_data(padapter)->p2p_enabled && pwdinfo->driver_interface == DRIVER_CFG80211 )
-		{
-			//if pwdinfo->role == P2P_ROLE_DEVICE will call issue_probersp_p2p()
-			len = pmlmepriv->p2p_go_probe_resp_ie_len;
-			if(pmlmepriv->p2p_go_probe_resp_ie && len>0)
-				_rtw_memcpy(pframe, pmlmepriv->p2p_go_probe_resp_ie, len);
-		}
-		else
-#endif //CONFIG_IOCTL_CFG80211
-		{
-			len = build_probe_resp_p2p_ie(pwdinfo, pframe);
-		}
-	
-		pframe += len;
-		pktlen += len;
-			
-#ifdef CONFIG_WFD
-#ifdef CONFIG_IOCTL_CFG80211
-		if(_TRUE == pwdinfo->wfd_info->wfd_enable)
-#endif //CONFIG_IOCTL_CFG80211
-		{
-			len = build_probe_resp_wfd_ie(pwdinfo, pframe, 0);
-		}
-#ifdef CONFIG_IOCTL_CFG80211
-		else
-		{	
-			len = 0;
-			if(pmlmepriv->wfd_probe_resp_ie && pmlmepriv->wfd_probe_resp_ie_len>0)
-			{
-				len = pmlmepriv->wfd_probe_resp_ie_len;
-				_rtw_memcpy(pframe, pmlmepriv->wfd_probe_resp_ie, len); 
-			}	
-		}
-#endif //CONFIG_IOCTL_CFG80211		
-		pframe += len;
-		pktlen += len;
-#endif //CONFIG_WFD
-	
-	}
-#endif //CONFIG_P2P
-	
+
 	*pLength = pktlen;
 
 }
@@ -1222,7 +1169,6 @@ void rtl8723b_set_FwPwrMode_cmd(PADAPTER padapter, u8 psmode)
 	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
 	u8 u1H2CPwrModeParm[H2C_PWRMODE_LEN]={0};
 	u8 PowerState=0, awake_intvl = 1, byte5 = 0, rlbm = 0;
-	struct wifidirect_info *wdinfo = &(padapter->wdinfo);
 
 _func_enter_;
 
@@ -1248,11 +1194,6 @@ _func_enter_;
 		rlbm = 2;
 	}	
 
-
-	if (!rtw_p2p_chk_state(wdinfo, P2P_STATE_NONE)) {
-		awake_intvl = 2;
-		rlbm = 2;
-	}
 
 	if(padapter->registrypriv.wifi_spec==1)
 	{
@@ -2855,99 +2796,6 @@ void rtl8723b_download_BTCoex_AP_mode_rsvd_page(PADAPTER padapter)
 	rtw_write8(padapter, REG_CR+1, val8);
 }
 #endif // CONFIG_BT_COEXIST
-
-#ifdef CONFIG_P2P
-void rtl8723b_set_p2p_ps_offload_cmd(_adapter* padapter, u8 p2p_ps_state)
-{
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
-	struct pwrctrl_priv		*pwrpriv = adapter_to_pwrctl(padapter);
-	struct wifidirect_info	*pwdinfo = &( padapter->wdinfo );
-	struct P2P_PS_Offload_t	*p2p_ps_offload = (struct P2P_PS_Offload_t	*)(&pHalData->p2p_ps_offload);
-	u8	i;
-
-_func_enter_;
-
-#if 1
-	switch(p2p_ps_state)
-	{
-		case P2P_PS_DISABLE:
-			DBG_8192C("P2P_PS_DISABLE \n");
-			_rtw_memset(p2p_ps_offload, 0 ,1);
-			break;
-		case P2P_PS_ENABLE:
-			DBG_8192C("P2P_PS_ENABLE \n");
-			// update CTWindow value.
-			if( pwdinfo->ctwindow > 0 )
-			{
-				p2p_ps_offload->CTWindow_En = 1;
-				rtw_write8(padapter, REG_P2P_CTWIN, pwdinfo->ctwindow);
-			}
-
-			// hw only support 2 set of NoA
-			for( i=0 ; i<pwdinfo->noa_num ; i++)
-			{
-				// To control the register setting for which NOA
-				rtw_write8(padapter, REG_NOA_DESC_SEL, (i << 4));
-				if(i == 0)
-					p2p_ps_offload->NoA0_En = 1;
-				else
-					p2p_ps_offload->NoA1_En = 1;
-
-				// config P2P NoA Descriptor Register
-				//DBG_8192C("%s(): noa_duration = %x\n",__FUNCTION__,pwdinfo->noa_duration[i]);
-				rtw_write32(padapter, REG_NOA_DESC_DURATION, pwdinfo->noa_duration[i]);
-
-				//DBG_8192C("%s(): noa_interval = %x\n",__FUNCTION__,pwdinfo->noa_interval[i]);
-				rtw_write32(padapter, REG_NOA_DESC_INTERVAL, pwdinfo->noa_interval[i]);
-
-				//DBG_8192C("%s(): start_time = %x\n",__FUNCTION__,pwdinfo->noa_start_time[i]);
-				rtw_write32(padapter, REG_NOA_DESC_START, pwdinfo->noa_start_time[i]);
-
-				//DBG_8192C("%s(): noa_count = %x\n",__FUNCTION__,pwdinfo->noa_count[i]);
-				rtw_write8(padapter, REG_NOA_DESC_COUNT, pwdinfo->noa_count[i]);
-			}
-
-			if( (pwdinfo->opp_ps == 1) || (pwdinfo->noa_num > 0) )
-			{
-				// rst p2p circuit
-				rtw_write8(padapter, REG_DUAL_TSF_RST, BIT(4));
-
-				p2p_ps_offload->Offload_En = 1;
-
-				if(pwdinfo->role == P2P_ROLE_GO)
-				{
-					p2p_ps_offload->role= 1;
-					p2p_ps_offload->AllStaSleep = 0;
-				}
-				else
-				{
-					p2p_ps_offload->role= 0;
-				}
-
-				p2p_ps_offload->discovery = 0;
-			}
-			break;
-		case P2P_PS_SCAN:
-			DBG_8192C("P2P_PS_SCAN \n");
-			p2p_ps_offload->discovery = 1;
-			break;
-		case P2P_PS_SCAN_DONE:
-			DBG_8192C("P2P_PS_SCAN_DONE \n");
-			p2p_ps_offload->discovery = 0;
-			pwdinfo->p2p_ps_state = P2P_PS_ENABLE;
-			break;
-		default:
-			break;
-	}
-
-	FillH2CCmd8723B(padapter, H2C_8723B_P2P_PS_OFFLOAD, 1, (u8 *)p2p_ps_offload);
-#endif
-
-_func_exit_;
-
-}
-#endif //CONFIG_P2P
-
 
 #ifdef CONFIG_TSF_RESET_OFFLOAD
 /*

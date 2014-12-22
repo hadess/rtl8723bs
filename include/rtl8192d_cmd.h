@@ -84,9 +84,6 @@ void	rtl8192d_set_FwJoinBssReport_cmd(_adapter* padapter, u8 mstatus);
 u8	rtl8192d_set_rssi_cmd(_adapter*padapter, u8 *param);
 void	rtl8192d_set_raid_cmd(_adapter*padapter, u32 mask, u8* arg);
 void	rtl8192d_Add_RateATid(PADAPTER pAdapter, u32 bitmap, u8* arg, u8 rssi_level);
-#ifdef CONFIG_P2P
-void	rtl8192d_set_p2p_ps_offload_cmd(_adapter* padapter, u8 p2p_ps_state);
-#endif //CONFIG_P2P
 
 #ifdef CONFIG_TSF_RESET_OFFLOAD
 int reset_tsf(PADAPTER Adapter, u8 reset_port );

@@ -240,11 +240,7 @@ struct group_id_info{
 
 struct scan_limit_info{
 	u8					scan_op_ch_only;			//	When this flag is set, the driver should just scan the operation channel
-#ifndef CONFIG_P2P_OP_CHK_SOCIAL_CH
 	u8					operation_ch[2];				//	Store the operation channel of invitation request frame
-#else
-	u8					operation_ch[5];				//	Store additional channel 1,6,11  for Android 4.2 IOT & Nexus 4
-#endif //CONFIG_P2P_OP_CHK_SOCIAL_CH
 };
 
 #ifdef CONFIG_IOCTL_CFG80211
@@ -343,18 +339,6 @@ struct wifidirect_info{
 	u16						ext_listen_interval;	//	The interval to be available with legacy AP (ms)
 	u16						ext_listen_period;	//	The time period to be available for P2P listen state (ms)
 #endif
-#ifdef CONFIG_P2P_PS
-	enum P2P_PS_MODE		p2p_ps_mode; // indicate p2p ps mode
-	enum P2P_PS_STATE		p2p_ps_state; // indicate p2p ps state
-	u8						noa_index; // Identifies and instance of Notice of Absence timing.
-	u8						ctwindow; // Client traffic window. A period of time in TU after TBTT.
-	u8						opp_ps; // opportunistic power save.
-	u8						noa_num; // number of NoA descriptor in P2P IE.
-	u8						noa_count[P2P_MAX_NOA_NUM]; // Count for owner, Type of client.
-	u32						noa_duration[P2P_MAX_NOA_NUM]; // Max duration for owner, preferred or min acceptable duration for client.
-	u32						noa_interval[P2P_MAX_NOA_NUM]; // Length of interval for owner, preferred or max acceptable interval of client.
-	u32						noa_start_time[P2P_MAX_NOA_NUM]; // schedule expressed in terms of the lower 4 bytes of the TSF timer.
-#endif // CONFIG_P2P_PS
 };
 
 struct tdls_ss_record{	//signal strength record
@@ -547,19 +531,7 @@ struct mlme_priv {
 	u32 p2p_probe_resp_ie_len;
 	u32 p2p_go_probe_resp_ie_len; //for GO
 	u32 p2p_assoc_req_ie_len;
-/*
-#if defined(CONFIG_P2P) && defined(CONFIG_IOCTL_CFG80211)
-	//u8 *wps_p2p_beacon_ie;
-	u8 *p2p_beacon_ie;
-	u8 *wps_p2p_probe_resp_ie;
-	u8 *wps_p2p_assoc_resp_ie;
-	//u32 wps_p2p_beacon_ie_len;
-	u32 p2p_beacon_ie_len;
-	u32 wps_p2p_probe_resp_ie_len;
-	u32 wps_p2p_assoc_resp_ie_len;
-#endif
-*/
-	
+
 	_lock	bcn_update_lock;
 	u8		update_bcn;
 	

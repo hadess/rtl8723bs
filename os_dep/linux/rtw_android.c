@@ -846,16 +846,6 @@ int rtw_android_priv_cmd(struct net_device *net, struct ifreq *ifr, int cmd)
 		rtw_gtk_offload(net, (u8 *)&priv_cmd.buf);
 		break;
 #endif //CONFIG_GTK_OL		
-	case ANDROID_WIFI_CMD_P2P_DISABLE:
-	{
-		struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;	
-		struct wifidirect_info 	*pwdinfo= &(padapter->wdinfo);
-		u8 channel, ch_offset;
-		u16 bwmode;
-
-		rtw_p2p_enable(padapter, P2P_ROLE_DISABLE);
-		break;
-	}
 	default:
 		DBG_871X("Unknown PRIVATE command %s - ignored\n", command);
 		snprintf(command, 3, "OK");

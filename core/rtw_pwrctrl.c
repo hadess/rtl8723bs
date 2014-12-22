@@ -188,12 +188,6 @@ bool rtw_pwr_unassociated_idle(_adapter *adapter)
 	_adapter *buddy = adapter->pbuddy_adapter;
 	struct mlme_priv *pmlmepriv = &(adapter->mlmepriv);
 	struct xmit_priv *pxmit_priv = &adapter->xmitpriv;
-#ifdef CONFIG_P2P
-	struct wifidirect_info	*pwdinfo = &(adapter->wdinfo);
-#ifdef CONFIG_IOCTL_CFG80211
-	struct cfg80211_wifidirect_info *pcfg80211_wdinfo = &adapter->cfg80211_wdinfo;
-#endif
-#endif
 
 	bool ret = _FALSE;
 
@@ -211,14 +205,6 @@ bool rtw_pwr_unassociated_idle(_adapter *adapter)
 		|| check_fwstate(pmlmepriv, WIFI_UNDER_LINKING|WIFI_UNDER_WPS)
 		|| check_fwstate(pmlmepriv, WIFI_AP_STATE)
 		|| check_fwstate(pmlmepriv, WIFI_ADHOC_MASTER_STATE|WIFI_ADHOC_STATE)
-		#if defined(CONFIG_P2P) && defined(CONFIG_IOCTL_CFG80211) && defined(CONFIG_P2P_IPS)
-		|| pcfg80211_wdinfo->is_ro_ch
-		#elif defined(CONFIG_P2P)
-		|| !rtw_p2p_chk_state(pwdinfo, P2P_STATE_NONE)
-		#endif
-		#if defined(CONFIG_P2P) && defined(CONFIG_IOCTL_CFG80211)
-		|| jiffies_to_msecs(jiffies - pcfg80211_wdinfo->last_ro_ch_time) < 3000
-		#endif
 	) {
 		goto exit;
 	}
@@ -226,25 +212,11 @@ bool rtw_pwr_unassociated_idle(_adapter *adapter)
 	/* consider buddy, if exist */
 	if (buddy) {
 		struct mlme_priv *b_pmlmepriv = &(buddy->mlmepriv);
-		#ifdef CONFIG_P2P
-		struct wifidirect_info *b_pwdinfo = &(buddy->wdinfo);
-		#ifdef CONFIG_IOCTL_CFG80211
-		struct cfg80211_wifidirect_info *b_pcfg80211_wdinfo = &buddy->cfg80211_wdinfo;
-		#endif
-		#endif
 
 		if (check_fwstate(b_pmlmepriv, WIFI_ASOC_STATE|WIFI_SITE_MONITOR)
 			|| check_fwstate(b_pmlmepriv, WIFI_UNDER_LINKING|WIFI_UNDER_WPS)
 			|| check_fwstate(b_pmlmepriv, WIFI_AP_STATE)
 			|| check_fwstate(b_pmlmepriv, WIFI_ADHOC_MASTER_STATE|WIFI_ADHOC_STATE)
-			#if defined(CONFIG_P2P) && defined(CONFIG_IOCTL_CFG80211) && defined(CONFIG_P2P_IPS)
-			|| b_pcfg80211_wdinfo->is_ro_ch
-			#elif defined(CONFIG_P2P)
-			|| !rtw_p2p_chk_state(b_pwdinfo, P2P_STATE_NONE)
-			#endif
-			#if defined(CONFIG_P2P) && defined(CONFIG_IOCTL_CFG80211)
-			|| jiffies_to_msecs(jiffies - b_pcfg80211_wdinfo->last_ro_ch_time) < 3000
-			#endif
 		) {
 			goto exit;
 		}
@@ -282,9 +254,6 @@ exit:
  */
 void rtw_ps_processor(_adapter*padapter)
 {
-#ifdef CONFIG_P2P
-	struct wifidirect_info	*pwdinfo = &( padapter->wdinfo );
-#endif //CONFIG_P2P
 	struct pwrctrl_priv *pwrpriv = adapter_to_pwrctl(padapter);
 	struct mlme_priv *pmlmepriv = &(padapter->mlmepriv);
 	struct dvobj_priv *psdpriv = padapter->dvobj;
@@ -664,12 +633,6 @@ u8 PS_RDY_CHECK(_adapter * padapter)
 	unsigned long curr_time, delta_time;
 	struct pwrctrl_priv	*pwrpriv = adapter_to_pwrctl(padapter);
 	struct mlme_priv	*pmlmepriv = &(padapter->mlmepriv);
-#ifdef CONFIG_P2P
-	struct wifidirect_info *pwdinfo = &(padapter->wdinfo);
-#ifdef CONFIG_IOCTL_CFG80211
-	struct cfg80211_wifidirect_info *pcfg80211_wdinfo = &padapter->cfg80211_wdinfo;
-#endif /* CONFIG_IOCTL_CFG80211 */
-#endif /* CONFIG_P2P */
 
 #if defined(CONFIG_WOWLAN) || defined(CONFIG_AP_WOWLAN)
 	if(_TRUE == pwrpriv->bInSuspend && pwrpriv->wowlan_mode)
@@ -696,11 +659,6 @@ u8 PS_RDY_CHECK(_adapter * padapter)
 		|| check_fwstate(pmlmepriv, WIFI_UNDER_LINKING|WIFI_UNDER_WPS)
 		|| check_fwstate(pmlmepriv, WIFI_AP_STATE)
 		|| check_fwstate(pmlmepriv, WIFI_ADHOC_MASTER_STATE|WIFI_ADHOC_STATE)
-		#if defined(CONFIG_P2P) && defined(CONFIG_IOCTL_CFG80211) && defined(CONFIG_P2P_IPS)
-		|| pcfg80211_wdinfo->is_ro_ch
-		#elif defined(CONFIG_P2P)
-		|| !rtw_p2p_chk_state(pwdinfo, P2P_STATE_NONE)
-		#endif
 		|| rtw_is_scan_deny(padapter)
 #ifdef CONFIG_TDLS
 		// TDLS link is established.
@@ -728,9 +686,6 @@ void rtw_set_ps_mode(PADAPTER padapter, u8 ps_mode, u8 smart_ps, u8 bcn_ant_mode
 	struct pwrctrl_priv *pwrpriv = adapter_to_pwrctl(padapter);
 	struct dvobj_priv *psdpriv = padapter->dvobj;
 	struct debug_priv *pdbgpriv = &psdpriv->drv_dbg;
-#ifdef CONFIG_P2P
-	struct wifidirect_info	*pwdinfo = &( padapter->wdinfo );
-#endif //CONFIG_P2P
 #ifdef CONFIG_TDLS
 	struct sta_priv *pstapriv = &padapter->stapriv;
 	_irqL irqL;
@@ -773,17 +728,11 @@ _func_enter_;
 		if (1
 #ifdef CONFIG_BT_COEXIST
 			&& (((rtw_btcoex_IsBtControlLps(padapter) == _FALSE)
-#ifdef CONFIG_P2P_PS
-					&& (pwdinfo->opp_ps == 0)
-#endif // CONFIG_P2P_PS
 					)
 				|| ((rtw_btcoex_IsBtControlLps(padapter) == _TRUE)
 					&& (rtw_btcoex_IsLpsOn(padapter) == _FALSE))
 				)
 #else // !CONFIG_BT_COEXIST
-#ifdef CONFIG_P2P_PS
-			&& (pwdinfo->opp_ps == 0)
-#endif // CONFIG_P2P_PS
 #endif // !CONFIG_BT_COEXIST
 			)
 		{
@@ -892,12 +841,6 @@ _func_enter_;
 			pwrpriv->smart_ps = smart_ps;
 			pwrpriv->bcn_ant_mode = bcn_ant_mode;
 			rtw_hal_set_hwreg(padapter, HW_VAR_H2C_FW_PWRMODE, (u8 *)(&ps_mode));
-
-#ifdef CONFIG_P2P_PS
-			// Set CTWindow after LPS
-			if(pwdinfo->opp_ps == 1)
-				p2p_ps_wk_cmd(padapter, P2P_PS_ENABLE, 0);
-#endif //CONFIG_P2P_PS
 
 			pslv = PS_STATE_S2;
 #ifdef CONFIG_LPS_LCLK
@@ -1183,10 +1126,6 @@ _func_enter_;
 	_exit_pwrlock(&pwrpriv->lock);
 #endif
 
-#ifdef CONFIG_P2P_PS
-		p2p_ps_wk_cmd(pri_padapter, P2P_PS_DISABLE, 0);
-#endif //CONFIG_P2P_PS
-
 #ifdef CONFIG_LPS
 		rtw_lps_ctrl_wk_cmd(pri_padapter, LPS_CTRL_LEAVE, 0);
 #endif
@@ -1262,10 +1201,6 @@ _func_enter_;
 #ifdef CONFIG_LPS_LCLK
 		enqueue = 1;
 #endif
-
-#ifdef CONFIG_P2P_PS
-		p2p_ps_wk_cmd(Adapter, P2P_PS_DISABLE, enqueue);
-#endif //CONFIG_P2P_PS
 
 #ifdef CONFIG_LPS
 		rtw_lps_ctrl_wk_cmd(Adapter, LPS_CTRL_LEAVE, enqueue);
@@ -1916,20 +1851,6 @@ _func_enter_;
 	}
 #endif // CONFIG_BT_COEXIST
 
-#ifdef CONFIG_P2P_PS
-	if(padapter->wdinfo.p2p_ps_mode > P2P_PS_NONE)
-	{
-		pslv = PS_STATE_S2;
-	}
-#ifdef CONFIG_CONCURRENT_MODE
-	else if(rtw_buddy_adapter_up(padapter))
-	{
-		if(padapter->pbuddy_adapter->wdinfo.p2p_ps_mode > P2P_PS_NONE)
-			pslv = PS_STATE_S2;
-	}
-#endif
-#endif
-
 	_enter_pwrlock(&pwrctrl->lock);
 
 	unregister_task_alive(pwrctrl, XMIT_ALIVE);
@@ -1995,20 +1916,6 @@ _func_enter_;
 #endif // CONFIG_RTL8723A
 	}
 #endif // CONFIG_BT_COEXIST
-
-#ifdef CONFIG_P2P_PS
-	if(padapter->wdinfo.p2p_ps_mode > P2P_PS_NONE)
-	{
-		pslv = PS_STATE_S2;
-	}
-#ifdef CONFIG_CONCURRENT_MODE
-	else if(rtw_buddy_adapter_up(padapter))
-	{
-		if(padapter->pbuddy_adapter->wdinfo.p2p_ps_mode > P2P_PS_NONE)
-			pslv = PS_STATE_S2;
-	}
-#endif
-#endif
 
 	_enter_pwrlock(&pwrctrl->lock);
 

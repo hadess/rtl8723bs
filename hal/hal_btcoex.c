@@ -372,11 +372,6 @@ static u32 _halbtcoutsrc_GetWifiLinkStatus(PADAPTER padapter)
 	bp2p = _FALSE;
 	portConnectedStatus = 0;
 
-#ifdef CONFIG_P2P
-	if (!rtw_p2p_chk_state(&padapter->wdinfo, P2P_STATE_NONE))
-		bp2p = _TRUE;
-#endif // CONFIG_P2P
-
 	if (check_fwstate(pmlmepriv, WIFI_ASOC_STATE) == _TRUE)
 	{
 		if (check_fwstate(pmlmepriv, WIFI_AP_STATE) == _TRUE)

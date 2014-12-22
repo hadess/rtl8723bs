@@ -135,10 +135,6 @@ void rtl8812_set_raid_cmd(PADAPTER padapter, u32 bitmap, u8* arg);
 void rtl8812_Add_RateATid(PADAPTER padapter, u32 bitmap, u8* arg, u8 rssi_level);
 void rtl8812_set_wowlan_cmd(_adapter* padapter, u8 enable);
 
-#ifdef CONFIG_P2P_PS
-void rtl8812_set_p2p_ps_offload_cmd(PADAPTER padapter, u8 p2p_ps_state);
-#endif //CONFIG_P2P
-
 void CheckFwRsvdPageContent(PADAPTER padapter);
 void rtl8812_set_FwMediaStatus_cmd(PADAPTER padapter, u16 mstatus_rpt );
 

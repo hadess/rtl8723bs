@@ -1286,42 +1286,6 @@ void flush_all_cam_entry(_adapter *padapter)
 	
 }
 
-#if defined(CONFIG_P2P) && defined(CONFIG_WFD)
-int WFD_info_handler(_adapter *padapter, PNDIS_802_11_VARIABLE_IEs	pIE)
-{
-	struct registry_priv	*pregpriv = &padapter->registrypriv;
-	struct mlme_priv	*pmlmepriv = &(padapter->mlmepriv);
-	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
-	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
-	struct wifidirect_info	*pwdinfo;	
-	u8	wfd_ie[ 128 ] = { 0x00 };
-	u32	wfd_ielen = 0;
-
-
-	pwdinfo = &padapter->wdinfo;
-	if ( rtw_get_wfd_ie( ( u8* ) pIE, pIE->Length, wfd_ie, &wfd_ielen ) )
-	{
-		u8	attr_content[ 10 ] = { 0x00 };
-		u32	attr_contentlen = 0;
-			
-		DBG_871X( "[%s] Found WFD IE\n", __FUNCTION__ );
-		rtw_get_wfd_attr_content( wfd_ie, wfd_ielen, WFD_ATTR_DEVICE_INFO, attr_content, &attr_contentlen);
-		if ( attr_contentlen )
-		{
-			pwdinfo->wfd_info->peer_rtsp_ctrlport = RTW_GET_BE16( attr_content + 2 );
-			DBG_8192C( "[%s] Peer PORT NUM = %d\n", __FUNCTION__, pwdinfo->wfd_info->peer_rtsp_ctrlport );
-			return( _TRUE );
-		}		
-	}
-	else
-	{
-		DBG_871X( "[%s] NO WFD IE\n", __FUNCTION__ );
-
-	}
-	return( _FAIL );
-}
-#endif
-
 int WMM_param_handler(_adapter *padapter, PNDIS_802_11_VARIABLE_IEs	pIE)
 {
 	//struct registry_priv	*pregpriv = &padapter->registrypriv;
@@ -2627,15 +2591,6 @@ void update_tx_basic_rate(_adapter *padapter, u8 wirelessmode)
 {
 	NDIS_802_11_RATES_EX	supported_rates;
 	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
-#ifdef CONFIG_P2P
-	struct wifidirect_info*	pwdinfo = &padapter->wdinfo;
-
-	//	Added by Albert 2011/03/22
-	//	In the P2P mode, the driver should not support the b mode.
-	//	So, the Tx packet shouldn't use the CCK rate
-	if(!rtw_p2p_chk_state(pwdinfo, P2P_STATE_NONE))
-		return;
-#endif //CONFIG_P2P
 #ifdef CONFIG_INTEL_WIDI
 	if (padapter->mlmepriv.widi_state != INTEL_WIDI_STATE_NONE)
 		return;
@@ -2863,9 +2818,6 @@ void update_wireless_mode(_adapter *padapter)
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 	WLAN_BSSID_EX 		*cur_network = &(pmlmeinfo->network);
 	unsigned char			*rate = cur_network->SupportedRates;
-#ifdef CONFIG_P2P
-	struct wifidirect_info	*pwdinfo= &(padapter->wdinfo);
-#endif //CONFIG_P2P
 
 	ratelen = rtw_get_rateset_len(cur_network->SupportedRates);
 
@@ -2919,15 +2871,6 @@ void update_wireless_mode(_adapter *padapter)
 	padapter->HalFunc.SetHwRegHandler( padapter, HW_VAR_RESP_SIFS,  (u8 *)&SIFS_Timer);
 
 	padapter->HalFunc.SetHwRegHandler( padapter, HW_VAR_WIRELESS_MODE,  (u8 *)&(pmlmeext->cur_wireless_mode));
-
-#ifdef CONFIG_P2P
-	//	Added by Thomas 20130822
-	//	In P2P enable, do not set tx rate.
-	//	workaround for Actiontec GO case. 
-	//	The Actiontec will use 1M to tx the beacon in 1.1.0 firmware.
-	if(!rtw_p2p_chk_state(pwdinfo, P2P_STATE_NONE))
-		return;
-#endif //CONFIG_P2P
 
 	if (pmlmeext->cur_wireless_mode & WIRELESS_11B)
 		update_mgnt_tx_rate(padapter, IEEE80211_CCK_RATE_1MB);

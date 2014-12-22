@@ -85,23 +85,6 @@
 	#define CONFIG_TX_MCAST2UNI		// Support IP multicast->unicast
 #endif
 
-#define CONFIG_P2P
-#ifdef CONFIG_P2P
-	//Added by Albert 20110812
-	//The CONFIG_WFD is for supporting the Wi-Fi display
-	#define CONFIG_WFD
-
-	#ifndef CONFIG_WIFI_TEST
-		#define CONFIG_P2P_REMOVE_GROUP_INFO
-	#endif
-	//#define CONFIG_DBG_P2P
-	#define CONFIG_P2P_PS
-	//#define CONFIG_P2P_IPS
-	#define CONFIG_P2P_OP_CHK_SOCIAL_CH
-	#define CONFIG_CFG80211_ONECHANNEL_UNDER_CONCURRENT  //replace CONFIG_P2P_CHK_INVITE_CH_LIST flag
-	#define CONFIG_P2P_INVITE_IOT
-#endif
-
 //	Added by Kurt 20110511
 //#define CONFIG_TDLS
 #ifdef CONFIG_TDLS

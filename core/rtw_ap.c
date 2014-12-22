@@ -1229,9 +1229,6 @@ void start_bss_network(_adapter *padapter, u8 *pbuf)
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 	WLAN_BSSID_EX *pnetwork_mlmeext = &(pmlmeinfo->network);
 	struct HT_info_element *pht_info=NULL;
-#ifdef CONFIG_P2P
-	struct wifidirect_info	*pwdinfo = &(padapter->wdinfo);
-#endif //CONFIG_P2P
 	u8	cbw40_enable=0;
 	u8	change_band = _FALSE;
 	
@@ -1412,11 +1409,6 @@ void start_bss_network(_adapter *padapter, u8 *pbuf)
 	//udpate capability after cur_wireless_mode updated
 	update_capinfo(padapter, rtw_get_capability((WLAN_BSSID_EX *)pnetwork));
 
-
-#ifdef CONFIG_P2P
-	_rtw_memcpy(pwdinfo->p2p_group_ssid, pnetwork->Ssid.Ssid, pnetwork->Ssid.SsidLength);	
-	pwdinfo->p2p_group_ssid_len = pnetwork->Ssid.SsidLength;
-#endif //CONFIG_P2P
 
 	if(_TRUE == pmlmeext->bstart_bss)
 	{

@@ -1025,9 +1025,6 @@ u8 rtw_init_default_value(_adapter *padapter)
 	RTW_ENABLE_FUNC(padapter, DF_TX_BIT);
 	padapter->bLinkInfoDump = 0;
 	padapter->bNotifyChannelChange = 0;
-#ifdef CONFIG_P2P
-	padapter->bShowGetP2PState = 1;
-#endif
 
 	//for debug purpose
 	padapter->fix_rate = 0xFF;
@@ -1167,19 +1164,6 @@ _func_enter_;
 		goto exit;
 	}
 
-#ifdef CONFIG_P2P
-	rtw_init_wifidirect_timers(padapter);
-	init_wifidirect_info(padapter, P2P_ROLE_DISABLE);
-	reset_global_wifidirect_info(padapter);
-	#ifdef CONFIG_IOCTL_CFG80211
-	rtw_init_cfg80211_wifidirect_info(padapter);
-	#endif
-#ifdef CONFIG_WFD
-	if(rtw_init_wifi_display_info(padapter) == _FAIL)
-		RT_TRACE(_module_os_intfs_c_,_drv_err_,("\n Can't init init_wifi_display_info\n"));
-#endif
-#endif /* CONFIG_P2P */
-
 	if(init_mlme_ext_priv(padapter) == _FAIL)
 	{
 		RT_TRACE(_module_os_intfs_c_,_drv_err_,("\n Can't init mlme_ext_priv\n"));
@@ -1305,9 +1289,6 @@ void rtw_cancel_all_timer(_adapter *padapter)
 	_cancel_timer_ex(&(adapter_to_pwrctl(padapter)->pwr_state_check_timer));
 
 #ifdef CONFIG_IOCTL_CFG80211
-#ifdef CONFIG_P2P
-	_cancel_timer_ex(&padapter->cfg80211_wdinfo.remain_on_ch_timer);
-#endif //CONFIG_P2P
 #endif //CONFIG_IOCTL_CFG80211
 
 #ifdef CONFIG_SET_SCAN_DENY_TIMER
@@ -1337,24 +1318,6 @@ u8 rtw_free_drv_sw(_adapter *padapter)
 	rtw_wapi_free(padapter);
 #endif
 
-	//we can call rtw_p2p_enable here, but:
-	// 1. rtw_p2p_enable may have IO operation
-	// 2. rtw_p2p_enable is bundled with wext interface
-	#ifdef CONFIG_P2P
-	{
-		struct wifidirect_info *pwdinfo = &padapter->wdinfo;
-		if(!rtw_p2p_chk_state(pwdinfo, P2P_STATE_NONE))
-		{
-			_cancel_timer_ex( &pwdinfo->find_phase_timer );
-			_cancel_timer_ex( &pwdinfo->restore_p2p_state_timer );
-			_cancel_timer_ex( &pwdinfo->pre_tx_scan_timer);
-#ifdef CONFIG_CONCURRENT_MODE
-			_cancel_timer_ex( &pwdinfo->ap_p2p_switch_timer );
-#endif // CONFIG_CONCURRENT_MODE
-			rtw_p2p_set_state(pwdinfo, P2P_STATE_NONE);
-		}
-	}
-	#endif
 	// add for CONFIG_IEEE80211W, none 11w also can use
 	_rtw_spinlock_free(&padapter->security_key_mutex);
 	
@@ -1870,10 +1833,6 @@ static int netdev_if2_close(struct net_device *pnetdev)
 		if (!rtw_netif_queue_stopped(pnetdev))
 			rtw_netif_stop_queue(pnetdev);
 	}
-
-#ifdef CONFIG_P2P
-	rtw_p2p_enable(padapter, P2P_ROLE_DISABLE);
-#endif
 
 #ifdef CONFIG_IOCTL_CFG80211
 	rtw_scan_abort(padapter);
@@ -2515,10 +2474,6 @@ static int netdev_close(struct net_device *pnetdev)
 	}
 #endif	// CONFIG_BR_EXT
 
-#ifdef CONFIG_P2P
-	rtw_p2p_enable(padapter, P2P_ROLE_DISABLE);
-#endif //CONFIG_P2P
-
 #ifdef CONFIG_IOCTL_CFG80211
 	rtw_scan_abort(padapter);
 	adapter_wdev_data(padapter)->bandroid_scan = _FALSE;
@@ -2920,14 +2875,12 @@ int rtw_suspend_free_assoc_resource(_adapter *padapter)
 {
 	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
 	struct net_device *pnetdev = padapter->pnetdev;
-	struct wifidirect_info*	pwdinfo = &padapter->wdinfo;
 
 	DBG_871X("==> "FUNC_ADPT_FMT" entry....\n", FUNC_ADPT_ARG(padapter));
 
 	if (rtw_chk_roam_flags(padapter, RTW_ROAM_ON_RESUME)) {
 		if(check_fwstate(pmlmepriv, WIFI_STATION_STATE)
-			&& check_fwstate(pmlmepriv, _FW_LINKED)
-			&& rtw_p2p_chk_state(pwdinfo, P2P_STATE_NONE))
+			&& check_fwstate(pmlmepriv, _FW_LINKED))
 		{
 			DBG_871X("%s %s(" MAC_FMT "), length:%d assoc_ssid.length:%d\n",__FUNCTION__,
 					pmlmepriv->cur_network.network.Ssid.Ssid,

@@ -342,9 +342,6 @@ void rtl8723b_download_rsvd_page(PADAPTER padapter, u8 mstatus);
 #ifdef CONFIG_BT_COEXIST
 void rtl8723b_download_BTCoex_AP_mode_rsvd_page(PADAPTER padapter);
 #endif // CONFIG_BT_COEXIST
-#ifdef CONFIG_P2P
-void rtl8723b_set_p2p_ps_offload_cmd(PADAPTER padapter, u8 p2p_ps_state);
-#endif //CONFIG_P2P
 
 void CheckFwRsvdPageContent(PADAPTER padapter);
 

@@ -506,7 +506,6 @@ _adapter *rtw_sdio_if1_init(struct dvobj_priv *dvobj, const struct sdio_device_i
 	//3 8. get WLan MAC address
 	// set mac addr
 	rtw_macaddr_cfg(padapter->eeprompriv.mac_addr);
-	rtw_init_wifidirect_addrs(padapter, padapter->eeprompriv.mac_addr, padapter->eeprompriv.mac_addr);
 
 	rtw_hal_disable_interrupt(padapter);
 

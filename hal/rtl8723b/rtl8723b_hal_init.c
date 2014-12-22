@@ -6523,11 +6523,6 @@ _func_enter_;
 			rtl8723b_set_FwJoinBssRpt_cmd(padapter, *val);
 			break;
 
-#ifdef CONFIG_P2P
-		case HW_VAR_H2C_FW_P2P_PS_OFFLOAD:
-			rtl8723b_set_p2p_ps_offload_cmd(padapter, *val);
-			break;
-#endif //CONFIG_P2P
 #ifdef CONFIG_TDLS
 		case HW_VAR_TDLS_WRCR:
 			rtw_write32(padapter, REG_RCR, rtw_read32(padapter, REG_RCR)&(~RCR_CBSSID_DATA ));

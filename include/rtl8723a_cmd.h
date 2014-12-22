@@ -198,11 +198,6 @@ void rtl8192c_Add_RateATid(PADAPTER padapter, u32 bitmap, u8* arg, u8 rssi_level
 u8 rtl8192c_set_FwSelectSuspend_cmd(PADAPTER padapter, u8 bfwpoll, u16 period);
 //u8 rtl8723a_set_FwSelectSuspend_cmd(PADAPTER padapter, u8 bfwpoll, u16 period);
 
-#ifdef CONFIG_P2P
-void rtl8192c_set_p2p_ps_offload_cmd(PADAPTER padapter, u8 p2p_ps_state);
-//void rtl8723a_set_p2p_ps_offload_cmd(PADAPTER padapter, u8 p2p_ps_state);
-#endif //CONFIG_P2P
-
 void CheckFwRsvdPageContent(PADAPTER padapter);
 
 #endif

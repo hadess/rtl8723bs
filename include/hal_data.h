@@ -492,10 +492,6 @@ typedef struct hal_com_data
 	// This is used for fix the drawback of CU TSMC-A/UMC-A cut. HW auto suspend ability. Close BT clock.
 	BOOLEAN		SlimComboDbg;
 
-#ifdef CONFIG_P2P
-	u8	p2p_ps_offload;
-#endif
-
 	//u8	AMPDUDensity;
 
 	// Auto FSM to Turn On, include clock, isolation, power control for MAC only

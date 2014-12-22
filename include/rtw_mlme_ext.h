@@ -767,15 +767,6 @@ void dump_mgntframe(_adapter *padapter, struct xmit_frame *pmgntframe);
 s32 dump_mgntframe_and_wait(_adapter *padapter, struct xmit_frame *pmgntframe, int timeout_ms);
 s32 dump_mgntframe_and_wait_ack(_adapter *padapter, struct xmit_frame *pmgntframe);
 
-#ifdef CONFIG_P2P
-void issue_probersp_p2p(_adapter *padapter, unsigned char *da);
-void issue_p2p_provision_request( _adapter *padapter, u8* pssid, u8 ussidlen, u8* pdev_raddr);
-void issue_p2p_GO_request(_adapter *padapter, u8* raddr);
-void issue_probereq_p2p(_adapter *padapter, u8 *da);
-int issue_probereq_p2p_ex(_adapter *adapter, u8 *da, int try_cnt, int wait_ms);
-void issue_p2p_invitation_response(_adapter *padapter, u8* raddr, u8 dialogToken, u8 success);
-void issue_p2p_invitation_request(_adapter *padapter, u8* raddr );
-#endif //CONFIG_P2P
 void issue_beacon(_adapter *padapter, int timeout_ms);
 void issue_probersp(_adapter *padapter, unsigned char *da, u8 is_valid_p2p_probereq);
 void issue_assocreq(_adapter *padapter);

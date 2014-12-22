@@ -540,14 +540,6 @@ if (Adapter->registrypriv.mp_mode == 1 && Adapter->mppriv.mp_dm ==0) // for MP p
 	rtw_hal_get_hwreg(Adapter, HW_VAR_FWLPS_RF_ON, (u8 *)(&bFwPSAwake));
 #endif
 
-#ifdef CONFIG_P2P
-	// Fw is under p2p powersaving mode, driver should stop dynamic mechanism.
-	// modifed by thomas. 2011.06.11.
-	if(Adapter->wdinfo.p2p_ps_mode)
-		bFwPSAwake = _FALSE;
-#endif //CONFIG_P2P
-
-
 	if( (hw_init_completed == _TRUE)
 		&& ((!bFwCurrentInPSMode) && bFwPSAwake))
 	{

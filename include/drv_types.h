@@ -116,10 +116,6 @@ typedef struct _ADAPTER _adapter, ADAPTER,*PADAPTER;
 #include <rtw_mem.h>
 #endif
 
-#ifdef CONFIG_P2P
-#include <rtw_p2p.h>
-#endif // CONFIG_P2P
-
 #ifdef CONFIG_TDLS
 #include <rtw_tdls.h>
 #endif // CONFIG_TDLS
@@ -803,14 +799,8 @@ struct _ADAPTER{
 #endif
 
 #ifdef CONFIG_IOCTL_CFG80211
-#ifdef CONFIG_P2P
-	struct cfg80211_wifidirect_info	cfg80211_wdinfo;
-#endif //CONFIG_P2P
 #endif //CONFIG_IOCTL_CFG80211
 	u32	setband;
-#ifdef CONFIG_P2P
-	struct wifidirect_info	wdinfo;
-#endif //CONFIG_P2P
 
 #ifdef CONFIG_TDLS
 	struct tdls_info	tdlsinfo;
@@ -898,11 +888,6 @@ struct _ADAPTER{
 	//	Added by Albert 2012/10/26
 	//	The driver will show up the desired channel number when this flag is 1.
 	u8 bNotifyChannelChange;
-#ifdef CONFIG_P2P
-	//	Added by Albert 2012/12/06
-	//	The driver will show the current P2P status when the upper application reads it.
-	u8 bShowGetP2PState;
-#endif
 #ifdef CONFIG_AUTOSUSPEND
 	u8	bDisableAutosuspend;
 #endif
