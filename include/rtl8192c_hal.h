@@ -44,98 +44,7 @@
 #endif
 
 
-#ifdef CONFIG_PCI_HCI
-	
-	#define RTL819X_DEFAULT_RF_TYPE			RF_2T2R
-	//#define RTL819X_DEFAULT_RF_TYPE			RF_1T2R
-	#define RTL819X_TOTAL_RF_PATH				2
-
-	//2TODO:  The following need to check!!
-	#define RTL8192C_FW_TSMC_IMG				"rtl8192CE\\rtl8192cfwT.bin"
-	#define RTL8192C_FW_UMC_IMG				"rtl8192CE\\rtl8192cfwU.bin"
-	#define RTL8192C_FW_UMC_B_IMG				"rtl8192CE\\rtl8192cfwU_B.bin"
-
-	#define RTL8188C_PHY_REG					"rtl8192CE\\PHY_REG_1T.txt"
-	#define RTL8188C_PHY_RADIO_A				"rtl8192CE\\radio_a_1T.txt"
-	#define RTL8188C_PHY_RADIO_B				"rtl8192CE\\radio_b_1T.txt"
-	#define RTL8188C_AGC_TAB					"rtl8192CE\\AGC_TAB_1T.txt"
-	#define RTL8188C_PHY_MACREG				"rtl8192CE\\MACREG_1T.txt"
-
-	#define RTL8192C_PHY_REG					"rtl8192CE\\PHY_REG_2T.txt"
-	#define RTL8192C_PHY_RADIO_A				"rtl8192CE\\radio_a_2T.txt"
-	#define RTL8192C_PHY_RADIO_B				"rtl8192CE\\radio_b_2T.txt"
-	#define RTL8192C_AGC_TAB					"rtl8192CE\\AGC_TAB_2T.txt"
-	#define RTL8192C_PHY_MACREG				"rtl8192CE\\MACREG_2T.txt"
-
-	#define RTL819X_PHY_MACPHY_REG			"rtl8192CE\\MACPHY_reg.txt"
-	#define RTL819X_PHY_MACPHY_REG_PG		"rtl8192CE\\MACPHY_reg_PG.txt"
-	#define RTL819X_PHY_MACREG				"rtl8192CE\\MAC_REG.txt"
-	#define RTL819X_PHY_REG					"rtl8192CE\\PHY_REG.txt"
-	#define RTL819X_PHY_REG_1T2R				"rtl8192CE\\PHY_REG_1T2R.txt"
-	#define RTL819X_PHY_REG_to1T1R				"rtl8192CE\\phy_to1T1R_a.txt"
-	#define RTL819X_PHY_REG_to1T2R				"rtl8192CE\\phy_to1T2R.txt"
-	#define RTL819X_PHY_REG_to2T2R				"rtl8192CE\\phy_to2T2R.txt"
-	#define RTL819X_PHY_REG_PG					"rtl8192CE\\PHY_REG_PG.txt"
-	#define RTL819X_AGC_TAB					"rtl8192CE\\AGC_TAB.txt"
-	#define RTL819X_PHY_RADIO_A				"rtl8192CE\\radio_a.txt"
-	#define RTL819X_PHY_RADIO_A_1T			"rtl8192CE\\radio_a_1t.txt"
-	#define RTL819X_PHY_RADIO_A_2T			"rtl8192CE\\radio_a_2t.txt"
-	#define RTL819X_PHY_RADIO_B				"rtl8192CE\\radio_b.txt"
-	#define RTL819X_PHY_RADIO_B_GM			"rtl8192CE\\radio_b_gm.txt"
-	#define RTL819X_PHY_RADIO_C				"rtl8192CE\\radio_c.txt"
-	#define RTL819X_PHY_RADIO_D				"rtl8192CE\\radio_d.txt"
-	#define RTL819X_EEPROM_MAP				"rtl8192CE\\8192ce.map"
-	#define RTL819X_EFUSE_MAP					"rtl8192CE\\8192ce.map"
-
-//---------------------------------------------------------------------
-//		RTL8723E From file
-//---------------------------------------------------------------------
-
-	// The file name "_2T" is for 92CE, "_1T"  is for 88CE. Modified by tynli. 2009.11.24.
-	#define Rtl819XFwTSMCImageArray			Rtl8192CEFwTSMCImgArray
-	#define Rtl819XFwUMCACutImageArray			Rtl8192CEFwUMCACutImgArray
-	#define Rtl819XFwUMCBCutImageArray			Rtl8192CEFwUMCBCutImgArray
-	
-//	#define Rtl8723FwUMCImageArray				Rtl8192CEFwUMC8723ImgArray
-	#define Rtl819XMAC_Array					Rtl8192CEMAC_2T_Array
-	#define Rtl819XAGCTAB_2TArray				Rtl8192CEAGCTAB_2TArray
-	#define Rtl819XAGCTAB_1TArray				Rtl8192CEAGCTAB_1TArray
-	#define Rtl819XPHY_REG_2TArray				Rtl8192CEPHY_REG_2TArray
-	#define Rtl819XPHY_REG_1TArray				Rtl8192CEPHY_REG_1TArray
-	#define Rtl819XRadioA_2TArray				Rtl8192CERadioA_2TArray
-	#define Rtl819XRadioA_1TArray				Rtl8192CERadioA_1TArray
-	#define Rtl819XRadioB_2TArray				Rtl8192CERadioB_2TArray
-	#define Rtl819XRadioB_1TArray				Rtl8192CERadioB_1TArray
-	#define Rtl819XPHY_REG_Array_PG 			Rtl8192CEPHY_REG_Array_PG
-	#define Rtl819XPHY_REG_Array_MP 			Rtl8192CEPHY_REG_Array_MP
-
-	#define PHY_REG_2TArrayLength 				Rtl8192CEPHY_REG_2TArrayLength 
-	#define PHY_REG_1TArrayLength 				Rtl8192CEPHY_REG_1TArrayLength 
-	#define PHY_ChangeTo_1T1RArrayLength 		Rtl8192CEPHY_ChangeTo_1T1RArrayLength 
-	#define PHY_ChangeTo_1T2RArrayLength  		Rtl8192CEPHY_ChangeTo_1T2RArrayLength 
-	#define PHY_ChangeTo_2T2RArrayLength  		Rtl8192CEPHY_ChangeTo_2T2RArrayLength 
-	#define PHY_REG_Array_PGLength  			Rtl8192CEPHY_REG_Array_PGLength 
-	//#define PHY_REG_Array_PG_mCardLength 		Rtl8192CEPHY_REG_Array_PG_mCardLength 
-	#define PHY_REG_Array_MPLength 			Rtl8192CEPHY_REG_Array_MPLength 
-	#define PHY_REG_Array_MPLength 			Rtl8192CEPHY_REG_Array_MPLength 
-	//#define PHY_REG_1T_mCardArrayLength 		Rtl8192CEPHY_REG_1T_mCardArrayLength 
-	//#define PHY_REG_2T_mCardArrayLength  		Rtl8192CEPHY_REG_2T_mCardArrayLength 
-	//#define PHY_REG_Array_PG_HPLength 			Rtl8192CEPHY_REG_Array_PG_HPLength 
-	#define RadioA_2TArrayLength  				Rtl8192CERadioA_2TArrayLength 
-	#define RadioB_2TArrayLength 				Rtl8192CERadioB_2TArrayLength 
-	#define RadioA_1TArrayLength  				Rtl8192CERadioA_1TArrayLength 
-	#define RadioB_1TArrayLength 				Rtl8192CERadioB_1TArrayLength 
-	//#define RadioA_1T_mCardArrayLength 			Rtl8192CERadioA_1T_mCardArrayLength 
-	//#define RadioB_1T_mCardArrayLength 			Rtl8192CERadioB_1T_mCardArrayLength 
-	//#define RadioA_1T_HPArrayLength 				Rtl8192CERadioA_1T_HPArrayLength 
-	#define RadioB_GM_ArrayLength 				Rtl8192CERadioB_GM_ArrayLength 
-	#define MAC_2T_ArrayLength					Rtl8192CEMAC_2T_ArrayLength 
-	#define MACPHY_Array_PGLength 				Rtl8192CEMACPHY_Array_PGLength 
-	#define AGCTAB_2TArrayLength 				Rtl8192CEAGCTAB_2TArrayLength 
-	#define AGCTAB_1TArrayLength 				Rtl8192CEAGCTAB_1TArrayLength 
-	//#define AGCTAB_1T_HPArrayLength 			Rtl8192CEAGCTAB_1T_HPArrayLength 	
-
-#elif defined(CONFIG_USB_HCI)
+#if defined(CONFIG_USB_HCI)
 
 
 	//2TODO: We should define 8192S firmware related macro settings here!!
@@ -370,26 +279,6 @@ enum c2h_id_8192c {
 	C2H_BT_MP_INFO = 15,
 	MAX_C2HEVENT
 };
-
-#ifdef CONFIG_PCI_HCI
-
-//
-// Function disabled.
-//
-#define DF_TX_BIT		BIT0
-#define DF_RX_BIT		BIT1
-#define DF_IO_BIT		BIT2
-#define DF_IO_D3_BIT			BIT3
-
-#define RT_DF_TYPE		u32
-//#define RT_DISABLE_FUNC(__pAdapter, __FuncBits) ((__pAdapter)->DisabledFunctions |= ((RT_DF_TYPE)(__FuncBits)))
-//#define RT_ENABLE_FUNC(__pAdapter, __FuncBits) ((__pAdapter)->DisabledFunctions &= (~((RT_DF_TYPE)(__FuncBits))))
-//#define RT_IS_FUNC_DISABLED(__pAdapter, __FuncBits) ( (__pAdapter)->DisabledFunctions & (__FuncBits) )
-#define IS_MULTI_FUNC_CHIP(_Adapter)	(((((PHAL_DATA_TYPE)(_Adapter->HalData))->MultiFunc) & (RT_MULTI_FUNC_BT|RT_MULTI_FUNC_GPS)) ? _TRUE : _FALSE)
-
-void InterruptRecognized8192CE(PADAPTER Adapter, PRT_ISR_CONTENT pIsrContent);
-VOID UpdateInterruptMask8192CE(PADAPTER Adapter, u32 AddMSR, u32 AddMSR1, u32 RemoveMSR, u32 RemoveMSR1);
-#endif
 
 #define INCLUDE_MULTI_FUNC_BT(_Adapter)	(GET_HAL_DATA(_Adapter)->MultiFunc & RT_MULTI_FUNC_BT)
 #define INCLUDE_MULTI_FUNC_GPS(_Adapter)	(GET_HAL_DATA(_Adapter)->MultiFunc & RT_MULTI_FUNC_GPS)

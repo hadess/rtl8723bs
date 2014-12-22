@@ -34,7 +34,6 @@ CONFIG_RTL8192E = n
 CONFIG_RTL8723B = y
 ######################### Interface ###########################
 CONFIG_USB_HCI = n
-CONFIG_PCI_HCI = n
 CONFIG_SDIO_HCI = y
 CONFIG_GSPI_HCI = n
 ########################## Features ###########################
@@ -83,11 +82,6 @@ endif
 ifeq ($(CONFIG_USB_HCI), y)
 HCI_NAME = usb
 endif
-
-ifeq ($(CONFIG_PCI_HCI), y)
-HCI_NAME = pci
-endif
-
 
 _OS_INTFS_FILES :=	os_dep/osdep_service.o \
 			os_dep/linux/os_intfs.o \
@@ -161,9 +155,6 @@ RTL871X = rtl8192c
 ifeq ($(CONFIG_USB_HCI), y)
 MODULE_NAME = 8192cu
 endif
-ifeq ($(CONFIG_PCI_HCI), y)
-MODULE_NAME = 8192ce
-endif
 EXTRA_CFLAGS += -DCONFIG_RTL8192C
 
 _HAL_INTFS_FILES += \
@@ -197,12 +188,6 @@ _OUTSRC_FILES += hal/OUTSRC/$(RTL871X)/Hal8192CUFWImg_CE.o	\
 								hal/OUTSRC/$(RTL871X)/Hal8192CUMACImg_CE.o
 endif
 
-ifeq ($(CONFIG_PCI_HCI), y)
-_OUTSRC_FILES += hal/OUTSRC/$(RTL871X)/Hal8192CEFWImg_CE.o	\
-								hal/OUTSRC/$(RTL871X)/Hal8192CEPHYImg_CE.o	\
-								hal/OUTSRC/$(RTL871X)/Hal8192CEMACImg_CE.o
-endif
-
 endif
 
 ########### HAL_RTL8192D #################################
@@ -210,9 +195,6 @@ ifeq ($(CONFIG_RTL8192D), y)
 RTL871X = rtl8192d
 ifeq ($(CONFIG_USB_HCI), y)
 MODULE_NAME = 8192du
-endif
-ifeq ($(CONFIG_PCI_HCI), y)
-MODULE_NAME = 8192de
 endif
 EXTRA_CFLAGS += -DCONFIG_RTL8192D
 
@@ -246,12 +228,6 @@ _OUTSRC_FILES += hal/OUTSRC/$(RTL871X)/Hal8192DUFWImg_CE.o \
 								hal/OUTSRC/$(RTL871X)/Hal8192DUMACImg_CE.o
 endif
 
-ifeq ($(CONFIG_PCI_HCI), y)
-_OUTSRC_FILES += hal/OUTSRC/$(RTL871X)/Hal8192DEFWImg_CE.o \
-								hal/OUTSRC/$(RTL871X)/Hal8192DEPHYImg_CE.o \
-								hal/OUTSRC/$(RTL871X)/Hal8192DEMACImg_CE.o
-endif
-
 endif
 
 ########### HAL_RTL8723A #################################
@@ -266,9 +242,6 @@ MODULE_NAME = 8723as
 endif
 ifeq ($(CONFIG_USB_HCI), y)
 MODULE_NAME = 8723au
-endif
-ifeq ($(CONFIG_PCI_HCI), y)
-MODULE_NAME = 8723ae
 endif
 EXTRA_CFLAGS += -DCONFIG_RTL8723A
 
@@ -314,10 +287,6 @@ ifeq ($(CONFIG_USB_HCI), y)
 _OUTSRC_FILES += hal/OUTSRC/$(RTL871X)/Hal8723UHWImg_CE.o
 endif
 
-ifeq ($(CONFIG_PCI_HCI), y)
-_OUTSRC_FILES += hal/OUTSRC/$(RTL871X)/Hal8723EHWImg_CE.o
-endif
-
 #hal/OUTSRC/$(RTL871X)/HalHWImg8723A_FW.o
 _OUTSRC_FILES += hal/OUTSRC/$(RTL871X)/HalHWImg8723A_BB.o\
 								hal/OUTSRC/$(RTL871X)/HalHWImg8723A_MAC.o\
@@ -342,9 +311,6 @@ ifeq ($(CONFIG_USB_HCI), y)
 MODULE_NAME = 8188eu
 endif
 
-ifeq ($(CONFIG_PCI_HCI), y)
-MODULE_NAME = 8188ee
-endif
 EXTRA_CFLAGS += -DCONFIG_RTL8188E
 
 _HAL_INTFS_FILES +=	hal/HalPwrSeqCmd.o \
@@ -401,9 +367,6 @@ ifeq ($(CONFIG_USB_HCI), y)
 MODULE_NAME = 8192eu
 endif
 
-ifeq ($(CONFIG_PCI_HCI), y)
-MODULE_NAME = 8192ee
-endif
 EXTRA_CFLAGS += -DCONFIG_RTL8192E
 _HAL_INTFS_FILES += hal/HalPwrSeqCmd.o \
 					hal/$(RTL871X)/Hal8192EPwrSeq.o\
@@ -453,9 +416,6 @@ ifneq ($(CONFIG_RTL8812A)_$(CONFIG_RTL8821A), n_n)
 RTL871X = rtl8812a
 ifeq ($(CONFIG_USB_HCI), y)
 MODULE_NAME = 8812au
-endif
-ifeq ($(CONFIG_PCI_HCI), y)
-MODULE_NAME = 8812ae
 endif
 ifeq ($(CONFIG_SDIO_HCI), y)
 MODULE_NAME = 8812as
@@ -511,9 +471,6 @@ RTL871X = rtl8821a
 ifeq ($(CONFIG_USB_HCI), y)
 MODULE_NAME := 8821au
 endif
-ifeq ($(CONFIG_PCI_HCI), y)
-MODULE_NAME := 8821ae
-endif
 ifeq ($(CONFIG_SDIO_HCI), y)
 MODULE_NAME := 8821as
 endif
@@ -541,9 +498,6 @@ RTL871X = rtl8723b
 ifeq ($(CONFIG_USB_HCI), y)
 MODULE_NAME = 8723bu
 endif
-ifeq ($(CONFIG_PCI_HCI), y)
-MODULE_NAME = 8723be
-endif
 ifeq ($(CONFIG_SDIO_HCI), y)
 MODULE_NAME = 8723bs
 endif
@@ -568,11 +522,7 @@ _HAL_INTFS_FILES +=	\
 			hal/$(RTL871X)/$(HCI_NAME)/rtl$(MODULE_NAME)_xmit.o \
 			hal/$(RTL871X)/$(HCI_NAME)/rtl$(MODULE_NAME)_recv.o
 
-ifeq ($(CONFIG_PCI_HCI), y)
-_HAL_INTFS_FILES += hal/$(RTL871X)/$(HCI_NAME)/$(HCI_NAME)_ops_linux.o
-else
 _HAL_INTFS_FILES += hal/$(RTL871X)/$(HCI_NAME)/$(HCI_NAME)_ops.o
-endif
 
 ifeq ($(CONFIG_MP_INCLUDED), y)
 _HAL_INTFS_FILES += hal/$(RTL871X)/$(RTL871X)_mp.o
@@ -737,11 +687,6 @@ endif
 ifeq ($(CONFIG_USB_HCI), y)
 MODULE_NAME := rtw_usb
 endif
-
-ifeq ($(CONFIG_PCI_HCI), y)
-MODULE_NAME := rtw_pci
-endif
-
 
 endif
 

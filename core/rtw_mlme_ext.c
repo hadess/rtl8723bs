@@ -5390,16 +5390,6 @@ unsigned int send_beacon(_adapter *padapter)
 	//struct mlme_priv *pbuddy_mlmepriv = &(pbuddy_adapter->mlmepriv);
 //#endif		
 
-#ifdef CONFIG_PCI_HCI
-
-	//DBG_871X("%s\n", __FUNCTION__);
-
-	issue_beacon(padapter, 0);
-
-	return _SUCCESS;
-
-#endif
-
 #if defined(CONFIG_USB_HCI) || defined(CONFIG_SDIO_HCI) || defined(CONFIG_GSPI_HCI)
 	unsigned long start = jiffies;
 
@@ -8886,9 +8876,8 @@ u8 chk_bmc_sleepq_hdl(_adapter *padapter, unsigned char *pbuf)
 
 	if((pstapriv->tim_bitmap&BIT(0)) && (psta_bmc->sleepq_len>0))
 	{
-#ifndef CONFIG_PCI_HCI
 		rtw_msleep_os(10);// 10ms, ATIM(HIQ) Windows
-#endif
+
 		//_enter_critical_bh(&psta_bmc->sleep_q.lock, &irqL);
 		_enter_critical_bh(&pxmitpriv->lock, &irqL);
 

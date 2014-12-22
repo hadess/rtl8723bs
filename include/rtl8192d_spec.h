@@ -100,11 +100,6 @@
 //-----------------------------------------------------
 
 
-#ifdef CONFIG_PCI_HCI
-#define RT_BCN_INT_MASKS				(IMR_BcnInt | IMR_TBDOK | IMR_TBDER)
-#define RT_AC_INT_MASKS				(IMR_VIDOK | IMR_VODOK | IMR_BEDOK|IMR_BKDOK)
-#endif
-
 //========================================================
 // General definitions
 //========================================================

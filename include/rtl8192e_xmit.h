@@ -381,18 +381,6 @@ void rtl8192eu_xmit_tasklet(void *priv);
 s32 rtl8192eu_xmitframe_complete(_adapter *padapter, struct xmit_priv *pxmitpriv, struct xmit_buf *pxmitbuf);
 #endif
 
-#ifdef CONFIG_PCI_HCI
-s32 rtl8192ee_init_xmit_priv(PADAPTER padapter);
-void rtl8192ee_free_xmit_priv(PADAPTER padapter);
-struct xmit_buf *rtl8192ee_dequeue_xmitbuf(struct rtw_tx_ring *ring);
-s32	rtl8192ee_hal_xmitframe_enqueue(_adapter *padapter, struct xmit_frame *pxmitframe);
-void	rtl8192ee_xmitframe_resume(_adapter *padapter);
-s32 rtl8192ee_hal_xmit(PADAPTER padapter, struct xmit_frame *pxmitframe);
-s32 rtl8192ee_mgnt_xmit(PADAPTER padapter, struct xmit_frame *pmgntframe);
-void rtl8192ee_xmit_tasklet(void *priv);
-#endif
-
-
 struct txrpt_ccx_92e {
 	/* offset 0 */
 	u8 tag1:1;

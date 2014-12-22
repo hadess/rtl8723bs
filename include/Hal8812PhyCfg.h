@@ -29,11 +29,7 @@
 #define Reset_Cnt_Limit			3
 
 
-#ifdef CONFIG_PCI_HCI
-#define MAX_AGGR_NUM	0x0B
-#else
 #define MAX_AGGR_NUM	0x07
-#endif // CONFIG_PCI_HCI
 
 
 /*--------------------------Define Parameters-------------------------------*/

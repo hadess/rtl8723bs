@@ -221,16 +221,6 @@
 #define	IMR_RXFOVW_8812					BIT8			// Receive FIFO Overflow
 
 
-#ifdef CONFIG_PCI_HCI
-//#define IMR_RX_MASK		(IMR_ROK_8812|IMR_RDU_8812|IMR_RXFOVW_8812)
-#define IMR_TX_MASK			(IMR_VODOK_8812|IMR_VIDOK_8812|IMR_BEDOK_8812|IMR_BKDOK_8812|IMR_MGNTDOK_8812|IMR_HIGHDOK_8812)
-
-#define RT_BCN_INT_MASKS	(IMR_BCNDMAINT0_8812 | IMR_TXBCN0OK_8812 | IMR_TXBCN0ERR_8812 | IMR_BCNDERR0_8812)
-
-#define RT_AC_INT_MASKS	(IMR_VIDOK_8812 | IMR_VODOK_8812 | IMR_BEDOK_8812|IMR_BKDOK_8812)
-#endif
-
-
 //============================================================================
 //       Regsiter Bit and Content definition 
 //============================================================================

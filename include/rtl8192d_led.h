@@ -29,10 +29,5 @@ void rtl8192du_InitSwLeds(_adapter *padapter);
 void rtl8192du_DeInitSwLeds(_adapter *padapter);
 #endif
 
-#ifdef CONFIG_PCI_HCI
-void rtl8192de_InitSwLeds(_adapter *padapter);
-void rtl8192de_DeInitSwLeds(_adapter *padapter);
-#endif
-
 #endif
 

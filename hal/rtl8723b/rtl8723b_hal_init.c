@@ -78,11 +78,6 @@ _BlockWrite(
 	u32			remainSize_p1 = 0, remainSize_p2 = 0;
 	u8			*bufferPtr	= (u8*)buffer;
 	u32			i=0, offset=0;
-#ifdef CONFIG_PCI_HCI
-	u8			remainFW[4] = {0, 0, 0, 0};
-	u8			*p = NULL;
-#endif
-
 #ifdef CONFIG_USB_HCI
 	blockSize_p1 = 254;
 #endif
@@ -111,25 +106,6 @@ _BlockWrite(
 			goto exit;
 		}
 	}
-
-#ifdef CONFIG_PCI_HCI
-	p = (u8*)((u32*)(bufferPtr + blockCount_p1 * blockSize_p1));
-	if (remainSize_p1) {
-		switch (remainSize_p1) {
-		case 0:
-			break;
-		case 3:
-			remainFW[2]=*(p+2);
-		case 2: 	
-			remainFW[1]=*(p+1);
-		case 1: 	
-			remainFW[0]=*(p);
-			ret = rtw_write32(padapter, (FW_8723B_START_ADDRESS + blockCount_p1 * blockSize_p1), 
-				 le32_to_cpu(*(u32*)remainFW));	
-		}
-		return ret;
-	}
-#endif
 
 	//3 Phase #2
 	if (remainSize_p1)
@@ -229,12 +205,6 @@ _WriteFW(
 	u32 	pageNums,remainSize ;
 	u32 	page, offset;
 	u8		*bufferPtr = (u8*)buffer;
-
-#ifdef CONFIG_PCI_HCI
-	// 20100120 Joseph: Add for 88CE normal chip.
-	// Fill in zero to make firmware image to dword alignment.
-	_FillDummy(bufferPtr, &size);
-#endif
 
 	pageNums = size / MAX_DLFW_PAGE_SIZE ;
 	//RT_ASSERT((pageNums <= 4), ("Page numbers should not greater then 4 \n"));
@@ -581,12 +551,8 @@ int _WriteBTFWtoTxPktBuf8723B(
 
 			_rtw_memcpy( (u8*) (pmgntframe->buf_addr + txdesc_offset), ReservedPagePacket, FwBufLen);
 			DBG_871X("[%d]===>TotalPktLen + TXDESC_OFFSET TotalPacketLen:%d \n", DLBcnCount, (FwBufLen + txdesc_offset));
-			
-#ifdef CONFIG_PCI_HCI
-			dump_mgntframe(Adapter, pmgntframe);
-#else
+
 			dump_mgntframe_and_wait(Adapter, pmgntframe, 100);
-#endif
 
 #endif
 #if 1
@@ -4898,14 +4864,6 @@ static void rtl8723b_fill_default_txdesc(
 		pdesc->txdw7 = le32_to_cpu(pdesc->txdw7);
 		pdesc->txdw8 = le32_to_cpu(pdesc->txdw8);
 		pdesc->txdw9 = le32_to_cpu(pdesc->txdw9);
-#ifdef CONFIG_PCI_HCI
-		pdesc->txdw10 = le32_to_cpu(pdesc->txdw10);
-		pdesc->txdw11 = le32_to_cpu(pdesc->txdw11);
-		pdesc->txdw12 = le32_to_cpu(pdesc->txdw12);
-		pdesc->txdw13 = le32_to_cpu(pdesc->txdw13);
-		pdesc->txdw14 = le32_to_cpu(pdesc->txdw14);
-		pdesc->txdw15 = le32_to_cpu(pdesc->txdw15);
-#endif
 	}
 #endif
 	else
@@ -4978,16 +4936,6 @@ void rtl8723b_update_txdesc(struct xmit_frame *pxmitframe, u8 *pbuf)
 	pdesc->txdw7 = cpu_to_le32(pdesc->txdw7);
 	pdesc->txdw8 = cpu_to_le32(pdesc->txdw8);
 	pdesc->txdw9 = cpu_to_le32(pdesc->txdw9);
-#ifdef CONFIG_PCI_HCI
-	pdesc->txdw8 = cpu_to_le32(pdesc->txdw8);
-	pdesc->txdw9 = cpu_to_le32(pdesc->txdw9);
-	pdesc->txdw10 = cpu_to_le32(pdesc->txdw10);
-	pdesc->txdw11 = cpu_to_le32(pdesc->txdw11);
-	pdesc->txdw12 = cpu_to_le32(pdesc->txdw12);
-	pdesc->txdw13 = cpu_to_le32(pdesc->txdw13);
-	pdesc->txdw14 = cpu_to_le32(pdesc->txdw14);
-	pdesc->txdw15 = cpu_to_le32(pdesc->txdw15);
-#endif
 
 #ifdef CONFIG_ANTENNA_DIVERSITY
 	ODM_SetTxAntByTxInfo(&GET_HAL_DATA(padapter)->odmpriv, pbuf, pxmitframe->attrib.mac_id);
@@ -5126,9 +5074,6 @@ static void hw_var_set_opmode(PADAPTER padapter, u8 variable, u8* val)
 			if (!check_buddy_mlmeinfo_state(padapter, WIFI_FW_AP_STATE))
 			{
 				StopTxBeacon(padapter);
-#ifdef CONFIG_PCI_HCI
-				UpdateInterruptMask8723BE(padapter, 0, 0, RT_BCN_INT_MASKS, 0);
-#else // !CONFIG_PCI_HCI
 #ifdef CONFIG_INTERRUPT_BASED_TXBCN	
 
 #ifdef CONFIG_INTERRUPT_BASED_TXBCN_EARLY_INT	
@@ -5141,7 +5086,6 @@ static void hw_var_set_opmode(PADAPTER padapter, u8 variable, u8* val)
 #endif // CONFIG_INTERRUPT_BASED_TXBCN_BCN_OK_ERR
 
 #endif // CONFIG_INTERRUPT_BASED_TXBCN
-#endif // !CONFIG_PCI_HCI
 			}
 
 			// disable atim wnd and disable beacon function
@@ -5154,9 +5098,6 @@ static void hw_var_set_opmode(PADAPTER padapter, u8 variable, u8* val)
 		}
 		else if (mode == _HW_STATE_AP_)
 		{
-#ifdef CONFIG_PCI_HCI
-			UpdateInterruptMask8723BE(padapter, RT_BCN_INT_MASKS, 0, 0, 0);
-#else // !CONFIG_PCI_HCI
 #ifdef CONFIG_INTERRUPT_BASED_TXBCN
 
 #ifdef  CONFIG_INTERRUPT_BASED_TXBCN_EARLY_INT
@@ -5168,7 +5109,6 @@ static void hw_var_set_opmode(PADAPTER padapter, u8 variable, u8* val)
 #endif // CONFIG_INTERRUPT_BASED_TXBCN_BCN_OK_ERR
 
 #endif // CONFIG_INTERRUPT_BASED_TXBCN
-#endif // !CONFIG_PCI_HCI
 
 			ResumeTxBeacon(padapter);
 
@@ -5251,9 +5191,6 @@ static void hw_var_set_opmode(PADAPTER padapter, u8 variable, u8* val)
 #endif // CONFIG_CONCURRENT_MODE
 			{
 				StopTxBeacon(padapter);
-#ifdef CONFIG_PCI_HCI
-				UpdateInterruptMask8723BE(padapter, 0, 0, RT_BCN_INT_MASKS, 0);
-#else // !CONFIG_PCI_HCI
 #ifdef CONFIG_INTERRUPT_BASED_TXBCN
 #ifdef CONFIG_INTERRUPT_BASED_TXBCN_EARLY_INT
 				rtw_write8(padapter, REG_DRVERLYINT, 0x05); // restore early int time to 5ms
@@ -5265,7 +5202,6 @@ static void hw_var_set_opmode(PADAPTER padapter, u8 variable, u8* val)
 #endif // CONFIG_INTERRUPT_BASED_TXBCN_BCN_OK_ERR
 
 #endif // CONFIG_INTERRUPT_BASED_TXBCN
-#endif // !CONFIG_PCI_HCI
 			}
 
 			// disable atim wnd
@@ -5279,9 +5215,6 @@ static void hw_var_set_opmode(PADAPTER padapter, u8 variable, u8* val)
 		}
 		else if (mode == _HW_STATE_AP_)
 		{
-#ifdef CONFIG_PCI_HCI
-			UpdateInterruptMask8723BE( padapter, RT_BCN_INT_MASKS, 0, 0, 0);
-#else // !CONFIG_PCI_HCI
 #ifdef CONFIG_INTERRUPT_BASED_TXBCN
 #ifdef CONFIG_INTERRUPT_BASED_TXBCN_EARLY_INT
 			UpdateInterruptMask8723BU(padapter, _TRUE ,IMR_BCNDMAINT0_8723B, 0);
@@ -5292,7 +5225,6 @@ static void hw_var_set_opmode(PADAPTER padapter, u8 variable, u8* val)
 #endif // CONFIG_INTERRUPT_BASED_TXBCN_BCN_OK_ERR
 
 #endif // CONFIG_INTERRUPT_BASED_TXBCN
-#endif
 
 			ResumeTxBeacon(padapter);
 
@@ -5947,15 +5879,6 @@ s32 c2h_handler_8723b(PADAPTER padapter, u8 *buf)
 //			CCX_FwC2HTxRpt(padapter, QueueID, pC2hEvent->payload);
 			break;
 
-#ifdef CONFIG_BT_COEXIST
-#ifdef CONFIG_PCI_HCI
-		case C2H_BT_RSSI:
-//			fwc2h_ODM(padapter, tmpBuf, &C2hEvent);
-			//BT_FwC2hBtRssi(padapter, pC2hEvent->payload);
-			break;
-#endif
-#endif
-
 		case C2H_EXT_RA_RPT:
 //			C2HExtRaRptHandler(padapter, pC2hEvent->payload, C2hEvent.CmdLen);
 			break;
@@ -6040,15 +5963,6 @@ static void process_c2h_event(PADAPTER padapter, PC2H_EVT_HDR pC2hEvent, u8 *c2h
 		case C2H_CCX_TX_RPT:
 //			CCX_FwC2HTxRpt(padapter, QueueID, tmpBuf);
 			break;
-
-#ifdef CONFIG_BT_COEXIST
-#ifdef CONFIG_PCI_HCI
-		case C2H_BT_RSSI:
-//			fwc2h_ODM(padapter, tmpBuf, &C2hEvent);
-			//BT_FwC2hBtRssi(padapter, c2hBuf);
-			break;
-#endif
-#endif
 
 		case C2H_EXT_RA_RPT:
 //			C2HExtRaRptHandler(padapter, tmpBuf, C2hEvent.CmdLen);

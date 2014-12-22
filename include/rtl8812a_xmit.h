@@ -347,17 +347,6 @@ void rtl8812au_xmit_tasklet(void *priv);
 s32 rtl8812au_xmitframe_complete(_adapter *padapter, struct xmit_priv *pxmitpriv, struct xmit_buf *pxmitbuf);
 #endif
 
-#ifdef CONFIG_PCI_HCI
-s32 rtl8812ae_init_xmit_priv(PADAPTER padapter);
-void rtl8812ae_free_xmit_priv(PADAPTER padapter);
-struct xmit_buf *rtl8812ae_dequeue_xmitbuf(struct rtw_tx_ring *ring);
-void	rtl8812ae_xmitframe_resume(_adapter *padapter);
-s32 rtl8812ae_hal_xmit(PADAPTER padapter, struct xmit_frame *pxmitframe);
-s32 rtl8812ae_mgnt_xmit(PADAPTER padapter, struct xmit_frame *pmgntframe);
-s32	rtl8812ae_hal_xmitframe_enqueue(_adapter *padapter, struct xmit_frame *pxmitframe);
-void rtl8812ae_xmit_tasklet(void *priv);
-#endif
-
 #ifdef CONFIG_TX_EARLY_MODE
 void UpdateEarlyModeInfo8812(struct xmit_priv *pxmitpriv,struct xmit_buf *pxmitbuf );
 #endif
