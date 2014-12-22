@@ -140,9 +140,7 @@ typedef struct _ADAPTER _adapter, ADAPTER,*PADAPTER;
 #include <rtw_iol.h>
 #endif // CONFIG_IOL
 
-#ifdef CONFIG_IOCTL_CFG80211
 #include "ioctl_cfg80211.h"
-#endif //CONFIG_IOCTL_CFG80211
 
 #include <ip.h>
 #include <if_ether.h>
@@ -798,8 +796,6 @@ struct _ADAPTER{
 	struct	hostapd_priv	*phostapdpriv;
 #endif
 
-#ifdef CONFIG_IOCTL_CFG80211
-#endif //CONFIG_IOCTL_CFG80211
 	u32	setband;
 
 #ifdef CONFIG_TDLS
@@ -870,10 +866,8 @@ struct _ADAPTER{
 	struct proc_dir_entry *dir_dev;// for proc directory
 	struct proc_dir_entry *dir_odm;
 
-#ifdef CONFIG_IOCTL_CFG80211
 	struct wireless_dev *rtw_wdev;
 	struct rtw_wdev_priv wdev_data;
-#endif //CONFIG_IOCTL_CFG80211
 
 #endif //end of PLATFORM_LINUX
 

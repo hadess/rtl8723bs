@@ -459,9 +459,7 @@ _adapter *rtw_sdio_if1_init(struct dvobj_priv *dvobj, const struct sdio_device_i
 
 	padapter = rtw_netdev_priv(pnetdev);
 
-#ifdef CONFIG_IOCTL_CFG80211
 	rtw_wdev_alloc(padapter, dvobj_to_dev(dvobj));
-#endif
 
 	//3 3. init driver special setting, interface, OS and hardware relative
 
@@ -524,10 +522,8 @@ free_hal_data:
 
 free_wdev:
 	if(status != _SUCCESS) {
-		#ifdef CONFIG_IOCTL_CFG80211
 		rtw_wdev_unregister(padapter->rtw_wdev);
 		rtw_wdev_free(padapter->rtw_wdev);
-		#endif
 	}
 
 free_adapter:
@@ -573,11 +569,9 @@ static void rtw_sdio_if1_deinit(_adapter *if1)
 	
 	rtw_handle_dualmac(if1, 0);
 
-#ifdef CONFIG_IOCTL_CFG80211
 	if (if1->rtw_wdev) {
 		rtw_wdev_free(if1->rtw_wdev);
 	}
-#endif
 
 	rtw_free_drv_sw(if1);
 

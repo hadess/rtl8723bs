@@ -673,10 +673,8 @@ u8 PS_RDY_CHECK(_adapter * padapter)
 		return _FALSE;
 	}
 
-#ifdef CONFIG_IOCTL_CFG80211
 	if (!rtw_cfg80211_pwr_mgmt(padapter))
 		return _FALSE;
-#endif	
 
 	return _TRUE;
 }

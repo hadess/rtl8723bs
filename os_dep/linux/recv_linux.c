@@ -413,9 +413,7 @@ void rtw_os_recv_indicate_pkt(_adapter *padapter, _pkt *pkt, struct rx_pkt_attri
 
 void rtw_handle_tkip_mic_err(_adapter *padapter,u8 bgroup)
 {
-#ifdef CONFIG_IOCTL_CFG80211
 	enum nl80211_key_type key_type = 0;
-#endif
 	union iwreq_data wrqu;
 	struct iw_michaelmicfailure    ev;
 	struct mlme_priv*              pmlmepriv  = &padapter->mlmepriv;
@@ -442,7 +440,6 @@ void rtw_handle_tkip_mic_err(_adapter *padapter,u8 bgroup)
 		}
 	}
 
-#ifdef CONFIG_IOCTL_CFG80211
 	if ( bgroup )
 	{
 		key_type |= NL80211_KEYTYPE_GROUP;
@@ -454,7 +451,6 @@ void rtw_handle_tkip_mic_err(_adapter *padapter,u8 bgroup)
 
 	cfg80211_michael_mic_failure(padapter->pnetdev, (u8 *)&pmlmepriv->assoc_bssid[ 0 ], key_type, -1,
 		NULL, GFP_ATOMIC);
-#endif
 
 	_rtw_memset( &ev, 0x00, sizeof( ev ) );
 	if ( bgroup )
@@ -471,10 +467,6 @@ void rtw_handle_tkip_mic_err(_adapter *padapter,u8 bgroup)
 
 	_rtw_memset( &wrqu, 0x00, sizeof( wrqu ) );
 	wrqu.data.length = sizeof( ev );
-
-#ifndef CONFIG_IOCTL_CFG80211
-	wireless_send_event( padapter->pnetdev, IWEVMICHAELMICFAILURE, &wrqu, (char*) &ev );
-#endif
 }
 
 void rtw_hostapd_mlme_rx(_adapter *padapter, union recv_frame *precv_frame)

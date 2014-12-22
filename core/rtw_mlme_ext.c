@@ -20,9 +20,7 @@
 #define _RTW_MLME_EXT_C_
 
 #include <drv_types.h>
-#ifdef CONFIG_IOCTL_CFG80211
 #include <rtw_wifi_regd.h>
-#endif //CONFIG_IOCTL_CFG80211
 
 
 struct mlme_handler mlme_sta_tbl[]={
@@ -2158,7 +2156,6 @@ unsigned int OnAssocReq(_adapter *padapter, union recv_frame *precv_frame)
 		else
 			issue_asocrsp(padapter, status, pstat, WIFI_REASSOCRSP);
 
-#ifdef CONFIG_IOCTL_CFG80211
 		_enter_critical_bh(&pstat->lock, &irqL);
 		if(pstat->passoc_req)
 		{
@@ -2174,7 +2171,6 @@ unsigned int OnAssocReq(_adapter *padapter, union recv_frame *precv_frame)
 			pstat->assoc_req_len = pkt_len;
 		}
 		_exit_critical_bh(&pstat->lock, &irqL);
-#endif //CONFIG_IOCTL_CFG80211
 
 		//.3-(1) report sta add event
 		report_add_sta_event(padapter, pstat->hwaddr, pstat->aid);
@@ -2818,10 +2814,8 @@ unsigned int on_action_public_default(union recv_frame *precv_frame, u8 action)
 	if (rtw_action_public_decache(precv_frame, token) == _FAIL)
 		goto exit;
 
-	#ifdef CONFIG_IOCTL_CFG80211
 	cnt += sprintf((msg+cnt), "%s(token:%u)", action_public_str(action), token);
 	rtw_cfg80211_rx_action(adapter, pframe, frame_len, msg);
-	#endif
 
 	ret = _SUCCESS;
 	
@@ -4394,15 +4388,12 @@ void issue_assocreq(_adapter *padapter)
 #endif
 
 #ifdef CONFIG_WFD
-#ifdef CONFIG_IOCTL_CFG80211
 	if ( _TRUE == pwdinfo->wfd_info->wfd_enable )
-#endif //CONFIG_IOCTL_CFG80211
 	{
 		wfdielen = build_assoc_req_wfd_ie(pwdinfo, pframe);
 		pframe += wfdielen;
 		pattrib->pktlen += wfdielen;
 	}
-#ifdef CONFIG_IOCTL_CFG80211
 	else if (pmlmepriv->wfd_assoc_req_ie != NULL && pmlmepriv->wfd_assoc_req_ie_len>0)		
 	{
 		//WFD IE
@@ -4410,7 +4401,6 @@ void issue_assocreq(_adapter *padapter)
 		pattrib->pktlen += pmlmepriv->wfd_assoc_req_ie_len;
 		pframe += pmlmepriv->wfd_assoc_req_ie_len;		
 	}
-#endif //CONFIG_IOCTL_CFG80211
 #endif //CONFIG_WFD	
 
 	pattrib->last_txcmdsz = pattrib->pktlen;
@@ -5647,7 +5637,6 @@ void site_survey(_adapter *padapter)
 			DBG_871X(FUNC_ADPT_FMT" back to linked/linking union - ch:%u, bw:%u, offset:%u\n",
 				FUNC_ADPT_ARG(padapter), cur_channel, cur_bwmode, cur_ch_offset);
 		}
-		#ifdef CONFIG_IOCTL_CFG80211
 		else if(padapter->pbuddy_adapter
 			&& pbuddy_adapter->wdinfo.driver_interface == DRIVER_CFG80211
 			&& adapter_wdev_data(pbuddy_adapter)->p2p_enabled
@@ -5658,7 +5647,6 @@ void site_survey(_adapter *padapter)
 			cur_bwmode = pbuddy_mlmeext->cur_bwmode;
 			cur_ch_offset = pbuddy_mlmeext->cur_ch_offset;
 		}
-		#endif
 		else
 		{
 			cur_channel = pmlmeext->cur_channel;
@@ -10127,13 +10115,11 @@ u8 set_chplan_hdl(_adapter *padapter, unsigned char *pbuf)
 	pmlmeext->max_chan_nums = init_channel_set(padapter, setChannelPlan_param->channel_plan, pmlmeext->channel_set);
 	init_channel_list(padapter, pmlmeext->channel_set, pmlmeext->max_chan_nums, &pmlmeext->channel_list);	
 
-#ifdef CONFIG_IOCTL_CFG80211
 	if ((padapter->rtw_wdev != NULL) && (padapter->rtw_wdev->wiphy)) {
 		struct regulatory_request request;
 		request.initiator = NL80211_REGDOM_SET_BY_DRIVER;
 		rtw_reg_notifier(padapter->rtw_wdev->wiphy, &request);
 	}
-#endif //CONFIG_IOCTL_CFG80211
 
 	return 	H2C_SUCCESS;
 }

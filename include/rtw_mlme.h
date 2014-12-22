@@ -243,7 +243,6 @@ struct scan_limit_info{
 	u8					operation_ch[2];				//	Store the operation channel of invitation request frame
 };
 
-#ifdef CONFIG_IOCTL_CFG80211
 struct cfg80211_wifidirect_info{
 	_timer					remain_on_ch_timer;
 	u8						restore_channel;
@@ -253,7 +252,6 @@ struct cfg80211_wifidirect_info{
 	bool is_ro_ch;
 	unsigned long last_ro_ch_time; /* this will be updated at the beginning and end of ro_ch */
 };
-#endif //CONFIG_IOCTL_CFG80211
 
 struct wifidirect_info{
 	_adapter*				padapter;
@@ -538,7 +536,7 @@ struct mlme_priv {
 	
 #endif //#if defined (CONFIG_AP_MODE) && defined (CONFIG_NATIVEAP_MLME)
 
-#if defined(CONFIG_WFD) && defined(CONFIG_IOCTL_CFG80211)
+#if defined(CONFIG_WFD)
 	
 	u8 *wfd_beacon_ie;
 	u8 *wfd_probe_req_ie;

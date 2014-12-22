@@ -1246,7 +1246,6 @@ enum P2P_PROTO_WK_ID
 #define ICMPV6_MCAST_MAC(mac)	((mac[0]==0x33)&&(mac[1]==0x33)&&(mac[2]!=0xff))
 #endif	// CONFIG_TX_MCAST2UNI
 
-#ifdef CONFIG_IOCTL_CFG80211
 /* Regulatroy Domain */
 struct regd_pair_mapping {
 	u16 reg_dmnenum;
@@ -1264,7 +1263,6 @@ struct rtw_regulatory {
 	int16_t power_limit;
 	struct regd_pair_mapping *regpair;
 };
-#endif
 
 #ifdef CONFIG_WAPI_SUPPORT
 #ifndef IW_AUTH_WAPI_VERSION_1

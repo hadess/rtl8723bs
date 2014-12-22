@@ -6,8 +6,6 @@
 
 #include <drv_types.h>
 
-#ifdef CONFIG_IOCTL_CFG80211
-
 #include <rtw_wifi_regd.h>
 
 static struct country_code_to_enum_rd allCountries[] = {
@@ -561,4 +559,3 @@ void rtw_reg_notifier(struct wiphy *wiphy, struct regulatory_request *request)
 
 	_rtw_reg_notifier_apply(wiphy, request, reg);
 }
-#endif //CONFIG_IOCTL_CFG80211

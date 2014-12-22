@@ -53,14 +53,6 @@
 #define CONFIG_80211N_HT
 #define CONFIG_RECV_REORDERING_CTRL
 
-//#define CONFIG_IOCTL_CFG80211
-
-#if defined(CONFIG_PLATFORM_SPRD)
-	#ifndef CONFIG_IOCTL_CFG80211
-		#define CONFIG_IOCTL_CFG80211 1
-	#endif
-#endif
-
 #ifdef CONFIG_IOCTL_CFG80211
 	/*
 	 * Indecate new sta asoc through cfg80211_new_sta
@@ -69,7 +61,6 @@
 	 * RTW_USE_CFG80211_STA_EVENT must be defiend!
 	 */
 	//#define RTW_USE_CFG80211_STA_EVENT
-	#define CONFIG_CFG80211_FORCE_COMPATIBLE_2_6_37_UNDER
 	//#define CONFIG_DEBUG_CFG80211
 	#define CONFIG_SET_SCAN_DENY_TIMER
 #endif
@@ -141,7 +132,6 @@
  * Auto Config Section
  */
 #ifdef CONFIG_MAC_LOOPBACK_DRIVER
-#undef CONFIG_IOCTL_CFG80211
 #undef CONFIG_AP_MODE
 #undef CONFIG_NATIVEAP_MLME
 #undef CONFIG_POWER_SAVING
