@@ -66,17 +66,13 @@ CONFIG_RTW_SDIO_PM_KEEP_POWER = y
 ###################### Platform Related #######################
 CONFIG_PLATFORM_I386_PC = y
 CONFIG_PLATFORM_JB_X86 = n
-CONFIG_PLATFORM_MIPS_RMI = n
 CONFIG_PLATFORM_RTD2880B = n
-CONFIG_PLATFORM_MIPS_AR9132 = n
 CONFIG_PLATFORM_RTK_DMP = n
-CONFIG_PLATFORM_MIPS_PLM = n
 CONFIG_PLATFORM_MT53XX = n
 CONFIG_PLATFORM_FS_MX61 = n
 CONFIG_PLATFORM_ACTIONS_ATJ227X = n
 CONFIG_PLATFORM_TEGRA3_CARDHU = n
 CONFIG_PLATFORM_TEGRA4_DALMORE = n
-CONFIG_PLATFORM_MIPS_JZ4760 = n
 CONFIG_PLATFORM_DMP_PHILIPS = n
 CONFIG_PLATFORM_TI_DM365 = n
 CONFIG_PLATFORM_SZEBOOK = n
@@ -784,29 +780,6 @@ KVER:=
 KSRC:=
 endif
 
-ifeq ($(CONFIG_PLATFORM_MIPS_RMI), y)
-EXTRA_CFLAGS += -DCONFIG_LITTLE_ENDIAN
-ARCH:=mips
-CROSS_COMPILE:=mipsisa32r2-uclibc-
-KVER:=
-KSRC:= /root/work/kernel_realtek
-endif
-
-ifeq ($(CONFIG_PLATFORM_MIPS_PLM), y)
-EXTRA_CFLAGS += -DCONFIG_BIG_ENDIAN
-ARCH:=mips
-CROSS_COMPILE:=mipsisa32r2-uclibc-
-KVER:=
-KSRC:= /root/work/kernel_realtek
-endif
-
-ifeq ($(CONFIG_PLATFORM_MIPS_AR9132), y)
-EXTRA_CFLAGS += -DCONFIG_BIG_ENDIAN
-ARCH := mips
-CROSS_COMPILE := mips-openwrt-linux-
-KSRC := /home/alex/test_openwrt/tmp/linux-2.6.30.9
-endif
-
 ifeq ($(CONFIG_PLATFORM_DMP_PHILIPS), y)
 EXTRA_CFLAGS += -DCONFIG_LITTLE_ENDIAN -DRTK_DMP_PLATFORM
 ARCH := mips
@@ -885,13 +858,6 @@ ARCH := arm
 CROSS_COMPILE := /home/android_sdk/nvidia/tegra-17r9-partner-android-4.2-dalmore_20130131/prebuilts/gcc/linux-x86/arm/arm-eabi-4.6/bin/arm-eabi-
 KSRC := /home/android_sdk/nvidia/tegra-17r9-partner-android-4.2-dalmore_20130131/out/target/product/dalmore/obj/KERNEL
 MODULE_NAME := wlan
-endif
-
-ifeq ($(CONFIG_PLATFORM_MIPS_JZ4760), y)
-EXTRA_CFLAGS += -DCONFIG_LITTLE_ENDIAN -DCONFIG_MINIMAL_MEMORY_USAGE
-ARCH ?= mips
-CROSS_COMPILE ?= /mnt/sdb5/Ingenic/Umido/mips-4.3/bin/mips-linux-gnu-
-KSRC ?= /mnt/sdb5/Ingenic/Umido/kernel
 endif
 
 ifeq ($(CONFIG_PLATFORM_SZEBOOK), y)
