@@ -26,9 +26,7 @@
 #endif
 
 #if defined (CONFIG_LITTLE_ENDIAN)
-#ifndef CONFIG_PLATFORM_MSTAR389
-#  include <byteorder/little_endian.h>
-#endif
+#include <byteorder/little_endian.h>
 #elif defined (CONFIG_BIG_ENDIAN)
 #  include <byteorder/big_endian.h>
 #else

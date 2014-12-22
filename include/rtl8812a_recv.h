@@ -27,11 +27,7 @@
 #define MAX_RECVBUF_SZ (8192+1024) // 8K+1k
 #else
 	#ifndef CONFIG_MINIMAL_MEMORY_USAGE
-		#ifdef CONFIG_PLATFORM_MSTAR
-			#define MAX_RECVBUF_SZ (8192) // 8K
-		#else
 		#define MAX_RECVBUF_SZ (32768) // 32k
-		#endif
 		//#define MAX_RECVBUF_SZ (24576) // 24k
 		//#define MAX_RECVBUF_SZ (20480) //20K
 		//#define MAX_RECVBUF_SZ (10240) //10K
