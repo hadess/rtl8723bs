@@ -20,14 +20,6 @@
 #ifndef _RTW_RECV_H_
 #define _RTW_RECV_H_
 
-#if defined(PLATFORM_OS_CE)
-	#ifdef CONFIG_SDIO_HCI
-		#define NR_RECVBUFF (128)
-	#else
-		#define NR_RECVBUFF (4)
-	#endif
-#else //PLATFORM_LINUX /PLATFORM_BSD
-
 	#ifdef CONFIG_SINGLE_RECV_BUF
 		#define NR_RECVBUFF (1)
 	#else
@@ -39,7 +31,6 @@
 	#endif //CONFIG_SINGLE_RECV_BUF
 
 	#define NR_PREALLOC_RECV_SKB (8)	
-#endif
 
 #define NR_RECVFRAME 256
 

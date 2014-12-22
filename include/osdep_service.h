@@ -37,10 +37,6 @@
 #include <osdep_service_linux.h>
 #endif
 
-#ifdef PLATFORM_OS_CE
-#include <osdep_service_ce.h>
-#endif
-
 #define RTW_TIMER_HDL_NAME(name) rtw_##name##_timer_hdl
 #define RTW_DECLARE_TIMER_HDL(name) void RTW_TIMER_HDL_NAME(name)(RTW_TIMER_HDL_ARGS)
 

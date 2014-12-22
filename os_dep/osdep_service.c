@@ -723,19 +723,10 @@ void _rtw_init_sema(_sema	*sema, int init_val)
 	sema_init(sema, init_val);
 
 #endif
-#ifdef PLATFORM_OS_CE
-	if(*sema == NULL)
-		*sema = CreateSemaphore(NULL, init_val, SEMA_UPBND, NULL);
-#endif
-
 }
 
 void _rtw_free_sema(_sema	*sema)
 {
-#ifdef PLATFORM_OS_CE
-	CloseHandle(*sema);
-#endif
-
 }
 
 void _rtw_up_sema(_sema	*sema)
@@ -746,10 +737,6 @@ void _rtw_up_sema(_sema	*sema)
 	up(sema);
 
 #endif	
-
-#ifdef PLATFORM_OS_CE
-	ReleaseSemaphore(*sema,  1,  NULL );
-#endif
 }
 
 u32 _rtw_down_sema(_sema *sema)
@@ -763,13 +750,6 @@ u32 _rtw_down_sema(_sema *sema)
 		return _SUCCESS;
 
 #endif    	
-
-#ifdef PLATFORM_OS_CE
-	if(WAIT_OBJECT_0 == WaitForSingleObject(*sema, INFINITE ))
-		return _SUCCESS; 
-	else
-		return _FAIL;
-#endif
 }
 
 
@@ -785,9 +765,6 @@ void	_rtw_mutex_init(_mutex *pmutex)
 #endif
 
 #endif
-#ifdef PLATFORM_OS_CE
-	*pmutex =  CreateMutex( NULL, _FALSE, NULL);
-#endif
 }
 
 void	_rtw_mutex_free(_mutex *pmutex);
@@ -799,10 +776,6 @@ void	_rtw_mutex_free(_mutex *pmutex)
 	mutex_destroy(pmutex);
 #else	
 #endif
-
-#endif
-
-#ifdef PLATFORM_OS_CE
 
 #endif
 }

@@ -36,14 +36,10 @@
 
 #endif
 
-#ifdef PLATFORM_OS_CE
-#define XMITBUF_ALIGN_SZ 4
-#else
 #ifdef USB_XMITBUF_ALIGN_SZ
 #define XMITBUF_ALIGN_SZ (USB_XMITBUF_ALIGN_SZ)
 #else
 #define XMITBUF_ALIGN_SZ 512
-#endif
 #endif
 
 // xmit extension buff defination

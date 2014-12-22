@@ -422,7 +422,6 @@ enum UAPSD_MAX_SP
 * 	WPA2
 */
 
-#ifndef PLATFORM_OS_CE
 typedef struct _PMKID_CANDIDATE {
     NDIS_802_11_MAC_ADDRESS BSSID;
     ULONG Flags;
@@ -452,7 +451,6 @@ typedef struct _NDIS_802_11_CAPABILITY
 	NDIS_802_11_AUTHENTICATION_ENCRYPTION AuthenticationEncryptionSupported[1];
 	
 } NDIS_802_11_CAPABILITY, *PNDIS_802_11_CAPABILITY;
-#endif
 
 
 #endif //#ifndef WLAN_BSSDEF_H_

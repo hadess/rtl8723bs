@@ -147,10 +147,6 @@
 	#define	_MODULE_DEFINE_	_module_efuse_
 #endif
 
-#ifdef PLATFORM_OS_CE
-extern void rtl871x_cedbg(const char *fmt, ...);
-#endif
-
 #define RT_TRACE(_Comp, _Level, Fmt) do{}while(0)
 #define _func_enter_ do{}while(0)
 #define _func_exit_ do{}while(0)
