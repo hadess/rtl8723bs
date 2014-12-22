@@ -23,7 +23,7 @@
 #include <rtl8192c_recv.h>
 
 
-#if defined(CONFIG_SDIO_HCI) || defined(CONFIG_GSPI_HCI)
+#if defined(CONFIG_SDIO_HCI)
 #ifdef CONFIG_DIRECT_RECV
 void rtl8723as_recv(PADAPTER padapter, struct recv_buf *precvbuf);
 #endif

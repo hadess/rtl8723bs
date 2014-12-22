@@ -457,7 +457,7 @@ typedef struct txdesc_8723b
 void rtl8723b_update_txdesc(struct xmit_frame *pxmitframe, u8 *pmem);
 void rtl8723b_fill_fake_txdesc(PADAPTER padapter, u8 *pDesc, u32 BufferLen, u8 IsPsPoll, u8 IsBTQosNull, u8 bDataFrame);
 
-#if defined(CONFIG_SDIO_HCI) || defined(CONFIG_GSPI_HCI)
+#if defined(CONFIG_SDIO_HCI)
 s32 rtl8723bs_init_xmit_priv(PADAPTER padapter);
 void rtl8723bs_free_xmit_priv(PADAPTER padapter);
 s32 rtl8723bs_hal_xmit(PADAPTER padapter, struct xmit_frame *pxmitframe);

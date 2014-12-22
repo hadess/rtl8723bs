@@ -6782,9 +6782,6 @@ static int rtw_mp_efuse_get(struct net_device *dev,
 			#ifdef CONFIG_SDIO_HCI
 			addr = EEPROM_MAC_ADDR_8723AS;
 			#endif
-			#ifdef CONFIG_GSPI_HCI
-			addr = EEPROM_MAC_ADDR_8723AS;
-			#endif
 		#endif // CONFIG_RTL8723A
 		#ifdef CONFIG_RTL8188E
 			#ifdef CONFIG_SDIO_HCI
@@ -6799,9 +6796,6 @@ static int rtw_mp_efuse_get(struct net_device *dev,
 		#endif
 		#ifdef CONFIG_RTL8723B
 		#ifdef CONFIG_SDIO_HCI
-		addr = EEPROM_MAC_ADDR_8723BS;
-		#endif
-		#ifdef CONFIG_GSPI_HCI
 		addr = EEPROM_MAC_ADDR_8723BS;
 		#endif
 		#endif // CONFIG_RTL8723B
@@ -7378,9 +7372,6 @@ static int rtw_mp_efuse_set(struct net_device *dev,
 		#ifdef CONFIG_SDIO_HCI
 		addr = EEPROM_MAC_ADDR_8723AS;
 		#endif
-		#ifdef CONFIG_GSPI_HCI
-		addr = EEPROM_MAC_ADDR_8723AS;
-		#endif
 		#endif // CONFIG_RTL8723A
 		#ifdef CONFIG_RTL8188E
 			#ifdef CONFIG_SDIO_HCI
@@ -7396,9 +7387,6 @@ static int rtw_mp_efuse_set(struct net_device *dev,
 		
 		#ifdef CONFIG_RTL8723B
 		#ifdef CONFIG_SDIO_HCI
-		addr = EEPROM_MAC_ADDR_8723BS;
-		#endif
-		#ifdef CONFIG_GSPI_HCI
 		addr = EEPROM_MAC_ADDR_8723BS;
 		#endif
 		#endif // CONFIG_RTL8723B
@@ -10595,7 +10583,7 @@ extern void rtl8723a_fill_default_txdesc(struct xmit_frame *pxmitframe, u8 *pbuf
 #include <rtl8188e_hal.h>
 extern void rtl8188e_cal_txdesc_chksum(struct tx_desc *ptxdesc);
 #define cal_txdesc_chksum rtl8188e_cal_txdesc_chksum
-#ifdef CONFIG_SDIO_HCI || defined(CONFIG_GSPI_HCI)
+#ifdef CONFIG_SDIO_HCI
 extern void rtl8188es_fill_default_txdesc(struct xmit_frame *pxmitframe, u8 *pbuf);
 #define fill_default_txdesc rtl8188es_fill_default_txdesc
 #endif // CONFIG_SDIO_HCI

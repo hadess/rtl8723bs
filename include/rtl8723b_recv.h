@@ -147,7 +147,7 @@ typedef struct phystatus_8723b
 	u32 antsel:1;
 } PHYSTATUS, *PPHYSTATUS;
 
-#if defined(CONFIG_SDIO_HCI) || defined(CONFIG_GSPI_HCI)
+#if defined(CONFIG_SDIO_HCI)
 s32 rtl8723bs_init_recv_priv(PADAPTER padapter);
 void rtl8723bs_free_recv_priv(PADAPTER padapter);
 #endif

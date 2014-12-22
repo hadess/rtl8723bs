@@ -33,7 +33,6 @@
 #endif
 #define CONFIG_SDIO_HCI
 
-//#define CONFIG_GSPI_HCI config from Makefile
 //#define CONFIG_SDIO_HCI config from Makefile
 #define PLATFORM_LINUX
 
@@ -169,7 +168,7 @@
 	#define CONFIG_IPS
 	#define CONFIG_LPS
 
-	#if defined(CONFIG_LPS) && (defined(CONFIG_GSPI_HCI) || defined(CONFIG_SDIO_HCI))
+	#if defined(CONFIG_SDIO_HCI)
 	#define CONFIG_LPS_LCLK
 	#endif
 

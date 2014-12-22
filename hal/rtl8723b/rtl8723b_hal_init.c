@@ -3393,7 +3393,7 @@ s32 rtl8723b_InitLLTTable(PADAPTER padapter)
 	return ret;
 }
 
-#if defined(CONFIG_SDIO_HCI) || defined(CONFIG_GSPI_HCI)
+#if defined(CONFIG_SDIO_HCI)
 void _DisableGPIO(PADAPTER	padapter)
 {
 /***************************************
@@ -3763,7 +3763,7 @@ s32 CardDisableWithoutHWSM(PADAPTER padapter)
 	//RT_TRACE(COMP_INIT, DBG_LOUD, ("<====== Card Disable Without HWSM .\n"));
 	return rtStatus;
 }
-#endif // CONFIG_SDIO_HCI || CONFIG_GSPI_HCI
+#endif // CONFIG_SDIO_HCI
 
 BOOLEAN 
 Hal_GetChnlGroup8723B(
@@ -4554,7 +4554,7 @@ u8	SCMapping_8723B(PADAPTER Adapter, struct pkt_attrib *pattrib)
 	return SCSettingOfDesc;
 }
 
-#if defined(CONFIG_SDIO_HCI) || defined(CONFIG_GSPI_HCI)
+#if defined(CONFIG_SDIO_HCI)
 void rtl8723b_cal_txdesc_chksum(struct tx_desc *ptxdesc)
 {
 	u16	*usPtr = (u16*)ptxdesc;
@@ -4768,7 +4768,7 @@ static void rtl8723b_fill_default_txdesc(
 			DBG_871X("YJ: %s(): ARP Data: userate=%d, datarate=0x%x\n", __func__, ptxdesc->userate, ptxdesc->datarate);
 		}
 
-#if defined(CONFIG_USB_TX_AGGREGATION) || defined(CONFIG_SDIO_HCI) || defined(CONFIG_GSPI_HCI)
+#if defined(CONFIG_USB_TX_AGGREGATION) || defined(CONFIG_SDIO_HCI)
 		ptxdesc->usb_txagg_num = pxmitframe->agg_num;
 #endif
 	}
@@ -4908,7 +4908,7 @@ void rtl8723b_update_txdesc(struct xmit_frame *pxmitframe, u8 *pbuf)
 	ODM_SetTxAntByTxInfo(&GET_HAL_DATA(padapter)->odmpriv, pbuf, pxmitframe->attrib.mac_id);
 #endif // CONFIG_ANTENNA_DIVERSITY
 
-#if defined(CONFIG_SDIO_HCI) || defined(CONFIG_GSPI_HCI)
+#if defined(CONFIG_SDIO_HCI)
 	rtl8723b_cal_txdesc_chksum(pdesc);
 #endif
 }
@@ -4990,7 +4990,7 @@ void rtl8723b_fill_fake_txdesc(
 		}
 	}
 
-#if defined(CONFIG_SDIO_HCI) || defined(CONFIG_GSPI_HCI)
+#if defined(CONFIG_SDIO_HCI)
 	// USB interface drop packet if the checksum of descriptor isn't correct.
 	// Using this checksum can let hardware recovery from packet bulk out error (e.g. Cancel URC, Bulk out error.).
 	rtl8723b_cal_txdesc_chksum((struct tx_desc*)pDesc);
@@ -6003,7 +6003,7 @@ void C2HPacketHandler_8723B(PADAPTER padapter, u8 *pbuffer, u16 length)
 static void C2HCommandHandler(PADAPTER padapter)
 {
 	C2H_EVT_HDR 	C2hEvent;
-#if defined(CONFIG_SDIO_HCI) || defined(CONFIG_GSPI_HCI)
+#if defined(CONFIG_SDIO_HCI)
 
 	u8				*tmpBuf = NULL;
 	u8				index = 0;
@@ -6950,7 +6950,7 @@ void Hal_DetectWoWMode(PADAPTER pAdapter)
 
 void rtl8723b_start_thread(_adapter *padapter)
 {
-#if (defined CONFIG_SDIO_HCI) || (defined CONFIG_GSPI_HCI)
+#if (defined CONFIG_SDIO_HCI)
 #ifndef CONFIG_SDIO_TX_TASKLET
 	struct xmit_priv *xmitpriv = &padapter->xmitpriv;
 
@@ -6965,7 +6965,7 @@ void rtl8723b_start_thread(_adapter *padapter)
 
 void rtl8723b_stop_thread(_adapter *padapter)
 {
-#if (defined CONFIG_SDIO_HCI) || (defined CONFIG_GSPI_HCI)
+#if (defined CONFIG_SDIO_HCI)
 #ifndef CONFIG_SDIO_TX_TASKLET
 	struct xmit_priv *xmitpriv = &padapter->xmitpriv;
 

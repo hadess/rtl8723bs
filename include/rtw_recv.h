@@ -37,9 +37,7 @@
 	#ifdef CONFIG_SINGLE_RECV_BUF
 		#define NR_RECVBUFF (1)
 	#else
-		#if defined(CONFIG_GSPI_HCI)
-			#define NR_RECVBUFF (32)
-		#elif defined(CONFIG_SDIO_HCI)
+		#if defined(CONFIG_SDIO_HCI)
 			#define NR_RECVBUFF (8)	
 		#else
 			#define NR_RECVBUFF (8)
@@ -360,7 +358,7 @@ struct recv_priv
 	_queue	free_recv_buf_queue;
 	u32	free_recv_buf_queue_cnt;
 
-#if defined(CONFIG_SDIO_HCI) || defined(CONFIG_GSPI_HCI)
+#if defined(CONFIG_SDIO_HCI)
 	_queue	recv_buf_pending_queue;
 #endif
 

@@ -42,9 +42,6 @@
 #ifndef GPIO_WIFI_PWDN
 #define GPIO_WIFI_PWDN -1
 #endif // !GPIO_WIFI_RESET
-#ifdef CONFIG_GSPI_HCI
-extern unsigned int oob_irq;
-#endif // CONFIG_GSPI_HCI
 
 #ifdef CONFIG_SDIO_HCI
 extern int rtw_mp_mode;
@@ -53,16 +50,6 @@ extern int rtw_mp_mode;
 
 int rtw_wifi_gpio_init(void)
 {
-#ifdef CONFIG_GSPI_HCI
-	if (GPIO_WIFI_IRQ > 0) {
-		gpio_request(GPIO_WIFI_IRQ, "oob_irq");
-		gpio_direction_input(GPIO_WIFI_IRQ);
-
-		oob_irq = gpio_to_irq(GPIO_WIFI_IRQ);
-
-		DBG_8192C("%s oob_irq:%d\n", __func__, oob_irq);
-	}
-#endif
 	if (GPIO_WIFI_RESET > 0)
 		gpio_request(GPIO_WIFI_RESET , "wifi_rst");
 	if (GPIO_WIFI_POWER > 0)
@@ -82,10 +69,6 @@ int rtw_wifi_gpio_init(void)
 
 int rtw_wifi_gpio_deinit(void)
 {
-#ifdef CONFIG_GSPI_HCI
-	if (GPIO_WIFI_IRQ > 0)
-		gpio_free(GPIO_WIFI_IRQ);
-#endif
 	if (GPIO_WIFI_RESET > 0)
 		gpio_free(GPIO_WIFI_RESET );
 	if (GPIO_WIFI_POWER > 0)
