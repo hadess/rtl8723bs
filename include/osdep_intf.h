@@ -46,20 +46,6 @@ The protection mechanism is through the pending queue.
 */
 
 	_mutex ioctl_mutex;
-
-#ifdef PLATFORM_OS_XP
-	#ifdef CONFIG_SDIO_HCI
-		// below is for io_rwmem...
-		PMDL pmdl;
-		PSDBUS_REQUEST_PACKET  sdrp;
-		PSDBUS_REQUEST_PACKET  recv_sdrp;
-		PSDBUS_REQUEST_PACKET  xmit_sdrp;
-
-			PIRP		piorw_irp;
-
-	#endif
-#endif
-
 };
 
 

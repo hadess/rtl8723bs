@@ -114,9 +114,6 @@
 #if defined(CONFIG_SDIO_HCI)
 		u8	*c2h_mem;
 		u8	*allocated_c2h_mem;
-#ifdef PLATFORM_OS_XP
-		PMDL	pc2h_mdl;
-#endif
 #endif
 
 	};

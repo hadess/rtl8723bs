@@ -723,12 +723,6 @@ void _rtw_init_sema(_sema	*sema, int init_val)
 	sema_init(sema, init_val);
 
 #endif
-#ifdef PLATFORM_OS_XP
-
-	KeInitializeSemaphore(sema, init_val,  SEMA_UPBND); // count=0;
-
-#endif
-	
 #ifdef PLATFORM_OS_CE
 	if(*sema == NULL)
 		*sema = CreateSemaphore(NULL, init_val, SEMA_UPBND, NULL);
@@ -752,11 +746,6 @@ void _rtw_up_sema(_sema	*sema)
 	up(sema);
 
 #endif	
-#ifdef PLATFORM_OS_XP
-
-	KeReleaseSemaphore(sema, IO_NETWORK_INCREMENT, 1,  FALSE );
-
-#endif
 
 #ifdef PLATFORM_OS_CE
 	ReleaseSemaphore(*sema,  1,  NULL );
@@ -774,13 +763,6 @@ u32 _rtw_down_sema(_sema *sema)
 		return _SUCCESS;
 
 #endif    	
-#ifdef PLATFORM_OS_XP
-
-	if(STATUS_SUCCESS == KeWaitForSingleObject(sema, Executive, KernelMode, TRUE, NULL))
-		return  _SUCCESS;
-	else
-		return _FAIL;
-#endif
 
 #ifdef PLATFORM_OS_CE
 	if(WAIT_OBJECT_0 == WaitForSingleObject(*sema, INFINITE ))
@@ -803,12 +785,6 @@ void	_rtw_mutex_init(_mutex *pmutex)
 #endif
 
 #endif
-#ifdef PLATFORM_OS_XP
-
-	KeInitializeMutex(pmutex, 0);
-
-#endif
-
 #ifdef PLATFORM_OS_CE
 	*pmutex =  CreateMutex( NULL, _FALSE, NULL);
 #endif
@@ -823,10 +799,6 @@ void	_rtw_mutex_free(_mutex *pmutex)
 	mutex_destroy(pmutex);
 #else	
 #endif
-
-#endif
-
-#ifdef PLATFORM_OS_XP
 
 #endif
 

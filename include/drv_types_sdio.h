@@ -36,11 +36,6 @@
 #endif // CONFIG_PLATFORM_SPRD
 #endif
 
-#ifdef PLATFORM_OS_XP
-#include <wdm.h>
-#include <ntddsd.h>
-#endif
-
 #ifdef PLATFORM_OS_CE
 #include <sdcardddk.h>
 #endif
@@ -57,14 +52,6 @@ typedef struct sdio_data
 #ifdef PLATFORM_LINUX
 	struct sdio_func	 *func;
 	_thread_hdl_ sys_sdio_irq_thd;
-#endif
-
-#ifdef PLATFORM_OS_XP
-	PDEVICE_OBJECT				pphysdevobj;
-	PDEVICE_OBJECT				pfuncdevobj;
-	PDEVICE_OBJECT				pnextdevobj;
-	SDBUS_INTERFACE_STANDARD	sdbusinft;
-	u8							nextdevstacksz;
 #endif
 
 #ifdef PLATFORM_OS_CE
