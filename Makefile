@@ -75,7 +75,6 @@ CONFIG_PLATFORM_TEGRA3_CARDHU = n
 CONFIG_PLATFORM_TEGRA4_DALMORE = n
 CONFIG_PLATFORM_DMP_PHILIPS = n
 CONFIG_PLATFORM_TI_DM365 = n
-CONFIG_PLATFORM_SZEBOOK = n
 CONFIG_PLATFORM_ACTIONS_ATM702X = n
 CONFIG_PLATFORM_ACTIONS_ATV5201 = n
 ###############################################################
@@ -858,24 +857,6 @@ ARCH := arm
 CROSS_COMPILE := /home/android_sdk/nvidia/tegra-17r9-partner-android-4.2-dalmore_20130131/prebuilts/gcc/linux-x86/arm/arm-eabi-4.6/bin/arm-eabi-
 KSRC := /home/android_sdk/nvidia/tegra-17r9-partner-android-4.2-dalmore_20130131/out/target/product/dalmore/obj/KERNEL
 MODULE_NAME := wlan
-endif
-
-ifeq ($(CONFIG_PLATFORM_SZEBOOK), y)
-EXTRA_CFLAGS += -DCONFIG_BIG_ENDIAN
-ARCH:=arm
-CROSS_COMPILE:=/opt/crosstool2/bin/armeb-unknown-linux-gnueabi- 
-KVER:= 2.6.31.6
-KSRC:= ../code/linux-2.6.31.6-2020/
-endif
-
-#Add setting for MN10300
-ifeq ($(CONFIG_PLATFORM_MN10300), y)
-EXTRA_CFLAGS += -DCONFIG_LITTLE_ENDIAN -DCONFIG_PLATFORM_MN10300
-ARCH := mn10300
-CROSS_COMPILE := mn10300-linux-
-KVER := 2.6.32.2
-KSRC := /home/winuser/work/Plat_sLD2T_V3010/usr/src/linux-2.6.32.2
-INSTALL_PREFIX :=
 endif
 
 ifeq ($(CONFIG_MULTIDRV), y)	
