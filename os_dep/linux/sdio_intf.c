@@ -578,11 +578,6 @@ static void rtw_sdio_if1_deinit(_adapter *if1)
 	if(pnetdev)
 		rtw_free_netdev(pnetdev);
 
-#ifdef CONFIG_PLATFORM_RTD2880B
-	DBG_871X("wlan link down\n");
-	rtd2885_wlan_netlink_sendMsg("linkdown", "8712");
-#endif
-
 #ifdef RTW_SUPPORT_PLATFORM_SHUTDOWN
 	g_test_adapter = NULL;
 #endif // RTW_SUPPORT_PLATFORM_SHUTDOWN
@@ -630,11 +625,6 @@ static int rtw_drv_init(
 
 #ifdef CONFIG_HOSTAPD_MLME
 	hostapd_mode_init(if1);
-#endif
-
-#ifdef CONFIG_PLATFORM_RTD2880B
-	DBG_871X("wlan link up\n");
-	rtd2885_wlan_netlink_sendMsg("linkup", "8712");
 #endif
 
 	if (sdio_alloc_irq(dvobj) != _SUCCESS)

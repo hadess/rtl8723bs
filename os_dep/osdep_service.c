@@ -126,11 +126,6 @@ u8* _rtw_malloc(u32 sz)
 	u8 	*pbuf=NULL;
 
 #ifdef PLATFORM_LINUX
-#ifdef RTK_DMP_PLATFORM
-	if(sz > 0x4000)
-		pbuf = (u8 *)dvr_malloc(sz);
-	else
-#endif		
 		pbuf = kmalloc(sz,in_interrupt() ? GFP_ATOMIC : GFP_KERNEL); 		
 
 #endif	
@@ -167,11 +162,6 @@ void	_rtw_mfree(u8 *pbuf, u32 sz)
 {
 
 #ifdef	PLATFORM_LINUX
-#ifdef RTK_DMP_PLATFORM
-	if(sz > 0x4000)
-		dvr_free(pbuf);
-	else
-#endif
 		kfree(pbuf);
 
 #endif	

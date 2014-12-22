@@ -62,13 +62,6 @@
 	#include <linux/tqueue.h>
 #endif
 
-#ifdef RTK_DMP_PLATFORM
-#if (LINUX_VERSION_CODE > KERNEL_VERSION(2,6,12))
-	#include <linux/pageremap.h>
-#endif
-	#include <asm/io.h>
-#endif
-
 //	#include <linux/ieee80211.h>        
         #include <net/ieee80211_radiotap.h>
 	#include <net/cfg80211.h>	

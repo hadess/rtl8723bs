@@ -360,7 +360,6 @@ int _netdev_open(struct net_device *pnetdev);
 int netdev_open (struct net_device *pnetdev);
 static int netdev_close (struct net_device *pnetdev);
 
-//#ifdef RTK_DMP_PLATFORM
 uint loadparam( _adapter *padapter,  _nic_hdl	pnetdev)
 {
 
@@ -1295,10 +1294,6 @@ void rtw_cancel_all_timer(_adapter *padapter)
 #endif
 	//cancel dm timer
 	rtw_hal_dm_deinit(padapter);
-
-#ifdef CONFIG_PLATFORM_FS_MX61
-	msleep(50);
-#endif
 }
 
 u8 rtw_free_drv_sw(_adapter *padapter)
