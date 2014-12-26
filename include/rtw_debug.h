@@ -384,11 +384,6 @@ ssize_t proc_set_btcoex_dbg(struct file *file, const char __user *buffer, size_t
 int proc_get_btcoex_info(struct seq_file *m, void *v);
 #endif /* CONFIG_BT_COEXIST */
 
-#if defined(DBG_CONFIG_ERROR_DETECT)
-int proc_get_sreset(struct seq_file *m, void *v);
-ssize_t proc_set_sreset(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data);
-#endif /* DBG_CONFIG_ERROR_DETECT */
-
 int proc_get_odm_dbg_comp(struct seq_file *m, void *v);
 ssize_t proc_set_odm_dbg_comp(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data);
 int proc_get_odm_dbg_level(struct seq_file *m, void *v);

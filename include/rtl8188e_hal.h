@@ -38,9 +38,6 @@
 #include "rtl8188e_cmd.h"
 #include "rtl8188e_led.h"
 #include "Hal8188EPwrSeq.h"
-#ifdef DBG_CONFIG_ERROR_DETECT
-#include "rtl8188e_sreset.h"
-#endif
 
 #if 0
 	// Fw Array

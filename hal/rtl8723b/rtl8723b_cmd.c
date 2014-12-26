@@ -1802,16 +1802,10 @@ static void rtl8723b_set_FwRsvdPagePkt(PADAPTER padapter, BOOLEAN bDLFinished)
 	u8 kck[RTW_KCK_LEN];
 #endif
 #endif
-#ifdef DBG_CONFIG_ERROR_DETECT
-	struct sreset_priv *psrtpriv;
-#endif // DBG_CONFIG_ERROR_DETECT
 
 	//DBG_871X("%s---->\n", __FUNCTION__);
 
 	pHalData = GET_HAL_DATA(padapter);
-#ifdef DBG_CONFIG_ERROR_DETECT
-	psrtpriv = &pHalData->srestpriv;
-#endif
 	pxmitpriv = &padapter->xmitpriv;
 	pmlmeext = &padapter->mlmeextpriv;
 	pmlmeinfo = &pmlmeext->mlmext_info;
@@ -1945,9 +1939,6 @@ static void rtl8723b_set_FwRsvdPagePkt(PADAPTER padapter, BOOLEAN bDLFinished)
 	//3(7) ARP RSP
 	rtw_get_current_ip_address(padapter, currentip);
 	RsvdPageLoc.LocArpRsp= TotalPageNum;
-#ifdef DBG_CONFIG_ERROR_DETECT
-	if(psrtpriv->silent_reset_inprogress == _FALSE)
-#endif //DBG_CONFIG_ERROR_DETECT
 	{
 	ConstructARPResponse(
 		padapter, 
@@ -1962,10 +1953,6 @@ static void rtl8723b_set_FwRsvdPagePkt(PADAPTER padapter, BOOLEAN bDLFinished)
 
 	CurtPktPageNum = (u8)PageNum_128(TxDescLen + ARPLegnth);
 	}
-#ifdef DBG_CONFIG_ERROR_DETECT
-	else
-		CurtPktPageNum = (u8)PageNum_128(128);
-#endif //DBG_CONFIG_ERROR_DETECT
 	TotalPageNum += CurtPktPageNum;
 
 	BufIndex += (CurtPktPageNum*PageSize);
@@ -2240,18 +2227,12 @@ static void rtl8723b_set_AP_FwRsvdPagePkt(PADAPTER padapter,
 	u16	BufIndex, PageSize = 128;
 	u32	TotalPacketLen = 0, MaxRsvdPageBufSize=0;
 	RSVDPAGE_LOC	RsvdPageLoc;
-#ifdef DBG_CONFIG_ERROR_DETECT
-	struct sreset_priv *psrtpriv;
-#endif // DBG_CONFIG_ERROR_DETECT
 
 	//DBG_871X("%s---->\n", __FUNCTION__);
 	DBG_8192C("+" FUNC_ADPT_FMT ": iface_type=%d\n",
 		FUNC_ADPT_ARG(padapter), get_iface_type(padapter));
 
 	pHalData = GET_HAL_DATA(padapter);
-#ifdef DBG_CONFIG_ERROR_DETECT
-	psrtpriv = &pHalData->srestpriv;
-#endif
 	pxmitpriv = &padapter->xmitpriv;
 	pmlmeext = &padapter->mlmeextpriv;
 	pmlmeinfo = &pmlmeext->mlmext_info;

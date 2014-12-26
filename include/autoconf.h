@@ -304,7 +304,6 @@
 
 #define CONFIG_PROC_DEBUG
 
-#define DBG_CONFIG_ERROR_DETECT
 //#define DBG_XMIT_BUF
 //#define DBG_XMIT_BUF_EXT
 #define DBG_CHECK_FW_PS_STATE

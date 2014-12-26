@@ -491,9 +491,6 @@ const struct rtw_proc_hdl adapter_proc_hdls [] = {
 	{"btcoex", proc_get_btcoex_info, NULL},
 #endif /* CONFIG_BT_COEXIST */
 
-#if defined(DBG_CONFIG_ERROR_DETECT)
-	{"sreset", proc_get_sreset, proc_set_sreset},
-#endif /* DBG_CONFIG_ERROR_DETECT */
 	{"linked_info_dump",proc_get_linked_info_dump,proc_set_linked_info_dump},
 #ifdef CONFIG_DBG_COUNTER
 	{"rx_logs", proc_get_rx_logs, NULL},

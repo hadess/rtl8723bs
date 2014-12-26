@@ -39,10 +39,6 @@
 #include "rtl8192c_xmit.h"
 #include "rtl8192c_cmd.h"
 #include "rtl8192c_led.h"
-#ifdef DBG_CONFIG_ERROR_DETECT
-#include "rtl8192c_sreset.h"
-#endif
-
 
 #define FW_8192C_SIZE					16384+32//16k
 #define FW_8192C_START_ADDRESS		0x1000

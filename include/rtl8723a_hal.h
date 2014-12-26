@@ -39,11 +39,6 @@
 #include "rtl8723a_cmd.h"
 #include "rtl8723a_led.h"
 #include "Hal8723PwrSeq.h"
-#ifdef DBG_CONFIG_ERROR_DETECT
-#include "rtl8723a_sreset.h"
-#endif
-
-
 #if defined(CONFIG_SDIO_HCI)
 
 	//2TODO: We should define 8192S firmware related macro settings here!!

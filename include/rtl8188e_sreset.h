@@ -22,9 +22,5 @@
 
 #include <rtw_sreset.h>
 
-#ifdef DBG_CONFIG_ERROR_DETECT
-extern void rtl8188e_sreset_xmit_status_check(_adapter *padapter);
-extern void rtl8188e_sreset_linked_status_check(_adapter *padapter);
-#endif
 #endif
 
