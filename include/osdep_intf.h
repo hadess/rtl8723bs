@@ -75,9 +75,7 @@ int rtw_init_netdev_name(struct net_device *pnetdev, const char *ifname);
 struct net_device *rtw_init_netdev(_adapter *padapter);
 void rtw_unregister_netdevs(struct dvobj_priv *dvobj);
 
-#if (LINUX_VERSION_CODE>=KERNEL_VERSION(2,6,35))
 u16 rtw_recv_select_queue(struct sk_buff *skb);
-#endif //LINUX_VERSION_CODE>=KERNEL_VERSION(2,6,35)
 
 int rtw_ndev_notifier_register(void);
 void rtw_ndev_notifier_unregister(void);

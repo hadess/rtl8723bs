@@ -26,11 +26,6 @@
 #include "rtl8723a_hal.h"
 #endif
 
-#if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,27))
-#define  iwe_stream_add_event(a, b, c, d, e)  iwe_stream_add_event(b, c, d, e)
-#define  iwe_stream_add_point(a, b, c, d, e)  iwe_stream_add_point(b, c, d, e)
-#endif
-
 #ifdef CONFIG_80211N_HT
 extern int rtw_ht_enable;
 #endif
@@ -9463,11 +9458,7 @@ static struct iw_statistics *rtw_get_wireless_stats(struct net_device *dev)
 		piwstats->qual.qual = tmp_qual;
 		piwstats->qual.noise = tmp_noise;
 	}
-#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,14))
 	piwstats->qual.updated = IW_QUAL_ALL_UPDATED ;//|IW_QUAL_DBM;
-#else
-	piwstats->qual.updated = 0x0f;
-#endif
 
 	#ifdef CONFIG_SIGNAL_DISPLAY_DBM
 	piwstats->qual.updated = piwstats->qual.updated | IW_QUAL_DBM;
@@ -9482,7 +9473,7 @@ struct iw_handler_def rtw_handlers_def =
 {
 	.standard = rtw_handlers,
 	.num_standard = sizeof(rtw_handlers) / sizeof(iw_handler),
-#if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,33)) || defined(CONFIG_WEXT_PRIV)
+#if defined(CONFIG_WEXT_PRIV)
 	.private = rtw_private_handler,
 	.private_args = (struct iw_priv_args *)rtw_private_args,
 	.num_private = sizeof(rtw_private_handler) / sizeof(iw_handler),

@@ -6408,11 +6408,7 @@ void rtl8723b_stop_thread(_adapter *padapter)
 extern void check_bt_status_work(void *data);
 void rtl8723bs_init_checkbthang_workqueue(_adapter * adapter)
 {
-#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,37))
 	adapter->priv_checkbt_wq = alloc_workqueue("sdio_wq", 0, 0);
-#else
-	adapter->priv_checkbt_wq = create_workqueue("sdio_wq");
-#endif
 	INIT_DELAYED_WORK(&adapter->checkbt_work, (void*)check_bt_status_work);
 }
 

@@ -268,11 +268,7 @@ static void _rtw_reg_apply_radar_flags(struct wiphy *wiphy)
 #ifdef CONFIG_DFS
 		if (!(ch->flags & IEEE80211_CHAN_DISABLED)) {
 			ch->flags |= IEEE80211_CHAN_RADAR;
-			#if (LINUX_VERSION_CODE < KERNEL_VERSION(3,14,0))
-			ch->flags |= (IEEE80211_CHAN_NO_IBSS|IEEE80211_CHAN_PASSIVE_SCAN);
-			#else
 			ch->flags |= IEEE80211_CHAN_NO_IR;
-			#endif
 		}
 #endif //CONFIG_DFS
 
@@ -361,11 +357,7 @@ static void _rtw_reg_apply_flags(struct wiphy *wiphy)
 		ch = ieee80211_get_channel(wiphy, freq);
 		if (ch) {
 			if (channel_set[i].ScanType == SCAN_PASSIVE) {
-				#if (LINUX_VERSION_CODE < KERNEL_VERSION(3,14,0))
-				ch->flags = (IEEE80211_CHAN_NO_IBSS|IEEE80211_CHAN_PASSIVE_SCAN);
-				#else
 				ch->flags = IEEE80211_CHAN_NO_IR;
-				#endif
 			}
 			else {
 				ch->flags = 0;
@@ -494,15 +486,9 @@ static void _rtw_regd_init_wiphy(struct rtw_regulatory *reg,
 
 	wiphy->reg_notifier = reg_notifier;
 
-	#if (LINUX_VERSION_CODE < KERNEL_VERSION(3,14,0))
-	wiphy->flags |= WIPHY_FLAG_CUSTOM_REGULATORY;
-	wiphy->flags &= ~WIPHY_FLAG_STRICT_REGULATORY;
-	wiphy->flags &= ~WIPHY_FLAG_DISABLE_BEACON_HINTS;
-	#else
 	wiphy->regulatory_flags |= REGULATORY_CUSTOM_REG;
 	wiphy->regulatory_flags &= ~REGULATORY_STRICT_REG;
 	wiphy->regulatory_flags &= ~REGULATORY_DISABLE_BEACON_HINTS;
-	#endif
 
 	regd = _rtw_regdomain_select(reg);
 	wiphy_apply_custom_regulatory(wiphy, regd);

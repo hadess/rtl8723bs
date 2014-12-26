@@ -286,9 +286,7 @@ void rtw_os_recv_indicate_pkt(_adapter *padapter, _pkt *pkt, struct rx_pkt_attri
 
 					//skb->ip_summed = CHECKSUM_NONE;
 					pkt->dev = pnetdev;				
-#if (LINUX_VERSION_CODE>=KERNEL_VERSION(2,6,35))
 					skb_set_queue_mapping(pkt, rtw_recv_select_queue(pkt));
-#endif //LINUX_VERSION_CODE>=KERNEL_VERSION(2,6,35)
 
 					_rtw_xmit_entry(pkt, pnetdev);
 
@@ -310,14 +308,9 @@ void rtw_os_recv_indicate_pkt(_adapter *padapter, _pkt *pkt, struct rx_pkt_attri
 		
 #ifdef CONFIG_BR_EXT
 		// Insert NAT2.5 RX here!
-#if (LINUX_VERSION_CODE <= KERNEL_VERSION(2, 6, 35))
-		br_port = padapter->pnetdev->br_port;
-#else   // (LINUX_VERSION_CODE <= KERNEL_VERSION(2, 6, 35))
 		rcu_read_lock();
 		br_port = rcu_dereference(padapter->pnetdev->rx_handler_data);
 		rcu_read_unlock();
-#endif  // (LINUX_VERSION_CODE <= KERNEL_VERSION(2, 6, 35))
-
 
 		if( br_port && (check_fwstate(pmlmepriv, WIFI_STATION_STATE|WIFI_ADHOC_STATE) == _TRUE) )
 		{

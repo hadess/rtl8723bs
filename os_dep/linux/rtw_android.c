@@ -26,11 +26,7 @@
 
 #if defined(RTW_ENABLE_WIFI_CONTROL_FUNC)
 #include <linux/platform_device.h>
-#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2, 6, 35))
 #include <linux/wlan_plat.h>
-#else
-#include <linux/wifi_tiwlan.h>
-#endif
 #endif /* defined(RTW_ENABLE_WIFI_CONTROL_FUNC) */
 
 #ifdef CONFIG_GPIO_WAKEUP
@@ -962,7 +958,6 @@ int wifi_set_power(int on, unsigned long msec)
 	return 0;
 }
 
-#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2, 6, 35))
 int wifi_get_mac_addr(unsigned char *buf)
 {
 	DBG_871X("%s\n", __FUNCTION__);
@@ -973,9 +968,7 @@ int wifi_get_mac_addr(unsigned char *buf)
 	}
 	return -EOPNOTSUPP;
 }
-#endif /* (LINUX_VERSION_CODE >= KERNEL_VERSION(2, 6, 35)) */
 
-#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2, 6, 39)) || defined(COMPAT_KERNEL_RELEASE)
 void *wifi_get_country_code(char *ccode)
 {
 	DBG_871X("%s\n", __FUNCTION__);
@@ -986,7 +979,6 @@ void *wifi_get_country_code(char *ccode)
 	}
 	return NULL;
 }
-#endif /* (LINUX_VERSION_CODE >= KERNEL_VERSION(2, 6, 39)) */
 
 static int wifi_set_carddetect(int on)
 {
@@ -1151,19 +1143,12 @@ static void wifi_shutdown(struct platform_device *pdev)
 static int wifi_suspend(struct platform_device *pdev, pm_message_t state)
 {
 	DBG_871X("##> %s\n", __FUNCTION__);
-#if (LINUX_VERSION_CODE <= KERNEL_VERSION(2, 6, 39)) && defined(OOB_INTR_ONLY)
-	bcmsdh_oob_intr_set(0);
-#endif
 	return 0;
 }
 
 static int wifi_resume(struct platform_device *pdev)
 {
 	DBG_871X("##> %s\n", __FUNCTION__);
-#if (LINUX_VERSION_CODE <= KERNEL_VERSION(2, 6, 39)) && defined(OOB_INTR_ONLY)
-	if (dhd_os_check_if_up(bcmsdh_get_drvdata()))
-		bcmsdh_oob_intr_set(1);
-#endif
 	return 0;
 }
 

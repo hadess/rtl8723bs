@@ -1130,11 +1130,7 @@ _func_enter_;
 			#ifdef CONFIG_AUTOSUSPEND
 			if(Adapter->registrypriv.usbss_enable)
 			{
-				#if (LINUX_VERSION_CODE>=KERNEL_VERSION(2,6,35))
 				usb_disable_autosuspend(adapter_to_dvobj(Adapter)->pusbdev);
-				#elif (LINUX_VERSION_CODE>=KERNEL_VERSION(2,6,22) && LINUX_VERSION_CODE<=KERNEL_VERSION(2,6,34))
-				adapter_to_dvobj(Adapter)->pusbdev->autosuspend_disabled = Adapter->bDisableAutosuspend;//autosuspend disabled by the user
-				#endif
 			}
 			else
 			#endif
@@ -1210,11 +1206,7 @@ _func_enter_;
 			#ifdef CONFIG_AUTOSUSPEND
 			if(Adapter->registrypriv.usbss_enable)
 			{
-				#if (LINUX_VERSION_CODE>=KERNEL_VERSION(2,6,35))
 				usb_disable_autosuspend(adapter_to_dvobj(Adapter)->pusbdev);
-				#elif (LINUX_VERSION_CODE>=KERNEL_VERSION(2,6,22) && LINUX_VERSION_CODE<=KERNEL_VERSION(2,6,34))
-				adapter_to_dvobj(Adapter)->pusbdev->autosuspend_disabled = Adapter->bDisableAutosuspend;//autosuspend disabled by the user
-				#endif
 			}
 			else
 			#endif
@@ -2297,16 +2289,10 @@ int _rtw_pwr_wakeup(_adapter *padapter, u32 ips_deffer_ms, const char *caller)
 #if defined (CONFIG_BT_COEXIST)&& defined (CONFIG_AUTOSUSPEND)
 		if(_TRUE==pwrpriv->bInternalAutoSuspend){
 			if(0==pwrpriv->autopm_cnt){
-			#if (LINUX_VERSION_CODE>=KERNEL_VERSION(2,6,33))				
-				if (usb_autopm_get_interface(adapter_to_dvobj(padapter)->pusbintf) < 0) 
-				{
-					DBG_871X( "can't get autopm: \n");
-				}			
-			#elif (LINUX_VERSION_CODE>=KERNEL_VERSION(2,6,20))				
-				usb_autopm_disable(adapter_to_dvobj(padapter)->pusbintf);
-			#else
-				usb_autoresume_device(adapter_to_dvobj(padapter)->pusbdev, 1);
-			#endif
+			if (usb_autopm_get_interface(adapter_to_dvobj(padapter)->pusbintf) < 0) 
+			{
+				DBG_871X( "can't get autopm: \n");
+			}			
 			pwrpriv->autopm_cnt++;
 			}
 #endif	//#if defined (CONFIG_BT_COEXIST)&& defined (CONFIG_AUTOSUSPEND)

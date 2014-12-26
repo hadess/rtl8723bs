@@ -1993,19 +1993,10 @@ void Hal_ReadMACAddrFromFile(
 	pEEPROM->bloadmac_fail_flag = _FALSE;
 
 	if (rtw_check_invalid_mac_address(pEEPROM->mac_addr) == _TRUE) {
-#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,33))
 		get_random_bytes(pEEPROM->mac_addr, ETH_ALEN);
 		pEEPROM->mac_addr[0] = 0x00;
 		pEEPROM->mac_addr[1] = 0xe0;
 		pEEPROM->mac_addr[2] = 0x4c;
-#else
-		pEEPROM->mac_addr[0] = 0x00;
-		pEEPROM->mac_addr[1] = 0xe0;
-		pEEPROM->mac_addr[2] = 0x4c;
-		pEEPROM->mac_addr[3] = (u8)(curtime & 0xff) ;
-		pEEPROM->mac_addr[4] = (u8)((curtime>>8) & 0xff) ;
-		pEEPROM->mac_addr[5] = (u8)((curtime>>16) & 0xff) ;
-#endif
                 DBG_871X("MAC Address from wifimac error is invalid, assign random MAC !!!\n");
 	}
 
@@ -2055,19 +2046,10 @@ void Hal_GetPhyEfuseMACAddr(PADAPTER padapter, u8* mac_addr) {
 	rtw_efuse_map_read(padapter, addr_offset, ETH_ALEN, mac_addr);
 
 	if (rtw_check_invalid_mac_address(mac_addr) == _TRUE) {
-#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,33))
 		get_random_bytes(mac_addr, ETH_ALEN);
 		mac_addr[0] = 0x00;
 		mac_addr[1] = 0xe0;
 		mac_addr[2] = 0x4c;
-#else
-		mac_addr[0] = 0x00;
-		mac_addr[1] = 0xe0;
-		mac_addr[2] = 0x4c;
-		mac_addr[3] = (u8)(curtime & 0xff) ;
-		mac_addr[4] = (u8)((curtime>>8) & 0xff) ;
-		mac_addr[5] = (u8)((curtime>>16) & 0xff) ;
-#endif
                 DBG_871X("MAC Address from phy efuse error, assign random MAC !!!\n");
 	}
 

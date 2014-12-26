@@ -62,12 +62,10 @@ static void rtw_dev_remove(struct sdio_func *func);
 static int rtw_sdio_resume(struct device *dev);
 static int rtw_sdio_suspend(struct device *dev);
 
-#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29)) 
 static const struct dev_pm_ops rtw_sdio_pm_ops = {
 	.suspend	= rtw_sdio_suspend,
 	.resume	= rtw_sdio_resume,
 };
-#endif
 	
 struct sdio_drv_priv {
 	struct sdio_driver r871xs_drv;
@@ -79,11 +77,9 @@ static struct sdio_drv_priv sdio_drvpriv = {
 	.r871xs_drv.remove = rtw_dev_remove,
 	.r871xs_drv.name = (char*)DRV_NAME,
 	.r871xs_drv.id_table = sdio_ids,
-	#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29)) 
 	.r871xs_drv.drv = {
 		.pm = &rtw_sdio_pm_ops,
 	}
-	#endif
 };
 
 static void sd_sync_int_hdl(struct sdio_func *func)
@@ -750,7 +746,6 @@ static int rtw_sdio_suspend(struct device *dev)
 
 exit:
 #ifdef CONFIG_RTW_SDIO_PM_KEEP_POWER 
-#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,34))
 	//Android 4.0 don't support WIFI close power
 	//or power down or clock will close after wifi resume,
 	//this is sprd's bug in Android 4.0, but sprd don't
@@ -769,7 +764,6 @@ exit:
 			sdio_set_host_pm_flags(func, MMC_PM_KEEP_POWER);
 		}
 	}
-#endif	
 #endif
 	return ret;
 }
