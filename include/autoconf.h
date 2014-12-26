@@ -222,8 +222,6 @@
  * Outsource  Related Config
  */
 
-#define 	TESTCHIP_SUPPORT				0
-
 #define 	RTL8192CE_SUPPORT 				0
 #define 	RTL8192CU_SUPPORT 			0
 #define 	RTL8192C_SUPPORT 				(RTL8192CE_SUPPORT|RTL8192CU_SUPPORT)

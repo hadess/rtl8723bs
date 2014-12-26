@@ -158,13 +158,6 @@
 #include "rtl8188e/HalHWImg8188E_FW.h"
 #include "rtl8188e/Hal8188EReg.h"
 
-#if (TESTCHIP_SUPPORT == 1) 
-#include "rtl8188e/HalHWImg8188E_TestChip_MAC.h"
-#include "rtl8188e/HalHWImg8188E_TestChip_RF.h"
-#include "rtl8188e/HalHWImg8188E_TestChip_BB.h"
-#endif
-
-
 #include "rtl8188e/odm_RegConfig8188E.h"
 #include "rtl8188e/odm_RTL8188E.h"
 #endif
@@ -196,11 +189,6 @@
 #include "rtl8812a/HalHWImg8812A_FW.h"
 #include "rtl8812a/odm_RegConfig8812A.h"
 #include "rtl8812a/odm_RTL8812A.h"
-#if (TESTCHIP_SUPPORT == 1) 
-#include "rtl8812a/HalHWImg8812A_TestChip_MAC.h"
-#include "rtl8812a/HalHWImg8812A_TestChip_RF.h"
-#include "rtl8812a/HalHWImg8812A_TestChip_BB.h"
-#endif
 #endif
 
 
@@ -211,12 +199,6 @@
 #include "rtl8821a/HalHWImg8821A_FW.h"
 #include "rtl8821a/odm_RegConfig8821A.h"
 #include "rtl8821a/odm_RTL8821A.h"
-#if (TESTCHIP_SUPPORT == 1) 
-#include "rtl8821a/HalHWImg8821A_TestChip_MAC.h"
-#include "rtl8821a/HalHWImg8821A_TestChip_RF.h"
-#include "rtl8821a/HalHWImg8821A_TestChip_BB.h"
-#include "rtl8821a/HalHWImg8821A_TestChip_FW.h"
-#endif
 #endif
 
 #endif	// __ODM_PRECOMP_H__

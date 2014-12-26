@@ -29,32 +29,15 @@
 #define READ_AND_CONFIG_TC(ic, txt) (ODM_ReadAndConfig_TC_##ic##txt(pDM_Odm))
 
 
-#if (TESTCHIP_SUPPORT == 1)
-#define READ_AND_CONFIG(ic, txt) do {\
-                                            if (pDM_Odm->bIsMPChip)\
-                                    		    READ_AND_CONFIG_MP(ic,txt);\
-                                            else\
-                                                READ_AND_CONFIG_TC(ic,txt);\
-                                    } while(0)
-#else
+
   #define READ_AND_CONFIG     READ_AND_CONFIG_MP
-#endif
 
 
 #define READ_FIRMWARE_MP(ic, txt) 		(ODM_ReadFirmware_MP_##ic##txt(pDM_Odm, pFirmware, pSize))
 #define READ_FIRMWARE_TC(ic, txt) 		(ODM_ReadFirmware_TC_##ic##txt(pDM_Odm, pFirmware, pSize))		
 
-#if (TESTCHIP_SUPPORT == 1)
-#define READ_FIRMWARE(ic, txt) do {\
-						if (pDM_Odm->bIsMPChip)\
-							READ_FIRMWARE_MP(ic,txt);\
-						else\
-							READ_FIRMWARE_TC(ic,txt);\
-					} while(0) 
-#else
 #define READ_FIRMWARE     READ_FIRMWARE_MP
-#endif
-						
+
 #define GET_VERSION_MP(ic, txt) 		(ODM_GetVersion_MP_##ic##txt())
 #define GET_VERSION_TC(ic, txt) 		(ODM_GetVersion_TC_##ic##txt())
 #define GET_VERSION(ic, txt) (pDM_Odm->bIsMPChip?GET_VERSION_MP(ic,txt):GET_VERSION_TC(ic,txt))
