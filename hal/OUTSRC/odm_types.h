@@ -37,8 +37,6 @@
 #define GET_ODM(__pAdapter)	((PDM_ODM_T)(&((GET_HAL_DATA(__pAdapter))->odmpriv)))
 #endif
 
-#define 	RT_PCI_INTERFACE				1
-#define 	RT_USB_INTERFACE				2
 #define 	RT_SDIO_INTERFACE				3
 
 typedef enum _HAL_STATUS{

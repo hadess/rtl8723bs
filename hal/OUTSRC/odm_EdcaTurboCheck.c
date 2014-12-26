@@ -193,20 +193,6 @@ odm_EdcaTurboCheckCE(
 					EDCA_BE_DL = 0x6ea42b;
 				}
 			}
-			else
-			{
-				if(pDM_Odm->SupportInterface==ODM_ITRF_PCIE) {
-					if((ICType==ODM_RTL8192C)&&(pDM_Odm->RFType==ODM_2T2R)) {
-						EDCA_BE_UL = 0x60a42b;
-						EDCA_BE_DL = 0x60a42b;
-					}
-					else
-					{
-						EDCA_BE_UL = 0x6ea42b;
-						EDCA_BE_DL = 0x6ea42b;
-					}
-				}
-			}
 		
 			//92D txop can't be set to 0x3e for cisco1250
 			if((ICType!=ODM_RTL8192D) && (IOTPeer== HT_IOT_PEER_CISCO) &&(WirelessMode==ODM_WM_N24G))

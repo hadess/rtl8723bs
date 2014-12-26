@@ -112,55 +112,9 @@ odm_SignalScaleMapping_92CSeries(
 )
 {
 	s4Byte RetSig = 0; 
-#if (DEV_BUS_TYPE == RT_PCI_INTERFACE) 
-	if(pDM_Odm->SupportInterface  == ODM_ITRF_PCIE) 
-	{
-		// Step 1. Scale mapping.
-		if(CurrSig >= 61 && CurrSig <= 100)
-		{
-			RetSig = 90 + ((CurrSig - 60) / 4);
-		}
-		else if(CurrSig >= 41 && CurrSig <= 60)
-		{
-			RetSig = 78 + ((CurrSig - 40) / 2);
-		}
-		else if(CurrSig >= 31 && CurrSig <= 40)
-		{
-			RetSig = 66 + (CurrSig - 30);
-		}
-		else if(CurrSig >= 21 && CurrSig <= 30)
-		{
-			RetSig = 54 + (CurrSig - 20);
-		}
-		else if(CurrSig >= 5 && CurrSig <= 20)
-		{
-			RetSig = 42 + (((CurrSig - 5) * 2) / 3);
-		}
-		else if(CurrSig == 4)
-		{
-			RetSig = 36;
-		}
-		else if(CurrSig == 3)
-		{
-			RetSig = 27;
-		}
-		else if(CurrSig == 2)
-		{
-			RetSig = 18;
-		}
-		else if(CurrSig == 1)
-		{
-			RetSig = 9;
-		}
-		else
-		{
-			RetSig = CurrSig;
-		}
-	}
-#endif
 
-#if ((DEV_BUS_TYPE == RT_USB_INTERFACE) ||(DEV_BUS_TYPE == RT_SDIO_INTERFACE))
-	if((pDM_Odm->SupportInterface  == ODM_ITRF_USB) || (pDM_Odm->SupportInterface  == ODM_ITRF_SDIO))
+#if (DEV_BUS_TYPE == RT_SDIO_INTERFACE)
+	if(pDM_Odm->SupportInterface  == ODM_ITRF_SDIO)
 	{
 		if(CurrSig >= 51 && CurrSig <= 100)
 		{
@@ -1413,15 +1367,7 @@ ODM_ConfigRFWithHeaderFile(
 			}
 		}
 		else if(ConfigType == CONFIG_RF_TXPWR_LMT) {
-			
-			if (pDM_Odm->SupportInterface == ODM_ITRF_USB) {
-				if (pDM_Odm->ExtPA5G || pDM_Odm->ExtLNA5G)
-					READ_AND_CONFIG_MP(8821A,_TXPWR_LMT_8811AU_FEM);
-				else
-					READ_AND_CONFIG_MP(8821A,_TXPWR_LMT_8811AU_IPA);				
-			} else {
-				READ_AND_CONFIG_MP(8821A,_TXPWR_LMT_8821A);			
-			}
+			READ_AND_CONFIG_MP(8821A,_TXPWR_LMT_8821A);
 		}
 		ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_LOUD, ("<===8821_ODM_ConfigRFWithHeaderFile\n"));
 	}
@@ -1485,57 +1431,20 @@ ODM_ConfigRFWithTxPwrTrackHeaderFile(
 #if (RTL8821A_SUPPORT == 1) 
 	else if(pDM_Odm->SupportICType == ODM_RTL8821)
 	{
-		if (pDM_Odm->SupportInterface == ODM_ITRF_PCIE)
-			READ_AND_CONFIG_MP(8821A,_TxPowerTrack_PCIE);
-		else if (pDM_Odm->SupportInterface == ODM_ITRF_USB)
-			READ_AND_CONFIG_MP(8821A,_TxPowerTrack_USB);
-		else
-			READ_AND_CONFIG_MP(8821A,_TxPowerTrack_PCIE);
-	}
-#endif
-#if (RTL8812A_SUPPORT == 1)
-	else if(pDM_Odm->SupportICType == ODM_RTL8812)
-	{
-		if (pDM_Odm->SupportInterface == ODM_ITRF_PCIE)
-			READ_AND_CONFIG(8812A,_TxPowerTrack_PCIE);
-		else if (pDM_Odm->SupportInterface == ODM_ITRF_USB) {
-			if (pDM_Odm->RFEType == 3 && pDM_Odm->bIsMPChip) 
-				READ_AND_CONFIG_MP(8812A,_TxPowerTrack_RFE3);	
-			else
-				READ_AND_CONFIG(8812A,_TxPowerTrack_USB);	
-		}
-		
-	}
-#endif
-#if (RTL8192E_SUPPORT == 1) 
-	else if(pDM_Odm->SupportICType == ODM_RTL8192E)
-	{
-		if (pDM_Odm->SupportInterface == ODM_ITRF_PCIE)
-			READ_AND_CONFIG_MP(8192E,_TxPowerTrack_PCIE);
-		else if (pDM_Odm->SupportInterface == ODM_ITRF_USB)
-			READ_AND_CONFIG_MP(8192E,_TxPowerTrack_USB); 
+		READ_AND_CONFIG_MP(8821A,_TxPowerTrack_PCIE);
 	}
 #endif
 #if RTL8723B_SUPPORT 	
 	else if(pDM_Odm->SupportICType == ODM_RTL8723B)
 	{
-		if (pDM_Odm->SupportInterface == ODM_ITRF_PCIE)
-			READ_AND_CONFIG(8723B,_TxPowerTrack_PCIE);
-		else if (pDM_Odm->SupportInterface == ODM_ITRF_USB)
-			READ_AND_CONFIG(8723B,_TxPowerTrack_USB);
-		else if (pDM_Odm->SupportInterface == ODM_ITRF_SDIO)
+		if (pDM_Odm->SupportInterface == ODM_ITRF_SDIO)
 			READ_AND_CONFIG(8723B,_TxPowerTrack_SDIO); 			
 	}
 #endif	
 #if RTL8188E_SUPPORT 	
 	else if(pDM_Odm->SupportICType == ODM_RTL8188E)
 	{
-		if (pDM_Odm->SupportInterface == ODM_ITRF_PCIE)
-			READ_AND_CONFIG_MP(8188E,_TxPowerTrack_PCIE);
-		else if (pDM_Odm->SupportInterface == ODM_ITRF_USB)
-			READ_AND_CONFIG_MP(8188E,_TxPowerTrack_USB);
-		else
-			READ_AND_CONFIG_MP(8188E,_TxPowerTrack_PCIE);
+		READ_AND_CONFIG_MP(8188E,_TxPowerTrack_PCIE);
 	}
 #endif
 

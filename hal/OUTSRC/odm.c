@@ -649,15 +649,6 @@ ODM_DMWatchdog(
 	IN		PDM_ODM_T		pDM_Odm
 	)
 {	
-	if((pDM_Odm->SupportICType == ODM_RTL8821) && (pDM_Odm->SupportInterface == ODM_ITRF_USB))
-	{
-		if(pDM_Odm->RSSI_Min > 25)
-			ODM_Write1Byte(pDM_Odm, 0x4CF, 0x02);
-		else if(pDM_Odm->RSSI_Min < 20)
-			ODM_Write1Byte(pDM_Odm, 0x4CF, 0x00);
-	}
-
-
 	odm_CommonInfoSelfUpdate(pDM_Odm);
 	odm_BasicDbgMessage(pDM_Odm);
 	odm_FalseAlarmCounterStatistics(pDM_Odm);
