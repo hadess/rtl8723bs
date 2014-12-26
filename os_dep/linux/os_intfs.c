@@ -128,11 +128,7 @@ int rtw_lowrate_two_xmit = 1;//Use 2 path Tx to transmit MCS0~7 and legacy mode
 //int rf_config = RF_1T2R;  // 1T2R
 int rtw_rf_config = RF_MAX_TYPE;  //auto
 int rtw_low_power = 0;
-#ifdef CONFIG_WIFI_TEST
-int rtw_wifi_spec = 1;//for wifi test
-#else
 int rtw_wifi_spec = 0;
-#endif
 int rtw_channel_plan = RT_CHANNEL_DOMAIN_MAX;
 
 #ifdef CONFIG_BT_COEXIST
