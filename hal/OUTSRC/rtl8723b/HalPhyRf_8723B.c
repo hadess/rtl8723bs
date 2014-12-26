@@ -2864,9 +2864,7 @@ PHY_APCalibrate_8723B(
 	}
 #endif	
 
-#if FOR_BRAZIL_PRETEST != 1
 	if(pDM_Odm->RFCalibrateInfo.bAPKdone)
-#endif		
 		return;
 
 #if !(DM_ODM_SUPPORT_TYPE & ODM_AP)
