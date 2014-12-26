@@ -40,8 +40,6 @@ typedef enum _HAL_STATUS{
 }HAL_STATUS,*PHAL_STATUS;
 
 
-#define		VISTA_USB_RX_REVISE			0
-
 //
 // Declare for ODM spin lock defintion temporarily fro compile pass.
 //
@@ -57,10 +55,6 @@ typedef enum _RT_SPINLOCK_TYPE{
 	RT_RF_OPERATE_SPINLOCK = 10,
 	RT_INITIAL_SPINLOCK = 11,
 	RT_RF_STATE_SPINLOCK = 12, // For RF state. Added by Bruce, 2007-10-30.
-#if VISTA_USB_RX_REVISE
-	RT_USBRX_CONTEXT_SPINLOCK = 13,
-	RT_USBRX_POSTPROC_SPINLOCK = 14, // protect data of Adapter->IndicateW/ IndicateR
-#endif
 	//Shall we define Ndis 6.2 SpinLock Here ?
 	RT_PORT_SPINLOCK=16,
 	RT_H2C_SPINLOCK = 20, // For H2C cmd. Added by tynli. 2009.11.09.
