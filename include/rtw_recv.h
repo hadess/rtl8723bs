@@ -321,7 +321,6 @@ struct recv_priv
 	uint  rx_smallpacket_crcerr;
 	uint  rx_middlepacket_crcerr;
 
-#if defined(PLATFORM_LINUX)
 	struct tasklet_struct irq_prepare_beacon_tasklet;
 	struct tasklet_struct recv_tasklet;
 	struct sk_buff_head free_recv_skb_queue;
@@ -330,8 +329,6 @@ struct recv_priv
 	struct task rx_indicate_tasklet;
 	struct ifqueue rx_indicate_queue;
 #endif	// CONFIG_RX_INDICATE_QUEUE
-
-#endif //defined(PLATFORM_LINUX)
 
 	u8 *pallocated_recv_buf;
 	u8 *precv_buf;    // 4 alignment
@@ -412,10 +409,8 @@ struct recv_buf
 	u8	*ptail;
 	u8	*pend;
 
-#ifdef PLATFORM_LINUX
 	_pkt	*pskb;
 	u8	reuse;
-#endif
 };
 
 

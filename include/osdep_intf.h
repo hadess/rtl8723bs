@@ -69,7 +69,6 @@ void rtw_cancel_dynamic_chk_timer(_adapter *padapter);
 #endif
 void rtw_cancel_all_timer(_adapter *padapter);
 
-#ifdef PLATFORM_LINUX
 int rtw_ioctl(struct net_device *dev, struct ifreq *rq, int cmd);
 
 int rtw_init_netdev_name(struct net_device *pnetdev, const char *ifname);
@@ -84,8 +83,6 @@ int rtw_ndev_notifier_register(void);
 void rtw_ndev_notifier_unregister(void);
 
 #include "../os_dep/linux/rtw_proc.h"
-#endif //PLATFORM_LINUX
-
 
 void rtw_ips_dev_unload(_adapter *padapter);
 

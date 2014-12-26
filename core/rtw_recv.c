@@ -2586,7 +2586,6 @@ _func_exit_;
 
 
 #if defined(CONFIG_SDIO_HCI)
-#ifdef PLATFORM_LINUX
 static void recvframe_expand_pkt(
 	PADAPTER padapter,
 	union recv_frame *prframe)
@@ -2635,9 +2634,6 @@ static void recvframe_expand_pkt(
 	pfhdr->rx_tail = skb_tail_pointer(ppkt);
 	pfhdr->rx_end = skb_end_pointer(ppkt);
 }
-#else
-#warning "recvframe_expand_pkt not implement, defrag may crash system"
-#endif
 #endif
 
 //perform defrag

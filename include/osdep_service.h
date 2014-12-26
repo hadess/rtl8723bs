@@ -33,9 +33,7 @@
 #define _FALSE		0
 
 
-#ifdef PLATFORM_LINUX
 #include <osdep_service_linux.h>
-#endif
 
 #define RTW_TIMER_HDL_NAME(name) rtw_##name##_timer_hdl
 #define RTW_DECLARE_TIMER_HDL(name) void RTW_TIMER_HDL_NAME(name)(RTW_TIMER_HDL_ARGS)
@@ -278,51 +276,37 @@ extern void rtw_init_timer(_timer *ptimer, void *padapter, void *pfunc);
 
 __inline static unsigned char _cancel_timer_ex(_timer *ptimer)
 {
-#ifdef PLATFORM_LINUX
 	return del_timer_sync(ptimer);
-#endif
 }
 
 static __inline void thread_enter(char *name)
 {
-#ifdef PLATFORM_LINUX
 	#if (LINUX_VERSION_CODE < KERNEL_VERSION(3, 8, 0))
 	daemonize("%s", name);
 	#endif
 	allow_signal(SIGTERM);
-#endif
 }
 
 __inline static void flush_signals_thread(void) 
 {
-#ifdef PLATFORM_LINUX
 	if (signal_pending (current)) 
 	{
 		flush_signals(current);
 	}
-#endif
 }
 
 __inline static _OS_STATUS res_to_status(sint res)
 {
 
-#if defined (PLATFORM_LINUX) || defined (PLATFORM_MPIXEL)
 	return res;
-#endif
 }
 
 __inline static void rtw_dump_stack(void)
 {
-#ifdef PLATFORM_LINUX
 	dump_stack();
-#endif
 }
 
-#ifdef PLATFORM_LINUX
 #define rtw_warn_on(condition) WARN_ON(condition)
-#else
-#define rtw_warn_on(condition) do {} while (0)
-#endif
 
 __inline static int rtw_bug_check(void *parg1, void *parg2, void *parg3, void *parg4)
 {
@@ -535,11 +519,7 @@ void rtw_cbuf_free(struct rtw_cbuf *cbuf);
 /*
  * Write formatted output to sized buffer
  */
-#ifdef PLATFORM_LINUX
 #define rtw_sprintf(buf, size, format, arg...)	snprintf(buf, size, format, ##arg)
-#else // !PLATFORM_LINUX
-#error "NOT DEFINE \"rtw_sprintf\"!!"
-#endif // !PLATFORM_LINUX
 
 #endif
 

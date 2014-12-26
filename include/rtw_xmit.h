@@ -332,9 +332,7 @@ struct  submit_ctx{
 	unsigned long submit_time; /* */
 	u32 timeout_ms; /* <0: not synchronous, 0: wait forever, >0: up to ms waiting */
 	int status; /* status for operation */
-#ifdef PLATFORM_LINUX
 	struct completion done;
-#endif
 };
 
 enum {
@@ -537,9 +535,7 @@ struct	xmit_priv	{
 
 #ifdef CONFIG_SDIO_HCI
 #ifdef CONFIG_SDIO_TX_TASKLET
-	#ifdef PLATFORM_LINUX
 	struct tasklet_struct xmit_tasklet;
-	#endif /* PLATFORM_LINUX */
 #else
 	_thread_hdl_	SdioXmitThread;
 	_sema		SdioXmitSema;

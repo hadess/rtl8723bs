@@ -36,8 +36,6 @@
 	#define _FALSE	FALSE	
 #endif
 
-#ifdef PLATFORM_LINUX
-
 	#include <linux/types.h>
 	#define IN
 	#define OUT
@@ -62,8 +60,6 @@
 	typedef 	__kernel_size_t	SIZE_T;	
 	typedef	__kernel_ssize_t	SSIZE_T;
 	#define FIELD_OFFSET(s,field)	((SSIZE_T)&((s*)(0))->field)
-	
-#endif
 
 #define MEM_ALIGNMENT_OFFSET	(sizeof (SIZE_T))
 #define MEM_ALIGNMENT_PADDING	(sizeof(SIZE_T) - 1)

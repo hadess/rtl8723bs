@@ -21,7 +21,6 @@
 #define __DRV_TYPES_SDIO_H__
 
 // SDIO Header Files
-#ifdef PLATFORM_LINUX
 	#include <linux/mmc/sdio_func.h> 
 	#include <linux/mmc/sdio_ids.h>
 
@@ -34,7 +33,6 @@
 	#include <linux/gpio.h>
 	#include <custom_gpio.h>
 #endif // CONFIG_PLATFORM_SPRD
-#endif
 
 typedef struct sdio_data
 {
@@ -44,10 +42,8 @@ typedef struct sdio_data
 	u8  rx_block_mode;
 	u32 block_transfer_len;
 
-#ifdef PLATFORM_LINUX
 	struct sdio_func	 *func;
 	_thread_hdl_ sys_sdio_irq_thd;
-#endif
 } SDIO_DATA, *PSDIO_DATA;
 
 #endif

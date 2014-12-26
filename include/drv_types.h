@@ -39,9 +39,7 @@
 #include <net/arp.h>
 #endif
 
-#ifdef PLATFORM_LINUX
 #include <drv_types_linux.h>
-#endif
 
 enum _NIC_VERSION {
 
@@ -597,7 +595,6 @@ struct dvobj_priv
 #define dvobj_to_pwrctl(dvobj) (&(dvobj->pwrctl_priv))
 #define pwrctl_to_dvobj(pwrctl) container_of(pwrctl, struct dvobj_priv, pwrctl_priv)
 
-#ifdef PLATFORM_LINUX
 static struct device *dvobj_to_dev(struct dvobj_priv *dvobj)
 {
 	/* todo: get interface type from dvobj and the return the dev accordingly */
@@ -608,7 +605,6 @@ static struct device *dvobj_to_dev(struct dvobj_priv *dvobj)
 	return &dvobj->intf_data.func->dev;
 #endif
 }
-#endif
 
 _adapter *dvobj_get_port0_adapter(struct dvobj_priv *dvobj);
 
@@ -729,11 +725,6 @@ struct _ADAPTER{
 	_thread_hdl_ xmitThread;
 	_thread_hdl_ recvThread;
 
-#ifndef PLATFORM_LINUX
-	NDIS_STATUS (*dvobj_init)(struct dvobj_priv *dvobj);
-	void (*dvobj_deinit)(struct dvobj_priv *dvobj);
-#endif
-
  	u32 (*intf_init)(struct dvobj_priv *dvobj);
 	void (*intf_deinit)(struct dvobj_priv *dvobj);
 	int (*intf_alloc_irq)(struct dvobj_priv *dvobj);
@@ -743,7 +734,6 @@ struct _ADAPTER{
 	void (*intf_start)(_adapter * adapter);
 	void (*intf_stop)(_adapter * adapter);
 
-#ifdef PLATFORM_LINUX
 	_nic_hdl pnetdev;
 	char old_ifname[IFNAMSIZ];
 
@@ -763,8 +753,6 @@ struct _ADAPTER{
 
 	struct wireless_dev *rtw_wdev;
 	struct rtw_wdev_priv wdev_data;
-
-#endif //end of PLATFORM_LINUX
 
 	int net_closed;
 	

@@ -34,7 +34,6 @@
 #define CONFIG_SDIO_HCI
 
 //#define CONFIG_SDIO_HCI config from Makefile
-#define PLATFORM_LINUX
 
 #define CONFIG_EMBEDDED_FWIMG
 //#define CONFIG_FILE_FWIMG

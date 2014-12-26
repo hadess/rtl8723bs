@@ -21,9 +21,7 @@
 #define __SDIO_OPS_H__
 
 
-#ifdef PLATFORM_LINUX
 #include <sdio_ops_linux.h>
-#endif
 
 extern void sdio_set_intf_ops(_adapter *padapter,struct _io_ops *pops);
 	

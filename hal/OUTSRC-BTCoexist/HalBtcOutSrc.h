@@ -103,7 +103,7 @@ extern u4Byte					GLBtcDbgType[];
 #define		WIFI_P2P_GC_CONNECTED			BIT4
 
 // following is for command line utility
-#define	CL_SPRINTF	rsprintf
+#define	CL_SPRINTF	snprintf
 #define	CL_PRINTF	DCMD_Printf
 
 // The following is for dbgview print
