@@ -82,7 +82,6 @@ typedef struct _ADAPTER _adapter, ADAPTER,*PADAPTER;
 
 #include <recv_osdep.h>
 #include <rtw_efuse.h>
-#include <rtw_sreset.h>
 #include <hal_intf.h>
 #include <hal_com.h>
 #include <hal_com_led.h>
@@ -497,7 +496,6 @@ struct debug_priv {
 	u32 dbg_poll_fail_cnt;
 	u32 dbg_rpwm_toogle_cnt;
 	u32 dbg_rpwm_timeout_fail_cnt;
-	u32 dbg_sreset_cnt;
 	u64 dbg_rx_fifo_last_overflow;
 	u64 dbg_rx_fifo_curr_overflow;
 	u64 dbg_rx_fifo_diff_overflow;

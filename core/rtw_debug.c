@@ -714,7 +714,6 @@ int proc_get_suspend_resume_info(struct seq_file *m, void *v)
 	DBG_871X_SEL_NL(m, "dbg_poll_fail_cnt=%d\n", pdbgpriv->dbg_poll_fail_cnt);
 	DBG_871X_SEL_NL(m, "dbg_rpwm_toogle_cnt=%d\n", pdbgpriv->dbg_rpwm_toogle_cnt);
 	DBG_871X_SEL_NL(m, "dbg_rpwm_timeout_fail_cnt=%d\n", pdbgpriv->dbg_rpwm_timeout_fail_cnt);
-	DBG_871X_SEL_NL(m, "dbg_sreset_cnt=%d\n", pdbgpriv->dbg_sreset_cnt);
 
 	return 0;
 }

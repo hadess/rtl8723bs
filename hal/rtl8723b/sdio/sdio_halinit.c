@@ -2164,16 +2164,6 @@ _func_enter_;
 					DBG_871X("TXDMA STATUS: 0x%08x\n",rtw_read32(padapter, REG_TXDMA_STATUS));
 #endif
 
-#ifdef DBG_CONFIG_ERROR_RESET
-					//reset
-					if (pwrctl->wowlan_wake_reason == FWDecisionDisconnect ||
-						pwrctl->wowlan_wake_reason == Rx_DisAssoc ||
-						pwrctl->wowlan_wake_reason == Rx_DeAuth)
-					{
-						rtw_hal_sreset_reset(padapter);
-					}
-					else
-#endif //DBG_CONFIG_ERROR_RESET
 					{
 						// 2.  Set Disable WOWLAN H2C command.
 						DBG_871X_LEVEL(_drv_always_, "Set Disable WOWLan cmd\n");

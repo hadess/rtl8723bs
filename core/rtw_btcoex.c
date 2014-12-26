@@ -64,15 +64,6 @@ void rtw_btcoex_ScanNotify(PADAPTER padapter, u8 type)
 
 void rtw_btcoex_ConnectNotify(PADAPTER padapter, u8 action)
 {
-#ifdef DBG_CONFIG_ERROR_RESET
-	if (_TRUE == rtw_hal_sreset_inprogress(padapter))
-	{
-		DBG_8192C(FUNC_ADPT_FMT ": [BTCoex] under reset, skip notify!\n",
-			FUNC_ADPT_ARG(padapter));
-		return;
-	}
-#endif // DBG_CONFIG_ERROR_RESET
-		
 #ifdef CONFIG_CONCURRENT_MODE
 	if ((_FALSE == action) && (padapter->pbuddy_adapter))
 	{
@@ -87,15 +78,6 @@ void rtw_btcoex_ConnectNotify(PADAPTER padapter, u8 action)
 
 void rtw_btcoex_MediaStatusNotify(PADAPTER padapter, u8 mediaStatus)
 {
-#ifdef DBG_CONFIG_ERROR_RESET
-	if (_TRUE == rtw_hal_sreset_inprogress(padapter))
-	{
-		DBG_8192C(FUNC_ADPT_FMT ": [BTCoex] under reset, skip notify!\n",
-			FUNC_ADPT_ARG(padapter));
-		return;
-	}
-#endif // DBG_CONFIG_ERROR_RESET
-
 #ifdef CONFIG_CONCURRENT_MODE
 	if ((RT_MEDIA_DISCONNECT == mediaStatus) && (padapter->pbuddy_adapter))
 	{
