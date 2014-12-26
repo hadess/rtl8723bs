@@ -170,13 +170,7 @@ typedef enum tag_DIG_Connect_Definition
 #define		DM_DIG_MAX_AP_HP				0x42
 #define		DM_DIG_MIN_AP_HP				0x30
 
-//vivi 92c&92d has different definition, 20110504
-//this is for 92c
-#ifdef CONFIG_SPECIAL_SETTING_FOR_FUNAI_TV
-#define		DM_DIG_FA_TH0				0x80//0x20
-#else
 #define		DM_DIG_FA_TH0				0x200//0x20
-#endif
 
 #define		DM_DIG_FA_TH1					0x300
 #define		DM_DIG_FA_TH2					0x400

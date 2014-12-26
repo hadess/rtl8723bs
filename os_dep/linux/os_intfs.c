@@ -181,13 +181,6 @@ int rtw_dmsp = 0;
 int rtw_80211d = 0;
 #endif
 
-#ifdef CONFIG_SPECIAL_SETTING_FOR_FUNAI_TV
-int rtw_force_ant = 2;//0 :normal, 1:Main ant, 2:Aux ant
-int rtw_force_igi =0;//0 :normal
-module_param(rtw_force_ant, int, 0644);
-module_param(rtw_force_igi, int, 0644);
-#endif
-
 #ifdef CONFIG_QOS_OPTIMIZATION
 int rtw_qos_opt_enable=1;//0: disable,1:enable
 #else
@@ -490,11 +483,6 @@ _func_enter_;
 	snprintf(registry_par->if2name, 16, "%s", if2name);
 
 	registry_par->notch_filter = (u8)rtw_notch_filter;
-
-#ifdef CONFIG_SPECIAL_SETTING_FOR_FUNAI_TV
-	registry_par->force_ant = (u8)rtw_force_ant;
-	registry_par->force_igi = (u8)rtw_force_igi;
-#endif
 
 #ifdef CONFIG_MULTI_VIR_IFACES
 	registry_par->ext_iface_num = (u8)rtw_ext_iface_num;
