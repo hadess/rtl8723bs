@@ -122,9 +122,7 @@ ODM_TXPowerTrackingCallback_ThermalMeter(
 
 #if !(DM_ODM_SUPPORT_TYPE & ODM_AP)
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
-	#if (DM_ODM_SUPPORT_TYPE == ODM_WIN)
-	PDM_ODM_T		pDM_Odm = &pHalData->DM_OutSrc;
-	#elif (DM_ODM_SUPPORT_TYPE == ODM_CE)
+	#if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 	PDM_ODM_T		pDM_Odm = &pHalData->odmpriv;
 	#endif
 #endif
@@ -220,7 +218,7 @@ ODM_TXPowerTrackingCallback_ThermalMeter(
 	if (delta > 0 && pDM_Odm->RFCalibrateInfo.TxPowerTrackControl)
 	{
 		//"delta" here is used to record the absolute value of differrence.
-#if (DM_ODM_SUPPORT_TYPE & (ODM_WIN|ODM_CE))			
+#if (DM_ODM_SUPPORT_TYPE & (ODM_CE))			
 	    delta = ThermalValue > pHalData->EEPROMThermalMeter?(ThermalValue - pHalData->EEPROMThermalMeter):(pHalData->EEPROMThermalMeter - ThermalValue);		
 #else
 	    delta = (ThermalValue > pDM_Odm->priv->pmib->dot11RFEntry.ther)?(ThermalValue - pDM_Odm->priv->pmib->dot11RFEntry.ther):(pDM_Odm->priv->pmib->dot11RFEntry.ther - ThermalValue);		
@@ -230,7 +228,7 @@ ODM_TXPowerTrackingCallback_ThermalMeter(
 
 		//4 7.1 The Final Power Index = BaseIndex + PowerIndexOffset
 		
-#if (DM_ODM_SUPPORT_TYPE & (ODM_WIN|ODM_CE))				
+#if (DM_ODM_SUPPORT_TYPE & (ODM_CE))				
 		if(ThermalValue > pHalData->EEPROMThermalMeter) {
 #else
 		if(ThermalValue > pDM_Odm->priv->pmib->dot11RFEntry.ther) {
@@ -465,7 +463,7 @@ ODM_ResetIQKResult(
 )
 {
 	u1Byte		i;
-#if (DM_ODM_SUPPORT_TYPE == ODM_WIN || DM_ODM_SUPPORT_TYPE == ODM_CE)
+#if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 	PADAPTER	Adapter = pDM_Odm->Adapter;
 
 	if (!IS_HARDWARE_TYPE_8192D(Adapter))

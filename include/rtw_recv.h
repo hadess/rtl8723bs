@@ -126,11 +126,7 @@ typedef struct _ODM_Phy_Status_Info_
 	// Be care, if you want to add any element please insert between 
 	// RxPWDBAll & SignalStrength.
 	//
-#if (DM_ODM_SUPPORT_TYPE &  (ODM_WIN))
-	u4Byte		RxPWDBAll;	
-#else
 	u1Byte		RxPWDBAll;	
-#endif
 
 	u1Byte		SignalQuality;	 		// in 0-100 index. 
 	s1Byte		RxMIMOSignalQuality[4];	//per-path's EVM
@@ -141,7 +137,7 @@ typedef struct _ODM_Phy_Status_Info_
 	u2Byte		Cfo_short[4]; 			// per-path's Cfo_short
 	u2Byte		Cfo_tail[4];			// per-path's Cfo_tail
 	
-#if (DM_ODM_SUPPORT_TYPE &  (ODM_WIN|ODM_CE))
+#if (DM_ODM_SUPPORT_TYPE & ODM_CE)
 	s1Byte		RxPower;				// in dBm Translate from PWdB
 	s1Byte		RecvSignalPower;		// Real power in dBm for this packet, no beautification and aggregation. Keep this raw info to be used for the other procedures.
 	u1Byte		BTRxRSSIPercentage;	

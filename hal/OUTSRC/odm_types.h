@@ -26,7 +26,6 @@
 #define	ODM_AP		 	0x01	//BIT0 
 #define	ODM_ADSL	 	0x02	//BIT1
 #define	ODM_CE		 	0x04	//BIT2
-#define	ODM_WIN		 	0x08	//BIT3
 
 #define	DM_ODM_SUPPORT_TYPE			ODM_CE
 
@@ -34,17 +33,13 @@
 #define	ODM_ENDIAN_BIG	0
 #define	ODM_ENDIAN_LITTLE	1
 
-#if (DM_ODM_SUPPORT_TYPE == ODM_WIN)
-#define GET_ODM(__pAdapter)	((PDM_ODM_T)(&((GET_HAL_DATA(__pAdapter))->DM_OutSrc)))
-#elif (DM_ODM_SUPPORT_TYPE == ODM_CE)
+#if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 #define GET_ODM(__pAdapter)	((PDM_ODM_T)(&((GET_HAL_DATA(__pAdapter))->odmpriv)))
 #endif
 
-#if (DM_ODM_SUPPORT_TYPE != ODM_WIN)
 #define 	RT_PCI_INTERFACE				1
 #define 	RT_USB_INTERFACE				2
 #define 	RT_SDIO_INTERFACE				3
-#endif
 
 typedef enum _HAL_STATUS{
 	HAL_STATUS_SUCCESS,
@@ -110,15 +105,7 @@ typedef enum _RT_SPINLOCK_TYPE{
 #endif
 
 
-#if (DM_ODM_SUPPORT_TYPE == ODM_WIN)
-	#define	STA_INFO_T			RT_WLAN_STA
-	#define	PSTA_INFO_T			PRT_WLAN_STA
-
-//    typedef unsigned long		u4Byte,*pu4Byte;
-#define CONFIG_HW_ANTENNA_DIVERSITY 
-#define CONFIG_SW_ANTENNA_DIVERSITY 
-
-#elif (DM_ODM_SUPPORT_TYPE == ODM_AP)
+#if (DM_ODM_SUPPORT_TYPE == ODM_AP)
 
 	// To let ADSL/AP project compile ok; it should be removed after all conflict are solved. Added by Annie, 2011-10-07.
 	#define ADSL_AP_BUILD_WORKAROUND

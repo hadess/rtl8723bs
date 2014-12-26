@@ -183,37 +183,13 @@ void DoIQK_8723B(
 
 	ODM_ResetIQKResult(pDM_Odm);		
 
-#if(DM_ODM_SUPPORT_TYPE  & ODM_WIN)
-#if (DEV_BUS_TYPE == RT_PCI_INTERFACE)	
-#if USE_WORKITEM
-	PlatformAcquireMutex(&pHalData->mxChnlBwControl);
-#else
-	PlatformAcquireSpinLock(Adapter, RT_CHANNEL_AND_BANDWIDTH_SPINLOCK);
-#endif
-#elif((DEV_BUS_TYPE == RT_USB_INTERFACE) || (DEV_BUS_TYPE == RT_SDIO_INTERFACE))
-	PlatformAcquireMutex(&pHalData->mxChnlBwControl);
-#endif
-#endif			
-
-
 	pDM_Odm->RFCalibrateInfo.ThermalValue_IQK= ThermalValue;
 #if (DM_ODM_SUPPORT_TYPE & ODM_AP)
 	PHY_IQCalibrate_8723B(pDM_Odm, FALSE, FALSE);
 #else
 	PHY_IQCalibrate_8723B(Adapter, FALSE, FALSE);
 #endif
-	
-#if(DM_ODM_SUPPORT_TYPE  & ODM_WIN)
-#if (DEV_BUS_TYPE == RT_PCI_INTERFACE)	
-#if USE_WORKITEM
-	PlatformReleaseMutex(&pHalData->mxChnlBwControl);
-#else
-	PlatformReleaseSpinLock(Adapter, RT_CHANNEL_AND_BANDWIDTH_SPINLOCK);
-#endif
-#elif((DEV_BUS_TYPE == RT_USB_INTERFACE) || (DEV_BUS_TYPE == RT_SDIO_INTERFACE))
-	PlatformReleaseMutex(&pHalData->mxChnlBwControl);
-#endif
-#endif
+
 #endif // #if 0
 }
 
@@ -257,9 +233,7 @@ ODM_TxPwrTrackSetPwr_8723B(
 		if(!rate) //auto rate
 		{
 			if(pDM_Odm->TxRate != 0xFF)
-				#if (DM_ODM_SUPPORT_TYPE & (ODM_WIN))
-				TxRate = Adapter->HalFunc.GetHwRateFromMRateHandler(pDM_Odm->TxRate);
-				#elif (DM_ODM_SUPPORT_TYPE & (ODM_CE))
+				#if (DM_ODM_SUPPORT_TYPE & (ODM_CE))
 				TxRate = HwRateToMRate(pDM_Odm->TxRate);
 				#endif
 		}
@@ -305,7 +279,7 @@ ODM_TxPwrTrackSetPwr_8723B(
 
 		pDM_Odm->Remnant_OFDMSwingIdx[RFPath] = pDM_Odm->Absolute_OFDMSwingIdx[RFPath];
 
-#if (DM_ODM_SUPPORT_TYPE & (ODM_WIN|ODM_CE ))
+#if (DM_ODM_SUPPORT_TYPE & ODM_CE)
 		{
 		        pDM_Odm->Modify_TxAGC_Flag_PathA = TRUE;
 		        pDM_Odm->Modify_TxAGC_Flag_PathA_CCK = TRUE;
@@ -538,9 +512,6 @@ phy_PathA_IQK_8723B(
 	#if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 	PDM_ODM_T		pDM_Odm = &pHalData->odmpriv;
 	#endif
-	#if (DM_ODM_SUPPORT_TYPE == ODM_WIN)
-	PDM_ODM_T		pDM_Odm = &pHalData->DM_OutSrc;
-	#endif
 #endif	
 
 
@@ -672,9 +643,6 @@ phy_PathA_RxIQK8723B(
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
 	#if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 	PDM_ODM_T		pDM_Odm = &pHalData->odmpriv;
-	#endif
-	#if (DM_ODM_SUPPORT_TYPE == ODM_WIN)
-	PDM_ODM_T		pDM_Odm = &pHalData->DM_OutSrc;
 	#endif
 #endif	
 //	ODM_RT_TRACE(pDM_Odm,ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("Path A Rx IQK!\n"));
@@ -910,9 +878,6 @@ phy_PathB_IQK_8723B(
 	#if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 	PDM_ODM_T		pDM_Odm = &pHalData->odmpriv;
 	#endif
-	#if (DM_ODM_SUPPORT_TYPE == ODM_WIN)
-	PDM_ODM_T		pDM_Odm = &pHalData->DM_OutSrc;
-	#endif
 #endif	
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_CALIBRATION, ODM_DBG_LOUD,  ("Path B IQK!\n"));
 
@@ -1040,9 +1005,6 @@ phy_PathB_RxIQK8723B(
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
 	#if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 	PDM_ODM_T		pDM_Odm = &pHalData->odmpriv;
-	#endif
-	#if (DM_ODM_SUPPORT_TYPE == ODM_WIN)
-	PDM_ODM_T		pDM_Odm = &pHalData->DM_OutSrc;
 	#endif
 #endif	
 //	ODM_RT_TRACE(pDM_Odm,ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("Path B Rx IQK!\n"));
@@ -1291,9 +1253,6 @@ _PHY_PathAFillIQKMatrix8723B(
 	#if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 	PDM_ODM_T		pDM_Odm = &pHalData->odmpriv;
 	#endif
-	#if (DM_ODM_SUPPORT_TYPE == ODM_WIN)
-	PDM_ODM_T		pDM_Odm = &pHalData->DM_OutSrc;
-	#endif
 #endif	
 	PODM_RF_CAL_T	pRFCalibrateInfo = &(pDM_Odm->RFCalibrateInfo);
 
@@ -1387,9 +1346,6 @@ _PHY_PathBFillIQKMatrix8723B(
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter); 	
 	#if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 	PDM_ODM_T		pDM_Odm = &pHalData->odmpriv;
-	#endif
-	#if (DM_ODM_SUPPORT_TYPE == ODM_WIN)
-	PDM_ODM_T		pDM_Odm = &pHalData->DM_OutSrc;
 	#endif
 #endif	
 	PODM_RF_CAL_T	pRFCalibrateInfo = &(pDM_Odm->RFCalibrateInfo);
@@ -1501,7 +1457,6 @@ ODM_SetIQCbyRFpath(
   }	
 }
 
-#if !(DM_ODM_SUPPORT_TYPE & ODM_WIN) 
 BOOLEAN
 ODM_CheckPowerStatus(
 	IN	PADAPTER		Adapter)
@@ -1532,7 +1487,6 @@ ODM_CheckPowerStatus(
 */
 	return	TRUE;
 }
-#endif
 
 VOID
 _PHY_SaveADDARegisters8723B(
@@ -1552,10 +1506,7 @@ _PHY_SaveADDARegisters8723B(
 	#if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 	PDM_ODM_T		pDM_Odm = &pHalData->odmpriv;
 	#endif
-	#if (DM_ODM_SUPPORT_TYPE == ODM_WIN)
-	PDM_ODM_T		pDM_Odm = &pHalData->DM_OutSrc;
-	#endif
-	
+
 	if (ODM_CheckPowerStatus(pAdapter) == FALSE)
 		return;
 #endif
@@ -1583,9 +1534,6 @@ _PHY_SaveMACRegisters8723B(
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
 	#if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 	PDM_ODM_T		pDM_Odm = &pHalData->odmpriv;
-	#endif
-	#if (DM_ODM_SUPPORT_TYPE == ODM_WIN)
-	PDM_ODM_T		pDM_Odm = &pHalData->DM_OutSrc;
 	#endif
 #endif	
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("Save MAC parameters.\n"));
@@ -1615,9 +1563,6 @@ _PHY_ReloadADDARegisters8723B(
 	#if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 	PDM_ODM_T		pDM_Odm = &pHalData->odmpriv;
 	#endif
-	#if (DM_ODM_SUPPORT_TYPE == ODM_WIN)
-	PDM_ODM_T		pDM_Odm = &pHalData->DM_OutSrc;
-	#endif
 #endif
 	
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("Reload ADDA power saving parameters !\n"));
@@ -1643,9 +1588,6 @@ _PHY_ReloadMACRegisters8723B(
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
 	#if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 	PDM_ODM_T		pDM_Odm = &pHalData->odmpriv;
-	#endif
-	#if (DM_ODM_SUPPORT_TYPE == ODM_WIN)
-	PDM_ODM_T		pDM_Odm = &pHalData->DM_OutSrc;
 	#endif
 #endif
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_CALIBRATION, ODM_DBG_LOUD,  ("Reload MAC parameters !\n"));
@@ -1674,9 +1616,6 @@ _PHY_PathADDAOn8723B(
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
 	#if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 	PDM_ODM_T		pDM_Odm = &pHalData->odmpriv;
-	#endif
-	#if (DM_ODM_SUPPORT_TYPE == ODM_WIN)
-	PDM_ODM_T		pDM_Odm = &pHalData->DM_OutSrc;
 	#endif
 #endif
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("ADDA ON.\n"));
@@ -1713,9 +1652,6 @@ _PHY_MACSettingCalibration8723B(
 	#if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 	PDM_ODM_T		pDM_Odm = &pHalData->odmpriv;
 	#endif
-	#if (DM_ODM_SUPPORT_TYPE == ODM_WIN)
-	PDM_ODM_T		pDM_Odm = &pHalData->DM_OutSrc;
-	#endif
 #endif	
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("MAC settings for Calibration.\n"));
 
@@ -1741,9 +1677,6 @@ _PHY_PathAStandBy8723B(
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
 	#if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 	PDM_ODM_T		pDM_Odm = &pHalData->odmpriv;
-	#endif
-	#if (DM_ODM_SUPPORT_TYPE == ODM_WIN)
-	PDM_ODM_T		pDM_Odm = &pHalData->DM_OutSrc;
 	#endif
 #endif	
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_CALIBRATION, ODM_DBG_LOUD,  ("Path-A standby mode!\n"));
@@ -1772,9 +1705,6 @@ _PHY_PIModeSwitch8723B(
 	#if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 	PDM_ODM_T		pDM_Odm = &pHalData->odmpriv;
 	#endif
-	#if (DM_ODM_SUPPORT_TYPE == ODM_WIN)
-	PDM_ODM_T		pDM_Odm = &pHalData->DM_OutSrc;
-	#endif
 #endif	
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("BB Switch to %s mode!\n", (PIMode ? "PI" : "SI")));
 
@@ -1800,9 +1730,6 @@ phy_SimularityCompare_8723B(
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter); 
 	#if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 	PDM_ODM_T		pDM_Odm = &pHalData->odmpriv;
-	#endif
-	#if (DM_ODM_SUPPORT_TYPE == ODM_WIN)
-	PDM_ODM_T		pDM_Odm = &pHalData->DM_OutSrc;
 	#endif
 #endif	
 	u1Byte		final_candidate[2] = {0xFF, 0xFF};	//for path A and path B
@@ -1931,9 +1858,6 @@ phy_IQCalibrate_8723B(
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter); 
 	#if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 	PDM_ODM_T		pDM_Odm = &pHalData->odmpriv;
-	#endif
-	#if (DM_ODM_SUPPORT_TYPE == ODM_WIN)
-	PDM_ODM_T		pDM_Odm = &pHalData->DM_OutSrc;
 	#endif
 #endif	
 	u4Byte			i;
@@ -2402,9 +2326,6 @@ phy_APCalibrate_8723B(
 	#if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 	PDM_ODM_T		pDM_Odm = &pHalData->odmpriv;
 	#endif
-	#if (DM_ODM_SUPPORT_TYPE == ODM_WIN)
-	PDM_ODM_T		pDM_Odm = &pHalData->DM_OutSrc;
-	#endif
 #endif
 	u4Byte			regD[PATH_NUM];
 	u4Byte			tmpReg, index, offset,	apkbound;
@@ -2536,11 +2457,7 @@ PHY_IQCalibrate_8723B(
 #if !(DM_ODM_SUPPORT_TYPE & ODM_AP)
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter); 
 
-	#if (DM_ODM_SUPPORT_TYPE == ODM_WIN)
-	PDM_ODM_T		pDM_Odm = &pHalData->DM_OutSrc; 
-	#else  // (DM_ODM_SUPPORT_TYPE == ODM_CE)
 	PDM_ODM_T		pDM_Odm = &pHalData->odmpriv;	
-	#endif
 
 #endif	
 
@@ -2561,7 +2478,7 @@ PHY_IQCalibrate_8723B(
 	u4Byte			StartTime; 
 	s4Byte			ProgressingTime;
 
-#if (DM_ODM_SUPPORT_TYPE & (ODM_WIN|ODM_CE) )
+#if (DM_ODM_SUPPORT_TYPE & ODM_CE)
 	if (ODM_CheckPowerStatus(pAdapter) == FALSE)
 		return;
 #else
@@ -2653,8 +2570,6 @@ PHY_IQCalibrate_8723B(
 
 #if (DM_ODM_SUPPORT_TYPE & (ODM_CE|ODM_AP))
 	if(bReCovery)
-#else//for ODM_WIN
-	if(bReCovery && (!pAdapter->bInHctTest))  //YJ,add for PowerTest,120405
 #endif	
 	{
 		ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_LOUD, ("PHY_IQCalibrate_8723B: Return due to bReCovery!\n"));
@@ -2936,9 +2851,6 @@ PHY_APCalibrate_8723B(
 	#if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 	PDM_ODM_T		pDM_Odm = &pHalData->odmpriv;
 	#endif
-	#if (DM_ODM_SUPPORT_TYPE == ODM_WIN)
-	PDM_ODM_T		pDM_Odm = &pHalData->DM_OutSrc;
-	#endif
 #endif	
 #if DISABLE_BB_RF
 	return;
@@ -2986,9 +2898,6 @@ VOID phy_SetRFPathSwitch_8723B(
 #if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 	PDM_ODM_T		pDM_Odm = &pHalData->odmpriv;
 #endif
-#if (DM_ODM_SUPPORT_TYPE == ODM_WIN)
-	PDM_ODM_T		pDM_Odm = &pHalData->DM_OutSrc;
-#endif
 
 	if(bMain) // Left antenna	
 	{
@@ -3018,113 +2927,3 @@ VOID PHY_SetRFPathSwitch_8723B(
 #endif		
 
 }
-
-#if (DM_ODM_SUPPORT_TYPE == ODM_WIN)
-//digital predistortion
-VOID	
-phy_DigitalPredistortion8723B(
-#if !(DM_ODM_SUPPORT_TYPE & ODM_AP)
-	IN	PADAPTER	pAdapter,
-#else
-	IN PDM_ODM_T	pDM_Odm,
-#endif
-	IN	BOOLEAN 	is2T
-	)
-{
-}
-
-VOID
-PHY_DigitalPredistortion_8723B(
-#if !(DM_ODM_SUPPORT_TYPE & ODM_AP)
-	IN	PADAPTER	pAdapter
-#else
-	IN PDM_ODM_T	pDM_Odm
-#endif		
-	)
-{
-#if !(DM_ODM_SUPPORT_TYPE & ODM_AP)
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
-	#if (DM_ODM_SUPPORT_TYPE == ODM_CE)
-	PDM_ODM_T		pDM_Odm = &pHalData->odmpriv;
-	#endif
-	#if (DM_ODM_SUPPORT_TYPE == ODM_WIN)
-	PDM_ODM_T		pDM_Odm = &pHalData->DM_OutSrc;
-	#endif
-#endif	
-#if DISABLE_BB_RF
-	return;
-#endif
-
-	return;
-
-	if(pDM_Odm->RFCalibrateInfo.bDPdone)
-		return;
-#if !(DM_ODM_SUPPORT_TYPE & ODM_AP)
-
-	if(IS_92C_SERIAL( pHalData->VersionID)){
-		phy_DigitalPredistortion8723B(pAdapter, TRUE);
-	}
-	else
-#endif		
-	{
-		// For 88C 1T1R
-		phy_DigitalPredistortion8723B(pAdapter, FALSE);
-	}
-}
-	
-
-
-//return value TRUE => Main; FALSE => Aux
-
-BOOLEAN phy_QueryRFPathSwitch_8723B(
-#if (DM_ODM_SUPPORT_TYPE & ODM_AP)
-	IN PDM_ODM_T		pDM_Odm,
-#else
-	IN	PADAPTER	pAdapter,
-#endif
-	IN	BOOLEAN 	is2T
-	)
-{
-#if !(DM_ODM_SUPPORT_TYPE & ODM_AP)
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
-	#if (DM_ODM_SUPPORT_TYPE == ODM_CE)
-	PDM_ODM_T		pDM_Odm = &pHalData->odmpriv;
-	#endif
-	#if (DM_ODM_SUPPORT_TYPE == ODM_WIN)
-	PDM_ODM_T		pDM_Odm = &pHalData->DM_OutSrc;
-	#endif
-#endif	
-
-
-	if(ODM_GetBBReg(pDM_Odm, 0x92C, bMaskDWord) == 0x01)
-		return TRUE;
-	else 
-		return FALSE;
-
-}
-
-
-
-//return value TRUE => Main; FALSE => Aux
-BOOLEAN PHY_QueryRFPathSwitch_8723B(	
-#if (DM_ODM_SUPPORT_TYPE & ODM_AP)
-	IN PDM_ODM_T		pDM_Odm
-#else
-	IN	PADAPTER	pAdapter
-#endif
-	)
-{
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
-
-#if DISABLE_BB_RF
-	return TRUE;
-#endif
-
-#if !(DM_ODM_SUPPORT_TYPE & ODM_AP)
-		return phy_QueryRFPathSwitch_8723B(pAdapter, FALSE);
-#else
-		return phy_QueryRFPathSwitch_8723B(pDM_Odm, FALSE);
-#endif
-
-}
-#endif

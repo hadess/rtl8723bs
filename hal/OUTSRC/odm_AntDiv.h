@@ -86,26 +86,14 @@ odm_AntselStatistics(
 );
 
 #if (RTL8723B_SUPPORT == 1)||(RTL8821A_SUPPORT == 1)
-#if (DM_ODM_SUPPORT_TYPE == ODM_WIN)
-VOID
-ODM_SW_AntDiv_Callback(
-	IN 	PRT_TIMER			pTimer
-);
-
-VOID
-ODM_SW_AntDiv_WorkitemCallback(
-    IN PVOID            pContext
-    );
-
-
-#elif (DM_ODM_SUPPORT_TYPE == ODM_CE)
+#if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 
 VOID
 ODM_SW_AntDiv_Callback(void *FunctionContext);
 
 #endif
 
-#if (DM_ODM_SUPPORT_TYPE & (ODM_WIN|ODM_CE))
+#if (DM_ODM_SUPPORT_TYPE & ODM_CE)
 VOID
 odm_S0S1_SwAntDivByCtrlFrame(
 	IN		PDM_ODM_T		pDM_Odm,
@@ -126,7 +114,7 @@ odm_S0S1_SwAntDivByCtrlFrame_ProcessRSSI(
 	IN		PODM_PACKET_INFO_T		pPktinfo
 	);
 
-#endif  //#if (DM_ODM_SUPPORT_TYPE == ODM_WIN)
+#endif  //#if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 #endif
 
 #if(RTL8188E_SUPPORT == 1  || RTL8192E_SUPPORT == 1)
@@ -170,7 +158,7 @@ ODM_Process_RSSIForAntDiv(
 	IN		PODM_PACKET_INFO_T			pPktinfo
 );
 
-#if (DM_ODM_SUPPORT_TYPE & (ODM_WIN|ODM_CE))
+#if (DM_ODM_SUPPORT_TYPE & ODM_CE)
 VOID
 ODM_SetTxAntByTxInfo(
 	IN		PDM_ODM_T		pDM_Odm,

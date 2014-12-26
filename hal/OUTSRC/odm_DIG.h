@@ -353,30 +353,6 @@ ODM_Write_CCK_CCA_Thres(
 	IN		u1Byte					CurCCK_CCAThres
 	);
 
-#if (DM_ODM_SUPPORT_TYPE == ODM_WIN)
-
-VOID
-odm_DisableEDCCA(
-	IN		PVOID					pDM_VOID
-);
-
-VOID
-odm_DynamicEDCCA(
-	IN		PVOID					pDM_VOID
-);
-
-VOID
-odm_MPT_DIGCallback(
-	PRT_TIMER						pTimer
-);
-
-VOID
-odm_MPT_DIGWorkItemCallback(
-    IN 		PVOID            			pContext
-    );
-
-#endif
-
 #if (DM_ODM_SUPPORT_TYPE & (ODM_AP|ODM_ADSL))
 VOID
 odm_MPT_DIGCallback(

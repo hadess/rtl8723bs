@@ -47,13 +47,13 @@ odm_DynamicBBPowerSaving(
 	)
 {	
 	PDM_ODM_T		pDM_Odm = (PDM_ODM_T)pDM_VOID;
-#if (DM_ODM_SUPPORT_TYPE & (ODM_WIN|ODM_CE))
+#if (DM_ODM_SUPPORT_TYPE & ODM_CE)
 
 	if (pDM_Odm->SupportICType != ODM_RTL8723A)
 		return;
 	if(!(pDM_Odm->SupportAbility & ODM_BB_PWR_SAVE))
 		return;
-	if(!(pDM_Odm->SupportPlatform & (ODM_WIN|ODM_CE)))
+	if(!(pDM_Odm->SupportPlatform & ODM_CE))
 		return;
 	
 	//1 2.Power Saving for 92C
@@ -69,7 +69,7 @@ odm_DynamicBBPowerSaving(
 	{
 		ODM_RF_Saving(pDM_Odm, FALSE);
 	}
-#endif	// #if (DM_ODM_SUPPORT_TYPE == ODM_WIN)
+#endif	// #if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 	
 }
 

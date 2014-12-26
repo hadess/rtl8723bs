@@ -80,7 +80,6 @@ odm_QueryRxPwrPercentage(
 	
 }
 
-#if (DM_ODM_SUPPORT_TYPE != ODM_WIN)
 //
 // 2012/01/12 MH MOve some signal strength smooth method to MP HAL layer.
 // IF other SW team do not support the feature, remove this section.??
@@ -92,52 +91,6 @@ odm_SignalScaleMapping_92CSeries_patch_RT_CID_819x_Lenovo(
 )
 {	
 	s4Byte RetSig = 0;
-#if (DM_ODM_SUPPORT_TYPE == ODM_WIN)
-	//if(pDM_Odm->SupportInterface  == ODM_ITRF_PCIE) 
-	{
-		// Step 1. Scale mapping.
-		// 20100611 Joseph: Re-tunning RSSI presentation for Lenovo.
-		// 20100426 Joseph: Modify Signal strength mapping.
-		// This modification makes the RSSI indication similar to Intel solution.
-		// 20100414 Joseph: Tunning RSSI for Lenovo according to RTL8191SE.
-		if(CurrSig >= 54 && CurrSig <= 100)
-		{
-			RetSig = 100;
-		}
-		else if(CurrSig>=42 && CurrSig <= 53 )
-		{
-			RetSig = 95;
-		}
-		else if(CurrSig>=36 && CurrSig <= 41 )
-		{
-			RetSig = 74 + ((CurrSig - 36) *20)/6;
-		}
-		else if(CurrSig>=33 && CurrSig <= 35 )
-		{
-			RetSig = 65 + ((CurrSig - 33) *8)/2;
-		}
-		else if(CurrSig>=18 && CurrSig <= 32 )
-		{
-			RetSig = 62 + ((CurrSig - 18) *2)/15;
-		}
-		else if(CurrSig>=15 && CurrSig <= 17 )
-		{
-			RetSig = 33 + ((CurrSig - 15) *28)/2;
-		}
-		else if(CurrSig>=10 && CurrSig <= 14 )
-		{
-			RetSig = 39;
-		}
-		else if(CurrSig>=8 && CurrSig <= 9 )
-		{
-			RetSig = 33;
-		}
-		else if(CurrSig <= 8 )
-		{
-			RetSig = 19;
-		}
-	}
-#endif //ENDIF (DM_ODM_SUPPORT_TYPE == ODM_WIN)
 	return RetSig;
 }
 
@@ -148,56 +101,6 @@ odm_SignalScaleMapping_92CSeries_patch_RT_CID_819x_Netcore(
 )
 {
 	s4Byte RetSig = 0;
-#if (DM_ODM_SUPPORT_TYPE == ODM_WIN)
-	//if(pDM_Odm->SupportInterface  == ODM_ITRF_USB)
-	{
-		// Netcore request this modification because 2009.04.13 SU driver use it. 
-		if(CurrSig >= 31 && CurrSig <= 100)
-		{
-			RetSig = 100;
-		}	
-		else if(CurrSig >= 21 && CurrSig <= 30)
-		{
-			RetSig = 90 + ((CurrSig - 20) / 1);
-		}
-		else if(CurrSig >= 11 && CurrSig <= 20)
-		{
-			RetSig = 80 + ((CurrSig - 10) / 1);
-		}
-		else if(CurrSig >= 7 && CurrSig <= 10)
-		{
-			RetSig = 69 + (CurrSig - 7);
-		}
-		else if(CurrSig == 6)
-		{
-			RetSig = 54;
-		}
-		else if(CurrSig == 5)
-		{
-			RetSig = 45;
-		}
-		else if(CurrSig == 4)
-		{
-			RetSig = 36;
-		}
-		else if(CurrSig == 3)
-		{
-			RetSig = 27;
-		}
-		else if(CurrSig == 2)
-		{
-			RetSig = 18;
-		}
-		else if(CurrSig == 1)
-		{
-			RetSig = 9;
-		}
-		else
-		{
-			RetSig = CurrSig;
-		}
-	}
-#endif //ENDIF (DM_ODM_SUPPORT_TYPE == ODM_WIN)
 	return RetSig;
 }
 
@@ -301,26 +204,9 @@ odm_SignalScaleMapping(
 	IN OUT PDM_ODM_T pDM_Odm,
 	IN	s4Byte CurrSig 
 )
-{	
-	if(	(pDM_Odm->SupportPlatform == ODM_WIN) && 
-		(pDM_Odm->SupportInterface  != ODM_ITRF_PCIE) && //USB & SDIO
-		(pDM_Odm->PatchID==10))//pMgntInfo->CustomerID == RT_CID_819x_Netcore
-	{
-		return odm_SignalScaleMapping_92CSeries_patch_RT_CID_819x_Netcore(pDM_Odm,CurrSig);
-	}
-	else if(	(pDM_Odm->SupportPlatform == ODM_WIN) && 
-			(pDM_Odm->SupportInterface  == ODM_ITRF_PCIE) &&
-			(pDM_Odm->PatchID==19))//pMgntInfo->CustomerID == RT_CID_819x_Lenovo)
-	{
-		return odm_SignalScaleMapping_92CSeries_patch_RT_CID_819x_Lenovo(pDM_Odm, CurrSig);
-	}
-	else{		
-		return odm_SignalScaleMapping_92CSeries(pDM_Odm,CurrSig);
-	}
-	
+{
+	return odm_SignalScaleMapping_92CSeries(pDM_Odm,CurrSig);
 }
-#endif
-
 
 static u1Byte odm_SQ_process_patch_RT_CID_819x_Lenovo(
 	IN PDM_ODM_T	pDM_Odm,
@@ -331,143 +217,6 @@ static u1Byte odm_SQ_process_patch_RT_CID_819x_Lenovo(
 )
 {
 	u1Byte	SQ = 0;
-#if (DM_ODM_SUPPORT_TYPE &  ODM_WIN)			
-
-	if(isCCKrate){
-		
-		if(IS_HARDWARE_TYPE_8723AE(pDM_Odm->Adapter))
-		{
-
-			//
-			// <Roger_Notes> Expected signal strength and bars indication at Lenovo lab. 2013.04.11
-			// 802.11n, 802.11b, 802.11g only at channel 6
-			//
-			//		Attenuation (dB)	OS Signal Bars	RSSI by Xirrus (dBm)
-			//			50				5			-52
-			//			55				5			-54
-			//			60				5			-55
-			//			65				5			-59
-			//			70				5			-63
-			//			75				5			-66
-			//			80				4			-72
-			//			85				3			-75
-			//			90				3			-80
-			//			95				2			-85
-			//			100				1			-89
-			//			102				1			-90
-			//			104				1			-91
-			//
-			RT_TRACE(COMP_DBG, DBG_WARNING, ("odm_SQ_process_patch_RT_CID_819x_Lenovo\n"));
-			
-#if OS_WIN_FROM_WIN8(OS_VERSION)	
-			if(PWDB_ALL >= 50)
-				SQ = 100;
-			else if(PWDB_ALL >= 23 && PWDB_ALL < 50)				
-				SQ = 80;
-			else if(PWDB_ALL >= 18 && PWDB_ALL < 23)
-				SQ = 60;
-			else if(PWDB_ALL >= 8 && PWDB_ALL < 18)
-				SQ = 40;
-			else
-				SQ = 10;
-#else
-			if(PWDB_ALL >= 34)
-				SQ = 100;
-			else if(PWDB_ALL >= 23 && PWDB_ALL < 34)				
-				SQ = 80;
-			else if(PWDB_ALL >= 18 && PWDB_ALL < 23)
-				SQ = 60;
-			else if(PWDB_ALL >= 8 && PWDB_ALL < 18)
-				SQ = 40;
-			else
-				SQ = 10;	
-
-			if(PWDB_ALL == 0)// Abnormal case, do not indicate the value above 20 on Win7
-				SQ = 20;
-#endif		
-
-		}
-		else if(IS_HARDWARE_TYPE_8192E(pDM_Odm->Adapter)){
-
-			//
-			// <Roger_Notes> Expected signal strength and bars indication at Lenovo lab. 2013.04.11
-			// 802.11n, 802.11b, 802.11g only at channel 6
-			//
-			//		Attenuation (dB)	OS Signal Bars	RSSI by Xirrus (dBm)
-			//			50				5			-49
-			//			55				5			-49
-			//			60				5			-50
-			//			65				5			-51
-			//			70				5			-52
-			//			75				5			-54
-			//			80				5			-55
-			//			85				4			-60
-			//			90				3			-63
-			//			95				3			-65
-			//			100				2			-67
-			//			102				2			-67
-			//			104				1			-70
-			//			
-
-			if(PWDB_ALL >= 50)
-				SQ = 100;
-			else if(PWDB_ALL >= 35 && PWDB_ALL < 50)				
-				SQ = 80;
-			else if(PWDB_ALL >= 31 && PWDB_ALL < 35)
-				SQ = 60;
-			else if(PWDB_ALL >= 22 && PWDB_ALL < 31)
-				SQ = 40;
-			else if(PWDB_ALL >= 18 && PWDB_ALL < 22)
-				SQ = 20;
-			else
-				SQ = 10;
-		}
-		else
-		{
-		if(PWDB_ALL >= 50)
-			SQ = 100;
-		else if(PWDB_ALL >= 35 && PWDB_ALL < 50)				
-			SQ = 80;
-		else if(PWDB_ALL >= 22 && PWDB_ALL < 35)
-			SQ = 60;
-		else if(PWDB_ALL >= 18 && PWDB_ALL < 22)
-			SQ = 40;
-		else
-				SQ = 10;
-		}
-		
-	}
-	else
-	{//OFDM rate		
-
-		if(IS_HARDWARE_TYPE_8723AE(pDM_Odm->Adapter) ||
-			IS_HARDWARE_TYPE_8192E(pDM_Odm->Adapter))
-		{
-			if(RSSI >= 45)
-				SQ = 100;
-			else if(RSSI >= 22 && RSSI < 45)
-				SQ = 80;
-			else if(RSSI >= 18 && RSSI < 22)
-				SQ = 40;
-			else
-			SQ = 20;
-	}
-		else
-		{
-			if(RSSI >= 45)
-			SQ = 100;
-			else if(RSSI >= 22 && RSSI < 45)
-			SQ = 80;
-		else if(RSSI >= 18 && RSSI < 22)
-			SQ = 40;
-		else
-			SQ = 20;			
-	}
-	}
-
-	RT_TRACE(COMP_DBG, DBG_TRACE, ("isCCKrate(%#d), PWDB_ALL(%#d), RSSI(%#d), SQ(%#d)\n", isCCKrate, PWDB_ALL, RSSI, SQ));
-	
-#endif
 	return SQ;
 }
 
@@ -480,79 +229,6 @@ static u1Byte odm_SQ_process_patch_RT_CID_819x_Acer(
 )
 {
 	u1Byte	SQ = 0;
-	
-#if (DM_ODM_SUPPORT_TYPE &  ODM_WIN)			
-
-	if(isCCKrate){
-
-			RT_TRACE(COMP_DBG, DBG_WARNING, ("odm_SQ_process_patch_RT_Acer\n"));
-			
-#if OS_WIN_FROM_WIN8(OS_VERSION)	
-
-			if(PWDB_ALL >= 50)
-				SQ = 100;
-			else if(PWDB_ALL >= 35 && PWDB_ALL < 50)				
-				SQ = 80;
-			else if(PWDB_ALL >= 30 && PWDB_ALL < 35)
-				SQ = 60;
-			else if(PWDB_ALL >= 25 && PWDB_ALL < 30)
-				SQ = 40;
-			else if(PWDB_ALL >= 20 && PWDB_ALL < 25)
-				SQ = 20;
-			else
-				SQ = 10;	
-#else
-			if(PWDB_ALL >= 50)
-				SQ = 100;
-			else if(PWDB_ALL >= 35 && PWDB_ALL < 50)				
-				SQ = 80;
-			else if(PWDB_ALL >= 30 && PWDB_ALL < 35)
-				SQ = 60;
-			else if(PWDB_ALL >= 25 && PWDB_ALL < 30)
-				SQ = 40;
-			else if(PWDB_ALL >= 20 && PWDB_ALL < 25)
-				SQ = 20;
-			else
-				SQ = 10;	
-
-			if(PWDB_ALL == 0)// Abnormal case, do not indicate the value above 20 on Win7
-				SQ = 20;
-#endif		
-
-		
-		
-	}
-	else
-	{//OFDM rate		
-
-		if(IS_HARDWARE_TYPE_8723AE(pDM_Odm->Adapter) ||
-			IS_HARDWARE_TYPE_8192E(pDM_Odm->Adapter))
-		{
-			if(RSSI >= 45)
-				SQ = 100;
-			else if(RSSI >= 22 && RSSI < 45)
-				SQ = 80;
-			else if(RSSI >= 18 && RSSI < 22)
-				SQ = 40;
-			else
-			SQ = 20;
-	}
-		else
-		{
-			if(RSSI >= 35)
-			SQ = 100;
-			else if(RSSI >= 30 && RSSI < 35)
-			SQ = 80;
-		else if(RSSI >= 25 && RSSI < 30)
-			SQ = 40;
-		else
-			SQ = 20;			
-	}
-	}
-
-	RT_TRACE(COMP_DBG, DBG_LOUD, ("isCCKrate(%#d), PWDB_ALL(%#d), RSSI(%#d), SQ(%#d)\n", isCCKrate, PWDB_ALL, RSSI, SQ));
-	
-#endif
 	return SQ;
 }
 			
@@ -819,7 +495,7 @@ odm_RxPhyStatus92CSeries_Parsing(
 		}
 	
 		pPhyInfo->RxPWDBAll = PWDB_ALL;
-#if (DM_ODM_SUPPORT_TYPE &  (ODM_WIN|ODM_CE))
+#if (DM_ODM_SUPPORT_TYPE &  ODM_CE)
 		pPhyInfo->BTRxRSSIPercentage = PWDB_ALL;
 		pPhyInfo->RecvSignalPower = rx_pwr_all;
 #endif		
@@ -830,16 +506,7 @@ odm_RxPhyStatus92CSeries_Parsing(
 		{
 			u1Byte	SQ,SQ_rpt;			
 			
-			if((pDM_Odm->SupportPlatform == ODM_WIN) &&
-				(pDM_Odm->PatchID==RT_CID_819x_Lenovo)){
-				SQ = odm_SQ_process_patch_RT_CID_819x_Lenovo(pDM_Odm,isCCKrate,PWDB_ALL,0,0);
-			}
-			else if((pDM_Odm->SupportPlatform == ODM_WIN) &&
-				(pDM_Odm->PatchID==RT_CID_819x_Acer))
-			{
-				SQ = odm_SQ_process_patch_RT_CID_819x_Acer(pDM_Odm,isCCKrate,PWDB_ALL,0,0);
-			}
-			else if(pPhyInfo->RxPWDBAll > 40 && !pDM_Odm->bInHctTest){
+			if(pPhyInfo->RxPWDBAll > 40 && !pDM_Odm->bInHctTest){
 				SQ = 100;
 			}
 			else{						
@@ -879,7 +546,7 @@ odm_RxPhyStatus92CSeries_Parsing(
 			rx_pwr[i] = ((pPhyStaRpt->path_agc[i].gain& 0x3F)*2) - 110;
 
 
-		#if (DM_ODM_SUPPORT_TYPE & (ODM_WIN|ODM_CE))
+		#if (DM_ODM_SUPPORT_TYPE & ODM_CE)
 			pPhyInfo->RxPwr[i] = rx_pwr[i];
 		#endif	
 
@@ -905,28 +572,10 @@ odm_RxPhyStatus92CSeries_Parsing(
 		
 			pPhyInfo->RxMIMOSignalStrength[i] =(u1Byte) RSSI;
 
-		#if (DM_ODM_SUPPORT_TYPE &  (/*ODM_WIN|*/ODM_CE|ODM_AP|ODM_ADSL))
+		#if (DM_ODM_SUPPORT_TYPE &  (ODM_CE|ODM_AP|ODM_ADSL))
 			//Get Rx snr value in DB		
 			pPhyInfo->RxSNR[i] = pDM_Odm->PhyDbgInfo.RxSNRdB[i] = (s4Byte)(pPhyStaRpt->path_rxsnr[i]/2);
 		#endif
-		
-			/* Record Signal Strength for next packet */
-			//if(pPktinfo->bPacketMatchBSSID)
-			{				
-				if((pDM_Odm->SupportPlatform == ODM_WIN) &&
-					(pDM_Odm->PatchID==RT_CID_819x_Lenovo))
-				{
-					if(i==ODM_RF_PATH_A)
-						pPhyInfo->SignalQuality = odm_SQ_process_patch_RT_CID_819x_Lenovo(pDM_Odm,isCCKrate,PWDB_ALL,i,RSSI);
-				
-				}		
-				else if((pDM_Odm->SupportPlatform == ODM_WIN) &&
-					(pDM_Odm->PatchID==RT_CID_819x_Acer))
-				{
-					pPhyInfo->SignalQuality = odm_SQ_process_patch_RT_CID_819x_Acer(pDM_Odm,isCCKrate,PWDB_ALL,0,RSSI);
-				}	
-				
-			}
 		}
 		
 		
@@ -940,18 +589,13 @@ odm_RxPhyStatus92CSeries_Parsing(
 	
 		pPhyInfo->RxPWDBAll = PWDB_ALL;
 		//ODM_RT_TRACE(pDM_Odm,ODM_COMP_RSSI_MONITOR, ODM_DBG_LOUD, ("ODM OFDM RSSI=%d\n",pPhyInfo->RxPWDBAll));
-	#if (DM_ODM_SUPPORT_TYPE &  (ODM_WIN|ODM_CE))
+	#if (DM_ODM_SUPPORT_TYPE &  ODM_CE)
 		pPhyInfo->BTRxRSSIPercentage = PWDB_ALL_BT;
 		pPhyInfo->RxPower = rx_pwr_all;
 		pPhyInfo->RecvSignalPower = rx_pwr_all;
 	#endif
 		
-		if((pDM_Odm->SupportPlatform == ODM_WIN) &&(pDM_Odm->PatchID==19)){
-			//do nothing	
-		}else if((pDM_Odm->SupportPlatform == ODM_WIN) &&(pDM_Odm->PatchID==25)){
-			//do nothing	
-		}
-		else{//pMgntInfo->CustomerID != RT_CID_819x_Lenovo
+		{//pMgntInfo->CustomerID != RT_CID_819x_Lenovo
 			//
 			// (3)EVM of HT rate
 			//
@@ -984,36 +628,26 @@ odm_RxPhyStatus92CSeries_Parsing(
 		ODM_ParsingCFO(pDM_Odm, pPktinfo, pPhyStaRpt->path_cfotail);
 		
 	}
-#if (DM_ODM_SUPPORT_TYPE &  (ODM_WIN|ODM_CE))
+#if (DM_ODM_SUPPORT_TYPE &  ODM_CE)
 	//UI BSS List signal strength(in percentage), make it good looking, from 0~100.
 	//It is assigned to the BSS List in GetValueFromBeaconOrProbeRsp().
 	if(isCCKrate)
 	{		
-#if (DM_ODM_SUPPORT_TYPE == ODM_WIN)
-		// 2012/01/12 MH Use customeris signal strength from HalComRxdDesc.c/	
-		pPhyInfo->SignalStrength = (u1Byte)(SignalScaleMapping(pDM_Odm->Adapter, PWDB_ALL));//PWDB_ALL;
-#else
 #ifdef CONFIG_SKIP_SIGNAL_SCALE_MAPPING
 		pPhyInfo->SignalStrength = (u1Byte)PWDB_ALL;
 #else
 		pPhyInfo->SignalStrength = (u1Byte)(odm_SignalScaleMapping(pDM_Odm, PWDB_ALL));//PWDB_ALL;
-#endif
 #endif
 	}
 	else
 	{	
 		if (rf_rx_num != 0)
 		{			
-#if (DM_ODM_SUPPORT_TYPE == ODM_WIN)
-			// 2012/01/12 MH Use customeris signal strength from HalComRxdDesc.c/	
-			pPhyInfo->SignalStrength = (u1Byte)(SignalScaleMapping(pDM_Odm->Adapter, total_rssi/=rf_rx_num));//PWDB_ALL;
-#else
 #ifdef CONFIG_SKIP_SIGNAL_SCALE_MAPPING
 			total_rssi/=rf_rx_num;
 			pPhyInfo->SignalStrength = (u1Byte)total_rssi;
 #else
 			pPhyInfo->SignalStrength = (u1Byte)(odm_SignalScaleMapping(pDM_Odm, total_rssi/=rf_rx_num));
-#endif
 #endif
 		}
 	}
@@ -1188,7 +822,7 @@ odm_RxPhyStatusJaguarSeries_Parsing(
 		//	DbgPrint("CCK: LNA_idx = %d, VGA_idx = %d, pPhyInfo->RxPWDBAll = %d\n", 
 		//		LNA_idx, VGA_idx, pPhyInfo->RxPWDBAll);
 		//}
-#if (DM_ODM_SUPPORT_TYPE &  (ODM_WIN|ODM_CE))
+#if (DM_ODM_SUPPORT_TYPE & ODM_CE)
 		pPhyInfo->BTRxRSSIPercentage = PWDB_ALL;
 		pPhyInfo->RecvSignalPower = rx_pwr_all;
 #endif		
@@ -1199,11 +833,7 @@ odm_RxPhyStatusJaguarSeries_Parsing(
 		{
 			u1Byte	SQ,SQ_rpt;			
 			
-			if((pDM_Odm->SupportPlatform == ODM_WIN) &&
-				(pDM_Odm->PatchID==RT_CID_819x_Lenovo)){
-				SQ = odm_SQ_process_patch_RT_CID_819x_Lenovo(pDM_Odm,isCCKrate,PWDB_ALL,0,0);
-			}
-			else if(pPhyInfo->RxPWDBAll > 40 && !pDM_Odm->bInHctTest){
+			if(pPhyInfo->RxPWDBAll > 40 && !pDM_Odm->bInHctTest){
 				SQ = 100;
 			}
 			else{						
@@ -1248,7 +878,7 @@ odm_RxPhyStatusJaguarSeries_Parsing(
 			//else
 			//	rx_pwr[i] = ((pPhyStaRpt->gain_trsw[i]& 0x3F)*2) - 110;  //OLD FORMULA
 
-		#if (DM_ODM_SUPPORT_TYPE & (ODM_WIN|ODM_CE))
+		#if (DM_ODM_SUPPORT_TYPE & ODM_CE)
 			pPhyInfo->RxPwr[i] = rx_pwr[i];
 		#endif	
 
@@ -1262,7 +892,7 @@ odm_RxPhyStatusJaguarSeries_Parsing(
 		
 			pPhyInfo->RxMIMOSignalStrength[i] =(u1Byte) RSSI;
 
-		#if (DM_ODM_SUPPORT_TYPE &  (ODM_WIN|ODM_CE|ODM_AP|ODM_ADSL))
+		#if (DM_ODM_SUPPORT_TYPE &  (ODM_CE|ODM_AP|ODM_ADSL))
 			//Get Rx snr value in DB		
 			pPhyInfo->RxSNR[i] = pDM_Odm->PhyDbgInfo.RxSNRdB[i] = pPhyStaRpt->rxsnr[i]/2;
 		#endif
@@ -1272,18 +902,6 @@ odm_RxPhyStatusJaguarSeries_Parsing(
 			//			
 			pPhyInfo->Cfo_short[i] = odm_Cfo( (pPhyStaRpt->cfosho[i]) );
 			pPhyInfo->Cfo_tail[i] = odm_Cfo( (pPhyStaRpt->cfotail[i]) );
-
-			/* Record Signal Strength for next packet */
-			//if(pPktinfo->bPacketMatchBSSID)
-			{				
-				if((pDM_Odm->SupportPlatform == ODM_WIN) &&
-					(pDM_Odm->PatchID==RT_CID_819x_Lenovo))
-				{
-					if(i==ODM_RF_PATH_A)
-						pPhyInfo->SignalQuality = odm_SQ_process_patch_RT_CID_819x_Lenovo(pDM_Odm,isCCKrate,PWDB_ALL,i,RSSI);
-				
-				}
-			}
 		}
 		
 		
@@ -1302,7 +920,7 @@ odm_RxPhyStatusJaguarSeries_Parsing(
 	
 		pPhyInfo->RxPWDBAll = PWDB_ALL;
 		//ODM_RT_TRACE(pDM_Odm,ODM_COMP_RSSI_MONITOR, ODM_DBG_LOUD, ("ODM OFDM RSSI=%d\n",pPhyInfo->RxPWDBAll));
-	#if (DM_ODM_SUPPORT_TYPE &  (ODM_WIN|ODM_CE))
+	#if (DM_ODM_SUPPORT_TYPE & ODM_CE)
 		pPhyInfo->BTRxRSSIPercentage = PWDB_ALL_BT;
 		pPhyInfo->RxPower = rx_pwr_all;
 		pPhyInfo->RecvSignalPower = rx_pwr_all;
@@ -1312,10 +930,7 @@ odm_RxPhyStatusJaguarSeries_Parsing(
 		//	pPhyInfo->RxPWDBAll, pPhyInfo->RxMIMOSignalStrength[0], pPhyInfo->RxMIMOSignalStrength[1]);
 	
 	
-		if((pDM_Odm->SupportPlatform == ODM_WIN) &&(pDM_Odm->PatchID==19)){
-			//do nothing	
-		}
-		else{//pMgntInfo->CustomerID != RT_CID_819x_Lenovo
+		{//pMgntInfo->CustomerID != RT_CID_819x_Lenovo
 			//
 			// (4)EVM of OFDM rate
 			//
@@ -1385,28 +1000,18 @@ odm_RxPhyStatusJaguarSeries_Parsing(
 	}
 	//DbgPrint("isCCKrate= %d, pPhyInfo->SignalStrength=%d % PWDB_AL=%d rf_rx_num=%d\n", isCCKrate, pPhyInfo->SignalStrength, PWDB_ALL, rf_rx_num);
 	
-#if (DM_ODM_SUPPORT_TYPE &  (ODM_WIN|ODM_CE))
+#if (DM_ODM_SUPPORT_TYPE & ODM_CE)
 	//UI BSS List signal strength(in percentage), make it good looking, from 0~100.
 	//It is assigned to the BSS List in GetValueFromBeaconOrProbeRsp().
 	if(isCCKrate)
 	{		
-#if (DM_ODM_SUPPORT_TYPE == ODM_WIN)
-		// 2012/01/12 MH Use customeris signal strength from HalComRxdDesc.c/	
-		pPhyInfo->SignalStrength = (u1Byte)(SignalScaleMapping(pDM_Odm->Adapter, PWDB_ALL));//PWDB_ALL;
-#else
 		pPhyInfo->SignalStrength = (u1Byte)(odm_SignalScaleMapping(pDM_Odm, PWDB_ALL));//PWDB_ALL;
-#endif
 	}
 	else
 	{	
 		if (rf_rx_num != 0)
 		{			
-#if (DM_ODM_SUPPORT_TYPE == ODM_WIN)
-			// 2012/01/12 MH Use customeris signal strength from HalComRxdDesc.c/	
-			pPhyInfo->SignalStrength = (u1Byte)(SignalScaleMapping(pDM_Odm->Adapter, total_rssi/=rf_rx_num));//PWDB_ALL;
-#else
 			pPhyInfo->SignalStrength = (u1Byte)(odm_SignalScaleMapping(pDM_Odm, total_rssi/=rf_rx_num));
-#endif
 		}
 	}
 #endif
@@ -1456,16 +1061,7 @@ odm_Process_RSSIForDM(
 	if(pPktinfo->StationID == 0xFF)
 		return;
 
-	//
-	// 2012/05/30 MH/Luke.Lee Add some description 
-	// In windows driver: AP/IBSS mode STA
-	//
-	//if (pDM_Odm->SupportPlatform == ODM_WIN)
-	//{
-	//	pEntry = pDM_Odm->pODM_StaInfo[pDM_Odm->pAidMap[pPktinfo->StationID-1]];			
-	//}
-	//else
-		pEntry = pDM_Odm->pODM_StaInfo[pPktinfo->StationID];							
+	pEntry = pDM_Odm->pODM_StaInfo[pPktinfo->StationID];
 
 	if(!IS_STA_VALID(pEntry) ){		
 		return;
@@ -1671,14 +1267,7 @@ ODM_PhyStatusQuery_92CSeries(
 		if(pPktinfo->bPacketToSelf || pPktinfo->bPacketBeacon )
 		{
 				/*
-			#if 0//(DM_ODM_SUPPORT_TYPE == ODM_WIN)
-			dm_SWAW_RSSI_Check(
-				Adapter, 
-				(tmppAdapter!=NULL)?(tmppAdapter==Adapter):TRUE,
-				bPacketMatchBSSID,
-				pEntry,
-				pRfd);
-			#elif (DM_ODM_SUPPORT_TYPE == ODM_CE)
+			#if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 			// Select the packets to do RSSI checking for antenna switching.
 			//odm_SwAntDivRSSICheck8192C(padapter, precvframe->u.hdr.attrib.RxPWDBAll);
 			#endif
@@ -1959,11 +1548,8 @@ ODM_ConfigBBWithHeaderFile(
 	IN 	ODM_BB_Config_Type 		ConfigType
 	)
 {
-#if (DM_ODM_SUPPORT_TYPE & (ODM_CE|ODM_WIN))
+#if (DM_ODM_SUPPORT_TYPE & ODM_CE)
 	PADAPTER		Adapter = pDM_Odm->Adapter;
-#if (DM_ODM_SUPPORT_TYPE &  ODM_WIN)
-	PMGNT_INFO		pMgntInfo = &(Adapter->MgntInfo);	
-#endif
 #endif
 	
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_LOUD, 
@@ -2019,10 +1605,6 @@ ODM_ConfigBBWithHeaderFile(
 		{
 			if (pDM_Odm->RFEType == 3 && pDM_Odm->bIsMPChip) 
 				READ_AND_CONFIG_MP(8812A,_PHY_REG_PG_ASUS);
-#if (DM_ODM_SUPPORT_TYPE &  ODM_WIN)
-			else if (pMgntInfo->CustomerID == RT_CID_WNC_NEC && pDM_Odm->bIsMPChip) 
-				READ_AND_CONFIG_MP(8812A,_PHY_REG_PG_NEC);
-#endif			
 			else
 				READ_AND_CONFIG(8812A,_PHY_REG_PG);
 		}
@@ -2119,7 +1701,7 @@ ODM_ConfigMACWithHeaderFile(
 	IN 	PDM_ODM_T	pDM_Odm
 	)
 {
-#if (DM_ODM_SUPPORT_TYPE &  (ODM_CE|ODM_WIN))	
+#if (DM_ODM_SUPPORT_TYPE & ODM_CE)
 	PADAPTER		Adapter = pDM_Odm->Adapter;
 #endif
 	u1Byte result = HAL_STATUS_SUCCESS;

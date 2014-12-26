@@ -23,14 +23,7 @@
 
 #include "odm_types.h"
 
-#if (DM_ODM_SUPPORT_TYPE == ODM_WIN)
-#include "Precomp.h"		// We need to include mp_precomp.h due to batch file setting.
-
-#else
-
 #define		TEST_FALG___		1
-
-#endif
 
 //2 Config Flags and Structs - defined by each ODM Type
 
@@ -79,9 +72,6 @@
 	//#include <rtw_byteorder.h>
 	//#include <hal_intf.h>
 #define BEAMFORMING_SUPPORT 0		
-#elif (DM_ODM_SUPPORT_TYPE == ODM_WIN)
-	#include "Mp_Precomp.h"
-	#define	ODM_ENDIAN_TYPE				ODM_ENDIAN_LITTLE
 #endif
 
  
@@ -132,8 +122,6 @@
 	#include "rtl8723a/Hal8723UHWImg_CE.h"	
 	#endif	
 	
-#elif (DM_ODM_SUPPORT_TYPE == ODM_WIN)
-
 #endif
 
 
