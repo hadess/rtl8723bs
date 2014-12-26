@@ -281,11 +281,6 @@ char *rtw_fw_wow_file_path = "/system/etc/firmware/rtlwifi/FW_WoWLAN.BIN";
 module_param(rtw_fw_wow_file_path, charp, 0644);
 MODULE_PARM_DESC(rtw_fw_wow_file_path, "The path of fw for Wake on Wireless image");
 
-#ifdef CONFIG_MP_INCLUDED
-char *rtw_fw_mp_bt_file_path = "";
-module_param(rtw_fw_mp_bt_file_path, charp, 0644);
-MODULE_PARM_DESC(rtw_fw_mp_bt_file_path, "The path of fw for MP-BT image");
-#endif // CONFIG_MP_INCLUDED
 #endif // CONFIG_FILE_FWIMG
 
 #ifdef CONFIG_TX_MCAST2UNI
@@ -1202,12 +1197,6 @@ _func_enter_;
 	rtw_init_pwrctrl_priv(padapter);
 
 	//_rtw_memset((u8 *)&padapter->qospriv, 0, sizeof (struct qos_priv));//move to mlme_priv
-
-#ifdef CONFIG_MP_INCLUDED
-	if (init_mp_priv(padapter) == _FAIL) {
-		DBG_871X("%s: initialize MP private data Fail!\n", __func__);
-	}
-#endif
 
 	rtw_hal_dm_init(padapter);
 	rtw_hal_sw_led_init(padapter);

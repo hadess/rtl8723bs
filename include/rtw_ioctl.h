@@ -159,15 +159,6 @@ struct oid_obj_priv {
 	NDIS_STATUS (*oidfuns)(struct oid_par_priv *poid_par_priv);	
 };
 
-#if (defined(CONFIG_MP_INCLUDED) && defined(_RTW_MP_IOCTL_C_))
-static NDIS_STATUS oid_null_function(struct oid_par_priv* poid_par_priv)
-{
-	_func_enter_;
-	_func_exit_;
-	return NDIS_STATUS_SUCCESS;
-}
-#endif
-
 #if defined(PLATFORM_LINUX) && defined(CONFIG_WIRELESS_EXT)
 extern struct iw_handler_def  rtw_handlers_def;
 #endif

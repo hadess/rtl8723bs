@@ -1447,11 +1447,6 @@ static u32 rtl8723bs_hal_deinit(PADAPTER padapter)
         struct dvobj_priv *psdpriv = padapter->dvobj;
 	struct debug_priv *pdbgpriv = &psdpriv->drv_dbg;
 
-#ifdef CONFIG_MP_INCLUDED
-	if (padapter->registrypriv.mp_mode == 1)
-		MPT_DeInitAdapter(padapter);
-#endif
-
 	if (padapter->hw_init_completed == _TRUE)
 	{
 #ifdef CONFIG_SWLPS_IN_IPS				

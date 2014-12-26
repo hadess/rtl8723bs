@@ -139,10 +139,6 @@
 	#define	_MODULE_DEFINE_	_module_rtl8712_recv_c_
 #elif defined _RTL871X_MLME_EXT_C_
 	#define _MODULE_DEFINE_	_module_mlme_osdep_c_
-#elif defined _RTW_MP_C_
-	#define	_MODULE_DEFINE_	_module_mp_
-#elif defined _RTW_MP_IOCTL_C_
-	#define	_MODULE_DEFINE_	_module_mp_
 #elif defined _RTW_EFUSE_C_
 	#define	_MODULE_DEFINE_	_module_efuse_
 #endif

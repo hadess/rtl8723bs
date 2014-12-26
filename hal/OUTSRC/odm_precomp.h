@@ -274,7 +274,6 @@
 #include "rtl8723b/HalHWImg8723B_RF.h"
 #include "rtl8723b/HalHWImg8723B_BB.h"
 #include "rtl8723b/HalHWImg8723B_FW.h"
-#include "rtl8723b/HalHWImg8723B_MP.h"
 #include "rtl8723b/Hal8723BReg.h"
 #include "rtl8723b/odm_RTL8723B.h"
 #include "rtl8723b/odm_RegConfig8723B.h"
