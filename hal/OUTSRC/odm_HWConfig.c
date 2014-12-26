@@ -611,8 +611,6 @@ odm_RxPhyStatus92CSeries_Parsing(
 #endif
 }
 
-#if	ODM_IC_11AC_SERIES_SUPPORT
-
 VOID
 odm_RxPhyStatusJaguarSeries_Parsing(
 	IN OUT	PDM_ODM_T					pDM_Odm,
@@ -968,8 +966,6 @@ odm_RxPhyStatusJaguarSeries_Parsing(
 	//			pPhyInfo->RxMIMOSignalStrength[0], pPhyInfo->RxMIMOSignalStrength[1], pPhyInfo->RxPWDBAll);
 
 }
-
-#endif
 
 VOID
 odm_Init_RSSIForDM(
