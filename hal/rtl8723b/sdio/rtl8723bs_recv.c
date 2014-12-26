@@ -368,9 +368,7 @@ static void rtl8723bs_recv_tasklet(void *priv)
 			// fix Hardware RX data error, drop whole recv_buffer
 			if ((!(pHalData->ReceiveConfig & RCR_ACRC32)) && pattrib->crc_err)
 			{
-#if !(MP_DRIVER==1)
 				DBG_8192C("%s()-%d: RX Warning! rx CRC ERROR !!\n", __FUNCTION__, __LINE__);
-#endif
 				rtw_free_recvframe(precvframe, &precvpriv->free_recv_queue);
 				break;
 			}

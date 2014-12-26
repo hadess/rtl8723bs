@@ -208,11 +208,7 @@ ODM_CfoTracking(
 
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CFO_TRACKING, ODM_DBG_LOUD, ("ODM_CfoTracking()=========> \n"));
 
-#if (DM_ODM_SUPPORT_TYPE == ODM_WIN && MP_DRIVER == 1)
-	if(0)
-#else
 	if(!pDM_Odm->bLinked || !pDM_Odm->bOneEntryOnly)
-#endif
 	{	
 		//4 No link or more than one entry
 		ODM_CfoTrackingReset(pDM_Odm);
@@ -338,13 +334,7 @@ ODM_ParsingCFO(
 	if(!(pDM_Odm->SupportAbility & ODM_BB_CFO_TRACKING))
 		return;
 
-#if ((DM_ODM_SUPPORT_TYPE == ODM_WIN) && (MP_DRIVER == 1))
-	if(1)
-#elif(DM_ODM_SUPPORT_TYPE & (ODM_WIN|ODM_CE))
-	if(pPktinfo->bPacketMatchBSSID)
-#else
 	if(pPktinfo->StationID != 0)
-#endif
 	{				
 		//3 Update CFO report for path-A & path-B
 		// Only paht-A and path-B have CFO tail and short CFO

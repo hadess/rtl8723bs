@@ -2281,11 +2281,6 @@ LedControlSDIO(
 {
 	struct led_priv	*ledpriv = &(padapter->ledpriv);
 
- #if(MP_DRIVER == 1)
-	if (padapter->registrypriv.mp_mode == 1)
-		return;
-#endif
-
        if( (padapter->bSurpriseRemoved == _TRUE) ||(padapter->hw_init_completed == _FALSE) )
        {
              return;

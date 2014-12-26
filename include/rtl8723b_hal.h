@@ -57,18 +57,6 @@
 //		RTL8723B From header
 //---------------------------------------------------------------------
 
-#if MP_DRIVER == 1
-	#define Rtl8723B_FwBTImgArray				Rtl8723BFwBTImgArray
-	#define Rtl8723B_FwBTImgArrayLength		Rtl8723BFwBTImgArrayLength
-
-	#define Rtl8723B_FwMPImageArray			Rtl8723BFwMPImgArray
-	#define Rtl8723B_FwMPImgArrayLength		Rtl8723BMPImgArrayLength
-
-	#define Rtl8723B_PHY_REG_Array_MP			Rtl8723B_PHYREG_Array_MP
-	#define Rtl8723B_PHY_REG_Array_MPLength	Rtl8723B_PHYREG_Array_MPLength
-#endif
-
-
 #define FW_8723B_SIZE			0x8000
 #define FW_8723B_START_ADDRESS	0x1000
 #define FW_8723B_END_ADDRESS		0x1FFF //0x5FFF

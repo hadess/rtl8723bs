@@ -53,15 +53,6 @@ void _dynamic_check_timer_handlder (void *FunctionContext)
 {
 	_adapter *adapter = (_adapter *)FunctionContext;
 
-#if (MP_DRIVER == 1)
-	if (adapter->registrypriv.mp_mode == 1 && adapter->mppriv.mp_dm ==0) //for MP ODM dynamic Tx power tracking
-	{
-		//DBG_871X("_dynamic_check_timer_handlder mp_dm =0 return \n");
-		_set_timer(&adapter->mlmepriv.dynamic_chk_timer, 2000);
-		return;
-	}
-#endif
-
 #ifdef CONFIG_CONCURRENT_MODE
 	if(adapter->pbuddy_adapter)
 		rtw_dynamic_check_timer_handlder(adapter->pbuddy_adapter);

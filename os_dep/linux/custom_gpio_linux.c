@@ -55,15 +55,6 @@ int rtw_wifi_gpio_init(void)
 	if (GPIO_WIFI_POWER > 0)
 		gpio_request(GPIO_WIFI_POWER, "wifi_power");
 
-#ifdef CONFIG_SDIO_HCI
-#if (defined(CONFIG_RTL8723A) || defined(CONFIG_RTL8723B)) && (MP_DRIVER == 1) 
-	if(rtw_mp_mode==1){
-		DBG_871X("%s GPIO_BT_RESET pin special for mp_test\n", __func__);	
-		if (GPIO_BT_RESET > 0)
-			gpio_request(GPIO_BT_RESET , "bt_rst");
-	}
-#endif
-#endif
 	return 0;
 }
 
@@ -74,15 +65,6 @@ int rtw_wifi_gpio_deinit(void)
 	if (GPIO_WIFI_POWER > 0)
 		gpio_free(GPIO_WIFI_POWER);
 
-#ifdef CONFIG_SDIO_HCI
-#if (defined(CONFIG_RTL8723A) || defined(CONFIG_RTL8723B)) && (MP_DRIVER == 1) 
-	if(rtw_mp_mode==1){
-		DBG_871X("%s GPIO_BT_RESET pin special for mp_test\n", __func__);
-		if (GPIO_BT_RESET > 0)
-			gpio_free(GPIO_BT_RESET);
-	}
-#endif
-#endif
 	return 0;
 }
 
@@ -114,30 +96,6 @@ void rtw_wifi_gpio_wlan_ctrl(int onoff)
 
 		case WLAN_POWER_ON:
 		break;
-#ifdef CONFIG_SDIO_HCI
-#if (defined(CONFIG_RTL8723A) || defined(CONFIG_RTL8723B)) && (MP_DRIVER == 1) 
-		case WLAN_BT_PWDN_OFF:
-		if(rtw_mp_mode==1)
-		{
-			DBG_871X("%s: call customer specific GPIO to set wifi power down pin to 0\n",
-				       	__FUNCTION__);
-			if (GPIO_BT_RESET > 0)
-				gpio_direction_output(GPIO_BT_RESET , 0);
-		}
-		break;
-
-		case WLAN_BT_PWDN_ON:
-		if(rtw_mp_mode==1)
-		{
-			DBG_871X("%s: callc customer specific GPIO to set wifi power down pin to 1 %x\n",
-					__FUNCTION__, GPIO_BT_RESET);
-
-			if (GPIO_BT_RESET > 0)
-				gpio_direction_output(GPIO_BT_RESET , 1);
-		}
-		break;
-#endif
-#endif
 	}
 }
 

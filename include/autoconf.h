@@ -150,8 +150,6 @@
 #endif	// CONFIG_CONCURRENT_MODE
 
 
-#define MP_DRIVER		0
-
 #ifdef CONFIG_POWER_SAVING
 	#define CONFIG_IPS
 	#define CONFIG_LPS

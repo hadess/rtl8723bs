@@ -222,11 +222,6 @@ bool rtw_pwr_unassociated_idle(_adapter *adapter)
 		}
 	}
 
-#if (MP_DRIVER == 1)
-	if (adapter->registrypriv.mp_mode == 1)
-		goto exit;
-#endif
-
 #ifdef CONFIG_INTEL_PROXIM
 	if(adapter->proximity.proxim_on==_TRUE){
 		return;

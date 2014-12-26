@@ -837,14 +837,6 @@ void _InitRDGSetting(PADAPTER padapter)
 	rtw_write8(padapter, REG_RD_RESP_PKT_TH, 0x05);
 }
 
-#if (MP_DRIVER == 1  )
-static void _InitRxSetting(PADAPTER padapter)
-{
-	rtw_write32(padapter, REG_MACID, 0x87654321);
-	rtw_write32(padapter, 0x0700, 0x87654321);
-}
-#endif
-
 static void _InitRFType(PADAPTER padapter)
 {
 	struct registry_priv *pregpriv = &padapter->registrypriv;
@@ -1119,14 +1111,6 @@ static u32 rtl8723bs_hal_init(PADAPTER padapter)
 
 	rtw_write8(padapter, REG_EARLY_MODE_CONTROL, 0);
 
-#if (MP_DRIVER == 1)
-	if (padapter->registrypriv.mp_mode == 1)
-	{
-		_InitRxSetting(padapter);
-	}
-
-#endif
-	
 		ret = rtl8723b_FirmwareDownload(padapter, _FALSE);
 		if (ret != _SUCCESS) {
 			RT_TRACE(_module_hci_hal_init_c_, _drv_err_, ("%s: Download Firmware failed!!\n", __FUNCTION__));
@@ -1320,14 +1304,6 @@ static u32 rtl8723bs_hal_init(PADAPTER padapter)
 
 //	pHalData->PreRpwmVal = SdioLocalCmd52Read1Byte(padapter, SDIO_REG_HRPWM1) & 0x80;
 
-#if (MP_DRIVER == 1)
-	if (padapter->registrypriv.mp_mode == 1)
-	{
-		padapter->mppriv.channel = pHalData->CurrentChannel;
-		MPT_InitializeAdapter(padapter, padapter->mppriv.channel);
-	}
-	else
-#endif //#if (MP_DRIVER == 1)
 	{
 		pwrctrlpriv->rf_pwrstate = rf_on;
 

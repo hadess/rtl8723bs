@@ -1219,20 +1219,7 @@ EFUSE_ShadowWrite(
 	IN	u16		Offset,
 	IN OUT	u32		Value)
 {
-#if (MP_DRIVER == 0)
 	return;
-#endif
-	if ( pAdapter->registrypriv.mp_mode == 0)
-		return;
-
-
-	if (Type == 1)
-		efuse_ShadowWrite1Byte(pAdapter, Offset, (u8)Value);
-	else if (Type == 2)
-		efuse_ShadowWrite2Byte(pAdapter, Offset, (u16)Value);
-	else if (Type == 4)
-		efuse_ShadowWrite4Byte(pAdapter, Offset, (u32)Value);
-
 }	// EFUSE_ShadowWrite
 
 VOID
