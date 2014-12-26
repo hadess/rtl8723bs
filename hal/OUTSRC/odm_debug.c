@@ -100,75 +100,7 @@ extern	void	ODM_DBGP_Flag_Init(void)
 	{
  		ODM_DBGP_Type[i] = 0;
 	}
-    
-#ifndef ADSL_AP_BUILD_WORKAROUND
-#if DBG		
-	// 2010/06/02 MH Free build driver can not out any debug message!!!
-	// Init Debug flag enable condition
 
-	ODM_DBGP_Type[FINIT]			=	\
-//								INIT_EEPROM						|
-//								INIT_TxPower						|
-//								INIT_IQK							|
-//								INIT_RF							|
-								0;
-
-	ODM_DBGP_Type[FDM]			=	\
-//								WA_IOT							|
-//								DM_PWDB						|
-//								DM_Monitor						|
-//								DM_DIG				|
-//								DM_EDCA_Turbo		|
-//								DM_BT30				|
-								0;
-
-	ODM_DBGP_Type[FIOCTL]		= 	\
-//								IOCTL_IRP						|
-//								IOCTL_IRP_DETAIL					|
-//								IOCTL_IRP_STATISTICS				|
-//								IOCTL_IRP_HANDLE				|
-//								IOCTL_BT_HCICMD					|
-//								IOCTL_BT_HCICMD_DETAIL			|
-//								IOCTL_BT_HCICMD_EXT				|
-//								IOCTL_BT_EVENT					|
-//								IOCTL_BT_EVENT_DETAIL			|
-//								IOCTL_BT_EVENT_PERIODICAL		|
-//								IOCTL_BT_TX_ACLDATA			|
-//								IOCTL_BT_TX_ACLDATA_DETAIL		|
-//								IOCTL_BT_RX_ACLDATA				|
-//								IOCTL_BT_RX_ACLDATA_DETAIL		|
-//								IOCTL_BT_TP						|
-//								IOCTL_STATE						|
-//								IOCTL_BT_LOGO					|
-//								IOCTL_CALLBACK_FUN				|
-//								IOCTL_PARSE_BT_PKT				|
-								0;
-
-	ODM_DBGP_Type[FBT]			= 	\
-//								BT_TRACE						|
-								0;
-
-	ODM_DBGP_Type[FEEPROM]		=	\
-//								EEPROM_W						|
-//								EFUSE_PG						|
-//								EFUSE_READ_ALL					|
-//								EFUSE_ANALYSIS					|
-//								EFUSE_PG_DETAIL					|
-								0;
-
-	ODM_DBGP_Type[FDBG_CTRL]	= 	\
-//								DBG_CTRL_TRACE					|
-//								DBG_CTRL_INBAND_NOISE			|
-								0;
-	
-	// 2011/07/20 MH Add for short cut 
-	ODM_DBGP_Type[FSHORT_CUT] = 	\
-//								SHCUT_TX 						| 
-//								SHCUT_RX						|
-								0;
-	
-#endif	
-#endif
 	/* Define debug header of every service module. */
 	//ODM_DBGP_Head.pMANS	= "\n\r[MANS] ";
 	//ODM_DBGP_Head.pRTOS	= "\n\r[RTOS] ";
