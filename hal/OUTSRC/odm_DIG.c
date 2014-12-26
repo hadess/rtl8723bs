@@ -1107,11 +1107,7 @@ odm_DIG(
 #else
 		{
 			//4 For AP
-#ifdef __ECOS
-			HAL_REORDER_BARRIER();
-#else
 			rmb();
-#endif
 			if (bDFSBand)
 			{
 				DIG_Dynamic_MIN = dm_dig_min;
