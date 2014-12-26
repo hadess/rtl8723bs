@@ -1982,14 +1982,6 @@ if( pAdapter->registrypriv.mp_mode == 1 && pAdapter->mppriv.mode == 3 )
 	
 	//u4Byte bbvalue;
 
-#if (DM_ODM_SUPPORT_TYPE & (ODM_AP|ODM_ADSL))
-#ifdef MP_TEST
-		if(pDM_Odm->priv->pshare->rf_ft_var.mp_specific)
-			retryCount = 9; 
-#endif
-#endif
-
-
 	if(t==0)
 	{
 //		 bbvalue = ODM_GetBBReg(pDM_Odm, rFPGA0_RFMOD, bMaskDWord);
