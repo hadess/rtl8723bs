@@ -252,34 +252,6 @@
 /*
  * Platform dependent
  */
-#ifdef CONFIG_PLATFORM_SPRD
- 
-#undef CONFIG_SDIO_RX_COPY
-
-	#undef CONFIG_WOWLAN
-	#undef CONFIG_WOWLAN_8723
-//	#define CONFIG_SDIO_RX_COPY
-//	#define CONFIG_LINKED_LCOK
-	#define CONFIG_AUTH_DIRECT_WITHOUT_BCN
-	//#define CONFIG_DISCONNECT_H2CWAY
-//	#define CONFIG_DONT_CARE_TP
-	#define CONFIG_LOW_PWR_LPS
-	//#define CONFIG_CMCC_TEST
-
-	//1) LPS unit is only 102 ms, it's not
-	//a good idear to retry it use timer,
-	//2) we must wait ACK, or lots of IO
-	//is not allowed under 32k, because
-	//this will cause hw hang
-	#undef CONFIG_LPS_RPWM_TIMER
-	#define CONFIG_WAIT_PS_ACK
-	#define CONFIG_SOFTAP_11N
-	#define CONFIG_CHECK_BT_HANG
-
-//	#define CONFIG_8723BS_TEST
-
-#endif // CONFIG_PLATFORM_SPRD
-
 #define CONFIG_ATTEMPT_TO_FIX_AP_BEACON_ERROR
 
 #define WAKEUP_GPIO_IDX	12	//WIFI Chip Side

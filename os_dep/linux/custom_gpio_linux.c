@@ -20,87 +20,6 @@
  ******************************************************************************/
 #include "drv_types.h"
 
-#ifdef CONFIG_PLATFORM_SPRD
-
-//gspi func & GPIO define
-#include <mach/gpio.h>//0915
-#include <mach/board.h>
-
-#ifdef CONFIG_RTL8188E
-#include <mach/regulator.h>
-#include <linux/regulator/consumer.h>
-#endif // CONFIG_RTL8188E
-
-#ifndef GPIO_WIFI_POWER
-#define GPIO_WIFI_POWER -1
-#endif // !GPIO_WIFI_POWER
-
-#ifndef GPIO_WIFI_RESET
-#define GPIO_WIFI_RESET -1
-#endif // !GPIO_WIFI_RESET
-
-#ifndef GPIO_WIFI_PWDN
-#define GPIO_WIFI_PWDN -1
-#endif // !GPIO_WIFI_RESET
-
-#ifdef CONFIG_SDIO_HCI
-extern int rtw_mp_mode;
-#else // !CONFIG_SDIO_HCI
-#endif // !CONFIG_SDIO_HCI
-
-int rtw_wifi_gpio_init(void)
-{
-	if (GPIO_WIFI_RESET > 0)
-		gpio_request(GPIO_WIFI_RESET , "wifi_rst");
-	if (GPIO_WIFI_POWER > 0)
-		gpio_request(GPIO_WIFI_POWER, "wifi_power");
-
-	return 0;
-}
-
-int rtw_wifi_gpio_deinit(void)
-{
-	if (GPIO_WIFI_RESET > 0)
-		gpio_free(GPIO_WIFI_RESET );
-	if (GPIO_WIFI_POWER > 0)
-		gpio_free(GPIO_WIFI_POWER);
-
-	return 0;
-}
-
-/* Customer function to control hw specific wlan gpios */
-void rtw_wifi_gpio_wlan_ctrl(int onoff)
-{
-	switch (onoff)
-	{
-		case WLAN_PWDN_OFF:
-			DBG_8192C("%s: call customer specific GPIO(%d) to set wifi power down pin to 0\n",
-				__FUNCTION__, GPIO_WIFI_RESET);
-
-#ifndef CONFIG_DONT_BUS_SCAN
-			if (GPIO_WIFI_RESET > 0)
-				gpio_direction_output(GPIO_WIFI_RESET , 0);
-#endif
-		break;
-
-		case WLAN_PWDN_ON:
-			DBG_8192C("%s: callc customer specific GPIO(%d) to set wifi power down pin to 1\n",
-				__FUNCTION__, GPIO_WIFI_RESET);
-
-			if (GPIO_WIFI_RESET > 0)
-				gpio_direction_output(GPIO_WIFI_RESET , 1);
-		break;
-
-		case WLAN_POWER_OFF:
-		break;
-
-		case WLAN_POWER_ON:
-		break;
-	}
-}
-
-#else // !CONFIG_PLATFORM_SPRD
-
 int rtw_wifi_gpio_init(void)
 {
 	return 0;
@@ -109,4 +28,3 @@ int rtw_wifi_gpio_init(void)
 void rtw_wifi_gpio_wlan_ctrl(int onoff)
 {
 }
-#endif //CONFIG_PLATFORM_SPRD

@@ -602,7 +602,6 @@ ODM_DMWatchdog(
 
 	odm_RSSIMonitorCheck(pDM_Odm);
 
-//#ifdef CONFIG_PLATFORM_SPRD
 	//For CE Platform(SPRD or Tablet)
 	//8723A or 8189ES platform
 	//NeilChen--2012--08--24--
@@ -619,7 +618,6 @@ ODM_DMWatchdog(
 			odm_DIGbyRSSI_LPS(pDM_Odm);
 	}		
 	else				
-//#endif
 	{
 		odm_DIG(pDM_Odm);
 	}
