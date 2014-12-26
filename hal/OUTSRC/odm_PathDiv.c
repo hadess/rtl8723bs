@@ -30,7 +30,6 @@ odm_PathDiversityInit(
 	IN	PVOID	pDM_VOID
 )
 {
-#if(DM_ODM_SUPPORT_TYPE & ODM_CE)
 	PDM_ODM_T		pDM_Odm = (PDM_ODM_T)pDM_VOID;
 	if(!(pDM_Odm->SupportAbility & ODM_BB_PATH_DIV))
 	{
@@ -42,11 +41,9 @@ odm_PathDiversityInit(
 
 	if(pDM_Odm->SupportICType & ODM_RTL8812)
 		ODM_PathDiversityInit_8812A(pDM_Odm);
-#endif	
 #endif
 }
 
-#if(DM_ODM_SUPPORT_TYPE & ODM_CE)
 VOID
 odm_PathDiversity(
 	IN	PVOID	pDM_VOID
@@ -65,4 +62,3 @@ odm_PathDiversity(
 		ODM_PathDiversity_8812A(pDM_Odm);
 #endif	
 }
-#endif  //(DM_ODM_SUPPORT_TYPE & ODM_CE)

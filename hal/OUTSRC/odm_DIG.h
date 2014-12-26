@@ -71,14 +71,6 @@ typedef struct _Dynamic_Initial_Gain_Threshold_
 	u4Byte		RSSI_max;
 
 	u1Byte		*pbP2pLinkInProgress;
-
-#if(DM_ODM_SUPPORT_TYPE & (ODM_AP|ODM_ADSL))
-	BOOLEAN		bTpTarget;
-	BOOLEAN		bNoiseEst;
-	u4Byte		TpTrainTH_min;
-	u1Byte		IGIOffset_A;
-	u1Byte		IGIOffset_B;
-#endif
 }DIG_T,*pDIG_T;
 
 typedef struct _FALSE_ALARM_STATISTICS{
@@ -178,26 +170,12 @@ typedef enum tag_DIG_Connect_Definition
 #define		DM_DIG_MAX_AP_HP				0x42
 #define		DM_DIG_MIN_AP_HP				0x30
 
-#if (DM_ODM_SUPPORT_TYPE & (ODM_AP|ODM_ADSL))
-#define		DM_DIG_MAX_AP_COVERAGR		0x26
-#define		DM_DIG_MIN_AP_COVERAGE		0x1c
-#define		DM_DIG_MAX_OF_MIN_COVERAGE	0x22
-
-#define		DM_DIG_TP_Target_TH0			500
-#define		DM_DIG_TP_Target_TH1			1000
-#define		DM_DIG_TP_Training_Period		10
-#endif
-
 //vivi 92c&92d has different definition, 20110504
 //this is for 92c
-#if (DM_ODM_SUPPORT_TYPE & ODM_CE)
-	#ifdef CONFIG_SPECIAL_SETTING_FOR_FUNAI_TV
-	#define		DM_DIG_FA_TH0				0x80//0x20
-	#else
-	#define		DM_DIG_FA_TH0				0x200//0x20
-	#endif
+#ifdef CONFIG_SPECIAL_SETTING_FOR_FUNAI_TV
+#define		DM_DIG_FA_TH0				0x80//0x20
 #else
-	#define		DM_DIG_FA_TH0				0x200//0x20
+#define		DM_DIG_FA_TH0				0x200//0x20
 #endif
 
 #define		DM_DIG_FA_TH1					0x300
@@ -352,20 +330,5 @@ ODM_Write_CCK_CCA_Thres(
 	IN		PVOID					pDM_VOID, 
 	IN		u1Byte					CurCCK_CCAThres
 	);
-
-#if (DM_ODM_SUPPORT_TYPE & (ODM_AP|ODM_ADSL))
-VOID
-odm_MPT_DIGCallback(
-	IN		PVOID					pDM_VOID
-);
-#endif
-
-#if (DM_ODM_SUPPORT_TYPE != ODM_CE)
-VOID
-ODM_MPT_DIG(
-	IN		PVOID					pDM_VOID
-);
-#endif
-
 
 #endif

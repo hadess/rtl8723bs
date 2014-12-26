@@ -138,10 +138,8 @@ ODM_UpdateRxIdleAnt(IN PDM_ODM_T pDM_Odm, IN u1Byte Ant)
 	pFAT_T	pDM_FatTable = &pDM_Odm->DM_FatTable;
 	u4Byte	DefaultAnt, OptionalAnt,value32;
 
-	//#if (DM_ODM_SUPPORT_TYPE & (ODM_CE))
 	//PADAPTER 		pAdapter = pDM_Odm->Adapter;
 	//HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
-	//#endif
 
 	if(pDM_FatTable->RxIdleAnt != Ant)
 	{
@@ -236,13 +234,6 @@ odm_UpdateTxAnt(IN PDM_ODM_T pDM_Odm, IN u1Byte Ant, IN u4Byte MacId)
 	pDM_FatTable->antsel_a[MacId] = TxAnt&BIT0;
 	pDM_FatTable->antsel_b[MacId] = (TxAnt&BIT1)>>1;
 	pDM_FatTable->antsel_c[MacId] = (TxAnt&BIT2)>>2;
-        #if (DM_ODM_SUPPORT_TYPE == ODM_AP)
-	if (pDM_Odm->antdiv_rssi)
-        {
-		//panic_printk("[Tx from TxInfo]: MacID:(( %d )),  TxAnt = (( %s ))\n",MacId,(Ant==MAIN_ANT)?"MAIN_ANT":"AUX_ANT");
-		//panic_printk("antsel_tr_mux=(( 3'b%d%d%d ))\n",	pDM_FatTable->antsel_c[MacId] , pDM_FatTable->antsel_b[MacId] , pDM_FatTable->antsel_a[MacId] );
-	}
-        #endif
 	//ODM_RT_TRACE(pDM_Odm,ODM_COMP_ANT_DIV, ODM_DBG_LOUD, ("[Tx from TxInfo]: MacID:(( %d )),  TxAnt = (( %s ))\n", 
 	//					MacId,(Ant==MAIN_ANT)?"MAIN_ANT":"AUX_ANT"));
 	//ODM_RT_TRACE(pDM_Odm,ODM_COMP_ANT_DIV, ODM_DBG_LOUD,("antsel_tr_mux=(( 3'b%d%d%d ))\n",
@@ -493,10 +484,6 @@ odm_TRX_HWAntDiv_Init_92E(
         return;
 	}
 
-#if (DM_ODM_SUPPORT_TYPE & ODM_AP)
-	 pDM_Odm->antdiv_rssi=0;
-#endif
-
 	 ODM_RT_TRACE(pDM_Odm,ODM_COMP_ANT_DIV, ODM_DBG_LOUD, ("***8192E AntDiv_Init =>  AntDivType=[CG_TRX_HW_ANTDIV]\n"));
 	
 	//3 --RFE pin setting---------
@@ -711,9 +698,7 @@ ODM_UpdateRxIdleAnt_8723B(
 
 			// Set TX AGC by S0/S1
 			// Need to consider Linux driver
-#if(DM_ODM_SUPPORT_TYPE == ODM_CE)
 			rtw_hal_set_tx_power_level(pAdapter, pHalData->CurrentChannel);
-#endif
 
 			// Set IQC by S0/S1
 			ODM_SetIQCbyRFpath(pDM_Odm,DefaultAnt);
@@ -984,12 +969,7 @@ odm_HW_AntDiv(
 	if(!pDM_Odm->bLinked) //bLinked==False
 	{
 		ODM_RT_TRACE(pDM_Odm,ODM_COMP_ANT_DIV, ODM_DBG_LOUD, ("[No Link!!!]\n"));
-	
-		#if(DM_ODM_SUPPORT_TYPE  == ODM_AP)
-			if (pDM_Odm->antdiv_rssi)
-				panic_printk("[No Link!!!]\n");
-		#endif
-	
+
 		if(pDM_FatTable->bBecomeLinked == TRUE)
 		{
 			odm_AntDiv_on_off(pDM_Odm, ANTDIV_OFF);
@@ -1007,12 +987,7 @@ odm_HW_AntDiv(
 			odm_AntDiv_on_off(pDM_Odm, ANTDIV_ON);
 			//if(pDM_Odm->SupportICType == ODM_RTL8821 )
 				//ODM_SetBBReg(pDM_Odm, 0x800 , BIT25, 0); //CCK AntDiv function disable
-				
-			//#if(DM_ODM_SUPPORT_TYPE  == ODM_AP)
-			//else if(pDM_Odm->SupportICType == ODM_RTL8881 )
-			//	ODM_SetBBReg(pDM_Odm, 0x800 , BIT25, 0); //CCK AntDiv function disable
-			//#endif
-			
+
 			//else if(pDM_Odm->SupportICType == ODM_RTL8723B ||pDM_Odm->SupportICType == ODM_RTL8812)
 				//ODM_SetBBReg(pDM_Odm, 0xA00 , BIT15, 0); //CCK AntDiv function disable
 			
@@ -1057,19 +1032,6 @@ odm_HW_AntDiv(
 
 			ODM_RT_TRACE(pDM_Odm, ODM_COMP_ANT_DIV,ODM_DBG_LOUD,("*** Phy_AntSel_A=[ %d, %d, %d] \n",((pDM_Odm->DM_FatTable.antsel_rx_keep_0)&BIT2)>>2,
 				                                                                              ((pDM_Odm->DM_FatTable.antsel_rx_keep_0)&BIT1) >>1, ((pDM_Odm->DM_FatTable.antsel_rx_keep_0)&BIT0)));
-			#if(DM_ODM_SUPPORT_TYPE  == ODM_AP)
-			if (pDM_Odm->antdiv_rssi)
-			{
-				panic_printk("*** SupportICType=[%lu] \n",pDM_Odm->SupportICType);
-				//panic_printk("*** Phy_AntSel_A=[ %d, %d, %d] \n",((pDM_Odm->DM_FatTable.antsel_rx_keep_0)&BIT2)>>2,
-				//	((pDM_Odm->DM_FatTable.antsel_rx_keep_0)&BIT1) >>1, ((pDM_Odm->DM_FatTable.antsel_rx_keep_0)&BIT0));
-				//panic_printk("*** Phy_AntSel_B=[ %d, %d, %d] \n",((pDM_Odm->DM_FatTable.antsel_rx_keep_1)&BIT2)>>2,
-				//	((pDM_Odm->DM_FatTable.antsel_rx_keep_1)&BIT1) >>1, ((pDM_Odm->DM_FatTable.antsel_rx_keep_1)&BIT0))
-				panic_printk("*** Client[ %lu ] , Main_Cnt = (( %lu ))  , Main_RSSI= ((  %lu )) \n",i, pDM_FatTable->MainAnt_Cnt[i], Main_RSSI);
-				panic_printk("*** Client[ %lu ] , Aux_Cnt   = (( %lu ))  , Aux_RSSI = ((  %lu )) \n" ,i, pDM_FatTable->AuxAnt_Cnt[i] , Aux_RSSI);
-			}
-			#endif
-
 
 			LocalMaxRSSI = (Main_RSSI>Aux_RSSI)?Main_RSSI:Aux_RSSI;
 			//2 Select MaxRSSI for DIG
@@ -1116,11 +1078,6 @@ odm_HW_AntDiv(
 	//2 Set RX Idle Antenna
 	ODM_UpdateRxIdleAnt(pDM_Odm, RxIdleAnt);
 
-	#if(DM_ODM_SUPPORT_TYPE  == ODM_AP)
-		if (pDM_Odm->antdiv_rssi)
-			panic_printk("*** RxIdleAnt = (( %s )) \n \n", ( RxIdleAnt ==MAIN_ANT)?"MAIN_ANT":"AUX_ANT");
-	#endif
-	
 	if(AntDivMaxRSSI == 0)
 		pDM_DigTable->AntDiv_RSSI_max = pDM_Odm->RSSI_Min;
 	else
@@ -1555,8 +1512,6 @@ odm_S0S1_SwAntDiv(
 }
 
 
-#if (DM_ODM_SUPPORT_TYPE == ODM_CE)
-
 VOID
 ODM_SW_AntDiv_WorkitemCallback(
     IN PVOID            pContext
@@ -1586,10 +1541,6 @@ ODM_SW_AntDiv_Callback(void *FunctionContext)
 #endif
 }
 
-#endif
-
-
-#if (DM_ODM_SUPPORT_TYPE & ODM_CE)
 VOID
 odm_S0S1_SwAntDivByCtrlFrame(
 	IN		PDM_ODM_T		pDM_Odm,
@@ -1694,241 +1645,9 @@ odm_S0S1_SwAntDivByCtrlFrame_ProcessRSSI(
 		odm_AntselStatisticsOfCtrlFrame(pDM_Odm, pDM_FatTable->antsel_rx_keep_0, pPhyInfo->RxPWDBAll);
 	}
 }
-#endif  //#if (DM_ODM_SUPPORT_TYPE == ODM_CE)
-
-
 
 #endif //#if (RTL8723B_SUPPORT == 1)
 
-
-#if(RTL8188E_SUPPORT == 1  || RTL8192E_SUPPORT == 1)
-#if (!(DM_ODM_SUPPORT_TYPE == ODM_CE))
-VOID
-odm_SetNextMACAddrTarget(
-	IN		PDM_ODM_T		pDM_Odm
-)
-{
-	pFAT_T	pDM_FatTable = &pDM_Odm->DM_FatTable;
-	PSTA_INFO_T   	pEntry;
-	//u1Byte	Bssid[6];
-	u4Byte	value32, i;
-
-	//
-	//2012.03.26 LukeLee: The MAC address is changed according to MACID in turn
-	//
-	ODM_RT_TRACE(pDM_Odm,ODM_COMP_ANT_DIV, ODM_DBG_LOUD, ("odm_SetNextMACAddrTarget() ==>\n"));
-	if(pDM_Odm->bLinked)
-	{
-		for (i=0; i<ODM_ASSOCIATE_ENTRY_NUM; i++)
-		{
-			if((pDM_FatTable->TrainIdx+1) == ODM_ASSOCIATE_ENTRY_NUM)
-				pDM_FatTable->TrainIdx = 0;
-			else
-				pDM_FatTable->TrainIdx++;
-			
-			pEntry = pDM_Odm->pODM_StaInfo[pDM_FatTable->TrainIdx];
-			if(IS_STA_VALID(pEntry))
-			{
-				//Match MAC ADDR
-#if (DM_ODM_SUPPORT_TYPE & (ODM_AP|ODM_ADSL))
-				value32 = (pEntry->hwaddr[5]<<8)|pEntry->hwaddr[4];
-#else
-				value32 = (pEntry->MacAddr[5]<<8)|pEntry->MacAddr[4];
-#endif
-				ODM_SetMACReg(pDM_Odm, 0x7b4, 0xFFFF, value32);
-#if (DM_ODM_SUPPORT_TYPE & (ODM_AP|ODM_ADSL))
-				value32 = (pEntry->hwaddr[3]<<24)|(pEntry->hwaddr[2]<<16) |(pEntry->hwaddr[1]<<8) |pEntry->hwaddr[0];
-#else
-				value32 = (pEntry->MacAddr[3]<<24)|(pEntry->MacAddr[2]<<16) |(pEntry->MacAddr[1]<<8) |pEntry->MacAddr[0];
-#endif
-				ODM_SetMACReg(pDM_Odm, 0x7b0, bMaskDWord, value32);
-
-				ODM_RT_TRACE(pDM_Odm,ODM_COMP_ANT_DIV, ODM_DBG_LOUD, ("pDM_FatTable->TrainIdx=%lu\n",pDM_FatTable->TrainIdx));
-#if (DM_ODM_SUPPORT_TYPE & (ODM_AP|ODM_ADSL))
-				ODM_RT_TRACE(pDM_Odm,ODM_COMP_ANT_DIV, ODM_DBG_LOUD, ("Training MAC Addr = %x:%x:%x:%x:%x:%x\n",
-					pEntry->hwaddr[5],pEntry->hwaddr[4],pEntry->hwaddr[3],pEntry->hwaddr[2],pEntry->hwaddr[1],pEntry->hwaddr[0]));
-#else
-				ODM_RT_TRACE(pDM_Odm,ODM_COMP_ANT_DIV, ODM_DBG_LOUD, ("Training MAC Addr = %x:%x:%x:%x:%x:%x\n",
-					pEntry->MacAddr[5],pEntry->MacAddr[4],pEntry->MacAddr[3],pEntry->MacAddr[2],pEntry->MacAddr[1],pEntry->MacAddr[0]));
-#endif
-
-				break;
-			}
-		}
-		
-	}
-
-#if 0
-	//odm_SetNextMACAddrTarget(pDM_Odm);
-	
-	//1 Select MAC Address Filter
-	for (i=0; i<6; i++)
-	{
-		if(Bssid[i] != pDM_FatTable->Bssid[i])
-		{
-			bMatchBSSID = FALSE;
-			break;
-		}
-	}
-	if(bMatchBSSID == FALSE)
-	{
-		//Match MAC ADDR
-		value32 = (Bssid[5]<<8)|Bssid[4];
-		ODM_SetMACReg(pDM_Odm, 0x7b4, 0xFFFF, value32);
-		value32 = (Bssid[3]<<24)|(Bssid[2]<<16) |(Bssid[1]<<8) |Bssid[0];
-		ODM_SetMACReg(pDM_Odm, 0x7b0, bMaskDWord, value32);
-	}
-
-	return bMatchBSSID;
-#endif
-				
-}
-
-VOID
-odm_FastAntTraining(
-	IN		PDM_ODM_T		pDM_Odm
-)
-{
-	u4Byte	i, MaxRSSI=0;
-	u1Byte	TargetAnt=2;
-	pFAT_T	pDM_FatTable = &pDM_Odm->DM_FatTable;
-	BOOLEAN	bPktFilterMacth = FALSE;
-
-	ODM_RT_TRACE(pDM_Odm,ODM_COMP_ANT_DIV, ODM_DBG_LOUD, ("==>odm_FastAntTraining()\n"));
-
-	//1 TRAINING STATE
-	if(pDM_FatTable->FAT_State == FAT_TRAINING_STATE)
-	{
-		ODM_RT_TRACE(pDM_Odm,ODM_COMP_ANT_DIV, ODM_DBG_LOUD, ("Enter FAT_TRAINING_STATE\n"));
-		//2 Caculate RSSI per Antenna
-		for (i=0; i<7; i++)
-		{
-			if(pDM_FatTable->antRSSIcnt[i] == 0)
-				pDM_FatTable->antAveRSSI[i] = 0;
-			else
-			{
-			pDM_FatTable->antAveRSSI[i] = pDM_FatTable->antSumRSSI[i] /pDM_FatTable->antRSSIcnt[i];
-				bPktFilterMacth = TRUE;
-			}
-			if(pDM_FatTable->antAveRSSI[i] > MaxRSSI)
-			{
-				MaxRSSI = pDM_FatTable->antAveRSSI[i];
-				TargetAnt = (u1Byte) i;
-			}
-
-			ODM_RT_TRACE(pDM_Odm,ODM_COMP_ANT_DIV, ODM_DBG_LOUD, ("pDM_FatTable->antAveRSSI[%lu] = %lu, pDM_FatTable->antRSSIcnt[%lu] = %lu\n",
-				i, pDM_FatTable->antAveRSSI[i], i, pDM_FatTable->antRSSIcnt[i]));
-		}
-
-		//2 Select TRX Antenna
-		if(bPktFilterMacth == FALSE)
-		{
-			ODM_RT_TRACE(pDM_Odm,ODM_COMP_ANT_DIV, ODM_DBG_LOUD, ("None Packet is matched\n"));
-
-			ODM_SetBBReg(pDM_Odm, 0xe08 , BIT16, 0);	//RegE08[16]=1'b0		//disable fast training
-			ODM_SetBBReg(pDM_Odm, 0xc50 , BIT7, 0);		//RegC50[7]=1'b0 		//disable HW AntDiv
-		}
-		else
-		{
-			ODM_RT_TRACE(pDM_Odm,ODM_COMP_ANT_DIV, ODM_DBG_LOUD, ("TargetAnt=%d, MaxRSSI=%lu\n",TargetAnt,MaxRSSI));
-
-			ODM_SetBBReg(pDM_Odm, 0xe08 , BIT16, 0);	//RegE08[16]=1'b0		//disable fast training
-			//ODM_SetBBReg(pDM_Odm, 0xc50 , BIT7, 0);		//RegC50[7]=1'b0 		//disable HW AntDiv
-			ODM_SetBBReg(pDM_Odm, 0x864 , BIT8|BIT7|BIT6, TargetAnt);	//Default RX is Omni, Optional RX is the best decision by FAT
-			//ODM_SetBBReg(pDM_Odm, 0x860 , BIT14|BIT13|BIT12, TargetAnt);	//Default TX
-			ODM_SetBBReg(pDM_Odm, 0x80c , BIT21, 1); //Reg80c[21]=1'b1		//from TX Info
-
-#if 0
-			pEntry = pDM_Odm->pODM_StaInfo[pDM_FatTable->TrainIdx];
-
-			if(IS_STA_VALID(pEntry))
-			{
-				pEntry->antsel_a = TargetAnt&BIT0;
-				pEntry->antsel_b = (TargetAnt&BIT1)>>1;
-				pEntry->antsel_c = (TargetAnt&BIT2)>>2;
-			}
-#else
-			pDM_FatTable->antsel_a[pDM_FatTable->TrainIdx] = TargetAnt&BIT0;
-			pDM_FatTable->antsel_b[pDM_FatTable->TrainIdx] = (TargetAnt&BIT1)>>1;
-			pDM_FatTable->antsel_c[pDM_FatTable->TrainIdx] = (TargetAnt&BIT2)>>2;
-#endif
-
-
-			if(TargetAnt == 0)
-				ODM_SetBBReg(pDM_Odm, 0xc50 , BIT7, 0);		//RegC50[7]=1'b0 		//disable HW AntDiv
-
-		}
-
-		//2 Reset Counter
-		for(i=0; i<7; i++)
-		{
-			pDM_FatTable->antSumRSSI[i] = 0;
-			pDM_FatTable->antRSSIcnt[i] = 0;
-		}
-		
-		pDM_FatTable->FAT_State = FAT_NORMAL_STATE;
-		return;
-	}
-
-	//1 NORMAL STATE
-	if(pDM_FatTable->FAT_State == FAT_NORMAL_STATE)
-	{
-		ODM_RT_TRACE(pDM_Odm,ODM_COMP_ANT_DIV, ODM_DBG_LOUD, ("Enter FAT_NORMAL_STATE\n"));
-
-		odm_SetNextMACAddrTarget(pDM_Odm);
-
-#if 0
-				pEntry = pDM_Odm->pODM_StaInfo[pDM_FatTable->TrainIdx];
-				if(IS_STA_VALID(pEntry))
-				{
-					pEntry->antsel_a = TargetAnt&BIT0;
-					pEntry->antsel_b = (TargetAnt&BIT1)>>1;
-					pEntry->antsel_c = (TargetAnt&BIT2)>>2;
-				}
-#endif
-
-		//2 Prepare Training
-		pDM_FatTable->FAT_State = FAT_TRAINING_STATE;
-		ODM_SetBBReg(pDM_Odm, 0xe08 , BIT16, 1);	//RegE08[16]=1'b1		//enable fast training
-		ODM_SetBBReg(pDM_Odm, 0xc50 , BIT7, 1);	//RegC50[7]=1'b1 		//enable HW AntDiv
-		ODM_RT_TRACE(pDM_Odm,ODM_COMP_ANT_DIV, ODM_DBG_LOUD, ("Start FAT_TRAINING_STATE\n"));
-		ODM_SetTimer(pDM_Odm,&pDM_Odm->FastAntTrainingTimer, 500 ); //ms
-		
-	}
-		
-}
-
-VOID
-odm_FastAntTrainingCallback(
-	IN		PDM_ODM_T		pDM_Odm
-)
-{
-
-#if (DM_ODM_SUPPORT_TYPE == ODM_CE)
-	PADAPTER	padapter = pDM_Odm->Adapter;
-	if(padapter->net_closed == _TRUE)
-	    return;
-	//if(*pDM_Odm->pbNet_closed == TRUE)
-	   // return;
-#endif
-
-#if USE_WORKITEM
-	ODM_ScheduleWorkItem(&pDM_Odm->FastAntTrainingWorkitem);
-#else
-	odm_FastAntTraining(pDM_Odm);
-#endif
-}
-
-VOID
-odm_FastAntTrainingWorkItemCallback(
-	IN		PDM_ODM_T		pDM_Odm
-)
-{
-	odm_FastAntTraining(pDM_Odm);
-}
-#endif
-
-#endif
 
 VOID
 ODM_AntDivReset(
@@ -1956,30 +1675,7 @@ ODM_AntDivInit(
 		ODM_RT_TRACE(pDM_Odm, ODM_COMP_ANT_DIV,ODM_DBG_LOUD,("[Return!!!]   Not Support Antenna Diversity Function\n"));
 		return;
 	}
-        //---
-#if (DM_ODM_SUPPORT_TYPE == ODM_AP)
-	if(pDM_FatTable->AntDiv_2G_5G == ODM_ANTDIV_2G)
-	{
-		ODM_RT_TRACE(pDM_Odm, ODM_COMP_ANT_DIV,ODM_DBG_LOUD,("[2G AntDiv Init]: Only Support 2G Antenna Diversity Function\n"));
-		if(!(pDM_Odm->SupportICType & ODM_ANTDIV_2G_SUPPORT_IC))
-			return;
-	}
-	else 	if(pDM_FatTable->AntDiv_2G_5G == ODM_ANTDIV_5G)
-	{
-		ODM_RT_TRACE(pDM_Odm, ODM_COMP_ANT_DIV,ODM_DBG_LOUD,("[5G AntDiv Init]: Only Support 5G Antenna Diversity Function\n"));
-		if(!(pDM_Odm->SupportICType & ODM_ANTDIV_5G_SUPPORT_IC))
-			return;
-	}
-	else 	if(pDM_FatTable->AntDiv_2G_5G == (ODM_ANTDIV_2G|ODM_ANTDIV_5G))
-	{
-		ODM_RT_TRACE(pDM_Odm, ODM_COMP_ANT_DIV,ODM_DBG_LOUD,("[2G & 5G AntDiv Init]:Support Both 2G & 5G Antenna Diversity Function\n"));
-	}
 
-	 pDM_Odm->antdiv_rssi=0;
-
-#endif	
-	//---
-	
 	//2 [--General---]
 	pDM_Odm->antdiv_period=0;
 	pDM_Odm->antdiv_select=0;
@@ -2178,7 +1874,6 @@ ODM_AntDiv(
 	PADAPTER		pAdapter	= pDM_Odm->Adapter;
 	pFAT_T			pDM_FatTable = &pDM_Odm->DM_FatTable;
 
-//#if (DM_ODM_SUPPORT_TYPE == ODM_AP)	
 	if(*pDM_Odm->pBandType == ODM_BAND_5G )
 	{
 		if(pDM_FatTable->idx_AntDiv_counter_5G <  pDM_Odm->antdiv_period )
@@ -2199,35 +1894,13 @@ ODM_AntDiv(
 		else
 			pDM_FatTable->idx_AntDiv_counter_2G=0;
 	}
-//#endif	
+
 	//----------
 	if(!(pDM_Odm->SupportAbility & ODM_BB_ANT_DIV))
 	{
 		ODM_RT_TRACE(pDM_Odm, ODM_COMP_ANT_DIV,ODM_DBG_LOUD,("[Return!!!]   Not Support Antenna Diversity Function\n"));
 		return;
 	}
-
-	//----------
-#if (DM_ODM_SUPPORT_TYPE == ODM_AP)
-	if(pDM_FatTable->AntDiv_2G_5G == ODM_ANTDIV_2G)
-	{
-		ODM_RT_TRACE(pDM_Odm, ODM_COMP_ANT_DIV,ODM_DBG_LOUD,("[ 2G AntDiv Running ]\n"));
-		if(!(pDM_Odm->SupportICType & ODM_ANTDIV_2G_SUPPORT_IC))
-			return;
-	}
-	else if(pDM_FatTable->AntDiv_2G_5G == ODM_ANTDIV_5G)
-	{
-		ODM_RT_TRACE(pDM_Odm, ODM_COMP_ANT_DIV,ODM_DBG_LOUD,("[ 5G AntDiv Running ]\n"));
-		if(!(pDM_Odm->SupportICType & ODM_ANTDIV_5G_SUPPORT_IC))
-		return;
-	}
-	else if(pDM_FatTable->AntDiv_2G_5G == (ODM_ANTDIV_2G|ODM_ANTDIV_5G))
-	{
-		ODM_RT_TRACE(pDM_Odm, ODM_COMP_ANT_DIV,ODM_DBG_LOUD,("[ 2G & 5G AntDiv Running ]\n"));
-	}
-#endif
-
-	//----------
 
 	if (pDM_Odm->antdiv_select==1)
 		pDM_Odm->AntType = ODM_FIX_MAIN_ANT;
@@ -2280,10 +1953,6 @@ ODM_AntDiv(
 		#if (RTL8188E_SUPPORT == 1)
 		if(pDM_Odm->AntDivType==CG_TRX_HW_ANTDIV ||pDM_Odm->AntDivType==CGCS_RX_HW_ANTDIV)
 			odm_HW_AntDiv(pDM_Odm);
-		#if (!(DM_ODM_SUPPORT_TYPE == ODM_CE))
-		else if (pDM_Odm->AntDivType==CG_TRX_SMART_ANTDIV)
-			odm_FastAntTraining(pDM_Odm);	
-		#endif
 		#endif
 	}
 	//2 [--92E---]	
@@ -2292,10 +1961,6 @@ ODM_AntDiv(
 	{
 		if(pDM_Odm->AntDivType==CGCS_RX_HW_ANTDIV)
 			odm_HW_AntDiv(pDM_Odm);
-		#if (!(DM_ODM_SUPPORT_TYPE == ODM_CE))
-		else if (pDM_Odm->AntDivType==CG_TRX_SMART_ANTDIV)
-			odm_FastAntTraining(pDM_Odm);	
-		#endif
 	}
 	#endif
 
@@ -2463,7 +2128,6 @@ pFAT_T			pDM_FatTable = &pDM_Odm->DM_FatTable;
 	//ODM_RT_TRACE(pDM_Odm,ODM_COMP_ANT_DIV, ODM_DBG_LOUD,("antsel_tr_mux=3'b%d%d%d\n",pDM_FatTable->antsel_rx_keep_2, pDM_FatTable->antsel_rx_keep_1, pDM_FatTable->antsel_rx_keep_0));
 }
 
-#if (DM_ODM_SUPPORT_TYPE & ODM_CE)
 VOID
 ODM_SetTxAntByTxInfo(
 	IN		PDM_ODM_T		pDM_Odm,
@@ -2512,50 +2176,6 @@ ODM_SetTxAntByTxInfo(
 	
 	}
 }
-#else// (DM_ODM_SUPPORT_TYPE == ODM_AP)
-
-VOID
-ODM_SetTxAntByTxInfo(
-	//IN		PDM_ODM_T		pDM_Odm,
-	struct	rtl8192cd_priv		*priv,
-	struct 	tx_desc			*pdesc,
-	struct	tx_insn			*txcfg,
-	unsigned short			aid	
-)
-{
-	pFAT_T		pDM_FatTable = &priv->pshare->_dmODM.DM_FatTable;
-	u4Byte		SupportICType=priv->pshare->_dmODM.SupportICType;
-
-	if(SupportICType == ODM_RTL8881A)
-	{
-		//panic_printk("[%s] [%d]   ******ODM_SetTxAntByTxInfo_8881E******   \n",__FUNCTION__,__LINE__);	
-		pdesc->Dword6 &= set_desc(~ (BIT(18)|BIT(17)|BIT(16)));	
-		pdesc->Dword6 |= set_desc(pDM_FatTable->antsel_a[aid]<<16);
-	}
-	else if(SupportICType == ODM_RTL8192E)
-	{
-		//panic_printk("[%s] [%d]   ******ODM_SetTxAntByTxInfo_8192E******   \n",__FUNCTION__,__LINE__);	
-		pdesc->Dword6 &= set_desc(~ (BIT(18)|BIT(17)|BIT(16)));	
-		pdesc->Dword6 |= set_desc(pDM_FatTable->antsel_a[aid]<<16);
-	}
-	else if(SupportICType == ODM_RTL8812)
-	{
-		//3 [path-A]
-		//panic_printk("[%s] [%d]   ******ODM_SetTxAntByTxInfo_8881E******   \n",__FUNCTION__,__LINE__);
-			
-		pdesc->Dword6 &= set_desc(~ BIT(16));
-		pdesc->Dword6 &= set_desc(~ BIT(17));
-		pdesc->Dword6 &= set_desc(~ BIT(18));
-		if(txcfg->pstat)
-		{
-			pdesc->Dword6 |= set_desc(pDM_FatTable->antsel_a[aid]<<16);
-			pdesc->Dword6 |= set_desc(pDM_FatTable->antsel_b[aid]<<17);
-			pdesc->Dword6 |= set_desc(pDM_FatTable->antsel_c[aid]<<18);
-		}
-	}
-}
-#endif
-
 
 VOID
 ODM_AntDiv_Config(
@@ -2563,128 +2183,14 @@ ODM_AntDiv_Config(
 	)
 {
 	pFAT_T			pDM_FatTable = &pDM_Odm->DM_FatTable;
-#if (DM_ODM_SUPPORT_TYPE & (ODM_CE))
 
-		ODM_RT_TRACE(pDM_Odm,ODM_COMP_ANT_DIV, ODM_DBG_LOUD, ("CE Config Antenna Diversity\n"));
-		if(pDM_Odm->SupportICType==ODM_RTL8723B)
-		{
-			pDM_Odm->AntDivType = S0S1_SW_ANTDIV;
-		}	
-
-#elif (DM_ODM_SUPPORT_TYPE & (ODM_AP))
-
-	ODM_RT_TRACE(pDM_Odm,ODM_COMP_ANT_DIV, ODM_DBG_LOUD, ("AP Config Antenna Diversity\n"));
-
-	//2 [ NOT_SUPPORT_ANTDIV ]
-	#if(defined(CONFIG_NOT_SUPPORT_ANTDIV)) 
-		pDM_Odm->SupportAbility &= ~(ODM_BB_ANT_DIV);
-		ODM_RT_TRACE(pDM_Odm,ODM_COMP_ANT_DIV, ODM_DBG_LOUD, ("[ Disable AntDiv function] : Not Support 2.4G & 5G Antenna Diversity\n"));
-		
-		//2 [ 2G&5G_SUPPORT_ANTDIV ]
-	#elif(defined(CONFIG_2G5G_SUPPORT_ANTDIV))
-		ODM_RT_TRACE(pDM_Odm,ODM_COMP_ANT_DIV, ODM_DBG_LOUD, ("[ Enable AntDiv function] : 2.4G & 5G Support Antenna Diversity Simultaneously \n"));
-		pDM_FatTable->AntDiv_2G_5G = (ODM_ANTDIV_2G|ODM_ANTDIV_5G);
-
-		if(pDM_Odm->SupportICType & ODM_ANTDIV_SUPPORT)
-			pDM_Odm->SupportAbility |= ODM_BB_ANT_DIV;
-		if(*pDM_Odm->pBandType == ODM_BAND_5G )
-		{
-				#if ( defined(CONFIG_5G_CGCS_RX_DIVERSITY) )
-					pDM_Odm->AntDivType = CGCS_RX_HW_ANTDIV; 
-					ODM_RT_TRACE(pDM_Odm,ODM_COMP_ANT_DIV, ODM_DBG_LOUD, ("[ 5G] : AntDiv Type = CGCS_RX_HW_ANTDIV\n"));
-					panic_printk("[ 5G] : AntDiv Type = CGCS_RX_HW_ANTDIV\n");
-				#elif( defined(CONFIG_5G_CG_TRX_DIVERSITY) )
-					pDM_Odm->AntDivType = CG_TRX_HW_ANTDIV;
-					ODM_RT_TRACE(pDM_Odm,ODM_COMP_ANT_DIV, ODM_DBG_LOUD, ("[ 5G] : AntDiv Type = CG_TRX_HW_ANTDIV\n"));				
-					panic_printk("[ 5G] : AntDiv Type = CG_TRX_HW_ANTDIV\n");
-				#elif( defined(CONFIG_5G_CG_SMART_ANT_DIVERSITY) )
-					pDM_Odm->AntDivType = CG_TRX_SMART_ANTDIV;
-					ODM_RT_TRACE(pDM_Odm,ODM_COMP_ANT_DIV, ODM_DBG_LOUD, ("[ 5G] : AntDiv Type = CG_SMART_ANTDIV\n"));
-				#elif( defined(CONFIG_5G_S0S1_SW_ANT_DIVERSITY) )
-					pDM_Odm->AntDivType = S0S1_SW_ANTDIV;
-					ODM_RT_TRACE(pDM_Odm,ODM_COMP_ANT_DIV, ODM_DBG_LOUD, ("[ 5G] : AntDiv Type = S0S1_SW_ANTDIV\n"));
-				#endif
-		}		
-		else if(*pDM_Odm->pBandType == ODM_BAND_2_4G )
-		 {
-				#if ( defined(CONFIG_2G_CGCS_RX_DIVERSITY) )
-						pDM_Odm->AntDivType = CGCS_RX_HW_ANTDIV;
-						ODM_RT_TRACE(pDM_Odm,ODM_COMP_ANT_DIV, ODM_DBG_LOUD, ("[ 2.4G] : AntDiv Type = CGCS_RX_HW_ANTDIV\n"));		
-				#elif( defined(CONFIG_2G_CG_TRX_DIVERSITY) )
-						pDM_Odm->AntDivType = CG_TRX_HW_ANTDIV;
-						ODM_RT_TRACE(pDM_Odm,ODM_COMP_ANT_DIV, ODM_DBG_LOUD, ("[ 2.4G] : AntDiv Type = CG_TRX_HW_ANTDIV\n"));
-				#elif( defined(CONFIG_2G_CG_SMART_ANT_DIVERSITY) )
-						pDM_Odm->AntDivType = CG_TRX_SMART_ANTDIV;
-						ODM_RT_TRACE(pDM_Odm,ODM_COMP_ANT_DIV, ODM_DBG_LOUD, ("[ 2.4G] : AntDiv Type = CG_SMART_ANTDIV\n"));
-				#elif( defined(CONFIG_2G_S0S1_SW_ANT_DIVERSITY) )
-					pDM_Odm->AntDivType = S0S1_SW_ANTDIV;
-					ODM_RT_TRACE(pDM_Odm,ODM_COMP_ANT_DIV, ODM_DBG_LOUD, ("[ 2.4G] : AntDiv Type = S0S1_SW_ANTDIV\n"));
-				#endif
-		}
-		
-		//2 [ 5G_SUPPORT_ANTDIV ]
-	#elif(defined(CONFIG_5G_SUPPORT_ANTDIV))
-		ODM_RT_TRACE(pDM_Odm,ODM_COMP_ANT_DIV, ODM_DBG_LOUD, ("[ Enable AntDiv function] : Only 5G Support Antenna Diversity\n"));
-		panic_printk("[ Enable AntDiv function] : Only 5G Support Antenna Diversity\n");
-		pDM_FatTable->AntDiv_2G_5G = (ODM_ANTDIV_5G);
-		if(*pDM_Odm->pBandType == ODM_BAND_5G )
-		{
-				if(pDM_Odm->SupportICType & ODM_ANTDIV_5G_SUPPORT_IC)
-				pDM_Odm->SupportAbility |= ODM_BB_ANT_DIV;	
-				#if ( defined(CONFIG_5G_CGCS_RX_DIVERSITY) )
-					pDM_Odm->AntDivType = CGCS_RX_HW_ANTDIV;
-					ODM_RT_TRACE(pDM_Odm,ODM_COMP_ANT_DIV, ODM_DBG_LOUD, ("[ 5G] : AntDiv Type = CGCS_RX_HW_ANTDIV\n"));
-					panic_printk("[ 5G] : AntDiv Type = CGCS_RX_HW_ANTDIV\n");
-				#elif( defined(CONFIG_5G_CG_TRX_DIVERSITY) )
-					pDM_Odm->AntDivType = CG_TRX_HW_ANTDIV;
-					panic_printk("[ 5G] : AntDiv Type = CG_TRX_HW_ANTDIV\n");
-					ODM_RT_TRACE(pDM_Odm,ODM_COMP_ANT_DIV, ODM_DBG_LOUD, ("[ 5G] : AntDiv Type = CG_TRX_HW_ANTDIV\n"));
-				#elif( defined(CONFIG_5G_CG_SMART_ANT_DIVERSITY) )
-					pDM_Odm->AntDivType = CG_TRX_SMART_ANTDIV;
-					ODM_RT_TRACE(pDM_Odm,ODM_COMP_ANT_DIV, ODM_DBG_LOUD, ("[ 5G] : AntDiv Type = CG_SMART_ANTDIV\n"));
-				#elif( defined(CONFIG_5G_S0S1_SW_ANT_DIVERSITY) )
-					pDM_Odm->AntDivType = S0S1_SW_ANTDIV;
-					ODM_RT_TRACE(pDM_Odm,ODM_COMP_ANT_DIV, ODM_DBG_LOUD, ("[ 5G] : AntDiv Type = S0S1_SW_ANTDIV\n"));
-				#endif
-		}
-		else if(*pDM_Odm->pBandType == ODM_BAND_2_4G )
-		{
-				ODM_RT_TRACE(pDM_Odm,ODM_COMP_ANT_DIV, ODM_DBG_LOUD,("Not Support 2G AntDivType\n"));
-				pDM_Odm->SupportAbility &= ~(ODM_BB_ANT_DIV);
-		}
-		
-		//2 [ 2G_SUPPORT_ANTDIV ]
-	#elif(defined(CONFIG_2G_SUPPORT_ANTDIV)) 
-		ODM_RT_TRACE(pDM_Odm,ODM_COMP_ANT_DIV, ODM_DBG_LOUD, ("[ Enable AntDiv function] : Only 2.4G Support Antenna Diversity\n"));
-		pDM_FatTable->AntDiv_2G_5G = (ODM_ANTDIV_2G);
-		if(*pDM_Odm->pBandType == ODM_BAND_2_4G )
-		{
-				if(pDM_Odm->SupportICType & ODM_ANTDIV_2G_SUPPORT_IC)
-					pDM_Odm->SupportAbility |= ODM_BB_ANT_DIV;
-				#if ( defined(CONFIG_2G_CGCS_RX_DIVERSITY) )
-					pDM_Odm->AntDivType = CGCS_RX_HW_ANTDIV;
-					ODM_RT_TRACE(pDM_Odm,ODM_COMP_ANT_DIV, ODM_DBG_LOUD, ("[ 2.4G] : AntDiv Type = CGCS_RX_HW_ANTDIV\n"));		
-				#elif( defined(CONFIG_2G_CG_TRX_DIVERSITY) )
-					pDM_Odm->AntDivType = CG_TRX_HW_ANTDIV;
-					ODM_RT_TRACE(pDM_Odm,ODM_COMP_ANT_DIV, ODM_DBG_LOUD, ("[ 2.4G] : AntDiv Type = CG_TRX_HW_ANTDIV\n"));
-				#elif( defined(CONFIG_2G_CG_SMART_ANT_DIVERSITY) )
-					pDM_Odm->AntDivType = CG_TRX_SMART_ANTDIV;
-					ODM_RT_TRACE(pDM_Odm,ODM_COMP_ANT_DIV, ODM_DBG_LOUD, ("[ 2.4G] : AntDiv Type = CG_SMART_ANTDIV\n"));
-				#elif( defined(CONFIG_2G_S0S1_SW_ANT_DIVERSITY) )
-					pDM_Odm->AntDivType = S0S1_SW_ANTDIV;
-					ODM_RT_TRACE(pDM_Odm,ODM_COMP_ANT_DIV, ODM_DBG_LOUD, ("[ 2.4G] : AntDiv Type = S0S1_SW_ANTDIV\n"));
-				#endif
-		}
-		else if(*pDM_Odm->pBandType == ODM_BAND_5G )
-		{
-				ODM_RT_TRACE(pDM_Odm,ODM_COMP_ANT_DIV, ODM_DBG_LOUD,("Not Support 5G AntDivType\n"));
-				pDM_Odm->SupportAbility &= ~(ODM_BB_ANT_DIV);
-		}
-	#endif		
-#endif
+	ODM_RT_TRACE(pDM_Odm,ODM_COMP_ANT_DIV, ODM_DBG_LOUD, ("CE Config Antenna Diversity\n"));
+	if(pDM_Odm->SupportICType==ODM_RTL8723B)
+	{
+		pDM_Odm->AntDivType = S0S1_SW_ANTDIV;
+	}	
 
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_ANT_DIV, ODM_DBG_LOUD, ("SupportAbility = (( %x ))\n", pDM_Odm->SupportAbility ));
-
 }
 
 
@@ -2699,31 +2205,18 @@ ODM_AntDivTimers(
 		#if (RTL8723B_SUPPORT == 1)||(RTL8821A_SUPPORT == 1)
 			ODM_InitializeTimer(pDM_Odm,&pDM_Odm->DM_SWAT_Table.SwAntennaSwitchTimer_8723B,
 			(RT_TIMER_CALL_BACK)ODM_SW_AntDiv_Callback, NULL, "SwAntennaSwitchTimer_8723B");
-		#elif (RTL8188E_SUPPORT == 1)
-			#if (DM_ODM_SUPPORT_TYPE == ODM_AP)
-			ODM_InitializeTimer(pDM_Odm,&pDM_Odm->FastAntTrainingTimer,
-			(RT_TIMER_CALL_BACK)odm_FastAntTrainingCallback, NULL, "FastAntTrainingTimer");
-			#endif
 		#endif
 	}
 	else if(state==CANCEL_ANTDIV_TIMMER)
 	{
 		#if (RTL8723B_SUPPORT == 1)||(RTL8821A_SUPPORT == 1)
 			ODM_CancelTimer(pDM_Odm,&pDM_Odm->DM_SWAT_Table.SwAntennaSwitchTimer_8723B);
-		#elif (RTL8188E_SUPPORT == 1)
-			#if (DM_ODM_SUPPORT_TYPE == ODM_AP)
-			ODM_CancelTimer(pDM_Odm,&pDM_Odm->FastAntTrainingTimer);
-			#endif
 		#endif
 	}
 	else if(state==RELEASE_ANTDIV_TIMMER)
 	{
 		#if (RTL8723B_SUPPORT == 1)||(RTL8821A_SUPPORT == 1)
 			ODM_ReleaseTimer(pDM_Odm,&pDM_Odm->DM_SWAT_Table.SwAntennaSwitchTimer_8723B);
-		#elif (RTL8188E_SUPPORT == 1)
-			#if (DM_ODM_SUPPORT_TYPE == ODM_AP)
-			ODM_ReleaseTimer(pDM_Odm,&pDM_Odm->FastAntTrainingTimer);
-			#endif
 		#endif
 	}
 

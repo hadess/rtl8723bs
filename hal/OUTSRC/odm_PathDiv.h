@@ -21,8 +21,6 @@
 #ifndef	__ODMPATHDIV_H__
 #define    __ODMPATHDIV_H__
 
-#if(DM_ODM_SUPPORT_TYPE & ODM_CE)
-
 VOID	
 odm_PathDiversityInit(
 	IN	PVOID	pDM_VOID
@@ -32,8 +30,6 @@ VOID
 odm_PathDiversity(
 	IN	PVOID	pDM_VOID
 	);
-
-#endif  //(DM_ODM_SUPPORT_TYPE & ODM_CE)
 
  #endif		 //#ifndef  __ODMPATHDIV_H__
 

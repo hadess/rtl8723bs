@@ -139,31 +139,10 @@
 // 2011/09/20 MH Add for AP/ADSLpseudo DM structuer requirement.
 // We need to remove to other position???
 //
-#if(DM_ODM_SUPPORT_TYPE & (ODM_CE))
 typedef		struct rtl8192cd_priv {
 	u1Byte		temp;
 
 }rtl8192cd_priv, *prtl8192cd_priv;
-#endif
-
-
-#if(DM_ODM_SUPPORT_TYPE & (ODM_AP|ODM_ADSL))
-typedef		struct _ADAPTER{
-	u1Byte		temp;
-	#ifdef AP_BUILD_WORKAROUND
-	HAL_DATA_TYPE*		temp2;
-	prtl8192cd_priv		priv;
-	#endif
-}ADAPTER, *PADAPTER;
-#endif
-
-#if (DM_ODM_SUPPORT_TYPE == ODM_AP)
-
-typedef		struct _WLAN_STA{
-	u1Byte		temp;
-} WLAN_STA, *PRT_WLAN_STA;
-
-#endif
 
 //Remove DIG by Yuchen
 
@@ -199,22 +178,9 @@ typedef struct _RX_High_Power_
 	u1Byte		TP_Mode;
 	RT_TIMER	PSDTimer;
 }RXHP_T, *pRXHP_T;
-	
-#if(DM_ODM_SUPPORT_TYPE & (ODM_CE))
+
 #define ASSOCIATE_ENTRY_NUM					32 // Max size of AsocEntry[].
 #define	ODM_ASSOCIATE_ENTRY_NUM				ASSOCIATE_ENTRY_NUM
-
-#elif(DM_ODM_SUPPORT_TYPE & (ODM_AP|ODM_ADSL))
-#define ASSOCIATE_ENTRY_NUM					NUM_STAT
-#define	ODM_ASSOCIATE_ENTRY_NUM				ASSOCIATE_ENTRY_NUM+1
-
-#else
-//
-// 2012/01/12 MH Revise for compatiable with other SW team. 
-// 0 is for STA 1-n is for AP clients.
-//
-#define ODM_ASSOCIATE_ENTRY_NUM				ASSOCIATE_ENTRY_NUM+1// Default port only one
-#endif
 
 //#ifdef CONFIG_ANTENNA_DIVERSITY
 // This indicates two different the steps. 
@@ -331,41 +297,6 @@ typedef struct _ODM_RATE_ADAPTIVE
 } ODM_RATE_ADAPTIVE, *PODM_RATE_ADAPTIVE;
 
 
-#if(DM_ODM_SUPPORT_TYPE & (ODM_AP|ODM_ADSL))
-
-
-#ifdef ADSL_AP_BUILD_WORKAROUND
-#define MAX_TOLERANCE			5
-#define IQK_DELAY_TIME			1		//ms
-#endif
-
-//
-// Indicate different AP vendor for IOT issue.
-//
-typedef enum _HT_IOT_PEER
-{
-	HT_IOT_PEER_UNKNOWN 			= 0,
-	HT_IOT_PEER_REALTEK 			= 1,
-	HT_IOT_PEER_REALTEK_92SE 		= 2,
-	HT_IOT_PEER_BROADCOM 		= 3,
-	HT_IOT_PEER_RALINK 			= 4,
-	HT_IOT_PEER_ATHEROS 			= 5,
-	HT_IOT_PEER_CISCO 				= 6,
-	HT_IOT_PEER_MERU 				= 7,	
-	HT_IOT_PEER_MARVELL 			= 8,
-	HT_IOT_PEER_REALTEK_SOFTAP 	= 9,// peer is RealTek SOFT_AP, by Bohn, 2009.12.17
-	HT_IOT_PEER_SELF_SOFTAP 		= 10, // Self is SoftAP
-	HT_IOT_PEER_AIRGO 				= 11,
-	HT_IOT_PEER_INTEL 				= 12, 
-	HT_IOT_PEER_RTK_APCLIENT 		= 13, 
-	HT_IOT_PEER_REALTEK_81XX 		= 14,	
-	HT_IOT_PEER_REALTEK_WOW 		= 15,	
-	HT_IOT_PEER_MAX 				= 16
-}HT_IOT_PEER_E, *PHTIOT_PEER_E;
-#endif//#if(DM_ODM_SUPPORT_TYPE & (ODM_AP|ODM_ADSL))
-
-
-
 #define IQK_MAC_REG_NUM		4
 #define IQK_ADDA_REG_NUM		16
 #define IQK_BB_REG_NUM_MAX	10
@@ -416,14 +347,13 @@ typedef struct _ODM_Phy_Status_Info_
 	u2Byte		Cfo_short[4]; 			// per-path's Cfo_short
 	u2Byte		Cfo_tail[4];			// per-path's Cfo_tail
 	
-#if (DM_ODM_SUPPORT_TYPE & ODM_CE)
 	s1Byte		RxPower;				// in dBm Translate from PWdB
 	s1Byte		RecvSignalPower;		// Real power in dBm for this packet, no beautification and aggregation. Keep this raw info to be used for the other procedures.
 	u1Byte		BTRxRSSIPercentage;	
 	u1Byte		SignalStrength; 		// in 0-100 index.
  
 	s1Byte		RxPwr[4];				//per-path's pwdb
-#endif
+
 	u1Byte		RxSNR[4];				//per-path's SNR	
 	u1Byte		BandWidth;
 	u1Byte		btCoexPwrAdjust;
@@ -721,15 +651,7 @@ typedef enum tag_ODM_Support_IC_Type_Definition
 #define ODM_IC_11N_SERIES		(ODM_RTL8192S|ODM_RTL8192C|ODM_RTL8192D|ODM_RTL8723A|ODM_RTL8188E|ODM_RTL8192E|ODM_RTL8723B|ODM_RTL8703B)
 #define ODM_IC_11AC_SERIES		(ODM_RTL8812|ODM_RTL8821|ODM_RTL8814A|ODM_RTL8881A|ODM_RTL8821B|ODM_RTL8822B)
 
-#if (DM_ODM_SUPPORT_TYPE == ODM_AP)
-#ifdef RTK_AC_SUPPORT
 #define ODM_IC_11AC_SERIES_SUPPORT		1
-#else
-#define ODM_IC_11AC_SERIES_SUPPORT		0
-#endif
-#else
-#define ODM_IC_11AC_SERIES_SUPPORT		1
-#endif
 
 //ODM_CMNINFO_CUT_VER
 typedef enum tag_ODM_Cut_Version_Definition
@@ -825,7 +747,6 @@ typedef enum tag_Operation_Mode_Definition
 }ODM_OPERATION_MODE_E;
 
 // ODM_CMNINFO_WM_MODE
-#if (DM_ODM_SUPPORT_TYPE & (ODM_AP|ODM_CE))
 typedef enum tag_Wireless_Mode_Definition
 {
         ODM_WM_UNKNOW     = 0x0,
@@ -837,22 +758,6 @@ typedef enum tag_Wireless_Mode_Definition
         ODM_WM_AUTO           = BIT5,
         ODM_WM_AC                = BIT6,
 }ODM_WIRELESS_MODE_E;
-#else
-typedef enum tag_Wireless_Mode_Definition
-{
-        ODM_WM_UNKNOWN 	= 0x00,
-        ODM_WM_A 			= BIT0,
-        ODM_WM_B 			= BIT1,
-        ODM_WM_G 			= BIT2,
-        ODM_WM_AUTO 		= BIT3,
-        ODM_WM_N24G 		= BIT4,
-        ODM_WM_N5G 		= BIT5,
-        ODM_WM_AC_5G 	= BIT6,
-        ODM_WM_AC_24G  	= BIT7,
-        ODM_WM_AC_ONLY  	= BIT8,
-        ODM_WM_MAX  		= BIT9
-}ODM_WIRELESS_MODE_E;
-#endif
 
 // ODM_CMNINFO_BAND
 typedef enum tag_Band_Type_Definition
@@ -1209,14 +1114,8 @@ typedef  struct DM_Out_Source_Dynamic_Mechanism_Structure
 	// WHen you use Adapter or priv pointer, you must make sure the pointer is ready.
 	BOOLEAN			odm_ready;
 
-#if(DM_ODM_SUPPORT_TYPE & ODM_CE)
 	rtl8192cd_priv		fake_priv;
-#endif
-#if(DM_ODM_SUPPORT_TYPE & (ODM_AP|ODM_ADSL))
-	// ADSL_AP_BUILD_WORKAROUND
-	ADAPTER			fake_adapter;
-#endif
-	
+
 	PHY_REG_PG_TYPE		PhyRegPgValueType;
 	u1Byte				PhyRegPgVersion;
 
@@ -1729,11 +1628,7 @@ static u1Byte DeltaSwingTableIdx_2GA_N_8188E[] = {0, 0, 0, 2, 2, 3, 3, 4, 4, 4, 
 //
 // check Sta pointer valid or not
 //
-#if (DM_ODM_SUPPORT_TYPE & (ODM_AP|ODM_ADSL))
-#define IS_STA_VALID(pSta)		(pSta && pSta->expire_to)
-#else
 #define IS_STA_VALID(pSta)		(pSta)
-#endif
 // 20100514 Joseph: Add definition for antenna switching test after link.
 // This indicates two different the steps. 
 // In SWAW_STEP_PEAK, driver needs to switch antenna and listen to the signal on the air.
@@ -1769,66 +1664,12 @@ ODM_RAStateCheck(
 	OUT		pu1Byte			pRATRState
 	);
 
-#if(DM_ODM_SUPPORT_TYPE & (ODM_AP|ODM_ADSL))
-//============================================================
-// function prototype
-//============================================================
-//#define DM_ChangeDynamicInitGainThresh		ODM_ChangeDynamicInitGainThresh
-//void	ODM_ChangeDynamicInitGainThresh(IN	PADAPTER	pAdapter,
-//											IN	INT32		DM_Type,
-//											IN	INT32		DM_Value);
-
-//Remove DIG by yuchen
-
-
-BOOLEAN
-ODM_CheckPowerStatus(
-	IN	PADAPTER		Adapter
-	);
-
-
-#if (DM_ODM_SUPPORT_TYPE != ODM_ADSL) 
-VOID
-ODM_RateAdaptiveStateApInit(
-	IN	PADAPTER	Adapter	,
-	IN	PRT_WLAN_STA  pEntry
-	);
-#endif
-#define AP_InitRateAdaptiveState	ODM_RateAdaptiveStateApInit
-
-//Remove Edca by Yuchen
-
-#if(DM_ODM_SUPPORT_TYPE==ODM_AP)
-#ifdef HW_ANT_SWITCH
-u1Byte
-ODM_Diversity_AntennaSelect(
-	IN	PDM_ODM_T	pDM_Odm,
-	IN	u1Byte	*data
-);
-#endif
-#endif
-
-#define SwAntDivResetBeforeLink		ODM_SwAntDivResetBeforeLink
-VOID ODM_SwAntDivResetBeforeLink(IN	PDM_ODM_T	pDM_Odm);
-
-#define SwAntDivCheckBeforeLink	ODM_SwAntDivCheckBeforeLink
-
-BOOLEAN 
-ODM_SwAntDivCheckBeforeLink(
-	IN		PDM_ODM_T		pDM_Odm
-	);
-
-
-#endif
-
 #define dm_SWAW_RSSI_Check	ODM_SwAntDivChkPerPktRssi
 VOID ODM_SwAntDivChkPerPktRssi(	
 	IN PDM_ODM_T		pDM_Odm,
 	IN u1Byte			StationID,
 	IN PODM_PHY_INFO_T pPhyInfo
 	);
-
-#if(DM_ODM_SUPPORT_TYPE==ODM_CE)
 
 u4Byte ConvertTo_dB(u4Byte Value);
 
@@ -1838,19 +1679,11 @@ GetPSDData(
 	unsigned int 	point,
 	u1Byte initial_gain_psd);
 
-#endif
-
-#if (DM_ODM_SUPPORT_TYPE == ODM_CE)
-
-
 u4Byte ODM_Get_Rate_Bitmap(
 	IN	PDM_ODM_T	pDM_Odm,
 	IN	u4Byte		macid,
 	IN	u4Byte 		ra_mask,	
 	IN	u1Byte 		rssi_level);
-
-#endif
-	
 
 #if (BEAMFORMING_SUPPORT == 1)
 BEAMFORMING_CAP
@@ -1937,8 +1770,6 @@ ODM_AntselStatistics_88C(
 	IN		BOOLEAN			isCCKrate
 );
 
-#if( DM_ODM_SUPPORT_TYPE & ODM_CE)
-
 VOID
 ODM_SingleDualAntennaDefaultSetting(
 	IN		PDM_ODM_T		pDM_Odm
@@ -1950,7 +1781,6 @@ ODM_SingleDualAntennaDetection(
 	IN		u1Byte			mode
 	);
 
-#endif	// #if(DM_ODM_SUPPORT_TYPE==ODM_CE)
 VOID
 ODM_UpdateNoisyState(
 	IN	PDM_ODM_T	pDM_Odm,
@@ -1997,9 +1827,7 @@ ODM_DynamicARFBSelect(
 	IN  		BOOLEAN			Collision_State	
 	);
 
-#if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 void odm_dtc(PDM_ODM_T pDM_Odm);
-#endif /* #if (DM_ODM_SUPPORT_TYPE == ODM_CE) */
 
 #endif
 

@@ -46,31 +46,10 @@ odm_DIG_8723(
 	u1Byte						dm_dig_max, dm_dig_min;
 	u1Byte						CurrentIGI = pDM_DigTable->CurIGValue;
 
-#if 0
-#if (DM_ODM_SUPPORT_TYPE & (ODM_AP|ODM_ADSL))
-	prtl8192cd_priv	priv			= pDM_Odm->priv;	
-	if (!((priv->up_time > 5) && (priv->up_time % 2)) )
-	{
-		ODM_RT_TRACE(pDM_Odm,ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG() Return: Not In DIG Operation Period \n"));
-		return;
-	}
-#endif
-#endif
-
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG()==>\n"));
 	//if(!(pDM_Odm->SupportAbility & (ODM_BB_DIG|ODM_BB_FA_CNT)))
 	if((!(pDM_Odm->SupportAbility&ODM_BB_DIG)) ||(!(pDM_Odm->SupportAbility&ODM_BB_FA_CNT)))
 	{
-#if 0	     
-		if(pDM_Odm->SupportPlatform & (ODM_AP|ODM_ADSL))
-		{
-			if ((pDM_Odm->SupportICType == ODM_RTL8192C) && (pDM_Odm->ExtLNA == 1))
-				CurrentIGI = 0x30; //pDM_DigTable->CurIGValue  = 0x30;
-			else
-				CurrentIGI = 0x20; //pDM_DigTable->CurIGValue  = 0x20;
-			ODM_Write_DIG(pDM_Odm, CurrentIGI);//ODM_Write_DIG(pDM_Odm, pDM_DigTable->CurIGValue);
-		}
-#endif		
 		ODM_RT_TRACE(pDM_Odm,ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG() Return: SupportAbility ODM_BB_DIG or ODM_BB_FA_CNT is disabled\n"));
 		return;
 	}
@@ -100,63 +79,26 @@ odm_DIG_8723(
 #if 0 	
 	if(pDM_Odm->SupportICType & (ODM_RTL8192C) &&(pDM_Odm->BoardType & (ODM_BOARD_EXT_LNA | ODM_BOARD_EXT_PA)))
 	{
-		if(pDM_Odm->SupportPlatform & (ODM_AP|ODM_ADSL))
-		{
-
-			dm_dig_max = DM_DIG_MAX_AP_HP;
-			dm_dig_min = DM_DIG_MIN_AP_HP;
-		}
-		else
-		{
-			dm_dig_max = DM_DIG_MAX_NIC_HP;
-			dm_dig_min = DM_DIG_MIN_NIC_HP;
-		}
+		dm_dig_max = DM_DIG_MAX_NIC_HP;
+		dm_dig_min = DM_DIG_MIN_NIC_HP;
 		DIG_MaxOfMin = DM_DIG_MAX_AP_HP;
 	}
 	else
 	{
-		if(pDM_Odm->SupportPlatform & (ODM_AP|ODM_ADSL))
-		{
-#if (DM_ODM_SUPPORT_TYPE & (ODM_AP|ODM_ADSL))
-#ifdef DFS
-			if (!priv->pmib->dot11DFSEntry.disable_DFS &&
-				(OPMODE & WIFI_AP_STATE) &&
-				(((pDM_Odm->ControlChannel >= 52) &&
-				(pDM_Odm->ControlChannel <= 64)) ||
-				((pDM_Odm->ControlChannel >= 100) &&
-				(pDM_Odm->ControlChannel <= 140))))
-				dm_dig_max = 0x24;
-			else
-#endif
-			if (priv->pmib->dot11RFEntry.tx2path) {
-				if (*(pDM_Odm->pWirelessMode) == ODM_WM_B)//(priv->pmib->dot11BssType.net_work_type == WIRELESS_11B)
-					dm_dig_max = 0x2A;
-				else
-					dm_dig_max = 0x32;
-			}
-			else
-#endif				
-			dm_dig_max = DM_DIG_MAX_AP;
-			dm_dig_min = DM_DIG_MIN_AP;
-			DIG_MaxOfMin = dm_dig_max;
-		}
+		if(pDM_Odm->SupportICType >= ODM_RTL8188E)
+			dm_dig_max = 0x5A;
 		else
-		{
-			if((pDM_Odm->SupportICType >= ODM_RTL8188E) && (pDM_Odm->SupportPlatform & ODM_CE))
-				dm_dig_max = 0x5A;
-			else
-				dm_dig_max = DM_DIG_MAX_NIC;
-			
-			dm_dig_min = DM_DIG_MIN_NIC;
-			DIG_MaxOfMin = DM_DIG_MAX_AP;
-		}
+			dm_dig_max = DM_DIG_MAX_NIC;
+		
+		dm_dig_min = DM_DIG_MIN_NIC;
+		DIG_MaxOfMin = DM_DIG_MAX_AP;
 	}
 #endif   // masked by neilchen to simpily 8723B case
 
 
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG(): RSSI=0x%x\n",pDM_Odm->RSSI_Min));
 
-	if((pDM_Odm->SupportICType >= ODM_RTL8723B) && (pDM_Odm->SupportPlatform & ODM_CE))
+	if(pDM_Odm->SupportICType >= ODM_RTL8723B)
 		dm_dig_max = 0x5A;
 	else
 		dm_dig_max = DM_DIG_MAX_NIC;

@@ -362,7 +362,6 @@ ODM_ReleaseTimer(
 //
 // ODM FW relative API.
 //
-#if (DM_ODM_SUPPORT_TYPE & ODM_CE)
 VOID
 ODM_FillH2CCmd(
 	IN	PDM_ODM_T		pDM_Odm,
@@ -370,18 +369,6 @@ ODM_FillH2CCmd(
 	IN	u4Byte 	CmdLen,
 	IN	pu1Byte	pCmdBuffer
 );
-#else
-u4Byte
-ODM_FillH2CCmd(	
-	IN	pu1Byte		pH2CBuffer,
-	IN	u4Byte		H2CBufferLen,
-	IN	u4Byte		CmdNum,
-	IN	pu4Byte		pElementID,
-	IN	pu4Byte		pCmdLen,
-	IN	pu1Byte*		pCmbBuffer,
-	IN	pu1Byte		CmdStartSeq
-	);
-#endif
 
 u4Byte
 ODM_GetCurrentTime(	

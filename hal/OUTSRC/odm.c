@@ -464,11 +464,7 @@ odm_AntennaDiversity(
 	);
 
 
-#if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 VOID odm_SwAntDivChkAntSwitchCallback(void *FunctionContext);
-#elif (DM_ODM_SUPPORT_TYPE & (ODM_AP|ODM_ADSL))
-VOID odm_SwAntDivChkAntSwitchCallback(void *FunctionContext);
-#endif
 
 
 
@@ -590,13 +586,10 @@ ODM_DMInit(
 	odm_TXPowerTrackingInit(pDM_Odm);
 	odm_AntennaDiversityInit(pDM_Odm);
 
-#if (DM_ODM_SUPPORT_TYPE & (ODM_CE))
 	ODM_ClearTxPowerTrackingState(pDM_Odm);
 
 	if ( *(pDM_Odm->mp_mode) != 1)
 	odm_PathDiversityInit(pDM_Odm);
-
-#endif
 
 	if(pDM_Odm->SupportICType & ODM_IC_11N_SERIES)
 	{
@@ -611,8 +604,6 @@ ODM_DMInit(
 		}
 #endif
 
-#if (DM_ODM_SUPPORT_TYPE & (ODM_CE))
-	
 	#if (RTL8723B_SUPPORT == 1)
 		if(pDM_Odm->SupportICType == ODM_RTL8723B)
 			odm_SwAntDetectInit(pDM_Odm);
@@ -622,9 +613,6 @@ ODM_DMInit(
 		if(pDM_Odm->SupportICType==ODM_RTL8192E)
 			odm_PrimaryCCA_Check_Init(pDM_Odm);
 	#endif
-
-#endif
-
 	}
 
 }
@@ -657,7 +645,6 @@ ODM_DMWatchdog(
 
 	odm_RSSIMonitorCheck(pDM_Odm);
 
-#if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 //#ifdef CONFIG_PLATFORM_SPRD
 	//For CE Platform(SPRD or Tablet)
 	//8723A or 8189ES platform
@@ -676,7 +663,6 @@ ODM_DMWatchdog(
 	}		
 	else				
 //#endif
-#endif
 	{
 		odm_DIG(pDM_Odm);
 	}
@@ -732,9 +718,7 @@ ODM_DMWatchdog(
 	}
 	pDM_Odm->PhyDbgInfo.NumQryBeaconPkt = 0;
 
-#if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 	odm_dtc(pDM_Odm);
-#endif
 }
 
 
@@ -1154,9 +1138,6 @@ odm_CommonInfoSelfInit(
 	pFAT_T			pDM_FatTable = &pDM_Odm->DM_FatTable;
 	pDM_Odm->bCckHighPower = (BOOLEAN) ODM_GetBBReg(pDM_Odm, ODM_REG(CCK_RPT_FORMAT,pDM_Odm), ODM_BIT(CCK_RPT_FORMAT,pDM_Odm));		
 	pDM_Odm->RFPathRxEnable = (u1Byte) ODM_GetBBReg(pDM_Odm, ODM_REG(BB_RX_PATH,pDM_Odm), ODM_BIT(BB_RX_PATH,pDM_Odm));
-#if (DM_ODM_SUPPORT_TYPE != ODM_CE)	
-	pDM_Odm->pbNet_closed = &pDM_Odm->BOOLEAN_temp;
-#endif
 
 	ODM_InitDebugSetting(pDM_Odm);
 
@@ -1247,9 +1228,6 @@ odm_CmnInfoHook_Debug(
 	}
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_COMMON, ODM_DBG_LOUD, ("pbScanInProcess=%d\n",*(pDM_Odm->pbScanInProcess)) );
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_COMMON, ODM_DBG_LOUD, ("pbPowerSaving=%d\n",*(pDM_Odm->pbPowerSaving)) );
-
-	if(pDM_Odm->SupportPlatform & (ODM_AP|ODM_ADSL))
-		ODM_RT_TRACE(pDM_Odm,ODM_COMP_COMMON, ODM_DBG_LOUD, ("pOnePathCCA=%d\n",*(pDM_Odm->pOnePathCCA)) );
 }
 
 VOID
@@ -1376,13 +1354,11 @@ odm_RateAdaptiveMaskInit(
 {
 	PODM_RATE_ADAPTIVE	pOdmRA = &pDM_Odm->RateAdaptive;
 
-#if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 	pOdmRA->Type = DM_Type_ByDriver;
 	if (pOdmRA->Type == DM_Type_ByDriver)
 		pDM_Odm->bUseRAMask = _TRUE;
 	else
 		pDM_Odm->bUseRAMask = _FALSE;	
-#endif
 
 	pOdmRA->RATRState = DM_RATR_STA_INIT;
 	pOdmRA->LdpcThres = 35;
@@ -1391,7 +1367,6 @@ odm_RateAdaptiveMaskInit(
 	pOdmRA->LowRSSIThresh = 20;
 }
 
-#if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 u4Byte ODM_Get_Rate_Bitmap(
 	IN	PDM_ODM_T	pDM_Odm,	
 	IN	u4Byte		macid,
@@ -1525,8 +1500,6 @@ u4Byte ODM_Get_Rate_Bitmap(
 	return (ra_mask&rate_bitmap);
 	
 }	
-#endif
-
 
 VOID
 odm_RefreshBasicRateMask(
@@ -1563,23 +1536,7 @@ odm_RefreshRateAdaptiveMask(
 		ODM_RT_TRACE(pDM_Odm, ODM_COMP_RA_MASK, ODM_DBG_TRACE, ("odm_RefreshRateAdaptiveMask(): Return cos not supported\n"));
 		return;	
 	}
-	//
-	// 2011/09/29 MH In HW integration first stage, we provide 4 different handle to operate
-	// at the same time. In the stage2/3, we need to prive universal interface and merge all
-	// HW dynamic mechanism.
-	//
-	switch	(pDM_Odm->SupportPlatform)
-	{
-		case	ODM_CE:
-			odm_RefreshRateAdaptiveMaskCE(pDM_Odm);
-			break;
-
-		case	ODM_AP:
-		case	ODM_ADSL:
-			odm_RefreshRateAdaptiveMaskAPADSL(pDM_Odm);
-			break;
-	}
-	
+	odm_RefreshRateAdaptiveMaskCE(pDM_Odm);
 }
 
 VOID
@@ -1595,7 +1552,6 @@ odm_RefreshRateAdaptiveMaskCE(
 	IN		PDM_ODM_T		pDM_Odm	
 	)
 {
-#if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 	u1Byte	i;
 	PADAPTER	pAdapter	 =  pDM_Odm->Adapter;
 	PODM_RATE_ADAPTIVE		pRA = &pDM_Odm->RateAdaptive;
@@ -1653,8 +1609,6 @@ odm_RefreshRateAdaptiveMaskCE(
 		
 		}
 	}			
-	
-#endif
 }
 
 VOID
@@ -1662,36 +1616,6 @@ odm_RefreshRateAdaptiveMaskAPADSL(
 	IN		PDM_ODM_T		pDM_Odm
 	)
 {
-#if (DM_ODM_SUPPORT_TYPE & (ODM_AP|ODM_ADSL))
-	struct rtl8192cd_priv *priv = pDM_Odm->priv;
-	struct stat_info	*pstat;
-
-	if (!priv->pmib->dot11StationConfigEntry.autoRate) 
-		return;
-
-	if (list_empty(&priv->asoc_list))
-		return;
-
-	list_for_each_entry(pstat, &priv->asoc_list, asoc_list) {
-		if(ODM_RAStateCheck(pDM_Odm, (s4Byte)pstat->rssi, FALSE, &pstat->rssi_level) ) {
-			ODM_PRINT_ADDR(pDM_Odm, ODM_COMP_RA_MASK, ODM_DBG_LOUD, ("Target STA addr : "), pstat->hwaddr);
-			ODM_RT_TRACE(pDM_Odm, ODM_COMP_RA_MASK, ODM_DBG_LOUD, ("RSSI:%d, RSSI_LEVEL:%d\n", pstat->rssi, pstat->rssi_level));
-
-#ifdef CONFIG_RTL_88E_SUPPORT
-			if (GET_CHIP_VER(priv)==VERSION_8188E) {
-#ifdef TXREPORT
-				add_RATid(priv, pstat);
-#endif
-			} else
-#endif
-			{
-#if defined(CONFIG_RTL_92D_SUPPORT) || defined(CONFIG_RTL_92C_SUPPORT)			
-			add_update_RATid(priv, pstat);
-#endif
-		        }
-	        }
-	}
-#endif
 }
 
 // Return Value: BOOLEAN
@@ -1796,27 +1720,9 @@ odm_RSSIMonitorCheck(
 
 	if (!(pDM_Odm->SupportAbility & ODM_BB_RSSI_MONITOR))
 		return;
-	
-	//
-	// 2011/09/29 MH In HW integration first stage, we provide 4 different handle to operate
-	// at the same time. In the stage2/3, we need to prive universal interface and merge all
-	// HW dynamic mechanism.
-	//
-	switch	(pDM_Odm->SupportPlatform)
-	{
-		case	ODM_CE:
-			odm_RSSIMonitorCheckCE(pDM_Odm);
-			break;
 
-		case	ODM_AP:
-			odm_RSSIMonitorCheckAP(pDM_Odm);
-			break;		
+	odm_RSSIMonitorCheckCE(pDM_Odm);
 
-		case	ODM_ADSL:
-			//odm_DIGAP(pDM_Odm);
-			break;	
-	}
-	
 }	// odm_RSSIMonitorCheck
 
 
@@ -1827,7 +1733,6 @@ odm_RSSIMonitorCheckMP(
 {
 }
 
-#if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 //
 //sherry move from DUSC to here 20110517
 //
@@ -1900,14 +1805,12 @@ IN	PADAPTER	pAdapter
 	//DBG_8192C("%s=>MinUndecoratedPWDBForDM(%d)\n",__FUNCTION__,pdmpriv->MinUndecoratedPWDBForDM);
 	//ODM_RT_TRACE(pDM_Odm,COMP_DIG, DBG_LOUD, ("MinUndecoratedPWDBForDM =%d\n",pHalData->MinUndecoratedPWDBForDM));
 }
-#endif
 
 VOID
 odm_RSSIMonitorCheckCE(
 	IN		PDM_ODM_T		pDM_Odm
 	)
 {
-#if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 	PADAPTER	Adapter = pDM_Odm->Adapter;
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
@@ -2127,34 +2030,13 @@ odm_RSSIMonitorCheckCE(
 	#endif
 	pDM_Odm->RSSI_Min = pdmpriv->MinUndecoratedPWDBForDM;
 	//ODM_CmnInfoUpdate(&pHalData->odmpriv ,ODM_CMNINFO_RSSI_MIN, pdmpriv->MinUndecoratedPWDBForDM);
-#endif//if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 }
+
 VOID
 odm_RSSIMonitorCheckAP(
 	IN		PDM_ODM_T		pDM_Odm
 	)
 {
-#if (DM_ODM_SUPPORT_TYPE == ODM_AP)
-#ifdef CONFIG_RTL_92C_SUPPORT || defined(CONFIG_RTL_92D_SUPPORT)
-
-	u4Byte i;
-	PSTA_INFO_T pstat;
-
-	for(i=0; i<ODM_ASSOCIATE_ENTRY_NUM; i++)
-	{
-		pstat = pDM_Odm->pODM_StaInfo[i];
-		if(IS_STA_VALID(pstat) )
-		{			
-#ifdef STA_EXT
-			if (REMAP_AID(pstat) < (FW_NUM_STAT - 1))
-#endif
-				add_update_rssi(pDM_Odm->priv, pstat);
-
-		}		
-	}
-#endif
-#endif
-
 }
 
 
@@ -2243,11 +2125,6 @@ odm_TXPowerTrackingInit(
 	IN	PDM_ODM_T	pDM_Odm 
 	)
 {
-#if (DM_ODM_SUPPORT_TYPE & (ODM_AP|ODM_ADSL))
-	if(!(pDM_Odm->SupportICType & (ODM_RTL8814A|ODM_IC_11N_SERIES)))
-		return;
-#endif
-
 	odm_TXPowerTrackingThermalMeterInit(pDM_Odm);
 }	
 
@@ -2305,7 +2182,6 @@ odm_TXPowerTrackingThermalMeterInit(
 {
 	u1Byte defaultSwingIndex = getSwingIndex(pDM_Odm);
 	u1Byte 			p = 0;
-#if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 	PADAPTER			Adapter = pDM_Odm->Adapter;
 	HAL_DATA_TYPE		*pHalData = GET_HAL_DATA(Adapter);
 
@@ -2340,17 +2216,6 @@ odm_TXPowerTrackingThermalMeterInit(
 
 		//MSG_8192C("pdmpriv->TxPowerTrackControl = %d\n", pdmpriv->TxPowerTrackControl);
 	}
-	
-#elif (DM_ODM_SUPPORT_TYPE & (ODM_AP|ODM_ADSL))
-	#ifdef RTL8188E_SUPPORT
-	{
-		pDM_Odm->RFCalibrateInfo.bTXPowerTracking = _TRUE;
-		pDM_Odm->RFCalibrateInfo.TXPowercount = 0;
-		pDM_Odm->RFCalibrateInfo.bTXPowerTrackingInit = _FALSE;
-		pDM_Odm->RFCalibrateInfo.TxPowerTrackControl = _TRUE;
-	}
-	#endif
-#endif
 
 	//pDM_Odm->RFCalibrateInfo.TxPowerTrackControl = TRUE;
 	pDM_Odm->RFCalibrateInfo.ThermalValue = pHalData->EEPROMThermalMeter;
@@ -2390,26 +2255,7 @@ ODM_TXPowerTrackingCheck(
 	IN		PDM_ODM_T		pDM_Odm
 	)
 {
-	//
-	// 2011/09/29 MH In HW integration first stage, we provide 4 different handle to operate
-	// at the same time. In the stage2/3, we need to prive universal interface and merge all
-	// HW dynamic mechanism.
-	//
-	switch	(pDM_Odm->SupportPlatform)
-	{
-		case	ODM_CE:
-			odm_TXPowerTrackingCheckCE(pDM_Odm);
-			break;
-
-		case	ODM_AP:
-			odm_TXPowerTrackingCheckAP(pDM_Odm);		
-			break;		
-
-		case	ODM_ADSL:
-			//odm_DIGAP(pDM_Odm);
-			break;	
-	}
-
+	odm_TXPowerTrackingCheckCE(pDM_Odm);
 }
 
 VOID
@@ -2417,7 +2263,6 @@ odm_TXPowerTrackingCheckCE(
 	IN		PDM_ODM_T		pDM_Odm 
 	)
 {
-#if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 	PADAPTER	Adapter = pDM_Odm->Adapter;
 	#if( (RTL8192C_SUPPORT==1) ||  (RTL8723A_SUPPORT==1) )
 	if(IS_HARDWARE_TYPE_8192C(Adapter)){
@@ -2462,7 +2307,6 @@ odm_TXPowerTrackingCheckCE(
 		pDM_Odm->RFCalibrateInfo.TM_Trigger = 0;
 	}
 	#endif
-#endif	
 }
 
 VOID
@@ -2478,23 +2322,6 @@ odm_TXPowerTrackingCheckAP(
 	IN		PDM_ODM_T		pDM_Odm
 	)
 {
-#if (DM_ODM_SUPPORT_TYPE == ODM_AP)
-	prtl8192cd_priv	priv		= pDM_Odm->priv;
-
-	if ( (priv->pmib->dot11RFEntry.ther) && ((priv->up_time % priv->pshare->rf_ft_var.tpt_period) == 0)){
-#ifdef CONFIG_RTL_92D_SUPPORT
-		if (GET_CHIP_VER(priv)==VERSION_8192D){
-			tx_power_tracking_92D(priv);
-		} else 
-#endif
-		{
-#ifdef CONFIG_RTL_92C_SUPPORT			
-			tx_power_tracking(priv);
-#endif
-		}
-	}
-#endif	
-
 }
 
 //3============================================================
@@ -2567,7 +2394,6 @@ odm_SwAntDetectInit(
 // need to ODM CE Platform
 //move to here for ANT detection mechanism using
 
-#if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 u4Byte
 GetPSDData(
 	IN PDM_ODM_T	pDM_Odm,
@@ -2645,11 +2471,7 @@ ConvertTo_dB(
 	return (dB);
 }
 
-#endif
-
 //Remove PathDiversity related function to odm_PathDiv.c
-
-#if (DM_ODM_SUPPORT_TYPE & ODM_CE)
 
 VOID
 odm_PHY_SaveAFERegisters(
@@ -2699,10 +2521,8 @@ ODM_SingleDualAntennaDefaultSetting(
 	pSWAT_T		pDM_SWAT_Table = &pDM_Odm->DM_SWAT_Table;
 	PADAPTER	pAdapter	 =  pDM_Odm->Adapter;
 	u1Byte btAntNum = 2;
-#if (DM_ODM_SUPPORT_TYPE & (ODM_CE))
 #ifdef CONFIG_BT_COEXIST
 	btAntNum = hal_btcoex_GetPgAntNum(pAdapter);
-#endif
 #endif
 
 	// Set default antenna A and B status
@@ -3135,11 +2955,6 @@ ODM_SingleDualAntennaDetection(
 
 }
 
-
-#endif   // end odm_CE
-
-#if (DM_ODM_SUPPORT_TYPE & ODM_CE)
-
 VOID
 odm_Set_RA_DM_ARFB_by_Noisy(
 	IN	PDM_ODM_T	pDM_Odm
@@ -3272,9 +3087,6 @@ ODM_UpdateInitRate(
 		return;
 }
 
-#endif
-
-#if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 /* Justin: According to the current RRSI to adjust Response Frame TX power, 2012/11/05 */
 void odm_dtc(PDM_ODM_T pDM_Odm)
 {
@@ -3358,6 +3170,3 @@ void odm_dtc(PDM_ODM_T pDM_Odm)
 		__func__, pDM_Odm->RSSI_Min, sign?"minus":"plus", dtc_steps);
 #endif /* CONFIG_RESP_TXAGC_ADJUST */
 }
-
-#endif /* #if (DM_ODM_SUPPORT_TYPE == ODM_CE) */
-

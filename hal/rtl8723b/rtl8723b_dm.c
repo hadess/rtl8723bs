@@ -148,7 +148,8 @@ static void Init_ODM_ComInfo_8723b(PADAPTER	Adapter)
 	_rtw_memset(pDM_Odm,0,sizeof(*pDM_Odm));
 
 	pDM_Odm->Adapter = Adapter;
-	ODM_CmnInfoInit(pDM_Odm,ODM_CMNINFO_PLATFORM,ODM_CE);
+#define ODM_CE 0x04
+	ODM_CmnInfoInit(pDM_Odm,ODM_CMNINFO_PLATFORM, ODM_CE);
 	ODM_CmnInfoInit(pDM_Odm,ODM_CMNINFO_INTERFACE,Adapter->interface_type);//RTL871X_HCI_TYPE
 	ODM_CmnInfoInit(pDM_Odm, ODM_CMNINFO_PACKAGE_TYPE, pHalData->PackageType);
 	ODM_CmnInfoInit(pDM_Odm,ODM_CMNINFO_IC_TYPE, ODM_RTL8723B);

@@ -449,10 +449,8 @@ odm_RxPhyStatus92CSeries_Parsing(
 		}
 	
 		pPhyInfo->RxPWDBAll = PWDB_ALL;
-#if (DM_ODM_SUPPORT_TYPE &  ODM_CE)
 		pPhyInfo->BTRxRSSIPercentage = PWDB_ALL;
 		pPhyInfo->RecvSignalPower = rx_pwr_all;
-#endif		
 		//
 		// (3) Get Signal Quality (EVM)
 		//
@@ -500,9 +498,7 @@ odm_RxPhyStatus92CSeries_Parsing(
 			rx_pwr[i] = ((pPhyStaRpt->path_agc[i].gain& 0x3F)*2) - 110;
 
 
-		#if (DM_ODM_SUPPORT_TYPE & ODM_CE)
 			pPhyInfo->RxPwr[i] = rx_pwr[i];
-		#endif	
 
 			/* Translate DBM to percentage. */
 			RSSI = odm_QueryRxPwrPercentage(rx_pwr[i]);
@@ -526,10 +522,8 @@ odm_RxPhyStatus92CSeries_Parsing(
 		
 			pPhyInfo->RxMIMOSignalStrength[i] =(u1Byte) RSSI;
 
-		#if (DM_ODM_SUPPORT_TYPE &  (ODM_CE|ODM_AP|ODM_ADSL))
 			//Get Rx snr value in DB		
 			pPhyInfo->RxSNR[i] = pDM_Odm->PhyDbgInfo.RxSNRdB[i] = (s4Byte)(pPhyStaRpt->path_rxsnr[i]/2);
-		#endif
 		}
 		
 		
@@ -543,12 +537,10 @@ odm_RxPhyStatus92CSeries_Parsing(
 	
 		pPhyInfo->RxPWDBAll = PWDB_ALL;
 		//ODM_RT_TRACE(pDM_Odm,ODM_COMP_RSSI_MONITOR, ODM_DBG_LOUD, ("ODM OFDM RSSI=%d\n",pPhyInfo->RxPWDBAll));
-	#if (DM_ODM_SUPPORT_TYPE &  ODM_CE)
 		pPhyInfo->BTRxRSSIPercentage = PWDB_ALL_BT;
 		pPhyInfo->RxPower = rx_pwr_all;
 		pPhyInfo->RecvSignalPower = rx_pwr_all;
-	#endif
-		
+
 		{//pMgntInfo->CustomerID != RT_CID_819x_Lenovo
 			//
 			// (3)EVM of HT rate
@@ -582,7 +574,7 @@ odm_RxPhyStatus92CSeries_Parsing(
 		ODM_ParsingCFO(pDM_Odm, pPktinfo, pPhyStaRpt->path_cfotail);
 		
 	}
-#if (DM_ODM_SUPPORT_TYPE &  ODM_CE)
+
 	//UI BSS List signal strength(in percentage), make it good looking, from 0~100.
 	//It is assigned to the BSS List in GetValueFromBeaconOrProbeRsp().
 	if(isCCKrate)
@@ -605,7 +597,6 @@ odm_RxPhyStatus92CSeries_Parsing(
 #endif
 		}
 	}
-#endif
 
 	//DbgPrint("isCCKrate = %d, pPhyInfo->RxPWDBAll = %d, pPhyStaRpt->cck_agc_rpt_ofdm_cfosho_a = 0x%x\n", 
 		//isCCKrate, pPhyInfo->RxPWDBAll, pPhyStaRpt->cck_agc_rpt_ofdm_cfosho_a);
@@ -776,10 +767,9 @@ odm_RxPhyStatusJaguarSeries_Parsing(
 		//	DbgPrint("CCK: LNA_idx = %d, VGA_idx = %d, pPhyInfo->RxPWDBAll = %d\n", 
 		//		LNA_idx, VGA_idx, pPhyInfo->RxPWDBAll);
 		//}
-#if (DM_ODM_SUPPORT_TYPE & ODM_CE)
 		pPhyInfo->BTRxRSSIPercentage = PWDB_ALL;
 		pPhyInfo->RecvSignalPower = rx_pwr_all;
-#endif		
+
 		//
 		// (3) Get Signal Quality (EVM)
 		//
@@ -832,9 +822,7 @@ odm_RxPhyStatusJaguarSeries_Parsing(
 			//else
 			//	rx_pwr[i] = ((pPhyStaRpt->gain_trsw[i]& 0x3F)*2) - 110;  //OLD FORMULA
 
-		#if (DM_ODM_SUPPORT_TYPE & ODM_CE)
 			pPhyInfo->RxPwr[i] = rx_pwr[i];
-		#endif	
 
 			/* Translate DBM to percentage. */
 			RSSI = odm_QueryRxPwrPercentage(rx_pwr[i]);	
@@ -846,10 +834,8 @@ odm_RxPhyStatusJaguarSeries_Parsing(
 		
 			pPhyInfo->RxMIMOSignalStrength[i] =(u1Byte) RSSI;
 
-		#if (DM_ODM_SUPPORT_TYPE &  (ODM_CE|ODM_AP|ODM_ADSL))
 			//Get Rx snr value in DB		
 			pPhyInfo->RxSNR[i] = pDM_Odm->PhyDbgInfo.RxSNRdB[i] = pPhyStaRpt->rxsnr[i]/2;
-		#endif
 
 			//
 			// (2) CFO_short  & CFO_tail
@@ -874,11 +860,9 @@ odm_RxPhyStatusJaguarSeries_Parsing(
 	
 		pPhyInfo->RxPWDBAll = PWDB_ALL;
 		//ODM_RT_TRACE(pDM_Odm,ODM_COMP_RSSI_MONITOR, ODM_DBG_LOUD, ("ODM OFDM RSSI=%d\n",pPhyInfo->RxPWDBAll));
-	#if (DM_ODM_SUPPORT_TYPE & ODM_CE)
 		pPhyInfo->BTRxRSSIPercentage = PWDB_ALL_BT;
 		pPhyInfo->RxPower = rx_pwr_all;
 		pPhyInfo->RecvSignalPower = rx_pwr_all;
-	#endif
 
 		//DbgPrint("OFDM: pPhyInfo->RxPWDBAll = %d, pPhyInfo->RxMIMOSignalStrength[0] = %d, pPhyInfo->RxMIMOSignalStrength[1] = %d\n",
 		//	pPhyInfo->RxPWDBAll, pPhyInfo->RxMIMOSignalStrength[0], pPhyInfo->RxMIMOSignalStrength[1]);
@@ -954,7 +938,6 @@ odm_RxPhyStatusJaguarSeries_Parsing(
 	}
 	//DbgPrint("isCCKrate= %d, pPhyInfo->SignalStrength=%d % PWDB_AL=%d rf_rx_num=%d\n", isCCKrate, pPhyInfo->SignalStrength, PWDB_ALL, rf_rx_num);
 	
-#if (DM_ODM_SUPPORT_TYPE & ODM_CE)
 	//UI BSS List signal strength(in percentage), make it good looking, from 0~100.
 	//It is assigned to the BSS List in GetValueFromBeaconOrProbeRsp().
 	if(isCCKrate)
@@ -968,7 +951,7 @@ odm_RxPhyStatusJaguarSeries_Parsing(
 			pPhyInfo->SignalStrength = (u1Byte)(odm_SignalScaleMapping(pDM_Odm, total_rssi/=rf_rx_num));
 		}
 	}
-#endif
+
 	pDM_Odm->RxPWDBAve = pDM_Odm->RxPWDBAve + pPhyInfo->RxPWDBAll;
 	
 	pDM_Odm->DM_FatTable.antsel_rx_keep_0 = pPhyStaRpt->antidx_anta;
@@ -1221,10 +1204,8 @@ ODM_PhyStatusQuery_92CSeries(
 		if(pPktinfo->bPacketToSelf || pPktinfo->bPacketBeacon )
 		{
 				/*
-			#if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 			// Select the packets to do RSSI checking for antenna switching.
 			//odm_SwAntDivRSSICheck8192C(padapter, precvframe->u.hdr.attrib.RxPWDBAll);
-			#endif
 				*/
 #if (RTL8192C_SUPPORT == 1)
 				ODM_SwAntDivChkPerPktRssi(pDM_Odm,pPktinfo->StationID,pPhyInfo);
@@ -1457,10 +1438,8 @@ ODM_ConfigBBWithHeaderFile(
 	IN 	ODM_BB_Config_Type 		ConfigType
 	)
 {
-#if (DM_ODM_SUPPORT_TYPE & ODM_CE)
 	PADAPTER		Adapter = pDM_Odm->Adapter;
-#endif
-	
+
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_LOUD, 
 		 		("===>ODM_ConfigBBWithHeaderFile (%s)\n", (pDM_Odm->bIsMPChip) ? "MPChip" : "TestChip"));
     ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_LOUD, 
@@ -1610,9 +1589,8 @@ ODM_ConfigMACWithHeaderFile(
 	IN 	PDM_ODM_T	pDM_Odm
 	)
 {
-#if (DM_ODM_SUPPORT_TYPE & ODM_CE)
 	PADAPTER		Adapter = pDM_Odm->Adapter;
-#endif
+
 	u1Byte result = HAL_STATUS_SUCCESS;
 
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_LOUD, 
