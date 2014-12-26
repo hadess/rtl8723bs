@@ -1670,11 +1670,6 @@ odm_RSSIMonitorCheck(
 	IN		PDM_ODM_T		pDM_Odm
 	)
 {
-	// 
-	// For AP/ADSL use prtl8192cd_priv
-	// For CE/NIC use PADAPTER
-	//
-
 	if (!(pDM_Odm->SupportAbility & ODM_BB_RSSI_MONITOR))
 		return;
 

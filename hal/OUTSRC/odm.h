@@ -135,15 +135,6 @@
 // structure and define
 //============================================================
 
-//
-// 2011/09/20 MH Add for AP/ADSLpseudo DM structuer requirement.
-// We need to remove to other position???
-//
-typedef		struct rtl8192cd_priv {
-	u1Byte		temp;
-
-}rtl8192cd_priv, *prtl8192cd_priv;
-
 //Remove DIG by Yuchen
 
 //Remoce BB power saving by Yuchn
@@ -1108,11 +1099,8 @@ typedef  struct DM_Out_Source_Dynamic_Mechanism_Structure
 	//	Add for different team use temporarily
 	//
 	PADAPTER		Adapter;		// For CE/NIC team
-	prtl8192cd_priv	priv;			// For AP/ADSL team
 	// WHen you use Adapter or priv pointer, you must make sure the pointer is ready.
 	BOOLEAN			odm_ready;
-
-	rtl8192cd_priv		fake_priv;
 
 	PHY_REG_PG_TYPE		PhyRegPgValueType;
 	u1Byte				PhyRegPgVersion;

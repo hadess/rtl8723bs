@@ -98,12 +98,6 @@ odm_DynamicTxPower(
 	IN		PVOID					pDM_VOID
 	)
 {
-	// 
-	// For AP/ADSL use prtl8192cd_priv
-	// For CE/NIC use PADAPTER
-	//
-	//PADAPTER		pAdapter = pDM_Odm->Adapter;
-//	prtl8192cd_priv	priv		= pDM_Odm->priv;
 	PDM_ODM_T		pDM_Odm = (PDM_ODM_T)pDM_VOID;
 	if (!(pDM_Odm->SupportAbility & ODM_BB_DYNAMIC_TXPWR))
 		return;

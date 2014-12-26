@@ -47,11 +47,6 @@ odm_EdcaTurboCheck(
 	IN 	PVOID	 	pDM_VOID
 	)
 {
-	// 
-	// For AP/ADSL use prtl8192cd_priv
-	// For CE/NIC use PADAPTER
-	//
-
 	//
 	// 2011/09/29 MH In HW integration first stage, we provide 4 different handle to operate
 	// at the same time. In the stage2/3, we need to prive universal interface and merge all
