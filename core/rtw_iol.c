@@ -301,32 +301,6 @@ int _rtw_IOL_append_WD_cmd(struct xmit_frame *xmit_frame, u16 addr, u32 value)
 	return rtw_IOL_append_cmds(xmit_frame, (u8*)&cmd, 8);
 }
 
-#ifdef DBG_IO
-int dbg_rtw_IOL_append_WB_cmd(struct xmit_frame *xmit_frame, u16 addr, u8 value, const char *caller, const int line)
-{
-	if (match_write_sniff_ranges(addr, 1))
-		DBG_871X("DBG_IO %s:%d IOL_WB(0x%04x, 0x%02x)\n", caller, line, addr, value);
-
-	return _rtw_IOL_append_WB_cmd(xmit_frame, addr, value);
-}
-
-int dbg_rtw_IOL_append_WW_cmd(struct xmit_frame *xmit_frame, u16 addr, u16 value, const char *caller, const int line)
-{
-	if (match_write_sniff_ranges(addr, 2))
-		DBG_871X("DBG_IO %s:%d IOL_WW(0x%04x, 0x%04x)\n", caller, line, addr, value);
-
-	return _rtw_IOL_append_WW_cmd(xmit_frame, addr, value);
-}
-
-int dbg_rtw_IOL_append_WD_cmd(struct xmit_frame *xmit_frame, u16 addr, u32 value, const char *caller, const int line)
-{
-	if (match_write_sniff_ranges(addr, 4))
-		DBG_871X("DBG_IO %s:%d IOL_WD(0x%04x, 0x%08x)\n", caller, line, addr, value);
-
-	return _rtw_IOL_append_WD_cmd(xmit_frame, addr, value);
-}
-#endif
-
 int rtw_IOL_append_DELAY_US_cmd(struct xmit_frame *xmit_frame, u16 us)
 {
 	IOL_CMD cmd = {0x0, IOL_CMD_DELAY_US, 0x0, 0x0};
