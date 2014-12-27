@@ -1060,11 +1060,7 @@ Current IOREG MAP
 #define	HCI_SUS_CTRL						BIT0
 
 
-#if DEV_BUS_TYPE == RT_SDIO_INTERFACE
-	#define 	MAX_TX_AGG_PACKET_NUMBER 	0x8
-#else
-	#define 	MAX_TX_AGG_PACKET_NUMBER 	0xFF
-#endif
+#define 	MAX_TX_AGG_PACKET_NUMBER 	0x8
 
 */
 #endif // #ifndef __INC_HAL8723BREG_H

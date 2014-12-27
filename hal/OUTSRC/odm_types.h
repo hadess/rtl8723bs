@@ -26,8 +26,6 @@
 
 #define GET_ODM(__pAdapter)	((PDM_ODM_T)(&((GET_HAL_DATA(__pAdapter))->odmpriv)))
 
-#define 	RT_SDIO_INTERFACE				3
-
 typedef enum _HAL_STATUS{
 	HAL_STATUS_SUCCESS,
 	HAL_STATUS_FAILURE,
@@ -118,8 +116,6 @@ typedef enum _RT_SPINLOCK_TYPE{
 	#define	ps8Byte 	s64*	
 	
 #endif
-	#define DEV_BUS_TYPE  	RT_SDIO_INTERFACE
-
 	#if defined(CONFIG_LITTLE_ENDIAN)	
 		#define	ODM_ENDIAN_TYPE			ODM_ENDIAN_LITTLE
 	#elif defined (CONFIG_BIG_ENDIAN)

@@ -96,7 +96,6 @@ odm_SignalScaleMapping_92CSeries(
 {
 	s4Byte RetSig = 0; 
 
-#if (DEV_BUS_TYPE == RT_SDIO_INTERFACE)
 	if(pDM_Odm->SupportInterface  == ODM_ITRF_SDIO)
 	{
 		if(CurrSig >= 51 && CurrSig <= 100)
@@ -133,7 +132,6 @@ odm_SignalScaleMapping_92CSeries(
 		}
 	}
 
-#endif
 	return RetSig;
 }
 s4Byte
