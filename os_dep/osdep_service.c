@@ -316,12 +316,6 @@ inline u32 rtw_ms_to_systime(u32 ms)
 {
 	return ms * HZ / 1000;
 }
-
-// the input parameter start use the same unit as returned by rtw_get_current_time
-inline s32 rtw_get_passing_time_ms(u32 start)
-{
-	return rtw_systime_to_ms(jiffies-start);
-}
 #endif
 
 inline s32 rtw_get_time_interval_ms(u32 start, u32 end)
