@@ -306,13 +306,6 @@ u32 rtw_end_of_queue_search(_list *head, _list *plist)
 		return _FALSE;
 }
 
-#if 0 /* avoid broken jiffies calcs */
-u32	rtw_get_current_time(void)
-{
-	return jiffies;
-}
-#endif
-
 inline u32 rtw_systime_to_ms(u32 systime)
 {
 	return systime * 1000 / HZ;
