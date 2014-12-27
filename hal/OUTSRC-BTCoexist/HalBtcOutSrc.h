@@ -1,8 +1,8 @@
 #ifndef	__HALBTC_OUT_SRC_H__
 #define __HALBTC_OUT_SRC_H__
 
-#define		NORMAL_EXEC					FALSE
-#define		FORCE_EXEC						TRUE
+#define		NORMAL_EXEC					false
+#define		FORCE_EXEC						true
 
 #define		BTC_RF_OFF					0x0
 #define		BTC_RF_ON					0x1
@@ -191,9 +191,9 @@ typedef enum _BTC_RSSI_STATE{
 	BTC_RSSI_STATE_STAY_LOW					= 0x5,
 	BTC_RSSI_MAX
 }BTC_RSSI_STATE,*PBTC_RSSI_STATE;
-#define	BTC_RSSI_HIGH(_rssi_)	((_rssi_==BTC_RSSI_STATE_HIGH||_rssi_==BTC_RSSI_STATE_STAY_HIGH)? TRUE:FALSE)
-#define	BTC_RSSI_MEDIUM(_rssi_)	((_rssi_==BTC_RSSI_STATE_MEDIUM||_rssi_==BTC_RSSI_STATE_STAY_MEDIUM)? TRUE:FALSE)
-#define	BTC_RSSI_LOW(_rssi_)	((_rssi_==BTC_RSSI_STATE_LOW||_rssi_==BTC_RSSI_STATE_STAY_LOW)? TRUE:FALSE)
+#define	BTC_RSSI_HIGH(_rssi_)	((_rssi_==BTC_RSSI_STATE_HIGH||_rssi_==BTC_RSSI_STATE_STAY_HIGH)? true:false)
+#define	BTC_RSSI_MEDIUM(_rssi_)	((_rssi_==BTC_RSSI_STATE_MEDIUM||_rssi_==BTC_RSSI_STATE_STAY_MEDIUM)? true:false)
+#define	BTC_RSSI_LOW(_rssi_)	((_rssi_==BTC_RSSI_STATE_LOW||_rssi_==BTC_RSSI_STATE_STAY_LOW)? true:false)
 
 typedef enum _BTC_WIFI_ROLE{
 	BTC_ROLE_STATION						= 0x0,

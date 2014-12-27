@@ -51,10 +51,10 @@ void rtw_btcoex_LpsNotify(PADAPTER padapter, u8 type)
 void rtw_btcoex_ScanNotify(PADAPTER padapter, u8 type)
 {
 #ifdef CONFIG_CONCURRENT_MODE
-	if ((_FALSE == type) && (padapter->pbuddy_adapter))
+	if ((false == type) && (padapter->pbuddy_adapter))
 	{
 		PADAPTER pbuddy = padapter->pbuddy_adapter;
-		if (check_fwstate(&pbuddy->mlmepriv, WIFI_SITE_MONITOR) == _TRUE)
+		if (check_fwstate(&pbuddy->mlmepriv, WIFI_SITE_MONITOR) == true)
 			return;
 	}
 #endif
@@ -65,10 +65,10 @@ void rtw_btcoex_ScanNotify(PADAPTER padapter, u8 type)
 void rtw_btcoex_ConnectNotify(PADAPTER padapter, u8 action)
 {
 #ifdef CONFIG_CONCURRENT_MODE
-	if ((_FALSE == action) && (padapter->pbuddy_adapter))
+	if ((false == action) && (padapter->pbuddy_adapter))
 	{
 		PADAPTER pbuddy = padapter->pbuddy_adapter;
-		if (check_fwstate(&pbuddy->mlmepriv, WIFI_UNDER_LINKING) == _TRUE)
+		if (check_fwstate(&pbuddy->mlmepriv, WIFI_UNDER_LINKING) == true)
 			return;
 	}
 #endif
@@ -82,13 +82,13 @@ void rtw_btcoex_MediaStatusNotify(PADAPTER padapter, u8 mediaStatus)
 	if ((RT_MEDIA_DISCONNECT == mediaStatus) && (padapter->pbuddy_adapter))
 	{
 		PADAPTER pbuddy = padapter->pbuddy_adapter;
-		if (check_fwstate(&pbuddy->mlmepriv, WIFI_ASOC_STATE) == _TRUE)
+		if (check_fwstate(&pbuddy->mlmepriv, WIFI_ASOC_STATE) == true)
 			return;
 	}
 #endif // CONFIG_CONCURRENT_MODE
 
 	if ((RT_MEDIA_CONNECT == mediaStatus)
-		&& (check_fwstate(&padapter->mlmepriv, WIFI_AP_STATE) == _TRUE))
+		&& (check_fwstate(&padapter->mlmepriv, WIFI_AP_STATE) == true))
 	{
 		rtw_hal_set_hwreg(padapter, HW_VAR_DL_RSVD_PAGE, NULL);
 	}
@@ -118,7 +118,7 @@ void rtw_btcoex_SuspendNotify(PADAPTER padapter, u8 state)
 
 void rtw_btcoex_HaltNotify(PADAPTER padapter)
 {
-	if (_FALSE == padapter->bup)
+	if (false == padapter->bup)
 	{
 		DBG_871X(FUNC_ADPT_FMT ": bup=%d Skip!\n",
 			FUNC_ADPT_ARG(padapter), padapter->bup);
@@ -126,7 +126,7 @@ void rtw_btcoex_HaltNotify(PADAPTER padapter)
 		return;
 	}
 
-	if (_TRUE == padapter->bSurpriseRemoved)
+	if (true == padapter->bSurpriseRemoved)
 	{
 		DBG_871X(FUNC_ADPT_FMT ": bSurpriseRemoved=%d Skip!\n",
 			FUNC_ADPT_ARG(padapter), padapter->bSurpriseRemoved);
@@ -182,13 +182,13 @@ u32 rtw_btcoex_GetAMPDUSize(PADAPTER padapter)
 
 void rtw_btcoex_SetManualControl(PADAPTER padapter, u8 manual)
 {
-	if (_TRUE == manual)
+	if (true == manual)
 	{
-		hal_btcoex_SetManualControl(padapter, _TRUE);
+		hal_btcoex_SetManualControl(padapter, true);
 	}
 	else
 	{
-		hal_btcoex_SetManualControl(padapter, _FALSE);
+		hal_btcoex_SetManualControl(padapter, false);
 	}
 }
 
@@ -288,15 +288,15 @@ void rtw_btcoex_RejectApAggregatedPacket(PADAPTER padapter, u8 enable)
 	pmlmeinfo = &padapter->mlmeextpriv.mlmext_info;
 	psta = rtw_get_stainfo(&padapter->stapriv, get_bssid(&padapter->mlmepriv));
 
-	if (_TRUE == enable)
+	if (true == enable)
 	{
-		pmlmeinfo->bAcceptAddbaReq = _FALSE;
+		pmlmeinfo->bAcceptAddbaReq = false;
 		if (psta)
 			send_delba(padapter, 0, psta->hwaddr);
 	}
 	else
 	{
-		pmlmeinfo->bAcceptAddbaReq = _TRUE;
+		pmlmeinfo->bAcceptAddbaReq = true;
 	}
 }
 
@@ -308,7 +308,7 @@ void rtw_btcoex_LPS_Enter(PADAPTER padapter)
 
 	pwrpriv = adapter_to_pwrctl(padapter);
 
-	pwrpriv->bpower_saving = _TRUE;
+	pwrpriv->bpower_saving = true;
 	lpsVal = rtw_btcoex_LpsVal(padapter);
 	rtw_set_ps_mode(padapter, PS_MODE_MIN, 0, lpsVal, "BTCOEX");
 }
@@ -324,7 +324,7 @@ void rtw_btcoex_LPS_Leave(PADAPTER padapter)
 	{
 		rtw_set_ps_mode(padapter, PS_MODE_ACTIVE, 0, 0, "BTCOEX");
 		LPS_RF_ON_check(padapter, 100);
-		pwrpriv->bpower_saving = _FALSE;
+		pwrpriv->bpower_saving = false;
 	}
 }
 #endif // CONFIG_BT_COEXIST

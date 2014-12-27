@@ -26,8 +26,8 @@ static bool rtw_sdio_claim_host_needed(struct sdio_func *func)
 	PSDIO_DATA sdio_data = &dvobj->intf_data;
 
 	if (sdio_data->sys_sdio_irq_thd && sdio_data->sys_sdio_irq_thd == current)
-		return _FALSE;
-	return _TRUE;
+		return false;
+	return true;
 }
 
 inline void rtw_sdio_set_irq_thd(struct dvobj_priv *dvobj, _thread_hdl_ thd_hdl)
@@ -409,11 +409,11 @@ _func_enter_;
 				DBG_871X(KERN_ERR "%s: (%d) addr=0x%05x, val=0x%x, try_cnt=%d\n", __func__, *err, addr, v, i);
 				if(( -ESHUTDOWN == *err ) || ( -ENODEV == *err))
 				{			
-					padapter->bSurpriseRemoved = _TRUE;
+					padapter->bSurpriseRemoved = true;
 				}
 
-				if(rtw_inc_and_chk_continual_io_error(psdiodev) == _TRUE ){
-					padapter->bSurpriseRemoved = _TRUE;
+				if(rtw_inc_and_chk_continual_io_error(psdiodev) == true ){
+					padapter->bSurpriseRemoved = true;
 					break;
 				}						
 					
@@ -480,11 +480,11 @@ _func_enter_;
 			}else{				
 				DBG_871X(KERN_ERR "%s: (%d) addr=0x%05x, val=0x%x, try_cnt=%d\n", __func__, *err, addr, v, i);
 				if(( -ESHUTDOWN == *err ) || ( -ENODEV == *err)){			
-					padapter->bSurpriseRemoved = _TRUE;
+					padapter->bSurpriseRemoved = true;
 				}
 
-				if(rtw_inc_and_chk_continual_io_error(psdiodev) == _TRUE ){
-					padapter->bSurpriseRemoved = _TRUE;
+				if(rtw_inc_and_chk_continual_io_error(psdiodev) == true ){
+					padapter->bSurpriseRemoved = true;
 					break;
 				}
 			}
@@ -607,11 +607,11 @@ _func_enter_;
 			}else{				
 				DBG_871X(KERN_ERR "%s: (%d) addr=0x%05x, val=0x%x, try_cnt=%d\n", __func__, *err, addr, v, i);
 				if(( -ESHUTDOWN == *err ) || ( -ENODEV == *err)){			
-					padapter->bSurpriseRemoved = _TRUE;
+					padapter->bSurpriseRemoved = true;
 				}
 
-				if(rtw_inc_and_chk_continual_io_error(psdiodev) == _TRUE ){
-					padapter->bSurpriseRemoved = _TRUE;
+				if(rtw_inc_and_chk_continual_io_error(psdiodev) == true ){
+					padapter->bSurpriseRemoved = true;
 					break;
 				}
 			}
@@ -672,11 +672,11 @@ _func_enter_;
 			}else{				
 				DBG_871X(KERN_ERR "%s: (%d) addr=0x%05x, val=0x%x, try_cnt=%d\n", __func__, *err, addr, v, i);
 				if(( -ESHUTDOWN == *err ) || ( -ENODEV == *err)){			
-					padapter->bSurpriseRemoved = _TRUE;
+					padapter->bSurpriseRemoved = true;
 				}
 
-				if(rtw_inc_and_chk_continual_io_error(psdiodev) == _TRUE ){
-					padapter->bSurpriseRemoved = _TRUE;
+				if(rtw_inc_and_chk_continual_io_error(psdiodev) == true ){
+					padapter->bSurpriseRemoved = true;
 					break;
 				}
 			}

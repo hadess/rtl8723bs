@@ -62,9 +62,9 @@ CheckPositive(
 	//QFN Type [15:12] and Cut Version [27:24] need to do value check
 	
 	if(((cond1 & 0x0000F000) != 0) &&((cond1 & 0x0000F000) != (driver1 & 0x0000F000)))
-		return FALSE;
+		return false;
 	if(((cond1 & 0x0F000000) != 0) &&((cond1 & 0x0F000000) != (driver1 & 0x0F000000)))
-		return FALSE;		
+		return false;		
 
 	//=============== Bit Defined Check ================//
     // We don't care [31:28] and [23:20]
@@ -76,7 +76,7 @@ CheckPositive(
     {
         u4Byte bitMask = 0;
         if ((cond1 & 0x0F) == 0) // BoardType is DONTCARE
-            return TRUE;
+            return true;
 
         if ((cond1 & BIT0) != 0) //GLNA
             bitMask |= 0x000000FF;
@@ -88,13 +88,13 @@ CheckPositive(
             bitMask |= 0xFF000000;
 
         if ((cond2 & bitMask) == (driver2 & bitMask)) // BoardType of each RF path is matched
-            return TRUE;
+            return true;
         else
-            return FALSE;
+            return false;
     }
     else 
     {
-        return FALSE;
+        return false;
     }
 }
 static BOOLEAN
@@ -104,7 +104,7 @@ CheckNegative(
     IN  const u4Byte  Condition2
     )
 {
-    return TRUE;
+    return true;
 }
 
 /******************************************************************************
@@ -242,26 +242,26 @@ ODM_ReadAndConfig_MP_8723B_MAC_REG(
         }
         else
         {   // This line is the beginning of branch.
-            BOOLEAN bMatched = TRUE;
+            BOOLEAN bMatched = true;
             u1Byte  cCond  = (u1Byte)((v1 & (BIT29|BIT28)) >> 28);
 
             if (cCond == COND_ELSE) { // ELSE, ENDIF
-                bMatched = TRUE;
+                bMatched = true;
                 READ_NEXT_PAIR(v1, v2, i);
             } else if ( ! CheckPositive(pDM_Odm, v1, v2) ) { 
-                bMatched = FALSE;
+                bMatched = false;
                 READ_NEXT_PAIR(v1, v2, i);
                 READ_NEXT_PAIR(v1, v2, i);
             } else {
                 READ_NEXT_PAIR(v1, v2, i);
                 if ( ! CheckNegative(pDM_Odm, v1, v2) )
-                    bMatched = FALSE;
+                    bMatched = false;
                 else
-                    bMatched = TRUE;
+                    bMatched = true;
                 READ_NEXT_PAIR(v1, v2, i);
             }
 
-            if ( bMatched == FALSE )
+            if ( bMatched == false )
             {   // Condition isn't matched. Discard the following (offset, data) pairs.
                 while (v1 < 0x40000000 && i < ArrayLen -2)
                     READ_NEXT_PAIR(v1, v2, i);

@@ -102,8 +102,8 @@ ODM_ClearTxPowerTrackingState(
 		pDM_Odm->Remnant_OFDMSwingIdx[p] = 0;			  
 	}
 	
-	pDM_Odm->Modify_TxAGC_Flag_PathA= FALSE;       //Initial at Modify Tx Scaling Mode
-	pDM_Odm->Modify_TxAGC_Flag_PathB= FALSE;       //Initial at Modify Tx Scaling Mode
+	pDM_Odm->Modify_TxAGC_Flag_PathA= false;       //Initial at Modify Tx Scaling Mode
+	pDM_Odm->Modify_TxAGC_Flag_PathB= false;       //Initial at Modify Tx Scaling Mode
 	pDM_Odm->Remnant_CCKSwingIdx= 0;
 	pDM_Odm->RFCalibrateInfo.ThermalValue = pHalData->EEPROMThermalMeter;
 	pDM_Odm->RFCalibrateInfo.ThermalValue_IQK = pHalData->EEPROMThermalMeter;
@@ -143,7 +143,7 @@ ODM_TXPowerTrackingCallback_ThermalMeter(
 									  (pu1Byte*)&deltaSwingTableIdx_TUP_B, (pu1Byte*)&deltaSwingTableIdx_TDOWN_B);	
 	
 	pDM_Odm->RFCalibrateInfo.TXPowerTrackingCallbackCnt++; //cosa add for debug
-	pDM_Odm->RFCalibrateInfo.bTXPowerTrackingInit = TRUE;
+	pDM_Odm->RFCalibrateInfo.bTXPowerTrackingInit = true;
     
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD,
 		("===>ODM_TXPowerTrackingCallback_ThermalMeter, \
@@ -335,7 +335,7 @@ ODM_TXPowerTrackingCallback_ThermalMeter(
 	{
 		//4 7.2 Configure the Swing Table to adjust Tx Power.
 		
-		pDM_Odm->RFCalibrateInfo.bTxPowerChanged = TRUE; // Always TRUE after Tx Power is adjusted by power tracking.			
+		pDM_Odm->RFCalibrateInfo.bTxPowerChanged = true; // Always true after Tx Power is adjusted by power tracking.			
 		//
 		// 2012/04/23 MH According to Luke's suggestion, we can not write BB digital
 		// to increase TX power. Otherwise, EVM will be bad.
@@ -462,7 +462,7 @@ ODM_ResetIQKResult(
 				pDM_Odm->RFCalibrateInfo.IQKMatrixRegSetting[i].Value[0][5] = 
 				pDM_Odm->RFCalibrateInfo.IQKMatrixRegSetting[i].Value[0][7] = 0x0;
 
-			pDM_Odm->RFCalibrateInfo.IQKMatrixRegSetting[i].bIQKDone = FALSE;
+			pDM_Odm->RFCalibrateInfo.IQKMatrixRegSetting[i].bIQKDone = false;
 
 		}
 	}

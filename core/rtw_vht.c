@@ -130,11 +130,11 @@ void	rtw_vht_use_default_setting(_adapter *padapter)
 	struct mlme_priv 		*pmlmepriv = &padapter->mlmepriv;
 	struct vht_priv		*pvhtpriv = &pmlmepriv->vhtpriv;
 	struct registry_priv	*pregistrypriv = &padapter->registrypriv;
-	BOOLEAN		bHwLDPCSupport = _FALSE, bHwSTBCSupport = _FALSE;
-	BOOLEAN		bHwSupportBeamformer = _FALSE, bHwSupportBeamformee = _FALSE;
+	BOOLEAN		bHwLDPCSupport = false, bHwSTBCSupport = false;
+	BOOLEAN		bHwSupportBeamformer = false, bHwSupportBeamformee = false;
 	u8	rf_type = 0;
 
-	pvhtpriv->sgi_80m = TEST_FLAG(pregistrypriv->short_gi, BIT2) ? _TRUE : _FALSE;
+	pvhtpriv->sgi_80m = TEST_FLAG(pregistrypriv->short_gi, BIT2) ? true : false;
 
 	// LDPC support
 	rtw_hal_get_def_var(padapter, HAL_DEF_RX_LDPC, (u8 *)&bHwLDPCSupport);
@@ -276,7 +276,7 @@ void	update_sta_vht_info_apmode(_adapter *padapter, PVOID sta)
 	u8	cur_ldpc_cap=0, cur_stbc_cap=0, cur_beamform_cap=0, bw_mode = 0;
 	u8	*pcap_mcs;
 
-	if (pvhtpriv_sta->vht_option == _FALSE) {
+	if (pvhtpriv_sta->vht_option == false) {
 		return;
 	}
 
@@ -299,11 +299,11 @@ void	update_sta_vht_info_apmode(_adapter *padapter, PVOID sta)
 
 	if (psta->bw_mode == CHANNEL_WIDTH_80) {
 		// B5 Short GI for 80 MHz
-		pvhtpriv_sta->sgi_80m = (GET_VHT_CAPABILITY_ELE_SHORT_GI80M(pvhtpriv_sta->vht_cap) & pvhtpriv_ap->sgi_80m) ? _TRUE : _FALSE;
+		pvhtpriv_sta->sgi_80m = (GET_VHT_CAPABILITY_ELE_SHORT_GI80M(pvhtpriv_sta->vht_cap) & pvhtpriv_ap->sgi_80m) ? true : false;
 		//DBG_871X("Current STA ShortGI80MHz = %d\n", pvhtpriv_sta->sgi_80m);
 	} else if (psta->bw_mode >= CHANNEL_WIDTH_160) {
 		// B5 Short GI for 80 MHz
-		pvhtpriv_sta->sgi_80m = (GET_VHT_CAPABILITY_ELE_SHORT_GI160M(pvhtpriv_sta->vht_cap) & pvhtpriv_ap->sgi_80m) ? _TRUE : _FALSE;
+		pvhtpriv_sta->sgi_80m = (GET_VHT_CAPABILITY_ELE_SHORT_GI160M(pvhtpriv_sta->vht_cap) & pvhtpriv_ap->sgi_80m) ? true : false;
 		//DBG_871X("Current STA ShortGI160MHz = %d\n", pvhtpriv_sta->sgi_80m);
 	}
 
@@ -370,7 +370,7 @@ void VHT_caps_handler(_adapter *padapter, PNDIS_802_11_VARIABLE_IEs pIE)
 
 	if(pIE==NULL) return;
 
-	if(pvhtpriv->vht_option == _FALSE)	return;
+	if(pvhtpriv->vht_option == false)	return;
 
 	pmlmeinfo->VHT_enable = 1;
 
@@ -384,7 +384,7 @@ void VHT_caps_handler(_adapter *padapter, PNDIS_802_11_VARIABLE_IEs pIE)
 	pvhtpriv->ldpc_cap = cur_ldpc_cap;
 
 	// B5 Short GI for 80 MHz
-	pvhtpriv->sgi_80m = (GET_VHT_CAPABILITY_ELE_SHORT_GI80M(pIE->data) & pvhtpriv->sgi_80m) ? _TRUE : _FALSE;
+	pvhtpriv->sgi_80m = (GET_VHT_CAPABILITY_ELE_SHORT_GI80M(pIE->data) & pvhtpriv->sgi_80m) ? true : false;
 	//DBG_871X("Current ShortGI80MHz = %d\n", pvhtpriv->sgi_80m);
 
 	// B8 B9 B10 Rx STBC
@@ -438,7 +438,7 @@ void VHT_operation_handler(_adapter *padapter, PNDIS_802_11_VARIABLE_IEs pIE)
 
 	if(pIE==NULL) return;
 
-	if(pvhtpriv->vht_option == _FALSE)	return;
+	if(pvhtpriv->vht_option == false)	return;
 }
 
 void rtw_process_vht_op_mode_notify(_adapter *padapter, u8 *pframe, PVOID sta)
@@ -449,10 +449,10 @@ void rtw_process_vht_op_mode_notify(_adapter *padapter, u8 *pframe, PVOID sta)
 	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
 	u8	target_bw;
 	u8	target_rxss, current_rxss;
-	u8	update_ra = _FALSE;
+	u8	update_ra = false;
 	u8	vht_mcs_map[2] = {};
 
-	if(pvhtpriv->vht_option == _FALSE)
+	if(pvhtpriv->vht_option == false)
 		return;
 
 	target_bw = GET_VHT_OPERATING_MODE_FIELD_CHNL_WIDTH(pframe);
@@ -460,14 +460,14 @@ void rtw_process_vht_op_mode_notify(_adapter *padapter, u8 *pframe, PVOID sta)
 
 	if (target_bw != psta->bw_mode) {
 		if (target_bw <= (padapter->registrypriv.bw_mode >> 4)) {
-			update_ra = _TRUE;
+			update_ra = true;
 			psta->bw_mode = target_bw;
 		}
 	}
 
 	current_rxss = rtw_vht_mcsmap_to_nss(psta->vhtpriv.vht_mcs_map);
 	if (target_rxss != current_rxss) {
-		update_ra = _TRUE;
+		update_ra = true;
 
 		rtw_vht_nss_to_mcsmap(target_rxss, vht_mcs_map, psta->vhtpriv.vht_mcs_map);
 		_rtw_memcpy(psta->vhtpriv.vht_mcs_map, vht_mcs_map, 2);
@@ -699,7 +699,7 @@ u32 rtw_restructure_vht_ie(_adapter *padapter, u8 *in_ie, u8 *out_ie, uint in_le
 		notify_len = rtw_build_vht_op_mode_notify_ie(padapter, out_ie+*pout_len, notify_bw);
 		*pout_len += notify_len;
 
-		pvhtpriv->vht_option = _TRUE;
+		pvhtpriv->vht_option = true;
 	}
 	
 	return (pvhtpriv->vht_option);

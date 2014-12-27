@@ -30,9 +30,9 @@ ODM_EdcaTurboInit(
 {
 	PDM_ODM_T		pDM_Odm = (PDM_ODM_T)pDM_VOID;
 	PADAPTER	Adapter = pDM_Odm->Adapter;	
-	pDM_Odm->DM_EDCA_Table.bCurrentTurboEDCA = FALSE;	
-	pDM_Odm->DM_EDCA_Table.bIsCurRDLState = FALSE;
-	Adapter->recvpriv.bIsAnyNonBEPkts =FALSE;
+	pDM_Odm->DM_EDCA_Table.bCurrentTurboEDCA = false;	
+	pDM_Odm->DM_EDCA_Table.bIsCurRDLState = false;
+	Adapter->recvpriv.bIsAnyNonBEPkts =false;
 
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_EDCA_TURBO,ODM_DBG_LOUD,("Orginial VO PARAM: 0x%x\n",ODM_Read4Byte(pDM_Odm,ODM_EDCA_VO_PARAM)));
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_EDCA_TURBO,ODM_DBG_LOUD,("Orginial VI PARAM: 0x%x\n",ODM_Read4Byte(pDM_Odm,ODM_EDCA_VI_PARAM)));
@@ -79,8 +79,8 @@ odm_EdcaTurboCheckCE(
 	u32	edca_param;
 	u64	cur_tx_bytes = 0;
 	u64	cur_rx_bytes = 0;
-	u8	bbtchange = _FALSE;
-	u8	bBiasOnRx = _FALSE;
+	u8	bbtchange = false;
+	u8	bBiasOnRx = false;
 	HAL_DATA_TYPE		*pHalData = GET_HAL_DATA(Adapter);
 	struct dvobj_priv		*pdvobjpriv = adapter_to_dvobj(Adapter);
 	struct xmit_priv		*pxmitpriv = &(Adapter->xmitpriv);
@@ -89,15 +89,15 @@ odm_EdcaTurboCheckCE(
 	struct mlme_ext_priv	*pmlmeext = &(Adapter->mlmeextpriv);
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 
-	if(pDM_Odm->bLinked != _TRUE)
+	if(pDM_Odm->bLinked != true)
 	{
-		precvpriv->bIsAnyNonBEPkts = _FALSE;
+		precvpriv->bIsAnyNonBEPkts = false;
 		return;
 	}
 
 	if ((pregpriv->wifi_spec == 1) )//|| (pmlmeinfo->HT_enable == 0))
 	{
-		precvpriv->bIsAnyNonBEPkts = _FALSE;
+		precvpriv->bIsAnyNonBEPkts = false;
 		return;
 	}
 
@@ -108,7 +108,7 @@ odm_EdcaTurboCheckCE(
 
 	if (IOTPeer >=  HT_IOT_PEER_MAX)
 	{
-		precvpriv->bIsAnyNonBEPkts = _FALSE;
+		precvpriv->bIsAnyNonBEPkts = false;
 		return;
 	}
 
@@ -117,7 +117,7 @@ odm_EdcaTurboCheckCE(
 		(pDM_Odm->SupportICType == ODM_RTL8188E))
 	{
 		if((IOTPeer == HT_IOT_PEER_RALINK)||(IOTPeer == HT_IOT_PEER_ATHEROS))
-			bBiasOnRx = _TRUE;
+			bBiasOnRx = true;
 	}
 
 	// Check if the status needs to be changed.
@@ -211,7 +211,7 @@ odm_EdcaTurboCheckCE(
 			pDM_Odm->DM_EDCA_Table.prv_traffic_idx = trafficIndex;
 		}
 		
-		pDM_Odm->DM_EDCA_Table.bCurrentTurboEDCA = _TRUE;
+		pDM_Odm->DM_EDCA_Table.bCurrentTurboEDCA = true;
 	}
 	else
 	{
@@ -222,7 +222,7 @@ odm_EdcaTurboCheckCE(
 		 if(pDM_Odm->DM_EDCA_Table.bCurrentTurboEDCA)
 		{
 			rtw_write32(Adapter, REG_EDCA_BE_PARAM, pHalData->AcParam_BE);
-			pDM_Odm->DM_EDCA_Table.bCurrentTurboEDCA = _FALSE;
+			pDM_Odm->DM_EDCA_Table.bCurrentTurboEDCA = false;
 		}
 	}
 

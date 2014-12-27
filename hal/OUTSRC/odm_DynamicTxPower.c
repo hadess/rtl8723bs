@@ -34,11 +34,11 @@ odm_DynamicTxPowerInit(
 	PADAPTER	Adapter = pDM_Odm->Adapter;
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
-	pdmpriv->bDynamicTxPowerEnable = _FALSE;
+	pdmpriv->bDynamicTxPowerEnable = false;
 
 	#if (RTL8192C_SUPPORT==1) 
 
-		pdmpriv->bDynamicTxPowerEnable = _FALSE;
+		pdmpriv->bDynamicTxPowerEnable = false;
 	#endif
 	
 	pdmpriv->LastDTPLvl = TxHighPwrLevel_Normal;
@@ -157,7 +157,7 @@ odm_DynamicTxPower_92C(
 		return;
 
 #ifdef CONFIG_INTEL_PROXIM
-	if(Adapter->proximity.proxim_on== _TRUE){
+	if(Adapter->proximity.proxim_on== true){
 		struct proximity_priv *prox_priv=Adapter->proximity.proximity_priv;
 		// Intel set fixed tx power 
 		printk("\n %s  Adapter->proximity.proxim_on=%d prox_priv->proxim_modeinfo->power_output=%d \n",__FUNCTION__,Adapter->proximity.proxim_on,prox_priv->proxim_modeinfo->power_output);
@@ -198,7 +198,7 @@ odm_DynamicTxPower_92C(
 #endif	
 	{
 		// STA not connected and AP not connected
-		if((check_fwstate(pmlmepriv, _FW_LINKED) != _TRUE) &&	
+		if((check_fwstate(pmlmepriv, _FW_LINKED) != true) &&	
 			(pdmpriv->EntryMinUndecoratedSmoothedPWDB == 0))
 		{
 			//ODM_RT_TRACE(pDM_Odm,COMP_HIPWR, DBG_LOUD, ("Not connected to any \n"));
@@ -211,12 +211,12 @@ odm_DynamicTxPower_92C(
 			return;
 		}
 		
-		if(check_fwstate(pmlmepriv, _FW_LINKED) == _TRUE)	// Default port
+		if(check_fwstate(pmlmepriv, _FW_LINKED) == true)	// Default port
 		{
 		#if 0
 			//todo: AP Mode
-			if ((check_fwstate(pmlmepriv, WIFI_ADHOC_MASTER_STATE) == _TRUE) ||
-			       (check_fwstate(pmlmepriv, WIFI_ADHOC_STATE) == _TRUE))
+			if ((check_fwstate(pmlmepriv, WIFI_ADHOC_MASTER_STATE) == true) ||
+			       (check_fwstate(pmlmepriv, WIFI_ADHOC_STATE) == true))
 			{
 				UndecoratedSmoothedPWDB = pdmpriv->EntryMinUndecoratedSmoothedPWDB;
 				//ODM_RT_TRACE(pDM_Odm,COMP_HIPWR, DBG_LOUD, ("AP Client PWDB = 0x%x \n", UndecoratedSmoothedPWDB));
@@ -289,7 +289,7 @@ odm_DynamicTxPower_92D(
 	#endif
 
 	// If dynamic high power is disabled.
-	if( (pdmpriv->bDynamicTxPowerEnable != _TRUE) ||
+	if( (pdmpriv->bDynamicTxPowerEnable != true) ||
 		(!(podmpriv->SupportAbility& ODM_BB_DYNAMIC_TXPWR)) )
 	{
 		pdmpriv->DynamicTxHighPowerLvl = TxHighPwrLevel_Normal;
@@ -297,7 +297,7 @@ odm_DynamicTxPower_92D(
 	}
 
 	// STA not connected and AP not connected
-	if((check_fwstate(pmlmepriv, _FW_LINKED) != _TRUE) &&	
+	if((check_fwstate(pmlmepriv, _FW_LINKED) != true) &&	
 		(pdmpriv->EntryMinUndecoratedSmoothedPWDB == 0))
 	{
 		//ODM_RT_TRACE(pDM_Odm,COMP_HIPWR, DBG_LOUD, ("Not connected to any \n"));
@@ -309,12 +309,12 @@ odm_DynamicTxPower_92D(
 		return;
 	}
 		
-	if(check_fwstate(pmlmepriv, _FW_LINKED) == _TRUE)	// Default port
+	if(check_fwstate(pmlmepriv, _FW_LINKED) == true)	// Default port
 	{
 	#if 0
 		//todo: AP Mode
-		if ((check_fwstate(pmlmepriv, WIFI_ADHOC_MASTER_STATE) == _TRUE) ||
-	       (check_fwstate(pmlmepriv, WIFI_ADHOC_STATE) == _TRUE))
+		if ((check_fwstate(pmlmepriv, WIFI_ADHOC_MASTER_STATE) == true) ||
+	       (check_fwstate(pmlmepriv, WIFI_ADHOC_STATE) == true))
 		{
 			UndecoratedSmoothedPWDB = pdmpriv->EntryMinUndecoratedSmoothedPWDB;
 			//ODM_RT_TRACE(pDM_Odm,COMP_HIPWR, DBG_LOUD, ("AP Client PWDB = 0x%x \n", UndecoratedSmoothedPWDB));
@@ -383,7 +383,7 @@ odm_DynamicTxPower_92D(
 			pHalData->DynamicTxHighPowerLvl = Adapter->DualMacDMSPControl.CurTxHighLvlForAnotherMacOfDMSP;
 			PHY_SetTxPowerLevel8192D(Adapter, pHalData->CurrentChannel);
 			pHalData->DynamicTxHighPowerLvl = HighPowerLvlBackForMac0;
-			Adapter->DualMacDMSPControl.bChangeTxHighPowerLvlForAnotherMacOfDMSP = _FALSE;
+			Adapter->DualMacDMSPControl.bChangeTxHighPowerLvlForAnotherMacOfDMSP = false;
 		}						
 	}
 #endif
@@ -408,7 +408,7 @@ odm_DynamicTxPower_92D(
 				if(Adapter->bSlaveOfDMSP)
 				{
 					//ODM_RT_TRACE(pDM_Odm,COMP_MLME,DBG_LOUD,("dm_DynamicTxPower() bslave case  \n"));
-					BuddyAdapter->DualMacDMSPControl.bChangeTxHighPowerLvlForAnotherMacOfDMSP = _TRUE;
+					BuddyAdapter->DualMacDMSPControl.bChangeTxHighPowerLvlForAnotherMacOfDMSP = true;
 					BuddyAdapter->DualMacDMSPControl.CurTxHighLvlForAnotherMacOfDMSP = pHalData->DynamicTxHighPowerLvl;
 				}
 				else

@@ -113,9 +113,9 @@ void update_recvframe_phyinfo(
 	struct sta_priv *pstapriv;
 	struct sta_info *psta;
 
-	pkt_info.bPacketMatchBSSID =_FALSE;
-	pkt_info.bPacketToSelf = _FALSE;
-	pkt_info.bPacketBeacon = _FALSE;
+	pkt_info.bPacketMatchBSSID =false;
+	pkt_info.bPacketToSelf = false;
+	pkt_info.bPacketBeacon = false;
 
 
 	wlanhdr = get_recvframe_data(precvframe);
@@ -129,7 +129,7 @@ void update_recvframe_phyinfo(
 	pkt_info.bPacketBeacon = pkt_info.bPacketMatchBSSID && (GetFrameSubType(wlanhdr) == WIFI_BEACON);
 /*
 	if(pkt_info.bPacketBeacon){
-		if(check_fwstate(&padapter->mlmepriv, WIFI_STATION_STATE) == _TRUE){
+		if(check_fwstate(&padapter->mlmepriv, WIFI_STATION_STATE) == true){
 			sa = padapter->mlmepriv.cur_network.network.MacAddress;
 			#if 0
 			{
@@ -164,7 +164,7 @@ void update_recvframe_phyinfo(
 	//_exit_critical_bh(&pHalData->odm_stainfo_lock, &irqL);
 	precvframe->u.hdr.psta = NULL;
 	if (pkt_info.bPacketMatchBSSID &&
-		(check_fwstate(&padapter->mlmepriv, WIFI_AP_STATE) == _TRUE))
+		(check_fwstate(&padapter->mlmepriv, WIFI_AP_STATE) == true))
 	{
 		if (psta)
 		{
@@ -174,7 +174,7 @@ void update_recvframe_phyinfo(
 	}
 	else if (pkt_info.bPacketToSelf || pkt_info.bPacketBeacon)
 	{
-		if (check_fwstate(&padapter->mlmepriv, WIFI_ADHOC_STATE|WIFI_ADHOC_MASTER_STATE) == _TRUE)
+		if (check_fwstate(&padapter->mlmepriv, WIFI_ADHOC_STATE|WIFI_ADHOC_MASTER_STATE) == true)
 		{
 			if (psta)
 			{
@@ -202,7 +202,7 @@ static s32 pre_recv_entry(union recv_frame *precvframe, struct recv_buf	*precvbu
 
 	paddr1 = GetAddr1Ptr(precvframe->u.hdr.rx_data);
 
-	if(IS_MCAST(paddr1) == _FALSE)//unicast packets
+	if(IS_MCAST(paddr1) == false)//unicast packets
 	{
 		//primary_myid = myid(&primary_padapter->eeprompriv);
 		secondary_myid = myid(&secondary_padapter->eeprompriv);
@@ -292,7 +292,7 @@ static s32 pre_recv_entry(union recv_frame *precvframe, struct recv_buf	*precvbu
 static void rtl8723bs_c2h_packet_handler(PADAPTER padapter, u8 *pbuf, u16 length)
 {
 	u8 *tmpBuf=NULL;
-	u8 res = _FALSE;
+	u8 res = false;
 
 	if(length == 0)
 		return;
@@ -307,7 +307,7 @@ static void rtl8723bs_c2h_packet_handler(PADAPTER padapter, u8 *pbuf, u16 length
 
 	res = rtw_c2h_packet_wk_cmd(padapter, tmpBuf, length);
 
-	if (res == _FALSE && tmpBuf != NULL)
+	if (res == false && tmpBuf != NULL)
 			rtw_mfree(tmpBuf, length);
 
 	//DBG_871X("-%s res(%d)\n", __func__, res);
@@ -646,7 +646,7 @@ static void rtl8723bs_recv_tasklet(void *priv)
 
 					// The case of can't allocte skb is serious and may never be recovered,
 					// once bDriverStopped is enable, this task should be stopped.
-					if (padapter->bDriverStopped == _FALSE) {
+					if (padapter->bDriverStopped == false) {
 						tasklet_schedule(&precvpriv->recv_tasklet);
 					}
 

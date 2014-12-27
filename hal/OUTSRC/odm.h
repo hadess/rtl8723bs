@@ -493,7 +493,7 @@ typedef enum _ODM_Common_Info_Definition
 	ODM_CMNINFO_RFE_TYPE, 
 	ODM_CMNINFO_BOARD_TYPE,				// ODM_BOARD_TYPE_E
 	ODM_CMNINFO_PACKAGE_TYPE,
-	ODM_CMNINFO_EXT_LNA,					// TRUE
+	ODM_CMNINFO_EXT_LNA,					// true
 	ODM_CMNINFO_5G_EXT_LNA,	
 	ODM_CMNINFO_EXT_PA,
 	ODM_CMNINFO_5G_EXT_PA,
@@ -1347,8 +1347,8 @@ typedef  struct DM_Out_Source_Dynamic_Mechanism_Structure
 	Pri_CCA_T					DM_PriCCA;
 	RXHP_T						DM_RXHP_Table;
 	RA_T						DM_RA_Table;  
-	FALSE_ALARM_STATISTICS		FalseAlmCnt;
-	FALSE_ALARM_STATISTICS		FlaseAlmCntBuddyAdapter;
+	false_ALARM_STATISTICS		FalseAlmCnt;
+	false_ALARM_STATISTICS		FlaseAlmCntBuddyAdapter;
 	//#ifdef CONFIG_ANTENNA_DIVERSITY
 	SWAT_T						DM_SWAT_Table;
 	BOOLEAN						RSSI_test;

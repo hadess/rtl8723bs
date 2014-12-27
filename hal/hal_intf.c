@@ -110,7 +110,7 @@ void rtw_hal_init_opmode(_adapter *padapter)
 	else
 		return;
 
-	rtw_setopmode_cmd(padapter, networkType, _FALSE); 
+	rtw_setopmode_cmd(padapter, networkType, false); 
 }
 
 uint	 rtw_hal_init(_adapter *padapter) 
@@ -120,28 +120,28 @@ uint	 rtw_hal_init(_adapter *padapter)
 	int i;
 
 #ifdef CONFIG_DUALMAC_CONCURRENT
-	if(padapter->hw_init_completed == _TRUE)
+	if(padapter->hw_init_completed == true)
 	{
-		DBG_871X("rtw_hal_init: hw_init_completed == _TRUE\n");
+		DBG_871X("rtw_hal_init: hw_init_completed == true\n");
 		return status;
 	}
 
 	// before init mac0, driver must init mac1 first to avoid usb rx error.
-	if((padapter->pbuddy_adapter != NULL) && (padapter->DualMacConcurrent == _TRUE)
+	if((padapter->pbuddy_adapter != NULL) && (padapter->DualMacConcurrent == true)
 		&& (padapter->adapter_type == PRIMARY_ADAPTER))
 	{
-		if(padapter->pbuddy_adapter->hw_init_completed == _TRUE)
+		if(padapter->pbuddy_adapter->hw_init_completed == true)
 		{
-			DBG_871X("rtw_hal_init: pbuddy_adapter hw_init_completed == _TRUE\n");
+			DBG_871X("rtw_hal_init: pbuddy_adapter hw_init_completed == true\n");
 		}
 		else
 		{
 			status = 	padapter->HalFunc.hal_init(padapter->pbuddy_adapter);
 			if(status == _SUCCESS){
-				padapter->pbuddy_adapter->hw_init_completed = _TRUE;
+				padapter->pbuddy_adapter->hw_init_completed = true;
 			}
 			else{
-			 	padapter->pbuddy_adapter->hw_init_completed = _FALSE;
+			 	padapter->pbuddy_adapter->hw_init_completed = false;
 				RT_TRACE(_module_hal_init_c_,_drv_err_,("rtw_hal_init: hal__init fail(pbuddy_adapter)\n"));
 				DBG_871X("rtw_hal_init: hal__init fail(pbuddy_adapter)\n");
 				return status;
@@ -157,7 +157,7 @@ uint	 rtw_hal_init(_adapter *padapter)
 		rtw_hal_init_opmode(padapter);
 
 		for (i = 0; i<dvobj->iface_nums; i++)
-			dvobj->padapters[i]->hw_init_completed = _TRUE;
+			dvobj->padapters[i]->hw_init_completed = true;
 			
 		if (padapter->registrypriv.notch_filter == 1)
 			rtw_hal_notch_filter(padapter, 1);
@@ -178,7 +178,7 @@ uint	 rtw_hal_init(_adapter *padapter)
 	}
 	else{
 		for (i = 0; i<dvobj->iface_nums; i++)
-			dvobj->padapters[i]->hw_init_completed = _FALSE;
+			dvobj->padapters[i]->hw_init_completed = false;
 		DBG_871X("rtw_hal_init: hal__init fail\n");
 	}
 
@@ -201,7 +201,7 @@ _func_enter_;
 		rtw_led_control(padapter, LED_CTL_POWER_OFF);
 		for (i = 0; i<dvobj->iface_nums; i++) {
 			padapter = dvobj->padapters[i];
-			padapter->hw_init_completed = _FALSE;
+			padapter->hw_init_completed = false;
 		}
 	}
 	else
@@ -277,7 +277,7 @@ void rtw_hal_disable_interrupt(_adapter *padapter)
 
 u8 rtw_hal_check_ips_status(_adapter *padapter)
 {
-	u8 val = _FALSE;
+	u8 val = false;
 	if (padapter->HalFunc.check_ips_status)
 		val = padapter->HalFunc.check_ips_status(padapter);
 	else 
@@ -337,7 +337,7 @@ s32	rtw_hal_xmitframe_enqueue(_adapter *padapter, struct xmit_frame *pxmitframe)
 	if(padapter->HalFunc.hal_xmitframe_enqueue)
 		return padapter->HalFunc.hal_xmitframe_enqueue(padapter, pxmitframe);
 
-	return _FALSE;	
+	return false;	
 }
 
 s32	rtw_hal_xmit(_adapter *padapter, struct xmit_frame *pxmitframe)
@@ -345,7 +345,7 @@ s32	rtw_hal_xmit(_adapter *padapter, struct xmit_frame *pxmitframe)
 	if(padapter->HalFunc.hal_xmit)
 		return padapter->HalFunc.hal_xmit(padapter, pxmitframe);
 
-	return _FALSE;	
+	return false;	
 }
 
 /*
@@ -362,17 +362,17 @@ s32	rtw_hal_mgnt_xmit(_adapter *padapter, struct xmit_frame *pmgntframe)
 	//_rtw_memcpy(pmgntframe->attrib.ra, pwlanhdr->addr1, ETH_ALEN);
 
 #ifdef CONFIG_IEEE80211W
-	if(padapter->securitypriv.binstallBIPkey == _TRUE)
+	if(padapter->securitypriv.binstallBIPkey == true)
 	{
 		if(IS_MCAST(pmgntframe->attrib.ra))
 		{
 			pmgntframe->attrib.encrypt = _BIP_;
-			//pmgntframe->attrib.bswenc = _TRUE;
+			//pmgntframe->attrib.bswenc = true;
 		}	
 		else
 		{
 			pmgntframe->attrib.encrypt = _AES_;
-			pmgntframe->attrib.bswenc = _TRUE;
+			pmgntframe->attrib.bswenc = true;
 		}
 		rtw_mgmt_xmitframe_coalesce(padapter, pmgntframe->pkt, pmgntframe);
 	}
@@ -421,7 +421,7 @@ void rtw_hal_update_ra_mask(struct sta_info *psta, u8 rssi_level)
 
 	pmlmepriv = &(padapter->mlmepriv);
 	
-	if(check_fwstate(pmlmepriv, WIFI_AP_STATE) == _TRUE)
+	if(check_fwstate(pmlmepriv, WIFI_AP_STATE) == true)
 	{
 		add_RATid(padapter, psta, rssi_level);
 	}
@@ -533,7 +533,7 @@ void	rtw_hal_dm_watchdog_in_lps(_adapter *padapter)
 		return;
 #endif	
 
-	if (adapter_to_pwrctl(padapter)->bFwCurrentInPSMode ==_TRUE )
+	if (adapter_to_pwrctl(padapter)->bFwCurrentInPSMode ==true )
 	{
 		if(padapter->HalFunc.hal_dm_watchdog_in_lps)
 		{
@@ -554,7 +554,7 @@ u8	rtw_hal_antdiv_before_linked(_adapter *padapter)
 {	
 	if(padapter->HalFunc.AntDivBeforeLinkHandler)
 		return padapter->HalFunc.AntDivBeforeLinkHandler(padapter);
-	return _FALSE;		
+	return false;		
 }
 void	rtw_hal_antdiv_rssi_compared(_adapter *padapter, WLAN_BSSID_EX *dst, WLAN_BSSID_EX *src)
 {
@@ -659,9 +659,9 @@ s32 rtw_hal_macid_sleep(PADAPTER padapter, u32 macid)
 	u8 support;
 
 
-	support = _FALSE;
+	support = false;
 	rtw_hal_get_def_var(padapter, HAL_DEF_MACID_SLEEP, &support);
-	if (_FALSE == support)
+	if (false == support)
 		return _FAIL;
 
 	rtw_hal_set_hwreg(padapter, HW_VAR_MACID_SLEEP, (u8*)&macid);
@@ -674,9 +674,9 @@ s32 rtw_hal_macid_wakeup(PADAPTER padapter, u32 macid)
 	u8 support;
 
 
-	support = _FALSE;
+	support = false;
 	rtw_hal_get_def_var(padapter, HAL_DEF_MACID_SLEEP, &support);
-	if (_FALSE == support)
+	if (false == support)
 		return _FAIL;
 
 	rtw_hal_set_hwreg(padapter, HW_VAR_MACID_WAKEUP, (u8*)&macid);

@@ -37,9 +37,9 @@ u8 rtw_hal_sdio_query_tx_freepage(_adapter *padapter, u8 PageIdx, u8 RequiredPag
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
 
 	if ((pHalData->SdioTxFIFOFreePage[PageIdx]+pHalData->SdioTxFIFOFreePage[PUBLIC_QUEUE_IDX]) >= (RequiredPageNum))
-		return _TRUE;
+		return true;
 	else
-		return _FALSE;
+		return false;
 }
 
 void rtw_hal_sdio_update_tx_freepage(_adapter *padapter, u8 PageIdx, u8 RequiredPageNum)

@@ -949,8 +949,8 @@ Current IOREG MAP
 #define	TOTAL_CAM_ENTRY				32
 #define	HALF_CAM_ENTRY				16	
        		
-#define	CAM_CONFIG_USEDK				TRUE
-#define	CAM_CONFIG_NO_USEDK			FALSE
+#define	CAM_CONFIG_USEDK				true
+#define	CAM_CONFIG_NO_USEDK			false
        		
 
 #define	SCR_UseDK						0x01

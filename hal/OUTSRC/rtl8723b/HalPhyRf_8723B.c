@@ -182,7 +182,7 @@ void DoIQK_8723B(
 	ODM_ResetIQKResult(pDM_Odm);		
 
 	pDM_Odm->RFCalibrateInfo.ThermalValue_IQK= ThermalValue;
-	PHY_IQCalibrate_8723B(Adapter, FALSE, FALSE);
+	PHY_IQCalibrate_8723B(Adapter, false, false);
 #endif // #if 0
 }
 
@@ -271,8 +271,8 @@ ODM_TxPwrTrackSetPwr_8723B(
 		pDM_Odm->Remnant_OFDMSwingIdx[RFPath] = pDM_Odm->Absolute_OFDMSwingIdx[RFPath];
 
 		{
-		        pDM_Odm->Modify_TxAGC_Flag_PathA = TRUE;
-		        pDM_Odm->Modify_TxAGC_Flag_PathA_CCK = TRUE;
+		        pDM_Odm->Modify_TxAGC_Flag_PathA = true;
+		        pDM_Odm->Modify_TxAGC_Flag_PathA_CCK = true;
 
 		        PHY_SetTxPowerIndexByRateSection(Adapter, RFPath, pHalData->CurrentChannel, CCK );
 		        PHY_SetTxPowerIndexByRateSection(Adapter, RFPath, pHalData->CurrentChannel, OFDM );
@@ -319,7 +319,7 @@ ODM_TxPwrTrackSetPwr_8723B(
 				pDM_Odm->RFCalibrateInfo.IQKMatrixRegSetting[ChannelMappedIndex].Value[0][0],
 				pDM_Odm->RFCalibrateInfo.IQKMatrixRegSetting[ChannelMappedIndex].Value[0][1]);
 
-			pDM_Odm->Modify_TxAGC_Flag_PathA = TRUE;
+			pDM_Odm->Modify_TxAGC_Flag_PathA = true;
 			PHY_SetTxPowerIndexByRateSection(Adapter, RFPath, pHalData->CurrentChannel, OFDM );
 			PHY_SetTxPowerIndexByRateSection(Adapter, RFPath, pHalData->CurrentChannel, HT_MCS0_MCS7 );
 
@@ -335,7 +335,7 @@ ODM_TxPwrTrackSetPwr_8723B(
 				pDM_Odm->RFCalibrateInfo.IQKMatrixRegSetting[ChannelMappedIndex].Value[0][0],
 				pDM_Odm->RFCalibrateInfo.IQKMatrixRegSetting[ChannelMappedIndex].Value[0][1]);
 
-			pDM_Odm->Modify_TxAGC_Flag_PathA = TRUE;
+			pDM_Odm->Modify_TxAGC_Flag_PathA = true;
 			PHY_SetTxPowerIndexByRateSection(Adapter, RFPath, pHalData->CurrentChannel, OFDM );
 			PHY_SetTxPowerIndexByRateSection(Adapter, RFPath, pHalData->CurrentChannel, HT_MCS0_MCS7 );
 
@@ -357,10 +357,10 @@ ODM_TxPwrTrackSetPwr_8723B(
 				pDM_Odm->Remnant_OFDMSwingIdx[RFPath] = 0;
 				PHY_SetTxPowerIndexByRateSection(Adapter, RFPath, pHalData->CurrentChannel, OFDM );
 				PHY_SetTxPowerIndexByRateSection(Adapter, RFPath, pHalData->CurrentChannel, HT_MCS0_MCS7 );
-				pDM_Odm->Modify_TxAGC_Flag_PathA = FALSE;
+				pDM_Odm->Modify_TxAGC_Flag_PathA = false;
 
 				ODM_RT_TRACE(pDM_Odm,ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD,
-					("******Path_A pDM_Odm->Modify_TxAGC_Flag = FALSE \n"));
+					("******Path_A pDM_Odm->Modify_TxAGC_Flag = false \n"));
 			}
 		}
 
@@ -368,7 +368,7 @@ ODM_TxPwrTrackSetPwr_8723B(
 		{
 			pDM_Odm->Remnant_CCKSwingIdx = Final_CCK_Swing_Index - PwrTrackingLimit_CCK;
 			setCCKFilterCoefficient(pDM_Odm, PwrTrackingLimit_CCK);
-			pDM_Odm->Modify_TxAGC_Flag_PathA_CCK = TRUE;
+			pDM_Odm->Modify_TxAGC_Flag_PathA_CCK = true;
 			PHY_SetTxPowerIndexByRateSection(Adapter, RFPath, pHalData->CurrentChannel, CCK );
 
 			ODM_RT_TRACE(pDM_Odm,ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD,
@@ -378,7 +378,7 @@ ODM_TxPwrTrackSetPwr_8723B(
 		{
 			pDM_Odm->Remnant_CCKSwingIdx = Final_CCK_Swing_Index;
 			setCCKFilterCoefficient(pDM_Odm, 0);
-			pDM_Odm->Modify_TxAGC_Flag_PathA_CCK = TRUE;
+			pDM_Odm->Modify_TxAGC_Flag_PathA_CCK = true;
 			PHY_SetTxPowerIndexByRateSection(Adapter, RFPath, pHalData->CurrentChannel, CCK );
 
 			ODM_RT_TRACE(pDM_Odm,ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD,
@@ -395,10 +395,10 @@ ODM_TxPwrTrackSetPwr_8723B(
 			{
 				pDM_Odm->Remnant_CCKSwingIdx = 0;
 				PHY_SetTxPowerIndexByRateSection(Adapter, RFPath, pHalData->CurrentChannel, CCK );
-				pDM_Odm->Modify_TxAGC_Flag_PathA_CCK= FALSE;
+				pDM_Odm->Modify_TxAGC_Flag_PathA_CCK= false;
 
 				ODM_RT_TRACE(pDM_Odm,ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD,
-					("******Path_A pDM_Odm->Modify_TxAGC_Flag_CCK = FALSE \n"));
+					("******Path_A pDM_Odm->Modify_TxAGC_Flag_CCK = false \n"));
 			}
 		}
 	}
@@ -1409,10 +1409,10 @@ ODM_CheckPowerStatus(
 	PMGNT_INFO			pMgntInfo	= &(Adapter->MgntInfo);
 
 	// 2011/07/27 MH We are not testing ready~~!! We may fail to get correct value when init sequence.
-	if (pMgntInfo->init_adpt_in_progress == TRUE)
+	if (pMgntInfo->init_adpt_in_progress == true)
 	{
-		ODM_RT_TRACE(pDM_Odm,COMP_INIT, DBG_LOUD, ("ODM_CheckPowerStatus Return TRUE, due to initadapter"));
-		return	TRUE;
+		ODM_RT_TRACE(pDM_Odm,COMP_INIT, DBG_LOUD, ("ODM_CheckPowerStatus Return true, due to initadapter"));
+		return	true;
 	}
 	
 	//
@@ -1421,12 +1421,12 @@ ODM_CheckPowerStatus(
 	Adapter->HalFunc.GetHwRegHandler(Adapter, HW_VAR_RF_STATE, (pu1Byte)(&rtState));	
 	if(Adapter->bDriverStopped || Adapter->bDriverIsGoingToPnpSetPowerSleep || rtState == eRfOff)
 	{
-		ODM_RT_TRACE(pDM_Odm,COMP_INIT, DBG_LOUD, ("ODM_CheckPowerStatus Return FALSE, due to %d/%d/%d\n", 
+		ODM_RT_TRACE(pDM_Odm,COMP_INIT, DBG_LOUD, ("ODM_CheckPowerStatus Return false, due to %d/%d/%d\n", 
 		Adapter->bDriverStopped, Adapter->bDriverIsGoingToPnpSetPowerSleep, rtState));
-		return	FALSE;
+		return	false;
 	}
 */
-	return	TRUE;
+	return	true;
 }
 
 VOID
@@ -1441,7 +1441,7 @@ _PHY_SaveADDARegisters8723B(
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
 	PDM_ODM_T		pDM_Odm = &pHalData->odmpriv;
 
-	if (ODM_CheckPowerStatus(pAdapter) == FALSE)
+	if (ODM_CheckPowerStatus(pAdapter) == false)
 		return;
 
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("Save ADDA parameters.\n"));
@@ -1525,7 +1525,7 @@ _PHY_PathADDAOn8723B(
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("ADDA ON.\n"));
 
 	pathOn = isPathAOn ? 0x01c00014 : 0x01c00014;
-	if(FALSE == is2T){
+	if(false == is2T){
 		pathOn = 0x01c00014;
 		ODM_SetBBReg(pDM_Odm, ADDAReg[0], bMaskDWord, 0x01c00014);
 	}
@@ -1609,8 +1609,8 @@ phy_SimularityCompare_8723B(
 	PDM_ODM_T		pDM_Odm = &pHalData->odmpriv;
 
 	u1Byte		final_candidate[2] = {0xFF, 0xFF};	//for path A and path B
-	BOOLEAN 	bResult = TRUE;
-	BOOLEAN 	is2T = TRUE;
+	BOOLEAN 	bResult = true;
+	BOOLEAN 	is2T = true;
 
 	s4Byte tmp1 = 0,tmp2 = 0;
 	
@@ -1675,7 +1675,7 @@ phy_SimularityCompare_8723B(
 			{
 				for( j = i*4; j < (i+1)*4-2; j++)
 					result[3][j] = result[final_candidate[i]][j];
-				bResult = FALSE;
+				bResult = false;
 			}
 		}
 		return bResult;
@@ -1707,7 +1707,7 @@ phy_SimularityCompare_8723B(
 		for(i = 6; i < 8; i++)
 			result[3][i] = result[c1][i];
 	}
-			return FALSE;
+			return false;
 	}	
 }
 
@@ -1781,7 +1781,7 @@ if( pAdapter->registrypriv.mp_mode == 1 && pAdapter->mppriv.mode == 3 )
 	}
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("IQ Calibration for %s for %d times\n", (is2T ? "2T2R" : "1T1R"), t));
 
-	_PHY_PathADDAOn8723B(pAdapter, ADDA_REG, TRUE, is2T);
+	_PHY_PathADDAOn8723B(pAdapter, ADDA_REG, true, is2T);
 
 //no serial mode
 #if 0	
@@ -1792,7 +1792,7 @@ if( pAdapter->registrypriv.mp_mode == 1 && pAdapter->mppriv.mode == 3 )
 	
 	if(!pDM_Odm->RFCalibrateInfo.bRfPiEnable){
 		// Switch BB to PI mode to do IQ Calibration.
-		_PHY_PIModeSwitch8723B(pAdapter, TRUE);
+		_PHY_PIModeSwitch8723B(pAdapter, true);
 	}
 #endif
 
@@ -1977,7 +1977,7 @@ for(i = 0 ; i < retryCount ; i++){
 	{
 		if(!pDM_Odm->RFCalibrateInfo.bRfPiEnable){
 			// Switch back BB to SI mode after finish IQ Calibration.
-//			_PHY_PIModeSwitch8723B(pAdapter, FALSE);
+//			_PHY_PIModeSwitch8723B(pAdapter, false);
 		}
 
 		// Reload ADDA power saving parameters
@@ -2234,7 +2234,7 @@ PHY_IQCalibrate_8723B(
 	BOOLEAN 		bPathAOK, bPathBOK;
 	s4Byte			RegE94, RegE9C, RegEA4, RegEAC, RegEB4, RegEBC, RegEC4, RegECC, RegTmp = 0;
 	BOOLEAN 		is12simular, is13simular, is23simular;	
-	BOOLEAN 		bStartContTx = FALSE, bSingleTone = FALSE, bCarrierSuppression = FALSE;
+	BOOLEAN 		bStartContTx = false, bSingleTone = false, bCarrierSuppression = false;
 	u4Byte			IQK_BB_REG_92C[IQK_BB_REG_NUM] = {
 					rOFDM0_XARxIQImbalance, 	rOFDM0_XBRxIQImbalance, 
 					rOFDM0_ECCAThreshold,	rOFDM0_AGCRSSITable,
@@ -2246,7 +2246,7 @@ PHY_IQCalibrate_8723B(
 	u4Byte			StartTime; 
 	s4Byte			ProgressingTime;
 
-	if (ODM_CheckPowerStatus(pAdapter) == FALSE)
+	if (ODM_CheckPowerStatus(pAdapter) == false)
 		return;
 
 	if(!(pDM_Odm->SupportAbility & ODM_RF_CALIBRATION))
@@ -2266,7 +2266,7 @@ PHY_IQCalibrate_8723B(
 
 
 	ODM_AcquireSpinLock(pDM_Odm, RT_IQK_SPINLOCK);
-	pDM_Odm->RFCalibrateInfo.bIQKInProgress = TRUE;
+	pDM_Odm->RFCalibrateInfo.bIQKInProgress = true;
 	ODM_ReleaseSpinLock(pDM_Odm, RT_IQK_SPINLOCK);
 
 	if (bRestore) {
@@ -2345,11 +2345,11 @@ PHY_IQCalibrate_8723B(
 		result[3][i] = 0;
 	}
 	final_candidate = 0xff;
-	bPathAOK = FALSE;
-	bPathBOK = FALSE;
-	is12simular = FALSE;
-	is23simular = FALSE;
-	is13simular = FALSE;
+	bPathAOK = false;
+	bPathBOK = false;
+	is12simular = false;
+	is23simular = false;
+	is13simular = false;
 
 
 	for (i=0; i<3; i++)
@@ -2422,7 +2422,7 @@ PHY_IQCalibrate_8723B(
 		RegECC = result[final_candidate][7];
 		ODM_RT_TRACE(pDM_Odm,ODM_COMP_CALIBRATION, ODM_DBG_LOUD,  ("IQK: final_candidate is %x\n",final_candidate));
 		ODM_RT_TRACE(pDM_Odm,ODM_COMP_CALIBRATION, ODM_DBG_LOUD,  ("IQK: RegE94=%x RegE9C=%x RegEA4=%x RegEAC=%x RegEB4=%x RegEBC=%x RegEC4=%x RegECC=%x\n ", RegE94, RegE9C, RegEA4, RegEAC, RegEB4, RegEBC, RegEC4, RegECC));
-		bPathAOK = bPathBOK = TRUE;
+		bPathAOK = bPathBOK = true;
 	}
 	else
 	{
@@ -2453,7 +2453,7 @@ PHY_IQCalibrate_8723B(
 	{
 		for(i = 0; i < IQK_Matrix_REG_NUM; i++)
 			pDM_Odm->RFCalibrateInfo.IQKMatrixRegSetting[Indexforchannel].Value[0][i] = result[final_candidate][i];
-		pDM_Odm->RFCalibrateInfo.IQKMatrixRegSetting[Indexforchannel].bIQKDone = TRUE;		
+		pDM_Odm->RFCalibrateInfo.IQKMatrixRegSetting[Indexforchannel].bIQKDone = true;		
 	}
 	//RT_DISP(FINIT, INIT_IQK, ("\nIQK OK Indexforchannel %d.\n", Indexforchannel));
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_CALIBRATION, ODM_DBG_LOUD,  ("\nIQK OK Indexforchannel %d.\n", Indexforchannel));
@@ -2486,7 +2486,7 @@ PHY_IQCalibrate_8723B(
 	}
 
 	ODM_AcquireSpinLock(pDM_Odm, RT_IQK_SPINLOCK);
-	pDM_Odm->RFCalibrateInfo.bIQKInProgress = FALSE;
+	pDM_Odm->RFCalibrateInfo.bIQKInProgress = false;
 	ODM_ReleaseSpinLock(pDM_Odm, RT_IQK_SPINLOCK);
 
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_CALIBRATION, ODM_DBG_LOUD,  ("IQK finished\n"));
@@ -2502,7 +2502,7 @@ PHY_LCCalibrate_8723B(
 	IN PDM_ODM_T		pDM_Odm
 	)
 {
-	BOOLEAN 		bStartContTx = FALSE, bSingleTone = FALSE, bCarrierSuppression = FALSE;
+	BOOLEAN 		bStartContTx = false, bSingleTone = false, bCarrierSuppression = false;
 	u4Byte			timeout = 2000, timecount = 0;
 	u4Byte			StartTime; 
 	s4Byte			ProgressingTime;
@@ -2528,13 +2528,13 @@ PHY_LCCalibrate_8723B(
 		timecount += 50;
 	}	
 	
-	pDM_Odm->RFCalibrateInfo.bLCKInProgress = TRUE;
+	pDM_Odm->RFCalibrateInfo.bLCKInProgress = true;
 
 	
-	phy_LCCalibrate_8723B(pDM_Odm, FALSE);
+	phy_LCCalibrate_8723B(pDM_Odm, false);
 
 
-	pDM_Odm->RFCalibrateInfo.bLCKInProgress = FALSE;
+	pDM_Odm->RFCalibrateInfo.bLCKInProgress = false;
 
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("LCK:Finish!!!interface %d\n", pDM_Odm->InterfaceIndex));
 	ProgressingTime = ODM_GetProgressingTime( pDM_Odm, StartTime);
@@ -2564,12 +2564,12 @@ PHY_APCalibrate_8723B(
 		return;
 
 	if(IS_92C_SERIAL( pHalData->VersionID)){
-		phy_APCalibrate_8723B(pAdapter, delta, TRUE);
+		phy_APCalibrate_8723B(pAdapter, delta, true);
 	}
 	else
 	{
 		// For 88C 1T1R
-		phy_APCalibrate_8723B(pAdapter, delta, FALSE);
+		phy_APCalibrate_8723B(pAdapter, delta, false);
 	}
 }
 VOID phy_SetRFPathSwitch_8723B(
@@ -2600,5 +2600,5 @@ VOID PHY_SetRFPathSwitch_8723B(
 	return;
 #endif
 
-		phy_SetRFPathSwitch_8723B(pAdapter, bMain, TRUE);
+		phy_SetRFPathSwitch_8723B(pAdapter, bMain, true);
 }

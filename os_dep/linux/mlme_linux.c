@@ -95,8 +95,8 @@ void rtw_os_indicate_connect(_adapter *adapter)
 	struct mlme_priv *pmlmepriv = &(adapter->mlmepriv);
 _func_enter_;	
 
-	if ( (check_fwstate(pmlmepriv, WIFI_ADHOC_MASTER_STATE)==_TRUE ) || 
-		(check_fwstate(pmlmepriv, WIFI_ADHOC_STATE)==_TRUE ) )
+	if ( (check_fwstate(pmlmepriv, WIFI_ADHOC_MASTER_STATE)==true ) || 
+		(check_fwstate(pmlmepriv, WIFI_ADHOC_STATE)==true ) )
 	{
 		rtw_cfg80211_ibss_indicate_connect(adapter);
 	}

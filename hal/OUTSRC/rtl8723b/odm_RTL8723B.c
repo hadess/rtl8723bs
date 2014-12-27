@@ -39,7 +39,7 @@ odm_DIG_8723(
 	)
 {
 	pDIG_T						pDM_DigTable = &pDM_Odm->DM_DigTable;
-	PFALSE_ALARM_STATISTICS		pFalseAlmCnt = &pDM_Odm->FalseAlmCnt;
+	Pfalse_ALARM_STATISTICS		pFalseAlmCnt = &pDM_Odm->FalseAlmCnt;
 	//pRXHP_T						pRX_HP_Table  = &pDM_Odm->DM_RXHP_Table;
 	u1Byte						DIG_Dynamic_MIN;
 	BOOLEAN						FirstConnect, FirstDisConnect;
@@ -63,7 +63,7 @@ odm_DIG_8723(
 	//add by Neil Chen to avoid PSD is processing
 	if(pDM_Odm->SupportICType&(ODM_RTL8723A|ODM_RTL8723B))
 	{
-	        if(pDM_Odm->bDMInitialGainEnable == FALSE)
+	        if(pDM_Odm->bDMInitialGainEnable == false)
 	        {
 		        ODM_RT_TRACE(pDM_Odm,ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG() Return: PSD is Processing \n"));
 		        return;
@@ -72,8 +72,8 @@ odm_DIG_8723(
 		
 	
 	DIG_Dynamic_MIN = pDM_DigTable->DIG_Dynamic_MIN_0;
-	FirstConnect = (pDM_Odm->bLinked) && (pDM_DigTable->bMediaConnect_0 == FALSE);
-	FirstDisConnect = (!pDM_Odm->bLinked) && (pDM_DigTable->bMediaConnect_0 == TRUE);
+	FirstConnect = (pDM_Odm->bLinked) && (pDM_DigTable->bMediaConnect_0 == false);
+	FirstDisConnect = (!pDM_Odm->bLinked) && (pDM_DigTable->bMediaConnect_0 == true);
 
 	
 #if 0 	

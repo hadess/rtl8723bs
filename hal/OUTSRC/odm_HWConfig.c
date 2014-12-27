@@ -249,13 +249,13 @@ odm_RxPhyStatus92CSeries_Parsing(
 	s1Byte				rx_pwr[4], rx_pwr_all=0;
 	u1Byte				EVM, PWDB_ALL = 0, PWDB_ALL_BT;
 	u1Byte				RSSI, total_rssi=0;
-	BOOLEAN				isCCKrate=FALSE;	
+	BOOLEAN				isCCKrate=false;	
 	u1Byte				rf_rx_num = 0;
 	u1Byte				cck_highpwr = 0;
 	u1Byte				LNA_idx, VGA_idx;
 	PPHY_STATUS_RPT_8192CD_T pPhyStaRpt = (PPHY_STATUS_RPT_8192CD_T)pPhyStatus;
 
-	isCCKrate = (pPktinfo->DataRate <= DESC_RATE11M)?TRUE :FALSE;
+	isCCKrate = (pPktinfo->DataRate <= DESC_RATE11M)?true :false;
 	pPhyInfo->RxMIMOSignalQuality[ODM_RF_PATH_A] = -1;
 	pPhyInfo->RxMIMOSignalQuality[ODM_RF_PATH_B] = -1;
 
@@ -274,7 +274,7 @@ odm_RxPhyStatus92CSeries_Parsing(
 		//if(pHalData->eRFPowerState == eRfOn)
 			cck_highpwr = pDM_Odm->bCckHighPower;
 		//else
-		//	cck_highpwr = FALSE;
+		//	cck_highpwr = false;
 
 		cck_agc_rpt =  pPhyStaRpt->cck_agc_rpt_ofdm_cfosho_a ;
 		
@@ -331,7 +331,7 @@ odm_RxPhyStatus92CSeries_Parsing(
 					rx_pwr_all += 10;
 				
 				PWDB_ALL = odm_QueryRxPwrPercentage(rx_pwr_all);
-				if(cck_highpwr == FALSE)
+				if(cck_highpwr == false)
 				{
 					if(PWDB_ALL >= 80)
 						PWDB_ALL = ((PWDB_ALL-80)<<1)+((PWDB_ALL-80)>>1)+80;
@@ -638,9 +638,9 @@ odm_RxPhyStatusJaguarSeries_Parsing(
 	}
 
 	if(pPktinfo->DataRate <= DESC_RATE11M)
-		isCCKrate = TRUE;
+		isCCKrate = true;
 	else
-		isCCKrate = FALSE;
+		isCCKrate = false;
 	
 	pPhyInfo->RxMIMOSignalQuality[ODM_RF_PATH_A] = -1;
 	pPhyInfo->RxMIMOSignalQuality[ODM_RF_PATH_B] = -1;
@@ -658,7 +658,7 @@ odm_RxPhyStatusJaguarSeries_Parsing(
 		//if(pHalData->eRFPowerState == eRfOn)
 			cck_highpwr = pDM_Odm->bCckHighPower;
 		//else
-		//	cck_highpwr = FALSE;
+		//	cck_highpwr = false;
 
 		cck_agc_rpt =  pPhyStaRpt->cfosho[0] ;
 		
@@ -705,7 +705,7 @@ odm_RxPhyStatusJaguarSeries_Parsing(
 			}
 			rx_pwr_all += 6;
 			PWDB_ALL = odm_QueryRxPwrPercentage(rx_pwr_all);
-			if(cck_highpwr == FALSE)
+			if(cck_highpwr == false)
 			{
 				if(PWDB_ALL >= 80)
 					PWDB_ALL = ((PWDB_ALL-80)<<1)+((PWDB_ALL-80)>>1)+80;
@@ -988,7 +988,7 @@ odm_Process_RSSIForDM(
 	if(pPktinfo->bPacketBeacon)
 		pDM_Odm->PhyDbgInfo.NumQryBeaconPkt++;
 	
-	isCCKrate = ((pPktinfo->DataRate >= DESC_RATE1M ) && (pPktinfo->DataRate <= DESC_RATE11M ))?TRUE :FALSE;
+	isCCKrate = ((pPktinfo->DataRate >= DESC_RATE1M ) && (pPktinfo->DataRate <= DESC_RATE11M ))?true :false;
 	pDM_Odm->RxRate = pPktinfo->DataRate;
 	/*
 	if(!isCCKrate)
@@ -1175,7 +1175,7 @@ ODM_PhyStatusQuery_92CSeries(
 							pPhyStatus,
 							pPktinfo);
 
-	if( pDM_Odm->RSSI_test == TRUE)
+	if( pDM_Odm->RSSI_test == true)
 	{
 		// Select the packets to do RSSI checking for antenna switching.
 		if(pPktinfo->bPacketToSelf || pPktinfo->bPacketBeacon )

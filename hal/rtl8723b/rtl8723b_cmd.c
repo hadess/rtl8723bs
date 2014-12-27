@@ -30,7 +30,7 @@
 
 static u8 _is_fw_read_cmd_down(_adapter* padapter, u8 msgbox_num)
 {
-	u8	read_down = _FALSE;
+	u8	read_down = false;
 	int 	retry_cnts = 100;
 
 	u8 valid;
@@ -40,7 +40,7 @@ static u8 _is_fw_read_cmd_down(_adapter* padapter, u8 msgbox_num)
 	do{
 		valid = rtw_read8(padapter,REG_HMETFR) & BIT(msgbox_num);
 		if(0 == valid ){
-			read_down = _TRUE;
+			read_down = true;
 		}
 #ifdef CONFIG_WOWLAN
 		else
@@ -95,7 +95,7 @@ _func_enter_;
 	if(CmdLen > RTL8723B_MAX_CMD_LEN) {
 		goto exit;
 	}
-	if (padapter->bSurpriseRemoved == _TRUE)
+	if (padapter->bSurpriseRemoved == true)
 		goto exit;
 
 	//pay attention to if  race condition happened in  H2C cmd setting.
@@ -338,7 +338,7 @@ static void ConstructNullFunctionData(
 
 	SetSeqNum(pwlanhdr, 0);
 
-	if (bQoS == _TRUE) {
+	if (bQoS == true) {
 		struct rtw_ieee80211_hdr_3addr_qos *pwlanqoshdr;
 
 		SetFrameSubType(pframe, WIFI_QOS_DATA_NULL);
@@ -509,7 +509,7 @@ static void ConstructARPResponse(
 
 		psta = rtw_get_stainfo(&padapter->stapriv, get_my_bssid(&(pmlmeinfo->network)));
 		if (psta != NULL) {
-			if(_rtw_memcmp(&psta->dot11tkiptxmickey.skey[0],null_key, 16)==_TRUE){
+			if(_rtw_memcmp(&psta->dot11tkiptxmickey.skey[0],null_key, 16)==true){
 				DBG_871X("%s(): STA dot11tkiptxmickey==0\n",__FUNCTION__);
 			}
 			//start to calculate the mic code
@@ -1204,7 +1204,7 @@ _func_enter_;
 	if (psmode > 0)
 	{
 #ifdef CONFIG_BT_COEXIST
-		if (rtw_btcoex_IsBtControlLps(padapter) == _TRUE)
+		if (rtw_btcoex_IsBtControlLps(padapter) == true)
 		{
 			PowerState = rtw_btcoex_RpwmVal(padapter);
 			byte5 = rtw_btcoex_LpsVal(padapter);
@@ -1240,7 +1240,7 @@ _func_enter_;
 #ifdef CONFIG_LPS_LCLK
 	if(psmode != PS_MODE_ACTIVE)
 	{
-		if(pmlmeext ->adaptive_tsf_done == _FALSE && pmlmeext->bcn_cnt>0)
+		if(pmlmeext ->adaptive_tsf_done == false && pmlmeext->bcn_cnt>0)
 		{
 			u8 ratio_20_delay, ratio_80_delay;
 
@@ -1283,7 +1283,7 @@ _func_enter_;
 			}
 
 			pmlmeext->bcn_cnt = 0;
-			pmlmeext ->adaptive_tsf_done = _TRUE;
+			pmlmeext ->adaptive_tsf_done = true;
 
 		}
 		else
@@ -1428,7 +1428,7 @@ static void rtl8723b_set_FwRemoteWakeCtrl_Cmd(PADAPTER padapter, u8 benable)
 	SET_H2CCMD_REMOTE_WAKECTRL_ENABLE(u1H2CRemoteWakeCtrlParm, benable);
 	SET_H2CCMD_REMOTE_WAKE_CTRL_ARP_OFFLOAD_EN(u1H2CRemoteWakeCtrlParm, 1);
 #ifdef CONFIG_GTK_OL
-		if (psecuritypriv->binstallKCK_KEK == _TRUE &&
+		if (psecuritypriv->binstallKCK_KEK == true &&
 				psecuritypriv->dot11PrivacyAlgrthm == _AES_) {
 		SET_H2CCMD_REMOTE_WAKE_CTRL_GTK_OFFLOAD_EN(u1H2CRemoteWakeCtrlParm, 1);
 		} else {
@@ -1458,7 +1458,7 @@ exit:
 	FillH2CCmd8723B(padapter, H2C_8723B_REMOTE_WAKE_CTRL,
 		H2C_REMOTE_WAKE_CTRL_LEN, u1H2CRemoteWakeCtrlParm);
 #ifdef CONFIG_PNO_SUPPORT
-	if (ppwrpriv->wowlan_pno_enable && ppwrpriv->pno_in_resume == _FALSE) {
+	if (ppwrpriv->wowlan_pno_enable && ppwrpriv->pno_in_resume == false) {
 		res = rtw_read8(padapter, REG_PNO_STATUS);
 		DBG_871X("cmd: 0x81 REG_PNO_STATUS: 0x%02x\n", res);
 		while(!(res&BIT(7)) && count < 25) {
@@ -1721,8 +1721,8 @@ static void rtl8723b_set_AP_FwWoWlan_cmd(_adapter* padapter, u8 enable)
 _func_enter_;
 	if (enable) {
 #ifdef CONFIG_CONCURRENT_MODE
-		if (rtw_buddy_adapter_up(padapter) == _TRUE &&
-			check_buddy_fwstate(padapter, WIFI_AP_STATE) == _TRUE) {
+		if (rtw_buddy_adapter_up(padapter) == true &&
+			check_buddy_fwstate(padapter, WIFI_AP_STATE) == true) {
 				rtl8723b_set_FwJoinBssRpt_cmd(padapter->pbuddy_adapter, RT_MEDIA_CONNECT);
 				issue_beacon(padapter->pbuddy_adapter, 0);
 		} else {
@@ -1757,7 +1757,7 @@ void rtl8723b_set_ap_wowlan_cmd(_adapter* padapter, u8 enable)
 static s32 rtl8723b_set_FwLowPwrLps_cmd(PADAPTER padapter, u8 enable)
 {
 	//TODO
-	return _FALSE;	
+	return false;	
 }
 
 //
@@ -1765,9 +1765,9 @@ static s32 rtl8723b_set_FwLowPwrLps_cmd(PADAPTER padapter, u8 enable)
 //			Now we just send 4 types packet to rsvd page.
 //			(1)Beacon, (2)Ps-poll, (3)Null data, (4)ProbeRsp.
 //	Input:
-//	    bDLFinished - FALSE: At the first time we will send all the packets as a large packet to Hw,
+//	    bDLFinished - false: At the first time we will send all the packets as a large packet to Hw,
 //				 		so we need to set the packet length to total lengh.
-//			      TRUE: At the second time, we should send the first packet (default:beacon)
+//			      true: At the second time, we should send the first packet (default:beacon)
 //						to Hw again and set the lengh in descriptor to the real beacon lengh.
 // 2009.10.15 by tynli.
 static void rtl8723b_set_FwRsvdPagePkt(PADAPTER padapter, BOOLEAN bDLFinished)
@@ -1842,7 +1842,7 @@ static void rtl8723b_set_FwRsvdPagePkt(PADAPTER padapter, BOOLEAN bDLFinished)
 	//3 (2) ps-poll
 	RsvdPageLoc.LocPsPoll = TotalPageNum;
 	ConstructPSPoll(padapter, &ReservedPagePacket[BufIndex], &PSPollLength);
-	rtl8723b_fill_fake_txdesc(padapter, &ReservedPagePacket[BufIndex-TxDescLen], PSPollLength, _TRUE, _FALSE, _FALSE);
+	rtl8723b_fill_fake_txdesc(padapter, &ReservedPagePacket[BufIndex-TxDescLen], PSPollLength, true, false, false);
 
 	//DBG_871X("%s(): HW_VAR_SET_TX_CMD: PS-POLL %p %d\n", 
 	//	__FUNCTION__, &ReservedPagePacket[BufIndex-TxDescLen], (PSPollLength+TxDescLen));
@@ -1860,8 +1860,8 @@ static void rtl8723b_set_FwRsvdPagePkt(PADAPTER padapter, BOOLEAN bDLFinished)
 		&ReservedPagePacket[BufIndex],
 		&NullDataLength,
 		get_my_bssid(&pmlmeinfo->network),
-		_FALSE, 0, 0, _FALSE);
-	rtl8723b_fill_fake_txdesc(padapter, &ReservedPagePacket[BufIndex-TxDescLen], NullDataLength, _FALSE, _FALSE, _FALSE);
+		false, 0, 0, false);
+	rtl8723b_fill_fake_txdesc(padapter, &ReservedPagePacket[BufIndex-TxDescLen], NullDataLength, false, false, false);
 
 	//DBG_871X("%s(): HW_VAR_SET_TX_CMD: NULL DATA %p %d\n", 
 	//	__FUNCTION__, &ReservedPagePacket[BufIndex-TxDescLen], (NullDataLength+TxDescLen));
@@ -1880,8 +1880,8 @@ static void rtl8723b_set_FwRsvdPagePkt(PADAPTER padapter, BOOLEAN bDLFinished)
 		&ReservedPagePacket[BufIndex],
 		&ProbeRspLength,
 		get_my_bssid(&pmlmeinfo->network),
-		_FALSE);
-	rtl8723b_fill_fake_txdesc(padapter, &ReservedPagePacket[BufIndex-TxDescLen], ProbeRspLength, _FALSE, _FALSE, _FALSE);
+		false);
+	rtl8723b_fill_fake_txdesc(padapter, &ReservedPagePacket[BufIndex-TxDescLen], ProbeRspLength, false, false, false);
 
 	//DBG_871X("%s(): HW_VAR_SET_TX_CMD: PROBE RSP %p %d\n", 
 	//	__FUNCTION__, &ReservedPagePacket[BufIndex-TxDescLen], (ProbeRspLength+TxDescLen));
@@ -1900,8 +1900,8 @@ static void rtl8723b_set_FwRsvdPagePkt(PADAPTER padapter, BOOLEAN bDLFinished)
 		&ReservedPagePacket[BufIndex],
 		&QosNullLength,
 		get_my_bssid(&pmlmeinfo->network),
-		_TRUE, 0, 0, _FALSE);
-	rtl8723b_fill_fake_txdesc(padapter, &ReservedPagePacket[BufIndex-TxDescLen], QosNullLength, _FALSE, _FALSE, _FALSE);
+		true, 0, 0, false);
+	rtl8723b_fill_fake_txdesc(padapter, &ReservedPagePacket[BufIndex-TxDescLen], QosNullLength, false, false, false);
 
 	//DBG_871X("%s(): HW_VAR_SET_TX_CMD: QOS NULL DATA %p %d\n", 
 	//	__FUNCTION__, &ReservedPagePacket[BufIndex-TxDescLen], (QosNullLength+TxDescLen));
@@ -1919,8 +1919,8 @@ static void rtl8723b_set_FwRsvdPagePkt(PADAPTER padapter, BOOLEAN bDLFinished)
 		&ReservedPagePacket[BufIndex],
 		&BTQosNullLength,
 		get_my_bssid(&pmlmeinfo->network),
-		_TRUE, 0, 0, _FALSE);
-	rtl8723b_fill_fake_txdesc(padapter, &ReservedPagePacket[BufIndex-TxDescLen], BTQosNullLength, _FALSE, _TRUE, _FALSE);
+		true, 0, 0, false);
+	rtl8723b_fill_fake_txdesc(padapter, &ReservedPagePacket[BufIndex-TxDescLen], BTQosNullLength, false, true, false);
 
 	//DBG_871X("%s(): HW_VAR_SET_TX_CMD: BT QOS NULL DATA %p %d\n", 
 	//	__FUNCTION__, &ReservedPagePacket[BufIndex-TxDescLen], (BTQosNullLength+TxDescLen));
@@ -1933,7 +1933,7 @@ static void rtl8723b_set_FwRsvdPagePkt(PADAPTER padapter, BOOLEAN bDLFinished)
 
 #ifdef CONFIG_WOWLAN
 	if (check_fwstate(pmlmepriv, _FW_LINKED)) {
-	//if (pwrctl->wowlan_mode == _TRUE) {
+	//if (pwrctl->wowlan_mode == true) {
 		//BufIndex += (CurtPktPageNum*PageSize);
 
 	//3(7) ARP RSP
@@ -1946,7 +1946,7 @@ static void rtl8723b_set_FwRsvdPagePkt(PADAPTER padapter, BOOLEAN bDLFinished)
 		&ARPLegnth,
 		currentip
 		);
-	rtl8723b_fill_fake_txdesc(padapter, &ReservedPagePacket[BufIndex-TxDescLen], ARPLegnth, _FALSE, _FALSE, _TRUE);
+	rtl8723b_fill_fake_txdesc(padapter, &ReservedPagePacket[BufIndex-TxDescLen], ARPLegnth, false, false, true);
 
 	//DBG_871X("%s(): HW_VAR_SET_TX_CMD: ARP RSP %p %d\n", 
 	//	__FUNCTION__, &ReservedPagePacket[BufIndex-TxDescLen], (ARPLegnth+TxDescLen));
@@ -2021,7 +2021,7 @@ static void rtl8723b_set_FwRsvdPagePkt(PADAPTER padapter, BOOLEAN bDLFinished)
 		&GTKLegnth
 		);
 
-	rtl8723b_fill_fake_txdesc(padapter, &ReservedPagePacket[BufIndex-TxDescLen], GTKLegnth, _FALSE, _FALSE, _TRUE);
+	rtl8723b_fill_fake_txdesc(padapter, &ReservedPagePacket[BufIndex-TxDescLen], GTKLegnth, false, false, true);
 #if 0
 	{
 		int gj;
@@ -2060,7 +2060,7 @@ static void rtl8723b_set_FwRsvdPagePkt(PADAPTER padapter, BOOLEAN bDLFinished)
 #endif //CONFIG_WOWLAN
 	{
 #ifdef CONFIG_PNO_SUPPORT
-		if (pwrctl->pno_in_resume == _FALSE && pwrctl->pno_inited == _TRUE) {
+		if (pwrctl->pno_in_resume == false && pwrctl->pno_inited == true) {
 			//Probe Request
 			RsvdPageLoc.LocProbePacket = TotalPageNum;
 			ConstructProbeReq(
@@ -2070,7 +2070,7 @@ static void rtl8723b_set_FwRsvdPagePkt(PADAPTER padapter, BOOLEAN bDLFinished)
 
 			rtl8723b_fill_fake_txdesc(padapter,
 				&ReservedPagePacket[BufIndex-TxDescLen],
-				ProbeReqLength, _FALSE, _FALSE, _FALSE);
+				ProbeReqLength, false, false, false);
 #ifdef CONFIG_PNO_SET_DEBUG
 	{
 			int gj;
@@ -2202,10 +2202,10 @@ error:
 //
 //Input: bDLFinished	
 //
-//FALSE: At the first time we will send all the packets as a large packet to Hw,
+//false: At the first time we will send all the packets as a large packet to Hw,
 //	 so we need to set the packet length to total lengh.
 //
-//TRUE: At the second time, we should send the first packet (default:beacon)
+//true: At the second time, we should send the first packet (default:beacon)
 //	to Hw again and set the lengh in descriptor to the real beacon lengh.
 // 2009.10.15 by tynli.
 static void rtl8723b_set_AP_FwRsvdPagePkt(PADAPTER padapter,
@@ -2276,11 +2276,11 @@ static void rtl8723b_set_AP_FwRsvdPagePkt(PADAPTER padapter,
 		&ReservedPagePacket[BufIndex],
 		&ProbeRspLength,
 		currentip,
-		_FALSE);
+		false);
 	rtl8723b_fill_fake_txdesc(padapter,
 			&ReservedPagePacket[BufIndex-TxDescLen],
 			ProbeRspLength,
-			_FALSE, _FALSE, _FALSE);
+			false, false, false);
 
 	DBG_871X("%s(): HW_VAR_SET_TX_CMD: PROBE RSP %p %d\n",
 		__func__, &ReservedPagePacket[BufIndex-TxDescLen],
@@ -2324,7 +2324,7 @@ void rtl8723b_download_rsvd_page(PADAPTER padapter, u8 mstatus)
 	struct mlme_ext_priv	*pmlmeext = &(padapter->mlmeextpriv);
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 	struct pwrctrl_priv *pwrpriv = adapter_to_pwrctl(padapter);
-	BOOLEAN		bcn_valid = _FALSE;
+	BOOLEAN		bcn_valid = false;
 	u8	DLBcnCount=0;
 	u32 poll = 0;
 	u8 val8;
@@ -2336,7 +2336,7 @@ _func_enter_;
 
 	if(mstatus == RT_MEDIA_CONNECT)
 	{
-		BOOLEAN bRecover = _FALSE;
+		BOOLEAN bRecover = false;
 		u8 v8;
 
 		// We should set AID, correct TSF, HW seq enable before set JoinBssReport to Fw in 88/92C.
@@ -2358,7 +2358,7 @@ _func_enter_;
 
 		// Set FWHW_TXQ_CTRL 0x422[6]=0 to tell Hw the packet is not a real beacon frame.
 		if (pHalData->RegFwHwTxQCtrl & BIT(6))
-			bRecover = _TRUE;
+			bRecover = true;
 
 		// To tell Hw the packet is not a real beacon frame.
 		rtw_write8(padapter, REG_FWHW_TXQ_CTRL+2, pHalData->RegFwHwTxQCtrl & ~BIT(6));
@@ -2530,7 +2530,7 @@ static void ConstructBtNullFunctionData(
 	SetDuration(pwlanhdr, 0);
 	SetSeqNum(pwlanhdr, 0);
 
-	if (bQoS == _TRUE)
+	if (bQoS == true)
 	{
 		struct rtw_ieee80211_hdr_3addr_qos *pwlanqoshdr;
 
@@ -2622,8 +2622,8 @@ static void SetFwRsvdPagePkt_BTCoex(PADAPTER padapter)
 		&ReservedPagePacket[BufIndex],
 		&BTQosNullLength,
 		NULL,
-		_TRUE, 0, 0, _FALSE);
-	rtl8723b_fill_fake_txdesc(padapter, &ReservedPagePacket[BufIndex-TxDescLen], BTQosNullLength, _FALSE, _TRUE, _FALSE);
+		true, 0, 0, false);
+	rtl8723b_fill_fake_txdesc(padapter, &ReservedPagePacket[BufIndex-TxDescLen], BTQosNullLength, false, true, false);
 
 	CurtPktPageNum = (u8)PageNum_128(TxDescLen + BTQosNullLength);
 
@@ -2660,8 +2660,8 @@ void rtl8723b_download_BTCoex_AP_mode_rsvd_page(PADAPTER padapter)
 	PHAL_DATA_TYPE pHalData;
 	struct mlme_ext_priv *pmlmeext;
 	struct mlme_ext_info *pmlmeinfo;
-	u8 bRecover = _FALSE;
-	u8 bcn_valid = _FALSE;
+	u8 bRecover = false;
+	u8 bcn_valid = false;
 	u8 DLBcnCount = 0;
 	u32 poll = 0;
 	u8 val8;
@@ -2671,7 +2671,7 @@ void rtl8723b_download_BTCoex_AP_mode_rsvd_page(PADAPTER padapter)
 		FUNC_ADPT_ARG(padapter), get_iface_type(padapter), get_fwstate(&padapter->mlmepriv));
 
 #ifdef CONFIG_DEBUG
-	if (check_fwstate(&padapter->mlmepriv, WIFI_AP_STATE) == _FALSE)
+	if (check_fwstate(&padapter->mlmepriv, WIFI_AP_STATE) == false)
 	{
 		DBG_8192C(FUNC_ADPT_FMT ": [WARNING] not in AP mode!!\n",
 			FUNC_ADPT_ARG(padapter));
@@ -2701,7 +2701,7 @@ void rtl8723b_download_BTCoex_AP_mode_rsvd_page(PADAPTER padapter)
 
 	// Set FWHW_TXQ_CTRL 0x422[6]=0 to tell Hw the packet is not a real beacon frame.
 	if (pHalData->RegFwHwTxQCtrl & BIT(6))
-		bRecover = _TRUE;
+		bRecover = true;
 
 	// To tell Hw the packet is not a real beacon frame.
 	pHalData->RegFwHwTxQCtrl &= ~BIT(6);
@@ -2725,7 +2725,7 @@ void rtl8723b_download_BTCoex_AP_mode_rsvd_page(PADAPTER padapter)
 		} while (!bcn_valid && (poll%10)!=0 && !padapter->bSurpriseRemoved && !padapter->bDriverStopped);
 	} while (!bcn_valid && (DLBcnCount<=100) && !padapter->bSurpriseRemoved && !padapter->bDriverStopped);
 
-	if (_TRUE == bcn_valid)
+	if (true == bcn_valid)
 	{
 		struct pwrctrl_priv *pwrctl = adapter_to_pwrctl(padapter);
 		pwrctl->fw_psmode_iface_id = padapter->iface_id;

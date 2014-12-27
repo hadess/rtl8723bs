@@ -475,14 +475,14 @@ int proc_get_survey_info(struct seq_file *m, void *v)
 	DBG_871X_SEL_NL(m, "%5s  %-17s  %3s  %-3s  %-4s  %-4s  %5s  %s\n","index", "bssid", "ch", "RSSI", "SdBm", "Noise", "age", "ssid");
 	while(1)
 	{
-		if (rtw_end_of_queue_search(phead,plist)== _TRUE)
+		if (rtw_end_of_queue_search(phead,plist)== true)
 			break;
 
 		pnetwork = LIST_CONTAINOR(plist, struct wlan_network, list);
                 if (!pnetwork)
 			break;
 	
-		if ( check_fwstate(pmlmepriv, _FW_LINKED)== _TRUE &&
+		if ( check_fwstate(pmlmepriv, _FW_LINKED)== true &&
 			is_same_network(&pmlmepriv->cur_network.network, &pnetwork->network, 0)) {
 			notify_signal = translate_percentage_to_dbm(padapter->recvpriv.signal_strength);//dbm
 		} else {
@@ -1379,7 +1379,7 @@ int proc_get_all_sta_info(struct seq_file *m, void *v)
 		phead = &(pstapriv->sta_hash[i]);
 		plist = get_next(phead);
 		
-		while ((rtw_end_of_queue_search(phead, plist)) == _FALSE)
+		while ((rtw_end_of_queue_search(phead, plist)) == false)
 		{
 			psta = LIST_CONTAINOR(plist, struct sta_info, hash_list);
 

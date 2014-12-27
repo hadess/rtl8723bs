@@ -73,7 +73,7 @@ typedef struct _Dynamic_Initial_Gain_Threshold_
 	u1Byte		*pbP2pLinkInProgress;
 }DIG_T,*pDIG_T;
 
-typedef struct _FALSE_ALARM_STATISTICS{
+typedef struct false_ALARM_STATISTICS{
 	u4Byte	Cnt_Parity_Fail;
 	u4Byte	Cnt_Rate_Illegal;
 	u4Byte	Cnt_Crc8_fail;
@@ -89,7 +89,7 @@ typedef struct _FALSE_ALARM_STATISTICS{
 	u4Byte	Cnt_CCA_all;
 	u4Byte	Cnt_BW_USC;	//Gary
 	u4Byte	Cnt_BW_LSC;	//Gary
-}FALSE_ALARM_STATISTICS, *PFALSE_ALARM_STATISTICS;
+}false_ALARM_STATISTICS, *Pfalse_ALARM_STATISTICS;
 
 typedef enum tag_Dynamic_Init_Gain_Operation_Type_Definition
 {
@@ -152,8 +152,8 @@ typedef enum tag_DIG_Connect_Definition
 #define		DM_DIG_THRESH_HIGH			40
 #define		DM_DIG_THRESH_LOW			35
 
-#define		DM_FALSEALARM_THRESH_LOW	400
-#define		DM_FALSEALARM_THRESH_HIGH	1000
+#define		DMfalseALARM_THRESH_LOW	400
+#define		DMfalseALARM_THRESH_HIGH	1000
 
 #define		DM_DIG_MAX_NIC				0x3e
 #define		DM_DIG_MIN_NIC				0x1e //0x22//0x1c

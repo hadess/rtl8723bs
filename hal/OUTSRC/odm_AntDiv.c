@@ -69,7 +69,7 @@ ODM_SwAntDivRestAfterLink(
 	{
 	    pDM_SWAT_Table->RSSI_cnt_A = 0;
 	    pDM_SWAT_Table->RSSI_cnt_B = 0;
-	    pDM_Odm->RSSI_test = FALSE;
+	    pDM_Odm->RSSI_test = false;
 	    pDM_SWAT_Table->try_flag = 0xff;
 	    pDM_SWAT_Table->RSSI_Trying = 0;
 	    pDM_SWAT_Table->SelectAntennaMap=0xAA;
@@ -77,7 +77,7 @@ ODM_SwAntDivRestAfterLink(
 	}
 	else if(pDM_Odm->SupportICType & (ODM_RTL8723B|ODM_RTL8821))
 	{
-		pDM_Odm->RSSI_test = FALSE;
+		pDM_Odm->RSSI_test = false;
 		pDM_SWAT_Table->try_flag = 0xff;
 		pDM_SWAT_Table->RSSI_Trying = 0;
 		pDM_SWAT_Table->Double_chk_flag= 0;
@@ -255,7 +255,7 @@ odm_RX_HWAntDiv_Init_88E(
 
 	pDM_Odm->AntType = ODM_AUTO_ANT;
 
-	if(pDM_Odm->mp_mode == TRUE)
+	if(pDM_Odm->mp_mode == true)
 	{
 	        pDM_Odm->AntDivType = CGCS_RX_SW_ANTDIV;
 	        ODM_SetBBReg(pDM_Odm, ODM_REG_IGI_A_11N , BIT7, 0); // disable HW AntDiv 
@@ -289,7 +289,7 @@ odm_TRX_HWAntDiv_Init_88E(
 {
 	u4Byte	value32;
 	
-	if(pDM_Odm->mp_mode == TRUE)
+	if(pDM_Odm->mp_mode == true)
 	{
 	        pDM_Odm->AntDivType = CGCS_RX_SW_ANTDIV;
 	        ODM_SetBBReg(pDM_Odm, ODM_REG_IGI_A_11N , BIT7, 0); // disable HW AntDiv 
@@ -334,7 +334,7 @@ odm_Smart_HWAntDiv_Init_88E(
 
     ODM_RT_TRACE(pDM_Odm,ODM_COMP_ANT_DIV, ODM_DBG_LOUD, ("***8188E AntDiv_Init =>  AntDivType=[CG_TRX_SMART_ANTDIV]\n"));
     
-	if(pDM_Odm->mp_mode == TRUE)
+	if(pDM_Odm->mp_mode == true)
 	{
     ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_LOUD, ("pDM_Odm->AntDivType: %d\n", pDM_Odm->AntDivType));
     return;
@@ -440,7 +440,7 @@ odm_RX_HWAntDiv_Init_92E(
 )
 {
 	
-	if(pDM_Odm->mp_mode == TRUE)
+	if(pDM_Odm->mp_mode == true)
 	{
         //pDM_Odm->AntDivType = CGCS_RX_SW_ANTDIV;
 	odm_AntDiv_on_off(pDM_Odm, ANTDIV_OFF);
@@ -475,7 +475,7 @@ odm_TRX_HWAntDiv_Init_92E(
 )
 {
 	
-	if(pDM_Odm->mp_mode == TRUE)
+	if(pDM_Odm->mp_mode == true)
 	{
         //pDM_Odm->AntDivType = CGCS_RX_SW_ANTDIV;
 	odm_AntDiv_on_off(pDM_Odm, ANTDIV_OFF);
@@ -608,7 +608,7 @@ odm_S0S1_SWAntDiv_Init_8723B(
 	//ODM_SetBBReg(pDM_Odm, 0x948 , BIT6, 0x1); 
 	ODM_SetBBReg(pDM_Odm, 0x870 , BIT9|BIT8, 0); 
 
-	pDM_FatTable->bBecomeLinked  =FALSE;
+	pDM_FatTable->bBecomeLinked  =false;
 	pDM_SWAT_Table->try_flag = 0xff;	
 	pDM_SWAT_Table->Double_chk_flag = 0;
 	pDM_SWAT_Table->TrafficLoad = TRAFFIC_LOW;
@@ -629,7 +629,7 @@ odm_S0S1_SWAntDiv_Reset_8723B(
 	pSWAT_T		pDM_SWAT_Table = &pDM_Odm->DM_SWAT_Table;
 	pFAT_T			pDM_FatTable = &pDM_Odm->DM_FatTable;
     
-	pDM_FatTable->bBecomeLinked  =FALSE;
+	pDM_FatTable->bBecomeLinked  =false;
 	pDM_SWAT_Table->try_flag = 0xff;	
 	pDM_SWAT_Table->Double_chk_flag = 0;
 	pDM_SWAT_Table->TrafficLoad = TRAFFIC_LOW;
@@ -661,7 +661,7 @@ ODM_UpdateRxIdleAnt_8723B(
 
 	// Send H2C command to FW
 	// Enable wifi calibration
-	H2C_Parameter = TRUE;
+	H2C_Parameter = true;
 	ODM_FillH2CCmd(pDM_Odm, ODM_H2C_WIFI_CALIBRATION, 1, &H2C_Parameter);
 
 	// Check if H2C command sucess or not (0x1e6)
@@ -712,7 +712,7 @@ ODM_UpdateRxIdleAnt_8723B(
 
 	// Send H2C command to FW
 	// Disable wifi calibration
-	H2C_Parameter = FALSE;
+	H2C_Parameter = false;
 	ODM_FillH2CCmd(pDM_Odm, ODM_H2C_WIFI_CALIBRATION, 1, &H2C_Parameter);
 
 }
@@ -970,7 +970,7 @@ odm_HW_AntDiv(
 	{
 		ODM_RT_TRACE(pDM_Odm,ODM_COMP_ANT_DIV, ODM_DBG_LOUD, ("[No Link!!!]\n"));
 
-		if(pDM_FatTable->bBecomeLinked == TRUE)
+		if(pDM_FatTable->bBecomeLinked == true)
 		{
 			odm_AntDiv_on_off(pDM_Odm, ANTDIV_OFF);
 			ODM_UpdateRxIdleAnt(pDM_Odm, MAIN_ANT);
@@ -981,7 +981,7 @@ odm_HW_AntDiv(
 	}	
 	else
 	{
-		if(pDM_FatTable->bBecomeLinked ==FALSE)
+		if(pDM_FatTable->bBecomeLinked ==false)
 		{
 			ODM_RT_TRACE(pDM_Odm,ODM_COMP_ANT_DIV, ODM_DBG_LOUD, ("[Linked !!!]\n"));
 			odm_AntDiv_on_off(pDM_Odm, ANTDIV_ON);
@@ -1111,7 +1111,7 @@ odm_S0S1_SwAntDiv(
 	if(!pDM_Odm->bLinked) //bLinked==False
 	{
 		ODM_RT_TRACE(pDM_Odm,ODM_COMP_ANT_DIV, ODM_DBG_LOUD, ("[No Link!!!]\n"));
-		if(pDM_FatTable->bBecomeLinked == TRUE)
+		if(pDM_FatTable->bBecomeLinked == true)
 		{
 			ODM_RT_TRACE(pDM_Odm,ODM_COMP_ANT_DIV, ODM_DBG_LOUD, ("Set REG 948[9:6]=0x0 \n"));
 			if(pDM_Odm->SupportICType == ODM_RTL8723B)
@@ -1123,7 +1123,7 @@ odm_S0S1_SwAntDiv(
 	}
 	else
 	{
-		if(pDM_FatTable->bBecomeLinked ==FALSE)
+		if(pDM_FatTable->bBecomeLinked ==false)
 		{
 			ODM_RT_TRACE(pDM_Odm,ODM_COMP_ANT_DIV, ODM_DBG_LOUD, ("[Linked !!!]\n"));
 			
@@ -1328,7 +1328,7 @@ odm_S0S1_SwAntDiv(
 		//1 Decision State
 		if((pDM_SWAT_Table->try_flag == 1)&&(pDM_SWAT_Table->RSSI_Trying == 0) )
 		{
-			BOOLEAN bByCtrlFrame = FALSE;
+			BOOLEAN bByCtrlFrame = false;
 			u8Byte	pkt_cnt_total = 0;
 			
 			for (i=0; i<ODM_ASSOCIATE_ENTRY_NUM; i++)
@@ -1401,7 +1401,7 @@ odm_S0S1_SwAntDiv(
 			if(pDM_SWAT_Table->bSWAntDivByCtrlFrame)
 			{
 				odm_S0S1_SwAntDivByCtrlFrame(pDM_Odm, SWAW_STEP_DETERMINE);
-				bByCtrlFrame = TRUE;
+				bByCtrlFrame = true;
 			}
 
 			pkt_cnt_total = pDM_FatTable->CCK_counter_main + pDM_FatTable->CCK_counter_aux + 
@@ -1531,7 +1531,7 @@ ODM_SW_AntDiv_Callback(void *FunctionContext)
 	PADAPTER	padapter = pDM_Odm->Adapter;
 
 
-	if(padapter->net_closed == _TRUE)
+	if(padapter->net_closed == true)
 	    return;
 
 #if 0 // Can't do I/O in timer callback
@@ -1554,7 +1554,7 @@ odm_S0S1_SwAntDivByCtrlFrame(
 	{
 		case SWAW_STEP_PEAK:
 			pDM_SWAT_Table->PktCnt_SWAntDivByCtrlFrame = 0;
-			pDM_SWAT_Table->bSWAntDivByCtrlFrame = TRUE;
+			pDM_SWAT_Table->bSWAntDivByCtrlFrame = true;
 			pDM_FatTable->MainAnt_CtrlFrame_Cnt = 0;
 			pDM_FatTable->AuxAnt_CtrlFrame_Cnt = 0;
 			pDM_FatTable->MainAnt_CtrlFrame_Sum = 0;
@@ -1566,11 +1566,11 @@ odm_S0S1_SwAntDivByCtrlFrame(
 			ODM_RT_TRACE(pDM_Odm, ODM_COMP_ANT_DIV, ODM_DBG_LOUD,("odm_S0S1_SwAntDivForAPMode(): Start peak and reset counter\n"));
 			break;
 		case SWAW_STEP_DETERMINE:
-			pDM_SWAT_Table->bSWAntDivByCtrlFrame = FALSE;
+			pDM_SWAT_Table->bSWAntDivByCtrlFrame = false;
 			ODM_RT_TRACE(pDM_Odm, ODM_COMP_ANT_DIV, ODM_DBG_LOUD,("odm_S0S1_SwAntDivForAPMode(): Stop peak\n"));
 			break;
 		default:
-			pDM_SWAT_Table->bSWAntDivByCtrlFrame = FALSE;
+			pDM_SWAT_Table->bSWAntDivByCtrlFrame = false;
 			break;
 	}			
 }
@@ -1622,7 +1622,7 @@ odm_S0S1_SwAntDivByCtrlFrame_ProcessRSSI(
 		return;
 	
 	pDM_SWAT_Table->PktCnt_SWAntDivByCtrlFrame++;
-	isCCKrate = ((pPktinfo->DataRate >= DESC_RATE1M ) && (pPktinfo->DataRate <= DESC_RATE11M ))?TRUE :FALSE;
+	isCCKrate = ((pPktinfo->DataRate >= DESC_RATE1M ) && (pPktinfo->DataRate <= DESC_RATE11M ))?true :false;
 
 	if(isCCKrate)
 	{
@@ -1986,7 +1986,7 @@ ODM_AntDiv(
 			pDM_Odm->AntDivType=CG_TRX_HW_ANTDIV;
 				ODM_RT_TRACE(pDM_Odm, ODM_COMP_ANT_DIV,ODM_DBG_LOUD,(" [S0S1_SW_ANTDIV]  ->  [CG_TRX_HW_ANTDIV]\n"));
 				//ODM_SetBBReg(pDM_Odm, 0x8D4 , BIT24, 1); 
-				if(pDM_FatTable->bBecomeLinked ==TRUE)
+				if(pDM_FatTable->bBecomeLinked ==true)
 					odm_AntDiv_on_off(pDM_Odm, ANTDIV_ON);
 			}
 		}	
@@ -2059,7 +2059,7 @@ pFAT_T			pDM_FatTable = &pDM_Odm->DM_FatTable;
 		CCKMaxRate=DESC_RATE11M;
 	else if(pDM_Odm->SupportICType & ODM_AC_ANTDIV_SUPPORT)
 		CCKMaxRate=DESC_RATE11M;
-	isCCKrate = (pPktinfo->DataRate <= CCKMaxRate)?TRUE:FALSE;
+	isCCKrate = (pPktinfo->DataRate <= CCKMaxRate)?true:false;
 
 #if ((RTL8192C_SUPPORT == 1) ||(RTL8192D_SUPPORT == 1))
 		if(pDM_Odm->SupportICType & ODM_RTL8192C|ODM_RTL8192D)

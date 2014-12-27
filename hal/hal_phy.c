@@ -102,7 +102,7 @@ PHY_RFShadowWrite(
 	IN	u32				Data)
 {
 	RF_Shadow[eRFPath][Offset].Value = (Data & bRFRegOffsetMask);
-	RF_Shadow[eRFPath][Offset].Driver_Write = _TRUE;
+	RF_Shadow[eRFPath][Offset].Driver_Write = true;
 
 }	/* PHY_RFShadowWrite */
 
@@ -115,21 +115,21 @@ PHY_RFShadowCompare(
 {
 	u32	reg;
 	// Check if we need to check the register
-	if (RF_Shadow[eRFPath][Offset].Compare == _TRUE)
+	if (RF_Shadow[eRFPath][Offset].Compare == true)
 	{
 		reg = rtw_hal_read_rfreg(Adapter, eRFPath, Offset, bRFRegOffsetMask);
 		// Compare shadow and real rf register for 20bits!!
 		if (RF_Shadow[eRFPath][Offset].Value != reg)
 		{
 			// Locate error position.
-			RF_Shadow[eRFPath][Offset].ErrorOrNot = _TRUE;
+			RF_Shadow[eRFPath][Offset].ErrorOrNot = true;
 			//RT_TRACE(COMP_INIT, DBG_LOUD,
 			//("PHY_RFShadowCompare RF-%d Addr%02lx Err = %05lx\n",
 			//eRFPath, Offset, reg));
 		}
 		return RF_Shadow[eRFPath][Offset].ErrorOrNot ;
 	}
-	return _FALSE;
+	return false;
 }	/* PHY_RFShadowCompare */
 
 
@@ -140,10 +140,10 @@ PHY_RFShadowRecorver(
 	IN	u32				Offset)
 {
 	// Check if the address is error
-	if (RF_Shadow[eRFPath][Offset].ErrorOrNot == _TRUE)
+	if (RF_Shadow[eRFPath][Offset].ErrorOrNot == true)
 	{
 		// Check if we need to recorver the register.
-		if (RF_Shadow[eRFPath][Offset].Recorver == _TRUE)
+		if (RF_Shadow[eRFPath][Offset].Recorver == true)
 		{
 			rtw_hal_write_rfreg(Adapter, eRFPath, Offset, bRFRegOffsetMask,
 							RF_Shadow[eRFPath][Offset].Value);
@@ -231,9 +231,9 @@ PHY_RFShadowCompareFlagSetAll(
 		{
 			// 2008/11/20 MH For S3S4 test, we only check reg 26/27 now!!!!
 			if (Offset != 0x26 && Offset != 0x27)
-				PHY_RFShadowCompareFlagSet(Adapter, eRFPath, Offset, _FALSE);
+				PHY_RFShadowCompareFlagSet(Adapter, eRFPath, Offset, false);
 			else
-				PHY_RFShadowCompareFlagSet(Adapter, eRFPath, Offset, _TRUE);
+				PHY_RFShadowCompareFlagSet(Adapter, eRFPath, Offset, true);
 		}
 	}
 
@@ -253,9 +253,9 @@ PHY_RFShadowRecorverFlagSetAll(
 		{
 			// 2008/11/20 MH For S3S4 test, we only check reg 26/27 now!!!!
 			if (Offset != 0x26 && Offset != 0x27)
-				PHY_RFShadowRecorverFlagSet(Adapter, eRFPath, Offset, _FALSE);
+				PHY_RFShadowRecorverFlagSet(Adapter, eRFPath, Offset, false);
 			else
-				PHY_RFShadowRecorverFlagSet(Adapter, eRFPath, Offset, _TRUE);
+				PHY_RFShadowRecorverFlagSet(Adapter, eRFPath, Offset, true);
 		}
 	}
 
@@ -273,10 +273,10 @@ PHY_RFShadowRefresh(
 		for (Offset = 0; Offset < maxReg; Offset++)
 		{
 			RF_Shadow[eRFPath][Offset].Value = 0;
-			RF_Shadow[eRFPath][Offset].Compare = _FALSE;
-			RF_Shadow[eRFPath][Offset].Recorver  = _FALSE;
-			RF_Shadow[eRFPath][Offset].ErrorOrNot = _FALSE;
-			RF_Shadow[eRFPath][Offset].Driver_Write = _FALSE;
+			RF_Shadow[eRFPath][Offset].Compare = false;
+			RF_Shadow[eRFPath][Offset].Recorver  = false;
+			RF_Shadow[eRFPath][Offset].ErrorOrNot = false;
+			RF_Shadow[eRFPath][Offset].Driver_Write = false;
 		}
 	}
 

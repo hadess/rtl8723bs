@@ -1289,16 +1289,16 @@ phy_GetChnlIndex(
 				114,116,118,120,122,124,126,128,130,132,134,136,138,140,142,144,149,151,
 				153,155,157,159,161,163,165,167,168,169,171,173,175,177};
 	u8  i = 0;
-	BOOLEAN bIn24G=_TRUE;
+	BOOLEAN bIn24G=true;
 
 	if(Channel <= 14)
 	{
-		bIn24G=_TRUE;
+		bIn24G=true;
 		*ChannelIdx = Channel -1;
 	}
 	else
 	{
-		bIn24G = _FALSE;	
+		bIn24G = false;	
 
 		for (i = 0; i < sizeof(channel5G)/sizeof(u8); ++i)
 		{
@@ -1328,7 +1328,7 @@ PHY_GetTxPowerIndexBase(
 	u8					txPower = 0;
 	u8					chnlIdx = (Channel-1);
 	
-	if (HAL_IsLegalChannel(pAdapter, Channel) == _FALSE)
+	if (HAL_IsLegalChannel(pAdapter, Channel) == false)
 	{
 		chnlIdx = 0;
 		DBG_871X("Illegal channel!!\n");
@@ -1504,7 +1504,7 @@ PHY_GetTxPowerTrackingOffset(
 	PDM_ODM_T			pDM_Odm = &pHalData->odmpriv;	
 	s8	offset = 0;
 	
-	if( pDM_Odm->RFCalibrateInfo.TxPowerTrackControl  == _FALSE)
+	if( pDM_Odm->RFCalibrateInfo.TxPowerTrackControl  == false)
 		return offset;
 	
 	if ((Rate == MGN_1M) ||(Rate == MGN_2M)||(Rate == MGN_5_5M)||(Rate == MGN_11M))
@@ -2599,7 +2599,7 @@ phy_ConfigMACWithParaFile(
 	{
 		rtw_merge_string(file_path, PATH_LENGTH_MAX, rtw_phy_file_path, pFileName);
 	
-		if (rtw_is_file_readable(file_path) == _TRUE)
+		if (rtw_is_file_readable(file_path) == true)
 		{
 			rlen = rtw_retrive_from_file(file_path, pHalData->para_file_buf, MAX_PARA_FILE_BUF_LEN);
 			if (rlen > 0)
@@ -2698,7 +2698,7 @@ phy_ConfigBBWithParaFile(
 	{
 		rtw_merge_string(file_path, PATH_LENGTH_MAX, rtw_phy_file_path, pFileName);
 	
-		if (rtw_is_file_readable(file_path) == _TRUE)
+		if (rtw_is_file_readable(file_path) == true)
 		{
 			rlen = rtw_retrive_from_file(file_path, pHalData->para_file_buf, MAX_PARA_FILE_BUF_LEN);
 			if (rlen > 0)
@@ -2855,7 +2855,7 @@ phy_ParseBBPgParaFile(
 	char	*szLine, *ptmp;
 	u32	u4bRegOffset, u4bRegMask, u4bRegValue;
 	u32	u4bMove;
-	BOOLEAN firstLine = _TRUE;
+	BOOLEAN firstLine = true;
 	u8	tx_num = 0;
 	u8	band = 0, rf_path = 0;
 
@@ -2896,14 +2896,14 @@ phy_ParseBBPgParaFile(
 				{
 					pHalData->odmpriv.PhyRegPgValueType = PHY_REG_PG_EXACT_VALUE;
 					//DBG_871X("The values in PHY_REG_PG are exact values ok\n");
-					firstLine = _FALSE;
+					firstLine = false;
 					continue;
 				}
 				else if ( eqNByte( szLine + 5, (pu1Byte)("[Relative]#"), 11 ) )
 				{
 					pHalData->odmpriv.PhyRegPgValueType = PHY_REG_PG_RELATIVE_VALUE;
 					//DBG_871X("The values in PHY_REG_PG are relative values ok\n");
-					firstLine = _FALSE;
+					firstLine = false;
 					continue;
 				}
 				else
@@ -3151,7 +3151,7 @@ phy_ConfigBBWithPgParaFile(
 	{
 		rtw_merge_string(file_path, PATH_LENGTH_MAX, rtw_phy_file_path, pFileName);
 	
-		if (rtw_is_file_readable(file_path) == _TRUE)
+		if (rtw_is_file_readable(file_path) == true)
 		{
 			rlen = rtw_retrive_from_file(file_path, pHalData->para_file_buf, MAX_PARA_FILE_BUF_LEN);
 			if (rlen > 0)
@@ -3231,7 +3231,7 @@ PHY_ConfigRFWithParaFile(
 	{
 		rtw_merge_string(file_path, PATH_LENGTH_MAX, rtw_phy_file_path, pFileName);
 
-		if (rtw_is_file_readable(file_path) == _TRUE)
+		if (rtw_is_file_readable(file_path) == true)
 		{
 			rlen = rtw_retrive_from_file(file_path, pHalData->para_file_buf, MAX_PARA_FILE_BUF_LEN);
 			if (rlen > 0)
@@ -3509,7 +3509,7 @@ PHY_ConfigRFWithTxPwrTrackParaFile(
 	{
 		rtw_merge_string(file_path, PATH_LENGTH_MAX, rtw_phy_file_path, pFileName);
 	
-		if (rtw_is_file_readable(file_path) == _TRUE)
+		if (rtw_is_file_readable(file_path) == true)
 		{
 			rlen = rtw_retrive_from_file(file_path, pHalData->para_file_buf, MAX_PARA_FILE_BUF_LEN);
 			if (rlen > 0)
@@ -3878,7 +3878,7 @@ PHY_ConfigRFWithPowerLimitTableParaFile(
 	{
 		rtw_merge_string(file_path, PATH_LENGTH_MAX, rtw_phy_file_path, pFileName);
 	
-		if (rtw_is_file_readable(file_path) == _TRUE)
+		if (rtw_is_file_readable(file_path) == true)
 		{
 			rlen = rtw_retrive_from_file(file_path, pHalData->para_file_buf, MAX_PARA_FILE_BUF_LEN);
 			if (rlen > 0)

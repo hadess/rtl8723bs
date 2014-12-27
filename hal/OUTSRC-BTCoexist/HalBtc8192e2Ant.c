@@ -254,9 +254,9 @@ halbtc8192e2ant_MonitorBtEnableDisable(
 	IN 	PBTC_COEXIST		pBtCoexist
 	)
 {
-	static BOOLEAN	bPreBtDisabled=FALSE;
+	static BOOLEAN	bPreBtDisabled=false;
 	static u4Byte	btDisableCnt=0;
-	BOOLEAN			bBtActive=TRUE, bBtDisabled=FALSE;
+	BOOLEAN			bBtActive=true, bBtDisabled=false;
 
 	// This function check if bt is disabled
 
@@ -265,19 +265,19 @@ halbtc8192e2ant_MonitorBtEnableDisable(
 		pCoexSta->lowPriorityTx == 0 &&
 		pCoexSta->lowPriorityRx == 0)
 	{
-		bBtActive = FALSE;
+		bBtActive = false;
 	}
 	if(	pCoexSta->highPriorityTx == 0xffff &&
 		pCoexSta->highPriorityRx == 0xffff &&
 		pCoexSta->lowPriorityTx == 0xffff &&
 		pCoexSta->lowPriorityRx == 0xffff)
 	{
-		bBtActive = FALSE;
+		bBtActive = false;
 	}
 	if(bBtActive)
 	{
 		btDisableCnt = 0;
-		bBtDisabled = FALSE;
+		bBtDisabled = false;
 		pBtCoexist->fBtcSet(pBtCoexist, BTC_SET_BL_BT_DISABLE, &bBtDisabled);
 		BTC_PRINT(BTC_MSG_ALGORITHM, ALGO_BT_MONITOR, ("[BTCoex], BT is enabled !!\n"));
 	}
@@ -288,7 +288,7 @@ halbtc8192e2ant_MonitorBtEnableDisable(
 				btDisableCnt));
 		if(btDisableCnt >= 2)
 		{
-			bBtDisabled = TRUE;
+			bBtDisabled = true;
 			pBtCoexist->fBtcSet(pBtCoexist, BTC_SET_BL_BT_DISABLE, &bBtDisabled);
 			BTC_PRINT(BTC_MSG_ALGORITHM, ALGO_BT_MONITOR, ("[BTCoex], BT is disabled !!\n"));
 		}
@@ -367,7 +367,7 @@ halbtc8192e2ant_AutoRateFallbackRetry(
 	IN	u1Byte				type
 	)
 {
-	BOOLEAN	bWifiUnderBMode=FALSE;
+	BOOLEAN	bWifiUnderBMode=false;
 	
 	pCoexDm->curArfrType = type;
 
@@ -543,7 +543,7 @@ halbtc8192e2ant_QueryBtInfo(
 {
 	u1Byte			H2C_Parameter[1] ={0};
 
-	pCoexSta->bC2hBtInfoReqSent = TRUE;
+	pCoexSta->bC2hBtInfoReqSent = true;
 
 	H2C_Parameter[0] |= BIT0;	// trigger
 
@@ -558,9 +558,9 @@ halbtc8192e2ant_IsWifiStatusChanged(
 	IN	PBTC_COEXIST		pBtCoexist
 	)
 {
-	static BOOLEAN	bPreWifiBusy=FALSE, bPreUnder4way=FALSE, bPreBtHsOn=FALSE;
-	BOOLEAN	bWifiBusy=FALSE, bUnder4way=FALSE, bBtHsOn=FALSE;
-	BOOLEAN	bWifiConnected=FALSE;
+	static BOOLEAN	bPreWifiBusy=false, bPreUnder4way=false, bPreBtHsOn=false;
+	BOOLEAN	bWifiBusy=false, bUnder4way=false, bBtHsOn=false;
+	BOOLEAN	bWifiConnected=false;
 
 	pBtCoexist->fBtcGet(pBtCoexist, BTC_GET_BL_WIFI_CONNECTED, &bWifiConnected);
 	pBtCoexist->fBtcGet(pBtCoexist, BTC_GET_BL_WIFI_BUSY, &bWifiBusy);
@@ -572,21 +572,21 @@ halbtc8192e2ant_IsWifiStatusChanged(
 		if(bWifiBusy != bPreWifiBusy)
 		{
 			bPreWifiBusy = bWifiBusy;
-			return TRUE;
+			return true;
 		}
 		if(bUnder4way != bPreUnder4way)
 		{
 			bPreUnder4way = bUnder4way;
-			return TRUE;
+			return true;
 		}
 		if(bBtHsOn != bPreBtHsOn)
 		{
 			bPreBtHsOn = bBtHsOn;
-			return TRUE;
+			return true;
 		}
 	}
 
-	return FALSE;
+	return false;
 }
 
 VOID
@@ -595,7 +595,7 @@ halbtc8192e2ant_UpdateBtLinkInfo(
 	)
 {
 	PBTC_BT_LINK_INFO	pBtLinkInfo=&pBtCoexist->btLinkInfo;
-	BOOLEAN				bBtHsOn=FALSE;
+	BOOLEAN				bBtHsOn=false;
 
 	pBtCoexist->fBtcGet(pBtCoexist, BTC_GET_BL_HS_OPERATION, &bBtHsOn);
 
@@ -608,8 +608,8 @@ halbtc8192e2ant_UpdateBtLinkInfo(
 	// work around for HS mode.
 	if(bBtHsOn)
 	{
-		pBtLinkInfo->bPanExist = TRUE;
-		pBtLinkInfo->bBtLinkExist = TRUE;
+		pBtLinkInfo->bPanExist = true;
+		pBtLinkInfo->bBtLinkExist = true;
 	}
 
 	// check if Sco only
@@ -617,36 +617,36 @@ halbtc8192e2ant_UpdateBtLinkInfo(
 		!pBtLinkInfo->bA2dpExist &&
 		!pBtLinkInfo->bPanExist &&
 		!pBtLinkInfo->bHidExist )
-		pBtLinkInfo->bScoOnly = TRUE;
+		pBtLinkInfo->bScoOnly = true;
 	else
-		pBtLinkInfo->bScoOnly = FALSE;
+		pBtLinkInfo->bScoOnly = false;
 
 	// check if A2dp only
 	if( !pBtLinkInfo->bScoExist &&
 		pBtLinkInfo->bA2dpExist &&
 		!pBtLinkInfo->bPanExist &&
 		!pBtLinkInfo->bHidExist )
-		pBtLinkInfo->bA2dpOnly = TRUE;
+		pBtLinkInfo->bA2dpOnly = true;
 	else
-		pBtLinkInfo->bA2dpOnly = FALSE;
+		pBtLinkInfo->bA2dpOnly = false;
 
 	// check if Pan only
 	if( !pBtLinkInfo->bScoExist &&
 		!pBtLinkInfo->bA2dpExist &&
 		pBtLinkInfo->bPanExist &&
 		!pBtLinkInfo->bHidExist )
-		pBtLinkInfo->bPanOnly = TRUE;
+		pBtLinkInfo->bPanOnly = true;
 	else
-		pBtLinkInfo->bPanOnly = FALSE;
+		pBtLinkInfo->bPanOnly = false;
 	
 	// check if Hid only
 	if( !pBtLinkInfo->bScoExist &&
 		!pBtLinkInfo->bA2dpExist &&
 		!pBtLinkInfo->bPanExist &&
 		pBtLinkInfo->bHidExist )
-		pBtLinkInfo->bHidOnly = TRUE;
+		pBtLinkInfo->bHidOnly = true;
 	else
-		pBtLinkInfo->bHidOnly = FALSE;
+		pBtLinkInfo->bHidOnly = false;
 }
 
 u1Byte
@@ -656,7 +656,7 @@ halbtc8192e2ant_ActionAlgorithm(
 {
 	PBTC_BT_LINK_INFO	pBtLinkInfo=&pBtCoexist->btLinkInfo;
 	PBTC_STACK_INFO 	pStackInfo=&pBtCoexist->stackInfo;
-	BOOLEAN				bBtHsOn=FALSE;
+	BOOLEAN				bBtHsOn=false;
 	u1Byte				algorithm=BT_8192E_2ANT_COEX_ALGO_UNDEFINED;
 	u1Byte				numOfDiffProfile=0;
 
@@ -1474,7 +1474,7 @@ halbtc8192e2ant_SwMechanism1(
 	if(BTC_WIFI_BW_HT40 != wifiBw)  //only shrink RF Rx LPF for HT40
 	{
 		if (bShrinkRxLPF)
-			bShrinkRxLPF = FALSE;
+			bShrinkRxLPF = false;
 	}
 	*/
 	
@@ -1559,7 +1559,7 @@ halbtc8192e2ant_PsTdma(
 	IN	u1Byte			type
 	)
 {
-	BOOLEAN			bTurnOnByCnt=FALSE;
+	BOOLEAN			bTurnOnByCnt=false;
 	u1Byte			psTdmaTypeByCnt=0;
 
 	BTC_PRINT(BTC_MSG_ALGORITHM, ALGO_TRACE_FW, ("[BTCoex], %s turn %s PS TDMA, type=%d\n", 
@@ -1659,12 +1659,12 @@ halbtc8192e2ant_PsTdma(
 			default:
 			case 0:  //ANT2PTA, 0x778=1
 				halbtc8192e2ant_SetFwPstdma(pBtCoexist, 0x8, 0x0, 0x0, 0x0, 0x0);
-				halbtc8192e2ant_SetAntPath(pBtCoexist, BTC_ANT_PATH_PTA, FALSE, FALSE);
+				halbtc8192e2ant_SetAntPath(pBtCoexist, BTC_ANT_PATH_PTA, false, false);
 				break;
 			case 1:  //ANT2BT, 0x778=3
 				halbtc8192e2ant_SetFwPstdma(pBtCoexist, 0x0, 0x0, 0x0, 0x8, 0x0);
 				delay_ms(5);
-				halbtc8192e2ant_SetAntPath(pBtCoexist, BTC_ANT_PATH_BT, FALSE, FALSE);
+				halbtc8192e2ant_SetAntPath(pBtCoexist, BTC_ANT_PATH_BT, false, false);
 				break;
 
 		}
@@ -1691,7 +1691,7 @@ halbtc8192e2ant_SetSwitchSsType(
 	
 	if(ssType == 1)
 	{		
-		halbtc8192e2ant_PsTdma(pBtCoexist, FORCE_EXEC, FALSE, 1);
+		halbtc8192e2ant_PsTdma(pBtCoexist, FORCE_EXEC, false, 1);
 		// switch ofdm path
 		pBtCoexist->fBtcWrite1Byte(pBtCoexist, 0xc04, 0x11);
 		pBtCoexist->fBtcWrite1Byte(pBtCoexist, 0xd04, 0x1);
@@ -1703,7 +1703,7 @@ halbtc8192e2ant_SetSwitchSsType(
 	}
 	else if(ssType == 2)
 	{
-		halbtc8192e2ant_PsTdma(pBtCoexist, FORCE_EXEC, FALSE, 0);
+		halbtc8192e2ant_PsTdma(pBtCoexist, FORCE_EXEC, false, 0);
 		pBtCoexist->fBtcWrite1Byte(pBtCoexist, 0xc04, 0x33);
 		pBtCoexist->fBtcWrite1Byte(pBtCoexist, 0xd04, 0x3);
 		pBtCoexist->fBtcWrite4Byte(pBtCoexist, 0x90c, 0x81121313);
@@ -1742,13 +1742,13 @@ halbtc8192e2ant_CoexAllOff(
 	)
 {
 	// fw all off
-	halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, FALSE, 1);
+	halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, false, 1);
 	halbtc8192e2ant_FwDacSwingLvl(pBtCoexist, NORMAL_EXEC, 6);
 	halbtc8192e2ant_DecBtPwr(pBtCoexist, NORMAL_EXEC, 0);
 
 	// sw all off
-	halbtc8192e2ant_SwMechanism1(pBtCoexist,FALSE,FALSE,FALSE,FALSE);
-	halbtc8192e2ant_SwMechanism2(pBtCoexist,FALSE,FALSE,FALSE,0x18);
+	halbtc8192e2ant_SwMechanism1(pBtCoexist,false,false,false,false);
+	halbtc8192e2ant_SwMechanism2(pBtCoexist,false,false,false,0x18);
 
 	// hw all off
 	halbtc8192e2ant_CoexTableWithType(pBtCoexist, NORMAL_EXEC, 0);
@@ -1761,15 +1761,15 @@ halbtc8192e2ant_InitCoexDm(
 {	
 	// force to reset coex mechanism
 	
-	halbtc8192e2ant_PsTdma(pBtCoexist, FORCE_EXEC, FALSE, 1);
+	halbtc8192e2ant_PsTdma(pBtCoexist, FORCE_EXEC, false, 1);
 	halbtc8192e2ant_FwDacSwingLvl(pBtCoexist, FORCE_EXEC, 6);
 	halbtc8192e2ant_DecBtPwr(pBtCoexist, FORCE_EXEC, 0);
 
 	halbtc8192e2ant_CoexTableWithType(pBtCoexist, FORCE_EXEC, 0);
 	halbtc8192e2ant_SwitchSsType(pBtCoexist, FORCE_EXEC, 2);
 	
-	halbtc8192e2ant_SwMechanism1(pBtCoexist,FALSE,FALSE,FALSE,FALSE);
-	halbtc8192e2ant_SwMechanism2(pBtCoexist,FALSE,FALSE,FALSE,0x18);
+	halbtc8192e2ant_SwMechanism1(pBtCoexist,false,false,false,false);
+	halbtc8192e2ant_SwMechanism2(pBtCoexist,false,false,false,0x18);
 }
 
 VOID
@@ -1777,19 +1777,19 @@ halbtc8192e2ant_ActionBtInquiry(
 	IN	PBTC_COEXIST		pBtCoexist
 	)
 {
-	BOOLEAN	bLowPwrDisable=TRUE;
+	BOOLEAN	bLowPwrDisable=true;
 	
 	pBtCoexist->fBtcSet(pBtCoexist, BTC_SET_ACT_DISABLE_LOW_POWER, &bLowPwrDisable);
 
 	halbtc8192e2ant_SwitchSsType(pBtCoexist, NORMAL_EXEC, 1);
 
 	halbtc8192e2ant_CoexTableWithType(pBtCoexist, NORMAL_EXEC, 2);
-	halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 3);
+	halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 3);
 	halbtc8192e2ant_FwDacSwingLvl(pBtCoexist, NORMAL_EXEC, 6);
 	halbtc8192e2ant_DecBtPwr(pBtCoexist, NORMAL_EXEC, 0);
 
-	halbtc8192e2ant_SwMechanism1(pBtCoexist,FALSE,FALSE,FALSE,FALSE);
-	halbtc8192e2ant_SwMechanism2(pBtCoexist,FALSE,FALSE,FALSE,0x18);
+	halbtc8192e2ant_SwMechanism1(pBtCoexist,false,false,false,false);
+	halbtc8192e2ant_SwMechanism2(pBtCoexist,false,false,false,0x18);
 }
 
 BOOLEAN
@@ -1798,8 +1798,8 @@ halbtc8192e2ant_IsCommonAction(
 	)
 {
 	PBTC_BT_LINK_INFO	pBtLinkInfo=&pBtCoexist->btLinkInfo;
-	BOOLEAN			bCommon=FALSE, bWifiConnected=FALSE, bWifiBusy=FALSE;
-	BOOLEAN			bBtHsOn=FALSE, bLowPwrDisable=FALSE;
+	BOOLEAN			bCommon=false, bWifiConnected=false, bWifiBusy=false;
+	BOOLEAN			bBtHsOn=false, bLowPwrDisable=false;
 
 	pBtCoexist->fBtcGet(pBtCoexist, BTC_GET_BL_HS_OPERATION, &bBtHsOn);
 	pBtCoexist->fBtcGet(pBtCoexist, BTC_GET_BL_WIFI_CONNECTED, &bWifiConnected);
@@ -1816,7 +1816,7 @@ halbtc8192e2ant_IsCommonAction(
 
 	if(!bWifiConnected)
 	{
-		bLowPwrDisable = FALSE;
+		bLowPwrDisable = false;
 		pBtCoexist->fBtcSet(pBtCoexist, BTC_SET_ACT_DISABLE_LOW_POWER, &bLowPwrDisable);
 		
 		BTC_PRINT(BTC_MSG_ALGORITHM, ALGO_TRACE, ("[BTCoex], Wifi non-connected idle!!\n"));
@@ -1826,72 +1826,72 @@ halbtc8192e2ant_IsCommonAction(
 		{
 			halbtc8192e2ant_SwitchSsType(pBtCoexist, NORMAL_EXEC, 2);
 			halbtc8192e2ant_CoexTableWithType(pBtCoexist, NORMAL_EXEC, 1);
-			halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, FALSE, 0);
+			halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, false, 0);
 		}
 		else
 		{			
 			halbtc8192e2ant_SwitchSsType(pBtCoexist, NORMAL_EXEC, 1);
 			halbtc8192e2ant_CoexTableWithType(pBtCoexist, NORMAL_EXEC, 0);
-			halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, FALSE, 1);
+			halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, false, 1);
 		}
 		
 		halbtc8192e2ant_FwDacSwingLvl(pBtCoexist, NORMAL_EXEC, 6);
 		halbtc8192e2ant_DecBtPwr(pBtCoexist, NORMAL_EXEC, 0);
 		
- 		halbtc8192e2ant_SwMechanism1(pBtCoexist,FALSE,FALSE,FALSE,FALSE);
-		halbtc8192e2ant_SwMechanism2(pBtCoexist,FALSE,FALSE,FALSE,0x18);
+ 		halbtc8192e2ant_SwMechanism1(pBtCoexist,false,false,false,false);
+		halbtc8192e2ant_SwMechanism2(pBtCoexist,false,false,false,0x18);
 
-		bCommon = TRUE;
+		bCommon = true;
 	}
 	else
 	{
 		if(BT_8192E_2ANT_BT_STATUS_NON_CONNECTED_IDLE == pCoexDm->btStatus)
 		{
-			bLowPwrDisable = FALSE;
+			bLowPwrDisable = false;
 			pBtCoexist->fBtcSet(pBtCoexist, BTC_SET_ACT_DISABLE_LOW_POWER, &bLowPwrDisable);
 
 			BTC_PRINT(BTC_MSG_ALGORITHM, ALGO_TRACE, ("[BTCoex], Wifi connected + BT non connected-idle!!\n"));
 
 			halbtc8192e2ant_SwitchSsType(pBtCoexist, NORMAL_EXEC, 2);
 			halbtc8192e2ant_CoexTableWithType(pBtCoexist, NORMAL_EXEC, 1);
-			halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, FALSE, 0);		
+			halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, false, 0);		
 			halbtc8192e2ant_FwDacSwingLvl(pBtCoexist, NORMAL_EXEC, 6);
 			halbtc8192e2ant_DecBtPwr(pBtCoexist, NORMAL_EXEC, 0);
 
-			halbtc8192e2ant_SwMechanism1(pBtCoexist,FALSE,FALSE,FALSE,FALSE);
-			halbtc8192e2ant_SwMechanism2(pBtCoexist,FALSE,FALSE,FALSE,0x18);
+			halbtc8192e2ant_SwMechanism1(pBtCoexist,false,false,false,false);
+			halbtc8192e2ant_SwMechanism2(pBtCoexist,false,false,false,0x18);
 
-			bCommon = TRUE;
+			bCommon = true;
 		}
 		else if(BT_8192E_2ANT_BT_STATUS_CONNECTED_IDLE == pCoexDm->btStatus)
 		{
-			bLowPwrDisable = TRUE;
+			bLowPwrDisable = true;
 			pBtCoexist->fBtcSet(pBtCoexist, BTC_SET_ACT_DISABLE_LOW_POWER, &bLowPwrDisable);
 
 			if(bBtHsOn)
-				return FALSE;
+				return false;
 			BTC_PRINT(BTC_MSG_ALGORITHM, ALGO_TRACE, ("[BTCoex], Wifi connected + BT connected-idle!!\n"));
 
 			halbtc8192e2ant_SwitchSsType(pBtCoexist, NORMAL_EXEC, 2);
 			halbtc8192e2ant_CoexTableWithType(pBtCoexist, NORMAL_EXEC, 1);
-			halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, FALSE, 0);
+			halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, false, 0);
 			halbtc8192e2ant_FwDacSwingLvl(pBtCoexist, NORMAL_EXEC, 6);
 			halbtc8192e2ant_DecBtPwr(pBtCoexist, NORMAL_EXEC, 0);
 
-			halbtc8192e2ant_SwMechanism1(pBtCoexist,TRUE,FALSE,FALSE,FALSE);
-			halbtc8192e2ant_SwMechanism2(pBtCoexist,FALSE,FALSE,FALSE,0x18);
+			halbtc8192e2ant_SwMechanism1(pBtCoexist,true,false,false,false);
+			halbtc8192e2ant_SwMechanism2(pBtCoexist,false,false,false,0x18);
 
-			bCommon = TRUE;
+			bCommon = true;
 		}
 		else
 		{
-			bLowPwrDisable = TRUE;
+			bLowPwrDisable = true;
 			pBtCoexist->fBtcSet(pBtCoexist, BTC_SET_ACT_DISABLE_LOW_POWER, &bLowPwrDisable);
 
 			if(bWifiBusy)
 			{
 				BTC_PRINT(BTC_MSG_ALGORITHM, ALGO_TRACE, ("[BTCoex], Wifi Connected-Busy + BT Busy!!\n"));
-				bCommon = FALSE;
+				bCommon = false;
 			}
 			else
 			{
@@ -1899,12 +1899,12 @@ halbtc8192e2ant_IsCommonAction(
 
 				halbtc8192e2ant_SwitchSsType(pBtCoexist, NORMAL_EXEC, 1);
 				halbtc8192e2ant_CoexTableWithType(pBtCoexist, NORMAL_EXEC, 2);
-				halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 21);
+				halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 21);
 				halbtc8192e2ant_FwDacSwingLvl(pBtCoexist, NORMAL_EXEC, 6);	
 				halbtc8192e2ant_DecBtPwr(pBtCoexist, NORMAL_EXEC, 0);
-				halbtc8192e2ant_SwMechanism1(pBtCoexist,FALSE,FALSE,FALSE,FALSE);
-				halbtc8192e2ant_SwMechanism2(pBtCoexist,FALSE,FALSE,FALSE,0x18);
-				bCommon = TRUE;
+				halbtc8192e2ant_SwMechanism1(pBtCoexist,false,false,false,false);
+				halbtc8192e2ant_SwMechanism2(pBtCoexist,false,false,false,0x18);
+				bCommon = true;
 			}
 		}	
 	}
@@ -1927,7 +1927,7 @@ halbtc8192e2ant_TdmaDurationAdjust(
 
 	if(!pCoexDm->bAutoTdmaAdjust)
 	{
-		pCoexDm->bAutoTdmaAdjust = TRUE;
+		pCoexDm->bAutoTdmaAdjust = true;
 		BTC_PRINT(BTC_MSG_ALGORITHM, ALGO_TRACE_FW_DETAIL, ("[BTCoex], first run TdmaDurationAdjust()!!\n"));
 		{
 			if(bScoHid)
@@ -1936,22 +1936,22 @@ halbtc8192e2ant_TdmaDurationAdjust(
 				{
 					if(maxInterval == 1)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 13);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 13);
 						pCoexDm->psTdmaDuAdjType = 13;	
 					}
 					else if(maxInterval == 2)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 14);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 14);
 						pCoexDm->psTdmaDuAdjType = 14;	
 					}
 					else if(maxInterval == 3)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 15);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 15);
 						pCoexDm->psTdmaDuAdjType = 15;	
 					}
 					else
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 15);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 15);
 						pCoexDm->psTdmaDuAdjType = 15;
 					}
 				}
@@ -1959,22 +1959,22 @@ halbtc8192e2ant_TdmaDurationAdjust(
 				{
 					if(maxInterval == 1)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 9);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 9);
 						pCoexDm->psTdmaDuAdjType = 9;	
 					}
 					else if(maxInterval == 2)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 10);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 10);
 						pCoexDm->psTdmaDuAdjType = 10;	
 					}
 					else if(maxInterval == 3)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 11);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 11);
 						pCoexDm->psTdmaDuAdjType = 11;
 					}
 					else
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 11);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 11);
 						pCoexDm->psTdmaDuAdjType = 11;
 					}
 				}
@@ -1985,22 +1985,22 @@ halbtc8192e2ant_TdmaDurationAdjust(
 				{
 					if(maxInterval == 1)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 5);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 5);
 						pCoexDm->psTdmaDuAdjType = 5;	
 					}
 					else if(maxInterval == 2)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 6);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 6);
 						pCoexDm->psTdmaDuAdjType = 6;	
 					}
 					else if(maxInterval == 3)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 7);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 7);
 						pCoexDm->psTdmaDuAdjType = 7;
 					}
 					else
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 7);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 7);
 						pCoexDm->psTdmaDuAdjType = 7;
 					}
 				}
@@ -2008,22 +2008,22 @@ halbtc8192e2ant_TdmaDurationAdjust(
 				{
 					if(maxInterval == 1)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 1);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 1);
 						pCoexDm->psTdmaDuAdjType = 1;	
 					}
 					else if(maxInterval == 2)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 2);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 2);
 						pCoexDm->psTdmaDuAdjType = 2;	
 					}
 					else if(maxInterval == 3)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 3);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 3);
 						pCoexDm->psTdmaDuAdjType = 3;
 					}
 					else
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 3);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 3);
 						pCoexDm->psTdmaDuAdjType = 3;
 					}
 				}
@@ -2118,47 +2118,47 @@ halbtc8192e2ant_TdmaDurationAdjust(
 
 				if(pCoexDm->curPsTdma == 71)
 				{
-					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 5);
+					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 5);
 					pCoexDm->psTdmaDuAdjType = 5;
 				}
 				else if(pCoexDm->curPsTdma == 1)
 				{
-					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 5);
+					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 5);
 					pCoexDm->psTdmaDuAdjType = 5;
 				}
 				else if(pCoexDm->curPsTdma == 2)
 				{
-					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 6);
+					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 6);
 					pCoexDm->psTdmaDuAdjType = 6;
 				}
 				else if(pCoexDm->curPsTdma == 3)
 				{
-					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 7);
+					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 7);
 					pCoexDm->psTdmaDuAdjType = 7;
 				}
 				else if(pCoexDm->curPsTdma == 4)
 				{
-					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 8);
+					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 8);
 					pCoexDm->psTdmaDuAdjType = 8;
 				}
 				if(pCoexDm->curPsTdma == 9)
 				{
-					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 13);
+					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 13);
 					pCoexDm->psTdmaDuAdjType = 13;
 				}
 				else if(pCoexDm->curPsTdma == 10)
 				{
-					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 14);
+					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 14);
 					pCoexDm->psTdmaDuAdjType = 14;
 				}
 				else if(pCoexDm->curPsTdma == 11)
 				{
-					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 15);
+					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 15);
 					pCoexDm->psTdmaDuAdjType = 15;
 				}
 				else if(pCoexDm->curPsTdma == 12)
 				{
-					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 16);
+					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 16);
 					pCoexDm->psTdmaDuAdjType = 16;
 				}
 				
@@ -2166,32 +2166,32 @@ halbtc8192e2ant_TdmaDurationAdjust(
 				{					
 					if(pCoexDm->curPsTdma == 5)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 6);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 6);
 						pCoexDm->psTdmaDuAdjType = 6;
 					}
 					else if(pCoexDm->curPsTdma == 6)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 7);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 7);
 						pCoexDm->psTdmaDuAdjType = 7;
 					}
 					else if(pCoexDm->curPsTdma == 7)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 8);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 8);
 						pCoexDm->psTdmaDuAdjType = 8;
 					}
 					else if(pCoexDm->curPsTdma == 13)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 14);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 14);
 						pCoexDm->psTdmaDuAdjType = 14;
 					}
 					else if(pCoexDm->curPsTdma == 14)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 15);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 15);
 						pCoexDm->psTdmaDuAdjType = 15;
 					}
 					else if(pCoexDm->curPsTdma == 15)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 16);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 16);
 						pCoexDm->psTdmaDuAdjType = 16;
 					}
 				} 
@@ -2199,32 +2199,32 @@ halbtc8192e2ant_TdmaDurationAdjust(
 				{
 					if(pCoexDm->curPsTdma == 8)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 7);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 7);
 						pCoexDm->psTdmaDuAdjType = 7;
 					}
 					else if(pCoexDm->curPsTdma == 7)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 6);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 6);
 						pCoexDm->psTdmaDuAdjType = 6;
 					}
 					else if(pCoexDm->curPsTdma == 6)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 5);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 5);
 						pCoexDm->psTdmaDuAdjType = 5;
 					}
 					else if(pCoexDm->curPsTdma == 16)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 15);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 15);
 						pCoexDm->psTdmaDuAdjType = 15;
 					}
 					else if(pCoexDm->curPsTdma == 15)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 14);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 14);
 						pCoexDm->psTdmaDuAdjType = 14;
 					}
 					else if(pCoexDm->curPsTdma == 14)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 13);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 13);
 						pCoexDm->psTdmaDuAdjType = 13;
 					}
 				}
@@ -2234,42 +2234,42 @@ halbtc8192e2ant_TdmaDurationAdjust(
 				BTC_PRINT(BTC_MSG_ALGORITHM, ALGO_TRACE_FW_DETAIL, ("[BTCoex], TxPause = 0\n"));
 				if(pCoexDm->curPsTdma == 5)
 				{
-					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 71);
+					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 71);
 					pCoexDm->psTdmaDuAdjType = 71;
 				}
 				else if(pCoexDm->curPsTdma == 6)
 				{
-					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 2);
+					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 2);
 					pCoexDm->psTdmaDuAdjType = 2;
 				}
 				else if(pCoexDm->curPsTdma == 7)
 				{
-					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 3);
+					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 3);
 					pCoexDm->psTdmaDuAdjType = 3;
 				}
 				else if(pCoexDm->curPsTdma == 8)
 				{
-					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 4);
+					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 4);
 					pCoexDm->psTdmaDuAdjType = 4;
 				}
 				if(pCoexDm->curPsTdma == 13)
 				{
-					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 9);
+					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 9);
 					pCoexDm->psTdmaDuAdjType = 9;
 				}
 				else if(pCoexDm->curPsTdma == 14)
 				{
-					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 10);
+					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 10);
 					pCoexDm->psTdmaDuAdjType = 10;
 				}
 				else if(pCoexDm->curPsTdma == 15)
 				{
-					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 11);
+					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 11);
 					pCoexDm->psTdmaDuAdjType = 11;
 				}
 				else if(pCoexDm->curPsTdma == 16)
 				{
-					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 12);
+					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 12);
 					pCoexDm->psTdmaDuAdjType = 12;
 				}
 				
@@ -2277,37 +2277,37 @@ halbtc8192e2ant_TdmaDurationAdjust(
 				{
 					if(pCoexDm->curPsTdma == 71)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 1);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 1);
 						pCoexDm->psTdmaDuAdjType = 1;
 					}
 					else if(pCoexDm->curPsTdma == 1)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 2);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 2);
 						pCoexDm->psTdmaDuAdjType = 2;
 					}
 					else if(pCoexDm->curPsTdma == 2)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 3);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 3);
 						pCoexDm->psTdmaDuAdjType = 3;
 					}
 					else if(pCoexDm->curPsTdma == 3)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 4);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 4);
 						pCoexDm->psTdmaDuAdjType = 4;
 					}
 					else if(pCoexDm->curPsTdma == 9)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 10);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 10);
 						pCoexDm->psTdmaDuAdjType = 10;
 					}
 					else if(pCoexDm->curPsTdma == 10)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 11);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 11);
 						pCoexDm->psTdmaDuAdjType = 11;
 					}
 					else if(pCoexDm->curPsTdma == 11)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 12);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 12);
 						pCoexDm->psTdmaDuAdjType = 12;
 					}
 				} 
@@ -2315,37 +2315,37 @@ halbtc8192e2ant_TdmaDurationAdjust(
 				{
 					if(pCoexDm->curPsTdma == 4)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 3);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 3);
 						pCoexDm->psTdmaDuAdjType = 3;
 					}
 					else if(pCoexDm->curPsTdma == 3)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 2);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 2);
 						pCoexDm->psTdmaDuAdjType = 2;
 					}
 					else if(pCoexDm->curPsTdma == 2)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 1);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 1);
 						pCoexDm->psTdmaDuAdjType = 1;
 					}
 					else if(pCoexDm->curPsTdma == 1)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 71);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 71);
 						pCoexDm->psTdmaDuAdjType = 71;
 					}
 					else if(pCoexDm->curPsTdma == 12)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 11);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 11);
 						pCoexDm->psTdmaDuAdjType = 11;
 					}
 					else if(pCoexDm->curPsTdma == 11)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 10);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 10);
 						pCoexDm->psTdmaDuAdjType = 10;
 					}
 					else if(pCoexDm->curPsTdma == 10)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 9);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 9);
 						pCoexDm->psTdmaDuAdjType = 9;
 					}
 				}
@@ -2358,74 +2358,74 @@ halbtc8192e2ant_TdmaDurationAdjust(
 				BTC_PRINT(BTC_MSG_ALGORITHM, ALGO_TRACE_FW_DETAIL, ("[BTCoex], TxPause = 1\n"));
 				if(pCoexDm->curPsTdma == 1)
 				{
-					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 6);
+					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 6);
 					pCoexDm->psTdmaDuAdjType = 6;
 				}
 				else if(pCoexDm->curPsTdma == 2)
 				{
-					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 6);
+					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 6);
 					pCoexDm->psTdmaDuAdjType = 6;
 				}
 				else if(pCoexDm->curPsTdma == 3)
 				{
-					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 7);
+					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 7);
 					pCoexDm->psTdmaDuAdjType = 7;
 				}
 				else if(pCoexDm->curPsTdma == 4)
 				{
-					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 8);
+					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 8);
 					pCoexDm->psTdmaDuAdjType = 8;
 				}
 				if(pCoexDm->curPsTdma == 9)
 				{
-					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 14);
+					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 14);
 					pCoexDm->psTdmaDuAdjType = 14;
 				}
 				else if(pCoexDm->curPsTdma == 10)
 				{
-					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 14);
+					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 14);
 					pCoexDm->psTdmaDuAdjType = 14;
 				}
 				else if(pCoexDm->curPsTdma == 11)
 				{
-					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 15);
+					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 15);
 					pCoexDm->psTdmaDuAdjType = 15;
 				}
 				else if(pCoexDm->curPsTdma == 12)
 				{
-					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 16);
+					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 16);
 					pCoexDm->psTdmaDuAdjType = 16;
 				}
 				if(result == -1)
 				{
 					if(pCoexDm->curPsTdma == 5) 
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 6);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 6);
 						pCoexDm->psTdmaDuAdjType = 6;
 					}
 					else if(pCoexDm->curPsTdma == 6)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 7);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 7);
 						pCoexDm->psTdmaDuAdjType = 7;
 					}
 					else if(pCoexDm->curPsTdma == 7)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 8);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 8);
 						pCoexDm->psTdmaDuAdjType = 8;
 					}
 					else if(pCoexDm->curPsTdma == 13)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 14);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 14);
 						pCoexDm->psTdmaDuAdjType = 14;
 					}
 					else if(pCoexDm->curPsTdma == 14)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 15);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 15);
 						pCoexDm->psTdmaDuAdjType = 15;
 					}
 					else if(pCoexDm->curPsTdma == 15)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 16);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 16);
 						pCoexDm->psTdmaDuAdjType = 16;
 					}
 				} 
@@ -2433,32 +2433,32 @@ halbtc8192e2ant_TdmaDurationAdjust(
 				{
 					if(pCoexDm->curPsTdma == 8)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 7);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 7);
 						pCoexDm->psTdmaDuAdjType = 7;
 					}
 					else if(pCoexDm->curPsTdma == 7)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 6);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 6);
 						pCoexDm->psTdmaDuAdjType = 6;
 					}
 					else if(pCoexDm->curPsTdma == 6)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 6);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 6);
 						pCoexDm->psTdmaDuAdjType = 6;
 					}					
 					else if(pCoexDm->curPsTdma == 16)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 15);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 15);
 						pCoexDm->psTdmaDuAdjType = 15;
 					}
 					else if(pCoexDm->curPsTdma == 15)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 14);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 14);
 						pCoexDm->psTdmaDuAdjType = 14;
 					}
 					else if(pCoexDm->curPsTdma == 14)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 14);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 14);
 						pCoexDm->psTdmaDuAdjType = 14;
 					}
 				}
@@ -2468,74 +2468,74 @@ halbtc8192e2ant_TdmaDurationAdjust(
 				BTC_PRINT(BTC_MSG_ALGORITHM, ALGO_TRACE_FW_DETAIL, ("[BTCoex], TxPause = 0\n"));
 				if(pCoexDm->curPsTdma == 5)
 				{
-					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 2);
+					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 2);
 					pCoexDm->psTdmaDuAdjType = 2;
 				}
 				else if(pCoexDm->curPsTdma == 6)
 				{
-					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 2);
+					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 2);
 					pCoexDm->psTdmaDuAdjType = 2;
 				}
 				else if(pCoexDm->curPsTdma == 7)
 				{
-					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 3);
+					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 3);
 					pCoexDm->psTdmaDuAdjType = 3;
 				}
 				else if(pCoexDm->curPsTdma == 8)
 				{
-					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 4);
+					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 4);
 					pCoexDm->psTdmaDuAdjType = 4;
 				}
 				if(pCoexDm->curPsTdma == 13)
 				{
-					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 10);
+					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 10);
 					pCoexDm->psTdmaDuAdjType = 10;
 				}
 				else if(pCoexDm->curPsTdma == 14)
 				{
-					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 10);
+					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 10);
 					pCoexDm->psTdmaDuAdjType = 10;
 				}
 				else if(pCoexDm->curPsTdma == 15)
 				{
-					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 11);
+					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 11);
 					pCoexDm->psTdmaDuAdjType = 11;
 				}
 				else if(pCoexDm->curPsTdma == 16)
 				{
-					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 12);
+					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 12);
 					pCoexDm->psTdmaDuAdjType = 12;
 				}
 				if(result == -1)
 				{
 					if(pCoexDm->curPsTdma == 1)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 2);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 2);
 						pCoexDm->psTdmaDuAdjType = 2;
 					}
 					else if(pCoexDm->curPsTdma == 2)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 3);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 3);
 						pCoexDm->psTdmaDuAdjType = 3;
 					}
 					else if(pCoexDm->curPsTdma == 3)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 4);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 4);
 						pCoexDm->psTdmaDuAdjType = 4;
 					}
 					else if(pCoexDm->curPsTdma == 9)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 10);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 10);
 						pCoexDm->psTdmaDuAdjType = 10;
 					}
 					else if(pCoexDm->curPsTdma == 10)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 11);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 11);
 						pCoexDm->psTdmaDuAdjType = 11;
 					}
 					else if(pCoexDm->curPsTdma == 11)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 12);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 12);
 						pCoexDm->psTdmaDuAdjType = 12;
 					}
 				} 
@@ -2543,32 +2543,32 @@ halbtc8192e2ant_TdmaDurationAdjust(
 				{
 					if(pCoexDm->curPsTdma == 4)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 3);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 3);
 						pCoexDm->psTdmaDuAdjType = 3;
 					}
 					else if(pCoexDm->curPsTdma == 3)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 2);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 2);
 						pCoexDm->psTdmaDuAdjType = 2;
 					}
 					else if(pCoexDm->curPsTdma == 2)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 2);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 2);
 						pCoexDm->psTdmaDuAdjType = 2;
 					}
 					else if(pCoexDm->curPsTdma == 12)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 11);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 11);
 						pCoexDm->psTdmaDuAdjType = 11;
 					}
 					else if(pCoexDm->curPsTdma == 11)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 10);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 10);
 						pCoexDm->psTdmaDuAdjType = 10;
 					}
 					else if(pCoexDm->curPsTdma == 10)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 10);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 10);
 						pCoexDm->psTdmaDuAdjType = 10;
 					}
 				}
@@ -2581,74 +2581,74 @@ halbtc8192e2ant_TdmaDurationAdjust(
 				BTC_PRINT(BTC_MSG_ALGORITHM, ALGO_TRACE_FW_DETAIL, ("[BTCoex], TxPause = 1\n"));
 				if(pCoexDm->curPsTdma == 1)
 				{
-					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 7);
+					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 7);
 					pCoexDm->psTdmaDuAdjType = 7;
 				}
 				else if(pCoexDm->curPsTdma == 2)
 				{
-					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 7);
+					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 7);
 					pCoexDm->psTdmaDuAdjType = 7;
 				}
 				else if(pCoexDm->curPsTdma == 3)
 				{
-					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 7);
+					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 7);
 					pCoexDm->psTdmaDuAdjType = 7;
 				}
 				else if(pCoexDm->curPsTdma == 4)
 				{
-					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 8);
+					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 8);
 					pCoexDm->psTdmaDuAdjType = 8;
 				}
 				if(pCoexDm->curPsTdma == 9)
 				{
-					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 15);
+					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 15);
 					pCoexDm->psTdmaDuAdjType = 15;
 				}
 				else if(pCoexDm->curPsTdma == 10)
 				{
-					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 15);
+					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 15);
 					pCoexDm->psTdmaDuAdjType = 15;
 				}
 				else if(pCoexDm->curPsTdma == 11)
 				{
-					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 15);
+					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 15);
 					pCoexDm->psTdmaDuAdjType = 15;
 				}
 				else if(pCoexDm->curPsTdma == 12)
 				{
-					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 16);
+					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 16);
 					pCoexDm->psTdmaDuAdjType = 16;
 				}
 				if(result == -1)
 				{
 					if(pCoexDm->curPsTdma == 5) 
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 7);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 7);
 						pCoexDm->psTdmaDuAdjType = 7;
 					}
 					else if(pCoexDm->curPsTdma == 6)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 7);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 7);
 						pCoexDm->psTdmaDuAdjType = 7;
 					}
 					else if(pCoexDm->curPsTdma == 7)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 8);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 8);
 						pCoexDm->psTdmaDuAdjType = 8;
 					}
 					else if(pCoexDm->curPsTdma == 13)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 15);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 15);
 						pCoexDm->psTdmaDuAdjType = 15;
 					}
 					else if(pCoexDm->curPsTdma == 14)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 15);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 15);
 						pCoexDm->psTdmaDuAdjType = 15;
 					}
 					else if(pCoexDm->curPsTdma == 15)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 16);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 16);
 						pCoexDm->psTdmaDuAdjType = 16;
 					}
 				} 
@@ -2656,32 +2656,32 @@ halbtc8192e2ant_TdmaDurationAdjust(
 				{
 					if(pCoexDm->curPsTdma == 8)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 7);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 7);
 						pCoexDm->psTdmaDuAdjType = 7;
 					}
 					else if(pCoexDm->curPsTdma == 7)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 7);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 7);
 						pCoexDm->psTdmaDuAdjType = 7;
 					}
 					else if(pCoexDm->curPsTdma == 6)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 7);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 7);
 						pCoexDm->psTdmaDuAdjType = 7;
 					}					
 					else if(pCoexDm->curPsTdma == 16)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 15);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 15);
 						pCoexDm->psTdmaDuAdjType = 15;
 					}
 					else if(pCoexDm->curPsTdma == 15)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 15);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 15);
 						pCoexDm->psTdmaDuAdjType = 15;
 					}
 					else if(pCoexDm->curPsTdma == 14)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 15);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 15);
 						pCoexDm->psTdmaDuAdjType = 15;
 					}
 				}
@@ -2691,74 +2691,74 @@ halbtc8192e2ant_TdmaDurationAdjust(
 				BTC_PRINT(BTC_MSG_ALGORITHM, ALGO_TRACE_FW_DETAIL, ("[BTCoex], TxPause = 0\n"));
 				if(pCoexDm->curPsTdma == 5)
 				{
-					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 3);
+					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 3);
 					pCoexDm->psTdmaDuAdjType = 3;
 				}
 				else if(pCoexDm->curPsTdma == 6)
 				{
-					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 3);
+					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 3);
 					pCoexDm->psTdmaDuAdjType = 3;
 				}
 				else if(pCoexDm->curPsTdma == 7)
 				{
-					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 3);
+					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 3);
 					pCoexDm->psTdmaDuAdjType = 3;
 				}
 				else if(pCoexDm->curPsTdma == 8)
 				{
-					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 4);
+					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 4);
 					pCoexDm->psTdmaDuAdjType = 4;
 				}
 				if(pCoexDm->curPsTdma == 13)
 				{
-					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 11);
+					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 11);
 					pCoexDm->psTdmaDuAdjType = 11;
 				}
 				else if(pCoexDm->curPsTdma == 14)
 				{
-					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 11);
+					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 11);
 					pCoexDm->psTdmaDuAdjType = 11;
 				}
 				else if(pCoexDm->curPsTdma == 15)
 				{
-					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 11);
+					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 11);
 					pCoexDm->psTdmaDuAdjType = 11;
 				}
 				else if(pCoexDm->curPsTdma == 16)
 				{
-					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 12);
+					halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 12);
 					pCoexDm->psTdmaDuAdjType = 12;
 				}
 				if(result == -1)
 				{
 					if(pCoexDm->curPsTdma == 1)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 3);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 3);
 						pCoexDm->psTdmaDuAdjType = 3;
 					}
 					else if(pCoexDm->curPsTdma == 2)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 3);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 3);
 						pCoexDm->psTdmaDuAdjType = 3;
 					}
 					else if(pCoexDm->curPsTdma == 3)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 4);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 4);
 						pCoexDm->psTdmaDuAdjType = 4;
 					}
 					else if(pCoexDm->curPsTdma == 9)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 11);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 11);
 						pCoexDm->psTdmaDuAdjType = 11;
 					}
 					else if(pCoexDm->curPsTdma == 10)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 11);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 11);
 						pCoexDm->psTdmaDuAdjType = 11;
 					}
 					else if(pCoexDm->curPsTdma == 11)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 12);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 12);
 						pCoexDm->psTdmaDuAdjType = 12;
 					}
 				} 
@@ -2766,32 +2766,32 @@ halbtc8192e2ant_TdmaDurationAdjust(
 				{
 					if(pCoexDm->curPsTdma == 4)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 3);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 3);
 						pCoexDm->psTdmaDuAdjType = 3;
 					}
 					else if(pCoexDm->curPsTdma == 3)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 3);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 3);
 						pCoexDm->psTdmaDuAdjType = 3;
 					}
 					else if(pCoexDm->curPsTdma == 2)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 3);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 3);
 						pCoexDm->psTdmaDuAdjType = 3;
 					}
 					else if(pCoexDm->curPsTdma == 12)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 11);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 11);
 						pCoexDm->psTdmaDuAdjType = 11;
 					}
 					else if(pCoexDm->curPsTdma == 11)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 11);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 11);
 						pCoexDm->psTdmaDuAdjType = 11;
 					}
 					else if(pCoexDm->curPsTdma == 10)
 					{
-						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 11);
+						halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 11);
 						pCoexDm->psTdmaDuAdjType = 11;
 					}
 				}
@@ -2803,7 +2803,7 @@ halbtc8192e2ant_TdmaDurationAdjust(
 	// then we have to adjust it back to the previous record one.
 	if(pCoexDm->curPsTdma != pCoexDm->psTdmaDuAdjType)
 	{
-		BOOLEAN	bScan=FALSE, bLink=FALSE, bRoam=FALSE;
+		BOOLEAN	bScan=false, bLink=false, bRoam=false;
 		BTC_PRINT(BTC_MSG_ALGORITHM, ALGO_TRACE_FW_DETAIL, ("[BTCoex], PsTdma type dismatch!!!, curPsTdma=%d, recordPsTdma=%d\n", 
 			pCoexDm->curPsTdma, pCoexDm->psTdmaDuAdjType));
 
@@ -2813,7 +2813,7 @@ halbtc8192e2ant_TdmaDurationAdjust(
 		
 		if( !bScan && !bLink && !bRoam)
 		{
-			halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, pCoexDm->psTdmaDuAdjType);
+			halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, pCoexDm->psTdmaDuAdjType);
 		}
 		else
 		{
@@ -2834,7 +2834,7 @@ halbtc8192e2ant_ActionSco(
 	wifiRssiState = halbtc8192e2ant_WifiRssiState(pBtCoexist, 0, 2, 15, 0);
 
 	halbtc8192e2ant_SwitchSsType(pBtCoexist, NORMAL_EXEC, 1);
-	halbtc8192e2ant_LimitedRx(pBtCoexist, NORMAL_EXEC, FALSE, FALSE, 0x8);
+	halbtc8192e2ant_LimitedRx(pBtCoexist, NORMAL_EXEC, false, false, 0x8);
 
 	halbtc8192e2ant_FwDacSwingLvl(pBtCoexist, NORMAL_EXEC, 6);
 
@@ -2846,19 +2846,19 @@ halbtc8192e2ant_ActionSco(
 		(btRssiState == BTC_RSSI_STATE_STAY_LOW) )
 	{
 		halbtc8192e2ant_DecBtPwr(pBtCoexist, NORMAL_EXEC, 0);
-		halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 13);
+		halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 13);
 	}
 	else if( (btRssiState == BTC_RSSI_STATE_MEDIUM) ||
 			(btRssiState == BTC_RSSI_STATE_STAY_MEDIUM) )
 	{
 		halbtc8192e2ant_DecBtPwr(pBtCoexist, NORMAL_EXEC, 2);
-		halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 9);
+		halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 9);
 	}
 	else if( (btRssiState == BTC_RSSI_STATE_HIGH) ||
 			(btRssiState == BTC_RSSI_STATE_STAY_HIGH) )
 	{
 		halbtc8192e2ant_DecBtPwr(pBtCoexist, NORMAL_EXEC, 4);
-		halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 9);
+		halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 9);
 	}
 	
 	pBtCoexist->fBtcGet(pBtCoexist, BTC_GET_U4_WIFI_BW, &wifiBw);
@@ -2869,13 +2869,13 @@ halbtc8192e2ant_ActionSco(
 		if( (wifiRssiState == BTC_RSSI_STATE_HIGH) ||
 			(wifiRssiState == BTC_RSSI_STATE_STAY_HIGH) )
 		{
-			halbtc8192e2ant_SwMechanism1(pBtCoexist,TRUE,TRUE,FALSE,FALSE);
-			halbtc8192e2ant_SwMechanism2(pBtCoexist,TRUE,FALSE,FALSE,0x6);			
+			halbtc8192e2ant_SwMechanism1(pBtCoexist,true,true,false,false);
+			halbtc8192e2ant_SwMechanism2(pBtCoexist,true,false,false,0x6);			
 		}
 		else
 		{
-			halbtc8192e2ant_SwMechanism1(pBtCoexist,TRUE,TRUE,FALSE,FALSE);
-			halbtc8192e2ant_SwMechanism2(pBtCoexist,FALSE,FALSE,FALSE,0x6);	
+			halbtc8192e2ant_SwMechanism1(pBtCoexist,true,true,false,false);
+			halbtc8192e2ant_SwMechanism2(pBtCoexist,false,false,false,0x6);	
 		}		
 	}
 	else
@@ -2883,13 +2883,13 @@ halbtc8192e2ant_ActionSco(
 		if( (wifiRssiState == BTC_RSSI_STATE_HIGH) ||
 			(wifiRssiState == BTC_RSSI_STATE_STAY_HIGH) )
 		{
-			halbtc8192e2ant_SwMechanism1(pBtCoexist,FALSE,TRUE,FALSE,FALSE);
-			halbtc8192e2ant_SwMechanism2(pBtCoexist,TRUE,FALSE,FALSE,0x6);
+			halbtc8192e2ant_SwMechanism1(pBtCoexist,false,true,false,false);
+			halbtc8192e2ant_SwMechanism2(pBtCoexist,true,false,false,0x6);
 		}
 		else
 		{
-			halbtc8192e2ant_SwMechanism1(pBtCoexist,FALSE,TRUE,FALSE,FALSE);
-			halbtc8192e2ant_SwMechanism2(pBtCoexist,FALSE,FALSE,FALSE,0x6);
+			halbtc8192e2ant_SwMechanism1(pBtCoexist,false,true,false,false);
+			halbtc8192e2ant_SwMechanism2(pBtCoexist,false,false,false,0x6);
 		}		
 	}
 }
@@ -2905,7 +2905,7 @@ halbtc8192e2ant_ActionScoPan(
 	wifiRssiState = halbtc8192e2ant_WifiRssiState(pBtCoexist, 0, 2, 15, 0);
 
 	halbtc8192e2ant_SwitchSsType(pBtCoexist, NORMAL_EXEC, 1);
-	halbtc8192e2ant_LimitedRx(pBtCoexist, NORMAL_EXEC, FALSE, FALSE, 0x8);
+	halbtc8192e2ant_LimitedRx(pBtCoexist, NORMAL_EXEC, false, false, 0x8);
 
 	halbtc8192e2ant_FwDacSwingLvl(pBtCoexist, NORMAL_EXEC, 6);
 
@@ -2917,19 +2917,19 @@ halbtc8192e2ant_ActionScoPan(
 		(btRssiState == BTC_RSSI_STATE_STAY_LOW) )
 	{
 		halbtc8192e2ant_DecBtPwr(pBtCoexist, NORMAL_EXEC, 0);
-		halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 14);
+		halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 14);
 	}
 	else if( (btRssiState == BTC_RSSI_STATE_MEDIUM) ||
 			(btRssiState == BTC_RSSI_STATE_STAY_MEDIUM) )
 	{
 		halbtc8192e2ant_DecBtPwr(pBtCoexist, NORMAL_EXEC, 2);
-		halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 10);
+		halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 10);
 	}
 	else if( (btRssiState == BTC_RSSI_STATE_HIGH) ||
 			(btRssiState == BTC_RSSI_STATE_STAY_HIGH) )
 	{
 		halbtc8192e2ant_DecBtPwr(pBtCoexist, NORMAL_EXEC, 4);
-		halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 10);
+		halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 10);
 	}
 	
 	pBtCoexist->fBtcGet(pBtCoexist, BTC_GET_U4_WIFI_BW, &wifiBw);
@@ -2940,13 +2940,13 @@ halbtc8192e2ant_ActionScoPan(
 		if( (wifiRssiState == BTC_RSSI_STATE_HIGH) ||
 			(wifiRssiState == BTC_RSSI_STATE_STAY_HIGH) )
 		{
-			halbtc8192e2ant_SwMechanism1(pBtCoexist,TRUE,TRUE,FALSE,FALSE);
-			halbtc8192e2ant_SwMechanism2(pBtCoexist,TRUE,FALSE,FALSE,0x6);			
+			halbtc8192e2ant_SwMechanism1(pBtCoexist,true,true,false,false);
+			halbtc8192e2ant_SwMechanism2(pBtCoexist,true,false,false,0x6);			
 		}
 		else
 		{
-			halbtc8192e2ant_SwMechanism1(pBtCoexist,TRUE,TRUE,FALSE,FALSE);
-			halbtc8192e2ant_SwMechanism2(pBtCoexist,FALSE,FALSE,FALSE,0x6);	
+			halbtc8192e2ant_SwMechanism1(pBtCoexist,true,true,false,false);
+			halbtc8192e2ant_SwMechanism2(pBtCoexist,false,false,false,0x6);	
 		}		
 	}
 	else
@@ -2954,13 +2954,13 @@ halbtc8192e2ant_ActionScoPan(
 		if( (wifiRssiState == BTC_RSSI_STATE_HIGH) ||
 			(wifiRssiState == BTC_RSSI_STATE_STAY_HIGH) )
 		{
-			halbtc8192e2ant_SwMechanism1(pBtCoexist,FALSE,TRUE,FALSE,FALSE);
-			halbtc8192e2ant_SwMechanism2(pBtCoexist,TRUE,FALSE,FALSE,0x6);
+			halbtc8192e2ant_SwMechanism1(pBtCoexist,false,true,false,false);
+			halbtc8192e2ant_SwMechanism2(pBtCoexist,true,false,false,0x6);
 		}
 		else
 		{
-			halbtc8192e2ant_SwMechanism1(pBtCoexist,FALSE,TRUE,FALSE,FALSE);
-			halbtc8192e2ant_SwMechanism2(pBtCoexist,FALSE,FALSE,FALSE,0x6);
+			halbtc8192e2ant_SwMechanism1(pBtCoexist,false,true,false,false);
+			halbtc8192e2ant_SwMechanism2(pBtCoexist,false,false,false,0x6);
 		}		
 	}
 }
@@ -2977,7 +2977,7 @@ halbtc8192e2ant_ActionHid(
 	btRssiState = halbtc8192e2ant_BtRssiState(3, 34, 42);
 
 	halbtc8192e2ant_SwitchSsType(pBtCoexist, NORMAL_EXEC, 1);
-	halbtc8192e2ant_LimitedRx(pBtCoexist, NORMAL_EXEC, FALSE, FALSE, 0x8);
+	halbtc8192e2ant_LimitedRx(pBtCoexist, NORMAL_EXEC, false, false, 0x8);
 
 	halbtc8192e2ant_FwDacSwingLvl(pBtCoexist, NORMAL_EXEC, 6);
 
@@ -2989,19 +2989,19 @@ halbtc8192e2ant_ActionHid(
 		(btRssiState == BTC_RSSI_STATE_STAY_LOW) )
 	{
 		halbtc8192e2ant_DecBtPwr(pBtCoexist, NORMAL_EXEC, 0);
-		halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 13);
+		halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 13);
 	}
 	else if( (btRssiState == BTC_RSSI_STATE_MEDIUM) ||
 			(btRssiState == BTC_RSSI_STATE_STAY_MEDIUM) )
 	{
 		halbtc8192e2ant_DecBtPwr(pBtCoexist, NORMAL_EXEC, 2);
-		halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 9);
+		halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 9);
 	}
 	else if( (btRssiState == BTC_RSSI_STATE_HIGH) ||
 			(btRssiState == BTC_RSSI_STATE_STAY_HIGH) )
 	{
 		halbtc8192e2ant_DecBtPwr(pBtCoexist, NORMAL_EXEC, 4);
-		halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 9);
+		halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 9);
 	}
 
 	// sw mechanism
@@ -3010,13 +3010,13 @@ halbtc8192e2ant_ActionHid(
 		if( (wifiRssiState == BTC_RSSI_STATE_HIGH) ||
 			(wifiRssiState == BTC_RSSI_STATE_STAY_HIGH) )
 		{
-			halbtc8192e2ant_SwMechanism1(pBtCoexist,TRUE,TRUE,FALSE,FALSE);
-			halbtc8192e2ant_SwMechanism2(pBtCoexist,TRUE,FALSE,FALSE,0x18);
+			halbtc8192e2ant_SwMechanism1(pBtCoexist,true,true,false,false);
+			halbtc8192e2ant_SwMechanism2(pBtCoexist,true,false,false,0x18);
 		}
 		else
 		{
- 			halbtc8192e2ant_SwMechanism1(pBtCoexist,TRUE,TRUE,FALSE,FALSE);
-			halbtc8192e2ant_SwMechanism2(pBtCoexist,FALSE,FALSE,FALSE,0x18);
+ 			halbtc8192e2ant_SwMechanism1(pBtCoexist,true,true,false,false);
+			halbtc8192e2ant_SwMechanism2(pBtCoexist,false,false,false,0x18);
 		}	
 	}
 	else
@@ -3024,13 +3024,13 @@ halbtc8192e2ant_ActionHid(
 		if( (wifiRssiState == BTC_RSSI_STATE_HIGH) ||
 			(wifiRssiState == BTC_RSSI_STATE_STAY_HIGH) )
 		{
-			halbtc8192e2ant_SwMechanism1(pBtCoexist,FALSE,TRUE,FALSE,FALSE);
-			halbtc8192e2ant_SwMechanism2(pBtCoexist,TRUE,FALSE,FALSE,0x18);
+			halbtc8192e2ant_SwMechanism1(pBtCoexist,false,true,false,false);
+			halbtc8192e2ant_SwMechanism2(pBtCoexist,true,false,false,0x18);
 		}
 		else
 		{
- 			halbtc8192e2ant_SwMechanism1(pBtCoexist,FALSE,TRUE,FALSE,FALSE);
-			halbtc8192e2ant_SwMechanism2(pBtCoexist,FALSE,FALSE,FALSE,0x18);
+ 			halbtc8192e2ant_SwMechanism1(pBtCoexist,false,true,false,false);
+			halbtc8192e2ant_SwMechanism2(pBtCoexist,false,false,false,0x18);
 		}		
 	}
 }
@@ -3043,7 +3043,7 @@ halbtc8192e2ant_ActionA2dp(
 {
 	u1Byte		wifiRssiState, btRssiState=BTC_RSSI_STATE_HIGH;
 	u4Byte		wifiBw;
-	BOOLEAN		bLongDist=FALSE;
+	BOOLEAN		bLongDist=false;
 
 	wifiRssiState = halbtc8192e2ant_WifiRssiState(pBtCoexist, 0, 2, 15, 0);
 	btRssiState = halbtc8192e2ant_BtRssiState(3, 34, 42);
@@ -3052,17 +3052,17 @@ halbtc8192e2ant_ActionA2dp(
 		(wifiRssiState == BTC_RSSI_STATE_LOW||wifiRssiState == BTC_RSSI_STATE_STAY_LOW) )
 	{
 		BTC_PRINT(BTC_MSG_ALGORITHM, ALGO_TRACE, ("[BTCoex], A2dp, wifi/bt rssi both LOW!!\n"));
-		bLongDist = TRUE;
+		bLongDist = true;
 	}
 	if(bLongDist)
 	{
 		halbtc8192e2ant_SwitchSsType(pBtCoexist, NORMAL_EXEC, 2);
-		halbtc8192e2ant_LimitedRx(pBtCoexist, NORMAL_EXEC, FALSE, TRUE, 0x4);
+		halbtc8192e2ant_LimitedRx(pBtCoexist, NORMAL_EXEC, false, true, 0x4);
 	}
 	else
 	{
 		halbtc8192e2ant_SwitchSsType(pBtCoexist, NORMAL_EXEC, 1);
-		halbtc8192e2ant_LimitedRx(pBtCoexist, NORMAL_EXEC, FALSE, FALSE, 0x8);
+		halbtc8192e2ant_LimitedRx(pBtCoexist, NORMAL_EXEC, false, false, 0x8);
 	}
 
 	halbtc8192e2ant_FwDacSwingLvl(pBtCoexist, NORMAL_EXEC, 6);
@@ -3075,8 +3075,8 @@ halbtc8192e2ant_ActionA2dp(
 
 	if(bLongDist)
 	{
-		halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 17);
-		pCoexDm->bAutoTdmaAdjust = FALSE;
+		halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 17);
+		pCoexDm->bAutoTdmaAdjust = false;
 		halbtc8192e2ant_DecBtPwr(pBtCoexist, NORMAL_EXEC, 0);
 	}
 	else
@@ -3084,19 +3084,19 @@ halbtc8192e2ant_ActionA2dp(
 		if( (btRssiState == BTC_RSSI_STATE_LOW) ||
 			(btRssiState == BTC_RSSI_STATE_STAY_LOW) )
 		{
-			halbtc8192e2ant_TdmaDurationAdjust(pBtCoexist, FALSE, TRUE, 1);
+			halbtc8192e2ant_TdmaDurationAdjust(pBtCoexist, false, true, 1);
 			halbtc8192e2ant_DecBtPwr(pBtCoexist, NORMAL_EXEC, 0);
 		}
 		else if( (btRssiState == BTC_RSSI_STATE_MEDIUM) ||
 				(btRssiState == BTC_RSSI_STATE_STAY_MEDIUM) )
 		{
-			halbtc8192e2ant_TdmaDurationAdjust(pBtCoexist, FALSE, FALSE, 1);
+			halbtc8192e2ant_TdmaDurationAdjust(pBtCoexist, false, false, 1);
 			halbtc8192e2ant_DecBtPwr(pBtCoexist, NORMAL_EXEC, 2);
 		}
 		else if( (btRssiState == BTC_RSSI_STATE_HIGH) ||
 				(btRssiState == BTC_RSSI_STATE_STAY_HIGH) )
 		{
-			halbtc8192e2ant_TdmaDurationAdjust(pBtCoexist, FALSE, FALSE, 1);
+			halbtc8192e2ant_TdmaDurationAdjust(pBtCoexist, false, false, 1);
 			halbtc8192e2ant_DecBtPwr(pBtCoexist, NORMAL_EXEC, 4);
 		}
 	}
@@ -3108,13 +3108,13 @@ halbtc8192e2ant_ActionA2dp(
 		if( (wifiRssiState == BTC_RSSI_STATE_HIGH) ||
 			(wifiRssiState == BTC_RSSI_STATE_STAY_HIGH) )
 		{
- 			halbtc8192e2ant_SwMechanism1(pBtCoexist,TRUE,FALSE,FALSE,FALSE);
-			halbtc8192e2ant_SwMechanism2(pBtCoexist,TRUE,FALSE,FALSE,0x18);
+ 			halbtc8192e2ant_SwMechanism1(pBtCoexist,true,false,false,false);
+			halbtc8192e2ant_SwMechanism2(pBtCoexist,true,false,false,0x18);
 		}
 		else
 		{
-			halbtc8192e2ant_SwMechanism1(pBtCoexist,TRUE,FALSE,FALSE,FALSE);
-			halbtc8192e2ant_SwMechanism2(pBtCoexist,FALSE,FALSE,FALSE,0x18);
+			halbtc8192e2ant_SwMechanism1(pBtCoexist,true,false,false,false);
+			halbtc8192e2ant_SwMechanism2(pBtCoexist,false,false,false,0x18);
 		}
 	}
 	else
@@ -3122,13 +3122,13 @@ halbtc8192e2ant_ActionA2dp(
 		if( (wifiRssiState == BTC_RSSI_STATE_HIGH) ||
 			(wifiRssiState == BTC_RSSI_STATE_STAY_HIGH) )
 		{
-			halbtc8192e2ant_SwMechanism1(pBtCoexist,FALSE,FALSE,FALSE,FALSE);
-			halbtc8192e2ant_SwMechanism2(pBtCoexist,TRUE,FALSE,FALSE,0x18);
+			halbtc8192e2ant_SwMechanism1(pBtCoexist,false,false,false,false);
+			halbtc8192e2ant_SwMechanism2(pBtCoexist,true,false,false,0x18);
 		}
 		else
 		{
-			halbtc8192e2ant_SwMechanism1(pBtCoexist,FALSE,FALSE,FALSE,FALSE);
-			halbtc8192e2ant_SwMechanism2(pBtCoexist,FALSE,FALSE,FALSE,0x18);
+			halbtc8192e2ant_SwMechanism1(pBtCoexist,false,false,false,false);
+			halbtc8192e2ant_SwMechanism2(pBtCoexist,false,false,false,0x18);
 		}		
 	}
 }
@@ -3145,7 +3145,7 @@ halbtc8192e2ant_ActionA2dpPanHs(
 	btRssiState = halbtc8192e2ant_BtRssiState(3, 34, 42);
 
 	halbtc8192e2ant_SwitchSsType(pBtCoexist, NORMAL_EXEC, 1);
-	halbtc8192e2ant_LimitedRx(pBtCoexist, NORMAL_EXEC, FALSE, FALSE, 0x8);
+	halbtc8192e2ant_LimitedRx(pBtCoexist, NORMAL_EXEC, false, false, 0x8);
 
 	halbtc8192e2ant_FwDacSwingLvl(pBtCoexist, NORMAL_EXEC, 6);
 	halbtc8192e2ant_CoexTableWithType(pBtCoexist, NORMAL_EXEC, 2);
@@ -3153,19 +3153,19 @@ halbtc8192e2ant_ActionA2dpPanHs(
 	if( (btRssiState == BTC_RSSI_STATE_LOW) ||
 		(btRssiState == BTC_RSSI_STATE_STAY_LOW) )
 	{
-		halbtc8192e2ant_TdmaDurationAdjust(pBtCoexist, FALSE, TRUE, 2);
+		halbtc8192e2ant_TdmaDurationAdjust(pBtCoexist, false, true, 2);
 		halbtc8192e2ant_DecBtPwr(pBtCoexist, NORMAL_EXEC, 0);
 	}
 	else if( (btRssiState == BTC_RSSI_STATE_MEDIUM) ||
 			(btRssiState == BTC_RSSI_STATE_STAY_MEDIUM) )
 	{
-		halbtc8192e2ant_TdmaDurationAdjust(pBtCoexist, FALSE, FALSE, 2);
+		halbtc8192e2ant_TdmaDurationAdjust(pBtCoexist, false, false, 2);
 		halbtc8192e2ant_DecBtPwr(pBtCoexist, NORMAL_EXEC, 2);
 	}
 	else if( (btRssiState == BTC_RSSI_STATE_HIGH) ||
 			(btRssiState == BTC_RSSI_STATE_STAY_HIGH) )
 	{
-		halbtc8192e2ant_TdmaDurationAdjust(pBtCoexist, FALSE, FALSE, 2);
+		halbtc8192e2ant_TdmaDurationAdjust(pBtCoexist, false, false, 2);
 		halbtc8192e2ant_DecBtPwr(pBtCoexist, NORMAL_EXEC, 4);
 	}
 
@@ -3176,13 +3176,13 @@ halbtc8192e2ant_ActionA2dpPanHs(
 		if( (wifiRssiState == BTC_RSSI_STATE_HIGH) ||
 			(wifiRssiState == BTC_RSSI_STATE_STAY_HIGH) )
 		{
- 			halbtc8192e2ant_SwMechanism1(pBtCoexist,TRUE,FALSE,FALSE,FALSE);
-			halbtc8192e2ant_SwMechanism2(pBtCoexist,TRUE,FALSE,TRUE,0x6);
+ 			halbtc8192e2ant_SwMechanism1(pBtCoexist,true,false,false,false);
+			halbtc8192e2ant_SwMechanism2(pBtCoexist,true,false,true,0x6);
 		}
 		else
 		{
-			halbtc8192e2ant_SwMechanism1(pBtCoexist,TRUE,FALSE,FALSE,FALSE);
-			halbtc8192e2ant_SwMechanism2(pBtCoexist,FALSE,FALSE,TRUE,0x6);
+			halbtc8192e2ant_SwMechanism1(pBtCoexist,true,false,false,false);
+			halbtc8192e2ant_SwMechanism2(pBtCoexist,false,false,true,0x6);
 		}
 	}
 	else
@@ -3190,13 +3190,13 @@ halbtc8192e2ant_ActionA2dpPanHs(
 		if( (wifiRssiState == BTC_RSSI_STATE_HIGH) ||
 			(wifiRssiState == BTC_RSSI_STATE_STAY_HIGH) )
 		{
-			halbtc8192e2ant_SwMechanism1(pBtCoexist,FALSE,FALSE,FALSE,FALSE);
-			halbtc8192e2ant_SwMechanism2(pBtCoexist,TRUE,FALSE,TRUE,0x6);
+			halbtc8192e2ant_SwMechanism1(pBtCoexist,false,false,false,false);
+			halbtc8192e2ant_SwMechanism2(pBtCoexist,true,false,true,0x6);
 		}
 		else
 		{
-			halbtc8192e2ant_SwMechanism1(pBtCoexist,FALSE,FALSE,FALSE,FALSE);
-			halbtc8192e2ant_SwMechanism2(pBtCoexist,FALSE,FALSE,TRUE,0x6);
+			halbtc8192e2ant_SwMechanism1(pBtCoexist,false,false,false,false);
+			halbtc8192e2ant_SwMechanism2(pBtCoexist,false,false,true,0x6);
 		}		
 	}
 }
@@ -3213,7 +3213,7 @@ halbtc8192e2ant_ActionPanEdr(
 	btRssiState = halbtc8192e2ant_BtRssiState(3, 34, 42);
 
 	halbtc8192e2ant_SwitchSsType(pBtCoexist, NORMAL_EXEC, 1);
-	halbtc8192e2ant_LimitedRx(pBtCoexist, NORMAL_EXEC, FALSE, FALSE, 0x8);
+	halbtc8192e2ant_LimitedRx(pBtCoexist, NORMAL_EXEC, false, false, 0x8);
 
 	halbtc8192e2ant_FwDacSwingLvl(pBtCoexist, NORMAL_EXEC, 6);
 
@@ -3223,19 +3223,19 @@ halbtc8192e2ant_ActionPanEdr(
 		(btRssiState == BTC_RSSI_STATE_STAY_LOW) )
 	{
 		halbtc8192e2ant_DecBtPwr(pBtCoexist, NORMAL_EXEC, 0);
-		halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 5);
+		halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 5);
 	}
 	else if( (btRssiState == BTC_RSSI_STATE_MEDIUM) ||
 			(btRssiState == BTC_RSSI_STATE_STAY_MEDIUM) )
 	{
 		halbtc8192e2ant_DecBtPwr(pBtCoexist, NORMAL_EXEC, 2);
-		halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 1);
+		halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 1);
 	}
 	else if( (btRssiState == BTC_RSSI_STATE_HIGH) ||
 			(btRssiState == BTC_RSSI_STATE_STAY_HIGH) )
 	{
 		halbtc8192e2ant_DecBtPwr(pBtCoexist, NORMAL_EXEC, 4);
-		halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 1);
+		halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 1);
 	}
 	
 	// sw mechanism
@@ -3245,13 +3245,13 @@ halbtc8192e2ant_ActionPanEdr(
 		if( (wifiRssiState == BTC_RSSI_STATE_HIGH) ||
 			(wifiRssiState == BTC_RSSI_STATE_STAY_HIGH) )
 		{
-			halbtc8192e2ant_SwMechanism1(pBtCoexist,TRUE,FALSE,FALSE,FALSE);
-			halbtc8192e2ant_SwMechanism2(pBtCoexist,TRUE,FALSE,FALSE,0x18);
+			halbtc8192e2ant_SwMechanism1(pBtCoexist,true,false,false,false);
+			halbtc8192e2ant_SwMechanism2(pBtCoexist,true,false,false,0x18);
 		}
 		else
 		{
-			halbtc8192e2ant_SwMechanism1(pBtCoexist,TRUE,FALSE,FALSE,FALSE);
-			halbtc8192e2ant_SwMechanism2(pBtCoexist,FALSE,FALSE,FALSE,0x18);
+			halbtc8192e2ant_SwMechanism1(pBtCoexist,true,false,false,false);
+			halbtc8192e2ant_SwMechanism2(pBtCoexist,false,false,false,0x18);
 		}
 	}
 	else
@@ -3259,13 +3259,13 @@ halbtc8192e2ant_ActionPanEdr(
 		if( (wifiRssiState == BTC_RSSI_STATE_HIGH) ||
 			(wifiRssiState == BTC_RSSI_STATE_STAY_HIGH) )
 		{
-			halbtc8192e2ant_SwMechanism1(pBtCoexist,FALSE,FALSE,FALSE,FALSE);
-			halbtc8192e2ant_SwMechanism2(pBtCoexist,TRUE,FALSE,FALSE,0x18);
+			halbtc8192e2ant_SwMechanism1(pBtCoexist,false,false,false,false);
+			halbtc8192e2ant_SwMechanism2(pBtCoexist,true,false,false,0x18);
 		}
 		else
 		{
-			halbtc8192e2ant_SwMechanism1(pBtCoexist,FALSE,FALSE,FALSE,FALSE);
-			halbtc8192e2ant_SwMechanism2(pBtCoexist,FALSE,FALSE,FALSE,0x18);
+			halbtc8192e2ant_SwMechanism1(pBtCoexist,false,false,false,false);
+			halbtc8192e2ant_SwMechanism2(pBtCoexist,false,false,false,0x18);
 		}
 	}
 }
@@ -3283,7 +3283,7 @@ halbtc8192e2ant_ActionPanHs(
 	btRssiState = halbtc8192e2ant_BtRssiState(3, 34, 42);
 
 	halbtc8192e2ant_SwitchSsType(pBtCoexist, NORMAL_EXEC, 1);
-	halbtc8192e2ant_LimitedRx(pBtCoexist, NORMAL_EXEC, FALSE, FALSE, 0x8);
+	halbtc8192e2ant_LimitedRx(pBtCoexist, NORMAL_EXEC, false, false, 0x8);
 
 	halbtc8192e2ant_FwDacSwingLvl(pBtCoexist, NORMAL_EXEC, 6);
 
@@ -3304,7 +3304,7 @@ halbtc8192e2ant_ActionPanHs(
 	{
 		halbtc8192e2ant_DecBtPwr(pBtCoexist, NORMAL_EXEC, 4);
 	}
-	halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, FALSE, 1);
+	halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, false, 1);
 
 	pBtCoexist->fBtcGet(pBtCoexist, BTC_GET_U4_WIFI_BW, &wifiBw);
 	if(BTC_WIFI_BW_HT40 == wifiBw)
@@ -3312,13 +3312,13 @@ halbtc8192e2ant_ActionPanHs(
 		if( (wifiRssiState == BTC_RSSI_STATE_HIGH) ||
 			(wifiRssiState == BTC_RSSI_STATE_STAY_HIGH) )
 		{
-			halbtc8192e2ant_SwMechanism1(pBtCoexist,TRUE,FALSE,FALSE,FALSE);
-			halbtc8192e2ant_SwMechanism2(pBtCoexist,TRUE,FALSE,FALSE,0x18);
+			halbtc8192e2ant_SwMechanism1(pBtCoexist,true,false,false,false);
+			halbtc8192e2ant_SwMechanism2(pBtCoexist,true,false,false,0x18);
 		}
 		else
 		{
-			halbtc8192e2ant_SwMechanism1(pBtCoexist,TRUE,FALSE,FALSE,FALSE);
-			halbtc8192e2ant_SwMechanism2(pBtCoexist,FALSE,FALSE,FALSE,0x18);
+			halbtc8192e2ant_SwMechanism1(pBtCoexist,true,false,false,false);
+			halbtc8192e2ant_SwMechanism2(pBtCoexist,false,false,false,0x18);
 		}
 	}
 	else
@@ -3326,13 +3326,13 @@ halbtc8192e2ant_ActionPanHs(
 		if( (wifiRssiState == BTC_RSSI_STATE_HIGH) ||
 			(wifiRssiState == BTC_RSSI_STATE_STAY_HIGH) )
 		{
-			halbtc8192e2ant_SwMechanism1(pBtCoexist,FALSE,FALSE,FALSE,FALSE);
-			halbtc8192e2ant_SwMechanism2(pBtCoexist,TRUE,FALSE,FALSE,0x18);
+			halbtc8192e2ant_SwMechanism1(pBtCoexist,false,false,false,false);
+			halbtc8192e2ant_SwMechanism2(pBtCoexist,true,false,false,0x18);
 		}
 		else
 		{
-			halbtc8192e2ant_SwMechanism1(pBtCoexist,FALSE,FALSE,FALSE,FALSE);
-			halbtc8192e2ant_SwMechanism2(pBtCoexist,FALSE,FALSE,FALSE,0x18);
+			halbtc8192e2ant_SwMechanism1(pBtCoexist,false,false,false,false);
+			halbtc8192e2ant_SwMechanism2(pBtCoexist,false,false,false,0x18);
 		}
 	}
 }
@@ -3350,7 +3350,7 @@ halbtc8192e2ant_ActionPanEdrA2dp(
 	btRssiState = halbtc8192e2ant_BtRssiState(3, 34, 42);
 
 	halbtc8192e2ant_SwitchSsType(pBtCoexist, NORMAL_EXEC, 1);
-	halbtc8192e2ant_LimitedRx(pBtCoexist, NORMAL_EXEC, FALSE, FALSE, 0x8);
+	halbtc8192e2ant_LimitedRx(pBtCoexist, NORMAL_EXEC, false, false, 0x8);
 
 	halbtc8192e2ant_FwDacSwingLvl(pBtCoexist, NORMAL_EXEC, 6);
 
@@ -3362,19 +3362,19 @@ halbtc8192e2ant_ActionPanEdrA2dp(
 		(btRssiState == BTC_RSSI_STATE_STAY_LOW) )
 	{
 		halbtc8192e2ant_DecBtPwr(pBtCoexist, NORMAL_EXEC, 0);
-		halbtc8192e2ant_TdmaDurationAdjust(pBtCoexist, FALSE, TRUE, 3);
+		halbtc8192e2ant_TdmaDurationAdjust(pBtCoexist, false, true, 3);
 	}
 	else if( (btRssiState == BTC_RSSI_STATE_MEDIUM) ||
 			(btRssiState == BTC_RSSI_STATE_STAY_MEDIUM) )
 	{
 		halbtc8192e2ant_DecBtPwr(pBtCoexist, NORMAL_EXEC, 2);
-		halbtc8192e2ant_TdmaDurationAdjust(pBtCoexist, FALSE, FALSE, 3);
+		halbtc8192e2ant_TdmaDurationAdjust(pBtCoexist, false, false, 3);
 	}
 	else if( (btRssiState == BTC_RSSI_STATE_HIGH) ||
 			(btRssiState == BTC_RSSI_STATE_STAY_HIGH) )
 	{
 		halbtc8192e2ant_DecBtPwr(pBtCoexist, NORMAL_EXEC, 4);
-		halbtc8192e2ant_TdmaDurationAdjust(pBtCoexist, FALSE, FALSE, 3);
+		halbtc8192e2ant_TdmaDurationAdjust(pBtCoexist, false, false, 3);
 	}
 	
 	// sw mechanism	
@@ -3383,13 +3383,13 @@ halbtc8192e2ant_ActionPanEdrA2dp(
 		if( (wifiRssiState == BTC_RSSI_STATE_HIGH) ||
 			(wifiRssiState == BTC_RSSI_STATE_STAY_HIGH) )
 		{
-			halbtc8192e2ant_SwMechanism1(pBtCoexist,TRUE,FALSE,FALSE,FALSE);
-			halbtc8192e2ant_SwMechanism2(pBtCoexist,TRUE,FALSE,FALSE,0x18);
+			halbtc8192e2ant_SwMechanism1(pBtCoexist,true,false,false,false);
+			halbtc8192e2ant_SwMechanism2(pBtCoexist,true,false,false,0x18);
 		}
 		else
 		{
-			halbtc8192e2ant_SwMechanism1(pBtCoexist,TRUE,FALSE,FALSE,FALSE);
-			halbtc8192e2ant_SwMechanism2(pBtCoexist,FALSE,FALSE,FALSE,0x18);
+			halbtc8192e2ant_SwMechanism1(pBtCoexist,true,false,false,false);
+			halbtc8192e2ant_SwMechanism2(pBtCoexist,false,false,false,0x18);
 		}
 	}
 	else
@@ -3397,13 +3397,13 @@ halbtc8192e2ant_ActionPanEdrA2dp(
 		if( (wifiRssiState == BTC_RSSI_STATE_HIGH) ||
 			(wifiRssiState == BTC_RSSI_STATE_STAY_HIGH) )
 		{
-			halbtc8192e2ant_SwMechanism1(pBtCoexist,FALSE,FALSE,FALSE,FALSE);
-			halbtc8192e2ant_SwMechanism2(pBtCoexist,TRUE,FALSE,FALSE,0x18);
+			halbtc8192e2ant_SwMechanism1(pBtCoexist,false,false,false,false);
+			halbtc8192e2ant_SwMechanism2(pBtCoexist,true,false,false,0x18);
 		}
 		else
 		{
-			halbtc8192e2ant_SwMechanism1(pBtCoexist,FALSE,FALSE,FALSE,FALSE);
-			halbtc8192e2ant_SwMechanism2(pBtCoexist,FALSE,FALSE,FALSE,0x18);
+			halbtc8192e2ant_SwMechanism1(pBtCoexist,false,false,false,false);
+			halbtc8192e2ant_SwMechanism2(pBtCoexist,false,false,false,0x18);
 		}
 	}
 }
@@ -3422,7 +3422,7 @@ halbtc8192e2ant_ActionPanEdrHid(
 	pBtCoexist->fBtcGet(pBtCoexist, BTC_GET_U4_WIFI_BW, &wifiBw);
 
 	halbtc8192e2ant_SwitchSsType(pBtCoexist, NORMAL_EXEC, 1);
-	halbtc8192e2ant_LimitedRx(pBtCoexist, NORMAL_EXEC, FALSE, FALSE, 0x8);
+	halbtc8192e2ant_LimitedRx(pBtCoexist, NORMAL_EXEC, false, false, 0x8);
 
 	halbtc8192e2ant_FwDacSwingLvl(pBtCoexist, NORMAL_EXEC, 6);
 
@@ -3432,19 +3432,19 @@ halbtc8192e2ant_ActionPanEdrHid(
 		(btRssiState == BTC_RSSI_STATE_STAY_LOW) )
 	{
 		halbtc8192e2ant_DecBtPwr(pBtCoexist, NORMAL_EXEC, 0);
-	        halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 14);
+	        halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 14);
 	}
 	else if( (btRssiState == BTC_RSSI_STATE_MEDIUM) ||
 			(btRssiState == BTC_RSSI_STATE_STAY_MEDIUM) )
 	{
 		halbtc8192e2ant_DecBtPwr(pBtCoexist, NORMAL_EXEC, 2);
-	        halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 10);
+	        halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 10);
 	}
 	else if( (btRssiState == BTC_RSSI_STATE_HIGH) ||
 			(btRssiState == BTC_RSSI_STATE_STAY_HIGH) )
 	{
 		halbtc8192e2ant_DecBtPwr(pBtCoexist, NORMAL_EXEC, 4);
-	        halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, TRUE, 10);
+	        halbtc8192e2ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 10);
 	}
 	
 	// sw mechanism
@@ -3453,13 +3453,13 @@ halbtc8192e2ant_ActionPanEdrHid(
 		if( (wifiRssiState == BTC_RSSI_STATE_HIGH) ||
 			(wifiRssiState == BTC_RSSI_STATE_STAY_HIGH) )
 		{
-			halbtc8192e2ant_SwMechanism1(pBtCoexist,TRUE,TRUE,FALSE,FALSE);
-			halbtc8192e2ant_SwMechanism2(pBtCoexist,TRUE,FALSE,FALSE,0x18);
+			halbtc8192e2ant_SwMechanism1(pBtCoexist,true,true,false,false);
+			halbtc8192e2ant_SwMechanism2(pBtCoexist,true,false,false,0x18);
 		}
 		else
 		{
-			halbtc8192e2ant_SwMechanism1(pBtCoexist,TRUE,TRUE,FALSE,FALSE);
-			halbtc8192e2ant_SwMechanism2(pBtCoexist,FALSE,FALSE,FALSE,0x18);
+			halbtc8192e2ant_SwMechanism1(pBtCoexist,true,true,false,false);
+			halbtc8192e2ant_SwMechanism2(pBtCoexist,false,false,false,0x18);
 		}
 	}
 	else
@@ -3467,13 +3467,13 @@ halbtc8192e2ant_ActionPanEdrHid(
 		if( (wifiRssiState == BTC_RSSI_STATE_HIGH) ||
 			(wifiRssiState == BTC_RSSI_STATE_STAY_HIGH) )
 		{
-			halbtc8192e2ant_SwMechanism1(pBtCoexist,FALSE,TRUE,FALSE,FALSE);
-			halbtc8192e2ant_SwMechanism2(pBtCoexist,TRUE,FALSE,FALSE,0x18);
+			halbtc8192e2ant_SwMechanism1(pBtCoexist,false,true,false,false);
+			halbtc8192e2ant_SwMechanism2(pBtCoexist,true,false,false,0x18);
 		}
 		else
 		{
-			halbtc8192e2ant_SwMechanism1(pBtCoexist,FALSE,TRUE,FALSE,FALSE);
-			halbtc8192e2ant_SwMechanism2(pBtCoexist,FALSE,FALSE,FALSE,0x18);
+			halbtc8192e2ant_SwMechanism1(pBtCoexist,false,true,false,false);
+			halbtc8192e2ant_SwMechanism2(pBtCoexist,false,false,false,0x18);
 		}
 	}
 }
@@ -3491,7 +3491,7 @@ halbtc8192e2ant_ActionHidA2dpPanEdr(
 	btRssiState = halbtc8192e2ant_BtRssiState(3, 34, 42);
 
 	halbtc8192e2ant_SwitchSsType(pBtCoexist, NORMAL_EXEC, 1);
-	halbtc8192e2ant_LimitedRx(pBtCoexist, NORMAL_EXEC, FALSE, FALSE, 0x8);
+	halbtc8192e2ant_LimitedRx(pBtCoexist, NORMAL_EXEC, false, false, 0x8);
 
 	halbtc8192e2ant_FwDacSwingLvl(pBtCoexist, NORMAL_EXEC, 6);
 
@@ -3503,19 +3503,19 @@ halbtc8192e2ant_ActionHidA2dpPanEdr(
 		(btRssiState == BTC_RSSI_STATE_STAY_LOW) )
 	{
 		halbtc8192e2ant_DecBtPwr(pBtCoexist, NORMAL_EXEC, 0);
-		halbtc8192e2ant_TdmaDurationAdjust(pBtCoexist, TRUE, TRUE, 3);
+		halbtc8192e2ant_TdmaDurationAdjust(pBtCoexist, true, true, 3);
 	}
 	else if( (btRssiState == BTC_RSSI_STATE_MEDIUM) ||
 			(btRssiState == BTC_RSSI_STATE_STAY_MEDIUM) )
 	{
 		halbtc8192e2ant_DecBtPwr(pBtCoexist, NORMAL_EXEC, 2);
-		halbtc8192e2ant_TdmaDurationAdjust(pBtCoexist, TRUE, FALSE, 3);
+		halbtc8192e2ant_TdmaDurationAdjust(pBtCoexist, true, false, 3);
 	}
 	else if( (btRssiState == BTC_RSSI_STATE_HIGH) ||
 			(btRssiState == BTC_RSSI_STATE_STAY_HIGH) )
 	{
 		halbtc8192e2ant_DecBtPwr(pBtCoexist, NORMAL_EXEC, 4);
-		halbtc8192e2ant_TdmaDurationAdjust(pBtCoexist, TRUE, FALSE, 3);
+		halbtc8192e2ant_TdmaDurationAdjust(pBtCoexist, true, false, 3);
 	}
 
 	// sw mechanism
@@ -3524,13 +3524,13 @@ halbtc8192e2ant_ActionHidA2dpPanEdr(
 		if( (wifiRssiState == BTC_RSSI_STATE_HIGH) ||
 			(wifiRssiState == BTC_RSSI_STATE_STAY_HIGH) )
 		{
-			halbtc8192e2ant_SwMechanism1(pBtCoexist,TRUE,TRUE,FALSE,FALSE);
-			halbtc8192e2ant_SwMechanism2(pBtCoexist,TRUE,FALSE,FALSE,0x18);
+			halbtc8192e2ant_SwMechanism1(pBtCoexist,true,true,false,false);
+			halbtc8192e2ant_SwMechanism2(pBtCoexist,true,false,false,0x18);
 		}
 		else
 		{
-			halbtc8192e2ant_SwMechanism1(pBtCoexist,TRUE,TRUE,FALSE,FALSE);
-			halbtc8192e2ant_SwMechanism2(pBtCoexist,FALSE,FALSE,FALSE,0x18);
+			halbtc8192e2ant_SwMechanism1(pBtCoexist,true,true,false,false);
+			halbtc8192e2ant_SwMechanism2(pBtCoexist,false,false,false,0x18);
 		}
 	}
 	else
@@ -3538,13 +3538,13 @@ halbtc8192e2ant_ActionHidA2dpPanEdr(
 		if( (wifiRssiState == BTC_RSSI_STATE_HIGH) ||
 			(wifiRssiState == BTC_RSSI_STATE_STAY_HIGH) )
 		{
-			halbtc8192e2ant_SwMechanism1(pBtCoexist,FALSE,TRUE,FALSE,FALSE);
-			halbtc8192e2ant_SwMechanism2(pBtCoexist,TRUE,FALSE,FALSE,0x18);
+			halbtc8192e2ant_SwMechanism1(pBtCoexist,false,true,false,false);
+			halbtc8192e2ant_SwMechanism2(pBtCoexist,true,false,false,0x18);
 		}
 		else
 		{
-			halbtc8192e2ant_SwMechanism1(pBtCoexist,FALSE,TRUE,FALSE,FALSE);
-			halbtc8192e2ant_SwMechanism2(pBtCoexist,FALSE,FALSE,FALSE,0x18);
+			halbtc8192e2ant_SwMechanism1(pBtCoexist,false,true,false,false);
+			halbtc8192e2ant_SwMechanism2(pBtCoexist,false,false,false,0x18);
 		}
 	}
 }
@@ -3561,7 +3561,7 @@ halbtc8192e2ant_ActionHidA2dp(
 	btRssiState = halbtc8192e2ant_BtRssiState(3, 34, 42);
 
 	halbtc8192e2ant_SwitchSsType(pBtCoexist, NORMAL_EXEC, 1);
-	halbtc8192e2ant_LimitedRx(pBtCoexist, NORMAL_EXEC, FALSE, FALSE, 0x8);
+	halbtc8192e2ant_LimitedRx(pBtCoexist, NORMAL_EXEC, false, false, 0x8);
 
 	pBtCoexist->fBtcGet(pBtCoexist, BTC_GET_U4_WIFI_BW, &wifiBw);
 
@@ -3571,19 +3571,19 @@ halbtc8192e2ant_ActionHidA2dp(
 		(btRssiState == BTC_RSSI_STATE_STAY_LOW) )
 	{
 		halbtc8192e2ant_DecBtPwr(pBtCoexist, NORMAL_EXEC, 0);
-		halbtc8192e2ant_TdmaDurationAdjust(pBtCoexist, TRUE, TRUE, 2);
+		halbtc8192e2ant_TdmaDurationAdjust(pBtCoexist, true, true, 2);
 	}
 	else if( (btRssiState == BTC_RSSI_STATE_MEDIUM) ||
 			(btRssiState == BTC_RSSI_STATE_STAY_MEDIUM) )
 	{
 		halbtc8192e2ant_DecBtPwr(pBtCoexist, NORMAL_EXEC, 2);
-		halbtc8192e2ant_TdmaDurationAdjust(pBtCoexist, TRUE, FALSE, 2);
+		halbtc8192e2ant_TdmaDurationAdjust(pBtCoexist, true, false, 2);
 	}
 	else if( (btRssiState == BTC_RSSI_STATE_HIGH) ||
 			(btRssiState == BTC_RSSI_STATE_STAY_HIGH) )
 	{
 		halbtc8192e2ant_DecBtPwr(pBtCoexist, NORMAL_EXEC, 4);
-		halbtc8192e2ant_TdmaDurationAdjust(pBtCoexist, TRUE, FALSE, 2);
+		halbtc8192e2ant_TdmaDurationAdjust(pBtCoexist, true, false, 2);
 	}	
 	
 	// sw mechanism
@@ -3592,13 +3592,13 @@ halbtc8192e2ant_ActionHidA2dp(
 		if( (wifiRssiState == BTC_RSSI_STATE_HIGH) ||
 			(wifiRssiState == BTC_RSSI_STATE_STAY_HIGH) )
 		{
-			halbtc8192e2ant_SwMechanism1(pBtCoexist,TRUE,TRUE,FALSE,FALSE);
-			halbtc8192e2ant_SwMechanism2(pBtCoexist,TRUE,FALSE,FALSE,0x18);
+			halbtc8192e2ant_SwMechanism1(pBtCoexist,true,true,false,false);
+			halbtc8192e2ant_SwMechanism2(pBtCoexist,true,false,false,0x18);
 		}
 		else
 		{
-			halbtc8192e2ant_SwMechanism1(pBtCoexist,TRUE,TRUE,FALSE,FALSE);
-			halbtc8192e2ant_SwMechanism2(pBtCoexist,FALSE,FALSE,FALSE,0x18);
+			halbtc8192e2ant_SwMechanism1(pBtCoexist,true,true,false,false);
+			halbtc8192e2ant_SwMechanism2(pBtCoexist,false,false,false,0x18);
 		}
 	}
 	else
@@ -3606,13 +3606,13 @@ halbtc8192e2ant_ActionHidA2dp(
 		if( (wifiRssiState == BTC_RSSI_STATE_HIGH) ||
 			(wifiRssiState == BTC_RSSI_STATE_STAY_HIGH) )
 		{
-			halbtc8192e2ant_SwMechanism1(pBtCoexist,FALSE,TRUE,FALSE,FALSE);
-			halbtc8192e2ant_SwMechanism2(pBtCoexist,TRUE,FALSE,FALSE,0x18);
+			halbtc8192e2ant_SwMechanism1(pBtCoexist,false,true,false,false);
+			halbtc8192e2ant_SwMechanism2(pBtCoexist,true,false,false,0x18);
 		}
 		else
 		{
-			halbtc8192e2ant_SwMechanism1(pBtCoexist,FALSE,TRUE,FALSE,FALSE);
-			halbtc8192e2ant_SwMechanism2(pBtCoexist,FALSE,FALSE,FALSE,0x18);
+			halbtc8192e2ant_SwMechanism1(pBtCoexist,false,true,false,false);
+			halbtc8192e2ant_SwMechanism2(pBtCoexist,false,false,false,0x18);
 		}
 	}
 }
@@ -3622,7 +3622,7 @@ halbtc8192e2ant_RunCoexistMechanism(
 	IN	PBTC_COEXIST		pBtCoexist
 	)
 {
-	BOOLEAN				bWifiUnder5G=FALSE;
+	BOOLEAN				bWifiUnder5G=false;
 	u1Byte				btInfoOriginal=0, btRetryCnt=0;
 	u1Byte				algorithm=0;
 
@@ -3654,7 +3654,7 @@ halbtc8192e2ant_RunCoexistMechanism(
 	if(halbtc8192e2ant_IsCommonAction(pBtCoexist))
 	{
 		BTC_PRINT(BTC_MSG_ALGORITHM, ALGO_TRACE, ("[BTCoex], Action 2-Ant common.\n"));
-		pCoexDm->bAutoTdmaAdjust = FALSE;
+		pCoexDm->bAutoTdmaAdjust = false;
 	}
 	else
 	{
@@ -3662,7 +3662,7 @@ halbtc8192e2ant_RunCoexistMechanism(
 		{
 			BTC_PRINT(BTC_MSG_ALGORITHM, ALGO_TRACE, ("[BTCoex], preAlgorithm=%d, curAlgorithm=%d\n", 
 				pCoexDm->preAlgorithm, pCoexDm->curAlgorithm));
-			pCoexDm->bAutoTdmaAdjust = FALSE;
+			pCoexDm->bAutoTdmaAdjust = false;
 		}
 		switch(pCoexDm->curAlgorithm)
 		{
@@ -3744,7 +3744,7 @@ halbtc8192e2ant_InitHwConfig(
 	}
 
 	// antenna sw ctrl to bt
-	halbtc8192e2ant_SetAntPath(pBtCoexist, BTC_ANT_PATH_BT, TRUE, FALSE);
+	halbtc8192e2ant_SetAntPath(pBtCoexist, BTC_ANT_PATH_BT, true, false);
 
 	halbtc8192e2ant_CoexTableWithType(pBtCoexist, FORCE_EXEC, 0);
 
@@ -3803,7 +3803,7 @@ EXhalbtc8192e2ant_InitHwConfig(
 	IN	BOOLEAN				bWifiOnly
 	)
 {
-	halbtc8192e2ant_InitHwConfig(pBtCoexist, TRUE);
+	halbtc8192e2ant_InitHwConfig(pBtCoexist, true);
 }
 
 VOID
@@ -3827,8 +3827,8 @@ EXhalbtc8192e2ant_DisplayCoexInfo(
 	u1Byte				u1Tmp[4], i, btInfoExt, psTdmaCase=0;
 	u2Byte				u2Tmp[4];
 	u4Byte				u4Tmp[4];
-	BOOLEAN				bRoam=FALSE, bScan=FALSE, bLink=FALSE, bWifiUnder5G=FALSE;
-	BOOLEAN				bBtHsOn=FALSE, bWifiBusy=FALSE;
+	BOOLEAN				bRoam=false, bScan=false, bLink=false, bWifiUnder5G=false;
+	BOOLEAN				bBtHsOn=false, bWifiBusy=false;
 	s4Byte				wifiRssi=0, btHsRssi=0;
 	u4Byte				wifiBw, wifiTrafficDir, faOfdm, faCck;
 	u1Byte				wifiDot11Chnl, wifiHsChnl;
@@ -4047,14 +4047,14 @@ EXhalbtc8192e2ant_IpsNotify(
 	if(BTC_IPS_ENTER == type)
 	{
 		BTC_PRINT(BTC_MSG_INTERFACE, INTF_NOTIFY, ("[BTCoex], IPS ENTER notify\n"));
-		pCoexSta->bUnderIps = TRUE;
+		pCoexSta->bUnderIps = true;
 		halbtc8192e2ant_CoexAllOff(pBtCoexist);
-		halbtc8192e2ant_SetAntPath(pBtCoexist, BTC_ANT_PATH_BT, FALSE, TRUE);
+		halbtc8192e2ant_SetAntPath(pBtCoexist, BTC_ANT_PATH_BT, false, true);
 	}
 	else if(BTC_IPS_LEAVE == type)
 	{
 		BTC_PRINT(BTC_MSG_INTERFACE, INTF_NOTIFY, ("[BTCoex], IPS LEAVE notify\n"));
-		pCoexSta->bUnderIps = FALSE;
+		pCoexSta->bUnderIps = false;
 	}
 }
 
@@ -4067,12 +4067,12 @@ EXhalbtc8192e2ant_LpsNotify(
 	if(BTC_LPS_ENABLE == type)
 	{
 		BTC_PRINT(BTC_MSG_INTERFACE, INTF_NOTIFY, ("[BTCoex], LPS ENABLE notify\n"));
-		pCoexSta->bUnderLps = TRUE;
+		pCoexSta->bUnderLps = true;
 	}
 	else if(BTC_LPS_DISABLE == type)
 	{
 		BTC_PRINT(BTC_MSG_INTERFACE, INTF_NOTIFY, ("[BTCoex], LPS DISABLE notify\n"));
-		pCoexSta->bUnderLps = FALSE;
+		pCoexSta->bUnderLps = false;
 	}
 }
 
@@ -4178,10 +4178,10 @@ EXhalbtc8192e2ant_BtInfoNotify(
 	PBTC_BT_LINK_INFO	pBtLinkInfo=&pBtCoexist->btLinkInfo;
 	u1Byte			btInfo=0;
 	u1Byte			i, rspSource=0;
-	BOOLEAN			bBtBusy=FALSE, bLimitedDig=FALSE;
-	BOOLEAN			bWifiConnected=FALSE;
+	BOOLEAN			bBtBusy=false, bLimitedDig=false;
+	BOOLEAN			bWifiConnected=false;
 
-	pCoexSta->bC2hBtInfoReqSent = FALSE;
+	pCoexSta->bC2hBtInfoReqSent = false;
 
 	rspSource = tmpBuf[0]&0xf;
 	if(rspSource >= BT_INFO_SRC_8192E_2ANT_MAX)
@@ -4236,7 +4236,7 @@ EXhalbtc8192e2ant_BtInfoNotify(
 			if(!pBtCoexist->bManualControl && !pBtCoexist->bStopCoexDm)
 			{
 				BTC_PRINT(BTC_MSG_ALGORITHM, ALGO_TRACE, ("[BTCoex], BT ext info bit3 check, set BT NOT to ignore Wlan active!!\n"));
-				halbtc8192e2ant_IgnoreWlanAct(pBtCoexist, FORCE_EXEC, FALSE);
+				halbtc8192e2ant_IgnoreWlanAct(pBtCoexist, FORCE_EXEC, false);
 			}
 		}
 		else
@@ -4251,45 +4251,45 @@ EXhalbtc8192e2ant_BtInfoNotify(
 		}
 		else
 		{
-			halbtc8192e2ant_BtAutoReport(pBtCoexist, FORCE_EXEC, TRUE);
+			halbtc8192e2ant_BtAutoReport(pBtCoexist, FORCE_EXEC, true);
 		}
 #endif
 	}
 
 	// check BIT2 first ==> check if bt is under inquiry or page scan
 	if(btInfo & BT_INFO_8192E_2ANT_B_INQ_PAGE)
-		pCoexSta->bC2hBtInquiryPage = TRUE;
+		pCoexSta->bC2hBtInquiryPage = true;
 	else
-		pCoexSta->bC2hBtInquiryPage = FALSE;
+		pCoexSta->bC2hBtInquiryPage = false;
 
 	// set link exist status
 	if(!(btInfo&BT_INFO_8192E_2ANT_B_CONNECTION))
 	{
-		pCoexSta->bBtLinkExist = FALSE;
-		pCoexSta->bPanExist = FALSE;
-		pCoexSta->bA2dpExist = FALSE;
-		pCoexSta->bHidExist = FALSE;
-		pCoexSta->bScoExist = FALSE;
+		pCoexSta->bBtLinkExist = false;
+		pCoexSta->bPanExist = false;
+		pCoexSta->bA2dpExist = false;
+		pCoexSta->bHidExist = false;
+		pCoexSta->bScoExist = false;
 	}
 	else	// connection exists
 	{
-		pCoexSta->bBtLinkExist = TRUE;
+		pCoexSta->bBtLinkExist = true;
 		if(btInfo & BT_INFO_8192E_2ANT_B_FTP)
-			pCoexSta->bPanExist = TRUE;
+			pCoexSta->bPanExist = true;
 		else
-			pCoexSta->bPanExist = FALSE;
+			pCoexSta->bPanExist = false;
 		if(btInfo & BT_INFO_8192E_2ANT_B_A2DP)
-			pCoexSta->bA2dpExist = TRUE;
+			pCoexSta->bA2dpExist = true;
 		else
-			pCoexSta->bA2dpExist = FALSE;
+			pCoexSta->bA2dpExist = false;
 		if(btInfo & BT_INFO_8192E_2ANT_B_HID)
-			pCoexSta->bHidExist = TRUE;
+			pCoexSta->bHidExist = true;
 		else
-			pCoexSta->bHidExist = FALSE;
+			pCoexSta->bHidExist = false;
 		if(btInfo & BT_INFO_8192E_2ANT_B_SCO_ESCO)
-			pCoexSta->bScoExist = TRUE;
+			pCoexSta->bScoExist = true;
 		else
-			pCoexSta->bScoExist = FALSE;
+			pCoexSta->bScoExist = false;
 	}
 
 	halbtc8192e2ant_UpdateBtLinkInfo(pBtCoexist);
@@ -4325,13 +4325,13 @@ EXhalbtc8192e2ant_BtInfoNotify(
 		(BT_8192E_2ANT_BT_STATUS_SCO_BUSY == pCoexDm->btStatus) ||
 		(BT_8192E_2ANT_BT_STATUS_ACL_SCO_BUSY == pCoexDm->btStatus) )
 	{
-		bBtBusy = TRUE;
-		bLimitedDig = TRUE;
+		bBtBusy = true;
+		bLimitedDig = true;
 	}
 	else
 	{
-		bBtBusy = FALSE;
-		bLimitedDig = FALSE;
+		bBtBusy = false;
+		bLimitedDig = false;
 	}
 
 	pBtCoexist->fBtcSet(pBtCoexist, BTC_SET_BL_BT_TRAFFIC_BUSY, &bBtBusy);
@@ -4349,8 +4349,8 @@ EXhalbtc8192e2ant_HaltNotify(
 {
 	BTC_PRINT(BTC_MSG_INTERFACE, INTF_NOTIFY, ("[BTCoex], Halt notify\n"));
 
-	halbtc8192e2ant_SetAntPath(pBtCoexist, BTC_ANT_PATH_BT, FALSE, TRUE);
-	halbtc8192e2ant_IgnoreWlanAct(pBtCoexist, FORCE_EXEC, TRUE);
+	halbtc8192e2ant_SetAntPath(pBtCoexist, BTC_ANT_PATH_BT, false, true);
+	halbtc8192e2ant_IgnoreWlanAct(pBtCoexist, FORCE_EXEC, true);
 	EXhalbtc8192e2ant_MediaStatusNotify(pBtCoexist, BTC_MEDIA_DISCONNECT);
 }
 

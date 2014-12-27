@@ -64,7 +64,7 @@ odm_DynamicBBPowerSaving(
 	//1 3.Power Saving for 88C
 	else
 	{
-		ODM_RF_Saving(pDM_Odm, FALSE);
+		ODM_RF_Saving(pDM_Odm, false);
 	}
 }
 

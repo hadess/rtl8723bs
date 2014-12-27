@@ -32,7 +32,7 @@ odm_SetCrystalCap(
 	PADAPTER					Adapter = pDM_Odm->Adapter;
 	HAL_DATA_TYPE				*pHalData = GET_HAL_DATA(Adapter);
 
-	bEEPROMCheck = (pHalData->EEPROMVersion >= 0x01)?TRUE:FALSE;
+	bEEPROMCheck = (pHalData->EEPROMVersion >= 0x01)?true:false;
 
 	if(pCfoTrack->CrystalCap == CrystalCap)
 		return;
@@ -142,10 +142,10 @@ ODM_CfoTrackingReset(
 	u1Byte						CrystalCap;
 
 	pCfoTrack->DefXCap = odm_GetDefaultCrytaltalCap(pDM_Odm);
-	pCfoTrack->bAdjust = TRUE;
+	pCfoTrack->bAdjust = true;
 
 	odm_SetCrystalCap(pDM_Odm, pCfoTrack->DefXCap);
-	odm_SetATCStatus(pDM_Odm, TRUE);
+	odm_SetATCStatus(pDM_Odm, true);
 }
 
 VOID
@@ -158,7 +158,7 @@ ODM_CfoTrackingInit(
       
 	pCfoTrack->DefXCap = pCfoTrack->CrystalCap = odm_GetDefaultCrytaltalCap(pDM_Odm);
 	pCfoTrack->bATCStatus = odm_GetATCStatus(pDM_Odm);
-	pCfoTrack->bAdjust = TRUE;
+	pCfoTrack->bAdjust = true;
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CFO_TRACKING, ODM_DBG_LOUD, ("ODM_CfoTracking_init()=========> \n"));
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CFO_TRACKING, ODM_DBG_LOUD, ("ODM_CfoTracking_init(): bATCStatus = %d, CrystalCap = 0x%x \n",pCfoTrack->bATCStatus, pCfoTrack->DefXCap));
 }
@@ -226,21 +226,21 @@ ODM_CfoTracking(
 		pCfoTrack->CFO_ave_pre = CFO_ave;
 
 		//4 1.4 Dynamic Xtal threshold
-		if(pCfoTrack->bAdjust == FALSE)
+		if(pCfoTrack->bAdjust == false)
 		{
 			if(CFO_ave > CFO_TH_XTAL_HIGH || CFO_ave < (-CFO_TH_XTAL_HIGH))
-				pCfoTrack->bAdjust = TRUE;
+				pCfoTrack->bAdjust = true;
 		}
 		else
 		{
 			if(CFO_ave < CFO_TH_XTAL_LOW && CFO_ave > (-CFO_TH_XTAL_LOW))
-				pCfoTrack->bAdjust = FALSE;
+				pCfoTrack->bAdjust = false;
 		}
 
 		//4 1.5 BT case: Disable CFO tracking
 		if(pDM_Odm->bBtEnabled)
 		{
-			pCfoTrack->bAdjust = FALSE;
+			pCfoTrack->bAdjust = false;
 			odm_SetCrystalCap(pDM_Odm, pCfoTrack->DefXCap);
 			ODM_RT_TRACE(pDM_Odm, ODM_COMP_CFO_TRACKING, ODM_DBG_LOUD, ("ODM_CfoTracking(): Disable CFO tracking for BT!!\n"));
 		}
@@ -280,12 +280,12 @@ ODM_CfoTracking(
 		//3 2. Dynamic ATC switch
 		if(CFO_ave < CFO_TH_ATC && CFO_ave > -CFO_TH_ATC)
 		{
-			odm_SetATCStatus(pDM_Odm, FALSE);
+			odm_SetATCStatus(pDM_Odm, false);
 			ODM_RT_TRACE(pDM_Odm, ODM_COMP_CFO_TRACKING, ODM_DBG_LOUD, ("ODM_CfoTracking(): Disable ATC!!\n"));
 		}
 		else
 		{
-			odm_SetATCStatus(pDM_Odm, TRUE);
+			odm_SetATCStatus(pDM_Odm, true);
 			ODM_RT_TRACE(pDM_Odm, ODM_COMP_CFO_TRACKING, ODM_DBG_LOUD, ("ODM_CfoTracking(): Enable ATC!!\n"));
 		}
 	}

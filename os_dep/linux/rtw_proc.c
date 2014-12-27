@@ -331,7 +331,7 @@ static ssize_t proc_set_cam(struct file *file, const char __user *buffer, size_t
 
 		if (strcmp("c", cmd) == 0) {
 			_clear_cam_entry(adapter, id);
-			adapter->securitypriv.hw_decrypted = _FALSE; /* temporarily set this for TX path to use SW enc */
+			adapter->securitypriv.hw_decrypted = false; /* temporarily set this for TX path to use SW enc */
 		} else if (strcmp("wfc", cmd) == 0) {
 			write_cam_from_cache(adapter, id);
 		}

@@ -440,8 +440,8 @@ void WapiSetLastRxUnicastPNForQoSData(
 
 
 /****************************************************************************
- FALSE not RX-Reorder
- TRUE do RX Reorder
+ false not RX-Reorder
+ true do RX Reorder
 add to support WAPI to N-mode
 *****************************************************************************/
 u8 WapiCheckPnInSwDecrypt(

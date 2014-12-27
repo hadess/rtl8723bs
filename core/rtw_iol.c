@@ -100,9 +100,9 @@ int rtw_IOL_append_cmds(struct xmit_frame *xmit_frame, u8 *IOL_cmds, u32 cmd_len
 bool rtw_IOL_applied(ADAPTER *adapter)
 {	
 	if(1 == adapter->registrypriv.fw_iol)
-		return _TRUE;
+		return true;
 
-	return _FALSE;
+	return false;
 }
 
 int rtw_IOL_exec_cmds_sync(ADAPTER *adapter, struct xmit_frame *xmit_frame, u32 max_wating_ms, u32 bndy_cnt)
@@ -232,14 +232,14 @@ int rtw_IOL_append_END_cmd(struct xmit_frame *xmit_frame)
 
 u8 rtw_IOL_cmd_boundary_handle(struct xmit_frame *pxmit_frame)
 {	
-	u8 is_cmd_bndy = _FALSE;
+	u8 is_cmd_bndy = false;
 	if(((pxmit_frame->attrib.pktlen+32)%256) + 8 >= 256){
 		rtw_IOL_append_END_cmd(pxmit_frame);
 		pxmit_frame->attrib.pktlen = ((((pxmit_frame->attrib.pktlen+32)/256)+1)*256 );
 		
 		//printk("==> %s, pktlen(%d)\n",__FUNCTION__,pxmit_frame->attrib.pktlen);
 		pxmit_frame->attrib.last_txcmdsz = pxmit_frame->attrib.pktlen;
-		is_cmd_bndy = _TRUE;	
+		is_cmd_bndy = true;	
 	}
 	return is_cmd_bndy;
 }

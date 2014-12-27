@@ -149,13 +149,13 @@ hal_com_config_channel_plan(
 
 
 	pHalData = GET_HAL_DATA(padapter);
-	pHalData->bDisableSWChannelPlan = _FALSE;
+	pHalData->bDisableSWChannelPlan = false;
 	chnlPlan = def_channel_plan;
 
 	if (0xFF == hw_channel_plan)
-		AutoLoadFail = _TRUE;
+		AutoLoadFail = true;
 
-	if (_FALSE == AutoLoadFail)
+	if (false == AutoLoadFail)
 	{
 		u8 hw_chnlPlan;
 
@@ -164,14 +164,14 @@ hal_com_config_channel_plan(
 		{
 #ifndef CONFIG_SW_CHANNEL_PLAN
 			if (hw_channel_plan & EEPROM_CHANNEL_PLAN_BY_HW_MASK)
-				pHalData->bDisableSWChannelPlan = _TRUE;
+				pHalData->bDisableSWChannelPlan = true;
 #endif // !CONFIG_SW_CHANNEL_PLAN
 
 			chnlPlan = hw_chnlPlan;
 		}
 	}
 
-	if ((_FALSE == pHalData->bDisableSWChannelPlan)
+	if ((false == pHalData->bDisableSWChannelPlan)
 		&& rtw_is_channel_plan_valid(sw_channel_plan))
 	{
 		chnlPlan = sw_channel_plan;
@@ -186,20 +186,20 @@ HAL_IsLegalChannel(
 	IN	u32			Channel
 	)
 {
-	BOOLEAN bLegalChannel = _TRUE;
+	BOOLEAN bLegalChannel = true;
 
 	if (Channel > 14) {
-		if(IsSupported5G(Adapter->registrypriv.wireless_mode) == _FALSE) {
-			bLegalChannel = _FALSE;
+		if(IsSupported5G(Adapter->registrypriv.wireless_mode) == false) {
+			bLegalChannel = false;
 			DBG_871X("Channel > 14 but wireless_mode do not support 5G\n");
 		}
 	} else if ((Channel <= 14) && (Channel >=1)){
-		if(IsSupported24G(Adapter->registrypriv.wireless_mode) == _FALSE) {
-			bLegalChannel = _FALSE;
+		if(IsSupported24G(Adapter->registrypriv.wireless_mode) == false) {
+			bLegalChannel = false;
 			DBG_871X("(Channel <= 14) && (Channel >=1) but wireless_mode do not support 2.4G\n");
 		}
 	} else {
-		bLegalChannel = _FALSE;
+		bLegalChannel = false;
 		DBG_871X("Channel is Invalid !!!\n");
 	}
 
@@ -595,9 +595,9 @@ Hal_MappingOutPipe(
 {
 	struct registry_priv *pregistrypriv = &pAdapter->registrypriv;
 
-	BOOLEAN	 bWIFICfg = (pregistrypriv->wifi_spec) ?_TRUE:_FALSE;
+	BOOLEAN	 bWIFICfg = (pregistrypriv->wifi_spec) ?true:false;
 	
-	BOOLEAN result = _TRUE;
+	BOOLEAN result = true;
 
 	switch(NumOutPipe)
 	{
@@ -612,7 +612,7 @@ Hal_MappingOutPipe(
 			_OneOutPipeMapping(pAdapter);
 			break;
 		default:
-			result = _FALSE;
+			result = false;
 			break;
 	}
 
@@ -1106,7 +1106,7 @@ _func_enter_;
 		odm->SupportAbility = *((u32*)val);
 		break;
 	case HW_VAR_DM_FUNC_OP:
-		if (*((u8*)val) == _TRUE) {
+		if (*((u8*)val) == true) {
 			/* save dm flag */
 			odm->BK_SupportAbility = odm->SupportAbility;				
 		} else {
@@ -1187,7 +1187,7 @@ SetHalDefVar(_adapter *adapter, HAL_DEF_VARIABLE variable, void *value)
 		break;
 	case HAL_DEF_DBG_RX_INFO_DUMP:
 		{
-			PFALSE_ALARM_STATISTICS FalseAlmCnt = &(odm->FalseAlmCnt);
+			Pfalse_ALARM_STATISTICS FalseAlmCnt = &(odm->FalseAlmCnt);
 			pDIG_T	pDM_DigTable = &odm->DM_DigTable;
 
 			DBG_871X("============ Rx Info dump ===================\n");
@@ -1309,7 +1309,7 @@ GetHalDefVar(_adapter *adapter, HAL_DEF_VARIABLE variable, void *value)
 			*((u8 *)value) = hal_data->AntDetection;
 			break;
 		case HAL_DEF_MACID_SLEEP:
-			*(u8*)value = _FALSE;
+			*(u8*)value = false;
 			break;
 		case HAL_DEF_TX_PAGE_SIZE:
 			*(( u32*)value) = PAGE_SIZE_128;
@@ -1418,20 +1418,20 @@ eqNByte(
 	)
 {
 	if(num==0)
-		return _FALSE;
+		return false;
 	while(num>0)
 	{
 		num--;
 		if(str1[num]!=str2[num])
-			return _FALSE;
+			return false;
 	}
-	return _TRUE;
+	return true;
 }
 
 //
 //	Description:
-//		Return TRUE if chTmp is represent for hex digit and 
-//		FALSE otherwise.
+//		Return true if chTmp is represent for hex digit and 
+//		false otherwise.
 //
 //
 BOOLEAN
@@ -1443,11 +1443,11 @@ IsHexDigit(
 		(chTmp >= 'a' && chTmp <= 'f') ||
 		(chTmp >= 'A' && chTmp <= 'F') )
 	{
-		return _TRUE;
+		return true;
 	}
 	else
 	{
-		return _FALSE;
+		return false;
 	}
 }
 
@@ -1490,7 +1490,7 @@ GetHexValueFromString(
 	if(szStr == NULL || pu4bVal == NULL || pu4bMove == NULL)
 	{
 		DBG_871X("GetHexValueFromString(): Invalid inpur argumetns! szStr: %p, pu4bVal: %p, pu4bMove: %p\n", szStr, pu4bVal, pu4bMove);
-		return _FALSE;
+		return false;
 	}
 
 	// Initialize output.
@@ -1516,7 +1516,7 @@ GetHexValueFromString(
 	// if not, it means this is not a valid hex number.
 	if(!IsHexDigit(*szScan))
 	{
-		return _FALSE;
+		return false;
 	}
 
 	// Parse each digit.
@@ -1529,7 +1529,7 @@ GetHexValueFromString(
 		(*pu4bMove)++;
 	} while(IsHexDigit(*szScan));
 
-	return _TRUE;
+	return true;
 }
 
 BOOLEAN 
@@ -1567,22 +1567,22 @@ GetFractionValueFromString(
 			++(*pu4bMove);
 			
 			if ( *szScan < '0' || *szScan > '9' )
-				return _FALSE;
+				return false;
 			else {
 				*pFraction = *szScan - '0';
 				++szScan;
 				++(*pu4bMove);
-				return _TRUE;
+				return true;
 			}
 		}
 	} while(*szScan >= '0' && *szScan <= '9');
 
-	return _TRUE;
+	return true;
 }
 
 //
 //	Description:
-//		Return TRUE if szStr is comment out with leading "//".
+//		Return true if szStr is comment out with leading "//".
 //
 BOOLEAN
 IsCommentString(
@@ -1591,11 +1591,11 @@ IsCommentString(
 {
 	if(*szStr == '/' && *(szStr+1) == '/')
 	{
-		return _TRUE;
+		return true;
 	}
 	else
 	{
-		return _FALSE;
+		return false;
 	}
 }
 
@@ -1617,12 +1617,12 @@ GetU1ByteIntegerFromStringInDecimal(
 		}
 		else
 		{
-			return _FALSE;
+			return false;
 		}
 		++i;
 	}
 
-	return _TRUE;
+	return true;
 }
 
 // <20121004, Kordan> For example, 
@@ -1641,7 +1641,7 @@ ParseQualifiedString(
 	char	c = In[(*Start)++];
 
 	if (c != LeftQualifier)
-		return _FALSE;
+		return false;
 
 	i = (*Start);
 	while ((c = In[(*Start)++]) != RightQualifier) 
@@ -1649,7 +1649,7 @@ ParseQualifiedString(
 	j = (*Start) - 2;
 	strncpy((char *)Out, (const char*)(In+i), j-i+1);
 
-	return _TRUE;
+	return true;
 }
 
 BOOLEAN
@@ -1677,7 +1677,7 @@ void rtw_hal_check_rxfifo_full(_adapter *adapter)
 	struct dvobj_priv *psdpriv = adapter->dvobj;
 	struct debug_priv *pdbgpriv = &psdpriv->drv_dbg;
 	HAL_DATA_TYPE		*pHalData = GET_HAL_DATA(adapter);
-	int save_cnt=_FALSE;
+	int save_cnt=false;
 	
 	//switch counter to RX fifo
 	if(IS_81XXC(pHalData->VersionID) || IS_92D(pHalData->VersionID) 
@@ -1685,13 +1685,13 @@ void rtw_hal_check_rxfifo_full(_adapter *adapter)
 		|| IS_8812_SERIES(pHalData->VersionID) || IS_8821_SERIES(pHalData->VersionID))
 	{
 		rtw_write8(adapter, REG_RXERR_RPT+3, rtw_read8(adapter, REG_RXERR_RPT+3)|0xa0);
-		save_cnt = _TRUE;
+		save_cnt = true;
 	}
 	else if(IS_8723B_SERIES(pHalData->VersionID) || IS_8192E(pHalData->VersionID))
 	{
 		//printk("8723b or 8192e , MAC_667 set 0xf0\n");
 		rtw_write8(adapter, REG_RXERR_RPT+3, rtw_read8(adapter, REG_RXERR_RPT+3)|0xf0);
-		save_cnt = _TRUE;
+		save_cnt = true;
 	}
 	//todo: other chips 
 		
@@ -1745,7 +1745,7 @@ void rtw_get_raw_rssi_info(void *sel, _adapter *padapter)
 	
 	DBG_871X_SEL_NL(sel,"RxRate = %s, PWDBALL = %d(%%), rx_pwr_all = %d(dBm)\n", 
 			HDATA_RATE(psample_pkt_rssi->data_rate), psample_pkt_rssi->pwdball, psample_pkt_rssi->pwr_all);
-	isCCKrate = (psample_pkt_rssi->data_rate <= DESC_RATE11M)?TRUE :FALSE;
+	isCCKrate = (psample_pkt_rssi->data_rate <= DESC_RATE11M)?true :false;
 
 	if(isCCKrate)
 		psample_pkt_rssi->mimo_singal_strength[0] = psample_pkt_rssi->pwdball;
@@ -1771,7 +1771,7 @@ void rtw_dump_raw_rssi_info(_adapter *padapter)
 	DBG_871X("RxRate = %s, PWDBALL = %d(%%), rx_pwr_all = %d(dBm)\n", 
 			HDATA_RATE(psample_pkt_rssi->data_rate), psample_pkt_rssi->pwdball, psample_pkt_rssi->pwr_all);	
 
-	isCCKrate = (psample_pkt_rssi->data_rate <= DESC_RATE11M)?TRUE :FALSE;
+	isCCKrate = (psample_pkt_rssi->data_rate <= DESC_RATE11M)?true :false;
 
 	if(isCCKrate)
 		psample_pkt_rssi->mimo_singal_strength[0] = psample_pkt_rssi->pwdball;
@@ -1800,7 +1800,7 @@ void rtw_store_phy_info(_adapter *padapter, union recv_frame *prframe)
 	struct rx_raw_rssi *psample_pkt_rssi = &padapter->recvpriv.raw_rssi_info;
 	
 	psample_pkt_rssi->data_rate = pattrib->data_rate;
-	isCCKrate = (pattrib->data_rate <= DESC_RATE11M)?TRUE :FALSE;
+	isCCKrate = (pattrib->data_rate <= DESC_RATE11M)?true :false;
 	
 	psample_pkt_rssi->pwdball = pPhyInfo->RxPWDBAll;
 	psample_pkt_rssi->pwr_all = pPhyInfo->RecvSignalPower;
@@ -1840,13 +1840,13 @@ int check_phy_efuse_tx_power_info_valid(PADAPTER padapter) {
 	}
 	for (index = 0 ; index < 12 ; index++) {
 		if (pContent[tx_index_offset + index] == 0xFF) {
-			return _FALSE;
+			return false;
 		} else {
 			DBG_871X("0x%02x ,", pContent[EEPROM_TX_PWR_INX_88E+index]);
 		}
 	}
 	DBG_871X("\n");
-	return _TRUE;
+	return true;
 }
 
 int check_phy_efuse_macaddr_info_valid(PADAPTER padapter) {
@@ -1889,16 +1889,16 @@ int check_phy_efuse_macaddr_info_valid(PADAPTER padapter) {
 
 	if (addr_offset == 0x0000) {
 		DBG_871X("phy efuse MAC addr offset is 0!!\n");
-		return _FALSE;
+		return false;
 	} else {
 		rtw_efuse_map_read(padapter, addr_offset, 1, &val);
 	}
 
 	if (val == 0xFF) {
-		return _FALSE;
+		return false;
 	} else {
 		DBG_871X("phy efuse with valid MAC addr\n");
-		return _TRUE;
+		return true;
 	}
 }
 
@@ -1934,7 +1934,7 @@ u32 Hal_readPGDataFromConfigFile(
 	}
 
 	set_fs(fs);
-	pEEPROM->bloadfile_fail_flag = _FALSE;
+	pEEPROM->bloadfile_fail_flag = false;
 
 #ifdef CONFIG_DEBUG
 	DBG_871X("Efuse configure file:\n");
@@ -1990,9 +1990,9 @@ void Hal_ReadMACAddrFromFile(
 	}
 
 	set_fs(fs);
-	pEEPROM->bloadmac_fail_flag = _FALSE;
+	pEEPROM->bloadmac_fail_flag = false;
 
-	if (rtw_check_invalid_mac_address(pEEPROM->mac_addr) == _TRUE) {
+	if (rtw_check_invalid_mac_address(pEEPROM->mac_addr) == true) {
 		get_random_bytes(pEEPROM->mac_addr, ETH_ALEN);
 		pEEPROM->mac_addr[0] = 0x00;
 		pEEPROM->mac_addr[1] = 0xe0;
@@ -2045,7 +2045,7 @@ void Hal_GetPhyEfuseMACAddr(PADAPTER padapter, u8* mac_addr) {
 
 	rtw_efuse_map_read(padapter, addr_offset, ETH_ALEN, mac_addr);
 
-	if (rtw_check_invalid_mac_address(mac_addr) == _TRUE) {
+	if (rtw_check_invalid_mac_address(mac_addr) == true) {
 		get_random_bytes(mac_addr, ETH_ALEN);
 		mac_addr[0] = 0x00;
 		mac_addr[1] = 0xe0;
