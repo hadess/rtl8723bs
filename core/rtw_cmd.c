@@ -106,7 +106,6 @@ _func_enter_;
 	pevtpriv->evt_buf = pevtpriv->evt_allocated_buf  +  4 - ((unsigned int)(pevtpriv->evt_allocated_buf) & 3);
 	
 		
-#if defined(CONFIG_SDIO_HCI)
 	pevtpriv->allocated_c2h_mem = rtw_zmalloc(C2H_MEM_SZ +4); 
 	
 	if (pevtpriv->allocated_c2h_mem == NULL){
@@ -116,7 +115,6 @@ _func_enter_;
 
 	pevtpriv->c2h_mem = pevtpriv->allocated_c2h_mem +  4\
 	- ( (u32)(pevtpriv->allocated_c2h_mem) & 3);
-#endif //end of CONFIG_SDIO_HCI
 
 	_rtw_init_queue(&(pevtpriv->evt_queue));
 

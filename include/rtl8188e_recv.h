@@ -109,11 +109,9 @@ typedef struct rxreport_8188e
 } RXREPORT, *PRXREPORT;
 
 
-#ifdef CONFIG_SDIO_HCI
 s32 rtl8188es_init_recv_priv(PADAPTER padapter);
 void rtl8188es_free_recv_priv(PADAPTER padapter);
 void rtl8188es_recv_hdl(PADAPTER padapter, struct recv_buf *precvbuf);
-#endif
 
 void rtl8188e_query_rx_phy_status(union recv_frame *prframe, struct phy_stat *pphy_stat);
 void rtl8188e_process_phy_info(PADAPTER padapter, void *prframe);

@@ -70,7 +70,6 @@ void dump_log_level(void *sel)
 	DBG_871X_SEL_NL(sel, "log_level:%d\n", GlobalDebugLevel);
 }
 
-#ifdef CONFIG_SDIO_HCI
 void sd_f0_reg_dump(void *sel, _adapter *adapter)
 {
 	int i;
@@ -88,7 +87,6 @@ void sd_f0_reg_dump(void *sel, _adapter *adapter)
 			DBG_871X_SEL(sel, "\t");
 	}
 }
-#endif /* CONFIG_SDIO_HCI */
 
 void mac_reg_dump(void *sel, _adapter *adapter)
 {

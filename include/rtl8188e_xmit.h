@@ -253,7 +253,6 @@ struct txrpt_ccx_88e {
 
 void rtl8188e_fill_fake_txdesc(PADAPTER	padapter,u8*pDesc,u32 BufferLen,
 		u8 IsPsPoll,u8	IsBTQosNull, u8 bDataFrame);
-#ifdef CONFIG_SDIO_HCI
 s32 rtl8188es_init_xmit_priv(PADAPTER padapter);
 void rtl8188es_free_xmit_priv(PADAPTER padapter);
 s32 rtl8188es_hal_xmit(PADAPTER padapter, struct xmit_frame *pxmitframe);
@@ -264,7 +263,6 @@ s32 rtl8188es_xmit_buf_handler(PADAPTER padapter);
 
 #ifdef CONFIG_SDIO_TX_TASKLET
 void rtl8188es_xmit_tasklet(void *priv);
-#endif
 #endif
 
 #ifdef CONFIG_TX_EARLY_MODE

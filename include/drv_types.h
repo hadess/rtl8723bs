@@ -311,10 +311,8 @@ struct registry_priv
 
 
 
-#ifdef CONFIG_SDIO_HCI
 #include <drv_types_sdio.h>
 #define INTF_DATA SDIO_DATA
-#endif
 
 #ifdef CONFIG_CONCURRENT_MODE
 #define is_primary_adapter(adapter) (adapter->adapter_type == PRIMARY_ADAPTER)
@@ -601,9 +599,7 @@ static struct device *dvobj_to_dev(struct dvobj_priv *dvobj)
 #ifdef RTW_DVOBJ_CHIP_HW_TYPE
 #endif
 
-#ifdef CONFIG_SDIO_HCI
 	return &dvobj->intf_data.func->dev;
-#endif
 }
 
 _adapter *dvobj_get_port0_adapter(struct dvobj_priv *dvobj);
@@ -909,11 +905,9 @@ __inline static u8 *myid(struct eeprom_priv *peepriv)
 }
 
 // HCI Related header file
-#ifdef CONFIG_SDIO_HCI
 #include <sdio_osintf.h>
 #include <sdio_ops.h>
 #include <sdio_hal.h>
-#endif
 
 #ifdef CONFIG_BT_COEXIST
 #include <rtw_btcoex.h>

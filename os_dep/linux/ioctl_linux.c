@@ -6672,25 +6672,17 @@ static int rtw_mp_efuse_get(struct net_device *dev,
 				addr = EEPROM_MAC_ADDR_MAC1_92DE;
 		#endif // CONFIG_RTL8192D
 		#ifdef CONFIG_RTL8723A
-			#ifdef CONFIG_SDIO_HCI
 			addr = EEPROM_MAC_ADDR_8723AS;
-			#endif
 		#endif // CONFIG_RTL8723A
 		#ifdef CONFIG_RTL8188E
-			#ifdef CONFIG_SDIO_HCI
 			addr = EEPROM_MAC_ADDR_88ES;
-			#endif
 		#endif // CONFIG_RTL8188E
 
 		#ifdef CONFIG_RTL8192E
-			#ifdef CONFIG_SDIO_HCI
 			addr = EEPROM_MAC_ADDR_8192ES;
-			#endif
 		#endif
 		#ifdef CONFIG_RTL8723B
-		#ifdef CONFIG_SDIO_HCI
 		addr = EEPROM_MAC_ADDR_8723BS;
-		#endif
 		#endif // CONFIG_RTL8723B
 		cnts = 6;
 
@@ -7265,26 +7257,18 @@ static int rtw_mp_efuse_set(struct net_device *dev,
 				addr = EEPROM_MAC_ADDR_MAC1_92DE;
 		#endif
 		#ifdef CONFIG_RTL8723A
-		#ifdef CONFIG_SDIO_HCI
 		addr = EEPROM_MAC_ADDR_8723AS;
-		#endif
 		#endif // CONFIG_RTL8723A
 		#ifdef CONFIG_RTL8188E
-			#ifdef CONFIG_SDIO_HCI
 			addr = EEPROM_MAC_ADDR_88ES;
-			#endif
 		#endif //#ifdef CONFIG_RTL8188E
 
 		#ifdef CONFIG_RTL8192E
-			#ifdef CONFIG_SDIO_HCI
 			addr = EEPROM_MAC_ADDR_8192ES;
-			#endif
 		#endif //#ifdef CONFIG_RTL8192E
 		
 		#ifdef CONFIG_RTL8723B
-		#ifdef CONFIG_SDIO_HCI
 		addr = EEPROM_MAC_ADDR_8723BS;
-		#endif
 		#endif // CONFIG_RTL8723B
 
 		cnts = strlen(tmp[1]);
@@ -8494,10 +8478,8 @@ extern void rtl8723a_fill_default_txdesc(struct xmit_frame *pxmitframe, u8 *pbuf
 #include <rtl8188e_hal.h>
 extern void rtl8188e_cal_txdesc_chksum(struct tx_desc *ptxdesc);
 #define cal_txdesc_chksum rtl8188e_cal_txdesc_chksum
-#ifdef CONFIG_SDIO_HCI
 extern void rtl8188es_fill_default_txdesc(struct xmit_frame *pxmitframe, u8 *pbuf);
 #define fill_default_txdesc rtl8188es_fill_default_txdesc
-#endif // CONFIG_SDIO_HCI
 #endif // CONFIG_RTL8188E
 #if defined(CONFIG_RTL8723B)
 extern void rtl8723b_cal_txdesc_chksum(struct tx_desc *ptxdesc);

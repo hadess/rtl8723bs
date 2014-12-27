@@ -31,9 +31,6 @@
 #ifndef CONFIG_RTL8723B
 #define CONFIG_RTL8723B
 #endif
-#define CONFIG_SDIO_HCI
-
-//#define CONFIG_SDIO_HCI config from Makefile
 
 #define CONFIG_EMBEDDED_FWIMG
 //#define CONFIG_FILE_FWIMG
@@ -152,9 +149,7 @@
 	#define CONFIG_IPS
 	#define CONFIG_LPS
 
-	#if defined(CONFIG_SDIO_HCI)
 	#define CONFIG_LPS_LCLK
-	#endif
 
 	#ifdef CONFIG_LPS
 		#define CONFIG_CHECK_LEAVE_LPS

@@ -20,16 +20,11 @@
 #ifndef __RTL8812A_RECV_H__
 #define __RTL8812A_RECV_H__
 
-#if defined(CONFIG_SDIO_HCI)
-
 #ifdef CONFIG_SDIO_RX_COPY
 #define MAX_RECVBUF_SZ (10240)
 #else // !CONFIG_SDIO_RX_COPY
 #define MAX_RECVBUF_SZ	MAX_RX_DMA_BUFFER_SIZE_8821
 #endif // !CONFIG_SDIO_RX_COPY
-
-#endif
-
 
 // Rx smooth factor
 #define Rx_Smooth_Factor (20)
@@ -106,10 +101,8 @@
 #define SET_RX_STATUS_DESC_BUFF_ADDR_8812(__pRxDesc, __Value) 	SET_BITS_TO_LE_4BYTE(__pRxDesc+24, 0, 32, __Value)
 
 
-#ifdef CONFIG_SDIO_HCI
 s32 InitRecvPriv8821AS(PADAPTER padapter);
 void FreeRecvPriv8821AS(PADAPTER padapter);
-#endif // CONFIG_SDIO_HCI
 
 void	rtl8812_query_rx_desc_status(union recv_frame *precvframe, u8 *pdesc);
 void	rtl8812_query_rx_phy_status(union recv_frame *prframe, u8 *pphy_stat);

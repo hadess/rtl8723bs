@@ -39,7 +39,6 @@
 #include "rtl8723a_cmd.h"
 #include "rtl8723a_led.h"
 #include "Hal8723PwrSeq.h"
-#if defined(CONFIG_SDIO_HCI)
 
 	//2TODO: We should define 8192S firmware related macro settings here!!
 	#define RTL819X_DEFAULT_RF_TYPE			RF_1T2R
@@ -73,7 +72,6 @@
 
 	#define Rtl8723_PHY_REG_Array_PG 			Rtl8723SPHY_REG_Array_PG
 	#define Rtl8723_PHY_REG_Array_PGLength		Rtl8723SPHY_REG_Array_PGLength
-#endif // CONFIG_SDIO_HCI
 
 #define FW_8723A_SIZE			0x8000
 #define FW_8723A_START_ADDRESS	0x1000

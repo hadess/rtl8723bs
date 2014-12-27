@@ -22,10 +22,6 @@
 #include <drv_types.h>
 #include <linux/jiffies.h>
 
-#ifndef CONFIG_SDIO_HCI
-#error "CONFIG_SDIO_HCI shall be on!\n"
-#endif
-
 #ifndef dev_to_sdio_func
 #define dev_to_sdio_func(d)     container_of(d, struct sdio_func, dev)
 #endif

@@ -27,9 +27,7 @@
 #include <hal_btcoex.h>
 #endif
 
-#ifdef CONFIG_SDIO_HCI
 #include <hal_sdio.h>
-#endif
 
 //
 // <Roger_Notes> For RTL8723 WiFi/BT/GPS multi-function configuration. 2010.10.06.
@@ -494,7 +492,6 @@ typedef struct hal_com_data
 
 	RT_AMPDU_BRUST		AMPDUBurstMode; //92C maybe not use, but for compile successfully
 
-#ifdef CONFIG_SDIO_HCI
 	//
 	// For SDIO Interface HAL related
 	//
@@ -525,7 +522,6 @@ typedef struct hal_com_data
 	u16			SdioRxFIFOSize;
 
 	u32			sdio_tx_max_len[SDIO_MAX_TX_QUEUE];// H, N, L, used for sdio tx aggregation max length per queue
-#endif //CONFIG_SDIO_HCI
 
 	struct dm_priv	dmpriv;
 	DM_ODM_T 		odmpriv;

@@ -5060,7 +5060,7 @@ void issue_action_BA(_adapter *padapter, unsigned char *raddr, unsigned char act
 				else
 #endif
 				{
-					#if defined(CONFIG_RTL8188E) && defined(CONFIG_SDIO_HCI)
+					#if defined(CONFIG_RTL8188E)
 					BA_para_set = (0x0802 | ((status & 0xf) << 2)); //immediate ack & 16 buffer size
 					#else
 					BA_para_set = (0x1002 | ((status & 0xf) << 2)); //immediate ack & 64 buffer size
@@ -5096,7 +5096,7 @@ void issue_action_BA(_adapter *padapter, unsigned char *raddr, unsigned char act
 				pframe = rtw_set_fixed_ie(pframe, 2, (unsigned char *)(&status), &(pattrib->pktlen));
 				/*
 				//BA_para_set = cpu_to_le16((le16_to_cpu(pmlmeinfo->ADDBA_req.BA_para_set) & 0x3f) | 0x1000); //64 buffer size
-				#if defined(CONFIG_RTL8188E )&& defined (CONFIG_SDIO_HCI)
+				#if defined(CONFIG_RTL8188E )
 				BA_para_set = ((le16_to_cpu(pmlmeinfo->ADDBA_req.BA_para_set) & 0x3f) | 0x0800); //32buffer size
 				#else
 				BA_para_set = ((le16_to_cpu(pmlmeinfo->ADDBA_req.BA_para_set) & 0x3f) | 0x1000); //64 buffer size
@@ -5390,7 +5390,6 @@ unsigned int send_beacon(_adapter *padapter)
 	//struct mlme_priv *pbuddy_mlmepriv = &(pbuddy_adapter->mlmepriv);
 //#endif		
 
-#if defined(CONFIG_SDIO_HCI)
 	unsigned long start = jiffies;
 
 	rtw_hal_set_hwreg(padapter, HW_VAR_BCN_VALID, NULL);
@@ -5428,9 +5427,6 @@ unsigned int send_beacon(_adapter *padapter)
 		
 		return _SUCCESS;
 	}
-
-#endif
-
 }
 
 /****************************************************************************

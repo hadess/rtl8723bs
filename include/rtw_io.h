@@ -119,10 +119,7 @@ struct _io_ops
 		void (*_read_port_cancel)(struct intf_hdl *pintfhdl);
 		void (*_write_port_cancel)(struct intf_hdl *pintfhdl);
 
-#ifdef CONFIG_SDIO_HCI
 		u8 (*_sd_f0_read8)(struct intf_hdl *pintfhdl, u32 addr);
-#endif
-		
 };
 
 struct io_req {	
@@ -275,11 +272,8 @@ struct reg_protocol_wt {
 #endif
 
 };
-#ifdef CONFIG_SDIO_HCI
 #define SD_IO_TRY_CNT (8)
 #define MAX_CONTINUAL_IO_ERR SD_IO_TRY_CNT
-#endif
-
 
 int rtw_inc_and_chk_continual_io_error(struct dvobj_priv *dvobj);
 void rtw_reset_continual_io_error(struct dvobj_priv *dvobj);

@@ -20,12 +20,7 @@
 #ifndef __RTL8192E_RECV_H__
 #define __RTL8192E_RECV_H__
 
-#if defined(CONFIG_SDIO_HCI)
-
 #define MAX_RECVBUF_SZ (10240)
-
-#endif
-
 
 // Rx smooth factor
 #define Rx_Smooth_Factor (20)
@@ -120,11 +115,9 @@
 #define GET_RX_STATUS_DESC_BUFF_ADDR64_92E(__pRxDesc) 		LE_BITS_TO_4BYTE(__pRxDesc+28, 0, 32)
 
 
-#ifdef CONFIG_SDIO_HCI
 s32 rtl8812s_init_recv_priv(PADAPTER padapter);
 void rtl8812s_free_recv_priv(PADAPTER padapter);
 void rtl8812s_recv_hdl(PADAPTER padapter, struct recv_buf *precvbuf);
-#endif
 
 void rtl8192e_query_rx_desc_status(union recv_frame *precvframe, u8 *pdesc);
 void rtl8192e_query_rx_phy_status(union recv_frame *prframe, u8 *pphy_stat);

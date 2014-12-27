@@ -118,10 +118,7 @@ typedef enum _RT_SPINLOCK_TYPE{
 	#define	ps8Byte 	s64*	
 	
 #endif
-	#if defined(CONFIG_SDIO_HCI)
-		#define DEV_BUS_TYPE  	RT_SDIO_INTERFACE
-	#endif
-	
+	#define DEV_BUS_TYPE  	RT_SDIO_INTERFACE
 
 	#if defined(CONFIG_LITTLE_ENDIAN)	
 		#define	ODM_ENDIAN_TYPE			ODM_ENDIAN_LITTLE

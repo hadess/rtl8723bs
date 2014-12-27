@@ -219,7 +219,6 @@ void handle_txrpt_ccx_8723a(_adapter *adapter, void *buf);
 void rtl8723a_update_txdesc(struct xmit_frame *pxmitframe, u8 *pmem);
 void rtl8723a_fill_fake_txdesc(PADAPTER padapter, u8 *pDesc, u32 BufferLen, u8 IsPsPoll, u8 IsBTQosNull);
 
-#if defined(CONFIG_SDIO_HCI)
 s32 rtl8723as_init_xmit_priv(PADAPTER padapter);
 void rtl8723as_free_xmit_priv(PADAPTER padapter);
 s32 rtl8723as_hal_xmit(PADAPTER padapter, struct xmit_frame *pxmitframe);
@@ -227,7 +226,6 @@ s32 rtl8723as_mgnt_xmit(PADAPTER padapter, struct xmit_frame *pmgntframe);
 s32	rtl8723as_hal_xmitframe_enqueue(_adapter *padapter, struct xmit_frame *pxmitframe);
 s32 rtl8723as_xmit_buf_handler(PADAPTER padapter);
 thread_return rtl8723as_xmit_thread(thread_context context);
-#endif
 
 #endif
 

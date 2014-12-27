@@ -24,10 +24,8 @@
 //================================================================================
 // Interface to manipulate LED objects.
 //================================================================================
-#ifdef CONFIG_SDIO_HCI
 void rtl8723as_InitSwLeds(PADAPTER padapter);
 void rtl8723as_DeInitSwLeds(PADAPTER padapter);
-#endif
 
 #endif
 

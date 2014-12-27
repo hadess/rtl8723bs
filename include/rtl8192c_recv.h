@@ -24,13 +24,7 @@
 #define RECV_BLK_CNT 16
 #define RECV_BLK_TH RECV_BLK_CNT
 
-#if defined(CONFIG_SDIO_HCI)
-
 #define MAX_RECVBUF_SZ (10240)
-
-#endif
-
-
 
 struct phy_stat
 {

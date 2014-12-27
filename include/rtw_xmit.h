@@ -21,7 +21,6 @@
 #define _RTW_XMIT_H_
 
 
-#if defined(CONFIG_SDIO_HCI)
 #ifdef CONFIG_TX_AGGREGATION
 #define MAX_XMITBUF_SZ	(20480)	// 20k
 //#define SDIO_TX_AGG_MAX	5
@@ -30,11 +29,7 @@
 #define SDIO_TX_AGG_MAX	1
 #endif
 
-#if defined CONFIG_SDIO_HCI
 #define NR_XMITBUFF	(16)
-#endif
-
-#endif
 
 #ifdef USB_XMITBUF_ALIGN_SZ
 #define XMITBUF_ALIGN_SZ (USB_XMITBUF_ALIGN_SZ)
@@ -127,9 +122,7 @@ do{\
 #endif
 
 
-#if defined(CONFIG_SDIO_HCI)
 #define TXDESC_OFFSET TXDESC_SIZE
-#endif
 
 enum TXDESC_SC{
 	SC_DONT_CARE = 0x00,
@@ -377,7 +370,6 @@ struct xmit_buf
 
 	struct submit_ctx *sctx;
 
-#if defined(CONFIG_SDIO_HCI)
 	u8 *phead;
 	u8 *pdata;
 	u8 *ptail;
@@ -385,7 +377,6 @@ struct xmit_buf
 	u32 ff_hwaddr;
 	u8	pg_num;	
 	u8	agg_num;
-#endif
 
 #if defined(DBG_XMIT_BUF )|| defined(DBG_XMIT_BUF_EXT)
 	u8 no;
@@ -410,10 +401,8 @@ struct xmit_frame
 
 	struct xmit_buf *pxmitbuf;
 
-#if defined(CONFIG_SDIO_HCI)
 	u8	pg_num;
 	u8	agg_num;
-#endif
 
 #ifdef CONFIG_XMIT_ACK
 	u8 ack_report;
@@ -533,7 +522,6 @@ struct	xmit_priv	{
 
 	u8	wmm_para_seq[4];//sequence for wmm ac parameter strength from large to small. it's value is 0->vo, 1->vi, 2->be, 3->bk.
 
-#ifdef CONFIG_SDIO_HCI
 #ifdef CONFIG_SDIO_TX_TASKLET
 	struct tasklet_struct xmit_tasklet;
 #else
@@ -541,7 +529,6 @@ struct	xmit_priv	{
 	_sema		SdioXmitSema;
 	_sema		SdioXmitTerminateSema;
 #endif /* CONFIG_SDIO_TX_TASKLET */
-#endif /* CONFIG_SDIO_HCI */
 
 	_queue free_xmitbuf_queue;
 	_queue pending_xmitbuf_queue;
@@ -559,12 +546,8 @@ struct	xmit_priv	{
 	u16	nqos_ssn;
 	#ifdef CONFIG_TX_EARLY_MODE
 
-	#ifdef CONFIG_SDIO_HCI
-	#define MAX_AGG_PKT_NUM 20	
-	#else
-	#define MAX_AGG_PKT_NUM 256 //Max tx ampdu coounts		
-	#endif
-	
+	#define MAX_AGG_PKT_NUM 20
+
 	struct agg_pkt_info agg_pkt[MAX_AGG_PKT_NUM];
 	#endif
 

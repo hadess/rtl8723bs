@@ -596,10 +596,7 @@ void rtw_os_read_port(_adapter *padapter, struct recv_buf *precvbuf)
 {
 	struct recv_priv *precvpriv = &padapter->recvpriv;
 
-#if defined(CONFIG_SDIO_HCI)
-		precvbuf->pskb = NULL;
-#endif
-
+	precvbuf->pskb = NULL;
 }
 void _rtw_reordering_ctrl_timeout_handler (void *FunctionContext);
 void _rtw_reordering_ctrl_timeout_handler (void *FunctionContext)
