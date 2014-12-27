@@ -164,8 +164,8 @@ typedef struct _RX_High_Power_
 	u1Byte		Cur_IGI;
 	u1Byte		Pre_pw_th;
 	u1Byte		Cur_pw_th;
-	BOOLEAN		First_time_enter;
-	BOOLEAN		RXHP_enable;
+	bool		First_time_enter;
+	bool		RXHP_enable;
 	u1Byte		TP_Mode;
 	RT_TIMER	PSDTimer;
 }RXHP_T, *pRXHP_T;
@@ -210,10 +210,10 @@ typedef struct _SW_Antenna_Switch_
 	u4Byte		SWAS_NoLink_BK_Reg860;
 	u4Byte		SWAS_NoLink_BK_Reg92c;
 	u4Byte		SWAS_NoLink_BK_Reg948;
-	BOOLEAN		ANTA_ON;	//To indicate Ant A is or not
-	BOOLEAN		ANTB_ON;	//To indicate Ant B is on or not
-	BOOLEAN		Pre_Aux_FailDetec;
-	BOOLEAN		RSSI_AntDect_bResult;	
+	bool		ANTA_ON;	//To indicate Ant A is or not
+	bool		ANTB_ON;	//To indicate Ant B is on or not
+	bool		Pre_Aux_FailDetec;
+	bool		RSSI_AntDect_bResult;	
 	u1Byte		Ant5G;
 	u1Byte		Ant2G;
 
@@ -235,7 +235,7 @@ typedef struct _SW_Antenna_Switch_
 #if (RTL8723B_SUPPORT == 1)||(RTL8821A_SUPPORT == 1)	
 	RT_TIMER 	SwAntennaSwitchTimer_8723B;
 	u4Byte		PktCnt_SWAntDivByCtrlFrame;
-	BOOLEAN		bSWAntDivByCtrlFrame;
+	bool		bSWAntDivByCtrlFrame;
 #endif
 
 /* CE Platform use
@@ -279,8 +279,8 @@ typedef struct _ODM_RATE_ADAPTIVE
 {
 	u1Byte				Type;				// DM_Type_ByFW/DM_Type_ByDriver
 	u1Byte				LdpcThres;			// if RSSI > LdpcThres => switch from LPDC to BCC
-	BOOLEAN				bUseLdpc;
-	BOOLEAN				bLowerRtsRate;
+	bool				bUseLdpc;
+	bool				bLowerRtsRate;
 	u1Byte				HighRSSIThresh;		// if RSSI > HighRSSIThresh	=> RATRState is DM_RATR_STA_HIGH
 	u1Byte				LowRSSIThresh;		// if RSSI <= LowRSSIThresh	=> RATRState is DM_RATR_STA_LOW
 	u1Byte				RATRState;			// Current RSSI level, DM_RATR_STA_HIGH/DM_RATR_STA_MIDDLE/DM_RATR_STA_LOW
@@ -356,10 +356,10 @@ typedef struct _ODM_Per_Pkt_Info_
 	//u1Byte		Rate;	
 	u1Byte		DataRate;
 	u1Byte		StationID;
-	BOOLEAN		bPacketMatchBSSID;
-	BOOLEAN		bPacketToSelf;
-	BOOLEAN		bPacketBeacon;
-	BOOLEAN		bToSelf;
+	bool		bPacketMatchBSSID;
+	bool		bPacketToSelf;
+	bool		bPacketBeacon;
+	bool		bToSelf;
 }ODM_PACKET_INFO_T,*PODM_PACKET_INFO_T;
 
 
@@ -408,7 +408,7 @@ typedef enum tag_Dynamic_ODM_Support_Ability_Type
 #if 1
 typedef		struct _ODM_STA_INFO{
 	// Driver Write
-	BOOLEAN		bUsed;				// record the sta status link or not?
+	bool		bUsed;				// record the sta status link or not?
 	//u1Byte		WirelessMode;		// 
 	u1Byte		IOTPeer;			// Enum value.	HT_IOT_PEER_E
 
@@ -887,9 +887,9 @@ typedef struct _ODM_RA_Info_
 } ODM_RA_INFO_T,*PODM_RA_INFO_T;
 
 typedef struct _IQK_MATRIX_REGS_SETTING{
-	BOOLEAN 	bIQKDone;
+	bool 	bIQKDone;
 	s4Byte		Value[3][IQK_Matrix_REG_NUM];
-	BOOLEAN 	bBWIqkResultSaved[3];	
+	bool 	bBWIqkResultSaved[3];	
 }IQK_MATRIX_REGS_SETTING,*PIQK_MATRIX_REGS_SETTING;
 
 
@@ -906,8 +906,8 @@ typedef struct ODM_RF_Calibration_Structure
 	s4Byte	RegEBC;	
 
 	u1Byte  	TXPowercount;
-	BOOLEAN bTXPowerTrackingInit; 
-	BOOLEAN bTXPowerTracking;
+	bool bTXPowerTrackingInit; 
+	bool bTXPowerTracking;
 	u1Byte  	TxPowerTrackControl; //for mp mode, turn off txpwrtracking as default
 	u1Byte  	TM_Trigger;
     	u1Byte  	InternalPA5G[2];	//pathA / pathB
@@ -923,9 +923,9 @@ typedef struct ODM_RF_Calibration_Structure
 	u1Byte	ThermalValue_Crystal;
 	u1Byte	ThermalValue_DPKstore;
 	u1Byte	ThermalValue_DPKtrack;
-	BOOLEAN	TxPowerTrackingInProgress;
+	bool	TxPowerTrackingInProgress;
 	
-	BOOLEAN	bReloadtxpowerindex;	
+	bool	bReloadtxpowerindex;	
 	u1Byte 	bRfPiEnable;
 	u4Byte 	TXPowerTrackingCallbackCnt; //cosa add for debug
 
@@ -937,13 +937,13 @@ typedef struct ODM_RF_Calibration_Structure
 	s1Byte	PowerIndexOffset[MAX_RF_PATH];
 	s1Byte	DeltaPowerIndex[MAX_RF_PATH];
 	s1Byte	DeltaPowerIndexLast[MAX_RF_PATH];	
-	BOOLEAN bTxPowerChanged;
+	bool bTxPowerChanged;
 		
 	u1Byte 	ThermalValue_HP[HP_THERMAL_NUM];
 	u1Byte 	ThermalValue_HP_index;
 	IQK_MATRIX_REGS_SETTING IQKMatrixRegSetting[IQK_Matrix_Settings_NUM];
-	BOOLEAN	bNeedIQK;
-	BOOLEAN	bIQKInProgress;	
+	bool	bNeedIQK;
+	bool	bIQKInProgress;	
 	u1Byte	Delta_IQK;
 	u1Byte	Delta_LCK;
 	s1Byte  BBSwingDiff2G, BBSwingDiff5G; // Unit: dB
@@ -974,9 +974,9 @@ typedef struct ODM_RF_Calibration_Structure
 	u4Byte 	Reg860;
 	u4Byte 	Reg864;
 	
-	BOOLEAN	bIQKInitialized;
-	BOOLEAN bLCKInProgress;
-	BOOLEAN	bAntennaDetected;
+	bool	bIQKInitialized;
+	bool bLCKInProgress;
+	bool	bAntennaDetected;
 	u4Byte	ADDA_backup[IQK_ADDA_REG_NUM];
 	u4Byte	IQK_MAC_backup[IQK_MAC_REG_NUM];
 	u4Byte	IQK_BB_backup_recover[9];
@@ -991,7 +991,7 @@ typedef struct ODM_RF_Calibration_Structure
 	u1Byte 	bAPKThermalMeterIgnore;
 	
 	// DPK
-	BOOLEAN bDPKFail;	
+	bool bDPKFail;	
 	u1Byte 	bDPdone;
 	u1Byte 	bDPPathAOK;
 	u1Byte 	bDPPathBOK;
@@ -1023,7 +1023,7 @@ typedef struct _FAST_ANTENNA_TRAINNING_
 	u4Byte	MainAnt_Cnt[ODM_ASSOCIATE_ENTRY_NUM];
 	u4Byte	AuxAnt_Cnt[ODM_ASSOCIATE_ENTRY_NUM];
 	u1Byte	RxIdleAnt;
-	BOOLEAN	bBecomeLinked;
+	bool	bBecomeLinked;
 	u4Byte	MinMaxRSSI;
 	u1Byte	idx_AntDiv_counter_2G;
 	u1Byte	idx_AntDiv_counter_5G;
@@ -1083,7 +1083,7 @@ typedef enum _BASEBAND_CONFIG_PHY_REG_PG_VALUE_TYPE{
 // Antenna detection information from single tone mechanism, added by Roger, 2012.11.27.
 //
 typedef struct _ANT_DETECTED_INFO{
-	BOOLEAN			bAntDetected;
+	bool			bAntDetected;
 	u4Byte			dBForAntA;
 	u4Byte			dBForAntB;
 	u4Byte			dBForAntO;
@@ -1100,7 +1100,7 @@ typedef  struct DM_Out_Source_Dynamic_Mechanism_Structure
 	//
 	PADAPTER		Adapter;		// For CE/NIC team
 	// WHen you use Adapter or priv pointer, you must make sure the pointer is ready.
-	BOOLEAN			odm_ready;
+	bool			odm_ready;
 
 	PHY_REG_PG_TYPE		PhyRegPgValueType;
 	u1Byte				PhyRegPgVersion;
@@ -1111,24 +1111,24 @@ typedef  struct DM_Out_Source_Dynamic_Mechanism_Structure
 	u4Byte			NumQryPhyStatusAll; 	//CCK + OFDM
 	u4Byte			LastNumQryPhyStatusAll; 
 	u4Byte			RxPWDBAve;
-	BOOLEAN			MPDIG_2G; 		//off MPDIG
+	bool			MPDIG_2G; 		//off MPDIG
 	u1Byte			Times_2G;
 	
 //------ ODM HANDLE, DRIVER NEEDS NOT TO HOOK------//
-	BOOLEAN			bCckHighPower; 
+	bool			bCckHighPower; 
 	u1Byte			RFPathRxEnable;		// ODM_CMNINFO_RFPATH_ENABLE
 	u1Byte			ControlChannel;
 //------ ODM HANDLE, DRIVER NEEDS NOT TO HOOK------//
 
 //--------REMOVED COMMON INFO----------//
 	//u1Byte				PseudoMacPhyMode;
-	//BOOLEAN			*BTCoexist;
-	//BOOLEAN			PseudoBtCoexist;
+	//bool			*BTCoexist;
+	//bool			PseudoBtCoexist;
 	//u1Byte				OPMode;
-	//BOOLEAN			bAPMode;
-	//BOOLEAN			bClientMode;
-	//BOOLEAN			bAdHocMode;
-	//BOOLEAN			bSlaveOfDMSP;
+	//bool			bAPMode;
+	//bool			bClientMode;
+	//bool			bAdHocMode;
+	//bool			bSlaveOfDMSP;
 //--------REMOVED COMMON INFO----------//
 
 
@@ -1169,10 +1169,10 @@ typedef  struct DM_Out_Source_Dynamic_Mechanism_Structure
 	// with external TRSW  NO/Yes = 0/1
 	u1Byte			ExtTRSW;
 	u1Byte			PatchID; //Customer ID
-	BOOLEAN			bInHctTest;
-	BOOLEAN			bWIFITest;
+	bool			bInHctTest;
+	bool			bWIFITest;
 
-	BOOLEAN			bDualMacSmartConcurrent;
+	bool			bDualMacSmartConcurrent;
 	u4Byte			BK_SupportAbility;
 	u1Byte			AntDivType;
 //-----------HOOK BEFORE REG INIT-----------//	
@@ -1183,7 +1183,7 @@ typedef  struct DM_Out_Source_Dynamic_Mechanism_Structure
 //--------- POINTER REFERENCE-----------//
 
 	u1Byte			u1Byte_temp;
-	BOOLEAN			BOOLEAN_temp;
+	bool			bool_temp;
 	PADAPTER		PADAPTER_temp;
 	
 	// MAC PHY Mode SMSP/DMSP/DMDP = 0/1/2
@@ -1204,48 +1204,48 @@ typedef  struct DM_Out_Source_Dynamic_Mechanism_Structure
 	u1Byte			*pBandWidth;
  	// Central channel location Ch1/Ch2/....
 	u1Byte			*pChannel;	//central channel number
-	BOOLEAN			DPK_Done;
+	bool			DPK_Done;
 	// Common info for 92D DMSP
 	
-	BOOLEAN			*pbGetValueFromOtherMac;
+	bool			*pbGetValueFromOtherMac;
 	PADAPTER		*pBuddyAdapter;
-	BOOLEAN			*pbMasterOfDMSP; //MAC0: master, MAC1: slave
+	bool			*pbMasterOfDMSP; //MAC0: master, MAC1: slave
 	// Common info for Status
-	BOOLEAN			*pbScanInProcess;
-	BOOLEAN			*pbPowerSaving;
+	bool			*pbScanInProcess;
+	bool			*pbPowerSaving;
 	// CCA Path 2-path/path-A/path-B = 0/1/2; using ODM_CCA_PATH_E.
 	u1Byte			*pOnePathCCA;
 	//pMgntInfo->AntennaTest
 	u1Byte			*pAntennaTest;
-	BOOLEAN			*pbNet_closed;
+	bool			*pbNet_closed;
 	u1Byte			*mp_mode;
 	//u1Byte			*pAidMap;
 	u1Byte			*pu1ForcedIgiLb;
 //--------- For 8723B IQK-----------//
-	BOOLEAN			*pIs1Antenna;
+	bool			*pIs1Antenna;
 	u1Byte			*pRFDefaultPath;
 	// 0:S1, 1:S0
 
 //--------- POINTER REFERENCE-----------//
 	pu2Byte			pForcedDataRate;
 //------------CALL BY VALUE-------------//
-	BOOLEAN			bLinkInProcess;
-	BOOLEAN			bWIFI_Direct;
-	BOOLEAN			bWIFI_Display;
-	BOOLEAN			bLinked;
+	bool			bLinkInProcess;
+	bool			bWIFI_Direct;
+	bool			bWIFI_Display;
+	bool			bLinked;
 
-	BOOLEAN			bsta_state;
+	bool			bsta_state;
 	u1Byte			RSSI_Min;	
 	u1Byte          InterfaceIndex; // Add for 92D  dual MAC: 0--Mac0 1--Mac1
-	BOOLEAN         bIsMPChip;
-	BOOLEAN			bOneEntryOnly;
+	bool         bIsMPChip;
+	bool			bOneEntryOnly;
 	// Common info for BTDM
-	BOOLEAN			bBtEnabled;			// BT is disabled
-	BOOLEAN			bBtConnectProcess;	// BT HS is under connection progress.
+	bool			bBtEnabled;			// BT is disabled
+	bool			bBtConnectProcess;	// BT HS is under connection progress.
 	u1Byte			btHsRssi;				// BT HS mode wifi rssi value.
-	BOOLEAN			bBtHsOperation;		// BT HS mode is under progress
-	BOOLEAN			bBtDisableEdcaTurbo;	// Under some condition, don't enable the EDCA Turbo
-	BOOLEAN			bBtLimitedDig;   		// BT is busy.
+	bool			bBtHsOperation;		// BT HS mode is under progress
+	bool			bBtDisableEdcaTurbo;	// Under some condition, don't enable the EDCA Turbo
+	bool			bBtLimitedDig;   		// BT is busy.
 //------------CALL BY VALUE-------------//
 	u1Byte			RSSI_A;
 	u1Byte			RSSI_B;
@@ -1255,25 +1255,25 @@ typedef  struct DM_Out_Source_Dynamic_Mechanism_Structure
 	u8Byte			RSSI_TRSW_iso;
 
 	u1Byte			RxRate;
-	BOOLEAN			bNoisyState;
+	bool			bNoisyState;
 	u1Byte			TxRate;
 	u1Byte			LinkedInterval;
 	u1Byte			preChannel;
 	u4Byte			TxagcOffsetValueA;
-	BOOLEAN			IsTxagcOffsetPositiveA;
+	bool			IsTxagcOffsetPositiveA;
 	u4Byte			TxagcOffsetValueB;
-	BOOLEAN			IsTxagcOffsetPositiveB;
+	bool			IsTxagcOffsetPositiveB;
 	u8Byte			lastTxOkCnt;
 	u8Byte			lastRxOkCnt;
 	u4Byte			BbSwingOffsetA;
-	BOOLEAN			IsBbSwingOffsetPositiveA;
+	bool			IsBbSwingOffsetPositiveA;
 	u4Byte			BbSwingOffsetB;
-	BOOLEAN			IsBbSwingOffsetPositiveB;
+	bool			IsBbSwingOffsetPositiveB;
 	s1Byte			TH_L2H_ini;
 	s1Byte			TH_EDCCA_HL_diff;
 	s1Byte			IGI_Base;
 	u1Byte			IGI_target;
-	BOOLEAN			ForceEDCCA;
+	bool			ForceEDCCA;
 	u1Byte			AdapEn_RSSI;
 	s1Byte			Force_TH_H;
 	s1Byte			Force_TH_L;
@@ -1284,13 +1284,13 @@ typedef  struct DM_Out_Source_Dynamic_Mechanism_Structure
 	u1Byte		        antdiv_period;
         u1Byte		        antdiv_select;	
 	u1Byte			NdpaPeriod;
-	BOOLEAN			H2C_RARpt_connect;
+	bool			H2C_RARpt_connect;
 
 	// add by Yu Cehn for adaptivtiy
-	BOOLEAN			adaptivity_flag;
-	BOOLEAN			NHM_disable;
-	BOOLEAN			TxHangFlg;
-	BOOLEAN			Carrier_Sense_enable;
+	bool			adaptivity_flag;
+	bool			NHM_disable;
+	bool			TxHangFlg;
+	bool			Carrier_Sense_enable;
 	u1Byte			tolerance_cnt;
 	u8Byte			NHMCurTxOkcnt;
 	u8Byte			NHMCurRxOkcnt;
@@ -1319,7 +1319,7 @@ typedef  struct DM_Out_Source_Dynamic_Mechanism_Structure
 	// 2012/02/14 MH Add to share 88E ra with other SW team.
 	// We need to colelct all support abilit to a proper area.
 	//
-	BOOLEAN				RaSupport88E;
+	bool				RaSupport88E;
 
 	// Define ...........
 
@@ -1351,7 +1351,7 @@ typedef  struct DM_Out_Source_Dynamic_Mechanism_Structure
 	false_ALARM_STATISTICS		FlaseAlmCntBuddyAdapter;
 	//#ifdef CONFIG_ANTENNA_DIVERSITY
 	SWAT_T						DM_SWAT_Table;
-	BOOLEAN						RSSI_test;
+	bool						RSSI_test;
 	CFO_TRACKING    				DM_CfoTrack;
 	//#endif 
 
@@ -1374,17 +1374,17 @@ typedef  struct DM_Out_Source_Dynamic_Mechanism_Structure
 	//u8	AntDivCfg;// 0:OFF , 1:ON, 2:by efuse
 	//PSTA_INFO_T RSSI_target;
 
-	BOOLEAN			*pbDriverStopped;
-	BOOLEAN			*pbDriverIsGoingToPnpSetPowerSleep;
-	BOOLEAN			*pinit_adpt_in_progress;
+	bool			*pbDriverStopped;
+	bool			*pbDriverIsGoingToPnpSetPowerSleep;
+	bool			*pinit_adpt_in_progress;
 
 	//PSD
-	BOOLEAN			bUserAssignLevel;
+	bool			bUserAssignLevel;
 	RT_TIMER 		PSDTimer;
 	u1Byte			RSSI_BT;			//come from BT
-	BOOLEAN			bPSDinProcess;
-	BOOLEAN			bPSDactive;
-	BOOLEAN			bDMInitialGainEnable;
+	bool			bPSDinProcess;
+	bool			bPSDactive;
+	bool			bDMInitialGainEnable;
 
 	//MPT DIG
 	RT_TIMER 		MPT_DIGTimer;
@@ -1404,23 +1404,23 @@ typedef  struct DM_Out_Source_Dynamic_Mechanism_Structure
 	u1Byte			BbSwingIdxOfdm[MAX_RF_PATH];
 	u1Byte			BbSwingIdxOfdmCurrent;
 	u1Byte			BbSwingIdxOfdmBase[MAX_RF_PATH];
-	BOOLEAN			BbSwingFlagOfdm;
+	bool			BbSwingFlagOfdm;
 	u1Byte			BbSwingIdxCck;
 	u1Byte			BbSwingIdxCckCurrent;
 	u1Byte			BbSwingIdxCckBase;
 	u1Byte			DefaultOfdmIndex;
 	u1Byte			DefaultCckIndex;	
-	BOOLEAN			BbSwingFlagCck;
+	bool			BbSwingFlagCck;
 	
 	s1Byte			Absolute_OFDMSwingIdx[MAX_RF_PATH];   
 	s1Byte			Remnant_OFDMSwingIdx[MAX_RF_PATH];   
 	s1Byte			Remnant_CCKSwingIdx;
 	s1Byte			Modify_TxAGC_Value;       //Remnat compensate value at TxAGC 
-	BOOLEAN			Modify_TxAGC_Flag_PathA;
-	BOOLEAN			Modify_TxAGC_Flag_PathB;
-	BOOLEAN			Modify_TxAGC_Flag_PathC;
-	BOOLEAN			Modify_TxAGC_Flag_PathD;
-	BOOLEAN			Modify_TxAGC_Flag_PathA_CCK;
+	bool			Modify_TxAGC_Flag_PathA;
+	bool			Modify_TxAGC_Flag_PathB;
+	bool			Modify_TxAGC_Flag_PathC;
+	bool			Modify_TxAGC_Flag_PathD;
+	bool			Modify_TxAGC_Flag_PathA_CCK;
 	
 	s1Byte			KfreeOffset[MAX_RF_PATH];
 	//
@@ -1642,11 +1642,11 @@ ODM_TXPowerTrackingCheck(
 	IN		PDM_ODM_T		pDM_Odm
 	);
 						
-BOOLEAN 
+bool 
 ODM_RAStateCheck(
 	IN		PDM_ODM_T		pDM_Odm,
 	IN		s4Byte			RSSI,
-	IN		BOOLEAN			bForceUpdate,
+	IN		bool			bForceUpdate,
 	OUT		pu1Byte			pRATRState
 	);
 
@@ -1753,7 +1753,7 @@ ODM_AntselStatistics_88C(
 	IN		PDM_ODM_T		pDM_Odm,
 	IN		u1Byte			MacId,
 	IN		u4Byte			PWDBAll,
-	IN		BOOLEAN			isCCKrate
+	IN		bool			isCCKrate
 );
 
 VOID
@@ -1761,7 +1761,7 @@ ODM_SingleDualAntennaDefaultSetting(
 	IN		PDM_ODM_T		pDM_Odm
 	);
 
-BOOLEAN
+bool
 ODM_SingleDualAntennaDetection(
 	IN		PDM_ODM_T		pDM_Odm,
 	IN		u1Byte			mode
@@ -1770,7 +1770,7 @@ ODM_SingleDualAntennaDetection(
 VOID
 ODM_UpdateNoisyState(
 	IN	PDM_ODM_T	pDM_Odm,
-	IN 	BOOLEAN 	bNoisyStateFromC2H
+	IN 	bool 	bNoisyStateFromC2H
 );
 
 u4Byte
@@ -1810,7 +1810,7 @@ VOID
 ODM_DynamicARFBSelect(
 	IN		PDM_ODM_T		pDM_Odm,
 	IN 		u1Byte			rate,
-	IN  		BOOLEAN			Collision_State	
+	IN  		bool			Collision_State	
 	);
 
 void odm_dtc(PDM_ODM_T pDM_Odm);

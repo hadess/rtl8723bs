@@ -27,9 +27,9 @@
 
 typedef struct _CFO_TRACKING_
 {
-	BOOLEAN			bATCStatus;
-	BOOLEAN			largeCFOHit;
-	BOOLEAN			bAdjust;
+	bool			bATCStatus;
+	bool			largeCFOHit;
+	bool			bAdjust;
 	u1Byte			CrystalCap;
 	u1Byte			DefXCap;
 	int				CFO_tail[2];
@@ -37,8 +37,8 @@ typedef struct _CFO_TRACKING_
 	u4Byte			packetCount;
 	u4Byte			packetCount_pre;
 
-	BOOLEAN			bForceXtalCap;
-	BOOLEAN			bReset;
+	bool			bForceXtalCap;
+	bool			bReset;
 }CFO_TRACKING, *PCFO_TRACKING;
 
 VOID

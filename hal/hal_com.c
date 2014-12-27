@@ -140,7 +140,7 @@ hal_com_config_channel_plan(
 	IN	u8			hw_channel_plan,
 	IN	u8			sw_channel_plan,
 	IN	u8			def_channel_plan,
-	IN	BOOLEAN		AutoLoadFail
+	IN	bool		AutoLoadFail
 	)
 {
 	PHAL_DATA_TYPE	pHalData;
@@ -180,13 +180,13 @@ hal_com_config_channel_plan(
 	return chnlPlan;
 }
 
-BOOLEAN
+bool
 HAL_IsLegalChannel(
 	IN	PADAPTER	Adapter,
 	IN	u32			Channel
 	)
 {
-	BOOLEAN bLegalChannel = true;
+	bool bLegalChannel = true;
 
 	if (Channel > 14) {
 		if(IsSupported5G(Adapter->registrypriv.wireless_mode) == false) {
@@ -458,7 +458,7 @@ _OneOutPipeMapping(
 static VOID
 _TwoOutPipeMapping(
 	IN	PADAPTER	pAdapter,
-	IN	BOOLEAN	 	bWIFICfg
+	IN	bool	 	bWIFICfg
 	)
 {
 	struct dvobj_priv	*pdvobjpriv = adapter_to_dvobj(pAdapter);
@@ -503,7 +503,7 @@ _TwoOutPipeMapping(
 
 static VOID _ThreeOutPipeMapping(
 	IN	PADAPTER	pAdapter,
-	IN	BOOLEAN	 	bWIFICfg
+	IN	bool	 	bWIFICfg
 	)
 {
 	struct dvobj_priv	*pdvobjpriv = adapter_to_dvobj(pAdapter);
@@ -546,7 +546,7 @@ static VOID _ThreeOutPipeMapping(
 }
 static VOID _FourOutPipeMapping(
 	IN	PADAPTER	pAdapter,
-	IN	BOOLEAN	 	bWIFICfg
+	IN	bool	 	bWIFICfg
 	)
 {
 	struct dvobj_priv	*pdvobjpriv = adapter_to_dvobj(pAdapter);
@@ -587,7 +587,7 @@ static VOID _FourOutPipeMapping(
 	}
 
 }
-BOOLEAN
+bool
 Hal_MappingOutPipe(
 	IN	PADAPTER	pAdapter,
 	IN	u8		NumOutPipe
@@ -595,9 +595,9 @@ Hal_MappingOutPipe(
 {
 	struct registry_priv *pregistrypriv = &pAdapter->registrypriv;
 
-	BOOLEAN	 bWIFICfg = (pregistrypriv->wifi_spec) ?true:false;
+	bool	 bWIFICfg = (pregistrypriv->wifi_spec) ?true:false;
 	
-	BOOLEAN result = true;
+	bool result = true;
 
 	switch(NumOutPipe)
 	{
@@ -1354,7 +1354,7 @@ void SetHalODMVar(
 	PADAPTER				Adapter,
 	HAL_ODM_VARIABLE		eVariable,
 	PVOID					pValue1,
-	BOOLEAN					bSet)
+	bool					bSet)
 {
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
 	PDM_ODM_T podmpriv = &pHalData->odmpriv;
@@ -1410,7 +1410,7 @@ void SetHalODMVar(
 }	
 
 
-BOOLEAN 
+bool 
 eqNByte(
 	u8*	str1,
 	u8*	str2,
@@ -1434,7 +1434,7 @@ eqNByte(
 //		false otherwise.
 //
 //
-BOOLEAN
+bool
 IsHexDigit(
 	IN		char		chTmp
 )
@@ -1477,7 +1477,7 @@ MapCharToHexDigit(
 //	Description:
 //		Parse hex number from the string pucStr.
 //
-BOOLEAN 
+bool 
 GetHexValueFromString(
 	IN		char*			szStr,
 	IN OUT	u32*			pu4bVal,
@@ -1532,7 +1532,7 @@ GetHexValueFromString(
 	return true;
 }
 
-BOOLEAN 
+bool 
 GetFractionValueFromString(
 	IN		char*			szStr,
 	IN OUT	u8*				pInteger,
@@ -1584,7 +1584,7 @@ GetFractionValueFromString(
 //	Description:
 //		Return true if szStr is comment out with leading "//".
 //
-BOOLEAN
+bool
 IsCommentString(
 	IN		char			*szStr
 )
@@ -1599,7 +1599,7 @@ IsCommentString(
 	}
 }
 
-BOOLEAN
+bool
 GetU1ByteIntegerFromStringInDecimal(
 	IN		char*	Str,
 	IN OUT	u8*		pInt
@@ -1628,7 +1628,7 @@ GetU1ByteIntegerFromStringInDecimal(
 // <20121004, Kordan> For example, 
 // ParseQualifiedString(inString, 0, outString, '[', ']') gets "Kordan" from a string "Hello [Kordan]".
 // If RightQualifier does not exist, it will hang on in the while loop
-BOOLEAN 
+bool 
 ParseQualifiedString(
     IN		char*	In, 
     IN OUT	u32*	Start, 
@@ -1652,7 +1652,7 @@ ParseQualifiedString(
 	return true;
 }
 
-BOOLEAN
+bool
 isAllSpaceOrTab(
 	u8*	data,
 	u8	size

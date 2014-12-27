@@ -42,7 +42,7 @@ odm_DIG_8723(
 	Pfalse_ALARM_STATISTICS		pFalseAlmCnt = &pDM_Odm->FalseAlmCnt;
 	//pRXHP_T						pRX_HP_Table  = &pDM_Odm->DM_RXHP_Table;
 	u1Byte						DIG_Dynamic_MIN;
-	BOOLEAN						FirstConnect, FirstDisConnect;
+	bool						FirstConnect, FirstDisConnect;
 	u1Byte						dm_dig_max, dm_dig_min;
 	u1Byte						CurrentIGI = pDM_DigTable->CurIGValue;
 

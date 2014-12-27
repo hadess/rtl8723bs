@@ -257,7 +257,7 @@ static void _InitQueueReservedPage(PADAPTER padapter)
 	u32			numPubQ;
 	u32			value32;
 	u8			value8;
-	BOOLEAN			bWiFiConfig	= pregistrypriv->wifi_spec;
+	bool			bWiFiConfig	= pregistrypriv->wifi_spec;
 
 	if (pHalData->OutEpQueueSel & TX_SELE_HQ)
 	{
@@ -841,7 +841,7 @@ static void _InitRFType(PADAPTER padapter)
 {
 	struct registry_priv *pregpriv = &padapter->registrypriv;
 	HAL_DATA_TYPE *pHalData = GET_HAL_DATA(padapter);
-	BOOLEAN is92CU = IS_92C_SERIAL(pHalData->VersionID);
+	bool is92CU = IS_92C_SERIAL(pHalData->VersionID);
 
 
 #if	DISABLE_BB_RF
@@ -888,7 +888,7 @@ static void _InitPABias(PADAPTER padapter)
 {
 	HAL_DATA_TYPE		*pHalData = GET_HAL_DATA(padapter);
 	u8			pa_setting;
-	BOOLEAN		is92C = IS_92C_SERIAL(pHalData->VersionID);
+	bool		is92C = IS_92C_SERIAL(pHalData->VersionID);
 
 	//FIXED PA current issue
 	//efuse_one_byte_read(padapter, 0x1FA, &pa_setting);
@@ -926,7 +926,7 @@ static void _InitPABias(PADAPTER padapter)
 //
 // 2010/08/09 MH Add for power down check.
 //
-static BOOLEAN HalDetectPwrDownMode(PADAPTER Adapter)
+static bool HalDetectPwrDownMode(PADAPTER Adapter)
 {
 	u8 tmpvalue;
 	HAL_DATA_TYPE *pHalData = GET_HAL_DATA(Adapter);
@@ -1576,7 +1576,7 @@ static void rtl8723bs_interface_configure(PADAPTER padapter)
 	HAL_DATA_TYPE		*pHalData = GET_HAL_DATA(padapter);
 	struct dvobj_priv		*pdvobjpriv = adapter_to_dvobj(padapter);
 	struct registry_priv	*pregistrypriv = &padapter->registrypriv;
-	BOOLEAN		bWiFiConfig	= pregistrypriv->wifi_spec;
+	bool		bWiFiConfig	= pregistrypriv->wifi_spec;
 
 
 	pdvobjpriv->RtOutPipe[0] = WLAN_TX_HIQ_DEVICE_ID;
@@ -1650,7 +1650,7 @@ static void
 Hal_EfuseParseMACAddr_8723BS(
 	IN	PADAPTER		padapter,
 	IN	u8*			hwinfo,
-	IN	BOOLEAN			AutoLoadFail
+	IN	bool			AutoLoadFail
 	)
 {
 	u16			i, usValue;
@@ -1689,7 +1689,7 @@ static void
 Hal_EfuseParseBoardType_8723BS(
 	IN	PADAPTER		pAdapter,
 	IN	u8*			hwinfo,
-	IN	BOOLEAN			AutoLoadFail
+	IN	bool			AutoLoadFail
 	)
 {
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);

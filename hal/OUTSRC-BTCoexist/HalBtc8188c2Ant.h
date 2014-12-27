@@ -31,33 +31,33 @@ typedef enum _BT_8188C_2ANT_COEX_ALGO{
 
 typedef struct _COEX_DM_8188C_2ANT{
 	// fw mechanism
-	BOOLEAN		bPreBalanceOn;
-	BOOLEAN		bCurBalanceOn;
+	bool		bPreBalanceOn;
+	bool		bCurBalanceOn;
 
 	// diminishWifi
-	BOOLEAN		bPreDacOn;
-	BOOLEAN		bCurDacOn;
-	BOOLEAN 	bPreInterruptOn;
-	BOOLEAN		bCurInterruptOn;
+	bool		bPreDacOn;
+	bool		bCurDacOn;
+	bool 	bPreInterruptOn;
+	bool		bCurInterruptOn;
 	u1Byte		preFwDacSwingLvl;
 	u1Byte		curFwDacSwingLvl;
-	BOOLEAN 	bPreNavOn;
-	BOOLEAN		bCurNavOn;
+	bool 	bPreNavOn;
+	bool		bCurNavOn;
 
 	// sw mechanism
-	BOOLEAN		bPreRfRxLpfShrink;
-	BOOLEAN		bCurRfRxLpfShrink;
+	bool		bPreRfRxLpfShrink;
+	bool		bCurRfRxLpfShrink;
 	u4Byte		btRf0x1eBackup;
-	BOOLEAN 	bPreLowPenaltyRa;
-	BOOLEAN		bCurLowPenaltyRa;
-	BOOLEAN		bPreDacSwingOn;
+	bool 	bPreLowPenaltyRa;
+	bool		bCurLowPenaltyRa;
+	bool		bPreDacSwingOn;
 	u4Byte		preDacSwingLvl;
-	BOOLEAN		bCurDacSwingOn;
+	bool		bCurDacSwingOn;
 	u4Byte		curDacSwingLvl;
-	BOOLEAN		bPreAdcBackOff;
-	BOOLEAN		bCurAdcBackOff;
-	BOOLEAN 	bPreAgcTableEn;
-	BOOLEAN		bCurAgcTableEn;
+	bool		bPreAdcBackOff;
+	bool		bCurAdcBackOff;
+	bool 	bPreAgcTableEn;
+	bool		bCurAgcTableEn;
 	//u4Byte		preVal0x6c0;
 	//u4Byte		curVal0x6c0;
 	u4Byte		preVal0x6c4;
@@ -66,7 +66,7 @@ typedef struct _COEX_DM_8188C_2ANT{
 	u4Byte		curVal0x6c8;
 	u4Byte		preVal0x6cc;
 	u4Byte		curVal0x6cc;
-	//BOOLEAN		bLimitedDig;
+	//bool		bLimitedDig;
 
 	// algorithm related
 	u1Byte		preAlgorithm;
@@ -77,10 +77,10 @@ typedef struct _COEX_DM_8188C_2ANT{
 
 typedef struct _COEX_STA_8188C_2ANT{
 	u1Byte					preWifiRssiState[4];
-	BOOLEAN					bBtBusy;
-	BOOLEAN					bBtUplink;
-	BOOLEAN					bBtDownLink;
-	BOOLEAN					bA2dpBusy;
+	bool					bBtBusy;
+	bool					bBtUplink;
+	bool					bBtDownLink;
+	bool					bA2dpBusy;
 }COEX_STA_8188C_2ANT, *PCOEX_STA_8188C_2ANT;
 
 //===========================================
@@ -93,7 +93,7 @@ EXhalbtc8188c2ant_PowerOnSetting(
 VOID
 EXhalbtc8188c2ant_InitHwConfig(
 	IN	PBTC_COEXIST		pBtCoexist,
-	IN	BOOLEAN				bWifiOnly
+	IN	bool				bWifiOnly
 	);
 VOID
 EXhalbtc8188c2ant_InitCoexDm(

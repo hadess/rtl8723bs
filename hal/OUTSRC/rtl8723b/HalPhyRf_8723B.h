@@ -53,9 +53,9 @@ ODM_TxPwrTrackSetPwr_8723B(
 void	
 PHY_IQCalibrate_8723B(	
 	IN PADAPTER	Adapter,
-	IN BOOLEAN	bReCovery,
-	IN BOOLEAN	bRestore,
-	IN BOOLEAN	Is2ant,
+	IN bool	bReCovery,
+	IN bool	bRestore,
+	IN bool	Is2ant,
 	IN u1Byte	RF_Path);
 
 VOID
@@ -95,8 +95,8 @@ VOID
 _PHY_PathADDAOn_8723B(
 	IN	PADAPTER	pAdapter,
 	IN	pu4Byte		ADDAReg,
-	IN	BOOLEAN		isPathAOn,
-	IN	BOOLEAN		is2T
+	IN	bool		isPathAOn,
+	IN	bool		is2T
 	);
 
 VOID

@@ -115,7 +115,7 @@ typedef struct _RT_WORK_ITEM
 	RT_WORKITEM_CALL_BACK		CallbackFunc;	// Callback function of the workitem.
 	u1Byte						RefCount;		// 0: driver is going to unload, 1: No such workitem scheduled, 2: one workitem is schedueled. 
 	PVOID						pPlatformExt;	// Pointer to platform-dependent extension.	
-	BOOLEAN						bFree;
+	bool						bFree;
 	char						szID[36];		// An identity string of this workitem.
 }RT_WORK_ITEM, *PRT_WORK_ITEM;
 

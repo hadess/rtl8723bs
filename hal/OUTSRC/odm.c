@@ -493,7 +493,7 @@ odm_InitHybridAntDiv(
 	IN PDM_ODM_T	pDM_Odm 
 	);
 
-BOOLEAN
+bool
 odm_StaDefAntSel(
 	IN PDM_ODM_T	pDM_Odm,
 	IN u4Byte		OFDM_Ant1_Cnt,
@@ -507,7 +507,7 @@ VOID
 odm_SetRxIdleAnt(
 	IN	PDM_ODM_T	pDM_Odm,
 	IN	u1Byte	Ant,
-	IN   BOOLEAN   bDualPath                     
+	IN   bool   bDualPath                     
 );
 
 
@@ -779,14 +779,14 @@ ODM_CmnInfoInit(
 			pDM_Odm->PatchID = (u1Byte)Value;
 			break;
 		case 	ODM_CMNINFO_BINHCT_TEST:
-			pDM_Odm->bInHctTest = (BOOLEAN)Value;
+			pDM_Odm->bInHctTest = (bool)Value;
 			break;
 		case 	ODM_CMNINFO_BWIFI_TEST:
-			pDM_Odm->bWIFITest = (BOOLEAN)Value;
+			pDM_Odm->bWIFITest = (bool)Value;
 			break;	
 
 		case	ODM_CMNINFO_SMART_CONCURRENT:
-			pDM_Odm->bDualMacSmartConcurrent = (BOOLEAN )Value;
+			pDM_Odm->bDualMacSmartConcurrent = (bool )Value;
 			break;
 		
 		//To remove the compiler warning, must add an empty default statement to handle the other values.	
@@ -851,7 +851,7 @@ ODM_CmnInfoHook(
 			break;
 		
 		case	ODM_CMNINFO_DMSP_GET_VALUE:
-			pDM_Odm->pbGetValueFromOtherMac = (BOOLEAN *)pValue;
+			pDM_Odm->pbGetValueFromOtherMac = (bool *)pValue;
 			break;
 
 		case	ODM_CMNINFO_BUDDY_ADAPTOR:
@@ -859,15 +859,15 @@ ODM_CmnInfoHook(
 			break;
 
 		case	ODM_CMNINFO_DMSP_IS_MASTER:
-			pDM_Odm->pbMasterOfDMSP = (BOOLEAN *)pValue;
+			pDM_Odm->pbMasterOfDMSP = (bool *)pValue;
 			break;
 
 		case	ODM_CMNINFO_SCAN:
-			pDM_Odm->pbScanInProcess = (BOOLEAN *)pValue;
+			pDM_Odm->pbScanInProcess = (bool *)pValue;
 			break;
 
 		case	ODM_CMNINFO_POWER_SAVING:
-			pDM_Odm->pbPowerSaving = (BOOLEAN *)pValue;
+			pDM_Odm->pbPowerSaving = (bool *)pValue;
 			break;
 
 		case	ODM_CMNINFO_ONE_PATH_CCA:
@@ -875,15 +875,15 @@ ODM_CmnInfoHook(
 			break;
 
 		case	ODM_CMNINFO_DRV_STOP:
-			pDM_Odm->pbDriverStopped =  (BOOLEAN *)pValue;
+			pDM_Odm->pbDriverStopped =  (bool *)pValue;
 			break;
 
 		case	ODM_CMNINFO_PNP_IN:
-			pDM_Odm->pbDriverIsGoingToPnpSetPowerSleep =  (BOOLEAN *)pValue;
+			pDM_Odm->pbDriverIsGoingToPnpSetPowerSleep =  (bool *)pValue;
 			break;
 
 		case	ODM_CMNINFO_INIT_ON:
-			pDM_Odm->pinit_adpt_in_progress =  (BOOLEAN *)pValue;
+			pDM_Odm->pinit_adpt_in_progress =  (bool *)pValue;
 			break;
 
 		case	ODM_CMNINFO_ANT_TEST:
@@ -891,7 +891,7 @@ ODM_CmnInfoHook(
 			break;
 
 		case	ODM_CMNINFO_NET_CLOSED:
-			pDM_Odm->pbNet_closed = (BOOLEAN *)pValue;
+			pDM_Odm->pbNet_closed = (bool *)pValue;
 			break;
 
 		case 	ODM_CMNINFO_FORCED_RATE:
@@ -911,7 +911,7 @@ ODM_CmnInfoHook(
 		//	break;
 
 		//case	ODM_CMNINFO_BT_COEXIST:
-		//	pDM_Odm->BTCoexist = (BOOLEAN *)pValue;		
+		//	pDM_Odm->BTCoexist = (bool *)pValue;		
 
 		//case	ODM_CMNINFO_STA_STATUS:
 			//pDM_Odm->pODM_StaInfo[] = (PSTA_INFO_T)pValue;
@@ -978,7 +978,7 @@ ODM_CmnInfoUpdate(
 	switch	(CmnInfo)
 	{
 		case ODM_CMNINFO_LINK_IN_PROGRESS:
-			pDM_Odm->bLinkInProcess = (BOOLEAN)Value;
+			pDM_Odm->bLinkInProcess = (bool)Value;
 			break;
 		
 		case	ODM_CMNINFO_ABILITY:
@@ -990,19 +990,19 @@ ODM_CmnInfoUpdate(
 			break;
 
 		case	ODM_CMNINFO_WIFI_DIRECT:
-			pDM_Odm->bWIFI_Direct = (BOOLEAN)Value;
+			pDM_Odm->bWIFI_Direct = (bool)Value;
 			break;
 
 		case	ODM_CMNINFO_WIFI_DISPLAY:
-			pDM_Odm->bWIFI_Display = (BOOLEAN)Value;
+			pDM_Odm->bWIFI_Display = (bool)Value;
 			break;
 
 		case	ODM_CMNINFO_LINK:
-			pDM_Odm->bLinked = (BOOLEAN)Value;
+			pDM_Odm->bLinked = (bool)Value;
 			break;
 			
 		case	ODM_CMNINFO_STATION_STATE:
-			pDM_Odm->bsta_state = (BOOLEAN)Value;
+			pDM_Odm->bsta_state = (bool)Value;
 			break;
 			
 		case	ODM_CMNINFO_RSSI_MIN:
@@ -1025,11 +1025,11 @@ ODM_CmnInfoUpdate(
 			break;
 		// The following is for BT HS mode and BT coexist mechanism.
 		case ODM_CMNINFO_BT_ENABLED:
-			pDM_Odm->bBtEnabled = (BOOLEAN)Value;
+			pDM_Odm->bBtEnabled = (bool)Value;
 			break;
 			
 		case ODM_CMNINFO_BT_HS_CONNECT_PROCESS:
-			pDM_Odm->bBtConnectProcess = (BOOLEAN)Value;
+			pDM_Odm->bBtConnectProcess = (bool)Value;
 			break;
 		
 		case ODM_CMNINFO_BT_HS_RSSI:
@@ -1037,15 +1037,15 @@ ODM_CmnInfoUpdate(
 			break;
 			
 		case	ODM_CMNINFO_BT_OPERATION:
-			pDM_Odm->bBtHsOperation = (BOOLEAN)Value;
+			pDM_Odm->bBtHsOperation = (bool)Value;
 			break;
 
 		case	ODM_CMNINFO_BT_LIMITED_DIG:
-			pDM_Odm->bBtLimitedDig = (BOOLEAN)Value;
+			pDM_Odm->bBtLimitedDig = (bool)Value;
 			break;	
 
 		case	ODM_CMNINFO_BT_DISABLE_EDCA:
-			pDM_Odm->bBtDisableEdcaTurbo = (BOOLEAN)Value;
+			pDM_Odm->bBtDisableEdcaTurbo = (bool)Value;
 			break;
 			
 /*
@@ -1091,7 +1091,7 @@ odm_CommonInfoSelfInit(
 	)
 {
 	pFAT_T			pDM_FatTable = &pDM_Odm->DM_FatTable;
-	pDM_Odm->bCckHighPower = (BOOLEAN) ODM_GetBBReg(pDM_Odm, ODM_REG(CCK_RPT_FORMAT,pDM_Odm), ODM_BIT(CCK_RPT_FORMAT,pDM_Odm));		
+	pDM_Odm->bCckHighPower = (bool) ODM_GetBBReg(pDM_Odm, ODM_REG(CCK_RPT_FORMAT,pDM_Odm), ODM_BIT(CCK_RPT_FORMAT,pDM_Odm));		
 	pDM_Odm->RFPathRxEnable = (u1Byte) ODM_GetBBReg(pDM_Odm, ODM_REG(BB_RX_PATH,pDM_Odm), ODM_BIT(BB_RX_PATH,pDM_Odm));
 
 	ODM_InitDebugSetting(pDM_Odm);
@@ -1248,7 +1248,7 @@ odm_IsLinked(
 	)
 {
 	u4Byte i;
-	BOOLEAN Linked = false;
+	bool Linked = false;
 	
 	for(i=0; i<ODM_ASSOCIATE_ENTRY_NUM; i++)
 	{
@@ -1573,13 +1573,13 @@ odm_RefreshRateAdaptiveMaskAPADSL(
 {
 }
 
-// Return Value: BOOLEAN
+// Return Value: bool
 // - true: RATRState is changed.
-BOOLEAN 
+bool 
 ODM_RAStateCheck(
 	IN		PDM_ODM_T		pDM_Odm,
 	IN		s4Byte			RSSI,
-	IN		BOOLEAN			bForceUpdate,
+	IN		bool			bForceUpdate,
 	OUT		pu1Byte			pRATRState
 	)
 {
@@ -1695,8 +1695,8 @@ FindMinimumRSSI_Dmsp(
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
 	s32	Rssi_val_min_back_for_mac0;
-	BOOLEAN		bGetValueFromBuddyAdapter = dm_DualMacGetParameterFromBuddyAdapter(pAdapter);
-	BOOLEAN		bRestoreRssi = false;
+	bool		bGetValueFromBuddyAdapter = dm_DualMacGetParameterFromBuddyAdapter(pAdapter);
+	bool		bRestoreRssi = false;
 	PADAPTER	BuddyAdapter = pAdapter->BuddyAdapter;
 
 	if(pHalData->MacPhyMode92D == DUALMAC_SINGLEPHY)
@@ -1770,7 +1770,7 @@ odm_RSSIMonitorCheckCE(
 	u8 	sta_cnt=0;
 	u32	UL_DL_STATE = 0, STBC_TX = 0, TxBF_EN = 0;
 	u32	PWDB_rssi[NUM_STA]={0};//[0~15]:MACID, [16~31]:PWDB_rssi
-	BOOLEAN			FirstConnect = false;
+	bool			FirstConnect = false;
 	pRA_T			pRA_Table = &pDM_Odm->DM_RA_Table;
 
 	if(pDM_Odm->bLinked != true)
@@ -2502,7 +2502,7 @@ ODM_SingleDualAntennaDefaultSetting(
 //
 // Added by Roger, 2011.12.15
 //
-BOOLEAN
+bool
 ODM_SingleDualAntennaDetection(
 	IN		PDM_ODM_T		pDM_Odm,
 	IN		u1Byte			mode
@@ -2516,7 +2516,7 @@ ODM_SingleDualAntennaDetection(
 	u1Byte		initial_gain = 0x5a;
 	u4Byte		PSD_report_tmp;
 	u4Byte		AntA_report = 0x0, AntB_report = 0x0,AntO_report=0x0;
-	BOOLEAN		bResult = true;
+	bool		bResult = true;
 	u4Byte		AFE_Backup[16];
 	u4Byte		AFE_REG_8723A[16] = {
 					rRx_Wait_CCA, 	rTx_CCK_RFON, 
@@ -2923,7 +2923,7 @@ odm_Set_RA_DM_ARFB_by_Noisy(
 VOID
 ODM_UpdateNoisyState(
 	IN	PDM_ODM_T	pDM_Odm,
-	IN 	BOOLEAN 	bNoisyStateFromC2H
+	IN 	bool 	bNoisyStateFromC2H
 	)
 {
 	//DbgPrint("Get C2H Command! NoisyState=0x%x\n ", bNoisyStateFromC2H);

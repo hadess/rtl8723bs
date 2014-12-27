@@ -927,7 +927,7 @@ PHY_GetTxPowerIndex_8723B(
 {
 	PHAL_DATA_TYPE		pHalData = GET_HAL_DATA(pAdapter);
 	s8					txPower = 0, powerDiffByRate = 0, limit = 0;
-	BOOLEAN				bIn24G = false;
+	bool				bIn24G = false;
 
 	//DBG_871X("===>%s\n", __FUNCTION__ );
 	
@@ -1004,7 +1004,7 @@ phy_SpurCalibration_8723B(
 	u1Byte 		idx = 0;
 	u1Byte		b_doNotch = false;
 	u1Byte 		initial_gain;
-	BOOLEAN		bHW_Ctrl = false, bSW_Ctrl = false,bHW_Ctrl_S1 = false, bSW_Ctrl_S1 = false;
+	bool		bHW_Ctrl = false, bSW_Ctrl = false,bHW_Ctrl_S1 = false, bSW_Ctrl_S1 = false;
 	u4Byte		reg948;
 
 	// add for notch
@@ -1334,8 +1334,8 @@ phy_SwChnlAndSetBwMode8723B(
 VOID
 PHY_HandleSwChnlAndSetBW8723B(
 	IN	PADAPTER			Adapter,
-	IN	BOOLEAN				bSwitchChannel,
-	IN	BOOLEAN				bSetBandWidth,
+	IN	bool				bSwitchChannel,
+	IN	bool				bSetBandWidth,
 	IN	u8					ChannelNum,
 	IN	CHANNEL_WIDTH	ChnlWidth,
 	IN	EXTCHNL_OFFSET	ExtChnlOffsetOf40MHz,
@@ -1343,7 +1343,7 @@ PHY_HandleSwChnlAndSetBW8723B(
 	IN	u8					CenterFrequencyIndex1
 )
 {
-	//static BOOLEAN		bInitialzed = false;
+	//static bool		bInitialzed = false;
 	PHAL_DATA_TYPE		pHalData = GET_HAL_DATA(Adapter);
 	u8					tmpChannel = pHalData->CurrentChannel;
 	CHANNEL_WIDTH 	tmpBW= pHalData->CurrentChannelBW;

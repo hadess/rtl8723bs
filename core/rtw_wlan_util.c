@@ -2750,7 +2750,7 @@ void update_capinfo(PADAPTER Adapter, u16 updateCap)
 {
 	struct mlme_ext_priv	*pmlmeext = &Adapter->mlmeextpriv;
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
-	BOOLEAN		ShortPreamble;
+	bool		ShortPreamble;
 
 	// Check preamble mode, 2005.01.06, by rcnjko.
 	// Mark to update preamble value forever, 2008.03.18 by lanhsin
@@ -3488,7 +3488,7 @@ int rtw_get_gpio(struct net_device *netdev, int gpio_num)
 }
 EXPORT_SYMBOL(rtw_get_gpio);
 
-int  rtw_set_gpio_output_value(struct net_device *netdev, int gpio_num, BOOLEAN isHigh)
+int  rtw_set_gpio_output_value(struct net_device *netdev, int gpio_num, bool isHigh)
 {
 	u8 direction = 0;
 	u8 res = -1;
@@ -3530,7 +3530,7 @@ int  rtw_set_gpio_output_value(struct net_device *netdev, int gpio_num, BOOLEAN 
 }
 EXPORT_SYMBOL(rtw_set_gpio_output_value);
 
-int rtw_config_gpio(struct net_device *netdev, int gpio_num, BOOLEAN isOutput)
+int rtw_config_gpio(struct net_device *netdev, int gpio_num, bool isOutput)
 {
 	_adapter *adapter = (_adapter *)rtw_netdev_priv(netdev);
 

@@ -85,7 +85,7 @@ int	PHY_RFConfig8192E(IN PADAPTER	Adapter	);
 //
 void	PHY_GetTxPowerLevel8192E(	IN PADAPTER	Adapter, OUT s32*	powerlevel	);
 void	PHY_SetTxPowerLevel8192E(	IN PADAPTER	Adapter, IN u8	channel	);
-BOOLEAN	PHY_UpdateTxPowerDbm8192E( IN PADAPTER	Adapter, IN int	powerInDbm	);
+bool	PHY_UpdateTxPowerDbm8192E( IN PADAPTER	Adapter, IN int	powerInDbm	);
 
 VOID
 PHY_SetTxPowerIndex_8192E(
@@ -145,7 +145,7 @@ phy_SpurCalibration_8192E(
 VOID
 PHY_SetRFPathSwitch_8192E(
 	IN	PADAPTER	pAdapter,
-	IN	BOOLEAN		bMain
+	IN	bool		bMain
 );
 
 VOID

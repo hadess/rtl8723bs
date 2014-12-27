@@ -239,7 +239,7 @@ typedef enum tag_Package_Definition
 #define INCLUDE_MULTI_FUNC_GPS(_Adapter)	(GET_HAL_DATA(_Adapter)->MultiFunc & RT_MULTI_FUNC_GPS)
 
 // rtl8723a_hal_init.c
-s32 rtl8723b_FirmwareDownload(PADAPTER padapter, BOOLEAN  bUsedWoWLANFw);
+s32 rtl8723b_FirmwareDownload(PADAPTER padapter, bool  bUsedWoWLANFw);
 void rtl8723b_FirmwareSelfReset(PADAPTER padapter);
 void rtl8723b_InitializeFirmwareVars(PADAPTER padapter);
 
@@ -257,16 +257,16 @@ s32 CardDisableWithoutHWSM(PADAPTER padapter);
 u8 GetEEPROMSize8723B(PADAPTER padapter);
 void Hal_InitPGData(PADAPTER padapter, u8 *PROMContent);
 void Hal_EfuseParseIDCode(PADAPTER padapter, u8 *hwinfo);
-void Hal_EfuseParseTxPowerInfo_8723B(PADAPTER padapter, u8 *PROMContent, BOOLEAN AutoLoadFail);
-void Hal_EfuseParseBTCoexistInfo_8723B(PADAPTER padapter, u8 *hwinfo, BOOLEAN AutoLoadFail);
-void Hal_EfuseParseEEPROMVer_8723B(PADAPTER padapter, u8 *hwinfo, BOOLEAN AutoLoadFail);
-void Hal_EfuseParseChnlPlan_8723B(PADAPTER padapter, u8 *hwinfo, BOOLEAN AutoLoadFail);
-void Hal_EfuseParseCustomerID_8723B(PADAPTER padapter, u8 *hwinfo, BOOLEAN AutoLoadFail);
-void Hal_EfuseParseAntennaDiversity_8723B(PADAPTER padapter, u8 *hwinfo, BOOLEAN AutoLoadFail);
-void Hal_EfuseParseXtal_8723B(PADAPTER pAdapter, u8 *hwinfo, u8 AutoLoadFail);
+void Hal_EfuseParseTxPowerInfo_8723B(PADAPTER padapter, u8 *PROMContent, bool AutoLoadFail);
+void Hal_EfuseParseBTCoexistInfo_8723B(PADAPTER padapter, u8 *hwinfo, bool AutoLoadFail);
+void Hal_EfuseParseEEPROMVer_8723B(PADAPTER padapter, u8 *hwinfo, bool AutoLoadFail);
+void Hal_EfuseParseChnlPlan_8723B(PADAPTER padapter, u8 *hwinfo, bool AutoLoadFail);
+void Hal_EfuseParseCustomerID_8723B(PADAPTER padapter, u8 *hwinfo, bool AutoLoadFail);
+void Hal_EfuseParseAntennaDiversity_8723B(PADAPTER padapter, u8 *hwinfo, bool AutoLoadFail);
+void Hal_EfuseParseXtal_8723B(PADAPTER pAdapter, u8 *hwinfo, bool AutoLoadFail);
 void Hal_EfuseParseThermalMeter_8723B(PADAPTER padapter, u8 *hwinfo, u8 AutoLoadFail);
-VOID Hal_EfuseParsePackageType_8723B(PADAPTER pAdapter,u8* hwinfo,BOOLEAN AutoLoadFail);
-VOID Hal_EfuseParseVoltage_8723B(PADAPTER pAdapter,u8* hwinfo,BOOLEAN 	AutoLoadFail); 
+VOID Hal_EfuseParsePackageType_8723B(PADAPTER pAdapter,u8* hwinfo,bool AutoLoadFail);
+VOID Hal_EfuseParseVoltage_8723B(PADAPTER pAdapter,u8* hwinfo,bool 	AutoLoadFail); 
 
 #ifdef CONFIG_C2H_PACKET_EN
 void C2HPacketHandler_8723B(PADAPTER padapter, u8 *pbuffer, u16 length);
@@ -311,7 +311,7 @@ u8 MRateToHwRate8723B(u8  rate);
 u8 HwRateToMRate8723B(u8	 rate);
 
 #ifdef CONFIG_RF_GAIN_OFFSET
-void Hal_ReadRFGainOffset(PADAPTER pAdapter,u8* hwinfo,BOOLEAN AutoLoadFail);
+void Hal_ReadRFGainOffset(PADAPTER pAdapter,u8* hwinfo,bool AutoLoadFail);
 #endif //CONFIG_RF_GAIN_OFFSET
 
 #endif

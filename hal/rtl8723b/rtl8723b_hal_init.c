@@ -25,7 +25,7 @@
 static VOID
 _FWDownloadEnable(
 	IN	PADAPTER		padapter,
-	IN	BOOLEAN			enable
+	IN	bool			enable
 	)
 {
 	u8	tmp, count = 0;
@@ -376,7 +376,7 @@ u8 FwBuffer[FW_8723B_SIZE];
 //		Download 8192C firmware code.
 //
 //
-s32 rtl8723b_FirmwareDownload(PADAPTER padapter, BOOLEAN  bUsedWoWLANFw)
+s32 rtl8723b_FirmwareDownload(PADAPTER padapter, bool  bUsedWoWLANFw)
 {
 	s32	rtStatus = _SUCCESS;
 	u8 write_fw = 0;
@@ -656,7 +656,7 @@ static u8
 hal_EfuseSwitchToBank(
 	PADAPTER	padapter,
 	u8			bank,
-	u8			bPseudoTest)
+	bool			bPseudoTest)
 {
 	u8 bRet = false;
 	u32 value32 = 0;
@@ -711,7 +711,7 @@ Hal_GetEfuseDefinition(
 	u8			efuseType,
 	u8			type,
 	void		*pOut,
-	u8			bPseudoTest)
+	bool			bPseudoTest)
 {
 	switch (type)
 	{
@@ -958,7 +958,7 @@ hal_ReadEFuse_WiFi(
 	u16			_offset,
 	u16			_size_byte,
 	u8			*pbuf,
-	u8			bPseudoTest)
+	bool			bPseudoTest)
 {
 #ifdef HAL_EFUSE_MEMORY
 	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(padapter);
@@ -1124,7 +1124,7 @@ hal_ReadEFuse_BT(
 	u16			_offset,
 	u16			_size_byte,
 	u8			*pbuf,
-	u8			bPseudoTest
+	bool			bPseudoTest
 	)
 {
 #ifdef HAL_EFUSE_MEMORY
@@ -1279,7 +1279,7 @@ Hal_ReadEFuse(
 	u16			_offset,
 	u16			_size_byte,
 	u8			*pbuf,
-	u8			bPseudoTest)
+	bool			bPseudoTest)
 {
 	if (efuseType == EFUSE_WIFI)
 		hal_ReadEFuse_WiFi(padapter, _offset, _size_byte, pbuf, bPseudoTest);
@@ -1290,7 +1290,7 @@ Hal_ReadEFuse(
 static u16
 hal_EfuseGetCurrentSize_WiFi(
 	PADAPTER	padapter,
-	u8			bPseudoTest)
+	bool			bPseudoTest)
 {
 #ifdef HAL_EFUSE_MEMORY
 	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(padapter);
@@ -1590,7 +1590,7 @@ static u16
 Hal_EfuseGetCurrentSize(
 	PADAPTER	pAdapter,
 	u8			efuseType,
-	u8			bPseudoTest)
+	bool			bPseudoTest)
 {
 	u16	ret = 0;
 
@@ -1608,7 +1608,7 @@ Hal_EfuseWordEnableDataWrite(
 	u16			efuse_addr,
 	u8			word_en,
 	u8			*data,
-	u8			bPseudoTest)
+	bool			bPseudoTest)
 {
 	u16	tmpaddr = 0;
 	u16	start_addr = efuse_addr;
@@ -1676,7 +1676,7 @@ Hal_EfusePgPacketRead(
 	PADAPTER	padapter,
 	u8			offset,
 	u8			*data,
-	u8			bPseudoTest)
+	bool			bPseudoTest)
 {
 	u8	bDataEmpty = true;
 	u8	efuse_data, word_cnts=0;
@@ -2179,7 +2179,7 @@ Hal_EfusePgPacketWrite(
 	u8 			offset,
 	u8			word_en,
 	u8			*pData,
-	u8			bPseudoTest)
+	bool			bPseudoTest)
 {
 	PGPKT_STRUCT targetPkt;
 	u16 startAddr=0;
@@ -2202,13 +2202,13 @@ Hal_EfusePgPacketWrite(
 	return true;
 }
 
-static u8
+static bool
 Hal_EfusePgPacketWrite_BT(
 	PADAPTER	pAdapter,
 	u8 			offset,
 	u8			word_en,
 	u8			*pData,
-	u8			bPseudoTest)
+	bool			bPseudoTest)
 {
 	PGPKT_STRUCT targetPkt;
 	u16 startAddr=0;
@@ -2494,7 +2494,7 @@ void rtl8723b_SetHalODMVar(
 	PADAPTER				Adapter,
 	HAL_ODM_VARIABLE		eVariable,
 	PVOID					pValue1,
-	BOOLEAN					bSet)
+	bool					bSet)
 {
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
 	PDM_ODM_T podmpriv = &pHalData->odmpriv;
@@ -2954,7 +2954,7 @@ void _DisableRFAFEAndResetBB(PADAPTER padapter)
 		_DisableRFAFEAndResetBB8192C(padapter);
 }
 
-void _ResetDigitalProcedure1_92C(PADAPTER padapter, BOOLEAN bWithoutHWSM)
+void _ResetDigitalProcedure1_92C(PADAPTER padapter, bool bWithoutHWSM)
 {
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
 
@@ -3077,7 +3077,7 @@ void _ResetDigitalProcedure1_92C(PADAPTER padapter, BOOLEAN bWithoutHWSM)
 
 }
 
-void _ResetDigitalProcedure1(PADAPTER padapter, BOOLEAN bWithoutHWSM)
+void _ResetDigitalProcedure1(PADAPTER padapter, bool bWithoutHWSM)
 {
 #if 0
 	if(IS_HARDWARE_TYPE_8192D(padapter))
@@ -3104,7 +3104,7 @@ m.	SYS_ISO_CTRL 0x01[7:0] = 0x83			// isolated ELDR to PON
 	rtw_write8(padapter, REG_SYS_ISO_CTRL+1, 0x82); //modify to 0x82 by Scott.
 }
 
-void _DisableAnalog(PADAPTER padapter, BOOLEAN bWithoutHWSM)
+void _DisableAnalog(PADAPTER padapter, bool bWithoutHWSM)
 {
 	HAL_DATA_TYPE	*pHalData	= GET_HAL_DATA(padapter);
 	u16 value16 = 0;
@@ -3220,13 +3220,13 @@ s32 CardDisableWithoutHWSM(PADAPTER padapter)
 	return rtStatus;
 }
 
-BOOLEAN 
+bool 
 Hal_GetChnlGroup8723B(
 	IN	u8 Channel,
 	OUT u8 *pGroup
 	)
 {
-	BOOLEAN bIn24G=true;
+	bool bIn24G=true;
 
 	if(Channel <= 14)
 	{
@@ -3390,7 +3390,7 @@ Hal_ReadPowerValueFromPROM_8723B(
 	IN	PADAPTER 		Adapter,
 	IN	PTxPowerInfo24G	pwrInfo24G,
 	IN	u8 				* PROMContent,
-	IN	BOOLEAN			AutoLoadFail
+	IN	bool			AutoLoadFail
 	)
 {
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
@@ -3525,7 +3525,7 @@ void
 Hal_EfuseParseTxPowerInfo_8723B(
 	IN	PADAPTER 		padapter,
 	IN	u8*			PROMContent,
-	IN	BOOLEAN			AutoLoadFail
+	IN	bool			AutoLoadFail
 	)
 {
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
@@ -3592,7 +3592,7 @@ VOID
 Hal_EfuseParseBTCoexistInfo_8723B(
 	IN PADAPTER			padapter,
 	IN u8*			hwinfo,
-	IN BOOLEAN			AutoLoadFail
+	IN bool			AutoLoadFail
 	)
 {
 	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(padapter);
@@ -3670,7 +3670,7 @@ VOID
 Hal_EfuseParseEEPROMVer_8723B(
 	IN	PADAPTER		padapter,
 	IN	u8*			hwinfo,
-	IN	BOOLEAN			AutoLoadFail
+	IN	bool			AutoLoadFail
 	)
 {
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
@@ -3690,7 +3690,7 @@ VOID
 Hal_EfuseParsePackageType_8723B(
 	IN	PADAPTER		pAdapter,
 	IN	u8*				hwinfo,
-	IN	BOOLEAN 	AutoLoadFail
+	IN	bool 	AutoLoadFail
 	) 
 {
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
@@ -3731,7 +3731,7 @@ VOID
 Hal_EfuseParseVoltage_8723B(
 	IN	PADAPTER		pAdapter,
 	IN	u8* 			hwinfo,
-	IN	BOOLEAN 	AutoLoadFail
+	IN	bool 	AutoLoadFail
 	) 
 {
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
@@ -3747,7 +3747,7 @@ VOID
 Hal_EfuseParseChnlPlan_8723B(
 	IN	PADAPTER		padapter,
 	IN	u8*			hwinfo,
-	IN	BOOLEAN			AutoLoadFail
+	IN	bool			AutoLoadFail
 	)
 {
 	padapter->mlmepriv.ChannelPlan = hal_com_config_channel_plan(
@@ -3767,7 +3767,7 @@ VOID
 Hal_EfuseParseCustomerID_8723B(
 	IN	PADAPTER		padapter,
 	IN	u8*			hwinfo,
-	IN	BOOLEAN			AutoLoadFail
+	IN	bool			AutoLoadFail
 	)
 {
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
@@ -3788,7 +3788,7 @@ VOID
 Hal_EfuseParseAntennaDiversity_8723B(
 	IN	PADAPTER		pAdapter,
 	IN	u8				* hwinfo,
-	IN	BOOLEAN			AutoLoadFail
+	IN	bool			AutoLoadFail
 	)
 {
 #ifdef CONFIG_ANTENNA_DIVERSITY
@@ -3832,7 +3832,7 @@ VOID
 Hal_EfuseParseXtal_8723B(
 	IN	PADAPTER		pAdapter,
 	IN	u8			* hwinfo,
-	IN	BOOLEAN		AutoLoadFail
+	IN	bool		AutoLoadFail
 	)
 {
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
@@ -3884,7 +3884,7 @@ Hal_EfuseParseThermalMeter_8723B(
 void Hal_ReadRFGainOffset(
 	IN		PADAPTER		Adapter,
 	IN		u8* 			PROMContent,
-	IN		BOOLEAN 		AutoloadFail)
+	IN		bool 		AutoloadFail)
 {
 	//
 	// BB_RF Gain Offset from EEPROM

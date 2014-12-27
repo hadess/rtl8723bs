@@ -181,17 +181,17 @@ typedef struct _LED_SDIO{
 	LED_PIN				LedPin;	// Identify how to implement this SW led.
 
 	LED_STATE			CurrLedState; // Current LED state.
-	BOOLEAN				bLedOn; // true if LED is ON, false if LED is OFF.
+	bool				bLedOn; // true if LED is ON, false if LED is OFF.
 
-	BOOLEAN				bSWLedCtrl;
+	bool				bSWLedCtrl;
 
-	BOOLEAN				bLedBlinkInProgress; // true if it is blinking, false o.w..
+	bool				bLedBlinkInProgress; // true if it is blinking, false o.w..
 	// ALPHA, added by chiyoko, 20090106
-	BOOLEAN				bLedNoLinkBlinkInProgress;
-	BOOLEAN				bLedLinkBlinkInProgress;
-	BOOLEAN				bLedStartToLinkBlinkInProgress;	
-	BOOLEAN				bLedScanBlinkInProgress;
-	BOOLEAN				bLedWPSBlinkInProgress;
+	bool				bLedNoLinkBlinkInProgress;
+	bool				bLedLinkBlinkInProgress;
+	bool				bLedStartToLinkBlinkInProgress;	
+	bool				bLedScanBlinkInProgress;
+	bool				bLedWPSBlinkInProgress;
 	
 	u32					BlinkTimes; // Number of times to toggle led state for blinking.
 	LED_STATE			BlinkingLedState; // Next state for blinking, either LED_ON or LED_OFF are.

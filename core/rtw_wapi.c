@@ -124,7 +124,7 @@ u32 WapiComparePN(u8 *PN1, u8 *PN2)
 }
 
 u8
-WapiGetEntryForCamWrite(_adapter *padapter,u8 *pMacAddr,u8 KID,BOOLEAN IsMsk)
+WapiGetEntryForCamWrite(_adapter *padapter,u8 *pMacAddr,u8 KID,bool IsMsk)
 {
 	PRT_WAPI_T		pWapiInfo=NULL;
 	//PRT_WAPI_CAM_ENTRY	pEntry=NULL;
@@ -902,7 +902,7 @@ void rtw_wapi_set_key(_adapter *padapter, RT_WAPI_KEY *pWapiKey, RT_WAPI_STA_INF
 	PRT_WAPI_T		pWapiInfo =  &padapter->wapiInfo;
 	u8				*pMacAddr = pWapiSta->PeerMacAddr;
 	u32 EntryId = 0;
-	BOOLEAN IsPairWise = false ;
+	bool IsPairWise = false ;
 	u8 EncAlgo;
 
 	WAPI_TRACE(WAPI_API, "===========> %s\n", __FUNCTION__);

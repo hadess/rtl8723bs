@@ -23,8 +23,8 @@
 
 typedef struct _Dynamic_Initial_Gain_Threshold_
 {
-	BOOLEAN		bStopDIG;
-	BOOLEAN		bPSDInProgress;
+	bool		bStopDIG;
+	bool		bPSDInProgress;
 
 	u1Byte		Dig_Enable_Flag;
 	u1Byte		Dig_Ext_Port_Stage;
@@ -64,8 +64,8 @@ typedef struct _Dynamic_Initial_Gain_Threshold_
 
 	u1Byte		DIG_Dynamic_MIN_0;
 	u1Byte		DIG_Dynamic_MIN_1;
-	BOOLEAN		bMediaConnect_0;
-	BOOLEAN		bMediaConnect_1;
+	bool		bMediaConnect_0;
+	bool		bMediaConnect_1;
 
 	u4Byte		AntDiv_RSSI_max;
 	u4Byte		RSSI_max;
@@ -283,8 +283,8 @@ odm_FalseAlarmCounterStatistics(
 VOID
 odm_FAThresholdCheck(
 	IN		PVOID					pDM_VOID,
-	IN		BOOLEAN					bDFSBand,
-	IN		BOOLEAN					bPerformance,
+	IN		bool					bDFSBand,
+	IN		bool					bPerformance,
 	IN		u4Byte					RxTp,
 	IN		u4Byte					TxTp,
 	OUT		u4Byte*					dm_FA_thres
@@ -302,7 +302,7 @@ odm_InbandNoiseCalculate (
 	IN		PVOID					pDM_VOID
 	);
 
-BOOLEAN 
+bool 
 odm_DigAbort(
 	IN		PVOID					pDM_VOID
 	);

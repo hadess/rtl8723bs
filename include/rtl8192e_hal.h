@@ -207,7 +207,7 @@ typedef struct _RT_FIRMWARE_8192E {
 
 // rtl8812_hal_init.c
 void	_8051Reset8192E(PADAPTER padapter);
-s32	FirmwareDownload8192E(PADAPTER Adapter, BOOLEAN bUsedWoWLANFw);
+s32	FirmwareDownload8192E(PADAPTER Adapter, bool bUsedWoWLANFw);
 void	InitializeFirmwareVars8192E(PADAPTER padapter);
 
 s32	InitLLTTable8192E(PADAPTER padapter, u8 txpktbuf_bndy);
@@ -216,19 +216,19 @@ s32	InitLLTTable8192E(PADAPTER padapter, u8 txpktbuf_bndy);
 u8	GetEEPROMSize8192E(PADAPTER padapter);
 void	hal_InitPGData_8192E(PADAPTER padapter, u8* PROMContent);
 void	Hal_EfuseParseIDCode8192E(PADAPTER padapter, u8 *hwinfo);
-void	Hal_ReadPROMVersion8192E(PADAPTER padapter, u8 *hwinfo, BOOLEAN AutoLoadFail);
-void	Hal_ReadPowerSavingMode8192E(PADAPTER padapter, u8*	hwinfo, BOOLEAN	AutoLoadFail);
-void	Hal_ReadTxPowerInfo8192E(PADAPTER padapter,u8* hwinfo,BOOLEAN	AutoLoadFail);
-void	Hal_ReadBoardType8192E(PADAPTER pAdapter,u8* hwinfo,BOOLEAN AutoLoadFail);
-void	Hal_ReadThermalMeter_8192E(PADAPTER	Adapter,u8* PROMContent,BOOLEAN 	AutoloadFail);
-void	Hal_ReadChannelPlan8192E(PADAPTER padapter, u8 *hwinfo, BOOLEAN AutoLoadFail);
-void	Hal_EfuseParseXtal_8192E(PADAPTER pAdapter,u8* hwinfo,BOOLEAN AutoLoadFail);
-void	Hal_ReadAntennaDiversity8192E(PADAPTER pAdapter,u8* PROMContent,BOOLEAN AutoLoadFail);
-void	Hal_ReadPAType_8192E(PADAPTER Adapter,u8* PROMContent, BOOLEAN AutoloadFail);
-void	Hal_EfuseParseBTCoexistInfo8192E(PADAPTER Adapter, u8* hwinfo, BOOLEAN AutoLoadFail);
+void	Hal_ReadPROMVersion8192E(PADAPTER padapter, u8 *hwinfo, bool AutoLoadFail);
+void	Hal_ReadPowerSavingMode8192E(PADAPTER padapter, u8*	hwinfo, bool	AutoLoadFail);
+void	Hal_ReadTxPowerInfo8192E(PADAPTER padapter,u8* hwinfo,bool	AutoLoadFail);
+void	Hal_ReadBoardType8192E(PADAPTER pAdapter,u8* hwinfo,bool AutoLoadFail);
+void	Hal_ReadThermalMeter_8192E(PADAPTER	Adapter,u8* PROMContent,bool 	AutoloadFail);
+void	Hal_ReadChannelPlan8192E(PADAPTER padapter, u8 *hwinfo, bool AutoLoadFail);
+void	Hal_EfuseParseXtal_8192E(PADAPTER pAdapter,u8* hwinfo,bool AutoLoadFail);
+void	Hal_ReadAntennaDiversity8192E(PADAPTER pAdapter,u8* PROMContent,bool AutoLoadFail);
+void	Hal_ReadPAType_8192E(PADAPTER Adapter,u8* PROMContent, bool AutoloadFail);
+void	Hal_EfuseParseBTCoexistInfo8192E(PADAPTER Adapter, u8* hwinfo, bool AutoLoadFail);
 u8 Hal_CrystalAFEAdjust(_adapter * Adapter);
 
-BOOLEAN HalDetectPwrDownMode8192E(PADAPTER Adapter);
+bool HalDetectPwrDownMode8192E(PADAPTER Adapter);
 	
 #ifdef CONFIG_WOWLAN
 void Hal_DetectWoWMode(PADAPTER pAdapter);
@@ -251,7 +251,7 @@ VOID _InitRetryFunction_8192E(	IN  PADAPTER Adapter);
 VOID _InitBeaconParameters_8192E(IN  PADAPTER Adapter);
 VOID _InitBeaconMaxError_8192E(
 	IN  PADAPTER	Adapter,
-	IN	BOOLEAN		InfraMode
+	IN	bool		InfraMode
 	);
 void _BBTurnOnBlock_8192E(PADAPTER padapter);
 void SetBeaconRelatedRegisters8192E(PADAPTER padapter);

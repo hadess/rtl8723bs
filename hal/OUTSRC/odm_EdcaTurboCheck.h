@@ -23,8 +23,8 @@
 
 typedef struct _EDCA_TURBO_
 {
-	BOOLEAN bCurrentTurboEDCA;
-	BOOLEAN bIsCurRDLState;
+	bool bCurrentTurboEDCA;
+	bool bIsCurRDLState;
 
 	u4Byte	prv_traffic_idx; // edca turbo
 }EDCA_T,*pEDCA_T;

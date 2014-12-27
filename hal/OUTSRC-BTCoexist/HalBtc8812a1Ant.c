@@ -247,7 +247,7 @@ halbtc8812a1ant_WifiRssiState(
 VOID
 halbtc8812a1ant_UpdateRaMask(
 	IN	PBTC_COEXIST		pBtCoexist,
-	IN	BOOLEAN				bForceExec,
+	IN	bool				bForceExec,
 	IN	u1Byte				type,
 	IN	u4Byte				rateMask
 	)
@@ -382,7 +382,7 @@ halbtc8812a1ant_ActionAlgorithm(
 	)
 {
 	PBTC_BT_LINK_INFO	pBtLinkInfo=&pBtCoexist->btLinkInfo;
-	BOOLEAN				bBtHsOn=false;
+	bool				bBtHsOn=false;
 	u1Byte				algorithm=BT_8812A_1ANT_COEX_ALGO_UNDEFINED;
 	u1Byte				numOfDiffProfile=0;
 
@@ -589,7 +589,7 @@ halbtc8812a1ant_ActionAlgorithm(
 VOID
 halbtc8812a1ant_SetBtAutoReport(
 	IN	PBTC_COEXIST		pBtCoexist,
-	IN	BOOLEAN			bEnableAutoReport
+	IN	bool			bEnableAutoReport
 	)
 {
 }
@@ -597,8 +597,8 @@ halbtc8812a1ant_SetBtAutoReport(
 VOID
 halbtc8812a1ant_BtAutoReport(
 	IN	PBTC_COEXIST		pBtCoexist,
-	IN	BOOLEAN			bForceExec,
-	IN	BOOLEAN			bEnableAutoReport
+	IN	bool			bForceExec,
+	IN	bool			bEnableAutoReport
 	)
 {
 	BTC_PRINT(BTC_MSG_ALGORITHM, ALGO_TRACE_FW, ("[BTCoex], %s BT Auto report = %s\n",  
@@ -621,7 +621,7 @@ halbtc8812a1ant_BtAutoReport(
 VOID
 halbtc8812a1ant_SetSwPenaltyTxRateAdaptive(
 	IN	PBTC_COEXIST		pBtCoexist,
-	IN	BOOLEAN			bLowPenaltyRa
+	IN	bool			bLowPenaltyRa
 	)
 {
 	u1Byte	tmpU1;
@@ -645,8 +645,8 @@ halbtc8812a1ant_SetSwPenaltyTxRateAdaptive(
 VOID
 halbtc8812a1ant_LowPenaltyRa(
 	IN	PBTC_COEXIST		pBtCoexist,
-	IN	BOOLEAN			bForceExec,
-	IN	BOOLEAN			bLowPenaltyRa
+	IN	bool			bForceExec,
+	IN	bool			bLowPenaltyRa
 	)
 {
 	return;
@@ -692,7 +692,7 @@ halbtc8812a1ant_SetCoexTable(
 VOID
 halbtc8812a1ant_CoexTable(
 	IN	PBTC_COEXIST		pBtCoexist,
-	IN	BOOLEAN			bForceExec,
+	IN	bool			bForceExec,
 	IN	u4Byte			val0x6c0,
 	IN	u4Byte			val0x6c4,
 	IN	u4Byte			val0x6c8,
@@ -730,7 +730,7 @@ halbtc8812a1ant_CoexTable(
 VOID
 halbtc8812a1ant_CoexTableWithType(
 	IN	PBTC_COEXIST		pBtCoexist,
-	IN	BOOLEAN				bForceExec,
+	IN	bool				bForceExec,
 	IN	u1Byte				type
 	)
 {
@@ -768,7 +768,7 @@ halbtc8812a1ant_CoexTableWithType(
 VOID
 halbtc8812a1ant_SetFwIgnoreWlanAct(
 	IN	PBTC_COEXIST		pBtCoexist,
-	IN	BOOLEAN			bEnable
+	IN	bool			bEnable
 	)
 {
 	u1Byte	dataLen=3;
@@ -791,8 +791,8 @@ halbtc8812a1ant_SetFwIgnoreWlanAct(
 VOID
 halbtc8812a1ant_IgnoreWlanAct(
 	IN	PBTC_COEXIST		pBtCoexist,
-	IN	BOOLEAN			bForceExec,
-	IN	BOOLEAN			bEnable
+	IN	bool			bForceExec,
+	IN	bool			bEnable
 	)
 {
 	BTC_PRINT(BTC_MSG_ALGORITHM, ALGO_TRACE_FW, ("[BTCoex], %s turn Ignore WlanAct %s\n", 
@@ -860,12 +860,12 @@ halbtc8812a1ant_SetLpsRpwm(
 VOID
 halbtc8812a1ant_LpsRpwm(
 	IN	PBTC_COEXIST		pBtCoexist,
-	IN	BOOLEAN			bForceExec,
+	IN	bool			bForceExec,
 	IN	u1Byte			lpsVal,
 	IN	u1Byte			rpwmVal
 	)
 {
-	BOOLEAN	bForceExecPwrCmd=false;
+	bool	bForceExecPwrCmd=false;
 	
 	BTC_PRINT(BTC_MSG_ALGORITHM, ALGO_TRACE_FW, ("[BTCoex], %s set lps/rpwm=0x%x/0x%x \n", 
 		(bForceExec? "force to":""), lpsVal, rpwmVal));
@@ -893,8 +893,8 @@ VOID
 halbtc8812a1ant_SetAntPath(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	u1Byte				antPosType,
-	IN	BOOLEAN				bInitHwCfg,
-	IN	BOOLEAN				bWifiOff
+	IN	bool				bInitHwCfg,
+	IN	bool				bWifiOff
 	)
 {
 	u1Byte			u1Tmp=0;
@@ -939,12 +939,12 @@ halbtc8812a1ant_SetAntPath(
 VOID
 halbtc8812a1ant_PsTdma(
 	IN	PBTC_COEXIST		pBtCoexist,
-	IN	BOOLEAN			bForceExec,
-	IN	BOOLEAN			bTurnOn,
+	IN	bool			bForceExec,
+	IN	bool			bTurnOn,
 	IN	u1Byte			type
 	)
 {
-	BOOLEAN			bTurnOnByCnt=false;
+	bool			bTurnOnByCnt=false;
 	u1Byte			psTdmaTypeByCnt=0, rssiAdjustVal=0;
 
 	BTC_PRINT(BTC_MSG_ALGORITHM, ALGO_TRACE_FW, ("[BTCoex], %s turn %s PS TDMA, type=%d\n", 
@@ -1127,12 +1127,12 @@ halbtc8812a1ant_CoexAllOff(
 	halbtc8812a1ant_CoexTableWithType(pBtCoexist, NORMAL_EXEC, 0);
 }
 
-BOOLEAN
+bool
 halbtc8812a1ant_IsCommonAction(
 	IN	PBTC_COEXIST		pBtCoexist
 	)
 {
-	BOOLEAN			bCommon=false, bWifiConnected=false, bWifiBusy=false;
+	bool			bCommon=false, bWifiConnected=false, bWifiBusy=false;
 
 	pBtCoexist->fBtcGet(pBtCoexist, BTC_GET_BL_WIFI_CONNECTED, &bWifiConnected);
 	pBtCoexist->fBtcGet(pBtCoexist, BTC_GET_BL_WIFI_BUSY, &bWifiBusy);
@@ -1401,7 +1401,7 @@ halbtc8812a1ant_PsTdmaTypeByWifiRssi(
 VOID
 halbtc8812a1ant_PsTdmaCheckForPowerSaveState(
 	IN	PBTC_COEXIST		pBtCoexist,
-	IN	BOOLEAN			bNewPsState
+	IN	bool			bNewPsState
 	)
 {
 	u1Byte	lpsMode=0x0;
@@ -1442,7 +1442,7 @@ halbtc8812a1ant_PowerSaveState(
 	IN	u1Byte				rpwmVal
 	)
 {
-	BOOLEAN		bLowPwrDisable=false;
+	bool		bLowPwrDisable=false;
 
 	switch(psType)
 	{
@@ -1498,9 +1498,9 @@ halbtc8812a1ant_MonitorBtEnableDisable(
 	)
 {
 	PBTC_STACK_INFO	pStackInfo=&pBtCoexist->stackInfo;
-	static BOOLEAN	bPreBtDisabled=false;
+	static bool	bPreBtDisabled=false;
 	static u4Byte	btDisableCnt=0;
-	BOOLEAN			bBtActive=true, bBtDisabled=false;
+	bool			bBtActive=true, bBtDisabled=false;
 
 	// only 8812a need to consider if core stack is installed.
 	if(!pStackInfo->hciVersion)
@@ -1653,7 +1653,7 @@ halbtc8812a1ant_ActionHs(
 	IN	PBTC_COEXIST		pBtCoexist
 	)
 {
-	BOOLEAN 		bHsConnecting=false;
+	bool 		bHsConnecting=false;
 
 	pBtCoexist->fBtcGet(pBtCoexist, BTC_GET_BL_HS_CONNECTING, &bHsConnecting);
 
@@ -1680,7 +1680,7 @@ halbtc8812a1ant_ActionBtInquiry(
 	)
 {
 	PBTC_BT_LINK_INFO pBtLinkInfo=&pBtCoexist->btLinkInfo;
-	BOOLEAN			bWifiConnected=false;
+	bool			bWifiConnected=false;
 	
 	pBtCoexist->fBtcGet(pBtCoexist, BTC_GET_BL_WIFI_CONNECTED, &bWifiConnected);
 
@@ -1844,9 +1844,9 @@ halbtc8812a1ant_ActionWifiConnected(
 	IN	PBTC_COEXIST		pBtCoexist
 	)
 {
-	BOOLEAN 	bWifiConnected=false, bWifiBusy=false;
-	BOOLEAN 	bScan=false, bLink=false, bRoam=false;
-	BOOLEAN 	bUnder4way=false;
+	bool 	bWifiConnected=false, bWifiBusy=false;
+	bool 	bScan=false, bLink=false, bRoam=false;
+	bool 	bUnder4way=false;
 	u4Byte		wifiBw;
 
 	BTC_PRINT(BTC_MSG_ALGORITHM, ALGO_TRACE, ("[BTCoex], CoexForWifiConnect()===>\n"));
@@ -1939,7 +1939,7 @@ halbtc8812a1ant_RunSwCoexistMechanism(
 	IN	PBTC_COEXIST		pBtCoexist
 	)
 {
-	BOOLEAN				bWifiUnder5G=false, bWifiBusy=false, bWifiConnected=false;
+	bool				bWifiUnder5G=false, bWifiBusy=false, bWifiConnected=false;
 	u1Byte				btInfoOriginal=0, btRetryCnt=0;
 	u1Byte				algorithm=0;
 
@@ -2009,7 +2009,7 @@ halbtc8812a1ant_RunCoexistMechanism(
 	IN	PBTC_COEXIST		pBtCoexist
 	)
 {
-	BOOLEAN	bWifiUnder5G=false, bWifiBusy=false, bWifiConnected=false, bBtHsOn=false;
+	bool	bWifiUnder5G=false, bWifiBusy=false, bWifiConnected=false, bBtHsOn=false;
 
 	BTC_PRINT(BTC_MSG_ALGORITHM, ALGO_TRACE, ("[BTCoex], RunCoexistMechanism()===>\n"));
 
@@ -2056,7 +2056,7 @@ halbtc8812a1ant_RunCoexistMechanism(
 	pBtCoexist->fBtcGet(pBtCoexist, BTC_GET_BL_WIFI_CONNECTED, &bWifiConnected);
 	if(!bWifiConnected)
 	{
-		BOOLEAN	bScan=false, bLink=false, bRoam=false;
+		bool	bScan=false, bLink=false, bRoam=false;
 		
 		BTC_PRINT(BTC_MSG_ALGORITHM, ALGO_TRACE, ("[BTCoex], wifi is non connected-idle !!!\n"));
 
@@ -2101,7 +2101,7 @@ EXhalbtc8812a1ant_PowerOnSetting(
 VOID
 EXhalbtc8812a1ant_InitHwConfig(
 	IN	PBTC_COEXIST		pBtCoexist,
-	IN	BOOLEAN				bWifiOnly
+	IN	bool				bWifiOnly
 	)
 {
 	u4Byte	u4Tmp=0;
@@ -2168,8 +2168,8 @@ EXhalbtc8812a1ant_DisplayCoexInfo(
 	pu1Byte				cliBuf=pBtCoexist->cliBuf;
 	u1Byte				u1Tmp[4], i, btInfoExt, psTdmaCase=0;
 	u4Byte				u4Tmp[4];
-	BOOLEAN				bRoam=false, bScan=false, bLink=false, bWifiUnder5G=false;
-	BOOLEAN				bBtHsOn=false, bWifiBusy=false;
+	bool				bRoam=false, bScan=false, bLink=false, bWifiUnder5G=false;
+	bool				bBtHsOn=false, bWifiBusy=false;
 	s4Byte				wifiRssi=0, btHsRssi=0;
 	u4Byte				wifiBw, wifiTrafficDir;
 	u1Byte				wifiDot11Chnl, wifiHsChnl;
@@ -2414,7 +2414,7 @@ EXhalbtc8812a1ant_ScanNotify(
 	IN	u1Byte			type
 	)
 {
-	BOOLEAN bWifiConnected=false, bBtHsOn=false;	
+	bool bWifiConnected=false, bBtHsOn=false;	
 
 	if(pBtCoexist->bManualControl ||
 		pBtCoexist->bStopCoexDm ||
@@ -2466,7 +2466,7 @@ EXhalbtc8812a1ant_ConnectNotify(
 	IN	u1Byte			type
 	)
 {
-	BOOLEAN	bWifiConnected=false, bBtHsOn=false;	
+	bool	bWifiConnected=false, bBtHsOn=false;	
 
 	if(pBtCoexist->bManualControl ||
 		pBtCoexist->bStopCoexDm ||
@@ -2566,7 +2566,7 @@ EXhalbtc8812a1ant_SpecialPacketNotify(
 	IN	u1Byte				type
 	)
 {
-	BOOLEAN bBtHsOn=false;
+	bool bBtHsOn=false;
 
 	if(pBtCoexist->bManualControl ||
 		pBtCoexist->bStopCoexDm ||
@@ -2604,9 +2604,9 @@ EXhalbtc8812a1ant_BtInfoNotify(
 	u1Byte				btInfo=0;
 	u1Byte				i, rspSource=0;
 	static u4Byte		setBtPsdMode=0;
-	BOOLEAN				bBtBusy=false;
-	BOOLEAN				bWifiConnected=false;
-	BOOLEAN				bBtCtrlAggBufSize=false, bRejApAggPkt=false;
+	bool				bBtBusy=false;
+	bool				bWifiConnected=false;
+	bool				bBtCtrlAggBufSize=false, bRejApAggPkt=false;
 
 	rspSource = tmpBuf[0]&0xf;
 	if(rspSource >= BT_INFO_SRC_8812A_1ANT_MAX)

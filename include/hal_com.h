@@ -215,10 +215,10 @@ hal_com_config_channel_plan(
 	IN	u8			hw_channel_plan,	//channel plan from HW (efuse/eeprom)
 	IN	u8			sw_channel_plan,	//channel plan from SW (registry/module param)
 	IN	u8			def_channel_plan,	//channel plan used when the former two is invalid
-	IN	BOOLEAN		AutoLoadFail
+	IN	bool		AutoLoadFail
 	);
 
-BOOLEAN
+bool
 HAL_IsLegalChannel(
 	IN	PADAPTER	Adapter,
 	IN	u32			Channel
@@ -233,7 +233,7 @@ void	HalSetBrateCfg(
 	IN u8			*mBratesOS,
 	OUT u16			*pBrateCfg);
 
-BOOLEAN
+bool
 Hal_MappingOutPipe(
 	IN	PADAPTER	pAdapter,
 	IN	u8		NumOutPipe
@@ -260,14 +260,14 @@ void rtw_hal_check_rxfifo_full(_adapter *adapter);
 u8 SetHalDefVar(_adapter *adapter, HAL_DEF_VARIABLE variable, void *value);
 u8 GetHalDefVar(_adapter *adapter, HAL_DEF_VARIABLE variable, void *value);
 
-BOOLEAN 
+bool 
 eqNByte(
 	u8*	str1,
 	u8*	str2,
 	u32	num
 	);
 
-BOOLEAN 
+bool 
 IsHexDigit(
 	IN	char	chTmp
 	);
@@ -277,14 +277,14 @@ MapCharToHexDigit(
 	IN	char	chTmp
 );
 
-BOOLEAN 
+bool 
 GetHexValueFromString(
 	IN		char*			szStr,
 	IN OUT	u32*			pu4bVal,
 	IN OUT	u32*			pu4bMove
 	);
 
-BOOLEAN 
+bool 
 GetFractionValueFromString(
 	IN		char*		szStr,
 	IN OUT	u8*			pInteger,
@@ -292,12 +292,12 @@ GetFractionValueFromString(
 	IN OUT	u32*		pu4bMove
 	);
 
-BOOLEAN
+bool
 IsCommentString(
 	IN		char*		szStr
 	);
 
-BOOLEAN 
+bool 
 ParseQualifiedString(
     IN	char* In, 
     IN OUT  u32* Start, 
@@ -306,13 +306,13 @@ ParseQualifiedString(
     IN	char  RightQualifier
     );
 
-BOOLEAN
+bool
 GetU1ByteIntegerFromStringInDecimal(
 	IN		char* Str,
 	IN OUT	u8* pInt
 	);
 
-BOOLEAN
+bool
 isAllSpaceOrTab(
 	u8*	data,
 	u8	size
@@ -348,7 +348,7 @@ void SetHalODMVar(
 	PADAPTER				Adapter,
 	HAL_ODM_VARIABLE		eVariable,
 	PVOID					pValue1,
-	BOOLEAN					bSet);
+	bool					bSet);
 
 #ifdef CONFIG_BACKGROUND_NOISE_MONITOR
 struct noise_info

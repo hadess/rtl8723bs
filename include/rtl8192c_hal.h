@@ -190,10 +190,10 @@ VOID rtl8192c_FirmwareSelfReset(IN PADAPTER Adapter);
 int FirmwareDownload92C(IN PADAPTER Adapter);
 VOID InitializeFirmwareVars92C(PADAPTER Adapter);
 u8 GetEEPROMSize8192C(PADAPTER Adapter);
-void rtl8192c_EfuseParseChnlPlan(PADAPTER padapter, u8 *hwinfo, BOOLEAN AutoLoadFail);
+void rtl8192c_EfuseParseChnlPlan(PADAPTER padapter, u8 *hwinfo, bool AutoLoadFail);
 
 HAL_VERSION rtl8192c_ReadChipVersion(IN PADAPTER Adapter);
-void rtl8192c_ReadBluetoothCoexistInfo(PADAPTER Adapter, u8 *PROMContent, BOOLEAN AutoloadFail);
+void rtl8192c_ReadBluetoothCoexistInfo(PADAPTER Adapter, u8 *PROMContent, bool AutoloadFail);
 
 VOID rtl8192c_EfuseParseIDCode(PADAPTER pAdapter, u8 *hwinfo);
 void rtl8192c_set_hal_ops(struct hal_ops *pHalFunc);

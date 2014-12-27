@@ -55,31 +55,31 @@ typedef enum _BT_8723A_1ANT_COEX_ALGO{
 
 typedef struct _COEX_DM_8723A_1ANT{
 	// fw mechanism
-	BOOLEAN		bCurIgnoreWlanAct;
-	BOOLEAN		bPreIgnoreWlanAct;
+	bool		bCurIgnoreWlanAct;
+	bool		bPreIgnoreWlanAct;
 	u1Byte		prePsTdma;
 	u1Byte		curPsTdma;
 	u1Byte		psTdmaPara[5];
 	u1Byte		psTdmaDuAdjType;
 	u4Byte		psTdmaMonitorCnt;
 	u4Byte		psTdmaGlobalCnt;
-	BOOLEAN		bResetTdmaAdjust;
-	BOOLEAN		bPrePsTdmaOn;
-	BOOLEAN		bCurPsTdmaOn;
+	bool		bResetTdmaAdjust;
+	bool		bPrePsTdmaOn;
+	bool		bCurPsTdmaOn;
 
 	// sw mechanism
-	BOOLEAN		bPreRfRxLpfShrink;
-	BOOLEAN		bCurRfRxLpfShrink;
+	bool		bPreRfRxLpfShrink;
+	bool		bCurRfRxLpfShrink;
 	u4Byte		btRf0x1eBackup;
-	BOOLEAN 	bPreLowPenaltyRa;
-	BOOLEAN		bCurLowPenaltyRa;
+	bool 	bPreLowPenaltyRa;
+	bool		bCurLowPenaltyRa;
 	u4Byte		preVal0x6c0;
 	u4Byte		curVal0x6c0;
 	u4Byte		preVal0x6c8;
 	u4Byte		curVal0x6c8;
 	u1Byte		preVal0x6cc;
 	u1Byte		curVal0x6cc;
-	BOOLEAN		bLimitedDig;
+	bool		bLimitedDig;
 
 	// algorithm related
 	u1Byte		preAlgorithm;
@@ -97,13 +97,13 @@ typedef struct _COEX_STA_8723A_1ANT{
 	u1Byte					preBtRssiState;
 	u1Byte					preBtRssiState1;
 	u1Byte					preWifiRssiState[4];
-	BOOLEAN					bC2hBtInfoReqSent;
+	bool					bC2hBtInfoReqSent;
 	u1Byte					btInfoC2h[BT_INFO_SRC_8723A_1ANT_MAX][10];
 	u4Byte					btInfoC2hCnt[BT_INFO_SRC_8723A_1ANT_MAX];
-	BOOLEAN					bC2hBtInquiryPage;
+	bool					bC2hBtInquiryPage;
 	u1Byte					btRetryCnt;
 	u1Byte					btInfoExt;
-	//BOOLEAN					bHoldForStackOperation;
+	//bool					bHoldForStackOperation;
 	//u1Byte					bHoldPeriodCnt;
 	// this is for c2h hang work-around
 	u4Byte					c2hHangDetectCnt;

@@ -1328,7 +1328,7 @@ odm_S0S1_SwAntDiv(
 		//1 Decision State
 		if((pDM_SWAT_Table->try_flag == 1)&&(pDM_SWAT_Table->RSSI_Trying == 0) )
 		{
-			BOOLEAN bByCtrlFrame = false;
+			bool bByCtrlFrame = false;
 			u8Byte	pkt_cnt_total = 0;
 			
 			for (i=0; i<ODM_ASSOCIATE_ENTRY_NUM; i++)
@@ -1605,7 +1605,7 @@ odm_S0S1_SwAntDivByCtrlFrame_ProcessRSSI(
 {
 	pSWAT_T	pDM_SWAT_Table = &pDM_Odm->DM_SWAT_Table;
 	pFAT_T		pDM_FatTable = &pDM_Odm->DM_FatTable;
-	BOOLEAN		isCCKrate;
+	bool		isCCKrate;
 
 	if(!(pDM_Odm->SupportAbility & ODM_BB_ANT_DIV))
 		return;

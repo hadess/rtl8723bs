@@ -284,7 +284,7 @@ odm_DynamicTxPower_92D(
 	int	UndecoratedSmoothedPWDB;
 	#if (RTL8192D_EASY_SMART_CONCURRENT == 1)
 	PADAPTER	BuddyAdapter = Adapter->BuddyAdapter;
-	BOOLEAN		bGetValueFromBuddyAdapter = DualMacGetParameterFromBuddyAdapter(Adapter);
+	bool		bGetValueFromBuddyAdapter = DualMacGetParameterFromBuddyAdapter(Adapter);
 	u8		HighPowerLvlBackForMac0 = TxHighPwrLevel_Level1;
 	#endif
 

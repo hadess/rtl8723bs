@@ -296,7 +296,7 @@ void halbtcoutsrc_DisableLowPower(PBTC_COEXIST pBtCoexist, u8 bLowPwrDisable)
 void halbtcoutsrc_AggregationCheck(PBTC_COEXIST pBtCoexist)
 {
 	PADAPTER padapter;
-	BOOLEAN bNeedToAct;
+	bool bNeedToAct;
 
 
 	padapter = pBtCoexist->Adapter;

@@ -169,7 +169,7 @@ typedef struct _BTC_BOARD_INFO{
 	u1Byte				btdmAntNum;	// ant number for btdm
 	u1Byte				btdmAntPos;		//Bryant Add to indicate Antenna Position for (pgAntNum = 2) && (btdmAntNum =1)  (DPDT+1Ant case)
 	u1Byte				singleAntPath;	// current used for 8723b only, 1=>s0,  0=>s1
-	//BOOLEAN				bBtExist;
+	//bool				bBtExist;
 } BTC_BOARD_INFO, *PBTC_BOARD_INFO;
 
 typedef enum _BTC_DBG_OPCODE{
@@ -235,7 +235,7 @@ typedef enum _BT_WIFI_COEX_STATE{
 
 // defined for BFP_BTC_GET
 typedef enum _BTC_GET_TYPE{
-	// type BOOLEAN
+	// type bool
 	BTC_GET_BL_HS_OPERATION,
 	BTC_GET_BL_HS_CONNECTING,
 	BTC_GET_BL_WIFI_CONNECTED,
@@ -277,7 +277,7 @@ typedef enum _BTC_GET_TYPE{
 
 // defined for BFP_BTC_SET
 typedef enum _BTC_SET_TYPE{
-	// type BOOLEAN
+	// type bool
 	BTC_SET_BL_BT_DISABLE,
 	BTC_SET_BL_BT_TRAFFIC_BUSY,
 	BTC_SET_BL_BT_LIMITED_DIG,
@@ -295,7 +295,7 @@ typedef enum _BTC_SET_TYPE{
 	BTC_SET_ACT_GET_BT_RSSI,
 	BTC_SET_ACT_AGGREGATE_CTRL,
 	//===== for 1Ant ======
-	// type BOOLEAN
+	// type bool
 
 	// type u1Byte
 	BTC_SET_U1_RSSI_ADJ_VAL_FOR_1ANT_COEX_TYPE,
@@ -450,14 +450,14 @@ typedef VOID
 	IN	pu1Byte			pCmdBuffer
 	);
 
-typedef	BOOLEAN
+typedef	u8
 (*BFP_BTC_GET)(
 	IN	PVOID			pBtCoexist,
 	IN	u1Byte			getType,
 	OUT	PVOID			pOutBuf
 	);
 
-typedef	BOOLEAN
+typedef	u8
 (*BFP_BTC_SET)(
 	IN	PVOID			pBtCoexist,
 	IN	u1Byte			setType,
@@ -483,59 +483,59 @@ typedef VOID
 	);
 
 typedef struct _BTC_BT_INFO{
-	BOOLEAN					bBtDisabled;
+	bool					bBtDisabled;
 	u1Byte					rssiAdjustForAgcTableOn;
 	u1Byte					rssiAdjustFor1AntCoexType;
-	BOOLEAN					bPreBtCtrlAggBufSize;
-	BOOLEAN					bBtCtrlAggBufSize;
-	BOOLEAN					bRejectAggPkt;
-	BOOLEAN					bIncreaseScanDevNum;
-	BOOLEAN					bBtTxRxMask;
+	bool					bPreBtCtrlAggBufSize;
+	bool					bBtCtrlAggBufSize;
+	bool					bRejectAggPkt;
+	bool					bIncreaseScanDevNum;
+	bool					bBtTxRxMask;
 	u1Byte					preAggBufSize;
 	u1Byte					aggBufSize;
-	BOOLEAN					bBtBusy;
-	BOOLEAN					bLimitedDig;
+	bool					bBtBusy;
+	bool					bLimitedDig;
 	u2Byte					btHciVer;
 	u2Byte					btRealFwVer;
 	u1Byte					btFwVer;
 	u4Byte					getBtFwVerCnt;
 
-	BOOLEAN					bBtDisableLowPwr;
+	bool					bBtDisableLowPwr;
 
-	BOOLEAN					bBtCtrlLps;
-	BOOLEAN					bBtLpsOn;
-	BOOLEAN					bForceToRoam;	// for 1Ant solution
+	bool					bBtCtrlLps;
+	bool					bBtLpsOn;
+	bool					bForceToRoam;	// for 1Ant solution
 	u1Byte					lpsVal;
 	u1Byte					rpwmVal;
 	u4Byte					raMask;
 } BTC_BT_INFO, *PBTC_BT_INFO;
 
 typedef struct _BTC_STACK_INFO{
-	BOOLEAN					bProfileNotified;
+	bool					bProfileNotified;
 	u2Byte					hciVersion;	// stack hci version
 	u1Byte					numOfLink;
-	BOOLEAN					bBtLinkExist;
-	BOOLEAN					bScoExist;
-	BOOLEAN					bAclExist;
-	BOOLEAN					bA2dpExist;
-	BOOLEAN					bHidExist;
+	bool					bBtLinkExist;
+	bool					bScoExist;
+	bool					bAclExist;
+	bool					bA2dpExist;
+	bool					bHidExist;
 	u1Byte					numOfHid;
-	BOOLEAN					bPanExist;
-	BOOLEAN					bUnknownAclExist;
+	bool					bPanExist;
+	bool					bUnknownAclExist;
 	s1Byte					minBtRssi;
 } BTC_STACK_INFO, *PBTC_STACK_INFO;
 
 typedef struct _BTC_BT_LINK_INFO{
-	BOOLEAN					bBtLinkExist;
-	BOOLEAN					bScoExist;
-	BOOLEAN					bScoOnly;
-	BOOLEAN					bA2dpExist;
-	BOOLEAN					bA2dpOnly;
-	BOOLEAN					bHidExist;
-	BOOLEAN					bHidOnly;
-	BOOLEAN					bPanExist;
-	BOOLEAN					bPanOnly;
-	BOOLEAN					bSlaveRole;
+	bool					bBtLinkExist;
+	bool					bScoExist;
+	bool					bScoOnly;
+	bool					bA2dpExist;
+	bool					bA2dpOnly;
+	bool					bHidExist;
+	bool					bHidOnly;
+	bool					bPanExist;
+	bool					bPanOnly;
+	bool					bSlaveRole;
 } BTC_BT_LINK_INFO, *PBTC_BT_LINK_INFO;
 
 typedef struct _BTC_STATISTICS{
@@ -558,7 +558,7 @@ typedef struct _BTC_STATISTICS{
 } BTC_STATISTICS, *PBTC_STATISTICS;
 
 typedef struct _BTC_COEXIST{
-	BOOLEAN				bBinded;		// make sure only one adapter can bind the data context
+	bool				bBinded;		// make sure only one adapter can bind the data context
 	PVOID				Adapter;		// default adapter
 	BTC_BOARD_INFO		boardInfo;
 	BTC_BT_INFO			btInfo;		// some bt info referenced by non-bt module
@@ -566,9 +566,9 @@ typedef struct _BTC_COEXIST{
 	BTC_BT_LINK_INFO	btLinkInfo;
 	BTC_CHIP_INTERFACE	chipInterface;
 
-	BOOLEAN				bInitilized;
-	BOOLEAN				bStopCoexDm;
-	BOOLEAN				bManualControl;
+	bool				bInitilized;
+	bool				bStopCoexDm;
+	bool				bManualControl;
 	pu1Byte				cliBuf;
 	BTC_STATISTICS		statistics;
 	u1Byte				pwrModeVal[10];
@@ -605,7 +605,7 @@ typedef struct _BTC_COEXIST{
 
 extern BTC_COEXIST				GLBtCoexist;
 
-BOOLEAN
+u8
 EXhalbtcoutsrc_InitlizeVariables(
 	IN	PVOID		Adapter	
 	);
@@ -616,7 +616,7 @@ EXhalbtcoutsrc_PowerOnSetting(
 VOID
 EXhalbtcoutsrc_InitHwConfig(
 	IN	PBTC_COEXIST		pBtCoexist,
-	IN	BOOLEAN				bWifiOnly
+	IN	u8			bWifiOnly
 	);
 VOID
 EXhalbtcoutsrc_InitCoexDm(
@@ -712,7 +712,7 @@ EXhalbtcoutsrc_UpdateMinBtRssi(
 #if 0
 VOID
 EXhalbtcoutsrc_SetBtExist(
-	IN	BOOLEAN		bBtExist
+	IN	bool		bBtExist
 	);
 #endif
 VOID

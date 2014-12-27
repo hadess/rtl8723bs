@@ -3642,8 +3642,8 @@ void	rtw_ht_use_default_setting(_adapter *padapter)
 	struct mlme_priv 		*pmlmepriv = &padapter->mlmepriv;
 	struct ht_priv		*phtpriv = &pmlmepriv->htpriv;
 	struct registry_priv	*pregistrypriv = &padapter->registrypriv;
-	BOOLEAN		bHwLDPCSupport = false, bHwSTBCSupport = false;
-	BOOLEAN		bHwSupportBeamformer = false, bHwSupportBeamformee = false;
+	bool		bHwLDPCSupport = false, bHwSTBCSupport = false;
+	bool		bHwSupportBeamformer = false, bHwSupportBeamformee = false;
 
 	if (pregistrypriv->wifi_spec)
 		phtpriv->bss_coexist = 1;

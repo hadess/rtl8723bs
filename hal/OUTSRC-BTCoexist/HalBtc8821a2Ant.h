@@ -43,36 +43,36 @@ typedef enum _BT_8821A_2ANT_COEX_ALGO{
 
 typedef struct _COEX_DM_8821A_2ANT{
 	// fw mechanism
-	BOOLEAN		bPreDecBtPwr;
-	BOOLEAN		bCurDecBtPwr;
+	bool		bPreDecBtPwr;
+	bool		bCurDecBtPwr;
 	u1Byte		preFwDacSwingLvl;
 	u1Byte		curFwDacSwingLvl;
-	BOOLEAN		bCurIgnoreWlanAct;
-	BOOLEAN		bPreIgnoreWlanAct;
+	bool		bCurIgnoreWlanAct;
+	bool		bPreIgnoreWlanAct;
 	u1Byte		prePsTdma;
 	u1Byte		curPsTdma;
 	u1Byte		psTdmaPara[5];
 	u1Byte		psTdmaDuAdjType;
-	BOOLEAN		bResetTdmaAdjust;
-	BOOLEAN		bPrePsTdmaOn;
-	BOOLEAN		bCurPsTdmaOn;
-	BOOLEAN		bPreBtAutoReport;
-	BOOLEAN		bCurBtAutoReport;
+	bool		bResetTdmaAdjust;
+	bool		bPrePsTdmaOn;
+	bool		bCurPsTdmaOn;
+	bool		bPreBtAutoReport;
+	bool		bCurBtAutoReport;
 
 	// sw mechanism
-	BOOLEAN		bPreRfRxLpfShrink;
-	BOOLEAN		bCurRfRxLpfShrink;
+	bool		bPreRfRxLpfShrink;
+	bool		bCurRfRxLpfShrink;
 	u4Byte		btRf0x1eBackup;
-	BOOLEAN 	bPreLowPenaltyRa;
-	BOOLEAN		bCurLowPenaltyRa;
-	BOOLEAN		bPreDacSwingOn;
+	bool 	bPreLowPenaltyRa;
+	bool		bCurLowPenaltyRa;
+	bool		bPreDacSwingOn;
 	u4Byte		preDacSwingLvl;
-	BOOLEAN		bCurDacSwingOn;
+	bool		bCurDacSwingOn;
 	u4Byte		curDacSwingLvl;
-	BOOLEAN		bPreAdcBackOff;
-	BOOLEAN		bCurAdcBackOff;
-	BOOLEAN 	bPreAgcTableEn;
-	BOOLEAN		bCurAgcTableEn;
+	bool		bPreAdcBackOff;
+	bool		bCurAdcBackOff;
+	bool 	bPreAgcTableEn;
+	bool		bCurAgcTableEn;
 	u4Byte		preVal0x6c0;
 	u4Byte		curVal0x6c0;
 	u4Byte		preVal0x6c4;
@@ -81,7 +81,7 @@ typedef struct _COEX_DM_8821A_2ANT{
 	u4Byte		curVal0x6c8;
 	u1Byte		preVal0x6cc;
 	u1Byte		curVal0x6cc;
-	BOOLEAN		bLimitedDig;
+	bool		bLimitedDig;
 
 	// algorithm related
 	u1Byte		preAlgorithm;
@@ -91,14 +91,14 @@ typedef struct _COEX_DM_8821A_2ANT{
 } COEX_DM_8821A_2ANT, *PCOEX_DM_8821A_2ANT;
 
 typedef struct _COEX_STA_8821A_2ANT{
-	BOOLEAN					bBtLinkExist;
-	BOOLEAN					bScoExist;
-	BOOLEAN					bA2dpExist;
-	BOOLEAN					bHidExist;
-	BOOLEAN					bPanExist;
+	bool					bBtLinkExist;
+	bool					bScoExist;
+	bool					bA2dpExist;
+	bool					bHidExist;
+	bool					bPanExist;
 
-	BOOLEAN					bUnderLps;
-	BOOLEAN					bUnderIps;
+	bool					bUnderLps;
+	bool					bUnderIps;
 	u4Byte					highPriorityTx;
 	u4Byte					highPriorityRx;
 	u4Byte					lowPriorityTx;
@@ -106,10 +106,10 @@ typedef struct _COEX_STA_8821A_2ANT{
 	u1Byte					btRssi;
 	u1Byte					preBtRssiState;
 	u1Byte					preWifiRssiState[4];
-	BOOLEAN					bC2hBtInfoReqSent;
+	bool					bC2hBtInfoReqSent;
 	u1Byte					btInfoC2h[BT_INFO_SRC_8821A_2ANT_MAX][10];
 	u4Byte					btInfoC2hCnt[BT_INFO_SRC_8821A_2ANT_MAX];
-	BOOLEAN					bC2hBtInquiryPage;
+	bool					bC2hBtInquiryPage;
 	u1Byte					btRetryCnt;
 	u1Byte					btInfoExt;
 }COEX_STA_8821A_2ANT, *PCOEX_STA_8821A_2ANT;
@@ -124,7 +124,7 @@ EXhalbtc8821a2ant_PowerOnSetting(
 VOID
 EXhalbtc8821a2ant_InitHwConfig(
 	IN	PBTC_COEXIST		pBtCoexist,
-	IN	BOOLEAN				bWifiOnly
+	IN	bool				bWifiOnly
 	);
 VOID
 EXhalbtc8821a2ant_InitCoexDm(

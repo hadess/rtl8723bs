@@ -22,7 +22,7 @@
 #include "../odm_precomp.h"
 
 #if (RTL8723B_SUPPORT == 1)
-static BOOLEAN
+static bool
 CheckPositive(
     IN  PDM_ODM_T     pDM_Odm,
     IN  const u4Byte  Condition1,
@@ -97,7 +97,7 @@ CheckPositive(
         return false;
     }
 }
-static BOOLEAN
+static bool
 CheckNegative(
     IN  PDM_ODM_T     pDM_Odm,
     IN  const u4Byte  Condition1,
@@ -270,7 +270,7 @@ ODM_ReadAndConfig_MP_8723B_AGC_TAB(
         }
         else
         {   // This line is the beginning of branch.
-            BOOLEAN bMatched = true;
+            bool bMatched = true;
             u1Byte  cCond  = (u1Byte)((v1 & (BIT29|BIT28)) >> 28);
 
             if (cCond == COND_ELSE) { // ELSE, ENDIF
@@ -545,7 +545,7 @@ ODM_ReadAndConfig_MP_8723B_PHY_REG(
         }
         else
         {   // This line is the beginning of branch.
-            BOOLEAN bMatched = true;
+            bool bMatched = true;
             u1Byte  cCond  = (u1Byte)((v1 & (BIT29|BIT28)) >> 28);
 
             if (cCond == COND_ELSE) { // ELSE, ENDIF

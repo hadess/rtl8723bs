@@ -1278,7 +1278,7 @@ PHY_SetTxPowerIndexByRateSection(
 	}
 }
 
-BOOLEAN 
+bool 
 phy_GetChnlIndex(
 	IN	u8 	Channel,
 	OUT u8*	ChannelIdx
@@ -1289,7 +1289,7 @@ phy_GetChnlIndex(
 				114,116,118,120,122,124,126,128,130,132,134,136,138,140,142,144,149,151,
 				153,155,157,159,161,163,165,167,168,169,171,173,175,177};
 	u8  i = 0;
-	BOOLEAN bIn24G=true;
+	bool bIn24G=true;
 
 	if(Channel <= 14)
 	{
@@ -1319,7 +1319,7 @@ PHY_GetTxPowerIndexBase(
 	IN	u8				Rate,	
 	IN	CHANNEL_WIDTH	BandWidth,	
 	IN	u8				Channel,
-	OUT PBOOLEAN		bIn24G
+	OUT bool		*bIn24G
 	)
 {
 	PHAL_DATA_TYPE		pHalData = GET_HAL_DATA(pAdapter);
@@ -1711,7 +1711,7 @@ PHY_SetTxPowerLevelByPath(
 	)
 {
 	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(Adapter);
-	BOOLEAN bIsIn24G = (pHalData->CurrentBandType == BAND_ON_2_4G );
+	bool bIsIn24G = (pHalData->CurrentBandType == BAND_ON_2_4G );
 
 	//if ( pMgntInfo->RegNByteAccess == 0 )
 	{
@@ -2855,7 +2855,7 @@ phy_ParseBBPgParaFile(
 	char	*szLine, *ptmp;
 	u32	u4bRegOffset, u4bRegMask, u4bRegValue;
 	u32	u4bMove;
-	BOOLEAN firstLine = true;
+	bool firstLine = true;
 	u8	tx_num = 0;
 	u8	band = 0, rf_path = 0;
 

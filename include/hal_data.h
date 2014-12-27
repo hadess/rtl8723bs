@@ -233,7 +233,7 @@ struct dm_priv
 	u8	Delta_LCK;
 	//u8   RSVD_7;
 	
-	BOOLEAN	bDPKdone[2];
+	bool	bDPKdone[2];
 	//u16 RSVD_8;
 	
 	u32	RegA24;	
@@ -304,7 +304,7 @@ typedef struct hal_com_data
 	u8	bAPKThermalMeterIgnore;
 	u8	bDisableSWChannelPlan; // flag of disable software change channel plan
 
-	BOOLEAN 		EepromOrEfuse;
+	bool 		EepromOrEfuse;
 	u8				EfuseUsedPercentage;
 	u16				EfuseUsedBytes;
 	//u8				EfuseMap[2][HWSET_MAX_SIZE_JAGUAR];
@@ -420,12 +420,12 @@ typedef struct hal_com_data
 	u8	BoardType;
 	u8	ExternalPA;
 	u8	bIQKInitialized;
-	BOOLEAN		bLCKInProgress;
+	bool		bLCKInProgress;
 
-	BOOLEAN		bSwChnl;
-	BOOLEAN		bSetChnlBW;
-	BOOLEAN		bChnlBWInitialized;
-	BOOLEAN		bNeedIQK;
+	bool		bSwChnl;
+	bool		bSetChnlBW;
+	bool		bChnlBWInitialized;
+	bool		bNeedIQK;
 
 	u8	bLedOpenDrain; // Support Open-drain arrangement for controlling the LED. Added by Roger, 2009.10.16.
 	u8	TxPowerTrackControl; //for mp mode, turn off txpwrtracking as default
@@ -438,7 +438,7 @@ typedef struct hal_com_data
 	u32	RfRegChnlVal[2];
 
 	//RDG enable
-	BOOLEAN	 bRDGEnable;
+	bool	 bRDGEnable;
 
 	//for host message to fw
 	u8	LastHMEBoxNum;
@@ -467,7 +467,7 @@ typedef struct hal_com_data
 	u8	FwRsvdPageStartOffset; //2010.06.23. Added by tynli. Reserve page start offset except beacon in TxQ.
 
 	// 2010/08/09 MH Add CU power down mode.
-	BOOLEAN		pwrdown;
+	bool		pwrdown;
 
 	// Add for dual MAC  0--Mac0 1--Mac1
 	u32	interfaceIndex;
@@ -476,11 +476,11 @@ typedef struct hal_com_data
 	u8	OutEpNumber;
 
 	// 2010/12/10 MH Add for USB aggreation mode dynamic shceme.
-	BOOLEAN		UsbRxHighSpeedMode;
+	bool		UsbRxHighSpeedMode;
 
 	// 2010/11/22 MH Add for slim combo debug mode selective.
 	// This is used for fix the drawback of CU TSMC-A/UMC-A cut. HW auto suspend ability. Close BT clock.
-	BOOLEAN		SlimComboDbg;
+	bool		SlimComboDbg;
 
 	//u8	AMPDUDensity;
 
@@ -554,27 +554,27 @@ typedef struct hal_com_data
 	MACPHY_MODE_8192D	MacPhyMode92D;
 	BAND_TYPE	CurrentBandType92D;	//0:2.4G, 1:5G
 	BAND_TYPE	BandSet92D;
-	BOOLEAN       bMasterOfDMSP;
-	BOOLEAN       bSlaveOfDMSP;
+	bool       bMasterOfDMSP;
+	bool       bSlaveOfDMSP;
 
 	IQK_MATRIX_REGS_SETTING IQKMatrixRegSetting[IQK_Matrix_Settings_NUM_92D];
 	#ifdef CONFIG_DUALMAC_CONCURRENT
-	BOOLEAN		bInModeSwitchProcess;
+	bool		bInModeSwitchProcess;
 	#endif
 	u8	AutoLoadStatusFor8192D;
 	u8	EEPROMC9;
 	u8	EEPROMCC;
 	u8	PAMode;
 	u8	InternalPA5G[2];	//pathA / pathB
-	BOOLEAN		bPhyValueInitReady;
-	BOOLEAN		bLoadIMRandIQKSettingFor2G;// True if IMR or IQK  have done  for 2.4G in scan progress
-	BOOLEAN		bNOPG;
-	BOOLEAN		bIsVS;
+	bool		bPhyValueInitReady;
+	bool		bLoadIMRandIQKSettingFor2G;// True if IMR or IQK  have done  for 2.4G in scan progress
+	bool		bNOPG;
+	bool		bIsVS;
 	//Query RF by FW
-	BOOLEAN		bReadRFbyFW;
-	BOOLEAN		bEarlyModeEnable;
-	BOOLEAN		bSupportRemoteWakeUp;
-	BOOLEAN		bInSetPower;
+	bool		bReadRFbyFW;
+	bool		bEarlyModeEnable;
+	bool		bSupportRemoteWakeUp;
+	bool		bInSetPower;
 	u8	RTSInitRate;	 // 2010.11.24.by tynli.	
 	#endif //CONFIG_RTL8192D 
 

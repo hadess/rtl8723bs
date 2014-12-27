@@ -42,47 +42,47 @@ typedef enum _BT_8723A_2ANT_COEX_ALGO{
 
 typedef struct _COEX_DM_8723A_2ANT{
 	// fw mechanism
-	BOOLEAN		bPreDecBtPwr;
-	BOOLEAN		bCurDecBtPwr;
-	//BOOLEAN		bPreBtLnaConstrain;
-	//BOOLEAN		bCurBtLnaConstrain;
+	bool		bPreDecBtPwr;
+	bool		bCurDecBtPwr;
+	//bool		bPreBtLnaConstrain;
+	//bool		bCurBtLnaConstrain;
 	//u1Byte		bPreBtPsdMode;
 	//u1Byte		bCurBtPsdMode;
 	u1Byte		preFwDacSwingLvl;
 	u1Byte		curFwDacSwingLvl;
-	BOOLEAN		bCurIgnoreWlanAct;
-	BOOLEAN		bPreIgnoreWlanAct;
+	bool		bCurIgnoreWlanAct;
+	bool		bPreIgnoreWlanAct;
 	u1Byte		prePsTdma;
 	u1Byte		curPsTdma;
 	u1Byte		psTdmaPara[5];
 	u1Byte		psTdmaDuAdjType;
-	BOOLEAN		bResetTdmaAdjust;
-	BOOLEAN		bPrePsTdmaOn;
-	BOOLEAN		bCurPsTdmaOn;
-	//BOOLEAN		bPreBtAutoReport;
-	//BOOLEAN		bCurBtAutoReport;
+	bool		bResetTdmaAdjust;
+	bool		bPrePsTdmaOn;
+	bool		bCurPsTdmaOn;
+	//bool		bPreBtAutoReport;
+	//bool		bCurBtAutoReport;
 
 	// sw mechanism
-	BOOLEAN		bPreRfRxLpfShrink;
-	BOOLEAN		bCurRfRxLpfShrink;
+	bool		bPreRfRxLpfShrink;
+	bool		bCurRfRxLpfShrink;
 	u4Byte		btRf0x1eBackup;
-	BOOLEAN 	bPreLowPenaltyRa;
-	BOOLEAN		bCurLowPenaltyRa;
-	BOOLEAN		bPreDacSwingOn;
+	bool 	bPreLowPenaltyRa;
+	bool		bCurLowPenaltyRa;
+	bool		bPreDacSwingOn;
 	u4Byte		preDacSwingLvl;
-	BOOLEAN		bCurDacSwingOn;
+	bool		bCurDacSwingOn;
 	u4Byte		curDacSwingLvl;
-	BOOLEAN		bPreAdcBackOff;
-	BOOLEAN		bCurAdcBackOff;
-	BOOLEAN 	bPreAgcTableEn;
-	BOOLEAN		bCurAgcTableEn;
+	bool		bPreAdcBackOff;
+	bool		bCurAdcBackOff;
+	bool 	bPreAgcTableEn;
+	bool		bCurAgcTableEn;
 	u4Byte		preVal0x6c0;
 	u4Byte		curVal0x6c0;
 	u4Byte		preVal0x6c8;
 	u4Byte		curVal0x6c8;
 	u1Byte		preVal0x6cc;
 	u1Byte		curVal0x6cc;
-	BOOLEAN		bLimitedDig;
+	bool		bLimitedDig;
 
 	// algorithm related
 	u1Byte		preAlgorithm;
@@ -100,13 +100,13 @@ typedef struct _COEX_STA_8723A_2ANT{
 	u1Byte					preBtRssiState;
 	u1Byte					preBtRssiState1;
 	u1Byte					preWifiRssiState[4];
-	BOOLEAN					bC2hBtInfoReqSent;
+	bool					bC2hBtInfoReqSent;
 	u1Byte					btInfoC2h[BT_INFO_SRC_8723A_2ANT_MAX][10];
 	u4Byte					btInfoC2hCnt[BT_INFO_SRC_8723A_2ANT_MAX];
-	BOOLEAN					bC2hBtInquiryPage;
+	bool					bC2hBtInquiryPage;
 	u1Byte					btRetryCnt;
 	u1Byte					btInfoExt;
-	BOOLEAN					bHoldForStackOperation;
+	bool					bHoldForStackOperation;
 	u1Byte					bHoldPeriodCnt;
 	// this is for c2h hang work-around
 	u4Byte					c2hHangDetectCnt;
@@ -122,7 +122,7 @@ EXhalbtc8723a2ant_PowerOnSetting(
 VOID
 EXhalbtc8723a2ant_InitHwConfig(
 	IN	PBTC_COEXIST		pBtCoexist,
-	IN	BOOLEAN				bWifiOnly
+	IN	bool				bWifiOnly
 	);
 VOID
 EXhalbtc8723a2ant_InitCoexDm(

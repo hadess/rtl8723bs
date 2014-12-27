@@ -827,7 +827,7 @@ static void ConstructProbeReq(_adapter *padapter, u8 *pframe, u32 *pLength)
 #endif //CONFIG_PNO_SUPPORT
 #endif //CONFIG_WOWLAN
 
-static void ConstructProbeRsp(_adapter *padapter, u8 *pframe, u32 *pLength, u8 *StaAddr, BOOLEAN bHideSSID)
+static void ConstructProbeRsp(_adapter *padapter, u8 *pframe, u32 *pLength, u8 *StaAddr, bool bHideSSID)
 {
 	struct rtw_ieee80211_hdr	*pwlanhdr;
 	u16					*fctrl;
@@ -1770,7 +1770,7 @@ static s32 rtl8723b_set_FwLowPwrLps_cmd(PADAPTER padapter, u8 enable)
 //			      true: At the second time, we should send the first packet (default:beacon)
 //						to Hw again and set the lengh in descriptor to the real beacon lengh.
 // 2009.10.15 by tynli.
-static void rtl8723b_set_FwRsvdPagePkt(PADAPTER padapter, BOOLEAN bDLFinished)
+static void rtl8723b_set_FwRsvdPagePkt(PADAPTER padapter, bool bDLFinished)
 {
 	PHAL_DATA_TYPE pHalData;
 	struct xmit_frame	*pcmdframe;	
@@ -2209,7 +2209,7 @@ error:
 //	to Hw again and set the lengh in descriptor to the real beacon lengh.
 // 2009.10.15 by tynli.
 static void rtl8723b_set_AP_FwRsvdPagePkt(PADAPTER padapter,
-		BOOLEAN bDLFinished)
+		bool bDLFinished)
 {
 	PHAL_DATA_TYPE pHalData;
 	struct xmit_frame	*pcmdframe;
@@ -2324,7 +2324,7 @@ void rtl8723b_download_rsvd_page(PADAPTER padapter, u8 mstatus)
 	struct mlme_ext_priv	*pmlmeext = &(padapter->mlmeextpriv);
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 	struct pwrctrl_priv *pwrpriv = adapter_to_pwrctl(padapter);
-	BOOLEAN		bcn_valid = false;
+	bool		bcn_valid = false;
 	u8	DLBcnCount=0;
 	u32 poll = 0;
 	u8 val8;
@@ -2336,7 +2336,7 @@ _func_enter_;
 
 	if(mstatus == RT_MEDIA_CONNECT)
 	{
-		BOOLEAN bRecover = false;
+		bool bRecover = false;
 		u8 v8;
 
 		// We should set AID, correct TSF, HW seq enable before set JoinBssReport to Fw in 88/92C.

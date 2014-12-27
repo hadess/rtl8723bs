@@ -28,7 +28,7 @@ odm_SetCrystalCap(
 {
 	PDM_ODM_T					pDM_Odm = (PDM_ODM_T)pDM_VOID;
 	PCFO_TRACKING				pCfoTrack = &pDM_Odm->DM_CfoTrack;
-	BOOLEAN 					bEEPROMCheck;
+	bool 					bEEPROMCheck;
 	PADAPTER					Adapter = pDM_Odm->Adapter;
 	HAL_DATA_TYPE				*pHalData = GET_HAL_DATA(Adapter);
 
@@ -107,7 +107,7 @@ odm_GetDefaultCrytaltalCap(
 VOID
 odm_SetATCStatus(
 	IN		PVOID					pDM_VOID,
-	IN		BOOLEAN					ATCStatus
+	IN		bool					ATCStatus
 )
 {
 	PDM_ODM_T					pDM_Odm = (PDM_ODM_T)pDM_VOID;
@@ -120,15 +120,15 @@ odm_SetATCStatus(
 	pCfoTrack->bATCStatus = ATCStatus;
 }
 
-BOOLEAN
+bool
 odm_GetATCStatus(
 	IN		PVOID					pDM_VOID
 )
 {
-	BOOLEAN						ATCStatus;
+	bool						ATCStatus;
 	PDM_ODM_T					pDM_Odm = (PDM_ODM_T)pDM_VOID;
 
-	ATCStatus = (BOOLEAN)ODM_GetBBReg(pDM_Odm, ODM_REG(BB_ATC,pDM_Odm), ODM_BIT(BB_ATC,pDM_Odm));
+	ATCStatus = (bool)ODM_GetBBReg(pDM_Odm, ODM_REG(BB_ATC,pDM_Odm), ODM_BIT(BB_ATC,pDM_Odm));
 	return ATCStatus;
 }
 

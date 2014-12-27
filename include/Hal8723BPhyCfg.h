@@ -137,7 +137,7 @@ PHY_SetSwChnlBWMode8723B(
 
 VOID PHY_SetRFPathSwitch_8723B(
 	IN	PADAPTER	pAdapter,
-	IN	BOOLEAN		bMain
+	IN	bool		bMain
 	);
 /*--------------------------Exported Function prototype End---------------------*/
 

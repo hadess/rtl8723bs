@@ -485,7 +485,7 @@ void ConfigureTxpowerTrack_8723B(
 u1Byte			//bit0 = 1 => Tx OK, bit1 = 1 => Rx OK
 phy_PathA_IQK_8723B(
 	IN	PADAPTER	pAdapter,
-	IN	BOOLEAN		configPathB,
+	IN	bool		configPathB,
 	IN	u1Byte		RF_Path
 	)
 {
@@ -609,7 +609,7 @@ phy_PathA_IQK_8723B(
 u1Byte			//bit0 = 1 => Tx OK, bit1 = 1 => Rx OK
 phy_PathA_RxIQK8723B(
 	IN	PADAPTER	pAdapter,
-	IN	BOOLEAN		configPathB,
+	IN	bool		configPathB,
 	IN	u1Byte		RF_Path
 	)
 {
@@ -958,7 +958,7 @@ phy_PathB_IQK_8723B(
 u1Byte			//bit0 = 1 => Tx OK, bit1 = 1 => Rx OK
 phy_PathB_RxIQK8723B(
 	IN	PADAPTER	pAdapter,
-	IN	BOOLEAN 	configPathB
+	IN	bool 	configPathB
 	)
 {
 	u4Byte regE94, regE9C, regEA4, regEAC, u4tmp, tmp, Path_SEL_BB;
@@ -1195,10 +1195,10 @@ phy_PathB_RxIQK8723B(
 VOID
 _PHY_PathAFillIQKMatrix8723B(
 	IN	PADAPTER	pAdapter,
-	IN	BOOLEAN 	bIQKOK,
+	IN	bool 	bIQKOK,
 	IN	s4Byte		result[][8],
 	IN	u1Byte		final_candidate,
-	IN	BOOLEAN 	bTxOnly
+	IN	bool 	bTxOnly
 	)
 {
 	u4Byte	Oldval_0, X, TX0_A, reg;
@@ -1278,10 +1278,10 @@ _PHY_PathAFillIQKMatrix8723B(
 VOID
 _PHY_PathBFillIQKMatrix8723B(
 	IN	PADAPTER	pAdapter,
-	IN	BOOLEAN 	bIQKOK,
+	IN	bool 	bIQKOK,
 	IN	s4Byte		result[][8],
 	IN	u1Byte		final_candidate,
-	IN	BOOLEAN 	bTxOnly 		//do Tx only
+	IN	bool 	bTxOnly 		//do Tx only
 	)
 {
 	u4Byte	Oldval_1, X, TX1_A, reg;
@@ -1398,7 +1398,7 @@ ODM_SetIQCbyRFpath(
   }	
 }
 
-BOOLEAN
+bool
 ODM_CheckPowerStatus(
 	IN	PADAPTER		Adapter)
 {
@@ -1513,8 +1513,8 @@ VOID
 _PHY_PathADDAOn8723B(
 	IN	PADAPTER	pAdapter,
 	IN	pu4Byte 	ADDAReg,
-	IN	BOOLEAN 	isPathAOn,
-	IN	BOOLEAN 	is2T
+	IN	bool 	isPathAOn,
+	IN	bool 	is2T
 	)
 {
 	u4Byte	pathOn;
@@ -1582,7 +1582,7 @@ _PHY_PathAStandBy8723B(
 VOID
 _PHY_PIModeSwitch8723B(
 	IN	PADAPTER	pAdapter,
-	IN	BOOLEAN 	PIMode
+	IN	bool 	PIMode
 	)
 {
 	u4Byte	mode;
@@ -1596,7 +1596,7 @@ _PHY_PIModeSwitch8723B(
 	ODM_SetBBReg(pDM_Odm, rFPGA0_XB_HSSIParameter1, bMaskDWord, mode);
 }
 
-BOOLEAN 						
+bool 						
 phy_SimularityCompare_8723B(
 	IN	PADAPTER	pAdapter,
 	IN	s4Byte		result[][8],
@@ -1609,8 +1609,8 @@ phy_SimularityCompare_8723B(
 	PDM_ODM_T		pDM_Odm = &pHalData->odmpriv;
 
 	u1Byte		final_candidate[2] = {0xFF, 0xFF};	//for path A and path B
-	BOOLEAN 	bResult = true;
-	BOOLEAN 	is2T = true;
+	bool 	bResult = true;
+	bool 	is2T = true;
 
 	s4Byte tmp1 = 0,tmp2 = 0;
 	
@@ -1718,7 +1718,7 @@ phy_IQCalibrate_8723B(
 	IN	PADAPTER	pAdapter,
 	IN	s4Byte		result[][8],
 	IN	u1Byte		t,
-	IN	BOOLEAN		is2T,
+	IN	bool		is2T,
 	IN	u1Byte		RF_Path
 	)
 {
@@ -2014,7 +2014,7 @@ for(i = 0 ; i < retryCount ; i++){
 VOID	
 phy_LCCalibrate_8723B(
 	IN PDM_ODM_T		pDM_Odm,
-	IN	BOOLEAN 	is2T
+	IN	bool 	is2T
 	)
 {
 	u1Byte	tmpReg;
@@ -2097,7 +2097,7 @@ VOID
 phy_APCalibrate_8723B(
 	IN	PADAPTER	pAdapter,
 	IN	s1Byte		delta,
-	IN	BOOLEAN 	is2T
+	IN	bool 	is2T
 	)
 {
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
@@ -2219,9 +2219,9 @@ phy_APCalibrate_8723B(
 VOID
 PHY_IQCalibrate_8723B(
 	IN	PADAPTER	pAdapter,
-	IN	BOOLEAN		bReCovery,
-	IN BOOLEAN	bRestore,
-	IN BOOLEAN	Is2ant,	//false:1ant, true:2-ant
+	IN	bool		bReCovery,
+	IN bool	bRestore,
+	IN bool	Is2ant,	//false:1ant, true:2-ant
 	IN u1Byte	RF_Path	//0:S1, 1:S0
 	)
 {
@@ -2231,10 +2231,10 @@ PHY_IQCalibrate_8723B(
 
 	s4Byte			result[4][8];	//last is final result
 	u1Byte			i, final_candidate, Indexforchannel;
-	BOOLEAN 		bPathAOK, bPathBOK;
+	bool 		bPathAOK, bPathBOK;
 	s4Byte			RegE94, RegE9C, RegEA4, RegEAC, RegEB4, RegEBC, RegEC4, RegECC, RegTmp = 0;
-	BOOLEAN 		is12simular, is13simular, is23simular;	
-	BOOLEAN 		bStartContTx = false, bSingleTone = false, bCarrierSuppression = false;
+	bool 		is12simular, is13simular, is23simular;	
+	bool 		bStartContTx = false, bSingleTone = false, bCarrierSuppression = false;
 	u4Byte			IQK_BB_REG_92C[IQK_BB_REG_NUM] = {
 					rOFDM0_XARxIQImbalance, 	rOFDM0_XBRxIQImbalance, 
 					rOFDM0_ECCAThreshold,	rOFDM0_AGCRSSITable,
@@ -2502,7 +2502,7 @@ PHY_LCCalibrate_8723B(
 	IN PDM_ODM_T		pDM_Odm
 	)
 {
-	BOOLEAN 		bStartContTx = false, bSingleTone = false, bCarrierSuppression = false;
+	bool 		bStartContTx = false, bSingleTone = false, bCarrierSuppression = false;
 	u4Byte			timeout = 2000, timecount = 0;
 	u4Byte			StartTime; 
 	s4Byte			ProgressingTime;
@@ -2574,8 +2574,8 @@ PHY_APCalibrate_8723B(
 }
 VOID phy_SetRFPathSwitch_8723B(
 	IN	PADAPTER	pAdapter,
-	IN	BOOLEAN 	bMain,
-	IN	BOOLEAN 	is2T
+	IN	bool 	bMain,
+	IN	bool 	is2T
 	)
 {
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
@@ -2592,7 +2592,7 @@ VOID phy_SetRFPathSwitch_8723B(
 }
 VOID PHY_SetRFPathSwitch_8723B(
 	IN	PADAPTER	pAdapter,
-	IN	BOOLEAN 	bMain
+	IN	bool 	bMain
 	)
 {
 

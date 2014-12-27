@@ -211,7 +211,7 @@ PHY_RFShadowWrite(
 	IN	u32				Offset,
 	IN	u32				Data);
 
-BOOLEAN
+bool
 PHY_RFShadowCompare(
 	IN	PADAPTER		Adapter,
 	IN	u8				eRFPath,

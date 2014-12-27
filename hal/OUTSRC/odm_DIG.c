@@ -256,7 +256,7 @@ odm_SearchPwdBLowerBound(
 	PDM_ODM_T		pDM_Odm = (PDM_ODM_T)pDM_VOID;
 	u4Byte			value32 =0;
 	u1Byte			cnt, IGI;
-	BOOLEAN			bAdjust=true;
+	bool			bAdjust=true;
 	s1Byte 			TH_L2H_dmc, TH_H2L_dmc;
 	s1Byte 			TH_L2H, TH_H2L, Diff;
 
@@ -386,7 +386,7 @@ odm_Adaptivity(
 	PDM_ODM_T		pDM_Odm = (PDM_ODM_T)pDM_VOID;
 	s1Byte TH_L2H_dmc, TH_H2L_dmc;
 	s1Byte Diff, IGI_target;
-	BOOLEAN EDCCA_State = false;
+	bool EDCCA_State = false;
 
 	if(!(pDM_Odm->SupportAbility & ODM_BB_ADAPTIVITY))
 	{
@@ -553,7 +553,7 @@ odm_PauseDIG(
 {
 	PDM_ODM_T			pDM_Odm = (PDM_ODM_T)pDM_VOID;
 	pDIG_T				pDM_DigTable = &pDM_Odm->DM_DigTable;
-	static	BOOLEAN		bPaused = false;
+	static	bool		bPaused = false;
 
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_PauseDIG()=========>\n"));
 
@@ -611,7 +611,7 @@ odm_PauseDIG(
 	}
 }
 
-BOOLEAN 
+bool 
 odm_DigAbort(
 	IN		PVOID			pDM_VOID
 	)
@@ -709,7 +709,7 @@ odm_DIG(
 	// Common parameters
 	pDIG_T						pDM_DigTable = &pDM_Odm->DM_DigTable;
 	Pfalse_ALARM_STATISTICS		pFalseAlmCnt = &pDM_Odm->FalseAlmCnt;
-	BOOLEAN						FirstConnect,FirstDisConnect;
+	bool						FirstConnect,FirstDisConnect;
 	u1Byte						DIG_MaxOfMin, DIG_Dynamic_MIN, i;
 	u1Byte						dm_dig_max, dm_dig_min;
 	u1Byte						CurrentIGI = pDM_DigTable->CurIGValue;
@@ -717,8 +717,8 @@ odm_DIG(
 	u4Byte						dm_FA_thres[3];
 	u1Byte						Adap_IGI_Upper = 0;
 	u4Byte						TxTp = 0, RxTp = 0;
-	BOOLEAN						bDFSBand = false;
-	BOOLEAN						bPerformance = true, bFirstTpTarget = false, bFirstCoverage = false;
+	bool						bDFSBand = false;
+	bool						bPerformance = true, bFirstTpTarget = false, bFirstCoverage = false;
 
 	if(odm_DigAbort(pDM_Odm) == true)
 		return;
@@ -1303,8 +1303,8 @@ odm_FalseAlarmCounterStatistics(
 VOID
 odm_FAThresholdCheck(
 	IN		PVOID			pDM_VOID,
-	IN		BOOLEAN			bDFSBand,
-	IN		BOOLEAN			bPerformance,
+	IN		bool			bDFSBand,
+	IN		bool			bPerformance,
 	IN		u4Byte			RxTp,
 	IN		u4Byte			TxTp,
 	OUT		u4Byte*			dm_FA_thres
@@ -1438,7 +1438,7 @@ odm_PauseCCKPacketDetection(
 {
 	PDM_ODM_T			pDM_Odm = (PDM_ODM_T)pDM_VOID;
 	pDIG_T				pDM_DigTable = &pDM_Odm->DM_DigTable;
-	static	BOOLEAN		bPaused = false;
+	static	bool		bPaused = false;
 
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_CCK_PD, ODM_DBG_LOUD, ("odm_PauseCCKPacketDetection()=========>\n"));
 

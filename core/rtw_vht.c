@@ -130,8 +130,8 @@ void	rtw_vht_use_default_setting(_adapter *padapter)
 	struct mlme_priv 		*pmlmepriv = &padapter->mlmepriv;
 	struct vht_priv		*pvhtpriv = &pmlmepriv->vhtpriv;
 	struct registry_priv	*pregistrypriv = &padapter->registrypriv;
-	BOOLEAN		bHwLDPCSupport = false, bHwSTBCSupport = false;
-	BOOLEAN		bHwSupportBeamformer = false, bHwSupportBeamformee = false;
+	bool		bHwLDPCSupport = false, bHwSTBCSupport = false;
+	bool		bHwSupportBeamformer = false, bHwSupportBeamformee = false;
 	u8	rf_type = 0;
 
 	pvhtpriv->sgi_80m = TEST_FLAG(pregistrypriv->short_gi, BIT2) ? true : false;

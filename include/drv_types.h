@@ -240,7 +240,7 @@ struct registry_priv
 	u8	bt_ampdu;
 	s8	ant_num;
 #endif
-	BOOLEAN	bAcceptAddbaReq;
+	bool	bAcceptAddbaReq;
 
 	u8	antdiv_cfg;
 	u8	antdiv_type;
@@ -890,8 +890,8 @@ void rtw_dev_pno_debug(struct net_device *net);
 
 #ifdef CONFIG_GPIO_API
 int rtw_get_gpio(struct net_device *netdev, int gpio_num);
-int rtw_set_gpio_output_value(struct net_device *netdev, int gpio_num, BOOLEAN isHigh);
-int rtw_config_gpio(struct net_device *netdev, int gpio_num, BOOLEAN isOutput);
+int rtw_set_gpio_output_value(struct net_device *netdev, int gpio_num, bool isHigh);
+int rtw_config_gpio(struct net_device *netdev, int gpio_num, bool isOutput);
 #endif
 
 #ifdef CONFIG_WOWLAN

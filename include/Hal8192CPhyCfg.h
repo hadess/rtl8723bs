@@ -113,7 +113,7 @@ void	rtl8192c_PHY_GetHWRegOriginalValue(	IN	PADAPTER		Adapter	);
 //
 // RF Power setting
 //
-//extern	BOOLEAN	PHY_SetRFPowerState(IN	PADAPTER			Adapter, 
+//extern	bool	PHY_SetRFPowerState(IN	PADAPTER			Adapter, 
 //									IN	RT_RF_POWER_STATE	eRFPowerState);
 
 //
@@ -123,7 +123,7 @@ void	PHY_GetTxPowerLevel8192C(	IN	PADAPTER		Adapter,
 											OUT s32*    		powerlevel	);
 void	PHY_SetTxPowerLevel8192C(	IN	PADAPTER		Adapter,
 											IN	u8			channel	);
-BOOLEAN	PHY_UpdateTxPowerDbm8192C(	IN	PADAPTER	Adapter,
+bool	PHY_UpdateTxPowerDbm8192C(	IN	PADAPTER	Adapter,
 											IN	int		powerInDbm	);
 
 //
@@ -142,7 +142,7 @@ void	PHY_SetBWMode8192C(	IN	PADAPTER			pAdapter,
 //
 // Set FW CMD IO for 8192S.
 //
-//extern	BOOLEAN HalSetIO8192C(	IN	PADAPTER			Adapter,
+//extern	bool HalSetIO8192C(	IN	PADAPTER			Adapter,
 //									IN	IO_TYPE				IOType);
 
 //
@@ -173,13 +173,13 @@ PHY_SetSwChnlBWMode8192C(
 // BB/MAC/RF other monitor API
 //
 void	PHY_SetMonitorMode8192C(IN	PADAPTER	pAdapter,
-										IN	BOOLEAN		bEnableMonitorMode	);
+										IN	bool		bEnableMonitorMode	);
 
-BOOLEAN	PHY_CheckIsLegalRfPath8192C(IN	PADAPTER	pAdapter,
+bool	PHY_CheckIsLegalRfPath8192C(IN	PADAPTER	pAdapter,
 											IN	u32		eRFPath	);
 
 
-VOID rtl8192c_PHY_SetRFPathSwitch(IN	PADAPTER	pAdapter, IN	BOOLEAN		bMain);
+VOID rtl8192c_PHY_SetRFPathSwitch(IN	PADAPTER	pAdapter, IN	bool		bMain);
 
 //
 // Modify the value of the hw register when beacon interval be changed.
@@ -199,7 +199,7 @@ PHY_EnableHostClkReq(
 	IN	PADAPTER			Adapter
 	);
 
-BOOLEAN
+bool
 SetAntennaConfig92C(
 	IN	PADAPTER	Adapter,
 	IN	u8		DefaultAnt	
