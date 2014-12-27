@@ -94,15 +94,6 @@ static ssize_t proc_set_log_level(struct file *file, const char __user *buffer, 
 	return count;
 }
 
-#ifdef DBG_MEM_ALLOC
-static int proc_get_mstat(struct seq_file *m, void *v)
-{	
-	rtw_mstat_dump(m);
-	return 0;
-}
-#endif /* DBG_MEM_ALLOC */
-
-
 /*
 * rtw_drv_proc:
 * init/deinit when register/unregister driver
@@ -110,9 +101,6 @@ static int proc_get_mstat(struct seq_file *m, void *v)
 const struct rtw_proc_hdl drv_proc_hdls [] = {
 	{"ver_info", proc_get_drv_version, NULL},
 	{"log_level", proc_get_log_level, proc_set_log_level},
-#ifdef DBG_MEM_ALLOC
-	{"mstat", proc_get_mstat, NULL},
-#endif /* DBG_MEM_ALLOC */
 };
 
 const int drv_proc_hdls_num = sizeof(drv_proc_hdls) / sizeof(struct rtw_proc_hdl);
