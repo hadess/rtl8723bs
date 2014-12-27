@@ -20,10 +20,7 @@ EXTRA_CFLAGS += -I$(src)/include
 
 EXTRA_LDFLAGS += --strip-debug
 
-CONFIG_AUTOCFG_CP = n
-
 ########################## WIFI IC ############################
-CONFIG_MULTIDRV = n
 CONFIG_RTL8192C = n
 CONFIG_RTL8192D = n
 CONFIG_RTL8723A = n
@@ -410,22 +407,6 @@ _OUTSRC_FILES += hal/OUTSRC/$(RTL871X)/HalHWImg8723B_BB.o\
 
 endif
 
-########### AUTO_CFG  #################################	
-		
-ifeq ($(CONFIG_AUTOCFG_CP), y)
-
-ifeq ($(CONFIG_MULTIDRV), y)	
-$(shell cp $(TopDIR)/autoconf_multidrv_$(HCI_NAME)_linux.h $(TopDIR)/include/autoconf.h)
-else
-ifeq ($(CONFIG_RTL8188E)$(CONFIG_SDIO_HCI),yy) 
-$(shell cp $(TopDIR)/autoconf_rtl8189e_$(HCI_NAME)_linux.h $(TopDIR)/include/autoconf.h)
-else
-$(shell cp $(TopDIR)/autoconf_$(RTL871X)_$(HCI_NAME)_linux.h $(TopDIR)/include/autoconf.h)
-endif
-endif
-
-endif
-
 ########### END OF PATH  #################################
 
 
@@ -532,14 +513,6 @@ KVER  := $(shell uname -r)
 KSRC := /lib/modules/$(KVER)/build
 MODDESTDIR := /lib/modules/$(KVER)/kernel/drivers/net/wireless/
 INSTALL_PREFIX :=
-endif
-
-ifeq ($(CONFIG_MULTIDRV), y)	
-
-ifeq ($(CONFIG_SDIO_HCI), y)
-MODULE_NAME := rtw_sdio
-endif
-
 endif
 
 ifneq ($(USER_MODULE_NAME),)
