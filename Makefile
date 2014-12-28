@@ -83,7 +83,7 @@ _HAL_INTFS_FILES :=	hal/hal_intf.o \
 			hal/hal_com_phycfg.o \
 			hal/hal_phy.o \
 			hal/hal_btcoex.o \
-			hal/hal_hci/hal_$(HCI_NAME).o \
+			hal/hal_$(HCI_NAME).o \
 			hal/led/hal_$(HCI_NAME)_led.o
 			
 _OUTSRC_FILES := hal/OUTSRC/odm_debug.o	\
