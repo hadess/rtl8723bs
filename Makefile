@@ -84,7 +84,7 @@ _HAL_INTFS_FILES :=	hal/hal_intf.o \
 			hal/hal_phy.o \
 			hal/hal_btcoex.o \
 			hal/hal_$(HCI_NAME).o \
-			hal/led/hal_$(HCI_NAME)_led.o
+			hal/hal_$(HCI_NAME)_led.o
 			
 _OUTSRC_FILES := hal/OUTSRC/odm_debug.o	\
 		hal/OUTSRC/odm_AntDiv.o\
@@ -384,7 +384,6 @@ config_r:
 clean:
 	cd hal/OUTSRC/ ; rm -fr */*.mod.c */*.mod */*.o */.*.cmd */*.ko
 	cd hal/OUTSRC/ ; rm -fr *.mod.c *.mod *.o .*.cmd *.ko 
-	cd hal/led ; rm -fr *.mod.c *.mod *.o .*.cmd *.ko
 	cd hal ; rm -fr */*/*.mod.c */*/*.mod */*/*.o */*/.*.cmd */*/*.ko
 	cd hal ; rm -fr */*.mod.c */*.mod */*.o */.*.cmd */*.ko
 	cd hal ; rm -fr *.mod.c *.mod *.o .*.cmd *.ko
