@@ -61,12 +61,11 @@ CONFIG_DRVEXT_MODULE = n
 export TopDIR ?= $(shell pwd)
 
 ########### COMMON  #################################
-HCI_NAME = sdio
 
 _OS_INTFS_FILES :=	os_dep/osdep_service.o \
 			os_dep/os_intfs.o \
-			os_dep/$(HCI_NAME)_intf.o \
-			os_dep/$(HCI_NAME)_ops_linux.o \
+			os_dep/sdio_intf.o \
+			os_dep/sdio_ops_linux.o \
 			os_dep/ioctl_linux.o \
 			os_dep/xmit_linux.o \
 			os_dep/mlme_linux.o \
@@ -76,15 +75,15 @@ _OS_INTFS_FILES :=	os_dep/osdep_service.o \
 			os_dep/rtw_android.o \
 			os_dep/rtw_proc.o \
 			os_dep/custom_gpio_linux.o \
-			os_dep/$(HCI_NAME)_ops_linux.o
+			os_dep/sdio_ops_linux.o
 
 _HAL_INTFS_FILES :=	hal/hal_intf.o \
 			hal/hal_com.o \
 			hal/hal_com_phycfg.o \
 			hal/hal_phy.o \
 			hal/hal_btcoex.o \
-			hal/hal_$(HCI_NAME).o \
-			hal/hal_$(HCI_NAME)_led.o
+			hal/hal_sdio.o \
+			hal/hal_sdio_led.o
 			
 _OUTSRC_FILES := hal/OUTSRC/odm_debug.o	\
 		hal/OUTSRC/odm_AntDiv.o\
@@ -131,12 +130,12 @@ _HAL_INTFS_FILES +=	hal/$(RTL871X)/$(RTL871X)_hal_init.o \
 			hal/$(RTL871X)/$(RTL871X)_dm.o \
 			hal/$(RTL871X)/$(RTL871X)_rxdesc.o \
 			hal/$(RTL871X)/$(RTL871X)_cmd.o \
-			hal/$(RTL871X)/$(HCI_NAME)/$(HCI_NAME)_halinit.o \
-			hal/$(RTL871X)/$(HCI_NAME)/rtl$(MODULE_NAME)_led.o \
-			hal/$(RTL871X)/$(HCI_NAME)/rtl$(MODULE_NAME)_xmit.o \
-			hal/$(RTL871X)/$(HCI_NAME)/rtl$(MODULE_NAME)_recv.o	
+			hal/$(RTL871X)/sdio/sdio_halinit.o \
+			hal/$(RTL871X)/sdio/rtl$(MODULE_NAME)_led.o \
+			hal/$(RTL871X)/sdio/rtl$(MODULE_NAME)_xmit.o \
+			hal/$(RTL871X)/sdio/rtl$(MODULE_NAME)_recv.o	
 
-_HAL_INTFS_FILES += hal/$(RTL871X)/$(HCI_NAME)/$(HCI_NAME)_ops_linux.o
+_HAL_INTFS_FILES += hal/$(RTL871X)/sdio/sdio_ops_linux.o
 
 
 _OUTSRC_FILES += hal/OUTSRC/$(RTL871X)/odm_RTL8192C.o\
@@ -158,12 +157,12 @@ _HAL_INTFS_FILES +=	hal/$(RTL871X)/$(RTL871X)_hal_init.o \
 			hal/$(RTL871X)/$(RTL871X)_dm.o \
 			hal/$(RTL871X)/$(RTL871X)_rxdesc.o \
 			hal/$(RTL871X)/$(RTL871X)_cmd.o \
-			hal/$(RTL871X)/$(HCI_NAME)/$(HCI_NAME)_halinit.o \
-			hal/$(RTL871X)/$(HCI_NAME)/rtl$(MODULE_NAME)_led.o \
-			hal/$(RTL871X)/$(HCI_NAME)/rtl$(MODULE_NAME)_xmit.o \
-			hal/$(RTL871X)/$(HCI_NAME)/rtl$(MODULE_NAME)_recv.o
+			hal/$(RTL871X)/sdio/sdio_halinit.o \
+			hal/$(RTL871X)/sdio/rtl$(MODULE_NAME)_led.o \
+			hal/$(RTL871X)/sdio/rtl$(MODULE_NAME)_xmit.o \
+			hal/$(RTL871X)/sdio/rtl$(MODULE_NAME)_recv.o
 
-_HAL_INTFS_FILES += hal/$(RTL871X)/$(HCI_NAME)/$(HCI_NAME)_ops_linux.o
+_HAL_INTFS_FILES += hal/$(RTL871X)/sdio/sdio_ops_linux.o
 
 _OUTSRC_FILES += hal/OUTSRC/$(RTL871X)/odm_RTL8192D.o\
 								hal/OUTSRC/$(RTL871X)/HalDMOutSrc8192D_CE.o
@@ -191,12 +190,12 @@ _HAL_INTFS_FILES +=	hal/$(RTL871X)/$(RTL871X)_hal_init.o \
 			
 
 _HAL_INTFS_FILES +=	\
-			hal/$(RTL871X)/$(HCI_NAME)/$(HCI_NAME)_halinit.o \
-			hal/$(RTL871X)/$(HCI_NAME)/rtl$(MODULE_NAME)_led.o \
-			hal/$(RTL871X)/$(HCI_NAME)/rtl$(MODULE_NAME)_xmit.o \
-			hal/$(RTL871X)/$(HCI_NAME)/rtl$(MODULE_NAME)_recv.o
+			hal/$(RTL871X)/sdio/sdio_halinit.o \
+			hal/$(RTL871X)/sdio/rtl$(MODULE_NAME)_led.o \
+			hal/$(RTL871X)/sdio/rtl$(MODULE_NAME)_xmit.o \
+			hal/$(RTL871X)/sdio/rtl$(MODULE_NAME)_recv.o
 
-_HAL_INTFS_FILES += hal/$(RTL871X)/$(HCI_NAME)/$(HCI_NAME)_ops.o
+_HAL_INTFS_FILES += hal/$(RTL871X)/sdio/sdio_ops.o
 
 _OUTSRC_FILES += hal/OUTSRC/$(RTL871X)/HalHWImg8723B_BB.o\
 								hal/OUTSRC/$(RTL871X)/HalHWImg8723B_MAC.o\
