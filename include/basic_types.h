@@ -31,8 +31,6 @@
 
 	typedef	signed int sint;
 
-	#define USHORT u16
-
 	typedef void (*proc_t)(void*);
 
 	typedef 	__kernel_size_t	SIZE_T;	

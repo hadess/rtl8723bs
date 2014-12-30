@@ -93,8 +93,8 @@ typedef enum _NDIS_802_11_NETWORK_INFRASTRUCTURE
 typedef struct _NDIS_802_11_FIXED_IEs
 {
   u8  Timestamp[8];
-  USHORT  BeaconInterval;
-  USHORT  Capabilities;
+  u16  BeaconInterval;
+  u16  Capabilities;
 } NDIS_802_11_FIXED_IEs, *PNDIS_802_11_FIXED_IEs;
 
 
@@ -187,26 +187,26 @@ typedef enum _NDIS_802_11_WEP_STATUS
 
 typedef struct _NDIS_802_11_AI_REQFI
 {
-    USHORT Capabilities;
-    USHORT ListenInterval;
+    u16 Capabilities;
+    u16 ListenInterval;
     NDIS_802_11_MAC_ADDRESS  CurrentAPAddress;
 } NDIS_802_11_AI_REQFI, *PNDIS_802_11_AI_REQFI;
 
 typedef struct _NDIS_802_11_AI_RESFI
 {
-    USHORT Capabilities;
-    USHORT StatusCode;
-    USHORT AssociationId;
+    u16 Capabilities;
+    u16 StatusCode;
+    u16 AssociationId;
 } NDIS_802_11_AI_RESFI, *PNDIS_802_11_AI_RESFI;
 
 typedef struct _NDIS_802_11_ASSOCIATION_INFORMATION
 {
     u32                   Length;
-    USHORT                  AvailableRequestFixedIEs;
+    u16                  AvailableRequestFixedIEs;
     NDIS_802_11_AI_REQFI    RequestFixedIEs;
     u32                   RequestIELength;
     u32                   OffsetRequestIEs;
-    USHORT                  AvailableResponseFixedIEs;
+    u16                  AvailableResponseFixedIEs;
     NDIS_802_11_AI_RESFI    ResponseFixedIEs;
     u32                   ResponseIELength;
     u32                   OffsetResponseIEs;
