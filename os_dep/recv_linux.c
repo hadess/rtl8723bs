@@ -182,9 +182,6 @@ int rtw_os_recvbuf_resource_free(_adapter *padapter, struct recv_buf *precvbuf)
 
 	if(precvbuf->pskb)
 	{
-#ifdef CONFIG_PREALLOC_RX_SKB_BUFFER
-		if(rtw_free_skb_premem(precvbuf->pskb)!=0)
-#endif
 		rtw_skb_free(precvbuf->pskb);
 	}
 	return ret;

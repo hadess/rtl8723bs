@@ -101,10 +101,6 @@ typedef struct _ADAPTER _adapter, ADAPTER,*PADAPTER;
 #include <rtw_version.h>
 #include <rtw_odm.h>
 
-#ifdef CONFIG_PREALLOC_RX_SKB_BUFFER
-#include <rtw_mem.h>
-#endif
-
 #ifdef CONFIG_TDLS
 #include <rtw_tdls.h>
 #endif // CONFIG_TDLS
