@@ -32,9 +32,7 @@ static struct mmc_host *mmc_host = NULL;
 
 static const struct sdio_device_id sdio_ids[] =
 {
-#ifdef CONFIG_RTL8723B
 	{ SDIO_DEVICE(0x024c, 0xB723),.driver_data = RTL8723B},
-#endif
 
 #if defined(RTW_ENABLE_WIFI_CONTROL_FUNC) /* temporarily add this to accept all sdio wlan id */
 	{ SDIO_DEVICE_CLASS(SDIO_CLASS_WLAN) },
@@ -316,10 +314,8 @@ static void rtw_decide_chip_type_by_device_id(PADAPTER padapter, const struct sd
 {
 	padapter->chip_type = pdid->driver_data;
 
-#if defined(CONFIG_RTL8723B)
 	padapter->chip_type = RTL8723B;
 	padapter->HardwareType = HARDWARE_TYPE_RTL8723BS;
-#endif
 }
 
 void rtw_set_hal_ops(PADAPTER padapter)
@@ -327,11 +323,9 @@ void rtw_set_hal_ops(PADAPTER padapter)
 	//alloc memory for HAL DATA
 	rtw_hal_data_init(padapter);
 
-#if defined(CONFIG_RTL8723B)
 	if(padapter->chip_type == RTL8723B){
 		rtl8723bs_set_hal_ops(padapter);
 	}
-#endif
 }
 
 static void sd_intf_start(PADAPTER padapter)

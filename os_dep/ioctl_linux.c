@@ -6658,9 +6658,7 @@ static int rtw_mp_efuse_get(struct net_device *dev,
 	}
 	else if (strcmp(tmp[0], "mac") == 0)
 	{
-		#ifdef CONFIG_RTL8723B
 		addr = EEPROM_MAC_ADDR_8723BS;
-		#endif // CONFIG_RTL8723B
 		cnts = 6;
 
 		EFUSE_GetEfuseDefinition(padapter, EFUSE_WIFI, TYPE_AVAILABLE_EFUSE_BYTES_TOTAL, (void *)&max_available_size, false);
@@ -6693,9 +6691,7 @@ static int rtw_mp_efuse_get(struct net_device *dev,
 	}
 	else if (strcmp(tmp[0], "vidpid") == 0)
 	{
-		#ifdef CONFIG_RTL8723B
 		addr = EEPROM_VID_8723BU;
-		#endif
 		cnts = 4;
 
 		EFUSE_GetEfuseDefinition(padapter, EFUSE_WIFI, TYPE_AVAILABLE_EFUSE_BYTES_TOTAL, (void *)&max_available_size, false);
@@ -7211,9 +7207,7 @@ static int rtw_mp_efuse_set(struct net_device *dev,
 			goto exit;
 		}
 
-		#ifdef CONFIG_RTL8723B
 		addr = EEPROM_MAC_ADDR_8723BS;
-		#endif // CONFIG_RTL8723B
 
 		cnts = strlen(tmp[1]);
 		if (cnts%2)
@@ -7265,10 +7259,8 @@ static int rtw_mp_efuse_set(struct net_device *dev,
 			goto exit;
 		}
 
-		#ifdef CONFIG_RTL8723B
 		addr = EEPROM_VID_8723BU;
-		#endif
-		
+
 		cnts = strlen(tmp[1]);
 		if (cnts%2)
 		{
@@ -8399,12 +8391,10 @@ static int rtw_widi_set_probe_request(struct net_device *dev,
 
 #ifdef CONFIG_MAC_LOOPBACK_DRIVER
 
-#if defined(CONFIG_RTL8723B)
 extern void rtl8723b_cal_txdesc_chksum(struct tx_desc *ptxdesc);
 #define cal_txdesc_chksum rtl8723b_cal_txdesc_chksum
 extern void rtl8723b_fill_default_txdesc(struct xmit_frame *pxmitframe, u8 *pbuf);
 #define fill_default_txdesc rtl8723b_fill_default_txdesc
-#endif // CONFIG_RTL8723B
 
 static s32 initLoopback(PADAPTER padapter)
 {

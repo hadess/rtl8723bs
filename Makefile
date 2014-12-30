@@ -20,8 +20,6 @@ EXTRA_CFLAGS += -I$(src)/include -I$(src)/hal
 
 EXTRA_LDFLAGS += --strip-debug
 
-########################## WIFI IC ############################
-CONFIG_RTL8723B = y
 ########################## Features ###########################
 CONFIG_POWER_SAVING = y
 CONFIG_HW_PWRP_DETECTION = n
@@ -108,12 +106,8 @@ _OUTSRC_FILES += hal/HalBtc8188c2Ant.o \
 endif
 
 ########### HAL_RTL8723B #################################
-ifeq ($(CONFIG_RTL8723B), y)
-
 RTL871X = rtl8723b
 MODULE_NAME = 8723bs
-
-EXTRA_CFLAGS += -DCONFIG_RTL8723B
 
 _HAL_INTFS_FILES += hal/HalPwrSeqCmd.o \
 					hal/Hal8723BPwrSeq.o
@@ -141,8 +135,6 @@ _OUTSRC_FILES += hal/HalHWImg8723B_BB.o\
 								hal/odm_RegConfig8723B.o\
 								hal/HalPhyRf_8723B.o\
 								hal/odm_RTL8723B.o
-
-endif
 
 ########### END OF PATH  #################################
 

@@ -676,8 +676,6 @@ s32 c2h_evt_read_88xx(_adapter *adapter, u8 *buf)
 	if (buf == NULL)
 		goto exit;
 
-#if defined(CONFIG_RTL8723B)
-
 	trigger = rtw_read8(adapter, REG_C2HEVT_CLEAR);
 
 	if (trigger == C2H_EVT_HOST_CLOSE) {
@@ -717,7 +715,6 @@ clear_evt:
 	* If this field isn't clear, the FW won't update the next command message.
 	*/
 	c2h_evt_clear(adapter);
-#endif
 exit:
 	return ret;
 }
@@ -918,12 +915,10 @@ void hw_var_port_switch(_adapter *adapter)
 
 	/* write bcn ctl */
 #ifdef CONFIG_BT_COEXIST
-#if defined(CONFIG_RTL8723B)
 	// always enable port0 beacon function for PSTDMA
 	bcn_ctrl_1 |= EN_BCN_FUNCTION;
 	// always disable port1 beacon function for PSTDMA
 	bcn_ctrl &= ~EN_BCN_FUNCTION;
-#endif
 #endif
 	rtw_write8(adapter, REG_BCN_CTRL, bcn_ctrl_1);
 	rtw_write8(adapter, REG_BCN_CTRL_1, bcn_ctrl);
@@ -2041,7 +2036,7 @@ void rtw_bb_rf_gain_offset(_adapter *padapter)
 	pu4Byte    Array	   = Array_kfreemap;
 	u4Byte v1=0,v2=0,target=0; 
 	//DBG_871X("+%s value: 0x%02x+\n", __func__, value);
-#if defined(CONFIG_RTL8723B)
+
 	if (value & BIT4) {
 		DBG_871X("Offset RF Gain.\n");
 		DBG_871X("Offset RF Gain.  padapter->eeprompriv.EEPROMRFGainVal=0x%x\n",padapter->eeprompriv.EEPROMRFGainVal);
@@ -2076,8 +2071,6 @@ void rtw_bb_rf_gain_offset(_adapter *padapter)
 	} else {
 		DBG_871X("Using the default RF gain.\n");
 	}
-#endif
-	
 }
 #endif //CONFIG_RF_GAIN_OFFSET
 

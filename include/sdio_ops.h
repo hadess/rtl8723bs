@@ -43,7 +43,6 @@ extern u8 CheckIPSStatus(PADAPTER padapter);
 #if defined(CONFIG_WOWLAN) || defined(CONFIG_AP_WOWLAN)
 extern u8 RecvOnePkt(PADAPTER padapter, u32 size);
 #endif // CONFIG_WOWLAN
-#ifdef CONFIG_RTL8723B
 extern void InitInterrupt8723BSdio(PADAPTER padapter);
 extern void InitSysInterrupt8723BSdio(PADAPTER padapter);
 extern void EnableInterrupt8723BSdio(PADAPTER padapter);
@@ -54,7 +53,6 @@ extern u8 HalQueryTxOQTBufferStatus8723BSdio(PADAPTER padapter);
 extern void DisableInterruptButCpwm28723BSdio(PADAPTER padapter);
 extern void ClearInterrupt8723BSdio(PADAPTER padapter);
 #endif //CONFIG_WOWLAN
-#endif
 
 #endif // !__SDIO_OPS_H__
 

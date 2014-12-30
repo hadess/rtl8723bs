@@ -511,11 +511,9 @@ typedef struct hal_com_data
 	BT_COEXIST		bt_coexist;
 #endif // CONFIG_BT_COEXIST
 
-#if defined(CONFIG_RTL8723B)
 	// Interrupt relatd register information.
 	u32			SysIntrStatus;
 	u32			SysIntrMask;
-#endif //endif CONFIG_RTL8723B
 
 	
 #ifdef CONFIG_LOAD_PHY_PARA_FROM_FILE
