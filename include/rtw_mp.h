@@ -129,7 +129,6 @@ struct mp_tx
 #define s8Byte		s64
 #define ps8Byte 		s64*
 
-#define UCHAR u8
 #define USHORT u16
 #define UINT u32
 #define ULONG u32
