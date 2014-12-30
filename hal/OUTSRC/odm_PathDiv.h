@@ -23,12 +23,12 @@
 
 VOID	
 odm_PathDiversityInit(
-	IN	PVOID	pDM_VOID
+	IN	void *	pDM_VOID
 	);
 
 VOID    
 odm_PathDiversity(
-	IN	PVOID	pDM_VOID
+	IN	void *	pDM_VOID
 	);
 
  #endif		 //#ifndef  __ODMPATHDIV_H__

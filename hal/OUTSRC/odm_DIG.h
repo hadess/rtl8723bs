@@ -190,99 +190,99 @@ typedef enum tag_DIG_Connect_Definition
 
 VOID
 ODM_ChangeDynamicInitGainThresh(
-	IN		PVOID					pDM_VOID,
+	IN		void *					pDM_VOID,
 	IN		u4Byte  					DM_Type,
 	IN		u4Byte 					DM_Value
 	);
 
 VOID
 odm_NHMCounterStatisticsInit(
-	IN		PVOID					pDM_VOID
+	IN		void *					pDM_VOID
 	);
 
 VOID
 odm_NHMCounterStatistics(
-	IN		PVOID					pDM_VOID
+	IN		void *					pDM_VOID
 	);
 
 VOID
 odm_NHMBBInit(
-	IN		PVOID					pDM_VOID
+	IN		void *					pDM_VOID
 );
 
 VOID
 odm_NHMBB(
-	IN		PVOID					pDM_VOID
+	IN		void *					pDM_VOID
 );
 
 VOID
 odm_NHMCounterStatisticsReset(
-	IN		PVOID			pDM_VOID
+	IN		void *			pDM_VOID
 );
 
 VOID
 odm_GetNHMCounterStatistics(
-	IN		PVOID			pDM_VOID
+	IN		void *			pDM_VOID
 );
 
 VOID
 odm_SearchPwdBLowerBound(
-	IN		PVOID					pDM_VOID,
+	IN		void *					pDM_VOID,
 	IN		u1Byte					IGI_target
 );
 
 VOID 
 odm_AdaptivityInit(
-	IN		PVOID					pDM_VOID
+	IN		void *					pDM_VOID
 	);
 
 VOID
 odm_Adaptivity(
-	IN		PVOID					pDM_VOID,
+	IN		void *					pDM_VOID,
 	IN		u1Byte					IGI
 	);
 
 VOID
 ODM_Write_DIG(
-	IN		PVOID					pDM_VOID, 	
+	IN		void *					pDM_VOID, 	
 	IN		u1Byte					CurrentIGI
 	);
 
 VOID
 odm_PauseDIG(
-	IN		PVOID					pDM_VOID,
+	IN		void *					pDM_VOID,
 	IN		ODM_Pause_DIG_TYPE		PauseType,
 	IN		u1Byte					IGIValue
 	);
 
 VOID
 odm_DIGInit(
-	IN		PVOID					pDM_VOID
+	IN		void *					pDM_VOID
 	);
 
 VOID	
 odm_DIG(
-	IN		PVOID					pDM_VOID
+	IN		void *					pDM_VOID
 	);
 
 VOID
 odm_DIGbyRSSI_LPS(
-	IN		PVOID					pDM_VOID
+	IN		void *					pDM_VOID
 	);
 
 VOID
 odm_DigForBtHsMode(
-	IN		PVOID					pDM_VOID
+	IN		void *					pDM_VOID
 	);
 
 VOID 
 odm_FalseAlarmCounterStatistics(
-	IN		PVOID					pDM_VOID
+	IN		void *					pDM_VOID
 	);
 
 VOID
 odm_FAThresholdCheck(
-	IN		PVOID					pDM_VOID,
+	IN		void *					pDM_VOID,
 	IN		bool					bDFSBand,
 	IN		bool					bPerformance,
 	IN		u4Byte					RxTp,
@@ -292,36 +292,36 @@ odm_FAThresholdCheck(
 
 u1Byte
 odm_ForbiddenIGICheck(
-	IN		PVOID					pDM_VOID,
+	IN		void *					pDM_VOID,
 	IN		u1Byte					DIG_Dynamic_MIN,
 	IN		u1Byte					CurrentIGI
 	);
 
 VOID
 odm_InbandNoiseCalculate (	
-	IN		PVOID					pDM_VOID
+	IN		void *					pDM_VOID
 	);
 
 bool 
 odm_DigAbort(
-	IN		PVOID					pDM_VOID
+	IN		void *					pDM_VOID
 	);
 
 VOID
 odm_PauseCCKPacketDetection(
-	IN		PVOID					pDM_VOID,
+	IN		void *					pDM_VOID,
 	IN		ODM_Pause_CCKPD_TYPE	PauseType,
 	IN		u1Byte					CCKPDThreshold
 	);
 
 VOID 
 odm_CCKPacketDetectionThresh(
-	IN		PVOID					pDM_VOID
+	IN		void *					pDM_VOID
 	);
 
 VOID 
 ODM_Write_CCK_CCA_Thres(
-	IN		PVOID					pDM_VOID, 
+	IN		void *					pDM_VOID, 
 	IN		u1Byte					CurCCK_CCAThres
 	);
 

@@ -44,16 +44,16 @@ static u4Byte edca_setting_DL_GMode[HT_IOT_PEER_MAX] =
 
 VOID
 odm_EdcaTurboCheck(
-	IN 	PVOID	 	pDM_VOID
+	IN 	void *	 	pDM_VOID
 	);
 VOID
 ODM_EdcaTurboInit(
-	IN 	PVOID	 	pDM_VOID
+	IN 	void *	 	pDM_VOID
 );
 
 VOID
 odm_EdcaTurboCheckCE(
-	IN 	PVOID	 	pDM_VOID
+	IN 	void *	 	pDM_VOID
 	);
 
 #endif

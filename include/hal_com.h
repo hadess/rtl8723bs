@@ -342,12 +342,12 @@ void rtw_bb_rf_gain_offset(_adapter *padapter);
 void GetHalODMVar(	
 	PADAPTER				Adapter,
 	HAL_ODM_VARIABLE		eVariable,
-	PVOID					pValue1,
-	PVOID					pValue2);
+	void *					pValue1,
+	void *					pValue2);
 void SetHalODMVar(
 	PADAPTER				Adapter,
 	HAL_ODM_VARIABLE		eVariable,
-	PVOID					pValue1,
+	void *					pValue1,
 	bool					bSet);
 
 #ifdef CONFIG_BACKGROUND_NOISE_MONITOR

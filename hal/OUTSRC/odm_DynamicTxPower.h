@@ -39,47 +39,47 @@
 
 VOID 
 odm_DynamicTxPowerInit(
-	IN		PVOID					pDM_VOID
+	IN		void *					pDM_VOID
 	);
 
 VOID
 odm_DynamicTxPowerRestorePowerIndex(
-	IN		PVOID					pDM_VOID
+	IN		void *					pDM_VOID
 	);
 
 VOID 
 odm_DynamicTxPowerNIC(
-	IN		PVOID					pDM_VOID
+	IN		void *					pDM_VOID
 	);
 
 VOID
 odm_DynamicTxPowerSavePowerIndex(
-	IN		PVOID					pDM_VOID
+	IN		void *					pDM_VOID
 	);
 
 VOID
 odm_DynamicTxPowerWritePowerIndex(
-	IN		PVOID					pDM_VOID, 
+	IN		void *					pDM_VOID, 
 	IN 	u1Byte		Value);
 
 VOID 
 odm_DynamicTxPower_92C(
-	IN		PVOID					pDM_VOID
+	IN		void *					pDM_VOID
 	);
 
 VOID 
 odm_DynamicTxPower_92D(
-	IN		PVOID					pDM_VOID
+	IN		void *					pDM_VOID
 	);
 
 VOID 
 odm_DynamicTxPower(
-	IN		PVOID					pDM_VOID
+	IN		void *					pDM_VOID
 	);
 
 VOID 
 odm_DynamicTxPowerAP(
-	IN		PVOID					pDM_VOID
+	IN		void *					pDM_VOID
 	);
 
 #endif

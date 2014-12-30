@@ -26,7 +26,7 @@
 
 VOID 
 odm_DynamicTxPowerInit(
-	IN		PVOID					pDM_VOID	
+	IN		void *					pDM_VOID	
 	)
 {
 	PDM_ODM_T		pDM_Odm = (PDM_ODM_T)pDM_VOID;
@@ -47,7 +47,7 @@ odm_DynamicTxPowerInit(
 
 VOID
 odm_DynamicTxPowerSavePowerIndex(
-	IN		PVOID					pDM_VOID	
+	IN		void *					pDM_VOID	
 	)
 {	
 	PDM_ODM_T		pDM_Odm = (PDM_ODM_T)pDM_VOID;
@@ -63,7 +63,7 @@ odm_DynamicTxPowerSavePowerIndex(
 
 VOID
 odm_DynamicTxPowerRestorePowerIndex(
-	IN		PVOID					pDM_VOID
+	IN		void *					pDM_VOID
 	)
 {
 	PDM_ODM_T		pDM_Odm = (PDM_ODM_T)pDM_VOID;
@@ -79,7 +79,7 @@ odm_DynamicTxPowerRestorePowerIndex(
 
 VOID
 odm_DynamicTxPowerWritePowerIndex(
-	IN		PVOID					pDM_VOID, 
+	IN		void *					pDM_VOID, 
 	IN 	u1Byte		Value)
 {
 	PDM_ODM_T		pDM_Odm = (PDM_ODM_T)pDM_VOID;
@@ -95,7 +95,7 @@ odm_DynamicTxPowerWritePowerIndex(
 
 VOID 
 odm_DynamicTxPower(
-	IN		PVOID					pDM_VOID
+	IN		void *					pDM_VOID
 	)
 {
 	PDM_ODM_T		pDM_Odm = (PDM_ODM_T)pDM_VOID;
@@ -107,7 +107,7 @@ odm_DynamicTxPower(
 
 VOID 
 odm_DynamicTxPowerNIC(
-	IN		PVOID					pDM_VOID
+	IN		void *					pDM_VOID
 	)
 {	
 	PDM_ODM_T		pDM_Odm = (PDM_ODM_T)pDM_VOID;
@@ -130,7 +130,7 @@ odm_DynamicTxPowerNIC(
 
 VOID 
 odm_DynamicTxPowerAP(
-	IN		PVOID					pDM_VOID
+	IN		void *					pDM_VOID
 
 	)
 {	
@@ -140,7 +140,7 @@ odm_DynamicTxPowerAP(
 
 VOID 
 odm_DynamicTxPower_92C(
-	IN		PVOID					pDM_VOID
+	IN		void *					pDM_VOID
 	)
 {
 	PDM_ODM_T		pDM_Odm = (PDM_ODM_T)pDM_VOID;
@@ -270,7 +270,7 @@ odm_DynamicTxPower_92C(
 
 VOID 
 odm_DynamicTxPower_92D(
-	IN		PVOID					pDM_VOID
+	IN		void *					pDM_VOID
 	)
 {
 	PDM_ODM_T		pDM_Odm = (PDM_ODM_T)pDM_VOID;

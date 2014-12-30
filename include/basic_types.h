@@ -31,11 +31,6 @@
 
 	typedef	signed int sint;
 
-	#ifndef	PVOID
-	typedef void * PVOID;
-	//#define PVOID	(void *)
-	#endif
-
         #define UCHAR u8
 	#define USHORT u16
 	#define UINT u32

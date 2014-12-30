@@ -43,23 +43,23 @@ typedef struct _CFO_TRACKING_
 
 VOID
 ODM_CfoTrackingReset(
-	IN		PVOID					pDM_VOID
+	IN		void *					pDM_VOID
 );
 
 VOID
 ODM_CfoTrackingInit(
-	IN		PVOID					pDM_VOID
+	IN		void *					pDM_VOID
 );
 
 VOID
 ODM_CfoTracking(
-	IN		PVOID					pDM_VOID
+	IN		void *					pDM_VOID
 );
 
 VOID
 ODM_ParsingCFO(
-	IN		PVOID					pDM_VOID,
-	IN		PVOID					pPktinfo_VOID,
+	IN		void *					pDM_VOID,
+	IN		void *					pPktinfo_VOID,
 	IN     	s1Byte* 					pcfotail
 );
 

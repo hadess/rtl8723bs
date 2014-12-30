@@ -295,7 +295,7 @@ u8
 GetHalDefVar8188E(
 	IN	PADAPTER				Adapter,
 	IN	HAL_DEF_VARIABLE		eVariable,
-	IN	PVOID					pValue
+	IN	void *					pValue
 	);
 #endif //__RTL8188E_HAL_H__
 

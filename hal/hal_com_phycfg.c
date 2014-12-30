@@ -3632,12 +3632,12 @@ phy_ParsePowerLimitTableFile(
 
 		if( loadingStage == 0 ) {
 			for ( forCnt = 0; forCnt < TXPWR_LMT_MAX_REGULATION_NUM; ++forCnt )
-				_rtw_memset( ( PVOID ) regulation[forCnt], 0, 10 );
-			_rtw_memset( ( PVOID ) band, 0, 10 );
-			_rtw_memset( ( PVOID ) bandwidth, 0, 10 );
-			_rtw_memset( ( PVOID ) rateSection, 0, 10 );
-			_rtw_memset( ( PVOID ) rfPath, 0, 10 );
-			_rtw_memset( ( PVOID ) colNumBuf, 0, 10 );
+				_rtw_memset( ( void * ) regulation[forCnt], 0, 10 );
+			_rtw_memset( ( void * ) band, 0, 10 );
+			_rtw_memset( ( void * ) bandwidth, 0, 10 );
+			_rtw_memset( ( void * ) rateSection, 0, 10 );
+			_rtw_memset( ( void * ) rfPath, 0, 10 );
+			_rtw_memset( ( void * ) colNumBuf, 0, 10 );
 
 			if ( szLine[0] != '#' || szLine[1] != '#' )
 				continue;
@@ -3777,7 +3777,7 @@ phy_ParsePowerLimitTableFile(
 				// load the power limit value
 				cnt = 0;
 				fraction = 0;
-				_rtw_memset( ( PVOID ) powerLimit, 0, 10 );
+				_rtw_memset( ( void * ) powerLimit, 0, 10 );
 				while ( ( szLine[i] >= '0' && szLine[i] <= '9' ) || szLine[i] == '.' )
 				{
 					if ( szLine[i] == '.' ){

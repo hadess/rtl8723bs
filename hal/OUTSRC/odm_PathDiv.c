@@ -27,7 +27,7 @@
 
 VOID
 odm_PathDiversityInit(
-	IN	PVOID	pDM_VOID
+	IN	void *	pDM_VOID
 )
 {
 	PDM_ODM_T		pDM_Odm = (PDM_ODM_T)pDM_VOID;
@@ -46,7 +46,7 @@ odm_PathDiversityInit(
 
 VOID
 odm_PathDiversity(
-	IN	PVOID	pDM_VOID
+	IN	void *	pDM_VOID
 )
 {
 	PDM_ODM_T		pDM_Odm = (PDM_ODM_T)pDM_VOID;

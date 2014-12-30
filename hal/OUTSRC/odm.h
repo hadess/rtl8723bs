@@ -1710,7 +1710,7 @@ VOID
 ODM_CmnInfoHook(
 	IN		PDM_ODM_T		pDM_Odm,
 	IN		ODM_CMNINFO_E	CmnInfo,
-	IN		PVOID			pValue	
+	IN		void *			pValue	
 	);
 
 VOID
@@ -1718,7 +1718,7 @@ ODM_CmnInfoPtrArrayHook(
 	IN		PDM_ODM_T		pDM_Odm,
 	IN		ODM_CMNINFO_E	CmnInfo,
 	IN		u2Byte			Index,
-	IN		PVOID			pValue	
+	IN		void *			pValue	
 	);
 
 VOID
@@ -1792,7 +1792,7 @@ ODM_InitializeTimer(
 	IN 	PDM_ODM_T			pDM_Odm,
 	IN	PRT_TIMER 			pTimer, 
 	IN	RT_TIMER_CALL_BACK	CallBackFunc, 
-	IN	PVOID				pContext,
+	IN	void *				pContext,
 	IN	const char*			szID
 );
 

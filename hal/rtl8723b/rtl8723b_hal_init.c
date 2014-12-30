@@ -64,7 +64,7 @@ _FWDownloadEnable(
 static int
 _BlockWrite(
 	IN		PADAPTER		padapter,
-	IN		PVOID		buffer,
+	IN		void *		buffer,
 	IN		u32			buffSize
 	)
 {
@@ -143,7 +143,7 @@ static int
 _PageWrite(
 	IN		PADAPTER	padapter,
 	IN		u32			page,
-	IN		PVOID		buffer,
+	IN		void *		buffer,
 	IN		u32			size
 	)
 {
@@ -179,7 +179,7 @@ _FillDummy(
 static int
 _WriteFW(
 	IN		PADAPTER		padapter,
-	IN		PVOID			buffer,
+	IN		void *			buffer,
 	IN		u32			size
 	)
 {
@@ -2478,8 +2478,8 @@ static void rtl8723b_SetBeaconRelatedRegisters(PADAPTER padapter)
 void rtl8723b_GetHalODMVar(
 	PADAPTER				Adapter,
 	HAL_ODM_VARIABLE		eVariable,
-	PVOID					pValue1,
-	PVOID					pValue2)
+	void *					pValue1,
+	void *					pValue2)
 {
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
 	PDM_ODM_T podmpriv = &pHalData->odmpriv;
@@ -2493,7 +2493,7 @@ void rtl8723b_GetHalODMVar(
 void rtl8723b_SetHalODMVar(
 	PADAPTER				Adapter,
 	HAL_ODM_VARIABLE		eVariable,
-	PVOID					pValue1,
+	void *					pValue1,
 	bool					bSet)
 {
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
@@ -3340,8 +3340,8 @@ Hal_EfuseParseIDCode(
 static void
 Hal_EEValueCheck(
 	IN		u8		EEType,
-	IN		PVOID		pInValue,
-	OUT		PVOID		pOutValue
+	IN		void *		pInValue,
+	OUT		void *		pOutValue
 	)
 {
 	switch(EEType)

@@ -320,7 +320,7 @@ halbtc8812a1ant_QueryBtInfo(
 			buf[2] = 0x2;	// polling time in seconds
 			buf[3] = 0x1;	// auto report enable, 1=enable, 0=disable
 				
-			pBtCoexist->fBtcSet(pBtCoexist, BTC_SET_ACT_CTRL_BT_INFO, (PVOID)&buf[0]);
+			pBtCoexist->fBtcSet(pBtCoexist, BTC_SET_ACT_CTRL_BT_INFO, (void *)&buf[0]);
 		}
 	}
 	pCoexSta->btInfoQueryCnt++;
@@ -785,7 +785,7 @@ halbtc8812a1ant_SetFwIgnoreWlanAct(
 	else
 		buf[3] = 0x0;
 		
-	pBtCoexist->fBtcSet(pBtCoexist, BTC_SET_ACT_CTRL_BT_COEX, (PVOID)&buf[0]);	
+	pBtCoexist->fBtcSet(pBtCoexist, BTC_SET_ACT_CTRL_BT_COEX, (void *)&buf[0]);	
 }
 
 VOID
@@ -2557,7 +2557,7 @@ EXhalbtc8812a1ant_MediaStatusNotify(
 	buf[4] = H2C_Parameter[1];
 	buf[5] = H2C_Parameter[2];
 		
-	pBtCoexist->fBtcSet(pBtCoexist, BTC_SET_ACT_CTRL_BT_COEX, (PVOID)&buf[0]);		
+	pBtCoexist->fBtcSet(pBtCoexist, BTC_SET_ACT_CTRL_BT_COEX, (void *)&buf[0]);		
 }
 
 VOID
@@ -2920,7 +2920,7 @@ EXhalbtc8812a1ant_DbgControl(
 					buf[3] = decBtPwr;	// OP_Code_Content
 					buf[4] = pwrLevel;
 					BTC_PRINT(BTC_MSG_ALGORITHM, ALGO_TRACE, ("[BTCoex], Set Dec BT power=%d, pwrLevel=%d\n", decBtPwr, pwrLevel));
-					pBtCoexist->fBtcSet(pBtCoexist, BTC_SET_ACT_CTRL_BT_COEX, (PVOID)&buf[0]);	
+					pBtCoexist->fBtcSet(pBtCoexist, BTC_SET_ACT_CTRL_BT_COEX, (void *)&buf[0]);	
 				}
 			}
 			break;
@@ -2942,7 +2942,7 @@ EXhalbtc8812a1ant_DbgControl(
 
 					BTC_PRINT(BTC_MSG_ALGORITHM, ALGO_TRACE, ("[BTCoex], Set BT AFH Map = %02x %02x %02x\n", 
 						pData[0], pData[1], pData[2]));
-					pBtCoexist->fBtcSet(pBtCoexist, BTC_SET_ACT_CTRL_BT_COEX, (PVOID)&buf[0]);
+					pBtCoexist->fBtcSet(pBtCoexist, BTC_SET_ACT_CTRL_BT_COEX, (void *)&buf[0]);
 				}
 			}
 			break;
@@ -2962,7 +2962,7 @@ EXhalbtc8812a1ant_DbgControl(
 					BTC_PRINT(BTC_MSG_ALGORITHM, ALGO_TRACE, ("[BTCoex], Set BT Ignore Wlan Active = 0x%x\n", 
 						pData[0]));
 						
-					pBtCoexist->fBtcSet(pBtCoexist, BTC_SET_ACT_CTRL_BT_COEX, (PVOID)&buf[0]);
+					pBtCoexist->fBtcSet(pBtCoexist, BTC_SET_ACT_CTRL_BT_COEX, (void *)&buf[0]);
 				}
 			}
 			break;

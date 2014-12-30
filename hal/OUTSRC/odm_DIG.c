@@ -28,7 +28,7 @@
 
 VOID
 ODM_ChangeDynamicInitGainThresh(
-	IN	PVOID		pDM_VOID,
+	IN	void *		pDM_VOID,
 	IN	u4Byte		DM_Type,
 	IN	u4Byte		DM_Value
 	)
@@ -74,7 +74,7 @@ ODM_ChangeDynamicInitGainThresh(
 
 VOID
 odm_NHMCounterStatisticsInit(
-	IN		PVOID			pDM_VOID
+	IN		void *			pDM_VOID
 	)
 {
 	PDM_ODM_T		pDM_Odm = (PDM_ODM_T)pDM_VOID;
@@ -110,7 +110,7 @@ odm_NHMCounterStatisticsInit(
 
 VOID
 odm_NHMCounterStatistics(
-	IN		PVOID			pDM_VOID
+	IN		void *			pDM_VOID
 	)
 {
 	PDM_ODM_T	pDM_Odm = (PDM_ODM_T)pDM_VOID;
@@ -124,7 +124,7 @@ odm_NHMCounterStatistics(
 
 VOID
 odm_GetNHMCounterStatistics(
-	IN		PVOID			pDM_VOID
+	IN		void *			pDM_VOID
 	)
 {
 	PDM_ODM_T	pDM_Odm = (PDM_ODM_T)pDM_VOID;
@@ -140,7 +140,7 @@ odm_GetNHMCounterStatistics(
 
 VOID
 odm_NHMCounterStatisticsReset(
-	IN		PVOID			pDM_VOID
+	IN		void *			pDM_VOID
 	)
 {
 	PDM_ODM_T	pDM_Odm = (PDM_ODM_T)pDM_VOID;
@@ -159,7 +159,7 @@ odm_NHMCounterStatisticsReset(
 
 VOID
 odm_NHMBBInit(
-	IN		PVOID			pDM_VOID
+	IN		void *			pDM_VOID
 )
 {
 	PDM_ODM_T		pDM_Odm = (PDM_ODM_T)pDM_VOID;
@@ -175,7 +175,7 @@ odm_NHMBBInit(
 //
 VOID
 odm_NHMBB(
-	IN		PVOID			pDM_VOID
+	IN		void *			pDM_VOID
 )
 {
 	PDM_ODM_T	pDM_Odm = (PDM_ODM_T)pDM_VOID;
@@ -249,7 +249,7 @@ odm_NHMBB(
 
 VOID
 odm_SearchPwdBLowerBound(
-	IN		PVOID		pDM_VOID,
+	IN		void *		pDM_VOID,
 	IN		u1Byte		IGI_target
 )
 {
@@ -346,7 +346,7 @@ ODM_RT_TRACE(pDM_Odm,ODM_COMP_DIG, ODM_DBG_LOUD, ("IGI = 0x%x, H2L_lb = 0x%x, L2
 
 VOID
 odm_AdaptivityInit(
-	IN 	PVOID	 	pDM_VOID
+	IN 	void *	 	pDM_VOID
 )
 {
 	PDM_ODM_T		pDM_Odm = (PDM_ODM_T)pDM_VOID;
@@ -379,7 +379,7 @@ odm_AdaptivityInit(
 
 VOID
 odm_Adaptivity(
-	IN		PVOID			pDM_VOID,
+	IN		void *			pDM_VOID,
 	IN		u1Byte			IGI
 )
 {
@@ -497,7 +497,7 @@ getIGIForDiff(int value_IGI)
 
 VOID
 ODM_Write_DIG(
-	IN	PVOID			pDM_VOID,
+	IN	void *			pDM_VOID,
 	IN	u1Byte			CurrentIGI
 	)
 {
@@ -546,7 +546,7 @@ ODM_Write_DIG(
 
 VOID
 odm_PauseDIG(
-	IN		PVOID					pDM_VOID,
+	IN		void *					pDM_VOID,
 	IN		ODM_Pause_DIG_TYPE		PauseType,
 	IN		u1Byte					IGIValue
 )
@@ -613,7 +613,7 @@ odm_PauseDIG(
 
 bool 
 odm_DigAbort(
-	IN		PVOID			pDM_VOID
+	IN		void *			pDM_VOID
 	)
 {
 	PDM_ODM_T		pDM_Odm = (PDM_ODM_T)pDM_VOID;
@@ -651,7 +651,7 @@ odm_DigAbort(
 
 VOID
 odm_DIGInit(
-	IN		PVOID		pDM_VOID
+	IN		void *		pDM_VOID
 	)
 {
 	PDM_ODM_T					pDM_Odm = (PDM_ODM_T)pDM_VOID;
@@ -701,7 +701,7 @@ odm_DIGInit(
 
 VOID 
 odm_DIG(
-	IN		PVOID		pDM_VOID
+	IN		void *		pDM_VOID
 	)
 {
 	PDM_ODM_T					pDM_Odm = (PDM_ODM_T)pDM_VOID;
@@ -1051,7 +1051,7 @@ odm_DIG(
 
 VOID
 odm_DIGbyRSSI_LPS(
-	IN		PVOID		pDM_VOID
+	IN		void *		pDM_VOID
 	)
 {
 	PDM_ODM_T					pDM_Odm = (PDM_ODM_T)pDM_VOID;
@@ -1098,7 +1098,7 @@ odm_DIGbyRSSI_LPS(
 
 VOID
 odm_DigForBtHsMode(
-	IN		PVOID		pDM_VOID
+	IN		void *		pDM_VOID
 	)
 {
 }
@@ -1110,7 +1110,7 @@ odm_DigForBtHsMode(
 
 VOID 
 odm_FalseAlarmCounterStatistics(
-	IN		PVOID		pDM_VOID
+	IN		void *		pDM_VOID
 	)
 {
 	PDM_ODM_T					pDM_Odm = (PDM_ODM_T)pDM_VOID;
@@ -1302,7 +1302,7 @@ odm_FalseAlarmCounterStatistics(
 
 VOID
 odm_FAThresholdCheck(
-	IN		PVOID			pDM_VOID,
+	IN		void *			pDM_VOID,
 	IN		bool			bDFSBand,
 	IN		bool			bPerformance,
 	IN		u4Byte			RxTp,
@@ -1349,7 +1349,7 @@ odm_FAThresholdCheck(
 
 u1Byte
 odm_ForbiddenIGICheck(
-	IN		PVOID			pDM_VOID,
+	IN		void *			pDM_VOID,
 	IN		u1Byte			DIG_Dynamic_MIN,
 	IN		u1Byte			CurrentIGI
 	)
@@ -1419,7 +1419,7 @@ odm_ForbiddenIGICheck(
 
 VOID
 odm_InbandNoiseCalculate (	
-	IN		PVOID		pDM_VOID
+	IN		void *		pDM_VOID
 	)
 {
 	return;
@@ -1431,7 +1431,7 @@ odm_InbandNoiseCalculate (
 
 VOID
 odm_PauseCCKPacketDetection(
-	IN		PVOID					pDM_VOID,
+	IN		void *					pDM_VOID,
 	IN		ODM_Pause_CCKPD_TYPE	PauseType,
 	IN		u1Byte					CCKPDThreshold
 )
@@ -1494,7 +1494,7 @@ odm_PauseCCKPacketDetection(
 
 VOID 
 odm_CCKPacketDetectionThresh(
-	IN		PVOID		pDM_VOID
+	IN		void *		pDM_VOID
 	)
 {
 	PDM_ODM_T					pDM_Odm = (PDM_ODM_T)pDM_VOID;
@@ -1547,7 +1547,7 @@ odm_CCKPacketDetectionThresh(
 
 VOID
 ODM_Write_CCK_CCA_Thres(
-	IN	PVOID			pDM_VOID,
+	IN	void *			pDM_VOID,
 	IN	u1Byte			CurCCK_CCAThres
 	)
 {

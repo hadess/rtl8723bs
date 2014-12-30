@@ -177,7 +177,7 @@ ODM_GetRFReg(
 VOID
 ODM_AllocateMemory(	
 	IN 	PDM_ODM_T	pDM_Odm,
-	OUT	PVOID		*pPtr,
+	OUT	void *		*pPtr,
 	IN	u4Byte		length
 	)
 {
@@ -188,7 +188,7 @@ ODM_AllocateMemory(
 VOID
 ODM_FreeMemory(	
 	IN 	PDM_ODM_T	pDM_Odm,
-	OUT	PVOID		pPtr,
+	OUT	void *		pPtr,
 	IN	u4Byte		length
 	)
 {
@@ -198,8 +198,8 @@ ODM_FreeMemory(
 VOID
 ODM_MoveMemory(	
 	IN 	PDM_ODM_T	pDM_Odm,
-	OUT PVOID		pDest,
-	IN  PVOID		pSrc,
+	OUT void *		pDest,
+	IN  void *		pSrc,
 	IN  u4Byte		Length
 	)
 {
@@ -208,7 +208,7 @@ ODM_MoveMemory(
 
 void ODM_Memory_Set
 	(IN 	PDM_ODM_T	pDM_Odm,
-		IN  PVOID	pbuf,
+		IN  void *	pbuf,
 		IN  s1Byte	value,
 		IN  u4Byte	length)
 {
@@ -216,8 +216,8 @@ void ODM_Memory_Set
 }
 s4Byte ODM_CompareMemory(
 	IN 	PDM_ODM_T		pDM_Odm,
-	IN	PVOID           pBuf1,
-	IN	PVOID           pBuf2,
+	IN	void *           pBuf1,
+	IN	void *           pBuf2,
 	IN	u4Byte          length
        )
 {
@@ -250,7 +250,7 @@ ODM_InitializeWorkItem(
 	IN 	PDM_ODM_T					pDM_Odm,
 	IN	PRT_WORK_ITEM				pRtWorkItem,
 	IN	RT_WORKITEM_CALL_BACK		RtWorkItemCallback,
-	IN	PVOID						pContext,
+	IN	void *						pContext,
 	IN	const char*					szID
 	)
 {
@@ -348,7 +348,7 @@ ODM_InitializeTimer(
 	IN 	PDM_ODM_T			pDM_Odm,
 	IN	PRT_TIMER 			pTimer, 
 	IN	RT_TIMER_CALL_BACK	CallBackFunc, 
-	IN	PVOID				pContext,
+	IN	void *				pContext,
 	IN	const char*			szID
 	)
 {

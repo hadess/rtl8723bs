@@ -265,13 +265,13 @@ u8
 SetHalDefVar8192E(
 	IN	PADAPTER				Adapter,
 	IN	HAL_DEF_VARIABLE		eVariable,
-	IN	PVOID					pValue
+	IN	void *					pValue
 	);
 u8
 GetHalDefVar8192E(
 	IN	PADAPTER				Adapter,
 	IN	HAL_DEF_VARIABLE		eVariable,
-	IN	PVOID					pValue
+	IN	void *					pValue
 	);
 
 void rtl8192e_set_hal_ops(struct hal_ops *pHalFunc);

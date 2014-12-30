@@ -101,7 +101,7 @@ typedef enum _ODM_H2C_CMD
 //
 typedef  void *PRT_WORK_ITEM ;
 typedef  void RT_WORKITEM_HANDLE,*PRT_WORKITEM_HANDLE;
-typedef VOID (*RT_WORKITEM_CALL_BACK)(PVOID pContext);
+typedef VOID (*RT_WORKITEM_CALL_BACK)(void * pContext);
 
 #if 0
 typedef struct tasklet_struct RT_WORKITEM_HANDLE, *PRT_WORKITEM_HANDLE;
@@ -110,11 +110,11 @@ typedef struct _RT_WORK_ITEM
 {
 	
 	RT_WORKITEM_HANDLE			Handle;			// Platform-dependent handle for this workitem, e.g. Ndis Workitem object.
-	PVOID						Adapter;		// Pointer to Adapter object.
-	PVOID						pContext;		// Parameter to passed to CallBackFunc(). 
+	void *						Adapter;		// Pointer to Adapter object.
+	void *						pContext;		// Parameter to passed to CallBackFunc(). 
 	RT_WORKITEM_CALL_BACK		CallbackFunc;	// Callback function of the workitem.
 	u1Byte						RefCount;		// 0: driver is going to unload, 1: No such workitem scheduled, 2: one workitem is schedueled. 
-	PVOID						pPlatformExt;	// Pointer to platform-dependent extension.	
+	void *						pPlatformExt;	// Pointer to platform-dependent extension.	
 	bool						bFree;
 	char						szID[36];		// An identity string of this workitem.
 }RT_WORK_ITEM, *PRT_WORK_ITEM;
@@ -224,34 +224,34 @@ ODM_GetRFReg(
 VOID
 ODM_AllocateMemory(	
 	IN 	PDM_ODM_T	pDM_Odm,
-	OUT	PVOID		*pPtr,
+	OUT	void *		*pPtr,
 	IN	u4Byte		length
 	);
 VOID
 ODM_FreeMemory(	
 	IN 	PDM_ODM_T	pDM_Odm,
-	OUT	PVOID		pPtr,
+	OUT	void *		pPtr,
 	IN	u4Byte		length
 	);
 
 VOID
 ODM_MoveMemory(	
 	IN 	PDM_ODM_T	pDM_Odm,
-	OUT PVOID		pDest,
-	IN  PVOID		pSrc,
+	OUT void *		pDest,
+	IN  void *		pSrc,
 	IN  u4Byte		Length
 	);
 
 s4Byte ODM_CompareMemory(
 	IN 	PDM_ODM_T	pDM_Odm,
-	IN	PVOID           pBuf1,
-      IN	PVOID           pBuf2,
+	IN	void *           pBuf1,
+      IN	void *           pBuf2,
       IN	u4Byte          length
        );
 
 void ODM_Memory_Set
 	(IN 	PDM_ODM_T	pDM_Odm,
-		IN  PVOID	pbuf,
+		IN  void *	pbuf,
 		IN  s1Byte	value,
 		IN  u4Byte	length);
 	
@@ -279,7 +279,7 @@ ODM_InitializeWorkItem(
 	IN 	PDM_ODM_T					pDM_Odm,
 	IN	PRT_WORK_ITEM				pRtWorkItem,
 	IN	RT_WORKITEM_CALL_BACK		RtWorkItemCallback,
-	IN	PVOID						pContext,
+	IN	void *						pContext,
 	IN	const char*					szID
 	);
 
@@ -342,7 +342,7 @@ ODM_InitializeTimer(
 	IN 	PDM_ODM_T			pDM_Odm,
 	IN	PRT_TIMER 			pTimer, 
 	IN	RT_TIMER_CALL_BACK	CallBackFunc, 
-	IN	PVOID				pContext,
+	IN	void *				pContext,
 	IN	const char*			szID
 	);
 

@@ -178,7 +178,7 @@ s2Byte odm_InbandNoise_Monitor_NSeries(PDM_ODM_T	pDM_Odm,u8 bPauseDIG,u8 IGIValu
 	return pDM_Odm->noise_level.noise_all;
 
 }
-s2Byte ODM_InbandNoise_Monitor(PVOID pDM_VOID,u8 bPauseDIG,u8 IGIValue,u32 max_time)
+s2Byte ODM_InbandNoise_Monitor(void * pDM_VOID,u8 bPauseDIG,u8 IGIValue,u32 max_time)
 {
 
 	PDM_ODM_T	pDM_Odm = (PDM_ODM_T)pDM_VOID;

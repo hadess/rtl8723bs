@@ -42,7 +42,7 @@ struct beamforming_entry	*beamforming_get_entry_by_addr(struct mlme_priv *pmlmep
 	return NULL;
 }
 
-BEAMFORMING_CAP beamforming_get_entry_beam_cap_by_mac_id(PVOID pmlmepriv ,u8 mac_id)
+BEAMFORMING_CAP beamforming_get_entry_beam_cap_by_mac_id(void * pmlmepriv ,u8 mac_id)
 {
 	u8	i = 0;
 	struct beamforming_info	*pBeamInfo = GET_BEAMFORM_INFO((struct mlme_priv *)pmlmepriv);
@@ -849,7 +849,7 @@ void	beamforming_check_sounding_success(PADAPTER Adapter,bool status)
 	}
 }
 
-void	beamforming_enter(PADAPTER adapter, PVOID psta)
+void	beamforming_enter(PADAPTER adapter, void * psta)
 {
 	u8	idx = 0xff;
 
@@ -922,7 +922,7 @@ _func_enter_;
 	switch(type)
 	{
 		case BEAMFORMING_CTRL_ENTER:
-			beamforming_enter(padapter, (PVOID)pbuf);
+			beamforming_enter(padapter, (void *)pbuf);
 			break;
 
 		case BEAMFORMING_CTRL_LEAVE:

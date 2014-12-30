@@ -265,7 +265,7 @@ u32	rtw_vht_rate_to_bitmap(u8 *pVHTRate)
 	return RateBitmap;
 }
 
-void	update_sta_vht_info_apmode(_adapter *padapter, PVOID sta)
+void	update_sta_vht_info_apmode(_adapter *padapter, void * sta)
 {
 	struct sta_info	*psta = (struct sta_info *)sta;
 	struct mlme_priv	*pmlmepriv = &(padapter->mlmepriv);
@@ -441,7 +441,7 @@ void VHT_operation_handler(_adapter *padapter, PNDIS_802_11_VARIABLE_IEs pIE)
 	if(pvhtpriv->vht_option == false)	return;
 }
 
-void rtw_process_vht_op_mode_notify(_adapter *padapter, u8 *pframe, PVOID sta)
+void rtw_process_vht_op_mode_notify(_adapter *padapter, u8 *pframe, void * sta)
 {
 	struct sta_info		*psta = (struct sta_info *)sta;
 	struct mlme_priv 		*pmlmepriv = &padapter->mlmepriv;

@@ -137,7 +137,7 @@ struct mp_tx
 
 
 
-typedef VOID (*MPT_WORK_ITEM_HANDLER)(IN PVOID Adapter);
+typedef VOID (*MPT_WORK_ITEM_HANDLER)(IN void * Adapter);
 typedef struct _MPT_CONTEXT
 {
 	// Indicate if we have started Mass Production Test.

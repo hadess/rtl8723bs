@@ -1514,7 +1514,7 @@ odm_S0S1_SwAntDiv(
 
 VOID
 ODM_SW_AntDiv_WorkitemCallback(
-    IN PVOID            pContext
+    IN void *            pContext
     )
 {
 	PADAPTER		pAdapter = (PADAPTER)pContext;

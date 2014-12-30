@@ -22,7 +22,7 @@
 
 VOID
 odm_SetCrystalCap(
-	IN		PVOID					pDM_VOID,
+	IN		void *					pDM_VOID,
 	IN		u1Byte					CrystalCap
 )
 {
@@ -88,7 +88,7 @@ odm_SetCrystalCap(
 
 u1Byte
 odm_GetDefaultCrytaltalCap(
-	IN		PVOID					pDM_VOID
+	IN		void *					pDM_VOID
 )
 {
 	PDM_ODM_T					pDM_Odm = (PDM_ODM_T)pDM_VOID;
@@ -106,7 +106,7 @@ odm_GetDefaultCrytaltalCap(
 
 VOID
 odm_SetATCStatus(
-	IN		PVOID					pDM_VOID,
+	IN		void *					pDM_VOID,
 	IN		bool					ATCStatus
 )
 {
@@ -122,7 +122,7 @@ odm_SetATCStatus(
 
 bool
 odm_GetATCStatus(
-	IN		PVOID					pDM_VOID
+	IN		void *					pDM_VOID
 )
 {
 	bool						ATCStatus;
@@ -134,7 +134,7 @@ odm_GetATCStatus(
 
 VOID
 ODM_CfoTrackingReset(
-	IN		PVOID					pDM_VOID
+	IN		void *					pDM_VOID
 )
 {
 	PDM_ODM_T					pDM_Odm = (PDM_ODM_T)pDM_VOID;
@@ -150,7 +150,7 @@ ODM_CfoTrackingReset(
 
 VOID
 ODM_CfoTrackingInit(
-	IN		PVOID					pDM_VOID
+	IN		void *					pDM_VOID
 )
 {
 	PDM_ODM_T					pDM_Odm = (PDM_ODM_T)pDM_VOID;
@@ -165,7 +165,7 @@ ODM_CfoTrackingInit(
 
 VOID
 ODM_CfoTracking(
-	IN		PVOID					pDM_VOID
+	IN		void *					pDM_VOID
 )
 {
 	PDM_ODM_T					pDM_Odm = (PDM_ODM_T)pDM_VOID;
@@ -293,8 +293,8 @@ ODM_CfoTracking(
 
 VOID
 ODM_ParsingCFO(
-	IN		PVOID			pDM_VOID,
-	IN		PVOID			pPktinfo_VOID,
+	IN		void *			pDM_VOID,
+	IN		void *			pPktinfo_VOID,
 	IN		s1Byte* 			pcfotail
 	)
 {

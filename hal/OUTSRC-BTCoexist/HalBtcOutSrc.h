@@ -370,66 +370,66 @@ typedef enum _BTC_ANTENNA_POS{
 
 typedef u1Byte
 (*BFP_BTC_R1)(
-	IN 	PVOID			pBtcContext,
+	IN 	void *			pBtcContext,
 	IN	u4Byte			RegAddr
 	);
 typedef u2Byte
 (*BFP_BTC_R2)(
-	IN 	PVOID			pBtcContext,
+	IN 	void *			pBtcContext,
 	IN	u4Byte			RegAddr
 	);
 typedef u4Byte
 (*BFP_BTC_R4)(
-	IN 	PVOID			pBtcContext,
+	IN 	void *			pBtcContext,
 	IN	u4Byte			RegAddr
 	);
 typedef VOID
 (*BFP_BTC_W1)(
-	IN 	PVOID			pBtcContext,
+	IN 	void *			pBtcContext,
 	IN	u4Byte			RegAddr,
 	IN	u1Byte			Data
 	);
 typedef VOID
 (*BFP_BTC_W1_BIT_MASK)(
-	IN 	PVOID			pBtcContext,
+	IN 	void *			pBtcContext,
 	IN	u4Byte			regAddr,
 	IN	u1Byte			bitMask,
 	IN	u1Byte			data1b
 	);
 typedef VOID
 (*BFP_BTC_W2)(
-	IN 	PVOID			pBtcContext,
+	IN 	void *			pBtcContext,
 	IN	u4Byte			RegAddr,
 	IN	u2Byte			Data
 	);
 typedef VOID
 (*BFP_BTC_W4)(
-	IN 	PVOID			pBtcContext,
+	IN 	void *			pBtcContext,
 	IN	u4Byte			RegAddr,
 	IN	u4Byte			Data
 	);
 typedef VOID
 (*BFP_BTC_LOCAL_REG_W1)(
-	IN 	PVOID			pBtcContext,
+	IN 	void *			pBtcContext,
 	IN	u4Byte			RegAddr,
 	IN	u1Byte			Data
 	);
 typedef VOID
 (*BFP_BTC_SET_BB_REG)(
-	IN 	PVOID			pBtcContext,
+	IN 	void *			pBtcContext,
 	IN	u4Byte			RegAddr,
 	IN	u4Byte			BitMask,
 	IN	u4Byte			Data
 	);
 typedef u4Byte 
 (*BFP_BTC_GET_BB_REG)(
-	IN 	PVOID			pBtcContext,
+	IN 	void *			pBtcContext,
 	IN	u4Byte			RegAddr,
 	IN	u4Byte			BitMask
 	);
 typedef VOID
 (*BFP_BTC_SET_RF_REG)(	
-	IN 	PVOID			pBtcContext,
+	IN 	void *			pBtcContext,
 	IN	u1Byte			eRFPath,
 	IN	u4Byte			RegAddr,
 	IN	u4Byte			BitMask,
@@ -437,14 +437,14 @@ typedef VOID
 	);
 typedef u4Byte 
 (*BFP_BTC_GET_RF_REG)(
-	IN 	PVOID			pBtcContext,
+	IN 	void *			pBtcContext,
 	IN	u1Byte			eRFPath,
 	IN	u4Byte			RegAddr,
 	IN	u4Byte			BitMask
 	);
 typedef VOID
 (*BFP_BTC_FILL_H2C)(
-	IN 	PVOID			pBtcContext,
+	IN 	void *			pBtcContext,
 	IN	u1Byte 			elementId,
 	IN	u4Byte 			cmdLen,
 	IN	pu1Byte			pCmdBuffer
@@ -452,33 +452,33 @@ typedef VOID
 
 typedef	u8
 (*BFP_BTC_GET)(
-	IN	PVOID			pBtCoexist,
+	IN	void *			pBtCoexist,
 	IN	u1Byte			getType,
-	OUT	PVOID			pOutBuf
+	OUT	void *			pOutBuf
 	);
 
 typedef	u8
 (*BFP_BTC_SET)(
-	IN	PVOID			pBtCoexist,
+	IN	void *			pBtCoexist,
 	IN	u1Byte			setType,
-	OUT	PVOID			pInBuf
+	OUT	void *			pInBuf
 	);
 typedef VOID
 (*BFP_BTC_SET_BT_REG)(
-	IN 	PVOID			pBtcContext,
+	IN 	void *			pBtcContext,
 	IN	u1Byte			regType,
 	IN	u4Byte			offset,
 	IN	u4Byte			value
 	);
 typedef u4Byte 
 (*BFP_BTC_GET_BT_REG)(
-	IN 	PVOID			pBtcContext,
+	IN 	void *			pBtcContext,
 	IN	u1Byte			regType,
 	IN	u4Byte			offset
 	);
 typedef VOID
 (*BFP_BTC_DISP_DBG_MSG)(
-	IN	PVOID			pBtCoexist,
+	IN	void *			pBtCoexist,
 	IN	u1Byte			dispType
 	);
 
@@ -559,7 +559,7 @@ typedef struct _BTC_STATISTICS{
 
 typedef struct _BTC_COEXIST{
 	bool				bBinded;		// make sure only one adapter can bind the data context
-	PVOID				Adapter;		// default adapter
+	void *				Adapter;		// default adapter
 	BTC_BOARD_INFO		boardInfo;
 	BTC_BT_INFO			btInfo;		// some bt info referenced by non-bt module
 	BTC_STACK_INFO		stackInfo;
@@ -607,7 +607,7 @@ extern BTC_COEXIST				GLBtCoexist;
 
 u8
 EXhalbtcoutsrc_InitlizeVariables(
-	IN	PVOID		Adapter	
+	IN	void *		Adapter	
 	);
 VOID
 EXhalbtcoutsrc_PowerOnSetting(

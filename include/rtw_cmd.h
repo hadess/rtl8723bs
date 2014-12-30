@@ -923,7 +923,7 @@ struct SetChannelPlan_param
 /*H2C Handler index: 60 */ 
 struct LedBlink_param
 {
-	PVOID	 pLed;
+	void *	 pLed;
 };
 
 /*H2C Handler index: 61 */ 
@@ -1033,7 +1033,7 @@ u8 rtw_btinfo_cmd(PADAPTER padapter, u8 *pbuf, u16 length);
 
 u8 rtw_set_ch_cmd(_adapter*padapter, u8 ch, u8 bw, u8 ch_offset, u8 enqueue);
 extern u8 rtw_set_chplan_cmd(_adapter*padapter, u8 chplan, u8 enqueue, u8 swconfig);
-extern u8 rtw_led_blink_cmd(_adapter*padapter, PVOID pLed);
+extern u8 rtw_led_blink_cmd(_adapter*padapter, void * pLed);
 extern u8 rtw_set_csa_cmd(_adapter*padapter, u8 new_ch_no);
 extern u8 rtw_tdls_cmd(_adapter*padapter, u8 *addr, u8 option);
 

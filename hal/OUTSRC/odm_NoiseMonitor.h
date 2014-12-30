@@ -44,6 +44,6 @@ typedef struct _ODM_NOISE_MONITOR_
 	s2Byte			noise_all;	
 }ODM_NOISE_MONITOR;
 
-s2Byte ODM_InbandNoise_Monitor(PVOID pDM_VOID,u8 bPauseDIG,u8 IGIValue,u32 max_time);
+s2Byte ODM_InbandNoise_Monitor(void * pDM_VOID,u8 bPauseDIG,u8 IGIValue,u32 max_time);
 
 #endif

@@ -26,7 +26,7 @@
 
 VOID
 ODM_EdcaTurboInit(
-	IN 	PVOID	 	pDM_VOID)
+	IN 	void *	 	pDM_VOID)
 {
 	PDM_ODM_T		pDM_Odm = (PDM_ODM_T)pDM_VOID;
 	PADAPTER	Adapter = pDM_Odm->Adapter;	
@@ -44,7 +44,7 @@ ODM_EdcaTurboInit(
 
 VOID
 odm_EdcaTurboCheck(
-	IN 	PVOID	 	pDM_VOID
+	IN 	void *	 	pDM_VOID
 	)
 {
 	//
@@ -65,7 +65,7 @@ odm_EdcaTurboCheck(
 
 VOID
 odm_EdcaTurboCheckCE(
-	IN 	PVOID	 	pDM_VOID
+	IN 	void *	 	pDM_VOID
 	)
 {
 	PDM_ODM_T		pDM_Odm = (PDM_ODM_T)pDM_VOID;

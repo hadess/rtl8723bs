@@ -26,7 +26,7 @@
 
 VOID 
 odm_DynamicBBPowerSavingInit(
-	IN		PVOID					pDM_VOID
+	IN		void *					pDM_VOID
 	)
 {
 	PDM_ODM_T		pDM_Odm = (PDM_ODM_T)pDM_VOID;
@@ -43,7 +43,7 @@ odm_DynamicBBPowerSavingInit(
 
 VOID
 odm_DynamicBBPowerSaving(
-	IN		PVOID					pDM_VOID
+	IN		void *					pDM_VOID
 	)
 {	
 	PDM_ODM_T		pDM_Odm = (PDM_ODM_T)pDM_VOID;
@@ -70,7 +70,7 @@ odm_DynamicBBPowerSaving(
 
 VOID
 odm_1R_CCA(
-	IN		PVOID					pDM_VOID
+	IN		void *					pDM_VOID
 	)
 {
 	PDM_ODM_T		pDM_Odm = (PDM_ODM_T)pDM_VOID;
@@ -124,7 +124,7 @@ odm_1R_CCA(
 
 void
 ODM_RF_Saving(
-	IN		PVOID					pDM_VOID,
+	IN		void *					pDM_VOID,
 	IN	u1Byte		bForceInNormal 
 	)
 {

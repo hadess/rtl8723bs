@@ -1445,7 +1445,7 @@ halbtc8723b1ant_SetAntPathDCut(
 
 	buf[5] = wifiState;
 	
-	pBtCoexist->fBtcSet(pBtCoexist, BTC_SET_ACT_CTRL_8723B_ANT, (PVOID)&buf[0]);	
+	pBtCoexist->fBtcSet(pBtCoexist, BTC_SET_ACT_CTRL_8723B_ANT, (void *)&buf[0]);	
 }
 
 VOID
