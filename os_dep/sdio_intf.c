@@ -32,18 +32,9 @@ static struct mmc_host *mmc_host = NULL;
 
 static const struct sdio_device_id sdio_ids[] =
 {
-#ifdef CONFIG_RTL8723A
-	{ SDIO_DEVICE(0x024c, 0x8723),.driver_data = RTL8723A},
-#endif //CONFIG_RTL8723A
 #ifdef CONFIG_RTL8723B
 	{ SDIO_DEVICE(0x024c, 0xB723),.driver_data = RTL8723B},
 #endif
-#ifdef CONFIG_RTL8188E
-	{ SDIO_DEVICE(0x024c, 0x8179),.driver_data = RTL8188E},
-#endif //CONFIG_RTL8188E
-#ifdef CONFIG_RTL8821A
-	{ SDIO_DEVICE(0x024c, 0x8821),.driver_data = RTL8821},
-#endif //CONFIG_RTL8188E
 
 #if defined(RTW_ENABLE_WIFI_CONTROL_FUNC) /* temporarily add this to accept all sdio wlan id */
 	{ SDIO_DEVICE_CLASS(SDIO_CLASS_WLAN) },
@@ -325,30 +316,9 @@ static void rtw_decide_chip_type_by_device_id(PADAPTER padapter, const struct sd
 {
 	padapter->chip_type = pdid->driver_data;
 
-#if defined(CONFIG_RTL8723A)
-	if( padapter->chip_type == RTL8723A){
-		padapter->HardwareType = HARDWARE_TYPE_RTL8723AS;
-		DBG_871X("CHIP TYPE: RTL8723A\n");
-	}
-#endif
-
-#if defined(CONFIG_RTL8188E)
-	if(padapter->chip_type == RTL8188E){
-		padapter->HardwareType = HARDWARE_TYPE_RTL8188ES;
-		DBG_871X("CHIP TYPE: RTL8188E\n");
-	}
-#endif
-
 #if defined(CONFIG_RTL8723B)
 	padapter->chip_type = RTL8723B;
 	padapter->HardwareType = HARDWARE_TYPE_RTL8723BS;
-#endif
-
-#if defined(CONFIG_RTL8821A)
-	if (padapter->chip_type == RTL8821) {
-		padapter->HardwareType = HARDWARE_TYPE_RTL8821S;
-		DBG_871X("CHIP TYPE: RTL8821A\n");
-	}
 #endif
 }
 
@@ -356,25 +326,10 @@ void rtw_set_hal_ops(PADAPTER padapter)
 {
 	//alloc memory for HAL DATA
 	rtw_hal_data_init(padapter);
-	
-#if defined(CONFIG_RTL8723A)
-	if( padapter->chip_type == RTL8723A){
-		rtl8723as_set_hal_ops(padapter);
-	}
-#endif
-#if defined(CONFIG_RTL8188E)
-	if(padapter->chip_type == RTL8188E){
-		rtl8188es_set_hal_ops(padapter);
-	}
-#endif
+
 #if defined(CONFIG_RTL8723B)
 	if(padapter->chip_type == RTL8723B){
 		rtl8723bs_set_hal_ops(padapter);
-	}
-#endif
-#if defined(CONFIG_RTL8821A)
-	if(padapter->chip_type == RTL8821){
-		rtl8821as_set_hal_ops(padapter);
 	}
 #endif
 }

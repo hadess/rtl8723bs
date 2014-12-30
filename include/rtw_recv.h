@@ -252,11 +252,7 @@ struct rx_pkt_attrib	{
 
 #define RECVBUFF_ALIGN_SZ 8
 
-#if defined (CONFIG_RTL8192E)
-	#define RXDESC_SIZE	24
-#else
 #define RXDESC_SIZE	24
-#endif
 #define RXDESC_OFFSET RXDESC_SIZE
 
 struct recv_stat

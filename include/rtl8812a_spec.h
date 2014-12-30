@@ -235,8 +235,3 @@
 #define	AcmHw_BeqStatus_8812			BIT(7)
 
 #endif //__RTL8188E_SPEC_H__
-
-#ifdef CONFIG_RTL8821A
-#include "rtl8821a_spec.h"
-#endif // CONFIG_RTL8821A
-

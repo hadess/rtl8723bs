@@ -1093,25 +1093,6 @@ _func_enter_;
 
 	RT_TRACE(_module_rtl871x_mlme_c_,_drv_info_,("rtw_survey_event_callback, ssid=%s\n",  pnetwork->Ssid.Ssid));
 
-#ifdef CONFIG_RTL8712
-        //endian_convert
- 	pnetwork->Length = le32_to_cpu(pnetwork->Length);
-  	pnetwork->Ssid.SsidLength = le32_to_cpu(pnetwork->Ssid.SsidLength);	
-	pnetwork->Privacy =le32_to_cpu( pnetwork->Privacy);
-	pnetwork->Rssi = le32_to_cpu(pnetwork->Rssi);
-	pnetwork->NetworkTypeInUse =le32_to_cpu(pnetwork->NetworkTypeInUse);	
-	pnetwork->Configuration.ATIMWindow = le32_to_cpu(pnetwork->Configuration.ATIMWindow);
-	pnetwork->Configuration.BeaconPeriod = le32_to_cpu(pnetwork->Configuration.BeaconPeriod);
-	pnetwork->Configuration.DSConfig =le32_to_cpu(pnetwork->Configuration.DSConfig);
-	pnetwork->Configuration.FHConfig.DwellTime=le32_to_cpu(pnetwork->Configuration.FHConfig.DwellTime);
-	pnetwork->Configuration.FHConfig.HopPattern=le32_to_cpu(pnetwork->Configuration.FHConfig.HopPattern);
-	pnetwork->Configuration.FHConfig.HopSet=le32_to_cpu(pnetwork->Configuration.FHConfig.HopSet);
-	pnetwork->Configuration.FHConfig.Length=le32_to_cpu(pnetwork->Configuration.FHConfig.Length);	
-	pnetwork->Configuration.Length = le32_to_cpu(pnetwork->Configuration.Length);
-	pnetwork->InfrastructureMode = le32_to_cpu(pnetwork->InfrastructureMode);
-	pnetwork->IELength = le32_to_cpu(pnetwork->IELength);
-#endif	
-
 	len = get_WLAN_BSSID_EX_sz(pnetwork);
 	if(len > (sizeof(WLAN_BSSID_EX)))
 	{
@@ -1883,27 +1864,6 @@ void rtw_joinbss_event_prehandle(_adapter *adapter, u8 *pbuf)
 
 _func_enter_;	
 
-#ifdef CONFIG_RTL8712
-       //endian_convert
-	pnetwork->join_res = le32_to_cpu(pnetwork->join_res);
-	pnetwork->network_type = le32_to_cpu(pnetwork->network_type);
-	pnetwork->network.Length = le32_to_cpu(pnetwork->network.Length);
-	pnetwork->network.Ssid.SsidLength = le32_to_cpu(pnetwork->network.Ssid.SsidLength);
-	pnetwork->network.Privacy =le32_to_cpu( pnetwork->network.Privacy);
-	pnetwork->network.Rssi = le32_to_cpu(pnetwork->network.Rssi);
-	pnetwork->network.NetworkTypeInUse =le32_to_cpu(pnetwork->network.NetworkTypeInUse) ;	
-	pnetwork->network.Configuration.ATIMWindow = le32_to_cpu(pnetwork->network.Configuration.ATIMWindow);
-	pnetwork->network.Configuration.BeaconPeriod = le32_to_cpu(pnetwork->network.Configuration.BeaconPeriod);
-	pnetwork->network.Configuration.DSConfig = le32_to_cpu(pnetwork->network.Configuration.DSConfig);
-	pnetwork->network.Configuration.FHConfig.DwellTime=le32_to_cpu(pnetwork->network.Configuration.FHConfig.DwellTime);
-	pnetwork->network.Configuration.FHConfig.HopPattern=le32_to_cpu(pnetwork->network.Configuration.FHConfig.HopPattern);
-	pnetwork->network.Configuration.FHConfig.HopSet=le32_to_cpu(pnetwork->network.Configuration.FHConfig.HopSet);
-	pnetwork->network.Configuration.FHConfig.Length=le32_to_cpu(pnetwork->network.Configuration.FHConfig.Length);	
-	pnetwork->network.Configuration.Length = le32_to_cpu(pnetwork->network.Configuration.Length);
-	pnetwork->network.InfrastructureMode = le32_to_cpu(pnetwork->network.InfrastructureMode);
-	pnetwork->network.IELength = le32_to_cpu(pnetwork->network.IELength );
-#endif
-
 	RT_TRACE(_module_rtl871x_mlme_c_,_drv_info_,("joinbss event call back received with res=%d\n", pnetwork->join_res));
 
 	rtw_get_encrypt_decrypt_from_registrypriv(adapter);
@@ -2300,12 +2260,7 @@ _func_enter_;
 
 
 	mlmeext_sta_add_event_callback(adapter, psta);
-	
-#ifdef CONFIG_RTL8711
-	//submit SetStaKey_cmd to tell fw, fw will allocate an CAM entry for this sta	
-	rtw_setstakey_cmd(adapter, psta, false, true);
-#endif
-		
+
 exit:
 	
 _func_exit_;	
@@ -3853,11 +3808,7 @@ unsigned int rtw_restructure_ht_ie(_adapter *padapter, u8 *in_ie, u8 *out_ie, ui
 	*/
 
 	/*
-	#if defined(CONFIG_RTL8188E )&& defined (CONFIG_SDIO_HCI)
-	ht_capie.ampdu_params_info = 2;
-	#else
 	ht_capie.ampdu_params_info = (IEEE80211_HT_CAP_AMPDU_FACTOR&0x03);
-	#endif
 	*/
 
 	if(padapter->driver_rx_ampdu_factor != 0xFF)

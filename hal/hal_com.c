@@ -657,47 +657,6 @@ s32 c2h_evt_read(_adapter *adapter, u8 *buf)
 	if (buf == NULL)
 		goto exit;
 
-#if defined(CONFIG_RTL8192C) || defined(CONFIG_RTL8192D) || defined(CONFIG_RTL8723A) || defined (CONFIG_RTL8188E)
-
-	trigger = rtw_read8(adapter, REG_C2HEVT_CLEAR);
-
-	if (trigger == C2H_EVT_HOST_CLOSE) {
-		goto exit; /* Not ready */
-	} else if (trigger != C2H_EVT_FW_CLOSE) {
-		goto clear_evt; /* Not a valid value */
-	}
-
-	c2h_evt = (struct c2h_evt_hdr *)buf;
-
-	_rtw_memset(c2h_evt, 0, 16);
-
-	*buf = rtw_read8(adapter, REG_C2HEVT_MSG_NORMAL);
-	*(buf+1) = rtw_read8(adapter, REG_C2HEVT_MSG_NORMAL + 1);	
-
-	RT_PRINT_DATA(_module_hal_init_c_, _drv_info_, "c2h_evt_read(): ",
-		&c2h_evt , sizeof(c2h_evt));
-
-	if (0) {
-		DBG_871X("%s id:%u, len:%u, seq:%u, trigger:0x%02x\n", __func__
-			, c2h_evt->id, c2h_evt->plen, c2h_evt->seq, trigger);
-	}
-
-	/* Read the content */
-	for (i = 0; i < c2h_evt->plen; i++)
-		c2h_evt->payload[i] = rtw_read8(adapter, REG_C2HEVT_MSG_NORMAL + sizeof(*c2h_evt) + i);
-
-	RT_PRINT_DATA(_module_hal_init_c_, _drv_info_, "c2h_evt_read(): Command Content:\n",
-		c2h_evt->payload, c2h_evt->plen);
-
-	ret = _SUCCESS;
-
-clear_evt:
-	/* 
-	* Clear event to notify FW we have read the command.
-	* If this field isn't clear, the FW won't update the next command message.
-	*/
-	c2h_evt_clear(adapter);
-#endif
 exit:
 	return ret;
 }
@@ -717,7 +676,7 @@ s32 c2h_evt_read_88xx(_adapter *adapter, u8 *buf)
 	if (buf == NULL)
 		goto exit;
 
-#if defined(CONFIG_RTL8812A) || defined(CONFIG_RTL8821A) || defined(CONFIG_RTL8192E) || defined(CONFIG_RTL8723B)
+#if defined(CONFIG_RTL8723B)
 
 	trigger = rtw_read8(adapter, REG_C2HEVT_CLEAR);
 
@@ -959,7 +918,7 @@ void hw_var_port_switch(_adapter *adapter)
 
 	/* write bcn ctl */
 #ifdef CONFIG_BT_COEXIST
-#if defined(CONFIG_RTL8723A) || defined(CONFIG_RTL8723B)
+#if defined(CONFIG_RTL8723B)
 	// always enable port0 beacon function for PSTDMA
 	bcn_ctrl_1 |= EN_BCN_FUNCTION;
 	// always disable port1 beacon function for PSTDMA
@@ -2082,37 +2041,7 @@ void rtw_bb_rf_gain_offset(_adapter *padapter)
 	pu4Byte    Array	   = Array_kfreemap;
 	u4Byte v1=0,v2=0,target=0; 
 	//DBG_871X("+%s value: 0x%02x+\n", __func__, value);
-#if defined(CONFIG_RTL8723A)
-	if (value & BIT0) {
-		DBG_871X("Offset RF Gain.\n");
-		DBG_871X("Offset RF Gain.  padapter->eeprompriv.EEPROMRFGainVal=0x%x\n",padapter->eeprompriv.EEPROMRFGainVal);
-		if(padapter->eeprompriv.EEPROMRFGainVal != 0xff){
-			res = rtw_hal_read_rfreg(padapter, RF_PATH_A, 0xd, 0xffffffff);
-			DBG_871X("Offset RF Gain. reg 0xd=0x%x\n",res);
-			res &= 0xfff87fff;
-
-			res |= (padapter->eeprompriv.EEPROMRFGainVal & 0x0f)<< 15;
-			DBG_871X("Offset RF Gain.	 reg 0xd=0x%x\n",res);
-
-			rtw_hal_write_rfreg(padapter, RF_PATH_A, REG_RF_BB_GAIN_OFFSET_CCK, RF_GAIN_OFFSET_MASK, res);
-
-			res = rtw_hal_read_rfreg(padapter, RF_PATH_A, 0xe, 0xffffffff);
-			DBG_871X("Offset RF Gain. reg 0xe=0x%x\n",res);
-			res &= 0xfffffff0;
-
-			res |= (padapter->eeprompriv.EEPROMRFGainVal & 0x0f);
-			DBG_871X("Offset RF Gain.	 reg 0xe=0x%x\n",res);
-
-			rtw_hal_write_rfreg(padapter, RF_PATH_A, REG_RF_BB_GAIN_OFFSET_OFDM, RF_GAIN_OFFSET_MASK, res);
-		}
-		else
-		{
-			DBG_871X("Offset RF Gain.  padapter->eeprompriv.EEPROMRFGainVal=0x%x	!= 0xff, didn't run Kfree\n",padapter->eeprompriv.EEPROMRFGainVal);
-		}
-	} else {
-		DBG_871X("Using the default RF gain.\n");
-	}
-#elif defined(CONFIG_RTL8723B)
+#if defined(CONFIG_RTL8723B)
 	if (value & BIT4) {
 		DBG_871X("Offset RF Gain.\n");
 		DBG_871X("Offset RF Gain.  padapter->eeprompriv.EEPROMRFGainVal=0x%x\n",padapter->eeprompriv.EEPROMRFGainVal);
@@ -2144,43 +2073,6 @@ void rtw_bb_rf_gain_offset(_adapter *padapter)
 		{
 			DBG_871X("Offset RF Gain.  padapter->eeprompriv.EEPROMRFGainVal=0x%x	!= 0xff, didn't run Kfree\n",padapter->eeprompriv.EEPROMRFGainVal);
 		}
-	} else {
-		DBG_871X("Using the default RF gain.\n");
-	}
-
-#elif defined(CONFIG_RTL8188E)
-	if (value & BIT4) {
-		DBG_871X("8188ES Offset RF Gain.\n");
-		DBG_871X("8188ES Offset RF Gain. EEPROMRFGainVal=0x%x\n",
-				padapter->eeprompriv.EEPROMRFGainVal);
-
-		if (padapter->eeprompriv.EEPROMRFGainVal != 0xff) {
-			res = rtw_hal_read_rfreg(padapter, RF_PATH_A,
-					REG_RF_BB_GAIN_OFFSET, 0xffffffff);
-
-			DBG_871X("Offset RF Gain. reg 0x55=0x%x\n",res);
-			res &= 0xfff87fff;
-
-			res |= (padapter->eeprompriv.EEPROMRFGainVal & 0x0f) << 15;
-			DBG_871X("Offset RF Gain. res=0x%x\n",res);
-
-			rtw_hal_write_rfreg(padapter, RF_PATH_A,
-					REG_RF_BB_GAIN_OFFSET,
-					RF_GAIN_OFFSET_MASK, res);
-		} else {
-			DBG_871X("Offset RF Gain. EEPROMRFGainVal=0x%x == 0xff, didn't run Kfree\n",
-					padapter->eeprompriv.EEPROMRFGainVal);
-		}
-	} else {
-		DBG_871X("Using the default RF gain.\n");
-	}
-#else
-	if (!(value & 0x01)) {
-		//DBG_871X("Offset RF Gain.\n");
-		res = rtw_hal_read_rfreg(padapter, RF_PATH_A, REG_RF_BB_GAIN_OFFSET, 0xffffffff);
-		value &= tmp;
-		res = value << 14;
-		rtw_hal_write_rfreg(padapter, RF_PATH_A, REG_RF_BB_GAIN_OFFSET, RF_GAIN_OFFSET_MASK, res);
 	} else {
 		DBG_871X("Using the default RF gain.\n");
 	}

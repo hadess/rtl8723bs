@@ -23,8 +23,6 @@
 
 #define C2H_MEM_SZ (16*1024)
 
-#ifndef CONFIG_RTL8711FW
-
 	#define FREE_CMDOBJ_SZ	128
 	
 	#define MAX_CMDSZ	1024
@@ -183,10 +181,6 @@ extern u32 rtw_init_evt_priv (struct evt_priv *pevtpriv);
 extern void rtw_free_evt_priv (struct evt_priv *pevtpriv);
 extern void rtw_cmd_clr_isr(struct cmd_priv *pcmdpriv);
 extern void rtw_evt_notify_isr(struct evt_priv *pevtpriv);
-
-#else
-	//#include <ieee80211.h>
-#endif	/* CONFIG_RTL8711FW */
 
 enum rtw_drvextra_cmd_id
 {	

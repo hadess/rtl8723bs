@@ -21,19 +21,11 @@ EXTRA_CFLAGS += -I$(src)/include -I$(src)/hal
 EXTRA_LDFLAGS += --strip-debug
 
 ########################## WIFI IC ############################
-CONFIG_RTL8192C = n
-CONFIG_RTL8192D = n
-CONFIG_RTL8723A = n
-CONFIG_RTL8188E = n
-CONFIG_RTL8812A = n
-CONFIG_RTL8821A = n
-CONFIG_RTL8192E = n
 CONFIG_RTL8723B = y
 ########################## Features ###########################
 CONFIG_POWER_SAVING = y
 CONFIG_HW_PWRP_DETECTION = n
 CONFIG_BT_COEXIST = y
-CONFIG_RTL8192CU_REDEFINE_1X1 = n
 CONFIG_INTEL_WIDI = n
 CONFIG_WAPI_SUPPORT = n
 CONFIG_EFUSE_CONFIG_FILE = n
@@ -114,61 +106,6 @@ _OUTSRC_FILES += hal/HalBtc8188c2Ant.o \
 				hal/HalBtc8821a1Ant.o \
 				hal/HalBtc8821a2Ant.o
 endif
-		
-########### HAL_RTL8192C #################################										
-
-ifeq ($(CONFIG_RTL8192C), y)
-RTL871X = rtl8192c
-EXTRA_CFLAGS += -DCONFIG_RTL8192C
-
-_HAL_INTFS_FILES += \
-	hal/$(RTL871X)_xmit.o
-
-_HAL_INTFS_FILES +=	hal/$(RTL871X)_hal_init.o \
-			hal/$(RTL871X)_phycfg.o \
-			hal/$(RTL871X)_rf6052.o \
-			hal/$(RTL871X)_dm.o \
-			hal/$(RTL871X)_rxdesc.o \
-			hal/$(RTL871X)_cmd.o \
-			hal/sdio_halinit.o \
-			hal/rtl$(MODULE_NAME)_led.o \
-			hal/rtl$(MODULE_NAME)_xmit.o \
-			hal/rtl$(MODULE_NAME)_recv.o	
-
-_HAL_INTFS_FILES += hal/sdio_ops_linux.o
-
-
-_OUTSRC_FILES += hal/odm_RTL8192C.o\
-								hal/HalDMOutSrc8192C_CE.o
-
-endif
-
-########### HAL_RTL8192D #################################
-ifeq ($(CONFIG_RTL8192D), y)
-RTL871X = rtl8192d
-EXTRA_CFLAGS += -DCONFIG_RTL8192D
-
-_HAL_INTFS_FILES += \
-	hal/$(RTL871X)_xmit.o
-
-_HAL_INTFS_FILES +=	hal/$(RTL871X)_hal_init.o \
-			hal/$(RTL871X)_phycfg.o \
-			hal/$(RTL871X)_rf6052.o \
-			hal/$(RTL871X)_dm.o \
-			hal/$(RTL871X)_rxdesc.o \
-			hal/$(RTL871X)_cmd.o \
-			hal/sdio_halinit.o \
-			hal/rtl$(MODULE_NAME)_led.o \
-			hal/rtl$(MODULE_NAME)_xmit.o \
-			hal/rtl$(MODULE_NAME)_recv.o
-
-_HAL_INTFS_FILES += hal/sdio_ops_linux.o
-
-_OUTSRC_FILES += hal/odm_RTL8192D.o\
-								hal/HalDMOutSrc8192D_CE.o
-
-								
-endif
 
 ########### HAL_RTL8723B #################################
 ifeq ($(CONFIG_RTL8723B), y)
@@ -220,10 +157,6 @@ endif
 
 ifeq ($(CONFIG_BT_COEXIST), y)
 EXTRA_CFLAGS += -DCONFIG_BT_COEXIST
-endif
-
-ifeq ($(CONFIG_RTL8192CU_REDEFINE_1X1), y)
-EXTRA_CFLAGS += -DRTL8192C_RECONFIG_TO_1T1R
 endif
 
 ifeq ($(CONFIG_INTEL_WIDI), y)
