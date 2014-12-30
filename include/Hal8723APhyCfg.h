@@ -26,7 +26,7 @@ int	PHY_BBConfig8723A(	IN	PADAPTER	Adapter	);
 int	PHY_RFConfig8723A(	IN	PADAPTER	Adapter	);
 s32 PHY_MACConfig8723A(PADAPTER padapter);
 
-VOID
+void
 PHY_SetSwChnlBWMode8723A(
 	IN	PADAPTER			Adapter,
 	IN	u8					channel,

@@ -27,7 +27,6 @@
 	#include <linux/types.h>
 	#define IN
 	#define OUT
-	#define VOID void
 
 	typedef	signed int sint;
 

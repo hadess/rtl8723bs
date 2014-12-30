@@ -22,7 +22,7 @@
 #include <rtl8723b_hal.h>
 #include "hal_com_h2c.h"
 
-static VOID
+static void
 _FWDownloadEnable(
 	IN	PADAPTER		padapter,
 	IN	bool			enable
@@ -156,7 +156,7 @@ _PageWrite(
 	return _BlockWrite(padapter,buffer,size);
 }
 
-static VOID
+static void
 _FillDummy(
 	u8*		pFwBuf,
 	u32*	pFwLen
@@ -616,7 +616,7 @@ void rtl8723b_InitializeFirmwareVars(PADAPTER padapter)
 //
 // 2011.04.12 by tynli.
 //
-VOID
+void
 SetFwRelatedForWoWLAN8723b(
 		IN		PADAPTER			padapter,
 		IN		u8					bHostIsGoingtoSleep
@@ -1118,7 +1118,7 @@ if(1)
 		rtw_mfree(efuseTbl, EFUSE_MAX_MAP_LEN);
 }
 
-static VOID
+static void
 hal_ReadEFuse_BT(
 	PADAPTER	padapter,
 	u16			_offset,
@@ -3588,7 +3588,7 @@ Hal_EfuseParseTxPowerInfo_8723B(
 	RT_TRACE(_module_hci_hal_init_c_, _drv_notice_, ("EEPROMRegulatory = 0x%x\n", pHalData->EEPROMRegulatory));
 }
 
-VOID
+void
 Hal_EfuseParseBTCoexistInfo_8723B(
 	IN PADAPTER			padapter,
 	IN u8*			hwinfo,
@@ -3666,7 +3666,7 @@ Hal_EfuseParseBTCoexistInfo_8723B(
 		pHalData->EEPROMBluetoothAntNum==Ant_x2?2:1);
 }
 
-VOID
+void
 Hal_EfuseParseEEPROMVer_8723B(
 	IN	PADAPTER		padapter,
 	IN	u8*			hwinfo,
@@ -3686,7 +3686,7 @@ Hal_EfuseParseEEPROMVer_8723B(
 
 
 
-VOID
+void
 Hal_EfuseParsePackageType_8723B(
 	IN	PADAPTER		pAdapter,
 	IN	u8*				hwinfo,
@@ -3727,7 +3727,7 @@ Hal_EfuseParsePackageType_8723B(
 }
 
 
-VOID
+void
 Hal_EfuseParseVoltage_8723B(
 	IN	PADAPTER		pAdapter,
 	IN	u8* 			hwinfo,
@@ -3743,7 +3743,7 @@ Hal_EfuseParseVoltage_8723B(
 	DBG_871X("%s pEEPROM->adjuseVoltageVal =%x \n",__func__,pEEPROM->adjuseVoltageVal);
 }
 
-VOID
+void
 Hal_EfuseParseChnlPlan_8723B(
 	IN	PADAPTER		padapter,
 	IN	u8*			hwinfo,
@@ -3763,7 +3763,7 @@ Hal_EfuseParseChnlPlan_8723B(
 	RT_TRACE(_module_hci_hal_init_c_, _drv_notice_, ("EEPROM ChannelPlan=0x%02x\n", padapter->mlmepriv.ChannelPlan));
 }
 
-VOID
+void
 Hal_EfuseParseCustomerID_8723B(
 	IN	PADAPTER		padapter,
 	IN	u8*			hwinfo,
@@ -3784,7 +3784,7 @@ Hal_EfuseParseCustomerID_8723B(
 	RT_TRACE(_module_hci_hal_init_c_, _drv_notice_, ("EEPROM Customer ID: 0x%2x\n", pHalData->EEPROMCustomerID));
 }
 
-VOID
+void
 Hal_EfuseParseAntennaDiversity_8723B(
 	IN	PADAPTER		pAdapter,
 	IN	u8				* hwinfo,
@@ -3828,7 +3828,7 @@ Hal_EfuseParseAntennaDiversity_8723B(
 #endif
 }
 
-VOID
+void
 Hal_EfuseParseXtal_8723B(
 	IN	PADAPTER		pAdapter,
 	IN	u8			* hwinfo,

@@ -188,99 +188,99 @@ typedef enum tag_DIG_Connect_Definition
 #define 		DM_DIG_FA_TH2_LPS				30 //-> 30 lps
 #define 		RSSI_OFFSET_DIG				0x05
 
-VOID
+void
 ODM_ChangeDynamicInitGainThresh(
 	IN		void *					pDM_VOID,
 	IN		u4Byte  					DM_Type,
 	IN		u4Byte 					DM_Value
 	);
 
-VOID
+void
 odm_NHMCounterStatisticsInit(
 	IN		void *					pDM_VOID
 	);
 
-VOID
+void
 odm_NHMCounterStatistics(
 	IN		void *					pDM_VOID
 	);
 
-VOID
+void
 odm_NHMBBInit(
 	IN		void *					pDM_VOID
 );
 
-VOID
+void
 odm_NHMBB(
 	IN		void *					pDM_VOID
 );
 
-VOID
+void
 odm_NHMCounterStatisticsReset(
 	IN		void *			pDM_VOID
 );
 
-VOID
+void
 odm_GetNHMCounterStatistics(
 	IN		void *			pDM_VOID
 );
 
-VOID
+void
 odm_SearchPwdBLowerBound(
 	IN		void *					pDM_VOID,
 	IN		u1Byte					IGI_target
 );
 
-VOID 
+void
 odm_AdaptivityInit(
 	IN		void *					pDM_VOID
 	);
 
-VOID
+void
 odm_Adaptivity(
 	IN		void *					pDM_VOID,
 	IN		u1Byte					IGI
 	);
 
-VOID
+void
 ODM_Write_DIG(
 	IN		void *					pDM_VOID, 	
 	IN		u1Byte					CurrentIGI
 	);
 
-VOID
+void
 odm_PauseDIG(
 	IN		void *					pDM_VOID,
 	IN		ODM_Pause_DIG_TYPE		PauseType,
 	IN		u1Byte					IGIValue
 	);
 
-VOID
+void
 odm_DIGInit(
 	IN		void *					pDM_VOID
 	);
 
-VOID	
+void
 odm_DIG(
 	IN		void *					pDM_VOID
 	);
 
-VOID
+void
 odm_DIGbyRSSI_LPS(
 	IN		void *					pDM_VOID
 	);
 
-VOID
+void
 odm_DigForBtHsMode(
 	IN		void *					pDM_VOID
 	);
 
-VOID 
+void
 odm_FalseAlarmCounterStatistics(
 	IN		void *					pDM_VOID
 	);
 
-VOID
+void
 odm_FAThresholdCheck(
 	IN		void *					pDM_VOID,
 	IN		bool					bDFSBand,
@@ -297,7 +297,7 @@ odm_ForbiddenIGICheck(
 	IN		u1Byte					CurrentIGI
 	);
 
-VOID
+void
 odm_InbandNoiseCalculate (	
 	IN		void *					pDM_VOID
 	);
@@ -307,19 +307,19 @@ odm_DigAbort(
 	IN		void *					pDM_VOID
 	);
 
-VOID
+void
 odm_PauseCCKPacketDetection(
 	IN		void *					pDM_VOID,
 	IN		ODM_Pause_CCKPD_TYPE	PauseType,
 	IN		u1Byte					CCKPDThreshold
 	);
 
-VOID 
+void
 odm_CCKPacketDetectionThresh(
 	IN		void *					pDM_VOID
 	);
 
-VOID 
+void
 ODM_Write_CCK_CCA_Thres(
 	IN		void *					pDM_VOID, 
 	IN		u1Byte					CurCCK_CCAThres

@@ -43,17 +43,17 @@ void ODM_RF_Saving(
 	IN	u1Byte		bForceInNormal 
 	);
 
-VOID 
+void
 odm_DynamicBBPowerSavingInit(
 	IN		void *					pDM_VOID
 	);
 
-VOID 
+void
 odm_DynamicBBPowerSaving(
 	IN		void *					pDM_VOID
 	);
 
-VOID
+void
 odm_1R_CCA(
 	IN		void *					pDM_VOID
 	);

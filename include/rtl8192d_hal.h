@@ -223,14 +223,14 @@ enum c2h_id_8192d {
 };
 
 int FirmwareDownload92D(IN PADAPTER Adapter);
-VOID rtl8192d_FirmwareSelfReset(IN PADAPTER Adapter);
+void rtl8192d_FirmwareSelfReset(IN PADAPTER Adapter);
 void rtl8192d_ReadChipVersion(IN PADAPTER Adapter);
-VOID rtl8192d_EfuseParseChnlPlan(PADAPTER Adapter, u8 *hwinfo, bool AutoLoadFail);
-VOID rtl8192d_ReadTxPowerInfo(PADAPTER Adapter, u8* PROMContent, bool AutoLoadFail);
-VOID rtl8192d_ResetDualMacSwitchVariables(IN PADAPTER Adapter);
+void rtl8192d_EfuseParseChnlPlan(PADAPTER Adapter, u8 *hwinfo, bool AutoLoadFail);
+void rtl8192d_ReadTxPowerInfo(PADAPTER Adapter, u8* PROMContent, bool AutoLoadFail);
+void rtl8192d_ResetDualMacSwitchVariables(IN PADAPTER Adapter);
 u8 GetEEPROMSize8192D(PADAPTER Adapter);
 bool PHY_CheckPowerOffFor8192D(PADAPTER Adapter);
-VOID PHY_SetPowerOnFor8192D(PADAPTER Adapter);
+void PHY_SetPowerOnFor8192D(PADAPTER Adapter);
 //void PHY_ConfigMacPhyMode92D(PADAPTER Adapter);
 void rtl8192d_free_hal_data(_adapter * padapter);
 void rtl8192d_set_hal_ops(struct hal_ops *pHalFunc);

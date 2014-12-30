@@ -107,7 +107,7 @@ PHY_GetRateSectionIndexOfTxPowerByRate(
 	IN	u32			BitMask
 	);
 
-VOID
+void
 PHY_GetRateValuesOfTxPowerByRate(
 	IN	PADAPTER	pAdapter,
 	IN	u32			RegAddr,
@@ -123,7 +123,7 @@ PHY_GetRateIndexOfTxPowerByRate(
 	IN	u8	Rate
 	);
 
-VOID 
+void 
 PHY_SetTxPowerIndexByRateSection(
 	IN	PADAPTER		pAdapter,
 	IN	u8				RFPath,	
@@ -140,7 +140,7 @@ PHY_GetTxPowerByRate(
 	IN	u8			RateIndex
 	);
 
-VOID
+void
 PHY_SetTxPowerByRate( 
 	IN	PADAPTER	pAdapter, 
 	IN	u8			Band, 
@@ -150,14 +150,14 @@ PHY_SetTxPowerByRate(
 	IN	s8			Value
 	);
 
-VOID
+void
 PHY_SetTxPowerLevelByPath(
 	IN	PADAPTER	Adapter,
 	IN	u8			channel,
 	IN	u8			path
 	);
 
-VOID 
+void 
 PHY_SetTxPowerIndexByRateArray(
 	IN	PADAPTER		pAdapter,
 	IN	u8				RFPath,
@@ -167,12 +167,12 @@ PHY_SetTxPowerIndexByRateArray(
 	IN	u8				RateArraySize
 	);
 
-VOID
+void
 PHY_InitTxPowerByRate(
 	IN	PADAPTER	pAdapter
 	);
 
-VOID
+void
 PHY_StoreTxPowerByRate(
 	IN	PADAPTER	pAdapter,
 	IN	u32			Band,
@@ -183,7 +183,7 @@ PHY_StoreTxPowerByRate(
 	IN	u32			Data
 	);
 
-VOID
+void
 PHY_TxPowerByRateConfiguration(
 	IN  PADAPTER			pAdapter
 	);
@@ -209,7 +209,7 @@ PHY_GetTxPowerLimit(
 	IN	u8				Channel
 	);
 
-VOID
+void
 PHY_SetTxPowerLimit(
 	IN	PADAPTER			Adapter,
 	IN	u8					*Regulation,
@@ -221,12 +221,12 @@ PHY_SetTxPowerLimit(
 	IN	u8					*PowerLimit
 	);
 
-VOID 
+void 
 PHY_ConvertTxPowerLimitToPowerIndex(
 	IN	PADAPTER			Adapter
 	);
 
-VOID
+void
 PHY_InitTxPowerLimit(
 	IN	PADAPTER			Adapter
 	);
@@ -247,7 +247,7 @@ PHY_GetTxPowerIndex(
 	IN	u8					Channel
 	);
 
-VOID
+void
 PHY_SetTxPowerIndex(
 	IN	PADAPTER		pAdapter,
 	IN	u32				PowerIndex,
@@ -255,7 +255,7 @@ PHY_SetTxPowerIndex(
 	IN	u8				Rate
 	);
 
-VOID
+void
 Hal_ChannelPlanToRegulation(
 	IN	PADAPTER		Adapter,
 	IN	u16				ChannelPlan

@@ -86,64 +86,64 @@ typedef struct _COEX_STA_8188C_2ANT{
 //===========================================
 // The following is interface which will notify coex module.
 //===========================================
-VOID
+void
 EXhalbtc8188c2ant_PowerOnSetting(
 	IN	PBTC_COEXIST		pBtCoexist
 	);
-VOID
+void
 EXhalbtc8188c2ant_InitHwConfig(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	bool				bWifiOnly
 	);
-VOID
+void
 EXhalbtc8188c2ant_InitCoexDm(
 	IN	PBTC_COEXIST		pBtCoexist
 	);
-VOID
+void
 EXhalbtc8188c2ant_IpsNotify(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	u1Byte			type
 	);
-VOID
+void
 EXhalbtc8188c2ant_LpsNotify(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	u1Byte			type
 	);
-VOID
+void
 EXhalbtc8188c2ant_ScanNotify(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	u1Byte			type
 	);
-VOID
+void
 EXhalbtc8188c2ant_ConnectNotify(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	u1Byte			type
 	);
-VOID
+void
 EXhalbtc8188c2ant_MediaStatusNotify(
 	IN	PBTC_COEXIST			pBtCoexist,
 	IN	u1Byte				type
 	);
-VOID
+void
 EXhalbtc8188c2ant_SpecialPacketNotify(
 	IN	PBTC_COEXIST			pBtCoexist,
 	IN	u1Byte				type
 	);
-VOID
+void
 EXhalbtc8188c2ant_HaltNotify(
 	IN	PBTC_COEXIST			pBtCoexist
 	);
-VOID
+void
 EXhalbtc8188c2ant_Periodical(
 	IN	PBTC_COEXIST			pBtCoexist
 	);
-VOID
+void
 EXhalbtc8188c2ant_BtInfoNotify(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	pu1Byte			tmpBuf,
 	IN	u1Byte			length
 	);
-VOID
+void
 EXhalbtc8188c2ant_DisplayCoexInfo(
 	IN	PBTC_COEXIST		pBtCoexist
 	);

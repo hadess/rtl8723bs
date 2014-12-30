@@ -320,31 +320,31 @@ u4Byte TxScalingTable_Jaguar[TXSCALE_TABLE_SIZE] =
 //============================================================
 
 //START------------COMMON INFO RELATED---------------//
-VOID
+void
 odm_CommonInfoSelfInit(
 	IN		PDM_ODM_T		pDM_Odm
 	);
 
-VOID
+void
 odm_CommonInfoSelfUpdate(
 	IN		PDM_ODM_T		pDM_Odm
 	);
 
-VOID
+void
 odm_CmnInfoInit_Debug(
 	IN		PDM_ODM_T		pDM_Odm
 	);
 
-VOID
+void
 odm_CmnInfoHook_Debug(
 	IN		PDM_ODM_T		pDM_Odm
 	);
 
-VOID
+void
 odm_CmnInfoUpdate_Debug(
 	IN		PDM_ODM_T		pDM_Odm
 	);
-VOID
+void
 odm_BasicDbgMessage
 (
 	IN		PDM_ODM_T		pDM_Odm
@@ -362,122 +362,122 @@ odm_BasicDbgMessage
 //Remove BB power Saving by YuChen
 //END---------BB POWER SAVE-----------------------//
 
-VOID
+void
 odm_RefreshRateAdaptiveMaskMP(
 	IN		PDM_ODM_T		pDM_Odm
 	);
 
-VOID
+void
 odm_RefreshRateAdaptiveMaskCE(
 	IN		PDM_ODM_T		pDM_Odm
 	);
 
-VOID
+void
 odm_RefreshRateAdaptiveMaskAPADSL(
 	IN		PDM_ODM_T		pDM_Odm
 	);
 
 //Remove by YuChen
 
-VOID
+void
 odm_RSSIMonitorInit(
 	IN	PDM_ODM_T	pDM_Odm
 	);
 
-VOID
+void
 odm_RSSIMonitorCheckMP(
 	IN	PDM_ODM_T	pDM_Odm
 	);
 
-VOID 
+void 
 odm_RSSIMonitorCheckCE(
 	IN		PDM_ODM_T		pDM_Odm
 	);
-VOID 
+void 
 odm_RSSIMonitorCheckAP(
 	IN		PDM_ODM_T		pDM_Odm
 	);
 
 
 
-VOID
+void
 odm_RSSIMonitorCheck(
 	IN		PDM_ODM_T		pDM_Odm
 	);
 
-VOID
+void
 odm_SwAntDetectInit(
 	IN 		PDM_ODM_T 		pDM_Odm
 	);
 
-VOID
+void
 odm_AntennaDiversityInit(
 	IN		PDM_ODM_T		pDM_Odm
 	);
 
-VOID
+void
 odm_AntennaDiversity(
 	IN		PDM_ODM_T		pDM_Odm
 	);
 
 
-VOID odm_SwAntDivChkAntSwitchCallback(void *FunctionContext);
+void odm_SwAntDivChkAntSwitchCallback(void *FunctionContext);
 
 
 
-VOID
+void
 odm_GlobalAdapterCheck(
-	IN		VOID
+	IN		void
 	);
 
-VOID
+void
 odm_RefreshBasicRateMask(
 	IN		PDM_ODM_T		pDM_Odm	
 	);
 
-VOID
+void
 odm_RefreshRateAdaptiveMask(
 	IN		PDM_ODM_T		pDM_Odm
 	);
 
-VOID
+void
 ODM_TXPowerTrackingCheck(
 	IN		PDM_ODM_T		pDM_Odm
 	);
 
-VOID
+void
 odm_TXPowerTrackingCheckAP(
 	IN		PDM_ODM_T		pDM_Odm
 	);
 
-VOID
+void
 odm_RateAdaptiveMaskInit(
 	IN	PDM_ODM_T	pDM_Odm
 	);
 
-VOID
+void
 odm_TXPowerTrackingThermalMeterInit(
 	IN	PDM_ODM_T	pDM_Odm
 	);
 
 
-VOID
+void
 odm_IQCalibrate(
 		IN	PDM_ODM_T	pDM_Odm 
 		);
 
-VOID
+void
 odm_TXPowerTrackingInit(
 	IN	PDM_ODM_T	pDM_Odm
 	);
 
-VOID
+void
 odm_TXPowerTrackingCheckMP(
 	IN	PDM_ODM_T	pDM_Odm
 	);
 
 
-VOID
+void
 odm_TXPowerTrackingCheckCE(
 	IN	PDM_ODM_T	pDM_Odm
 	);
@@ -488,7 +488,7 @@ odm_TXPowerTrackingCheckCE(
 #define 	RxDefaultAnt1		0x65a9
 #define	RxDefaultAnt2		0x569a
 
-VOID
+void
 odm_InitHybridAntDiv(
 	IN PDM_ODM_T	pDM_Odm 
 	);
@@ -503,7 +503,7 @@ odm_StaDefAntSel(
 	OUT u1Byte		*pDefAnt 
 	);
 
-VOID
+void
 odm_SetRxIdleAnt(
 	IN	PDM_ODM_T	pDM_Odm,
 	IN	u1Byte	Ant,
@@ -512,7 +512,7 @@ odm_SetRxIdleAnt(
 
 
 
-VOID
+void
 odm_HwAntDiv(
 	IN	PDM_ODM_T	pDM_Odm
 );
@@ -525,7 +525,7 @@ odm_HwAntDiv(
 //
 // 2011/09/21 MH Add to describe different team necessary resource allocate??
 //
-VOID
+void
 ODM_DMInit(
 	IN		PDM_ODM_T		pDM_Odm
 	)
@@ -574,7 +574,7 @@ ODM_DMInit(
 
 }
 
-VOID
+void
 ODM_DMReset(
 	IN		PDM_ODM_T		pDM_Odm
 	)
@@ -589,7 +589,7 @@ ODM_DMReset(
 // You can not add any dummy function here, be care, you can only use DM structure
 // to perform any new ODM_DM.
 //
-VOID
+void
 ODM_DMWatchdog(
 	IN		PDM_ODM_T		pDM_Odm
 	)
@@ -680,7 +680,7 @@ ODM_DMWatchdog(
 //
 // Init /.. Fixed HW value. Only init time.
 //
-VOID
+void
 ODM_CmnInfoInit(
 	IN		PDM_ODM_T		pDM_Odm,
 	IN		ODM_CMNINFO_E	CmnInfo,
@@ -799,7 +799,7 @@ ODM_CmnInfoInit(
 }
 
 
-VOID
+void
 ODM_CmnInfoHook(
 	IN		PDM_ODM_T		pDM_Odm,
 	IN		ODM_CMNINFO_E	CmnInfo,
@@ -934,7 +934,7 @@ ODM_CmnInfoHook(
 }
 
 
-VOID
+void
 ODM_CmnInfoPtrArrayHook(
 	IN		PDM_ODM_T		pDM_Odm,
 	IN		ODM_CMNINFO_E	CmnInfo,
@@ -965,7 +965,7 @@ ODM_CmnInfoPtrArrayHook(
 //
 // Update Band/CHannel/.. The values are dynamic but non-per-packet.
 //
-VOID
+void
 ODM_CmnInfoUpdate(
 	IN		PDM_ODM_T		pDM_Odm,
 	IN		u4Byte			CmnInfo,
@@ -1085,7 +1085,7 @@ ODM_CmnInfoUpdate(
 	
 }
 
-VOID
+void
 odm_CommonInfoSelfInit(
 	IN		PDM_ODM_T		pDM_Odm
 	)
@@ -1099,7 +1099,7 @@ odm_CommonInfoSelfInit(
 	pDM_Odm->TxRate = 0xFF;
 }
 
-VOID
+void
 odm_CommonInfoSelfUpdate(
 	IN		PDM_ODM_T		pDM_Odm
 	)
@@ -1130,7 +1130,7 @@ odm_CommonInfoSelfUpdate(
 		pDM_Odm->bOneEntryOnly = false;
 }
 
-VOID
+void
 odm_CmnInfoInit_Debug(
 	IN		PDM_ODM_T		pDM_Odm
 	)
@@ -1154,7 +1154,7 @@ odm_CmnInfoInit_Debug(
 
 }
 
-VOID
+void
 odm_CmnInfoHook_Debug(
 	IN		PDM_ODM_T		pDM_Odm
 	)
@@ -1185,7 +1185,7 @@ odm_CmnInfoHook_Debug(
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_COMMON, ODM_DBG_LOUD, ("pbPowerSaving=%d\n",*(pDM_Odm->pbPowerSaving)) );
 }
 
-VOID
+void
 odm_CmnInfoUpdate_Debug(
 	IN		PDM_ODM_T		pDM_Odm
 	)
@@ -1197,7 +1197,7 @@ odm_CmnInfoUpdate_Debug(
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_COMMON, ODM_DBG_LOUD, ("RSSI_Min=%d\n",pDM_Odm->RSSI_Min) );
 }
 
-VOID
+void
 odm_BasicDbgMessage
 (
 	IN		PDM_ODM_T		pDM_Odm
@@ -1218,7 +1218,7 @@ odm_BasicDbgMessage
 }
 
 /*
-VOID
+void
 odm_FindMinimumRSSI(
 	IN		PDM_ODM_T		pDM_Odm
 	)
@@ -1242,7 +1242,7 @@ odm_FindMinimumRSSI(
 
 }
 
-VOID
+void
 odm_IsLinked(
 	IN		PDM_ODM_T		pDM_Odm
 	)
@@ -1302,7 +1302,7 @@ odm_IsLinked(
 //3 Rate Adaptive
 //3============================================================
 
-VOID
+void
 odm_RateAdaptiveMaskInit(
 	IN 	PDM_ODM_T	pDM_Odm
 	)
@@ -1456,7 +1456,7 @@ u4Byte ODM_Get_Rate_Bitmap(
 	
 }	
 
-VOID
+void
 odm_RefreshBasicRateMask(
 	IN		PDM_ODM_T		pDM_Odm	
 	)
@@ -1479,7 +1479,7 @@ odm_RefreshBasicRateMask(
  *	05/27/2009	hpfan	Create Version 0.  
  *
  *---------------------------------------------------------------------------*/
-VOID
+void
 odm_RefreshRateAdaptiveMask(
 	IN		PDM_ODM_T		pDM_Odm
 	)
@@ -1494,7 +1494,7 @@ odm_RefreshRateAdaptiveMask(
 	odm_RefreshRateAdaptiveMaskCE(pDM_Odm);
 }
 
-VOID
+void
 odm_RefreshRateAdaptiveMaskMP(
 	IN		PDM_ODM_T		pDM_Odm	
 	)
@@ -1502,7 +1502,7 @@ odm_RefreshRateAdaptiveMaskMP(
 }
 
 
-VOID
+void
 odm_RefreshRateAdaptiveMaskCE(
 	IN		PDM_ODM_T		pDM_Odm	
 	)
@@ -1566,7 +1566,7 @@ odm_RefreshRateAdaptiveMaskCE(
 	}			
 }
 
-VOID
+void
 odm_RefreshRateAdaptiveMaskAPADSL(
 	IN		PDM_ODM_T		pDM_Odm
 	)
@@ -1644,7 +1644,7 @@ ODM_RAStateCheck(
 //3 RSSI Monitor
 //3============================================================
 
-VOID
+void
 odm_RSSIDumpToRegister(
 	IN	PDM_ODM_T	pDM_Odm
 	)
@@ -1652,7 +1652,7 @@ odm_RSSIDumpToRegister(
 }
 
 
-VOID
+void
 odm_RSSIMonitorInit(
 	IN	PDM_ODM_T	pDM_Odm
 	)
@@ -1663,7 +1663,7 @@ odm_RSSIMonitorInit(
 
 }
 
-VOID
+void
 odm_RSSIMonitorCheck(
 	IN		PDM_ODM_T		pDM_Odm
 	)
@@ -1676,7 +1676,7 @@ odm_RSSIMonitorCheck(
 }	// odm_RSSIMonitorCheck
 
 
-VOID
+void
 odm_RSSIMonitorCheckMP(
 	IN	PDM_ODM_T	pDM_Odm
 	)
@@ -1686,7 +1686,7 @@ odm_RSSIMonitorCheckMP(
 //
 //sherry move from DUSC to here 20110517
 //
-static VOID
+static void
 FindMinimumRSSI_Dmsp(
 	IN	PADAPTER	pAdapter
 )
@@ -1756,7 +1756,7 @@ IN	PADAPTER	pAdapter
 	//ODM_RT_TRACE(pDM_Odm,COMP_DIG, DBG_LOUD, ("MinUndecoratedPWDBForDM =%d\n",pHalData->MinUndecoratedPWDBForDM));
 }
 
-VOID
+void
 odm_RSSIMonitorCheckCE(
 	IN		PDM_ODM_T		pDM_Odm
 	)
@@ -1982,7 +1982,7 @@ odm_RSSIMonitorCheckCE(
 	//ODM_CmnInfoUpdate(&pHalData->odmpriv ,ODM_CMNINFO_RSSI_MIN, pdmpriv->MinUndecoratedPWDBForDM);
 }
 
-VOID
+void
 odm_RSSIMonitorCheckAP(
 	IN		PDM_ODM_T		pDM_Odm
 	)
@@ -1991,7 +1991,7 @@ odm_RSSIMonitorCheckAP(
 
 
 
-VOID
+void
 ODM_InitAllTimers(
 	IN PDM_ODM_T	pDM_Odm 
 	)
@@ -2004,7 +2004,7 @@ ODM_InitAllTimers(
 #endif
 }
 
-VOID
+void
 ODM_CancelAllTimers(
 	IN PDM_ODM_T	pDM_Odm 
 	)
@@ -2017,7 +2017,7 @@ ODM_CancelAllTimers(
 }
 
 
-VOID
+void
 ODM_ReleaseAllTimers(
 	IN PDM_ODM_T	pDM_Odm 
 	)
@@ -2034,7 +2034,7 @@ ODM_ReleaseAllTimers(
 //3 Tx Power Tracking
 //3============================================================
 
-VOID
+void
 odm_IQCalibrate(
 		IN	PDM_ODM_T	pDM_Odm 
 		)
@@ -2070,7 +2070,7 @@ odm_IQCalibrate(
 }
 
 
-VOID
+void
 odm_TXPowerTrackingInit(
 	IN	PDM_ODM_T	pDM_Odm 
 	)
@@ -2125,7 +2125,7 @@ getSwingIndex(
 	return i;
 }
 
-VOID
+void
 odm_TXPowerTrackingThermalMeterInit(
 	IN	PDM_ODM_T	pDM_Odm 
 	)
@@ -2200,7 +2200,7 @@ odm_TXPowerTrackingThermalMeterInit(
 }
 
 
-VOID
+void
 ODM_TXPowerTrackingCheck(
 	IN		PDM_ODM_T		pDM_Odm
 	)
@@ -2208,7 +2208,7 @@ ODM_TXPowerTrackingCheck(
 	odm_TXPowerTrackingCheckCE(pDM_Odm);
 }
 
-VOID
+void
 odm_TXPowerTrackingCheckCE(
 	IN		PDM_ODM_T		pDM_Odm 
 	)
@@ -2259,7 +2259,7 @@ odm_TXPowerTrackingCheckCE(
 	#endif
 }
 
-VOID
+void
 odm_TXPowerTrackingCheckMP(
 	IN		PDM_ODM_T		pDM_Odm 
 	)
@@ -2267,7 +2267,7 @@ odm_TXPowerTrackingCheckMP(
 }
 
 
-VOID
+void
 odm_TXPowerTrackingCheckAP(
 	IN		PDM_ODM_T		pDM_Odm
 	)
@@ -2277,7 +2277,7 @@ odm_TXPowerTrackingCheckAP(
 //3============================================================
 //3 SW Antenna Diversity
 //3============================================================
-VOID
+void
 odm_AntennaDiversityInit(
 	IN 		PDM_ODM_T		pDM_Odm 
 )
@@ -2300,7 +2300,7 @@ odm_AntennaDiversityInit(
 	}
 }
 
-VOID
+void
 odm_AntennaDiversity(
 	IN 		PDM_ODM_T		pDM_Odm 
 )
@@ -2419,7 +2419,7 @@ ConvertTo_dB(
 
 //Remove PathDiversity related function to odm_PathDiv.c
 
-VOID
+void
 odm_PHY_SaveAFERegisters(
 	IN	PDM_ODM_T	pDM_Odm,
 	IN	pu4Byte		AFEReg,
@@ -2435,7 +2435,7 @@ odm_PHY_SaveAFERegisters(
 	}
 }
 
-VOID
+void
 odm_PHY_ReloadAFERegisters(
 	IN	PDM_ODM_T	pDM_Odm,
 	IN	pu4Byte		AFEReg,
@@ -2459,7 +2459,7 @@ odm_PHY_ReloadAFERegisters(
 //
 // Added by Joseph, 2012.03.22
 //
-VOID
+void
 ODM_SingleDualAntennaDefaultSetting(
 	IN		PDM_ODM_T		pDM_Odm
 	)
@@ -2901,7 +2901,7 @@ ODM_SingleDualAntennaDetection(
 
 }
 
-VOID
+void
 odm_Set_RA_DM_ARFB_by_Noisy(
 	IN	PDM_ODM_T	pDM_Odm
 )
@@ -2920,7 +2920,7 @@ odm_Set_RA_DM_ARFB_by_Noisy(
 	
 }
 
-VOID
+void
 ODM_UpdateNoisyState(
 	IN	PDM_ODM_T	pDM_Odm,
 	IN 	bool 	bNoisyStateFromC2H
@@ -3014,7 +3014,7 @@ Set_RA_DM_Ratrbitmap_by_Noisy(
 
 
 
-VOID
+void
 ODM_UpdateInitRate(
 	IN	PDM_ODM_T	pDM_Odm,
 	IN	u1Byte		Rate

@@ -265,8 +265,8 @@ void Hal_EfuseParseCustomerID_8723B(PADAPTER padapter, u8 *hwinfo, bool AutoLoad
 void Hal_EfuseParseAntennaDiversity_8723B(PADAPTER padapter, u8 *hwinfo, bool AutoLoadFail);
 void Hal_EfuseParseXtal_8723B(PADAPTER pAdapter, u8 *hwinfo, bool AutoLoadFail);
 void Hal_EfuseParseThermalMeter_8723B(PADAPTER padapter, u8 *hwinfo, u8 AutoLoadFail);
-VOID Hal_EfuseParsePackageType_8723B(PADAPTER pAdapter,u8* hwinfo,bool AutoLoadFail);
-VOID Hal_EfuseParseVoltage_8723B(PADAPTER pAdapter,u8* hwinfo,bool 	AutoLoadFail); 
+void Hal_EfuseParsePackageType_8723B(PADAPTER pAdapter,u8* hwinfo,bool AutoLoadFail);
+void Hal_EfuseParseVoltage_8723B(PADAPTER pAdapter,u8* hwinfo,bool 	AutoLoadFail); 
 
 #ifdef CONFIG_C2H_PACKET_EN
 void C2HPacketHandler_8723B(PADAPTER padapter, u8 *pbuffer, u16 length);

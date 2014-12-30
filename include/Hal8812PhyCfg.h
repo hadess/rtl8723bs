@@ -109,7 +109,7 @@ u32 PHY_GetTxBBSwing_8812A(
 	IN	u8			RFPath
 	);
 
-VOID
+void
 PHY_SetTxPowerIndex_8812A(
 	IN	PADAPTER			Adapter,
 	IN	u4Byte				PowerIndex,
@@ -120,7 +120,7 @@ PHY_SetTxPowerIndex_8812A(
 //
 // Switch bandwidth for 8192S
 //
-VOID
+void
 PHY_SetBWMode8812(
 	IN	PADAPTER			pAdapter,
 	IN	CHANNEL_WIDTH		Bandwidth,
@@ -130,14 +130,14 @@ PHY_SetBWMode8812(
 //
 // channel switch related funciton
 //
-VOID
+void
 PHY_SwChnl8812(
 	IN	PADAPTER	Adapter,
 	IN	u8			channel
 );
 
 
-VOID
+void
 PHY_SetSwChnlBWMode8812(
 	IN	PADAPTER			Adapter,
 	IN	u8					channel,
@@ -150,7 +150,7 @@ PHY_SetSwChnlBWMode8812(
 // BB/MAC/RF other monitor API
 //
 
-VOID
+void
 PHY_SetRFPathSwitch_8812A(
 	IN	PADAPTER	pAdapter,
 	IN	bool		bMain

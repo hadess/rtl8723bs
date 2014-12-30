@@ -132,7 +132,7 @@ PHY_QueryBBReg_8723B(
 * Note:		This function is equal to "PutRegSetting" in PHY programming guide
 */
 
-VOID
+void
 PHY_SetBBReg_8723B(
 	IN	PADAPTER	Adapter,
 	IN	u32		RegAddr,
@@ -210,7 +210,7 @@ phy_FwRFSerialRead(
  *	01/21/2008	MHC		Create Version 0.
  *
  *---------------------------------------------------------------------------*/
-static	VOID
+static	void
 phy_FwRFSerialWrite(
 	IN	PADAPTER			Adapter,
 	IN	RF_PATH			eRFPath,
@@ -330,7 +330,7 @@ phy_RFSerialRead_8723B(
  *
  *
 */
-static	VOID
+static	void
 phy_RFSerialWrite_8723B(
 	IN	PADAPTER			Adapter,
 	IN	RF_PATH			eRFPath,
@@ -426,7 +426,7 @@ PHY_QueryRFReg_8723B(
 * Return:		None
 * Note:		This function is equal to "PutRFRegSetting" in PHY programming guide
 */
-VOID
+void
 PHY_SetRFReg_8723B(
 	IN	PADAPTER			Adapter,
 	IN	u8				eRFPath,
@@ -513,7 +513,7 @@ s32 PHY_MACConfig8723B(PADAPTER Adapter)
 * Return:		None
 * Note:		The initialization value is constant and it should never be changes
 */
-static	VOID
+static	void
 phy_InitBBRFRegisterDefinition(
 	IN	PADAPTER		Adapter
 )
@@ -547,7 +547,7 @@ phy_InitBBRFRegisterDefinition(
 }
 
 #if 0 //YJ,test,130321
-static VOID
+static void
 phy_BB8192C_Config_1T(
 	IN PADAPTER Adapter
 	)
@@ -748,7 +748,7 @@ void phy_LCK_8723B(
 #define		rCCK_RX_Jaguar			0xa04	// for cck rx path selection
 #define		bCCK_RX_Jaguar			0x0c000000 
 #define		rVhtlen_Use_Lsig_Jaguar	0x8c3	// Use LSIG for VHT length
-VOID
+void
 PHY_BB8723B_Config_1T(
 	IN PADAPTER Adapter
 	)
@@ -860,7 +860,7 @@ void phy_PowerIndexCheck8723B(
  *                                                                                    <20120830, Kordan>
  **************************************************************************************************************/
 
-VOID
+void
 PHY_SetTxPowerIndex_8723B(
 	IN	PADAPTER			Adapter,
 	IN	u32					PowerIndex,
@@ -948,7 +948,7 @@ PHY_GetTxPowerIndex_8723B(
 	return (u8) txPower;	
 }
 
-VOID
+void
 PHY_SetTxPowerLevel8723B(
 	IN	PADAPTER		Adapter,
 	IN	u8				Channel
@@ -973,7 +973,7 @@ PHY_SetTxPowerLevel8723B(
 	RT_TRACE(_module_hal_init_c_, _drv_info_,("<==PHY_SetTxPowerLevel8723B()\n"));
 }
 
-VOID
+void
 PHY_GetTxPowerLevel8723B(
 	IN	PADAPTER		Adapter,
 	OUT s32*		    		powerlevel
@@ -993,7 +993,7 @@ PHY_GetTxPowerLevel8723B(
 
 
 // <20130321, VincentLan> A workaround to eliminate the 2440MHz & 2480MHz spur of 8723B. (Asked by Rock.)
-VOID
+void
 phy_SpurCalibration_8723B(
 	IN	PADAPTER					pAdapter,
 	IN	u1Byte						ToChannel,
@@ -1133,7 +1133,7 @@ phy_SpurCalibration_8723B(
 
 }
 
-VOID
+void
 phy_SetRegBW_8723B(
 	IN	PADAPTER		Adapter,
 	CHANNEL_WIDTH 	CurrentBW
@@ -1209,7 +1209,7 @@ phy_GetSecondaryChnl_8723B(
 	return  ( (SCSettingOf40 << 4) | SCSettingOf20);
 }
 
-VOID
+void
 phy_PostSetBwMode8723B(
 	IN	PADAPTER	Adapter
 )
@@ -1272,7 +1272,7 @@ phy_PostSetBwMode8723B(
 	PHY_RF6052SetBandwidth8723B(Adapter, pHalData->CurrentChannelBW);
 }
 
-VOID
+void
 phy_SwChnl8723B(	
 	IN	PADAPTER					pAdapter
 	)
@@ -1293,7 +1293,7 @@ phy_SwChnl8723B(
 	//phy_SpurCalibration_8723B(pAdapter, channelToSW, 0x16);
 }
 
-VOID
+void
 phy_SwChnlAndSetBwMode8723B(
 	IN  PADAPTER		Adapter
 )
@@ -1331,7 +1331,7 @@ phy_SwChnlAndSetBwMode8723B(
 	PHY_SetTxPowerLevel8723B(Adapter, pHalData->CurrentChannel);
 }
 
-VOID
+void
 PHY_HandleSwChnlAndSetBW8723B(
 	IN	PADAPTER			Adapter,
 	IN	bool				bSwitchChannel,
@@ -1456,7 +1456,7 @@ PHY_HandleSwChnlAndSetBW8723B(
 
 }
 
-VOID
+void
 PHY_SetBWMode8723B(
 	IN	PADAPTER					Adapter,
 	IN	CHANNEL_WIDTH	Bandwidth,	// 20M or 40M
@@ -1468,7 +1468,7 @@ PHY_SetBWMode8723B(
 	PHY_HandleSwChnlAndSetBW8723B(Adapter, false, true, pHalData->CurrentChannel, Bandwidth, Offset, Offset, pHalData->CurrentChannel);
 }
 
-VOID
+void
 PHY_SwChnl8723B(	// Call after initialization
 	IN	PADAPTER	Adapter,
 	IN	u8		channel
@@ -1477,7 +1477,7 @@ PHY_SwChnl8723B(	// Call after initialization
 	PHY_HandleSwChnlAndSetBW8723B(Adapter, true, false, channel, 0, 0, 0, channel);
 }
 
-VOID
+void
 PHY_SetSwChnlBWMode8723B(
 	IN	PADAPTER			Adapter,
 	IN	u8					channel,
@@ -1493,7 +1493,7 @@ PHY_SetSwChnlBWMode8723B(
 	//DBG_871X("<==%s()\n",__FUNCTION__);
 }
 
-static VOID
+static void
 _PHY_DumpRFReg_8723B(IN	PADAPTER	pAdapter)
 {
 	u32 rfRegValue,rfRegOffset;

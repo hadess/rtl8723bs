@@ -146,7 +146,7 @@ bool	PHY_UpdateTxPowerDbm8192D(	IN	PADAPTER	Adapter,
 											IN	int		powerInDbm	);
 
 //
-VOID 
+void 
 PHY_ScanOperationBackup8192D(IN	PADAPTER	Adapter,
 										IN	u8		Operation	);
 
@@ -179,7 +179,7 @@ extern	void FillA2Entry8192C(		IN	PADAPTER			Adapter,
 void	PHY_SwChnl8192D(	IN	PADAPTER		pAdapter,
 									IN	u8			channel	);
 
-VOID
+void
 PHY_SetSwChnlBWMode8192D(
 	IN	PADAPTER			Adapter,
 	IN	u8					channel,
@@ -206,12 +206,12 @@ rtl8192d_PHY_SetBeaconHwReg(	IN	PADAPTER		Adapter,
 					IN	u16			BeaconInterval	);
 
 
-extern	VOID
+extern	void
 PHY_SwitchEphyParameter(
 	IN	PADAPTER			Adapter
 	);
 
-extern	VOID
+extern	void
 PHY_EnableHostClkReq(
 	IN	PADAPTER			Adapter
 	);
@@ -222,45 +222,45 @@ SetAntennaConfig92C(
 	IN	u8		DefaultAnt	
 	);
 
-VOID
+void
 PHY_UpdateBBRFConfiguration8192D(
 	IN PADAPTER Adapter,
 	IN bool bisBandSwitch
 );
 
-VOID PHY_ReadMacPhyMode92D(
+void PHY_ReadMacPhyMode92D(
 	IN PADAPTER	Adapter,
 	IN bool 	AutoloadFail	
 );
 
-VOID PHY_ConfigMacPhyMode92D(
+void PHY_ConfigMacPhyMode92D(
 	IN PADAPTER	Adapter
 );
 
-VOID PHY_ConfigMacPhyModeInfo92D(
+void PHY_ConfigMacPhyModeInfo92D(
 	IN PADAPTER	Adapter
 );
 
-VOID PHY_ConfigMacCoexist_RFPage92D(
+void PHY_ConfigMacCoexist_RFPage92D(
 	IN PADAPTER	Adapter
 );
 
-VOID
+void
 rtl8192d_PHY_InitRxSetting(
 	IN	PADAPTER Adapter
 );
 
 
-VOID 
+void 
 rtl8192d_PHY_SetRFPathSwitch(IN	PADAPTER	pAdapter, IN	bool		bMain);
 
-VOID
+void
 HalChangeCCKStatus8192D(
 	IN	PADAPTER	Adapter,
 	IN	bool		bCCKDisable
 );
 
-VOID 
+void 
 PHY_InitPABias92D(IN	PADAPTER Adapter);
 
 /*--------------------------Exported Function prototype---------------------*/

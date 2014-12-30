@@ -138,7 +138,7 @@ void setIqkMatrix_8723B(
 }
 
 
-VOID
+void
 setCCKFilterCoefficient(
 	PDM_ODM_T	pDM_Odm,
 	u1Byte		CCKSwingIndex
@@ -203,7 +203,7 @@ void DoIQK_8723B(
  *	04/23/2012	MHC 	Create Version 0.  
  *
  *---------------------------------------------------------------------------*/
-VOID
+void
 ODM_TxPwrTrackSetPwr_8723B(
 	PDM_ODM_T			pDM_Odm,
 	PWRTRACK_METHOD 	Method,
@@ -408,7 +408,7 @@ ODM_TxPwrTrackSetPwr_8723B(
 	}
 }
 
-VOID
+void
 GetDeltaSwingTable_8723B(
 	IN	PDM_ODM_T			pDM_Odm,
 	OUT pu1Byte 			*TemperatureUP_A,
@@ -1192,7 +1192,7 @@ phy_PathB_RxIQK8723B(
 }
 
 
-VOID
+void
 _PHY_PathAFillIQKMatrix8723B(
 	IN	PADAPTER	pAdapter,
 	IN	bool 	bIQKOK,
@@ -1275,7 +1275,7 @@ _PHY_PathAFillIQKMatrix8723B(
 	}
 }
 
-VOID
+void
 _PHY_PathBFillIQKMatrix8723B(
 	IN	PADAPTER	pAdapter,
 	IN	bool 	bIQKOK,
@@ -1363,7 +1363,7 @@ _PHY_PathBFillIQKMatrix8723B(
 //
 // MP Already declare in odm.c 
 
-VOID
+void
 ODM_SetIQCbyRFpath(
 	IN PDM_ODM_T		pDM_Odm,
     IN u4Byte RFpath
@@ -1429,7 +1429,7 @@ ODM_CheckPowerStatus(
 	return	true;
 }
 
-VOID
+void
 _PHY_SaveADDARegisters8723B(
 	IN	PADAPTER	pAdapter,
 	IN	pu4Byte 	ADDAReg,
@@ -1451,7 +1451,7 @@ _PHY_SaveADDARegisters8723B(
 }
 
 
-VOID
+void
 _PHY_SaveMACRegisters8723B(
 	IN	PADAPTER	pAdapter,
 	IN	pu4Byte 	MACReg,
@@ -1471,7 +1471,7 @@ _PHY_SaveMACRegisters8723B(
 }
 
 
-VOID
+void
 _PHY_ReloadADDARegisters8723B(
 	IN	PADAPTER	pAdapter,
 	IN	pu4Byte 	ADDAReg,
@@ -1490,7 +1490,7 @@ _PHY_ReloadADDARegisters8723B(
 	}
 }
 
-VOID
+void
 _PHY_ReloadMACRegisters8723B(
 	IN	PADAPTER	pAdapter,
 	IN	pu4Byte 	MACReg,
@@ -1509,7 +1509,7 @@ _PHY_ReloadMACRegisters8723B(
 }
 
 
-VOID
+void
 _PHY_PathADDAOn8723B(
 	IN	PADAPTER	pAdapter,
 	IN	pu4Byte 	ADDAReg,
@@ -1539,7 +1539,7 @@ _PHY_PathADDAOn8723B(
 	
 }
 
-VOID
+void
 _PHY_MACSettingCalibration8723B(
 	IN	PADAPTER	pAdapter,
 	IN	pu4Byte 	MACReg,
@@ -1561,7 +1561,7 @@ _PHY_MACSettingCalibration8723B(
 
 }
 
-VOID
+void
 _PHY_PathAStandBy8723B(
 	IN PADAPTER pAdapter
 	)
@@ -1579,7 +1579,7 @@ _PHY_PathAStandBy8723B(
 	ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0x808000);
 }
 
-VOID
+void
 _PHY_PIModeSwitch8723B(
 	IN	PADAPTER	pAdapter,
 	IN	bool 	PIMode
@@ -1713,7 +1713,7 @@ phy_SimularityCompare_8723B(
 
 
 
-VOID	
+void	
 phy_IQCalibrate_8723B(
 	IN	PADAPTER	pAdapter,
 	IN	s4Byte		result[][8],
@@ -2011,7 +2011,7 @@ for(i = 0 ; i < retryCount ; i++){
 }
 
 
-VOID	
+void	
 phy_LCCalibrate_8723B(
 	IN PDM_ODM_T		pDM_Odm,
 	IN	bool 	is2T
@@ -2093,7 +2093,7 @@ phy_LCCalibrate_8723B(
 #define 	APK_CURVE_REG_NUM 4
 #define 	PATH_NUM		2
 
-VOID	
+void	
 phy_APCalibrate_8723B(
 	IN	PADAPTER	pAdapter,
 	IN	s1Byte		delta,
@@ -2216,7 +2216,7 @@ phy_APCalibrate_8723B(
 
 //IQK version:V2.5    20140123
 //IQK is controlled by Is2ant, RF path
-VOID
+void
 PHY_IQCalibrate_8723B(
 	IN	PADAPTER	pAdapter,
 	IN	bool		bReCovery,
@@ -2497,7 +2497,7 @@ PHY_IQCalibrate_8723B(
 }
 
 
-VOID
+void
 PHY_LCCalibrate_8723B(
 	IN PDM_ODM_T		pDM_Odm
 	)
@@ -2541,7 +2541,7 @@ PHY_LCCalibrate_8723B(
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_CALIBRATION, ODM_DBG_LOUD,  ("LCK ProgressingTime = %d\n", ProgressingTime));
 }
 
-VOID
+void
 PHY_APCalibrate_8723B(
 	IN	PADAPTER	pAdapter,
 	IN	s1Byte		delta	
@@ -2572,7 +2572,7 @@ PHY_APCalibrate_8723B(
 		phy_APCalibrate_8723B(pAdapter, delta, false);
 	}
 }
-VOID phy_SetRFPathSwitch_8723B(
+void phy_SetRFPathSwitch_8723B(
 	IN	PADAPTER	pAdapter,
 	IN	bool 	bMain,
 	IN	bool 	is2T
@@ -2590,7 +2590,7 @@ VOID phy_SetRFPathSwitch_8723B(
 		ODM_SetBBReg(pDM_Odm, 0x92C, bMaskDWord, 0x2);		
 	}		
 }
-VOID PHY_SetRFPathSwitch_8723B(
+void PHY_SetRFPathSwitch_8723B(
 	IN	PADAPTER	pAdapter,
 	IN	bool 	bMain
 	)

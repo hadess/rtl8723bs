@@ -40,7 +40,7 @@ void DoIQK_8723B(
 	u1Byte 		Threshold
 	);
 
-VOID
+void
 ODM_TxPwrTrackSetPwr_8723B(
 	PDM_ODM_T			pDM_Odm,
 	PWRTRACK_METHOD 	Method,
@@ -58,7 +58,7 @@ PHY_IQCalibrate_8723B(
 	IN bool	Is2ant,
 	IN u1Byte	RF_Path);
 
-VOID
+void
 ODM_SetIQCbyRFpath(
 	IN PDM_ODM_T		pDM_Odm,
     IN u4Byte RFpath
@@ -83,7 +83,7 @@ void
 PHY_DigitalPredistortion_8723B(		IN	PADAPTER	pAdapter);
 
 
-VOID
+void
 _PHY_SaveADDARegisters_8723B(
 	IN	PADAPTER	pAdapter,
 	IN	pu4Byte		ADDAReg,
@@ -91,7 +91,7 @@ _PHY_SaveADDARegisters_8723B(
 	IN	u4Byte		RegisterNum
 	);
 
-VOID
+void
 _PHY_PathADDAOn_8723B(
 	IN	PADAPTER	pAdapter,
 	IN	pu4Byte		ADDAReg,
@@ -99,7 +99,7 @@ _PHY_PathADDAOn_8723B(
 	IN	bool		is2T
 	);
 
-VOID
+void
 _PHY_MACSettingCalibration_8723B(
 	IN	PADAPTER	pAdapter,
 	IN	pu4Byte		MACReg,

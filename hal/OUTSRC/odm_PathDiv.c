@@ -25,7 +25,7 @@
 
 
 
-VOID
+void
 odm_PathDiversityInit(
 	IN	void *	pDM_VOID
 )
@@ -44,7 +44,7 @@ odm_PathDiversityInit(
 #endif
 }
 
-VOID
+void
 odm_PathDiversity(
 	IN	void *	pDM_VOID
 )

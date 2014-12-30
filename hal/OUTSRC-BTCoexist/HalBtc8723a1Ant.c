@@ -34,7 +34,7 @@ const char *const GLBtInfoSrc8723a1Ant[]={
 //============================================================
 // local function start with halbtc8723a1ant_
 //============================================================
-VOID
+void
 halbtc8723a1ant_Reg0x550Bit3(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	bool			bSet
@@ -55,7 +55,7 @@ halbtc8723a1ant_Reg0x550Bit3(
 	BTC_PRINT(BTC_MSG_ALGORITHM, ALGO_TRACE, ("[BTCoex], set 0x550[3]=%d\n", (bSet? 1:0)));
 }
 
-VOID
+void
 halbtc8723a1ant_NotifyFwScan(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	u1Byte			scanType
@@ -72,7 +72,7 @@ halbtc8723a1ant_NotifyFwScan(
 	pBtCoexist->fBtcFillH2c(pBtCoexist, 0x3b, 1, H2C_Parameter);
 }
 
-VOID
+void
 halbtc8723a1ant_QueryBtInfo(
 	IN	PBTC_COEXIST		pBtCoexist
 	)
@@ -89,7 +89,7 @@ halbtc8723a1ant_QueryBtInfo(
 	pBtCoexist->fBtcFillH2c(pBtCoexist, 0x38, 1, H2C_Parameter);
 }
 
-VOID
+void
 halbtc8723a1ant_SetSwRfRxLpfCorner(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	bool			bRxRfShrinkOn
@@ -113,7 +113,7 @@ halbtc8723a1ant_SetSwRfRxLpfCorner(
 	}
 }
 
-VOID
+void
 halbtc8723a1ant_RfShrink(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	bool			bForceExec,
@@ -137,7 +137,7 @@ halbtc8723a1ant_RfShrink(
 	pCoexDm->bPreRfRxLpfShrink = pCoexDm->bCurRfRxLpfShrink;
 }
 
-VOID
+void
 halbtc8723a1ant_SetSwPenaltyTxRateAdaptive(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	bool			bLowPenaltyRa
@@ -161,7 +161,7 @@ halbtc8723a1ant_SetSwPenaltyTxRateAdaptive(
 	pBtCoexist->fBtcWrite1Byte(pBtCoexist, 0x4fd, tmpU1);
 }
 
-VOID
+void
 halbtc8723a1ant_LowPenaltyRa(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	bool			bForceExec,
@@ -186,7 +186,7 @@ halbtc8723a1ant_LowPenaltyRa(
 	pCoexDm->bPreLowPenaltyRa = pCoexDm->bCurLowPenaltyRa;
 }
 
-VOID
+void
 halbtc8723a1ant_SetCoexTable(
 	IN	PBTC_COEXIST	pBtCoexist,
 	IN	u4Byte		val0x6c0,
@@ -204,7 +204,7 @@ halbtc8723a1ant_SetCoexTable(
 	pBtCoexist->fBtcWrite1Byte(pBtCoexist, 0x6cc, val0x6cc);
 }
 
-VOID
+void
 halbtc8723a1ant_CoexTable(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	bool			bForceExec,
@@ -238,7 +238,7 @@ halbtc8723a1ant_CoexTable(
 	pCoexDm->preVal0x6cc = pCoexDm->curVal0x6cc;
 }
 
-VOID
+void
 halbtc8723a1ant_SetFwIgnoreWlanAct(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	bool			bEnable
@@ -257,7 +257,7 @@ halbtc8723a1ant_SetFwIgnoreWlanAct(
 	pBtCoexist->fBtcFillH2c(pBtCoexist, 0x25, 1, H2C_Parameter);	
 }
 
-VOID
+void
 halbtc8723a1ant_IgnoreWlanAct(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	bool			bForceExec,
@@ -281,7 +281,7 @@ halbtc8723a1ant_IgnoreWlanAct(
 	pCoexDm->bPreIgnoreWlanAct = pCoexDm->bCurIgnoreWlanAct;
 }
 
-VOID
+void
 halbtc8723a1ant_SetFwPstdma(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	u1Byte			type,
@@ -334,7 +334,7 @@ halbtc8723a1ant_SetFwPstdma(
 	pBtCoexist->fBtcFillH2c(pBtCoexist, 0x3a, 5, H2C_Parameter);
 }
 
-VOID
+void
 halbtc8723a1ant_PsTdma(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	bool			bForceExec,
@@ -456,7 +456,7 @@ halbtc8723a1ant_PsTdma(
 }
 
 
-VOID
+void
 halbtc8723a1ant_CoexAllOff(
 	IN	PBTC_COEXIST		pBtCoexist
 	)
@@ -473,7 +473,7 @@ halbtc8723a1ant_CoexAllOff(
 	halbtc8723a1ant_CoexTable(pBtCoexist, NORMAL_EXEC, 0x55555555, 0xffff, 0x3);
 }
 
-VOID
+void
 halbtc8723a1ant_InitCoexDm(
 	IN	PBTC_COEXIST		pBtCoexist
 	)
@@ -482,7 +482,7 @@ halbtc8723a1ant_InitCoexDm(
 	halbtc8723a1ant_IgnoreWlanAct(pBtCoexist, FORCE_EXEC, false);
 }
 
-VOID
+void
 halbtc8723a1ant_BtEnableAction(
 	IN 	PBTC_COEXIST		pBtCoexist
 	)
@@ -490,7 +490,7 @@ halbtc8723a1ant_BtEnableAction(
 	halbtc8723a1ant_IgnoreWlanAct(pBtCoexist, FORCE_EXEC, false);
 }
 
-VOID
+void
 halbtc8723a1ant_MonitorBtCtr(
 	IN	PBTC_COEXIST		pBtCoexist
 	)
@@ -524,7 +524,7 @@ halbtc8723a1ant_MonitorBtCtr(
 	pBtCoexist->fBtcWrite1Byte(pBtCoexist, 0x76e, 0xc);
 }
 
-VOID
+void
 halbtc8723a1ant_MonitorBtEnableDisable(
 	IN 	PBTC_COEXIST		pBtCoexist
 	)
@@ -585,7 +585,7 @@ halbtc8723a1ant_MonitorBtEnableDisable(
 	}
 }
 
-VOID
+void
 halbtc8723a1ant_TdmaDurationAdjust(
 	IN	PBTC_COEXIST		pBtCoexist
 	)
@@ -884,7 +884,7 @@ halbtc8723a1ant_TdmaDurationAdjust(
 }
 
 
-VOID
+void
 halbtc8723a1ant_CoexForWifiConnect(
 	IN	PBTC_COEXIST		pBtCoexist
 	)
@@ -981,7 +981,7 @@ halbtc8723a1ant_CoexForWifiConnect(
 //============================================================
 // work around function start with wa_halbtc8723a1ant_
 //============================================================
-VOID
+void
 wa_halbtc8723a1ant_MonitorC2h(
 	IN	PBTC_COEXIST			pBtCoexist
 	)
@@ -1016,7 +1016,7 @@ wa_halbtc8723a1ant_MonitorC2h(
 //============================================================
 // extern function start with EXhalbtc8723a1ant_
 //============================================================
-VOID
+void
 EXhalbtc8723a1ant_InitHwConfig(
 	IN	PBTC_COEXIST		pBtCoexist
 	)
@@ -1048,7 +1048,7 @@ EXhalbtc8723a1ant_InitHwConfig(
 	pBtCoexist->fBtcWrite1Byte(pBtCoexist, 0x778, 0x1);	// enable RTK mode PTA
 }
 
-VOID
+void
 EXhalbtc8723a1ant_InitCoexDm(
 	IN	PBTC_COEXIST		pBtCoexist
 	)
@@ -1058,7 +1058,7 @@ EXhalbtc8723a1ant_InitCoexDm(
 	halbtc8723a1ant_InitCoexDm(pBtCoexist);
 }
 
-VOID
+void
 EXhalbtc8723a1ant_DisplayCoexInfo(
 	IN	PBTC_COEXIST		pBtCoexist
 	)
@@ -1261,7 +1261,7 @@ EXhalbtc8723a1ant_DisplayCoexInfo(
 }
 
 
-VOID
+void
 EXhalbtc8723a1ant_IpsNotify(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	u1Byte			type
@@ -1279,7 +1279,7 @@ EXhalbtc8723a1ant_IpsNotify(
 	}
 }
 
-VOID
+void
 EXhalbtc8723a1ant_LpsNotify(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	u1Byte			type
@@ -1296,7 +1296,7 @@ EXhalbtc8723a1ant_LpsNotify(
 	}
 }
 
-VOID
+void
 EXhalbtc8723a1ant_ScanNotify(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	u1Byte			type
@@ -1339,7 +1339,7 @@ EXhalbtc8723a1ant_ScanNotify(
 	}
 }
 
-VOID
+void
 EXhalbtc8723a1ant_ConnectNotify(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	u1Byte			type
@@ -1376,7 +1376,7 @@ EXhalbtc8723a1ant_ConnectNotify(
 	}
 }
 
-VOID
+void
 EXhalbtc8723a1ant_MediaStatusNotify(
 	IN	PBTC_COEXIST			pBtCoexist,
 	IN	u1Byte				type
@@ -1392,7 +1392,7 @@ EXhalbtc8723a1ant_MediaStatusNotify(
 	}
 }
 
-VOID
+void
 EXhalbtc8723a1ant_SpecialPacketNotify(
 	IN	PBTC_COEXIST			pBtCoexist,
 	IN	u1Byte				type
@@ -1412,7 +1412,7 @@ EXhalbtc8723a1ant_SpecialPacketNotify(
 	}
 }
 
-VOID
+void
 EXhalbtc8723a1ant_BtInfoNotify(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	pu1Byte			tmpBuf,
@@ -1520,7 +1520,7 @@ EXhalbtc8723a1ant_BtInfoNotify(
 	}
 }
 
-VOID
+void
 EXhalbtc8723a1ant_HaltNotify(
 	IN	PBTC_COEXIST			pBtCoexist
 	)
@@ -1534,7 +1534,7 @@ EXhalbtc8723a1ant_HaltNotify(
 	EXhalbtc8723a1ant_MediaStatusNotify(pBtCoexist, BTC_MEDIA_DISCONNECT);
 }
 
-VOID
+void
 EXhalbtc8723a1ant_Periodical(
 	IN	PBTC_COEXIST			pBtCoexist
 	)

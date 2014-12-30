@@ -28,7 +28,7 @@
 // when antenna test utility is on or some testing need to disable antenna diversity
 // call this function to disable all ODM related mechanisms which will switch antenna.
 //======================================================
-VOID
+void
 ODM_StopAntennaSwitchDm(
 	IN	PDM_ODM_T	pDM_Odm
 	)
@@ -38,7 +38,7 @@ ODM_StopAntennaSwitchDm(
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_ANT_DIV, ODM_DBG_LOUD, ("STOP Antenna Diversity \n"));
 }
 
-VOID
+void
 ODM_SetAntConfig(
 	IN	PDM_ODM_T	pDM_Odm,
 	IN	u1Byte		antSetting	// 0=A, 1=B, 2=C, ....
@@ -56,7 +56,7 @@ ODM_SetAntConfig(
 //======================================================
 
 
-VOID
+void
 ODM_SwAntDivRestAfterLink(
 	IN		PDM_ODM_T		pDM_Odm
 	)
@@ -97,7 +97,7 @@ ODM_SwAntDivRestAfterLink(
 
 
 #if (defined(CONFIG_HW_ANTENNA_DIVERSITY))
-VOID
+void
 odm_AntDiv_on_off( IN PDM_ODM_T	pDM_Odm ,IN u1Byte swch)
 {
 	if(pDM_Odm->AntDivType==S0S1_SW_ANTDIV || pDM_Odm->AntDivType==CGCS_RX_SW_ANTDIV) 
@@ -132,7 +132,7 @@ odm_AntDiv_on_off( IN PDM_ODM_T	pDM_Odm ,IN u1Byte swch)
          }
 }
 
-VOID
+void
 ODM_UpdateRxIdleAnt(IN PDM_ODM_T pDM_Odm, IN u1Byte Ant)
 {
 	pFAT_T	pDM_FatTable = &pDM_Odm->DM_FatTable;
@@ -220,7 +220,7 @@ ODM_UpdateRxIdleAnt(IN PDM_ODM_T pDM_Odm, IN u1Byte Ant)
 }
 
 
-VOID
+void
 odm_UpdateTxAnt(IN PDM_ODM_T pDM_Odm, IN u1Byte Ant, IN u4Byte MacId)
 {
 	pFAT_T	pDM_FatTable = &pDM_Odm->DM_FatTable;
@@ -246,7 +246,7 @@ odm_UpdateTxAnt(IN PDM_ODM_T pDM_Odm, IN u1Byte Ant, IN u4Byte MacId)
 #if (RTL8188E_SUPPORT == 1)
 
 
-VOID
+void
 odm_RX_HWAntDiv_Init_88E(
 	IN		PDM_ODM_T		pDM_Odm
 )
@@ -282,7 +282,7 @@ odm_RX_HWAntDiv_Init_88E(
 	ODM_SetBBReg(pDM_Odm, ODM_REG_ANT_MAPPING1_11N , 0xFFFF, 0x0001);	//antenna mapping table
 }
 
-VOID
+void
 odm_TRX_HWAntDiv_Init_88E(
 	IN		PDM_ODM_T		pDM_Odm
 )
@@ -323,7 +323,7 @@ odm_TRX_HWAntDiv_Init_88E(
 		ODM_SetBBReg(pDM_Odm, ODM_REG_ANT_MAPPING1_11N , bMaskDWord, 0x0001);	//Reg914=3'b010, Reg915=3'b001
 }
 
-VOID
+void
 odm_Smart_HWAntDiv_Init_88E(
 	IN		PDM_ODM_T		pDM_Odm
 )
@@ -434,7 +434,7 @@ odm_Smart_HWAntDiv_Init_88E(
 
 
 #if (RTL8192E_SUPPORT == 1)
-VOID
+void
 odm_RX_HWAntDiv_Init_92E(
 	IN		PDM_ODM_T		pDM_Odm
 )
@@ -469,7 +469,7 @@ odm_RX_HWAntDiv_Init_92E(
 	 ODM_SetBBReg(pDM_Odm, 0xa0c , BIT4, 1); //CCK complete HW AntDiv within 64 samples 	 
 }
 
-VOID
+void
 odm_TRX_HWAntDiv_Init_92E(
 	IN		PDM_ODM_T		pDM_Odm
 )
@@ -523,7 +523,7 @@ odm_TRX_HWAntDiv_Init_92E(
 	 ODM_SetBBReg(pDM_Odm, 0xE20 , BIT23|BIT22|BIT21|BIT20, 8); //keep antidx after tx for ACK ( unit x 32 mu sec)
 }
 
-VOID
+void
 odm_Smart_HWAntDiv_Init_92E(
 	IN		PDM_ODM_T		pDM_Odm
 )
@@ -534,7 +534,7 @@ odm_Smart_HWAntDiv_Init_92E(
 
 
 #if (RTL8723B_SUPPORT == 1)
-VOID
+void
 odm_TRX_HWAntDiv_Init_8723B(
 	IN		PDM_ODM_T		pDM_Odm
 )
@@ -590,7 +590,7 @@ odm_TRX_HWAntDiv_Init_8723B(
 
 	
 
-VOID
+void
 odm_S0S1_SWAntDiv_Init_8723B(
 	IN		PDM_ODM_T		pDM_Odm
 )
@@ -621,7 +621,7 @@ odm_S0S1_SWAntDiv_Init_8723B(
 
 }
 
-VOID
+void
 odm_S0S1_SWAntDiv_Reset_8723B(
 	IN		PDM_ODM_T		pDM_Odm
 )
@@ -637,7 +637,7 @@ odm_S0S1_SWAntDiv_Reset_8723B(
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_ANT_DIV, ODM_DBG_LOUD, ("odm_S0S1_SWAntDiv_Reset_8723B(): pDM_FatTable->bBecomeLinked = %d\n", pDM_FatTable->bBecomeLinked));
 }
 
-VOID
+void
 ODM_UpdateRxIdleAnt_8723B(
 	IN		PDM_ODM_T		pDM_Odm,
 	IN		u1Byte			Ant,
@@ -720,7 +720,7 @@ ODM_UpdateRxIdleAnt_8723B(
 #endif //#if (RTL8723B_SUPPORT == 1)
 
 #if (RTL8821A_SUPPORT == 1)
-VOID
+void
 odm_TRX_HWAntDiv_Init_8821A(
 	IN		PDM_ODM_T		pDM_Odm
 )
@@ -783,7 +783,7 @@ odm_TRX_HWAntDiv_Init_8821A(
 			
 }
 
-VOID
+void
 odm_S0S1_SWAntDiv_Init_8821A(
 	IN		PDM_ODM_T		pDM_Odm
 )
@@ -859,7 +859,7 @@ odm_S0S1_SWAntDiv_Init_8821A(
 #endif //#if (RTL8821A_SUPPORT == 1)
 
 #if (RTL8881A_SUPPORT == 1)
-VOID
+void
 odm_RX_HWAntDiv_Init_8881A(
 	IN		PDM_ODM_T		pDM_Odm
 )
@@ -868,7 +868,7 @@ odm_RX_HWAntDiv_Init_8881A(
 
 }
 
-VOID
+void
 odm_TRX_HWAntDiv_Init_8881A(
 	IN		PDM_ODM_T		pDM_Odm
 )
@@ -911,7 +911,7 @@ odm_TRX_HWAntDiv_Init_8881A(
 
 
 #if (RTL8812A_SUPPORT == 1)
-VOID
+void
 odm_TRX_HWAntDiv_Init_8812A(
 	IN		PDM_ODM_T		pDM_Odm
 )
@@ -954,7 +954,7 @@ odm_TRX_HWAntDiv_Init_8812A(
 
 #endif //#if (RTL8812A_SUPPORT == 1)
 
-VOID
+void
 odm_HW_AntDiv(
 	IN		PDM_ODM_T		pDM_Odm
 )
@@ -1088,7 +1088,7 @@ odm_HW_AntDiv(
 
 
 #if (RTL8723B_SUPPORT == 1)||(RTL8821A_SUPPORT == 1)
-VOID
+void
 odm_S0S1_SwAntDiv(
 	IN		PDM_ODM_T		pDM_Odm,
 	IN		u1Byte			Step
@@ -1512,7 +1512,7 @@ odm_S0S1_SwAntDiv(
 }
 
 
-VOID
+void
 ODM_SW_AntDiv_WorkitemCallback(
     IN void *            pContext
     )
@@ -1524,7 +1524,7 @@ ODM_SW_AntDiv_WorkitemCallback(
 	odm_S0S1_SwAntDiv(&pHalData->odmpriv, SWAW_STEP_DETERMINE);
 }
 
-VOID
+void
 ODM_SW_AntDiv_Callback(void *FunctionContext)
 {
 	PDM_ODM_T	pDM_Odm= (PDM_ODM_T)FunctionContext;
@@ -1541,7 +1541,7 @@ ODM_SW_AntDiv_Callback(void *FunctionContext)
 #endif
 }
 
-VOID
+void
 odm_S0S1_SwAntDivByCtrlFrame(
 	IN		PDM_ODM_T		pDM_Odm,
 	IN		u1Byte			Step
@@ -1575,7 +1575,7 @@ odm_S0S1_SwAntDivByCtrlFrame(
 	}			
 }
 
-VOID
+void
 odm_AntselStatisticsOfCtrlFrame(
 	IN		PDM_ODM_T		pDM_Odm,
 	IN		u1Byte			antsel_tr_mux,
@@ -1596,7 +1596,7 @@ odm_AntselStatisticsOfCtrlFrame(
 	}
 }
 
-VOID
+void
 odm_S0S1_SwAntDivByCtrlFrame_ProcessRSSI(
 	IN		PDM_ODM_T				pDM_Odm,
 	IN		PODM_PHY_INFO_T		pPhyInfo,
@@ -1649,7 +1649,7 @@ odm_S0S1_SwAntDivByCtrlFrame_ProcessRSSI(
 #endif //#if (RTL8723B_SUPPORT == 1)
 
 
-VOID
+void
 ODM_AntDivReset(
 	IN PDM_ODM_T	pDM_Odm 
 	)
@@ -1661,7 +1661,7 @@ ODM_AntDivReset(
 #endif
 }
 
-VOID
+void
 ODM_AntDivInit(
 	IN PDM_ODM_T	pDM_Odm 
 	)
@@ -1866,7 +1866,7 @@ ODM_AntDivInit(
 
 }
 
-VOID
+void
 ODM_AntDiv(
 	IN		PDM_ODM_T		pDM_Odm
 )
@@ -2020,7 +2020,7 @@ ODM_AntDiv(
 }
 
 
-VOID
+void
 odm_AntselStatistics(
 	IN		PDM_ODM_T		pDM_Odm,
 	IN		u1Byte			antsel_tr_mux,
@@ -2043,7 +2043,7 @@ odm_AntselStatistics(
 }
 
 
-VOID
+void
 ODM_Process_RSSIForAntDiv(	
 	IN OUT	PDM_ODM_T					pDM_Odm,
 	IN		PODM_PHY_INFO_T				pPhyInfo,
@@ -2128,7 +2128,7 @@ pFAT_T			pDM_FatTable = &pDM_Odm->DM_FatTable;
 	//ODM_RT_TRACE(pDM_Odm,ODM_COMP_ANT_DIV, ODM_DBG_LOUD,("antsel_tr_mux=3'b%d%d%d\n",pDM_FatTable->antsel_rx_keep_2, pDM_FatTable->antsel_rx_keep_1, pDM_FatTable->antsel_rx_keep_0));
 }
 
-VOID
+void
 ODM_SetTxAntByTxInfo(
 	IN		PDM_ODM_T		pDM_Odm,
 	IN		pu1Byte			pDesc,
@@ -2177,7 +2177,7 @@ ODM_SetTxAntByTxInfo(
 	}
 }
 
-VOID
+void
 ODM_AntDiv_Config(
 	IN		PDM_ODM_T		pDM_Odm
 	)
@@ -2194,7 +2194,7 @@ ODM_AntDiv_Config(
 }
 
 
-VOID
+void
 ODM_AntDivTimers(
 	IN PDM_ODM_T	pDM_Odm,
 	IN u1Byte			state

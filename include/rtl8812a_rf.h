@@ -20,7 +20,7 @@
 #ifndef __RTL8812A_RF_H__
 #define __RTL8812A_RF_H__
 
-VOID
+void
 PHY_RF6052SetBandwidth8812(
 	IN	PADAPTER				Adapter,
 	IN	CHANNEL_WIDTH		Bandwidth);

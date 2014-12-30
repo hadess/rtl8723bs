@@ -1958,7 +1958,7 @@ void EXhalbtcoutsrc_BtInfoNotify(PBTC_COEXIST pBtCoexist, u8 *tmpBuf, u8 length)
 //	halbtcoutsrc_NormalLowPower(pBtCoexist);
 }
 
-VOID
+void
 EXhalbtcoutsrc_RfStatusNotify(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	u1Byte 				type

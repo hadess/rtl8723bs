@@ -324,7 +324,7 @@ static void _InitTxBufferBoundary(PADAPTER padapter)
 #endif // CONFIG_CONCURRENT_MODE
 }
 
-static VOID
+static void
 _InitNormalChipRegPriority(
 	IN	PADAPTER	Adapter,
 	IN	u16		beQ,
@@ -344,7 +344,7 @@ _InitNormalChipRegPriority(
 	rtw_write16(Adapter, REG_TRXDMA_CTRL, value16);
 }
 
-static VOID
+static void
 _InitNormalChipOneOutEpPriority(
 	IN	PADAPTER Adapter
 	)
@@ -379,7 +379,7 @@ _InitNormalChipOneOutEpPriority(
 
 }
 
-static VOID
+static void
 _InitNormalChipTwoOutEpPriority(
 	IN	PADAPTER Adapter
 	)
@@ -432,7 +432,7 @@ _InitNormalChipTwoOutEpPriority(
 
 }
 
-static VOID
+static void
 _InitNormalChipThreeOutEpPriority(
 	IN	PADAPTER padapter
 	)
@@ -459,7 +459,7 @@ _InitNormalChipThreeOutEpPriority(
 	_InitNormalChipRegPriority(padapter,beQ,bkQ,viQ,voQ,mgtQ,hiQ);
 }
 
-static VOID
+static void
 _InitNormalChipQueuePriority(
 	IN	PADAPTER Adapter
 	)
@@ -1631,7 +1631,7 @@ _EfuseCellSel(
 	}
 }
 
-static VOID
+static void
 _ReadRFType(
 	IN	PADAPTER	Adapter
 	)
@@ -1777,7 +1777,7 @@ Hal_ReadMACAddrFromFile_8723BS(
 }
 #endif
 
-static VOID
+static void
 _ReadEfuseInfo8723BS(
 	IN PADAPTER			padapter
 	)
@@ -1884,7 +1884,7 @@ static void _ReadPROMContent(
 	_ReadEfuseInfo8723BS(padapter);
 }
 
-static VOID
+static void
 _InitOtherVariable(
 	IN PADAPTER 		Adapter
 	)

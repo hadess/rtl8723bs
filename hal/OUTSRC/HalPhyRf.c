@@ -75,7 +75,7 @@ void ConfigureTxpowerTrack(
 // NOTE: If Tx BB swing or Tx scaling is varified during run-time, still 
 //       need to call this function.
 //======================================================================
-VOID
+void
 ODM_ClearTxPowerTrackingState(
 	IN PDM_ODM_T		pDM_Odm
 	)
@@ -110,7 +110,7 @@ ODM_ClearTxPowerTrackingState(
 	pDM_Odm->RFCalibrateInfo.ThermalValue_LCK = pHalData->EEPROMThermalMeter;	
 }
 
-VOID
+void
 ODM_TXPowerTrackingCallback_ThermalMeter(
 	IN PADAPTER	Adapter
 	)
@@ -435,7 +435,7 @@ ODM_TXPowerTrackingCallback_ThermalMeter(
 //3 IQ Calibration
 //3============================================================
 
-VOID
+void
 ODM_ResetIQKResult(
 	IN PDM_ODM_T	pDM_Odm 
 )

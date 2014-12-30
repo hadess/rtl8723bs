@@ -127,7 +127,7 @@ bool	PHY_UpdateTxPowerDbm8192C(	IN	PADAPTER	Adapter,
 											IN	int		powerInDbm	);
 
 //
-VOID 
+void 
 PHY_ScanOperationBackup8192C(IN	PADAPTER	Adapter,
 										IN	u8		Operation	);
 
@@ -160,7 +160,7 @@ extern	void FillA2Entry8192C(		IN	PADAPTER			Adapter,
 void	PHY_SwChnl8192C(	IN	PADAPTER		pAdapter,
 									IN	u8			channel	);
 
-VOID
+void
 PHY_SetSwChnlBWMode8192C(
 	IN	PADAPTER			Adapter,
 	IN	u8					channel,
@@ -179,7 +179,7 @@ bool	PHY_CheckIsLegalRfPath8192C(IN	PADAPTER	pAdapter,
 											IN	u32		eRFPath	);
 
 
-VOID rtl8192c_PHY_SetRFPathSwitch(IN	PADAPTER	pAdapter, IN	bool		bMain);
+void rtl8192c_PHY_SetRFPathSwitch(IN	PADAPTER	pAdapter, IN	bool		bMain);
 
 //
 // Modify the value of the hw register when beacon interval be changed.
@@ -189,12 +189,12 @@ rtl8192c_PHY_SetBeaconHwReg(	IN	PADAPTER		Adapter,
 					IN	u16			BeaconInterval	);
 
 
-extern	VOID
+extern	void
 PHY_SwitchEphyParameter(
 	IN	PADAPTER			Adapter
 	);
 
-extern	VOID
+extern	void
 PHY_EnableHostClkReq(
 	IN	PADAPTER			Adapter
 	);

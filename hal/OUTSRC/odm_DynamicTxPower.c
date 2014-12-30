@@ -24,7 +24,7 @@
 
 #include "odm_precomp.h"
 
-VOID 
+void
 odm_DynamicTxPowerInit(
 	IN		void *					pDM_VOID	
 	)
@@ -45,7 +45,7 @@ odm_DynamicTxPowerInit(
 	pdmpriv->DynamicTxHighPowerLvl = TxHighPwrLevel_Normal;	
 }
 
-VOID
+void
 odm_DynamicTxPowerSavePowerIndex(
 	IN		void *					pDM_VOID	
 	)
@@ -61,7 +61,7 @@ odm_DynamicTxPowerSavePowerIndex(
 		pdmpriv->PowerIndex_backup[index] = rtw_read8(Adapter, Power_Index_REG[index]);
 }
 
-VOID
+void
 odm_DynamicTxPowerRestorePowerIndex(
 	IN		void *					pDM_VOID
 	)
@@ -77,7 +77,7 @@ odm_DynamicTxPowerRestorePowerIndex(
 		rtw_write8(Adapter, Power_Index_REG[index], pdmpriv->PowerIndex_backup[index]);
 }
 
-VOID
+void
 odm_DynamicTxPowerWritePowerIndex(
 	IN		void *					pDM_VOID, 
 	IN 	u1Byte		Value)
@@ -93,7 +93,7 @@ odm_DynamicTxPowerWritePowerIndex(
 }
 
 
-VOID 
+void
 odm_DynamicTxPower(
 	IN		void *					pDM_VOID
 	)
@@ -105,7 +105,7 @@ odm_DynamicTxPower(
 }
 
 
-VOID 
+void
 odm_DynamicTxPowerNIC(
 	IN		void *					pDM_VOID
 	)
@@ -128,7 +128,7 @@ odm_DynamicTxPowerNIC(
 	}
 }
 
-VOID 
+void
 odm_DynamicTxPowerAP(
 	IN		void *					pDM_VOID
 
@@ -138,7 +138,7 @@ odm_DynamicTxPowerAP(
 }
 
 
-VOID 
+void
 odm_DynamicTxPower_92C(
 	IN		void *					pDM_VOID
 	)
@@ -268,7 +268,7 @@ odm_DynamicTxPower_92C(
 }
 
 
-VOID 
+void
 odm_DynamicTxPower_92D(
 	IN		void *					pDM_VOID
 	)

@@ -24,7 +24,7 @@
 //#include "Mp_Precomp.h"
 #include "odm_precomp.h"
 
-VOID
+void
 ODM_EdcaTurboInit(
 	IN 	void *	 	pDM_VOID)
 {
@@ -42,7 +42,7 @@ ODM_EdcaTurboInit(
 	
 }	// ODM_InitEdcaTurbo
 
-VOID
+void
 odm_EdcaTurboCheck(
 	IN 	void *	 	pDM_VOID
 	)
@@ -63,7 +63,7 @@ odm_EdcaTurboCheck(
 
 }	// odm_CheckEdcaTurbo
 
-VOID
+void
 odm_EdcaTurboCheckCE(
 	IN 	void *	 	pDM_VOID
 	)

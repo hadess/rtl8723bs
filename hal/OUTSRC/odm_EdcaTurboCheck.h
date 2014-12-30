@@ -42,16 +42,16 @@ static u4Byte edca_setting_DL_GMode[HT_IOT_PEER_MAX] =
 // UNKNOWN		REALTEK_90	REALTEK_92SE	BROADCOM		RALINK		ATHEROS		CISCO		MERU,       MARVELL	92U_AP		SELF_AP
 { 0x4322, 		0xa44f, 		0x5e4322,		0xa42b, 			0x5e4322, 	0x4322, 		0xa42b,		0x5ea42b, 0xa44f,		0x5e4322,	0x5ea42b};
 
-VOID
+void
 odm_EdcaTurboCheck(
 	IN 	void *	 	pDM_VOID
 	);
-VOID
+void
 ODM_EdcaTurboInit(
 	IN 	void *	 	pDM_VOID
 );
 
-VOID
+void
 odm_EdcaTurboCheckCE(
 	IN 	void *	 	pDM_VOID
 	);

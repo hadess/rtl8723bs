@@ -204,7 +204,7 @@ typedef struct _LED_SDIO{
 typedef struct _LED_SDIO	LED_DATA, *PLED_DATA;
 typedef enum _LED_STRATEGY_SDIO	LED_STRATEGY, *PLED_STRATEGY;
 
-VOID
+void
 LedControlSDIO(
 	IN	PADAPTER		Adapter,
 	IN	LED_CTL_MODE		LedAction

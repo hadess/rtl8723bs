@@ -87,7 +87,7 @@ void	PHY_GetTxPowerLevel8192E(	IN PADAPTER	Adapter, OUT s32*	powerlevel	);
 void	PHY_SetTxPowerLevel8192E(	IN PADAPTER	Adapter, IN u8	channel	);
 bool	PHY_UpdateTxPowerDbm8192E( IN PADAPTER	Adapter, IN int	powerInDbm	);
 
-VOID
+void
 PHY_SetTxPowerIndex_8192E(
 	IN	PADAPTER			Adapter,
 	IN	u32					PowerIndex,
@@ -107,7 +107,7 @@ PHY_GetTxPowerIndex_8192E(
 //
 // Switch bandwidth for 8192S
 //
-VOID
+void
 PHY_SetBWMode8192E(
 	IN	PADAPTER			pAdapter,
 	IN	CHANNEL_WIDTH	Bandwidth,
@@ -117,14 +117,14 @@ PHY_SetBWMode8192E(
 //
 // channel switch related funciton
 //
-VOID
+void
 PHY_SwChnl8192E(
 	IN	PADAPTER	Adapter,
 	IN	u8			channel
 );
 
 
-VOID
+void
 PHY_SetSwChnlBWMode8192E(
 	IN	PADAPTER			Adapter,
 	IN	u8					channel,
@@ -142,13 +142,13 @@ phy_SpurCalibration_8192E(
 // BB/MAC/RF other monitor API
 //
 
-VOID
+void
 PHY_SetRFPathSwitch_8192E(
 	IN	PADAPTER	pAdapter,
 	IN	bool		bMain
 );
 
-VOID
+void
 storePwrIndexDiffRateOffset(
 	IN	PADAPTER	Adapter,
 	IN	u32		RegAddr,

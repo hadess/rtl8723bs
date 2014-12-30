@@ -54,11 +54,11 @@
 #define CANCEL_ANTDIV_TIMMER 1
 #define RELEASE_ANTDIV_TIMMER 2
 
-VOID
+void
 ODM_StopAntennaSwitchDm(
 	IN	PDM_ODM_T	pDM_Odm
 	);
-VOID
+void
 ODM_SetAntConfig(
 	IN	PDM_ODM_T	pDM_Odm,
 	IN	u1Byte		antSetting	// 0=A, 1=B, 2=C, ....
@@ -67,15 +67,15 @@ ODM_SetAntConfig(
 #if (defined(CONFIG_HW_ANTENNA_DIVERSITY))
 
 #define SwAntDivRestAfterLink	ODM_SwAntDivRestAfterLink
-VOID ODM_SwAntDivRestAfterLink(	IN	PDM_ODM_T	pDM_Odm);
+void ODM_SwAntDivRestAfterLink(	IN	PDM_ODM_T	pDM_Odm);
 
-VOID
+void
 ODM_UpdateRxIdleAnt(
 	IN	 	PDM_ODM_T 		pDM_Odm, 
 	IN		 u1Byte			Ant
 );
 
-VOID
+void
 odm_AntselStatistics(
 	IN		PDM_ODM_T		pDM_Odm,
 	IN		u1Byte			antsel_tr_mux,
@@ -85,23 +85,23 @@ odm_AntselStatistics(
 
 #if (RTL8723B_SUPPORT == 1)||(RTL8821A_SUPPORT == 1)
 
-VOID
+void
 ODM_SW_AntDiv_Callback(void *FunctionContext);
 
-VOID
+void
 odm_S0S1_SwAntDivByCtrlFrame(
 	IN		PDM_ODM_T		pDM_Odm,
 	IN		u1Byte			Step
 	);
 
-VOID
+void
 odm_AntselStatisticsOfCtrlFrame(
 	IN		PDM_ODM_T		pDM_Odm,
 	IN		u1Byte			antsel_tr_mux,
 	IN		u4Byte			RxPWDBAll
 );
 
-VOID
+void
 odm_S0S1_SwAntDivByCtrlFrame_ProcessRSSI(
 	IN		PDM_ODM_T				pDM_Odm,
 	IN		PODM_PHY_INFO_T		pPhyInfo,
@@ -110,42 +110,42 @@ odm_S0S1_SwAntDivByCtrlFrame_ProcessRSSI(
 
 #endif
 
-VOID
+void
 ODM_AntDivInit(
 	IN		 PDM_ODM_T		pDM_Odm 
 );
 
-VOID
+void
 ODM_AntDivReset(
 	IN		PDM_ODM_T		pDM_Odm 
 );
 
-VOID
+void
 ODM_AntDiv(
 	IN		PDM_ODM_T		pDM_Odm
 );
 
-VOID
+void
 ODM_Process_RSSIForAntDiv(	
 	IN OUT	PDM_ODM_T					pDM_Odm,
 	IN		PODM_PHY_INFO_T				pPhyInfo,
 	IN		PODM_PACKET_INFO_T			pPktinfo
 );
 
-VOID
+void
 ODM_SetTxAntByTxInfo(
 	IN		PDM_ODM_T		pDM_Odm,
 	IN		pu1Byte			pDesc,
 	IN		u1Byte			macId	
 );
 
-VOID
+void
 ODM_AntDiv_Config(
 	IN		PDM_ODM_T		pDM_Odm
 );
 
 
-VOID
+void
 ODM_UpdateRxIdleAnt_8723B(
 	IN		PDM_ODM_T		pDM_Odm,
 	IN		u1Byte			Ant,
@@ -153,7 +153,7 @@ ODM_UpdateRxIdleAnt_8723B(
 	IN		u4Byte			OptionalAnt
 );
 
-VOID
+void
 ODM_AntDivTimers(
 	IN PDM_ODM_T	pDM_Odm,
 	IN u1Byte			state

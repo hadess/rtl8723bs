@@ -37,47 +37,47 @@
 #define		TxHighPwrLevel_70			8
 #define		TxHighPwrLevel_100			9
 
-VOID 
+void
 odm_DynamicTxPowerInit(
 	IN		void *					pDM_VOID
 	);
 
-VOID
+void
 odm_DynamicTxPowerRestorePowerIndex(
 	IN		void *					pDM_VOID
 	);
 
-VOID 
+void
 odm_DynamicTxPowerNIC(
 	IN		void *					pDM_VOID
 	);
 
-VOID
+void
 odm_DynamicTxPowerSavePowerIndex(
 	IN		void *					pDM_VOID
 	);
 
-VOID
+void
 odm_DynamicTxPowerWritePowerIndex(
 	IN		void *					pDM_VOID, 
 	IN 	u1Byte		Value);
 
-VOID 
+void
 odm_DynamicTxPower_92C(
 	IN		void *					pDM_VOID
 	);
 
-VOID 
+void
 odm_DynamicTxPower_92D(
 	IN		void *					pDM_VOID
 	);
 
-VOID 
+void
 odm_DynamicTxPower(
 	IN		void *					pDM_VOID
 	);
 
-VOID 
+void
 odm_DynamicTxPowerAP(
 	IN		void *					pDM_VOID
 	);

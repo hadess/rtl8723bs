@@ -1625,7 +1625,7 @@ static u1Byte DeltaSwingTableIdx_2GA_N_8188E[] = {0, 0, 0, 2, 2, 3, 3, 4, 4, 4, 
 
 //Remove DIG by yuchen
 
-VOID
+void
 ODM_SetAntenna(
 	IN 	PDM_ODM_T	pDM_Odm,
 	IN	u1Byte		Antenna);
@@ -1634,10 +1634,10 @@ ODM_SetAntenna(
 //Remove BB power saving by Yuchen
 
 #define SwAntDivRestAfterLink	ODM_SwAntDivRestAfterLink
-VOID ODM_SwAntDivRestAfterLink(	IN	PDM_ODM_T	pDM_Odm);
+void ODM_SwAntDivRestAfterLink(	IN	PDM_ODM_T	pDM_Odm);
 
 #define dm_CheckTXPowerTracking 	ODM_TXPowerTrackingCheck
-VOID	
+void	
 ODM_TXPowerTrackingCheck(
 	IN		PDM_ODM_T		pDM_Odm
 	);
@@ -1651,7 +1651,7 @@ ODM_RAStateCheck(
 	);
 
 #define dm_SWAW_RSSI_Check	ODM_SwAntDivChkPerPktRssi
-VOID ODM_SwAntDivChkPerPktRssi(	
+void ODM_SwAntDivChkPerPktRssi(	
 	IN PDM_ODM_T		pDM_Odm,
 	IN u1Byte			StationID,
 	IN PODM_PHY_INFO_T pPhyInfo
@@ -1679,41 +1679,41 @@ Beamforming_GetEntryBeamCapByMacId(
  );
 #endif
 
-VOID
+void
 odm_TXPowerTrackingInit(
 	IN	PDM_ODM_T	pDM_Odm 
 	);
 
-VOID 
+void 
 ODM_DMInit(
  IN	PDM_ODM_T	pDM_Odm
 );
 
-VOID
+void
 ODM_DMReset(
 	IN	PDM_ODM_T	pDM_Odm
 	);
 
-VOID
+void
 ODM_DMWatchdog(
 	IN		PDM_ODM_T			pDM_Odm			// For common use in the future
 	);
 
-VOID
+void
 ODM_CmnInfoInit(
 	IN		PDM_ODM_T		pDM_Odm,
 	IN		ODM_CMNINFO_E	CmnInfo,
 	IN		u4Byte			Value	
 	);
 
-VOID
+void
 ODM_CmnInfoHook(
 	IN		PDM_ODM_T		pDM_Odm,
 	IN		ODM_CMNINFO_E	CmnInfo,
 	IN		void *			pValue	
 	);
 
-VOID
+void
 ODM_CmnInfoPtrArrayHook(
 	IN		PDM_ODM_T		pDM_Odm,
 	IN		ODM_CMNINFO_E	CmnInfo,
@@ -1721,34 +1721,34 @@ ODM_CmnInfoPtrArrayHook(
 	IN		void *			pValue	
 	);
 
-VOID
+void
 ODM_CmnInfoUpdate(
 	IN		PDM_ODM_T		pDM_Odm,
 	IN		u4Byte			CmnInfo,
 	IN		u8Byte			Value	
 	);
 
-VOID 
+void 
 ODM_InitAllTimers(
     IN PDM_ODM_T	pDM_Odm 
     );
 
-VOID 
+void 
 ODM_CancelAllTimers(
     IN PDM_ODM_T    pDM_Odm 
     );
 
-VOID
+void
 ODM_ReleaseAllTimers(
     IN PDM_ODM_T	pDM_Odm 
     );
 
-VOID
+void
 ODM_ResetIQKResult(
     IN PDM_ODM_T pDM_Odm 
     );
 
-VOID
+void
 ODM_AntselStatistics_88C(
 	IN		PDM_ODM_T		pDM_Odm,
 	IN		u1Byte			MacId,
@@ -1756,7 +1756,7 @@ ODM_AntselStatistics_88C(
 	IN		bool			isCCKrate
 );
 
-VOID
+void
 ODM_SingleDualAntennaDefaultSetting(
 	IN		PDM_ODM_T		pDM_Odm
 	);
@@ -1767,7 +1767,7 @@ ODM_SingleDualAntennaDetection(
 	IN		u1Byte			mode
 	);
 
-VOID
+void
 ODM_UpdateNoisyState(
 	IN	PDM_ODM_T	pDM_Odm,
 	IN 	bool 	bNoisyStateFromC2H
@@ -1781,13 +1781,13 @@ Set_RA_DM_Ratrbitmap_by_Noisy(
 	IN	u1Byte			rssi_level
 );
 
-VOID
+void
 ODM_UpdateInitRate(
 	IN	PDM_ODM_T	pDM_Odm,
 	IN	u1Byte		Rate
 	);
 
-VOID
+void
 ODM_InitializeTimer(
 	IN 	PDM_ODM_T			pDM_Odm,
 	IN	PRT_TIMER 			pTimer, 
@@ -1796,17 +1796,17 @@ ODM_InitializeTimer(
 	IN	const char*			szID
 );
 
-VOID
+void
 ODM_CancelAllTimers(
 	IN PDM_ODM_T	pDM_Odm 
 );
 
-VOID
+void
 ODM_ReleaseAllTimers(
 	IN PDM_ODM_T	pDM_Odm 
 );
 
-VOID
+void
 ODM_DynamicARFBSelect(
 	IN		PDM_ODM_T		pDM_Odm,
 	IN 		u1Byte			rate,

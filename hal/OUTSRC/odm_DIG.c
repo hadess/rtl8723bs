@@ -26,7 +26,7 @@
 #define ADAPTIVITY_VERSION	"5.0"
 
 
-VOID
+void
 ODM_ChangeDynamicInitGainThresh(
 	IN	void *		pDM_VOID,
 	IN	u4Byte		DM_Type,
@@ -72,7 +72,7 @@ ODM_ChangeDynamicInitGainThresh(
 	}
 }	// DM_ChangeDynamicInitGainThresh //
 
-VOID
+void
 odm_NHMCounterStatisticsInit(
 	IN		void *			pDM_VOID
 	)
@@ -108,7 +108,7 @@ odm_NHMCounterStatisticsInit(
 	}
 }
 
-VOID
+void
 odm_NHMCounterStatistics(
 	IN		void *			pDM_VOID
 	)
@@ -122,7 +122,7 @@ odm_NHMCounterStatistics(
 	odm_NHMCounterStatisticsReset(pDM_Odm);
 }
 
-VOID
+void
 odm_GetNHMCounterStatistics(
 	IN		void *			pDM_VOID
 	)
@@ -138,7 +138,7 @@ odm_GetNHMCounterStatistics(
 	pDM_Odm->NHM_cnt_0 = (u1Byte)(value32 & bMaskByte0);
 }
 
-VOID
+void
 odm_NHMCounterStatisticsReset(
 	IN		void *			pDM_VOID
 	)
@@ -157,7 +157,7 @@ odm_NHMCounterStatisticsReset(
 	}
 }
 
-VOID
+void
 odm_NHMBBInit(
 	IN		void *			pDM_VOID
 )
@@ -173,7 +173,7 @@ odm_NHMBBInit(
 }
 
 //
-VOID
+void
 odm_NHMBB(
 	IN		void *			pDM_VOID
 )
@@ -247,7 +247,7 @@ odm_NHMBB(
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_DIG, ODM_DBG_LOUD, ("adaptivity_flag = %d\n ", pDM_Odm->adaptivity_flag));
 }
 
-VOID
+void
 odm_SearchPwdBLowerBound(
 	IN		void *		pDM_VOID,
 	IN		u1Byte		IGI_target
@@ -344,7 +344,7 @@ ODM_RT_TRACE(pDM_Odm,ODM_COMP_DIG, ODM_DBG_LOUD, ("IGI = 0x%x, H2L_lb = 0x%x, L2
 		
 }
 
-VOID
+void
 odm_AdaptivityInit(
 	IN 	void *	 	pDM_VOID
 )
@@ -377,7 +377,7 @@ odm_AdaptivityInit(
 }
 
 
-VOID
+void
 odm_Adaptivity(
 	IN		void *			pDM_VOID,
 	IN		u1Byte			IGI
@@ -495,7 +495,7 @@ getIGIForDiff(int value_IGI)
 	}
 }
 
-VOID
+void
 ODM_Write_DIG(
 	IN	void *			pDM_VOID,
 	IN	u1Byte			CurrentIGI
@@ -544,7 +544,7 @@ ODM_Write_DIG(
 	
 }
 
-VOID
+void
 odm_PauseDIG(
 	IN		void *					pDM_VOID,
 	IN		ODM_Pause_DIG_TYPE		PauseType,
@@ -649,7 +649,7 @@ odm_DigAbort(
 	return	false;
 }
 
-VOID
+void
 odm_DIGInit(
 	IN		void *		pDM_VOID
 	)
@@ -699,7 +699,7 @@ odm_DIGInit(
 }
 
 
-VOID 
+void
 odm_DIG(
 	IN		void *		pDM_VOID
 	)
@@ -1049,7 +1049,7 @@ odm_DIG(
 	}
 }
 
-VOID
+void
 odm_DIGbyRSSI_LPS(
 	IN		void *		pDM_VOID
 	)
@@ -1096,7 +1096,7 @@ odm_DIGbyRSSI_LPS(
 	ODM_Write_DIG(pDM_Odm, CurrentIGI);//ODM_Write_DIG(pDM_Odm, pDM_DigTable->CurIGValue);
 }
 
-VOID
+void
 odm_DigForBtHsMode(
 	IN		void *		pDM_VOID
 	)
@@ -1108,7 +1108,7 @@ odm_DigForBtHsMode(
 //3 FASLE ALARM CHECK
 //3============================================================
 
-VOID 
+void
 odm_FalseAlarmCounterStatistics(
 	IN		void *		pDM_VOID
 	)
@@ -1300,7 +1300,7 @@ odm_FalseAlarmCounterStatistics(
 }
 
 
-VOID
+void
 odm_FAThresholdCheck(
 	IN		void *			pDM_VOID,
 	IN		bool			bDFSBand,
@@ -1417,7 +1417,7 @@ odm_ForbiddenIGICheck(
 
 }
 
-VOID
+void
 odm_InbandNoiseCalculate (	
 	IN		void *		pDM_VOID
 	)
@@ -1429,7 +1429,7 @@ odm_InbandNoiseCalculate (
 //3 CCK Packet Detect Threshold
 //3============================================================
 
-VOID
+void
 odm_PauseCCKPacketDetection(
 	IN		void *					pDM_VOID,
 	IN		ODM_Pause_CCKPD_TYPE	PauseType,
@@ -1492,7 +1492,7 @@ odm_PauseCCKPacketDetection(
 }
 
 
-VOID 
+void
 odm_CCKPacketDetectionThresh(
 	IN		void *		pDM_VOID
 	)
@@ -1545,7 +1545,7 @@ odm_CCKPacketDetectionThresh(
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_CCK_PD, ODM_DBG_LOUD, ("odm_CCKPacketDetectionThresh()  CurCCK_CCAThres = 0x%x\n",CurCCK_CCAThres));
 }
 
-VOID
+void
 ODM_Write_CCK_CCA_Thres(
 	IN	void *			pDM_VOID,
 	IN	u1Byte			CurCCK_CCAThres

@@ -236,26 +236,26 @@ void Hal_DetectWoWMode(PADAPTER pAdapter);
 
 /***********************************************************/
 // RTL8192E-MAC Setting
-VOID _InitTxBufferBoundary_8192E(IN PADAPTER Adapter,IN u8 txpktbuf_bndy);
-VOID _InitPageBoundary_8192E(IN PADAPTER Adapter);
-//VOID _InitTransferPageSize_8192E(IN PADAPTER Adapter);
-VOID _InitDriverInfoSize_8192E(IN PADAPTER Adapter,IN u8 drvInfoSize);
-VOID _InitRxSetting_8192E(PADAPTER Adapter);
-VOID _InitRDGSetting_8192E(PADAPTER Adapter);
+void _InitTxBufferBoundary_8192E(IN PADAPTER Adapter,IN u8 txpktbuf_bndy);
+void _InitPageBoundary_8192E(IN PADAPTER Adapter);
+//void _InitTransferPageSize_8192E(IN PADAPTER Adapter);
+void _InitDriverInfoSize_8192E(IN PADAPTER Adapter,IN u8 drvInfoSize);
+void _InitRxSetting_8192E(PADAPTER Adapter);
+void _InitRDGSetting_8192E(PADAPTER Adapter);
 void _InitID_8192E(IN  PADAPTER Adapter);
-VOID _InitNetworkType_8192E(IN  PADAPTER Adapter);
-VOID _InitWMACSetting_8192E(IN PADAPTER Adapter);
-VOID _InitAdaptiveCtrl_8192E(IN  PADAPTER Adapter);
-VOID _InitEDCA_8192E( IN  PADAPTER Adapter);
-VOID _InitRetryFunction_8192E(	IN  PADAPTER Adapter);
-VOID _InitBeaconParameters_8192E(IN  PADAPTER Adapter);
-VOID _InitBeaconMaxError_8192E(
+void _InitNetworkType_8192E(IN  PADAPTER Adapter);
+void _InitWMACSetting_8192E(IN PADAPTER Adapter);
+void _InitAdaptiveCtrl_8192E(IN  PADAPTER Adapter);
+void _InitEDCA_8192E( IN  PADAPTER Adapter);
+void _InitRetryFunction_8192E(	IN  PADAPTER Adapter);
+void _InitBeaconParameters_8192E(IN  PADAPTER Adapter);
+void _InitBeaconMaxError_8192E(
 	IN  PADAPTER	Adapter,
 	IN	bool		InfraMode
 	);
 void _BBTurnOnBlock_8192E(PADAPTER padapter);
 void SetBeaconRelatedRegisters8192E(PADAPTER padapter);
-VOID hal_ReadRFType_8192E(PADAPTER	Adapter);
+void hal_ReadRFType_8192E(PADAPTER	Adapter);
 // RTL8192E-MAC Setting
 /***********************************************************/
 

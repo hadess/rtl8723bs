@@ -186,16 +186,16 @@ enum c2h_id_8192c {
 #define INCLUDE_MULTI_FUNC_BT(_Adapter)	(GET_HAL_DATA(_Adapter)->MultiFunc & RT_MULTI_FUNC_BT)
 #define INCLUDE_MULTI_FUNC_GPS(_Adapter)	(GET_HAL_DATA(_Adapter)->MultiFunc & RT_MULTI_FUNC_GPS)
 
-VOID rtl8192c_FirmwareSelfReset(IN PADAPTER Adapter);
+void rtl8192c_FirmwareSelfReset(IN PADAPTER Adapter);
 int FirmwareDownload92C(IN PADAPTER Adapter);
-VOID InitializeFirmwareVars92C(PADAPTER Adapter);
+void InitializeFirmwareVars92C(PADAPTER Adapter);
 u8 GetEEPROMSize8192C(PADAPTER Adapter);
 void rtl8192c_EfuseParseChnlPlan(PADAPTER padapter, u8 *hwinfo, bool AutoLoadFail);
 
 HAL_VERSION rtl8192c_ReadChipVersion(IN PADAPTER Adapter);
 void rtl8192c_ReadBluetoothCoexistInfo(PADAPTER Adapter, u8 *PROMContent, bool AutoloadFail);
 
-VOID rtl8192c_EfuseParseIDCode(PADAPTER pAdapter, u8 *hwinfo);
+void rtl8192c_EfuseParseIDCode(PADAPTER pAdapter, u8 *hwinfo);
 void rtl8192c_set_hal_ops(struct hal_ops *pHalFunc);
 
 s32 c2h_id_filter_ccx_8192c(u8 *buf);

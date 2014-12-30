@@ -236,7 +236,7 @@ odm_Cfo(
 }
 
 
-VOID
+void
 odm_RxPhyStatus92CSeries_Parsing(
 	IN OUT	PDM_ODM_T					pDM_Odm,
 	OUT		PODM_PHY_INFO_T			pPhyInfo,		
@@ -592,7 +592,7 @@ odm_RxPhyStatus92CSeries_Parsing(
 #endif
 }
 
-VOID
+void
 odm_RxPhyStatusJaguarSeries_Parsing(
 	IN OUT	PDM_ODM_T					pDM_Odm,
 	OUT		PODM_PHY_INFO_T			pPhyInfo,		
@@ -948,7 +948,7 @@ odm_RxPhyStatusJaguarSeries_Parsing(
 
 }
 
-VOID
+void
 odm_Init_RSSIForDM(
 	IN OUT	PDM_ODM_T	pDM_Odm
 	)
@@ -956,7 +956,7 @@ odm_Init_RSSIForDM(
 
 }
 
-VOID
+void
 odm_Process_RSSIForDM(	
 	IN OUT	PDM_ODM_T					pDM_Odm,
 	IN		PODM_PHY_INFO_T				pPhyInfo,
@@ -1160,7 +1160,7 @@ odm_Process_RSSIForDM(
 //
 // Endianness before calling this API
 //
-VOID
+void
 ODM_PhyStatusQuery_92CSeries(
 	IN OUT	PDM_ODM_T					pDM_Odm,
 	OUT		PODM_PHY_INFO_T				pPhyInfo,
@@ -1201,7 +1201,7 @@ ODM_PhyStatusQuery_92CSeries(
 //
 // Endianness before calling this API
 //
-VOID
+void
 ODM_PhyStatusQuery_JaguarSeries(
 	IN OUT	PDM_ODM_T					pDM_Odm,
 	OUT		PODM_PHY_INFO_T			pPhyInfo,
@@ -1218,7 +1218,7 @@ ODM_PhyStatusQuery_JaguarSeries(
 	odm_Process_RSSIForDM(pDM_Odm,pPhyInfo,pPktinfo);
 }
 
-VOID
+void
 ODM_PhyStatusQuery(
 	IN OUT	PDM_ODM_T					pDM_Odm,
 	OUT		PODM_PHY_INFO_T				pPhyInfo,
@@ -1238,7 +1238,7 @@ ODM_PhyStatusQuery(
 }
 	
 // For future use.
-VOID
+void
 ODM_MacStatusQuery(
 	IN OUT	PDM_ODM_T					pDM_Odm,
 	IN 		pu1Byte						pMacStatus,

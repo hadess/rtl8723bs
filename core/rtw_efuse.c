@@ -112,7 +112,7 @@ Efuse_Write1ByteToFakeContent(
  * 11/17/2008 	MHC		Create Version 0.
  *
  *---------------------------------------------------------------------------*/
-VOID
+void
 Efuse_PowerSwitch(
 	IN	PADAPTER	pAdapter,
 	IN	u8		bWrite,
@@ -121,7 +121,7 @@ Efuse_PowerSwitch(
 	pAdapter->HalFunc.EfusePowerSwitch(pAdapter, bWrite, PwrState);
 }
 
-VOID
+void
 BTEfuse_PowerSwitch(
 	IN	PADAPTER	pAdapter,
 	IN	u8		bWrite,
@@ -183,7 +183,7 @@ Efuse_CalculateWordCnts(IN u8	word_en)
 //
 //	Created by Roger, 2008.10.21.
 //
-VOID
+void
 ReadEFuseByte(
 		PADAPTER	Adapter,
 		u16 			_offset, 
@@ -254,7 +254,7 @@ ReadEFuseByte(
 //					write addr must be after sec5.
 //
 
-VOID
+void
 efuse_ReadEFuse(
 	PADAPTER	Adapter,
 	u8		efuseType,
@@ -263,7 +263,7 @@ efuse_ReadEFuse(
 	u8      	*pbuf,
 	IN	bool	bPseudoTest
 	);
-VOID
+void
 efuse_ReadEFuse(
 	PADAPTER	Adapter,
 	u8		efuseType,
@@ -276,7 +276,7 @@ efuse_ReadEFuse(
 	Adapter->HalFunc.ReadEFuse(Adapter, efuseType, _offset, _size_byte, pbuf, bPseudoTest);
 }
 
-VOID
+void
 EFUSE_GetEfuseDefinition(
 	IN		PADAPTER	pAdapter,
 	IN		u8		efuseType,
@@ -957,13 +957,13 @@ exit:
  * 11/11/2008 	MHC		Create Version 0.
  *
  *---------------------------------------------------------------------------*/
-VOID 
+void 
 Efuse_ReadAllMap(
 	IN		PADAPTER	pAdapter, 
 	IN		u8		efuseType,
 	IN OUT	u8		*Efuse,
 	IN		bool		bPseudoTest);
-VOID 
+void 
 Efuse_ReadAllMap(
 	IN		PADAPTER	pAdapter, 
 	IN		u8		efuseType,
@@ -999,7 +999,7 @@ Efuse_ReadAllMap(
  * 11/12/2008 	MHC		Create Version 0.
  *
  *---------------------------------------------------------------------------*/
-static VOID
+static void
 efuse_ShadowRead1Byte(
 	IN	PADAPTER	pAdapter,
 	IN	u16		Offset,
@@ -1012,7 +1012,7 @@ efuse_ShadowRead1Byte(
 }	// EFUSE_ShadowRead1Byte
 
 //---------------Read Two Bytes
-static VOID
+static void
 efuse_ShadowRead2Byte(
 	IN	PADAPTER	pAdapter,
 	IN	u16		Offset,
@@ -1026,7 +1026,7 @@ efuse_ShadowRead2Byte(
 }	// EFUSE_ShadowRead2Byte
 
 //---------------Read Four Bytes
-static VOID
+static void
 efuse_ShadowRead4Byte(
 	IN	PADAPTER	pAdapter,
 	IN	u16		Offset,
@@ -1061,13 +1061,13 @@ efuse_ShadowRead4Byte(
  *
  *---------------------------------------------------------------------------*/
 #ifdef PLATFORM
-static VOID
+static void
 efuse_ShadowWrite1Byte(
 	IN	PADAPTER	pAdapter,
 	IN	u16		Offset,
 	IN 	u8		Value);
 #endif //PLATFORM
-static VOID
+static void
 efuse_ShadowWrite1Byte(
 	IN	PADAPTER	pAdapter,
 	IN	u16		Offset,
@@ -1080,7 +1080,7 @@ efuse_ShadowWrite1Byte(
 }	// efuse_ShadowWrite1Byte
 
 //---------------Write Two Bytes
-static VOID
+static void
 efuse_ShadowWrite2Byte(
 	IN	PADAPTER	pAdapter,
 	IN	u16		Offset,
@@ -1094,7 +1094,7 @@ efuse_ShadowWrite2Byte(
 }	// efuse_ShadowWrite1Byte
 
 //---------------Write Four Bytes
-static VOID
+static void
 efuse_ShadowWrite4Byte(
 	IN	PADAPTER	pAdapter,
 	IN	u16		Offset,
@@ -1197,13 +1197,13 @@ EFUSE_ShadowRead(
  * 11/12/2008 	MHC		Create Version 0.
  *
  *---------------------------------------------------------------------------*/
-VOID
+void
 EFUSE_ShadowWrite(
 	IN	PADAPTER	pAdapter,
 	IN	u8		Type,
 	IN	u16		Offset,
 	IN OUT	u32		Value);
-VOID
+void
 EFUSE_ShadowWrite(
 	IN	PADAPTER	pAdapter,
 	IN	u8		Type,
@@ -1213,11 +1213,11 @@ EFUSE_ShadowWrite(
 	return;
 }	// EFUSE_ShadowWrite
 
-VOID
+void
 Efuse_InitSomeVar(
 	IN		PADAPTER	pAdapter
 	);
-VOID
+void
 Efuse_InitSomeVar(
 	IN		PADAPTER	pAdapter
 	)

@@ -129,7 +129,7 @@ struct mp_tx
 #define s8Byte		s64
 #define ps8Byte 		s64*
 
-typedef VOID (*MPT_WORK_ITEM_HANDLER)(IN void * Adapter);
+typedef void (*MPT_WORK_ITEM_HANDLER)(IN void * Adapter);
 typedef struct _MPT_CONTEXT
 {
 	// Indicate if we have started Mass Production Test.

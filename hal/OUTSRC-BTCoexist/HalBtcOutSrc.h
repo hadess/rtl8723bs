@@ -383,38 +383,38 @@ typedef u4Byte
 	IN 	void *			pBtcContext,
 	IN	u4Byte			RegAddr
 	);
-typedef VOID
+typedef void
 (*BFP_BTC_W1)(
 	IN 	void *			pBtcContext,
 	IN	u4Byte			RegAddr,
 	IN	u1Byte			Data
 	);
-typedef VOID
+typedef void
 (*BFP_BTC_W1_BIT_MASK)(
 	IN 	void *			pBtcContext,
 	IN	u4Byte			regAddr,
 	IN	u1Byte			bitMask,
 	IN	u1Byte			data1b
 	);
-typedef VOID
+typedef void
 (*BFP_BTC_W2)(
 	IN 	void *			pBtcContext,
 	IN	u4Byte			RegAddr,
 	IN	u2Byte			Data
 	);
-typedef VOID
+typedef void
 (*BFP_BTC_W4)(
 	IN 	void *			pBtcContext,
 	IN	u4Byte			RegAddr,
 	IN	u4Byte			Data
 	);
-typedef VOID
+typedef void
 (*BFP_BTC_LOCAL_REG_W1)(
 	IN 	void *			pBtcContext,
 	IN	u4Byte			RegAddr,
 	IN	u1Byte			Data
 	);
-typedef VOID
+typedef void
 (*BFP_BTC_SET_BB_REG)(
 	IN 	void *			pBtcContext,
 	IN	u4Byte			RegAddr,
@@ -427,7 +427,7 @@ typedef u4Byte
 	IN	u4Byte			RegAddr,
 	IN	u4Byte			BitMask
 	);
-typedef VOID
+typedef void
 (*BFP_BTC_SET_RF_REG)(	
 	IN 	void *			pBtcContext,
 	IN	u1Byte			eRFPath,
@@ -442,7 +442,7 @@ typedef u4Byte
 	IN	u4Byte			RegAddr,
 	IN	u4Byte			BitMask
 	);
-typedef VOID
+typedef void
 (*BFP_BTC_FILL_H2C)(
 	IN 	void *			pBtcContext,
 	IN	u1Byte 			elementId,
@@ -463,7 +463,7 @@ typedef	u8
 	IN	u1Byte			setType,
 	OUT	void *			pInBuf
 	);
-typedef VOID
+typedef void
 (*BFP_BTC_SET_BT_REG)(
 	IN 	void *			pBtcContext,
 	IN	u1Byte			regType,
@@ -476,7 +476,7 @@ typedef u4Byte
 	IN	u1Byte			regType,
 	IN	u4Byte			offset
 	);
-typedef VOID
+typedef void
 (*BFP_BTC_DISP_DBG_MSG)(
 	IN	void *			pBtCoexist,
 	IN	u1Byte			dispType
@@ -609,126 +609,126 @@ u8
 EXhalbtcoutsrc_InitlizeVariables(
 	IN	void *		Adapter	
 	);
-VOID
+void
 EXhalbtcoutsrc_PowerOnSetting(
 	IN	PBTC_COEXIST		pBtCoexist
 	);
-VOID
+void
 EXhalbtcoutsrc_InitHwConfig(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	u8			bWifiOnly
 	);
-VOID
+void
 EXhalbtcoutsrc_InitCoexDm(
 	IN	PBTC_COEXIST		pBtCoexist
 	);
-VOID
+void
 EXhalbtcoutsrc_IpsNotify(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	u1Byte			type
 	);
-VOID
+void
 EXhalbtcoutsrc_LpsNotify(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	u1Byte			type
 	);
-VOID
+void
 EXhalbtcoutsrc_ScanNotify(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	u1Byte			type
 	);
-VOID
+void
 EXhalbtcoutsrc_ConnectNotify(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	u1Byte			action
 	);
-VOID
+void
 EXhalbtcoutsrc_MediaStatusNotify(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	RT_MEDIA_STATUS	mediaStatus
 	);
-VOID
+void
 EXhalbtcoutsrc_SpecialPacketNotify(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	u1Byte			pktType
 	);
-VOID
+void
 EXhalbtcoutsrc_BtInfoNotify(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	pu1Byte			tmpBuf,
 	IN	u1Byte			length
 	);
-VOID
+void
 EXhalbtcoutsrc_RfStatusNotify(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	u1Byte 				type
 	);
-VOID
+void
 EXhalbtcoutsrc_StackOperationNotify(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	u1Byte			type
 	);
-VOID
+void
 EXhalbtcoutsrc_HaltNotify(
 	IN	PBTC_COEXIST		pBtCoexist
 	);
-VOID
+void
 EXhalbtcoutsrc_PnpNotify(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	u1Byte			pnpState
 	);
-VOID
+void
 EXhalbtcoutsrc_CoexDmSwitch(
 	IN	PBTC_COEXIST		pBtCoexist
 	);
-VOID
+void
 EXhalbtcoutsrc_Periodical(
 	IN	PBTC_COEXIST		pBtCoexist
 	);
-VOID
+void
 EXhalbtcoutsrc_DbgControl(
 	IN	PBTC_COEXIST			pBtCoexist,
 	IN	u1Byte				opCode,
 	IN	u1Byte				opLen,
 	IN	pu1Byte				pData
 	);
-VOID
+void
 EXhalbtcoutsrc_StackUpdateProfileInfo(
-	VOID
+	void
 	);
-VOID
+void
 EXhalbtcoutsrc_SetHciVersion(
 	IN	u2Byte	hciVersion
 	);
-VOID
+void
 EXhalbtcoutsrc_SetBtPatchVersion(
 	IN	u2Byte	btHciVersion,
 	IN	u2Byte	btPatchVersion
 	);
-VOID
+void
 EXhalbtcoutsrc_UpdateMinBtRssi(
 	IN	s1Byte	btRssi
 	);
 #if 0
-VOID
+void
 EXhalbtcoutsrc_SetBtExist(
 	IN	bool		bBtExist
 	);
 #endif
-VOID
+void
 EXhalbtcoutsrc_SetChipType(
 	IN	u1Byte		chipType
 	);
-VOID
+void
 EXhalbtcoutsrc_SetAntNum(
 	IN	u1Byte		type,
 	IN	u1Byte		antNum
 	);
-VOID
+void
 EXhalbtcoutsrc_SetSingleAntPath(
 	IN	u1Byte		singleAntPath
 	);
-VOID
+void
 EXhalbtcoutsrc_DisplayBtCoexInfo(
 	IN	PBTC_COEXIST		pBtCoexist
 	);

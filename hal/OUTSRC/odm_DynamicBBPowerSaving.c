@@ -24,7 +24,7 @@
 
 #include "odm_precomp.h"
 
-VOID 
+void
 odm_DynamicBBPowerSavingInit(
 	IN		void *					pDM_VOID
 	)
@@ -41,7 +41,7 @@ odm_DynamicBBPowerSavingInit(
 }
 
 
-VOID
+void
 odm_DynamicBBPowerSaving(
 	IN		void *					pDM_VOID
 	)
@@ -68,7 +68,7 @@ odm_DynamicBBPowerSaving(
 	}
 }
 
-VOID
+void
 odm_1R_CCA(
 	IN		void *					pDM_VOID
 	)

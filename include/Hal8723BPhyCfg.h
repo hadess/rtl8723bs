@@ -45,7 +45,7 @@ PHY_QueryBBReg_8723B(
 	IN	u32		BitMask
 	);
 
-VOID
+void
 PHY_SetBBReg_8723B(
 	IN	PADAPTER	Adapter,
 	IN	u32		RegAddr,
@@ -61,7 +61,7 @@ PHY_QueryRFReg_8723B(
 	IN	u32				BitMask
 	);
 
-VOID
+void
 PHY_SetRFReg_8723B(
 	IN	PADAPTER			Adapter,
 	IN	u8				eRFPath,
@@ -84,7 +84,7 @@ PHY_ConfigRFWithParaFile_8723B(
 	RF_PATH				eRFPath
 );
 
-VOID
+void
 PHY_SetTxPowerIndex_8723B(
 	IN	PADAPTER			Adapter,
 	IN	u32					PowerIndex,
@@ -101,32 +101,32 @@ PHY_GetTxPowerIndex_8723B(
 	IN	u8					Channel
 	);
 
-VOID	
+void	
 PHY_GetTxPowerLevel8723B(			
 	IN	PADAPTER		Adapter,
 	OUT s32*		    		powerlevel	
 	);
 
-VOID
+void
 PHY_SetTxPowerLevel8723B(
 	IN	PADAPTER		Adapter,
 	IN	u8			channel
 	);
 
-VOID
+void
 PHY_SetBWMode8723B(
 	IN	PADAPTER				Adapter,
 	IN	CHANNEL_WIDTH			Bandwidth,	// 20M or 40M
 	IN	unsigned char				Offset		// Upper, Lower, or Don't care
 );
 
-VOID
+void
 PHY_SwChnl8723B(	// Call after initialization
 	IN	PADAPTER	Adapter,
 	IN	u8		channel
 	);
 
-VOID
+void
 PHY_SetSwChnlBWMode8723B(
 	IN	PADAPTER			Adapter,
 	IN	u8					channel,
@@ -135,7 +135,7 @@ PHY_SetSwChnlBWMode8723B(
 	IN	u8					Offset80
 );
 
-VOID PHY_SetRFPathSwitch_8723B(
+void PHY_SetRFPathSwitch_8723B(
 	IN	PADAPTER	pAdapter,
 	IN	bool		bMain
 	);

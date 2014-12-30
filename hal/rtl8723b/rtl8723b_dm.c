@@ -36,7 +36,7 @@
 //============================================================
 
 
-static VOID
+static void
 dm_CheckProtection(
 	IN	PADAPTER	Adapter
 	)
@@ -63,7 +63,7 @@ dm_CheckProtection(
 #endif
 }
 
-static VOID
+static void
 dm_CheckStatistics(
 	IN	PADAPTER	Adapter
 	)
@@ -372,7 +372,7 @@ IN	PADAPTER	pAdapter
 	//ODM_RT_TRACE(pDM_Odm,COMP_DIG, DBG_LOUD, ("MinUndecoratedPWDBForDM =%d\n",pHalData->MinUndecoratedPWDBForDM));
 }
 
-VOID
+void
 rtl8723b_HalDmWatchDog(
 	IN	PADAPTER	Adapter
 	)

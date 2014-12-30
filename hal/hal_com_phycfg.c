@@ -168,7 +168,7 @@ PHY_GetTxPowerByRateBase(
 	return value;
 }
 
-VOID
+void
 phy_SetTxPowerByRateBase(
 	IN	PADAPTER		Adapter,
 	IN	u8				Band,
@@ -267,7 +267,7 @@ phy_SetTxPowerByRateBase(
 	}
 }
 
-VOID
+void
 phy_StoreTxPowerByRateBaseOld(	
 	IN	PADAPTER	pAdapter
 	)
@@ -310,7 +310,7 @@ phy_StoreTxPowerByRateBaseOld(
 	phy_SetTxPowerByRateBase( pAdapter, BAND_ON_2_4G, ODM_RF_PATH_B, HT_MCS8_MCS15, RF_2TX, base );
 }
 
-VOID
+void
 phy_StoreTxPowerByRateBase(	
 	IN	PADAPTER	pAdapter
 	)
@@ -430,7 +430,7 @@ PHY_GetRateSectionIndexOfTxPowerByRate(
 	return index;
 }
 
-VOID
+void
 PHY_GetRateValuesOfTxPowerByRate(
 	IN	PADAPTER	pAdapter,
 	IN	u32			RegAddr,
@@ -912,7 +912,7 @@ PHY_StoreTxPowerByRateOld(
 	//	pHalData->MCSTxPowerLevelOriginalOffset[pHalData->pwrGroupCnt][0]);
 }
 
-VOID
+void
 PHY_InitTxPowerByRate(
 	IN	PADAPTER	pAdapter
 	)
@@ -936,7 +936,7 @@ PHY_InitTxPowerByRate(
 	}
 }
 
-VOID
+void
 PHY_StoreTxPowerByRate(
 	IN	PADAPTER	pAdapter,
 	IN	u32			Band,
@@ -968,7 +968,7 @@ PHY_StoreTxPowerByRate(
 	
 }
 
-VOID 
+void 
 phy_ConvertTxPowerByRateByBase(
 	IN	u32*		pData,
 	IN	u8			Start,
@@ -1004,7 +1004,7 @@ phy_ConvertTxPowerByRateByBase(
 }
 
 
-VOID
+void
 PHY_ConvertTxPowerByRateInDbmToRelativeValuesOld(
 	IN	PADAPTER	pAdapter
 	)
@@ -1073,7 +1073,7 @@ PHY_ConvertTxPowerByRateInDbmToRelativeValuesOld(
 	//DBG_871X("<===PHY_ConvertTxPowerByRateInDbmToRelativeValuesOld()\n" );
 }
 
-VOID
+void
 phy_ConvertTxPowerByRateInDbmToRelativeValues(
 	IN	PADAPTER	pAdapter
 	)
@@ -1176,7 +1176,7 @@ phy_ConvertTxPowerByRateInDbmToRelativeValues(
   * This function must be called if the value in the PHY_REG_PG.txt(or header)
   * is exact dBm values
   */
-VOID
+void
 PHY_TxPowerByRateConfiguration(
 	IN  PADAPTER			pAdapter
 	)
@@ -1187,7 +1187,7 @@ PHY_TxPowerByRateConfiguration(
 	phy_ConvertTxPowerByRateInDbmToRelativeValues( pAdapter );
 }
 
-VOID 
+void 
 PHY_SetTxPowerIndexByRateSection(
 	IN	PADAPTER		pAdapter,
 	IN	u8				RFPath,	
@@ -1666,7 +1666,7 @@ PHY_GetTxPowerByRate(
 
 }
 
-VOID
+void
 PHY_SetTxPowerByRate( 
 	IN	PADAPTER	pAdapter, 
 	IN	u8			Band, 
@@ -1703,7 +1703,7 @@ PHY_SetTxPowerByRate(
 	pHalData->TxPwrByRateOffset[Band][RFPath][TxNum][rateIndex] = Value;
 }
 
-VOID
+void
 PHY_SetTxPowerLevelByPath(
 	IN	PADAPTER	Adapter,
 	IN	u8			channel,
@@ -1740,7 +1740,7 @@ PHY_SetTxPowerLevelByPath(
 	}
 }
 
-VOID
+void
 PHY_SetTxPowerIndexByRateArray(
 	IN	PADAPTER			pAdapter,
 	IN 	u8					RFPath,
@@ -2010,7 +2010,7 @@ PHY_GetTxPowerLimit(
 	return powerLimit;
 }
 
-VOID
+void
 phy_CrossReferenceHTAndVHTTxPowerLimit(
 	IN	PADAPTER			pAdapter
 	)
@@ -2088,7 +2088,7 @@ phy_CrossReferenceHTAndVHTTxPowerLimit(
 	}
 }
 
-VOID 
+void 
 PHY_ConvertTxPowerLimitToPowerIndex(
 	IN	PADAPTER			Adapter
 	)
@@ -2196,7 +2196,7 @@ PHY_ConvertTxPowerLimitToPowerIndex(
 	//DBG_871X("<===== PHY_ConvertTxPowerLimitToPowerIndex()\n" );
 }
 
-VOID
+void
 PHY_InitTxPowerLimit(
 	IN	PADAPTER		Adapter
 	)
@@ -2227,7 +2227,7 @@ PHY_InitTxPowerLimit(
 	//DBG_871X("<===== PHY_InitTxPowerLimit()!\n" );
 }
 
-VOID
+void
 PHY_SetTxPowerLimit(
 	IN	PADAPTER		Adapter,
 	IN	u8				*Regulation,
@@ -2369,7 +2369,7 @@ PHY_GetTxPowerIndex(
 	return txPower;
 }
 
-VOID
+void
 PHY_SetTxPowerIndex(
 	IN	PADAPTER		pAdapter,
 	IN	u32				PowerIndex,
@@ -2404,7 +2404,7 @@ PHY_SetTxPowerIndex(
 	}
 }
 
-VOID
+void
 Hal_ChannelPlanToRegulation(
 	IN	PADAPTER		Adapter,
 	IN	u16				ChannelPlan
@@ -2804,7 +2804,7 @@ phy_ConfigBBWithParaFile(
 	return rtStatus;
 }
 
-VOID
+void
 phy_DecryptBBPgParaFile(
 	PADAPTER		Adapter,
 	char*			buffer
@@ -3346,7 +3346,7 @@ PHY_ConfigRFWithParaFile(
 	return rtStatus;
 }
 
-VOID
+void
 initDeltaSwingIndexTables(
 	PADAPTER	Adapter, 
 	char*		Band, 

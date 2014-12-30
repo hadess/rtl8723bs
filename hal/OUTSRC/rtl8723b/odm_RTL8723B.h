@@ -22,7 +22,7 @@
 
 #define	DM_DIG_MIN_NIC_8723	0x1C
 
-VOID 
+void 
 odm_DIG_8723(IN		PDM_ODM_T		pDM_Odm);
 
 s1Byte

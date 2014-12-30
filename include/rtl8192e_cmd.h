@@ -200,7 +200,7 @@ void C2HContentParsing8192E(
 	IN	u1Byte			c2hCmdLen,
 	IN	pu1Byte 			tmpBuf
 );
-VOID
+void
 C2HPacketHandler_8192E(
 	IN	PADAPTER		Adapter,
 	IN	pu1Byte			Buffer,

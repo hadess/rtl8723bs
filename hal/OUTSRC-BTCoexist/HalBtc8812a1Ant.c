@@ -244,7 +244,7 @@ halbtc8812a1ant_WifiRssiState(
 	return wifiRssiState;
 }
 
-VOID
+void
 halbtc8812a1ant_UpdateRaMask(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	bool				bForceExec,
@@ -268,7 +268,7 @@ halbtc8812a1ant_UpdateRaMask(
 	pCoexDm->preRaMask = pCoexDm->curRaMask;
 }
 
-VOID
+void
 halbtc8812a1ant_MonitorBtCtr(
 	IN	PBTC_COEXIST		pBtCoexist
 	)
@@ -302,7 +302,7 @@ halbtc8812a1ant_MonitorBtCtr(
 	pBtCoexist->fBtcWrite1Byte(pBtCoexist, 0x76e, 0xc);
 }
 
-VOID
+void
 halbtc8812a1ant_QueryBtInfo(
 	IN	PBTC_COEXIST		pBtCoexist
 	)
@@ -326,7 +326,7 @@ halbtc8812a1ant_QueryBtInfo(
 	pCoexSta->btInfoQueryCnt++;
 }
 
-VOID
+void
 halbtc8812a1ant_UpdateBtLinkInfo(
 	IN	PBTC_COEXIST		pBtCoexist
 	)
@@ -586,7 +586,7 @@ halbtc8812a1ant_ActionAlgorithm(
 	return algorithm;
 }
 
-VOID
+void
 halbtc8812a1ant_SetBtAutoReport(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	bool			bEnableAutoReport
@@ -594,7 +594,7 @@ halbtc8812a1ant_SetBtAutoReport(
 {
 }
 
-VOID
+void
 halbtc8812a1ant_BtAutoReport(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	bool			bForceExec,
@@ -618,7 +618,7 @@ halbtc8812a1ant_BtAutoReport(
 	pCoexDm->bPreBtAutoReport = pCoexDm->bCurBtAutoReport;
 }
 
-VOID
+void
 halbtc8812a1ant_SetSwPenaltyTxRateAdaptive(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	bool			bLowPenaltyRa
@@ -642,7 +642,7 @@ halbtc8812a1ant_SetSwPenaltyTxRateAdaptive(
 	pBtCoexist->fBtcWrite1Byte(pBtCoexist, 0x4fd, tmpU1);
 }
 
-VOID
+void
 halbtc8812a1ant_LowPenaltyRa(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	bool			bForceExec,
@@ -667,7 +667,7 @@ halbtc8812a1ant_LowPenaltyRa(
 	pCoexDm->bPreLowPenaltyRa = pCoexDm->bCurLowPenaltyRa;
 }
 
-VOID
+void
 halbtc8812a1ant_SetCoexTable(
 	IN	PBTC_COEXIST	pBtCoexist,
 	IN	u4Byte		val0x6c0,
@@ -689,7 +689,7 @@ halbtc8812a1ant_SetCoexTable(
 	pBtCoexist->fBtcWrite1Byte(pBtCoexist, 0x6cc, val0x6cc);
 }
 
-VOID
+void
 halbtc8812a1ant_CoexTable(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	bool			bForceExec,
@@ -727,7 +727,7 @@ halbtc8812a1ant_CoexTable(
 	pCoexDm->preVal0x6cc = pCoexDm->curVal0x6cc;
 }
 
-VOID
+void
 halbtc8812a1ant_CoexTableWithType(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	bool				bForceExec,
@@ -765,7 +765,7 @@ halbtc8812a1ant_CoexTableWithType(
 	}
 }
 
-VOID
+void
 halbtc8812a1ant_SetFwIgnoreWlanAct(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	bool			bEnable
@@ -788,7 +788,7 @@ halbtc8812a1ant_SetFwIgnoreWlanAct(
 	pBtCoexist->fBtcSet(pBtCoexist, BTC_SET_ACT_CTRL_BT_COEX, (void *)&buf[0]);	
 }
 
-VOID
+void
 halbtc8812a1ant_IgnoreWlanAct(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	bool			bForceExec,
@@ -812,7 +812,7 @@ halbtc8812a1ant_IgnoreWlanAct(
 	pCoexDm->bPreIgnoreWlanAct = pCoexDm->bCurIgnoreWlanAct;
 }
 
-VOID
+void
 halbtc8812a1ant_SetFwPstdma(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	u1Byte			byte1,
@@ -843,7 +843,7 @@ halbtc8812a1ant_SetFwPstdma(
 	pBtCoexist->fBtcFillH2c(pBtCoexist, 0x60, 5, H2C_Parameter);
 }
 
-VOID
+void
 halbtc8812a1ant_SetLpsRpwm(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	u1Byte			lpsVal,
@@ -857,7 +857,7 @@ halbtc8812a1ant_SetLpsRpwm(
 	pBtCoexist->fBtcSet(pBtCoexist, BTC_SET_U1_RPWM_VAL, &rpwm);
 }
 
-VOID
+void
 halbtc8812a1ant_LpsRpwm(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	bool			bForceExec,
@@ -889,7 +889,7 @@ halbtc8812a1ant_LpsRpwm(
 	pCoexDm->preRpwm = pCoexDm->curRpwm;
 }
 
-VOID
+void
 halbtc8812a1ant_SetAntPath(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	u1Byte				antPosType,
@@ -936,7 +936,7 @@ halbtc8812a1ant_SetAntPath(
 	}
 }
 
-VOID
+void
 halbtc8812a1ant_PsTdma(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	bool			bForceExec,
@@ -1118,7 +1118,7 @@ halbtc8812a1ant_PsTdma(
 	pCoexDm->prePsTdma = pCoexDm->curPsTdma;
 }
 
-VOID
+void
 halbtc8812a1ant_CoexAllOff(
 	IN	PBTC_COEXIST		pBtCoexist
 	)
@@ -1181,7 +1181,7 @@ halbtc8812a1ant_IsCommonAction(
 }
 
 
-VOID
+void
 halbtc8812a1ant_TdmaDurationAdjustForAcl(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	u1Byte				wifiStatus
@@ -1398,7 +1398,7 @@ halbtc8812a1ant_PsTdmaTypeByWifiRssi(
 	return psTdmaType;
 }
 
-VOID
+void
 halbtc8812a1ant_PsTdmaCheckForPowerSaveState(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	bool			bNewPsState
@@ -1434,7 +1434,7 @@ halbtc8812a1ant_PsTdmaCheckForPowerSaveState(
 	}
 }
 
-VOID
+void
 halbtc8812a1ant_PowerSaveState(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	u1Byte				psType,
@@ -1471,7 +1471,7 @@ halbtc8812a1ant_PowerSaveState(
 }
 
 
-VOID
+void
 halbtc8812a1ant_CoexUnder5G(
 	IN	PBTC_COEXIST		pBtCoexist
 	)
@@ -1483,7 +1483,7 @@ halbtc8812a1ant_CoexUnder5G(
 	halbtc8812a1ant_CoexTableWithType(pBtCoexist, NORMAL_EXEC, 0);
 }
 
-VOID
+void
 halbtc8812a1ant_ActionWifiOnly(
 	IN	PBTC_COEXIST		pBtCoexist
 	)
@@ -1492,7 +1492,7 @@ halbtc8812a1ant_ActionWifiOnly(
 	halbtc8812a1ant_PsTdma(pBtCoexist, NORMAL_EXEC, false, 9);	
 }
 
-VOID
+void
 halbtc8812a1ant_MonitorBtEnableDisable(
 	IN 	PBTC_COEXIST		pBtCoexist
 	)
@@ -1568,14 +1568,14 @@ halbtc8812a1ant_MonitorBtEnableDisable(
 //=============================================
 
 // SCO only or SCO+PAN(HS)
-VOID
+void
 halbtc8812a1ant_ActionSco(
 	IN	PBTC_COEXIST		pBtCoexist
 	)
 {
 }
 
-VOID
+void
 halbtc8812a1ant_ActionHid(
 	IN	PBTC_COEXIST		pBtCoexist
 	)
@@ -1583,21 +1583,21 @@ halbtc8812a1ant_ActionHid(
 }
 
 //A2DP only / PAN(EDR) only/ A2DP+PAN(HS)
-VOID
+void
 halbtc8812a1ant_ActionA2dp(
 	IN	PBTC_COEXIST		pBtCoexist
 	)
 {
 }
 
-VOID
+void
 halbtc8812a1ant_ActionA2dpPanHs(
 	IN	PBTC_COEXIST		pBtCoexist
 	)
 {
 }
 
-VOID
+void
 halbtc8812a1ant_ActionPanEdr(
 	IN	PBTC_COEXIST		pBtCoexist
 	)
@@ -1605,7 +1605,7 @@ halbtc8812a1ant_ActionPanEdr(
 }
 
 //PAN(HS) only
-VOID
+void
 halbtc8812a1ant_ActionPanHs(
 	IN	PBTC_COEXIST		pBtCoexist
 	)
@@ -1613,14 +1613,14 @@ halbtc8812a1ant_ActionPanHs(
 }
 
 //PAN(EDR)+A2DP
-VOID
+void
 halbtc8812a1ant_ActionPanEdrA2dp(
 	IN	PBTC_COEXIST		pBtCoexist
 	)
 {
 }
 
-VOID
+void
 halbtc8812a1ant_ActionPanEdrHid(
 	IN	PBTC_COEXIST		pBtCoexist
 	)
@@ -1628,14 +1628,14 @@ halbtc8812a1ant_ActionPanEdrHid(
 }
 
 // HID+A2DP+PAN(EDR)
-VOID
+void
 halbtc8812a1ant_ActionHidA2dpPanEdr(
 	IN	PBTC_COEXIST		pBtCoexist
 	)
 {
 }
 
-VOID
+void
 halbtc8812a1ant_ActionHidA2dp(
 	IN	PBTC_COEXIST		pBtCoexist
 	)
@@ -1648,7 +1648,7 @@ halbtc8812a1ant_ActionHidA2dp(
 //
 //=============================================
 
-VOID
+void
 halbtc8812a1ant_ActionHs(
 	IN	PBTC_COEXIST		pBtCoexist
 	)
@@ -1674,7 +1674,7 @@ halbtc8812a1ant_ActionHs(
 	}
 }
 
-VOID
+void
 halbtc8812a1ant_ActionBtInquiry(
 	IN	PBTC_COEXIST		pBtCoexist
 	)
@@ -1706,7 +1706,7 @@ halbtc8812a1ant_ActionBtInquiry(
 	}
 }
 
-VOID
+void
 halbtc8812a1ant_ActionBtScoHidOnlyBusy(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	u1Byte				wifiStatus
@@ -1721,7 +1721,7 @@ halbtc8812a1ant_ActionBtScoHidOnlyBusy(
 		halbtc8812a1ant_CoexTableWithType(pBtCoexist, NORMAL_EXEC, 2);
 }
 
-VOID
+void
 halbtc8812a1ant_ActionWifiConnectedBtAclBusy(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	u1Byte				wifiStatus
@@ -1760,7 +1760,7 @@ halbtc8812a1ant_ActionWifiConnectedBtAclBusy(
 	halbtc8812a1ant_CoexTableWithType(pBtCoexist, NORMAL_EXEC, 1);
 }
 
-VOID
+void
 halbtc8812a1ant_ActionWifiNotConnected(
 	IN	PBTC_COEXIST		pBtCoexist
 	)
@@ -1773,7 +1773,7 @@ halbtc8812a1ant_ActionWifiNotConnected(
 	halbtc8812a1ant_CoexTableWithType(pBtCoexist, NORMAL_EXEC, 0);
 }
 
-VOID
+void
 halbtc8812a1ant_ActionWifiNotConnectedAssoAuthScan(
 	IN	PBTC_COEXIST		pBtCoexist
 	)
@@ -1785,7 +1785,7 @@ halbtc8812a1ant_ActionWifiNotConnectedAssoAuthScan(
 	halbtc8812a1ant_CoexTableWithType(pBtCoexist, NORMAL_EXEC, 2);
 }
 
-VOID
+void
 halbtc8812a1ant_ActionWifiConnectedScan(
 	IN	PBTC_COEXIST		pBtCoexist
 	)
@@ -1815,7 +1815,7 @@ halbtc8812a1ant_ActionWifiConnectedScan(
 	}
 }
 
-VOID
+void
 halbtc8812a1ant_ActionWifiConnectedSpecialPacket(
 	IN	PBTC_COEXIST		pBtCoexist
 	)
@@ -1839,7 +1839,7 @@ halbtc8812a1ant_ActionWifiConnectedSpecialPacket(
 	}
 }
 
-VOID
+void
 halbtc8812a1ant_ActionWifiConnected(
 	IN	PBTC_COEXIST		pBtCoexist
 	)
@@ -1934,7 +1934,7 @@ halbtc8812a1ant_ActionWifiConnected(
 	}
 }
 
-VOID
+void
 halbtc8812a1ant_RunSwCoexistMechanism(
 	IN	PBTC_COEXIST		pBtCoexist
 	)
@@ -2004,7 +2004,7 @@ halbtc8812a1ant_RunSwCoexistMechanism(
 	}
 }
 
-VOID
+void
 halbtc8812a1ant_RunCoexistMechanism(
 	IN	PBTC_COEXIST		pBtCoexist
 	)
@@ -2075,7 +2075,7 @@ halbtc8812a1ant_RunCoexistMechanism(
 	}
 }
 
-VOID
+void
 halbtc8812a1ant_InitCoexDm(
 	IN	PBTC_COEXIST		pBtCoexist
 	)
@@ -2091,14 +2091,14 @@ halbtc8812a1ant_InitCoexDm(
 //============================================================
 // extern function start with EXhalbtc8812a1ant_
 //============================================================
-VOID
+void
 EXhalbtc8812a1ant_PowerOnSetting(
 	IN	PBTC_COEXIST		pBtCoexist
 	)
 {
 }
 
-VOID
+void
 EXhalbtc8812a1ant_InitHwConfig(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	bool				bWifiOnly
@@ -2145,7 +2145,7 @@ EXhalbtc8812a1ant_InitHwConfig(
 	pBtCoexist->fBtcWrite1Byte(pBtCoexist, 0x7, u1Tmp);
 }
 
-VOID
+void
 EXhalbtc8812a1ant_InitCoexDm(
 	IN	PBTC_COEXIST		pBtCoexist
 	)
@@ -2157,7 +2157,7 @@ EXhalbtc8812a1ant_InitCoexDm(
 	halbtc8812a1ant_InitCoexDm(pBtCoexist);
 }
 
-VOID
+void
 EXhalbtc8812a1ant_DisplayCoexInfo(
 	IN	PBTC_COEXIST		pBtCoexist
 	)
@@ -2362,7 +2362,7 @@ EXhalbtc8812a1ant_DisplayCoexInfo(
 }
 
 
-VOID
+void
 EXhalbtc8812a1ant_IpsNotify(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	u1Byte			type
@@ -2387,7 +2387,7 @@ EXhalbtc8812a1ant_IpsNotify(
 	}
 }
 
-VOID
+void
 EXhalbtc8812a1ant_LpsNotify(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	u1Byte			type
@@ -2408,7 +2408,7 @@ EXhalbtc8812a1ant_LpsNotify(
 	}
 }
 
-VOID
+void
 EXhalbtc8812a1ant_ScanNotify(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	u1Byte			type
@@ -2460,7 +2460,7 @@ EXhalbtc8812a1ant_ScanNotify(
 	}
 }
 
-VOID
+void
 EXhalbtc8812a1ant_ConnectNotify(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	u1Byte			type
@@ -2506,7 +2506,7 @@ EXhalbtc8812a1ant_ConnectNotify(
 	}
 }
 
-VOID
+void
 EXhalbtc8812a1ant_MediaStatusNotify(
 	IN	PBTC_COEXIST			pBtCoexist,
 	IN	u1Byte				type
@@ -2560,7 +2560,7 @@ EXhalbtc8812a1ant_MediaStatusNotify(
 	pBtCoexist->fBtcSet(pBtCoexist, BTC_SET_ACT_CTRL_BT_COEX, (void *)&buf[0]);		
 }
 
-VOID
+void
 EXhalbtc8812a1ant_SpecialPacketNotify(
 	IN	PBTC_COEXIST			pBtCoexist,
 	IN	u1Byte				type
@@ -2593,7 +2593,7 @@ EXhalbtc8812a1ant_SpecialPacketNotify(
 	}
 }
 
-VOID
+void
 EXhalbtc8812a1ant_BtInfoNotify(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	pu1Byte			tmpBuf,
@@ -2809,7 +2809,7 @@ EXhalbtc8812a1ant_BtInfoNotify(
 	halbtc8812a1ant_RunCoexistMechanism(pBtCoexist);
 }
 
-VOID
+void
 EXhalbtc8812a1ant_HaltNotify(
 	IN	PBTC_COEXIST			pBtCoexist
 	)
@@ -2822,7 +2822,7 @@ EXhalbtc8812a1ant_HaltNotify(
 	EXhalbtc8812a1ant_MediaStatusNotify(pBtCoexist, BTC_MEDIA_DISCONNECT);
 }
 
-VOID
+void
 EXhalbtc8812a1ant_PnpNotify(
 	IN	PBTC_COEXIST			pBtCoexist,
 	IN	u1Byte				pnpState
@@ -2843,7 +2843,7 @@ EXhalbtc8812a1ant_PnpNotify(
 	}
 }
 
-VOID
+void
 EXhalbtc8812a1ant_Periodical(
 	IN	PBTC_COEXIST			pBtCoexist
 	)
@@ -2875,7 +2875,7 @@ EXhalbtc8812a1ant_Periodical(
 	halbtc8812a1ant_MonitorBtEnableDisable(pBtCoexist);
 }
 
-VOID
+void
 EXhalbtc8812a1ant_DbgControl(
 	IN	PBTC_COEXIST			pBtCoexist,
 	IN	u1Byte				opCode,

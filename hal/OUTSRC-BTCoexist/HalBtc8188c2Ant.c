@@ -202,7 +202,7 @@ halbtc8188c2ant_ActionAlgorithm(
 	return algorithm;
 }
 
-VOID
+void
 halbtc8188c2ant_SetFwBalance(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	bool			bBalanceOn,
@@ -232,7 +232,7 @@ halbtc8188c2ant_SetFwBalance(
 	pBtCoexist->fBtcFillH2c(pBtCoexist, 0xc, 3, H2C_Parameter);	
 }
 
-VOID
+void
 halbtc8188c2ant_Balance(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	bool			bForceExec,
@@ -258,7 +258,7 @@ halbtc8188c2ant_Balance(
 	pCoexDm->bPreBalanceOn = pCoexDm->bCurBalanceOn;
 }
 
-VOID
+void
 halbtc8188c2ant_SetFwDiminishWifi(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	bool 		bDacOn,
@@ -297,7 +297,7 @@ halbtc8188c2ant_SetFwDiminishWifi(
 	pBtCoexist->fBtcFillH2c(pBtCoexist, 0xe, 3, H2C_Parameter);
 }
 
-VOID
+void
 halbtc8188c2ant_DiminishWifi(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	bool			bForceExec,
@@ -341,7 +341,7 @@ halbtc8188c2ant_DiminishWifi(
 	pCoexDm->bPreNavOn = pCoexDm->bCurNavOn;
 }
 
-VOID
+void
 halbtc8188c2ant_SetSwRfRxLpfCorner(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	bool			bRxRfShrinkOn
@@ -365,7 +365,7 @@ halbtc8188c2ant_SetSwRfRxLpfCorner(
 	}
 }
 
-VOID
+void
 halbtc8188c2ant_RfShrink(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	bool			bForceExec,
@@ -389,7 +389,7 @@ halbtc8188c2ant_RfShrink(
 	pCoexDm->bPreRfRxLpfShrink = pCoexDm->bCurRfRxLpfShrink;
 }
 
-VOID
+void
 halbtc8188c2ant_SetSwPenaltyTxRateAdaptive(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	bool			bLowPenaltyRa
@@ -411,7 +411,7 @@ halbtc8188c2ant_SetSwPenaltyTxRateAdaptive(
 	pBtCoexist->fBtcWrite1Byte(pBtCoexist, 0x4fd, tmpU1);
 }
 
-VOID
+void
 halbtc8188c2ant_LowPenaltyRa(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	bool			bForceExec,
@@ -435,7 +435,7 @@ halbtc8188c2ant_LowPenaltyRa(
 	pCoexDm->bPreLowPenaltyRa = pCoexDm->bCurLowPenaltyRa;
 }
 
-VOID
+void
 halbtc8188c2ant_SetSwFullTimeDacSwing(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	bool			bSwDacSwingOn,
@@ -462,7 +462,7 @@ halbtc8188c2ant_SetSwFullTimeDacSwing(
 	}
 }
 
-VOID
+void
 halbtc8188c2ant_DacSwing(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	bool			bForceExec,
@@ -492,7 +492,7 @@ halbtc8188c2ant_DacSwing(
 	pCoexDm->preDacSwingLvl = pCoexDm->curDacSwingLvl;
 }
 
-VOID
+void
 halbtc8188c2ant_SetAdcBackOff(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	bool			bAdcBackOff
@@ -510,7 +510,7 @@ halbtc8188c2ant_SetAdcBackOff(
 	}
 }
 
-VOID
+void
 halbtc8188c2ant_AdcBackOff(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	bool			bForceExec,
@@ -534,7 +534,7 @@ halbtc8188c2ant_AdcBackOff(
 	pCoexDm->bPreAdcBackOff = pCoexDm->bCurAdcBackOff;
 }
 
-VOID
+void
 halbtc8188c2ant_SetAgcTable(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	bool			bAgcTableEn
@@ -578,7 +578,7 @@ halbtc8188c2ant_SetAgcTable(
 }
 
 
-VOID
+void
 halbtc8188c2ant_AgcTable(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	bool			bForceExec,
@@ -602,7 +602,7 @@ halbtc8188c2ant_AgcTable(
 	pCoexDm->bPreAgcTableEn = pCoexDm->bCurAgcTableEn;
 }
 
-VOID
+void
 halbtc8188c2ant_SetCoexTable(
 	IN	PBTC_COEXIST	pBtCoexist,
 	IN	u4Byte		val0x6c4,
@@ -620,7 +620,7 @@ halbtc8188c2ant_SetCoexTable(
 	pBtCoexist->fBtcWrite4Byte(pBtCoexist, 0x6cc, val0x6cc);
 }
 
-VOID
+void
 halbtc8188c2ant_CoexTable(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	bool			bForceExec,
@@ -654,7 +654,7 @@ halbtc8188c2ant_CoexTable(
 	pCoexDm->preVal0x6cc = pCoexDm->curVal0x6cc;
 }
 
-VOID
+void
 halbtc8188c2ant_CoexAllOff(
 	IN	PBTC_COEXIST		pBtCoexist
 	)
@@ -668,7 +668,7 @@ halbtc8188c2ant_CoexAllOff(
 	halbtc8188c2ant_AdcBackOff(pBtCoexist, NORMAL_EXEC, false);
 	halbtc8188c2ant_DacSwing(pBtCoexist, NORMAL_EXEC, false, 0x30);
 }
-VOID
+void
 halbtc8188c2ant_InitCoexDm(
 	IN	PBTC_COEXIST		pBtCoexist
 	)
@@ -676,7 +676,7 @@ halbtc8188c2ant_InitCoexDm(
 }
 
 
-VOID
+void
 halbtc8188c2ant_MonitorBtState(
 	IN	PBTC_COEXIST			pBtCoexist
 	)
@@ -829,7 +829,7 @@ halbtc8188c2ant_MonitorBtState(
 	}
 }
 
-VOID
+void
 halbtc8188c2ant_ActionA2dpBc4(
 	IN	PBTC_COEXIST		pBtCoexist
 	)
@@ -899,7 +899,7 @@ halbtc8188c2ant_ActionA2dpBc4(
 	}
 }
 
-VOID
+void
 halbtc8188c2ant_ActionA2dpBc8(
 	IN	PBTC_COEXIST		pBtCoexist
 	)
@@ -968,7 +968,7 @@ halbtc8188c2ant_ActionA2dpBc8(
 	}
 }
 
-VOID
+void
 halbtc8188c2ant_ActionA2dp(
 	IN	PBTC_COEXIST		pBtCoexist
 	)
@@ -983,7 +983,7 @@ halbtc8188c2ant_ActionA2dp(
 	}
 }
 
-VOID
+void
 halbtc8188c2ant_ActionPanBc4(
 	IN	PBTC_COEXIST		pBtCoexist
 	)
@@ -1017,7 +1017,7 @@ halbtc8188c2ant_ActionPanBc4(
 	halbtc8188c2ant_DacSwing(pBtCoexist, NORMAL_EXEC, false, 0x30);
 }
 
-VOID
+void
 halbtc8188c2ant_ActionPanBc8(
 	IN	PBTC_COEXIST		pBtCoexist
 	)
@@ -1155,7 +1155,7 @@ halbtc8188c2ant_ActionPanBc8(
 	}
 }
 
-VOID
+void
 halbtc8188c2ant_ActionPan(
 	IN	PBTC_COEXIST		pBtCoexist
 	)
@@ -1170,7 +1170,7 @@ halbtc8188c2ant_ActionPan(
 	}
 }
 
-VOID
+void
 halbtc8188c2ant_ActionHid(
 	IN	PBTC_COEXIST		pBtCoexist
 	)
@@ -1216,7 +1216,7 @@ halbtc8188c2ant_ActionHid(
 }
 
 
-VOID
+void
 halbtc8188c2ant_ActionSco(
 	IN	PBTC_COEXIST		pBtCoexist
 	)
@@ -1276,7 +1276,7 @@ halbtc8188c2ant_ActionSco(
 	}
 }
 
-VOID
+void
 halbtc8188c2ant_ActionHidA2dpBc4(
 	IN	PBTC_COEXIST		pBtCoexist
 	)
@@ -1344,7 +1344,7 @@ halbtc8188c2ant_ActionHidA2dpBc4(
 		halbtc8188c2ant_CoexAllOff(pBtCoexist);
 	}
 }
-VOID
+void
 halbtc8188c2ant_ActionHidA2dpBc8(
 	IN	PBTC_COEXIST		pBtCoexist
 	)
@@ -1395,7 +1395,7 @@ halbtc8188c2ant_ActionHidA2dpBc8(
 	}
 }
 
-VOID
+void
 halbtc8188c2ant_ActionHidA2dp(
 	IN	PBTC_COEXIST		pBtCoexist
 	)
@@ -1410,7 +1410,7 @@ halbtc8188c2ant_ActionHidA2dp(
 	}
 }
 
-VOID
+void
 halbtc8188c2ant_ActionHidPanBc4(
 	IN	PBTC_COEXIST		pBtCoexist
 	)
@@ -1466,7 +1466,7 @@ halbtc8188c2ant_ActionHidPanBc4(
 	halbtc8188c2ant_AdcBackOff(pBtCoexist, NORMAL_EXEC, false);
 	halbtc8188c2ant_DacSwing(pBtCoexist, NORMAL_EXEC, false, 0x30);
 }
-VOID
+void
 halbtc8188c2ant_ActionHidPanBc8(	
 	IN	PBTC_COEXIST		pBtCoexist
 	)
@@ -1564,7 +1564,7 @@ halbtc8188c2ant_ActionHidPanBc8(
 	}
 }
 
-VOID
+void
 halbtc8188c2ant_ActionHidPan(
 	IN	PBTC_COEXIST		pBtCoexist
 	)
@@ -1579,7 +1579,7 @@ halbtc8188c2ant_ActionHidPan(
 	}
 }
 
-VOID
+void
 halbtc8188c2ant_ActionPanA2dpBc4(
 	IN	PBTC_COEXIST		pBtCoexist
 	)
@@ -1627,7 +1627,7 @@ halbtc8188c2ant_ActionPanA2dpBc4(
 		halbtc8188c2ant_DacSwing(pBtCoexist, NORMAL_EXEC, false, 0x30);
 	}
 }
-VOID
+void
 halbtc8188c2ant_ActionPanA2dpBc8(	
 	IN	PBTC_COEXIST		pBtCoexist
 	)
@@ -1705,7 +1705,7 @@ halbtc8188c2ant_ActionPanA2dpBc8(
 	}
 }
 
-VOID
+void
 halbtc8188c2ant_ActionPanA2dp(
 	IN	PBTC_COEXIST		pBtCoexist
 	)
@@ -1723,14 +1723,14 @@ halbtc8188c2ant_ActionPanA2dp(
 //============================================================
 // extern function start with EXhalbtc8188c2ant_
 //============================================================
-VOID
+void
 EXhalbtc8188c2ant_PowerOnSetting(
 	IN	PBTC_COEXIST		pBtCoexist
 	)
 {
 }
 
-VOID
+void
 EXhalbtc8188c2ant_InitHwConfig(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	bool				bWifiOnly
@@ -1754,7 +1754,7 @@ EXhalbtc8188c2ant_InitHwConfig(
 	}
 }
 
-VOID
+void
 EXhalbtc8188c2ant_InitCoexDm(
 	IN	PBTC_COEXIST		pBtCoexist
 	)
@@ -1764,7 +1764,7 @@ EXhalbtc8188c2ant_InitCoexDm(
 	halbtc8188c2ant_InitCoexDm(pBtCoexist);
 }
 
-VOID
+void
 EXhalbtc8188c2ant_DisplayCoexInfo(
 	IN	PBTC_COEXIST		pBtCoexist
 	)
@@ -1876,7 +1876,7 @@ EXhalbtc8188c2ant_DisplayCoexInfo(
 }
 
 
-VOID
+void
 EXhalbtc8188c2ant_IpsNotify(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	u1Byte			type
@@ -1894,7 +1894,7 @@ EXhalbtc8188c2ant_IpsNotify(
 	}
 }
 
-VOID
+void
 EXhalbtc8188c2ant_LpsNotify(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	u1Byte			type
@@ -1912,7 +1912,7 @@ EXhalbtc8188c2ant_LpsNotify(
 	}
 }
 
-VOID
+void
 EXhalbtc8188c2ant_ScanNotify(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	u1Byte			type
@@ -1928,7 +1928,7 @@ EXhalbtc8188c2ant_ScanNotify(
 	}
 }
 
-VOID
+void
 EXhalbtc8188c2ant_ConnectNotify(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	u1Byte			type
@@ -1944,7 +1944,7 @@ EXhalbtc8188c2ant_ConnectNotify(
 	}
 }
 
-VOID
+void
 EXhalbtc8188c2ant_MediaStatusNotify(
 	IN	PBTC_COEXIST			pBtCoexist,
 	IN	u1Byte				type
@@ -1961,7 +1961,7 @@ EXhalbtc8188c2ant_MediaStatusNotify(
 	
 }
 
-VOID
+void
 EXhalbtc8188c2ant_SpecialPacketNotify(
 	IN	PBTC_COEXIST			pBtCoexist,
 	IN	u1Byte				type
@@ -1973,7 +1973,7 @@ EXhalbtc8188c2ant_SpecialPacketNotify(
 	}
 }
 
-VOID
+void
 EXhalbtc8188c2ant_BtInfoNotify(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	pu1Byte			tmpBuf,
@@ -1982,7 +1982,7 @@ EXhalbtc8188c2ant_BtInfoNotify(
 {
 }
 
-VOID
+void
 EXhalbtc8188c2ant_HaltNotify(
 	IN	PBTC_COEXIST			pBtCoexist
 	)
@@ -1992,7 +1992,7 @@ EXhalbtc8188c2ant_HaltNotify(
 	EXhalbtc8188c2ant_MediaStatusNotify(pBtCoexist, BTC_MEDIA_DISCONNECT);
 }
 
-VOID
+void
 EXhalbtc8188c2ant_Periodical(
 	IN	PBTC_COEXIST			pBtCoexist
 	)
