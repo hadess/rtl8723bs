@@ -296,9 +296,9 @@ struct registry_priv
 
 
 //For registry parameters
-#define RGTRY_OFT(field) ((ULONG)FIELD_OFFSET(struct registry_priv,field))
+#define RGTRY_OFT(field) ((u32)FIELD_OFFSET(struct registry_priv,field))
 #define RGTRY_SZ(field)   sizeof(((struct registry_priv*) 0)->field)
-#define BSSID_OFT(field) ((ULONG)FIELD_OFFSET(WLAN_BSSID_EX,field))
+#define BSSID_OFT(field) ((u32)FIELD_OFFSET(WLAN_BSSID_EX,field))
 #define BSSID_SZ(field)   sizeof(((PWLAN_BSSID_EX) 0)->field)
 
 

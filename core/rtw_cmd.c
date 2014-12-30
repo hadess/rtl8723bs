@@ -1285,12 +1285,12 @@ _func_enter_;
 		goto exit;
 	}
 	/* // for IEs is pointer 
-	t_len = sizeof (ULONG) + sizeof (NDIS_802_11_MAC_ADDRESS) + 2 + 
-			sizeof (NDIS_802_11_SSID) + sizeof (ULONG) + 
+	t_len = sizeof (u32) + sizeof (NDIS_802_11_MAC_ADDRESS) + 2 + 
+			sizeof (NDIS_802_11_SSID) + sizeof (u32) + 
 			sizeof (NDIS_802_11_RSSI) + sizeof (NDIS_802_11_NETWORK_TYPE) + 
 			sizeof (NDIS_802_11_CONFIGURATION) +	
 			sizeof (NDIS_802_11_NETWORK_INFRASTRUCTURE) +   
-			sizeof (NDIS_802_11_RATES_EX)+ sizeof(WLAN_PHY_INFO)+ sizeof (ULONG) + MAX_IE_SZ;
+			sizeof (NDIS_802_11_RATES_EX)+ sizeof(WLAN_PHY_INFO)+ sizeof (u32) + MAX_IE_SZ;
 	*/
 	//for IEs is fix buf size
 	t_len = sizeof(WLAN_BSSID_EX);

@@ -258,9 +258,9 @@ uint oid_rt_get_small_packet_crc_hdl(struct oid_par_priv* poid_par_priv)
 		return status;
 	}		
 		
-	if(poid_par_priv->information_buf_len >=  sizeof(ULONG) )
+	if(poid_par_priv->information_buf_len >=  sizeof(u32) )
 	{		
-		*(ULONG *)poid_par_priv->information_buf = padapter->recvpriv.rx_smallpacket_crcerr;
+		*(u32 *)poid_par_priv->information_buf = padapter->recvpriv.rx_smallpacket_crcerr;
 		*poid_par_priv->bytes_rw = poid_par_priv->information_buf_len;		
 	}
 	else
@@ -282,9 +282,9 @@ uint oid_rt_get_middle_packet_crc_hdl(struct oid_par_priv* poid_par_priv)
 		return status;
 	}		
 
-	if(poid_par_priv->information_buf_len >=  sizeof(ULONG) )
+	if(poid_par_priv->information_buf_len >=  sizeof(u32) )
 	{		
-		*(ULONG *)poid_par_priv->information_buf = padapter->recvpriv.rx_middlepacket_crcerr;
+		*(u32 *)poid_par_priv->information_buf = padapter->recvpriv.rx_middlepacket_crcerr;
 		*poid_par_priv->bytes_rw = poid_par_priv->information_buf_len;		
 	}
 	else
@@ -307,9 +307,9 @@ uint oid_rt_get_large_packet_crc_hdl(struct oid_par_priv* poid_par_priv)
 		return status;
 	}	
 
-	if(poid_par_priv->information_buf_len >=  sizeof(ULONG) )
+	if(poid_par_priv->information_buf_len >=  sizeof(u32) )
 	{		
-		*(ULONG *)poid_par_priv->information_buf = padapter->recvpriv.rx_largepacket_crcerr;
+		*(u32 *)poid_par_priv->information_buf = padapter->recvpriv.rx_largepacket_crcerr;
 		*poid_par_priv->bytes_rw = poid_par_priv->information_buf_len;		
 	}
 	else
@@ -360,7 +360,7 @@ uint oid_rt_get_rx_total_packet_hdl(struct oid_par_priv* poid_par_priv)
 		status = NDIS_STATUS_NOT_ACCEPTED;
 		return status;
 	}	
-	if(poid_par_priv->information_buf_len >=  sizeof(ULONG) )
+	if(poid_par_priv->information_buf_len >=  sizeof(u32) )
 	{		
 		*(u64 *)poid_par_priv->information_buf = padapter->recvpriv.rx_pkts + padapter->recvpriv.rx_drop;
 		*poid_par_priv->bytes_rw = poid_par_priv->information_buf_len;		
@@ -444,14 +444,14 @@ uint oid_rt_get_preamble_mode_hdl(struct oid_par_priv* poid_par_priv)
 {
 	uint			status = NDIS_STATUS_SUCCESS;
 	PADAPTER		padapter = (PADAPTER)(poid_par_priv->adapter_context);
-	ULONG			preamblemode = 0 ;			
+	u32			preamblemode = 0 ;			
 		
 	if(poid_par_priv->type_of_oid != QUERY_OID)
 	{
 		status = NDIS_STATUS_NOT_ACCEPTED;
 		return status;
 	}		
-	if(poid_par_priv->information_buf_len>= sizeof(ULONG))
+	if(poid_par_priv->information_buf_len>= sizeof(u32))
 	{		
 		if(padapter->registrypriv.preamble == PREAMBLE_LONG)
 			preamblemode = 0;
@@ -461,7 +461,7 @@ uint oid_rt_get_preamble_mode_hdl(struct oid_par_priv* poid_par_priv)
 			preamblemode = 2;
 		
 			
-		*(ULONG *)poid_par_priv->information_buf = preamblemode ;
+		*(u32 *)poid_par_priv->information_buf = preamblemode ;
 		*poid_par_priv->bytes_rw = poid_par_priv->information_buf_len;
 	}
 	else
@@ -522,16 +522,16 @@ uint oid_rt_set_preamble_mode_hdl(struct oid_par_priv* poid_par_priv)
 {
 	uint			status = NDIS_STATUS_SUCCESS;
 	PADAPTER		padapter = (PADAPTER)(poid_par_priv->adapter_context);
-	ULONG			preamblemode = 0;
+	u32			preamblemode = 0;
 	if(poid_par_priv->type_of_oid != SET_OID)
 	{
 		status = NDIS_STATUS_NOT_ACCEPTED;
 		return status;
 	}
 	 
-	if(poid_par_priv->information_buf_len>= sizeof(ULONG))
+	if(poid_par_priv->information_buf_len>= sizeof(u32))
 	{		
-		preamblemode = *(ULONG *)poid_par_priv->information_buf ;
+		preamblemode = *(u32 *)poid_par_priv->information_buf ;
 		if( preamblemode == 0)
 			padapter->registrypriv.preamble = PREAMBLE_LONG;
 		else if (preamblemode==1 )
@@ -539,7 +539,7 @@ uint oid_rt_set_preamble_mode_hdl(struct oid_par_priv* poid_par_priv)
 		else if ( preamblemode==2 )
 			padapter->registrypriv.preamble = PREAMBLE_SHORT;		
 			
-		*(ULONG *)poid_par_priv->information_buf = preamblemode ;
+		*(u32 *)poid_par_priv->information_buf = preamblemode ;
 		*poid_par_priv->bytes_rw = poid_par_priv->information_buf_len;
 	}
 	else
@@ -581,7 +581,7 @@ uint oid_rt_get_total_tx_bytes_hdl(struct oid_par_priv* poid_par_priv)
 		status = NDIS_STATUS_NOT_ACCEPTED;
 		return status;
 	}	
-	if(poid_par_priv->information_buf_len>= sizeof(ULONG))
+	if(poid_par_priv->information_buf_len>= sizeof(u32))
 	{		
 		*(u64 *)poid_par_priv->information_buf = padapter->xmitpriv.tx_bytes;
 		*poid_par_priv->bytes_rw = poid_par_priv->information_buf_len;
@@ -605,7 +605,7 @@ uint oid_rt_get_total_rx_bytes_hdl(struct oid_par_priv* poid_par_priv)
 		status = NDIS_STATUS_NOT_ACCEPTED;
 		return status;
 	}
-	if(poid_par_priv->information_buf_len>= sizeof(ULONG))
+	if(poid_par_priv->information_buf_len>= sizeof(u32))
 	{
 		//_rtw_memcpy(*(uint *)poid_par_priv->information_buf,padapter->recvpriv.rx_icv_err,sizeof(u32));
 		*(u64 *)poid_par_priv->information_buf = padapter->recvpriv.rx_bytes;
@@ -658,7 +658,7 @@ uint oid_rt_get_channel_hdl(struct oid_par_priv* poid_par_priv)
 	struct	mlme_priv	*pmlmepriv = &padapter->mlmepriv;
 	NDIS_802_11_CONFIGURATION		*pnic_Config;
 
-	ULONG   channelnum;
+	u32   channelnum;
 
 	_func_enter_;
 	if(poid_par_priv->type_of_oid != QUERY_OID)
@@ -674,7 +674,7 @@ uint oid_rt_get_channel_hdl(struct oid_par_priv* poid_par_priv)
 		pnic_Config = &padapter->registrypriv.dev_network.Configuration;
 
 	channelnum = pnic_Config->DSConfig;
-	*(ULONG *)poid_par_priv->information_buf = channelnum;
+	*(u32 *)poid_par_priv->information_buf = channelnum;
 	
 	*poid_par_priv->bytes_rw = poid_par_priv->information_buf_len;
 
@@ -714,19 +714,19 @@ uint oid_rt_supported_wireless_mode_hdl(struct oid_par_priv* poid_par_priv)
 {
 	uint	 	status = NDIS_STATUS_SUCCESS;
 	PADAPTER		padapter = (PADAPTER)(poid_par_priv->adapter_context);
-	ULONG 			ulInfo = 0 ;
+	u32 			ulInfo = 0 ;
 	//DEBUG_ERR(("<**********************oid_rt_supported_wireless_mode_hdl \n"));	
 	if(poid_par_priv->type_of_oid != QUERY_OID)
 	{
 		status = NDIS_STATUS_NOT_ACCEPTED;
 		return status;
 	}		
-	if(poid_par_priv->information_buf_len >= sizeof(ULONG)){
+	if(poid_par_priv->information_buf_len >= sizeof(u32)){
 		ulInfo |= 0x0100; //WIRELESS_MODE_B
 		ulInfo |= 0x0200; //WIRELESS_MODE_G
 		ulInfo |= 0x0400; //WIRELESS_MODE_A
 
-		*(ULONG *) poid_par_priv->information_buf = ulInfo;		
+		*(u32 *) poid_par_priv->information_buf = ulInfo;		
 		//DEBUG_ERR(("<===oid_rt_supported_wireless_mode %x\n",ulInfo));	
 		*poid_par_priv->bytes_rw = poid_par_priv->information_buf_len;
 	}
@@ -960,7 +960,7 @@ uint oid_rt_get_connect_state_hdl(struct oid_par_priv* poid_par_priv)
 
 	struct mlme_priv	*pmlmepriv = &(padapter->mlmepriv);
 
-	ULONG ulInfo;
+	u32 ulInfo;
 		
 	if(poid_par_priv->type_of_oid != QUERY_OID)
 	{
@@ -982,7 +982,7 @@ uint oid_rt_get_connect_state_hdl(struct oid_par_priv* poid_par_priv)
 	else
 		ulInfo = NOTASSOCIATED ;
 
-	*(ULONG *)poid_par_priv->information_buf = ulInfo;
+	*(u32 *)poid_par_priv->information_buf = ulInfo;
 	*poid_par_priv->bytes_rw =  poid_par_priv->information_buf_len;
 
 #if 0
@@ -996,7 +996,7 @@ uint oid_rt_get_connect_state_hdl(struct oid_par_priv* poid_par_priv)
 		ulInfo = 0;
 	else
 		ulInfo = 3;
-	ulInfoLen = sizeof(ULONG);
+	ulInfoLen = sizeof(u32);
 	RT_TRACE(COMP_OID_QUERY, DBG_LOUD, ("<=== Query OID_RT_GET_CONNECT_STATE: %d\n", ulInfo));
 #endif
 
