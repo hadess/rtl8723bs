@@ -22,7 +22,7 @@
 
 #if 1//def  CONFIG_SINGLE_IMG
 
-#include "../hal/OUTSRC/odm_precomp.h"
+#include "odm_precomp.h"
 #ifdef CONFIG_BT_COEXIST
 #include <hal_btcoex.h>
 #endif

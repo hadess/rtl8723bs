@@ -85,19 +85,19 @@ _HAL_INTFS_FILES :=	hal/hal_intf.o \
 			hal/hal_sdio.o \
 			hal/hal_sdio_led.o
 			
-_OUTSRC_FILES := hal/OUTSRC/odm_debug.o	\
-		hal/OUTSRC/odm_AntDiv.o\
-		hal/OUTSRC/odm_interface.o\
-		hal/OUTSRC/odm_HWConfig.o\
-		hal/OUTSRC/odm.o\
-		hal/OUTSRC/HalPhyRf.o\
-		hal/OUTSRC/odm_EdcaTurboCheck.o\
-		hal/OUTSRC/odm_DIG.o\
-		hal/OUTSRC/odm_PathDiv.o\
-		hal/OUTSRC/odm_DynamicBBPowerSaving.o\
-		hal/OUTSRC/odm_DynamicTxPower.o\
-		hal/OUTSRC/odm_CfoTracking.o\
-		hal/OUTSRC/odm_NoiseMonitor.o
+_OUTSRC_FILES := hal/odm_debug.o	\
+		hal/odm_AntDiv.o\
+		hal/odm_interface.o\
+		hal/odm_HWConfig.o\
+		hal/odm.o\
+		hal/HalPhyRf.o\
+		hal/odm_EdcaTurboCheck.o\
+		hal/odm_DIG.o\
+		hal/odm_PathDiv.o\
+		hal/odm_DynamicBBPowerSaving.o\
+		hal/odm_DynamicTxPower.o\
+		hal/odm_CfoTracking.o\
+		hal/odm_NoiseMonitor.o
 		
 ifeq ($(CONFIG_BT_COEXIST), y)
 EXTRA_CFLAGS += -I$(src)/hal/OUTSRC-BTCoexist
@@ -381,8 +381,8 @@ config_r:
 .PHONY: modules clean
 
 clean:
-	cd hal/OUTSRC/ ; rm -fr */*.mod.c */*.mod */*.o */.*.cmd */*.ko
-	cd hal/OUTSRC/ ; rm -fr *.mod.c *.mod *.o .*.cmd *.ko 
+	cd hal/ ; rm -fr */*.mod.c */*.mod */*.o */.*.cmd */*.ko
+	cd hal/ ; rm -fr *.mod.c *.mod *.o .*.cmd *.ko 
 	cd hal ; rm -fr */*/*.mod.c */*/*.mod */*/*.o */*/.*.cmd */*/*.ko
 	cd hal ; rm -fr */*.mod.c */*.mod */*.o */.*.cmd */*.ko
 	cd hal ; rm -fr *.mod.c *.mod *.o .*.cmd *.ko

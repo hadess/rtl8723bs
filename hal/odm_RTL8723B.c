@@ -22,7 +22,7 @@
 // include files
 //============================================================
 
-#include "OUTSRC/odm_precomp.h"
+#include "odm_precomp.h"
 
 #if (RTL8723B_SUPPORT == 1)
 
