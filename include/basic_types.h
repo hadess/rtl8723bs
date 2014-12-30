@@ -32,7 +32,6 @@
 	typedef	signed int sint;
 
 	#define USHORT u16
-	#define UINT u32
 
 	typedef void (*proc_t)(void*);
 

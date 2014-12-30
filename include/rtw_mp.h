@@ -130,7 +130,6 @@ struct mp_tx
 #define ps8Byte 		s64*
 
 #define USHORT u16
-#define UINT u32
 
 typedef VOID (*MPT_WORK_ITEM_HANDLER)(IN void * Adapter);
 typedef struct _MPT_CONTEXT
