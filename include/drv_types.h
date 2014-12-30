@@ -247,10 +247,6 @@ struct registry_priv
 
 	u8	hw_wps_pbc;//0:disable,1:enable
 
-#ifdef CONFIG_ADAPTOR_INFO_CACHING_FILE
-	char	adaptor_info_caching_file_path[PATH_LENGTH_MAX];
-#endif
-
 #ifdef CONFIG_LAYER2_ROAMING
 	u8	max_roaming_times; // the max number driver will try to roaming
 #endif

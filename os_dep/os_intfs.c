@@ -239,11 +239,6 @@ module_param(rtw_hw_wps_pbc, int, 0644);
 #ifdef CONFIG_TX_EARLY_MODE
 module_param(rtw_early_mode, int, 0644);
 #endif
-#ifdef CONFIG_ADAPTOR_INFO_CACHING_FILE
-char *rtw_adaptor_info_caching_file_path= "/data/misc/wifi/rtw_cache";
-module_param(rtw_adaptor_info_caching_file_path, charp, 0644);
-MODULE_PARM_DESC(rtw_adaptor_info_caching_file_path, "The path of adapter info cache file");
-#endif //CONFIG_ADAPTOR_INFO_CACHING_FILE
 
 #ifdef CONFIG_LAYER2_ROAMING
 uint rtw_max_roaming_times=2;
@@ -446,11 +441,6 @@ _func_enter_;
 #endif
 
 	registry_par->hw_wps_pbc = (u8)rtw_hw_wps_pbc;
-
-#ifdef CONFIG_ADAPTOR_INFO_CACHING_FILE
-	snprintf(registry_par->adaptor_info_caching_file_path, PATH_LENGTH_MAX, "%s", rtw_adaptor_info_caching_file_path);
-	registry_par->adaptor_info_caching_file_path[PATH_LENGTH_MAX-1]=0;
-#endif
 
 #ifdef CONFIG_LAYER2_ROAMING
 	registry_par->max_roaming_times = (u8)rtw_max_roaming_times;
