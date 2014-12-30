@@ -122,20 +122,20 @@ RTL871X = rtl8192c
 EXTRA_CFLAGS += -DCONFIG_RTL8192C
 
 _HAL_INTFS_FILES += \
-	hal/$(RTL871X)/$(RTL871X)_xmit.o
+	hal/$(RTL871X)_xmit.o
 
-_HAL_INTFS_FILES +=	hal/$(RTL871X)/$(RTL871X)_hal_init.o \
-			hal/$(RTL871X)/$(RTL871X)_phycfg.o \
-			hal/$(RTL871X)/$(RTL871X)_rf6052.o \
-			hal/$(RTL871X)/$(RTL871X)_dm.o \
-			hal/$(RTL871X)/$(RTL871X)_rxdesc.o \
-			hal/$(RTL871X)/$(RTL871X)_cmd.o \
-			hal/$(RTL871X)/sdio/sdio_halinit.o \
-			hal/$(RTL871X)/sdio/rtl$(MODULE_NAME)_led.o \
-			hal/$(RTL871X)/sdio/rtl$(MODULE_NAME)_xmit.o \
-			hal/$(RTL871X)/sdio/rtl$(MODULE_NAME)_recv.o	
+_HAL_INTFS_FILES +=	hal/$(RTL871X)_hal_init.o \
+			hal/$(RTL871X)_phycfg.o \
+			hal/$(RTL871X)_rf6052.o \
+			hal/$(RTL871X)_dm.o \
+			hal/$(RTL871X)_rxdesc.o \
+			hal/$(RTL871X)_cmd.o \
+			hal/sdio_halinit.o \
+			hal/rtl$(MODULE_NAME)_led.o \
+			hal/rtl$(MODULE_NAME)_xmit.o \
+			hal/rtl$(MODULE_NAME)_recv.o	
 
-_HAL_INTFS_FILES += hal/$(RTL871X)/sdio/sdio_ops_linux.o
+_HAL_INTFS_FILES += hal/sdio_ops_linux.o
 
 
 _OUTSRC_FILES += hal/odm_RTL8192C.o\
@@ -149,20 +149,20 @@ RTL871X = rtl8192d
 EXTRA_CFLAGS += -DCONFIG_RTL8192D
 
 _HAL_INTFS_FILES += \
-	hal/$(RTL871X)/$(RTL871X)_xmit.o
+	hal/$(RTL871X)_xmit.o
 
-_HAL_INTFS_FILES +=	hal/$(RTL871X)/$(RTL871X)_hal_init.o \
-			hal/$(RTL871X)/$(RTL871X)_phycfg.o \
-			hal/$(RTL871X)/$(RTL871X)_rf6052.o \
-			hal/$(RTL871X)/$(RTL871X)_dm.o \
-			hal/$(RTL871X)/$(RTL871X)_rxdesc.o \
-			hal/$(RTL871X)/$(RTL871X)_cmd.o \
-			hal/$(RTL871X)/sdio/sdio_halinit.o \
-			hal/$(RTL871X)/sdio/rtl$(MODULE_NAME)_led.o \
-			hal/$(RTL871X)/sdio/rtl$(MODULE_NAME)_xmit.o \
-			hal/$(RTL871X)/sdio/rtl$(MODULE_NAME)_recv.o
+_HAL_INTFS_FILES +=	hal/$(RTL871X)_hal_init.o \
+			hal/$(RTL871X)_phycfg.o \
+			hal/$(RTL871X)_rf6052.o \
+			hal/$(RTL871X)_dm.o \
+			hal/$(RTL871X)_rxdesc.o \
+			hal/$(RTL871X)_cmd.o \
+			hal/sdio_halinit.o \
+			hal/rtl$(MODULE_NAME)_led.o \
+			hal/rtl$(MODULE_NAME)_xmit.o \
+			hal/rtl$(MODULE_NAME)_recv.o
 
-_HAL_INTFS_FILES += hal/$(RTL871X)/sdio/sdio_ops_linux.o
+_HAL_INTFS_FILES += hal/sdio_ops_linux.o
 
 _OUTSRC_FILES += hal/odm_RTL8192D.o\
 								hal/HalDMOutSrc8192D_CE.o
@@ -179,23 +179,23 @@ MODULE_NAME = 8723bs
 EXTRA_CFLAGS += -DCONFIG_RTL8723B
 
 _HAL_INTFS_FILES += hal/HalPwrSeqCmd.o \
-					hal/$(RTL871X)/Hal8723BPwrSeq.o
+					hal/Hal8723BPwrSeq.o
 
-_HAL_INTFS_FILES +=	hal/$(RTL871X)/$(RTL871X)_hal_init.o \
-			hal/$(RTL871X)/$(RTL871X)_phycfg.o \
-			hal/$(RTL871X)/$(RTL871X)_rf6052.o \
-			hal/$(RTL871X)/$(RTL871X)_dm.o \
-			hal/$(RTL871X)/$(RTL871X)_rxdesc.o \
-			hal/$(RTL871X)/$(RTL871X)_cmd.o \
+_HAL_INTFS_FILES +=	hal/$(RTL871X)_hal_init.o \
+			hal/$(RTL871X)_phycfg.o \
+			hal/$(RTL871X)_rf6052.o \
+			hal/$(RTL871X)_dm.o \
+			hal/$(RTL871X)_rxdesc.o \
+			hal/$(RTL871X)_cmd.o \
 			
 
 _HAL_INTFS_FILES +=	\
-			hal/$(RTL871X)/sdio/sdio_halinit.o \
-			hal/$(RTL871X)/sdio/rtl$(MODULE_NAME)_led.o \
-			hal/$(RTL871X)/sdio/rtl$(MODULE_NAME)_xmit.o \
-			hal/$(RTL871X)/sdio/rtl$(MODULE_NAME)_recv.o
+			hal/sdio_halinit.o \
+			hal/rtl$(MODULE_NAME)_led.o \
+			hal/rtl$(MODULE_NAME)_xmit.o \
+			hal/rtl$(MODULE_NAME)_recv.o
 
-_HAL_INTFS_FILES += hal/$(RTL871X)/sdio/sdio_ops.o
+_HAL_INTFS_FILES += hal/sdio_ops.o
 
 _OUTSRC_FILES += hal/HalHWImg8723B_BB.o\
 								hal/HalHWImg8723B_MAC.o\
