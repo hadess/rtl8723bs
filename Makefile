@@ -16,7 +16,7 @@ EXTRA_CFLAGS += -Wno-unused
 
 #EXTRA_CFLAGS += -Wno-uninitialized
 
-EXTRA_CFLAGS += -I$(src)/include
+EXTRA_CFLAGS += -I$(src)/include -I$(src)/hal
 
 EXTRA_LDFLAGS += --strip-debug
 
@@ -138,8 +138,8 @@ _HAL_INTFS_FILES +=	hal/$(RTL871X)/$(RTL871X)_hal_init.o \
 _HAL_INTFS_FILES += hal/$(RTL871X)/sdio/sdio_ops_linux.o
 
 
-_OUTSRC_FILES += hal/OUTSRC/$(RTL871X)/odm_RTL8192C.o\
-								hal/OUTSRC/$(RTL871X)/HalDMOutSrc8192C_CE.o
+_OUTSRC_FILES += hal/odm_RTL8192C.o\
+								hal/HalDMOutSrc8192C_CE.o
 
 endif
 
@@ -164,8 +164,8 @@ _HAL_INTFS_FILES +=	hal/$(RTL871X)/$(RTL871X)_hal_init.o \
 
 _HAL_INTFS_FILES += hal/$(RTL871X)/sdio/sdio_ops_linux.o
 
-_OUTSRC_FILES += hal/OUTSRC/$(RTL871X)/odm_RTL8192D.o\
-								hal/OUTSRC/$(RTL871X)/HalDMOutSrc8192D_CE.o
+_OUTSRC_FILES += hal/odm_RTL8192D.o\
+								hal/HalDMOutSrc8192D_CE.o
 
 								
 endif
@@ -197,13 +197,13 @@ _HAL_INTFS_FILES +=	\
 
 _HAL_INTFS_FILES += hal/$(RTL871X)/sdio/sdio_ops.o
 
-_OUTSRC_FILES += hal/OUTSRC/$(RTL871X)/HalHWImg8723B_BB.o\
-								hal/OUTSRC/$(RTL871X)/HalHWImg8723B_MAC.o\
-								hal/OUTSRC/$(RTL871X)/HalHWImg8723B_RF.o\
-								hal/OUTSRC/$(RTL871X)/HalHWImg8723B_FW.o\
-								hal/OUTSRC/$(RTL871X)/odm_RegConfig8723B.o\
-								hal/OUTSRC/$(RTL871X)/HalPhyRf_8723B.o\
-								hal/OUTSRC/$(RTL871X)/odm_RTL8723B.o
+_OUTSRC_FILES += hal/HalHWImg8723B_BB.o\
+								hal/HalHWImg8723B_MAC.o\
+								hal/HalHWImg8723B_RF.o\
+								hal/HalHWImg8723B_FW.o\
+								hal/odm_RegConfig8723B.o\
+								hal/HalPhyRf_8723B.o\
+								hal/odm_RTL8723B.o
 
 endif
 
