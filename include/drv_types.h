@@ -57,10 +57,6 @@ typedef struct _ADAPTER _adapter, ADAPTER,*PADAPTER;
 
 #include <rtw_ht.h>
 
-#ifdef CONFIG_80211AC_VHT
-#include <rtw_vht.h>
-#endif
-
 #ifdef CONFIG_INTEL_WIDI
 #include <rtw_intel_widi.h>
 #endif
@@ -210,12 +206,6 @@ struct registry_priv
 	u8	stbc_cap;
 	// BIT0: Enable VHT Beamformer, BIT1: Enable VHT Beamformee, BIT4: Enable HT Beamformer, BIT5: Enable HT Beamformee
 	u8	beamform_cap;
-
-#ifdef CONFIG_80211AC_VHT
-	u8	vht_enable; //0:disable, 1:enable, 2:auto
-	u8	ampdu_factor;
-	u8	vht_rate_sel;
-#endif //CONFIG_80211AC_VHT
 
 	u8	lowrate_two_xmit;
 

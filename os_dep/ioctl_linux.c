@@ -305,27 +305,6 @@ static char *translate_scan(_adapter *padapter,
 		short_GI = (pht_capie->cap_info&(IEEE80211_HT_CAP_SGI_20|IEEE80211_HT_CAP_SGI_40)) ? 1:0;
 	}
 
-#ifdef CONFIG_80211AC_VHT
-	//parsing VHT_CAP_IE
-	p = rtw_get_ie(&pnetwork->network.IEs[ie_offset], EID_VHTCapability, &vht_ielen, pnetwork->network.IELength-ie_offset);
-	if(p && vht_ielen>0)
-	{
-		u8	mcs_map[2];
-
-		vht_cap = true;		
-		bw_160MHz = GET_VHT_CAPABILITY_ELE_CHL_WIDTH(p+2);
-		if(bw_160MHz)
-			short_GI = GET_VHT_CAPABILITY_ELE_SHORT_GI160M(p+2);
-		else
-			short_GI = GET_VHT_CAPABILITY_ELE_SHORT_GI80M(p+2);
-
-		_rtw_memcpy(mcs_map, GET_VHT_CAPABILITY_ELE_TX_MCS(p+2), 2);
-
-		vht_highest_rate = rtw_get_vht_highest_rate(mcs_map);
-		vht_data_rate = rtw_vht_mcs_to_data_rate(CHANNEL_WIDTH_80, short_GI, vht_highest_rate);
-	}
-#endif
-
 	/* Add the protocol name */
 	iwe.cmd = SIOCGIWNAME;
 	if ((rtw_is_cckratesonly_included((u8*)&pnetwork->network.SupportedRates)) == true)		
@@ -1209,11 +1188,6 @@ static int rtw_wx_get_name(struct net_device *dev,
 		{
 			ht_cap = true;
 		}
-
-#ifdef CONFIG_80211AC_VHT
-		if(pmlmepriv->vhtpriv.vht_option == true)
-			vht_cap = true;
-#endif
 
 		prates = &pcur_bss->SupportedRates;
 

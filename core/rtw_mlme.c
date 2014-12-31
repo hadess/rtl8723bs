@@ -4145,9 +4145,6 @@ void rtw_append_exented_cap(_adapter *padapter, u8 *out_ie, uint *pout_len)
 {
 	struct mlme_priv 	*pmlmepriv = &padapter->mlmepriv;
 	struct ht_priv		*phtpriv = &pmlmepriv->htpriv;
-#ifdef CONFIG_80211AC_VHT
-	struct vht_priv	*pvhtpriv = &pmlmepriv->vhtpriv;
-#endif //CONFIG_80211AC_VHT
 	u8	cap_content[8] = {0};
 	u8	*pframe;
 
@@ -4155,12 +4152,6 @@ void rtw_append_exented_cap(_adapter *padapter, u8 *out_ie, uint *pout_len)
 	if (phtpriv->bss_coexist) {
 		SET_EXT_CAPABILITY_ELE_BSS_COEXIST(cap_content, 1);
 	}
-
-#ifdef CONFIG_80211AC_VHT
-	if (pvhtpriv->vht_option) {
-		SET_EXT_CAPABILITY_ELE_OP_MODE_NOTIF(cap_content, 1);
-	}
-#endif //CONFIG_80211AC_VHT
 
 	pframe = rtw_set_ie(out_ie+*pout_len, EID_EXTCapability, 8, cap_content , pout_len);
 }

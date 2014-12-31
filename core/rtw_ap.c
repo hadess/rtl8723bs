@@ -813,14 +813,6 @@ void add_RATid(_adapter *padapter, struct sta_info *psta, u8 rssi_level)
 
 		if (tx_ra_bitmap & 0xff0)
 			sta_band |= WIRELESS_11A;
-
-		// 5G band
-		#ifdef CONFIG_80211AC_VHT
-		if (psta->vhtpriv.vht_option)  {
-			sta_band = WIRELESS_11_5AC;
-		}		
-		#endif
-		
 	} else {
 		if (tx_ra_bitmap & 0xffff000)
 			sta_band |= WIRELESS_11_24N;
@@ -1076,10 +1068,6 @@ void update_sta_info_apmode(_adapter *padapter, struct sta_info *psta)
 	phtpriv_sta->agg_enable_bitmap = 0x0;//reset
 	phtpriv_sta->candidate_tid_bitmap = 0x0;//reset
 
-#ifdef CONFIG_80211AC_VHT
-	update_sta_vht_info_apmode(padapter, psta);
-#endif
-
 	update_ldpc_stbc_cap(psta);
 
 	//todo: init other variables
@@ -1145,10 +1133,6 @@ static void update_ap_info(_adapter *padapter, struct sta_info *psta)
 	phtpriv_ap->candidate_tid_bitmap = 0x0;//reset
 
 	_rtw_memcpy(&psta->htpriv, &pmlmepriv->htpriv, sizeof(struct ht_priv));
-
-#ifdef CONFIG_80211AC_VHT
-	_rtw_memcpy(&psta->vhtpriv, &pmlmepriv->vhtpriv, sizeof(struct vht_priv));
-#endif //CONFIG_80211AC_VHT
 }
 
 static void update_hw_ht_param(_adapter *padapter)
@@ -1246,13 +1230,6 @@ void start_bss_network(_adapter *padapter, u8 *pbuf)
 		update_hw_ht_param(padapter);
 	}
 
-#ifdef CONFIG_80211AC_VHT
-	if(pmlmepriv->vhtpriv.vht_option) {
-		pmlmeinfo->VHT_enable = true;
-		update_hw_vht_param(padapter);
-	}
-#endif //CONFIG_80211AC_VHT
-
 	if(pmlmepriv->cur_network.join_res != true) //setting only at  first time
 	{
 		//WEP Key will be set before this function, do not clear CAM.
@@ -1348,16 +1325,6 @@ void start_bss_network(_adapter *padapter, u8 *pbuf)
 		}
 					
 	}
-#ifdef CONFIG_80211AC_VHT
-	p = rtw_get_ie((pnetwork->IEs + sizeof(NDIS_802_11_FIXED_IEs)), EID_VHTOperation, &ie_len, (pnetwork->IELength - sizeof(NDIS_802_11_FIXED_IEs)));
-	if( p && ie_len)
-	{
-		if(GET_VHT_OPERATION_ELE_CHL_WIDTH(p+2) >= 1) {
-			cur_bwmode = CHANNEL_WIDTH_80;
-		}
-	}
-#endif
-
 #ifdef CONFIG_DUALMAC_CONCURRENT
 	dc_set_ap_channel_bandwidth(padapter, cur_channel, cur_ch_offset, cur_bwmode);
 #else //!CONFIG_DUALMAC_CONCURRENT	
@@ -1837,46 +1804,6 @@ int rtw_check_beacon_data(_adapter *padapter, u8 *pbuf,  int len)
 		
 		HT_info_handler(padapter, (PNDIS_802_11_VARIABLE_IEs)pHT_info_ie);
 	}
-
-#ifdef CONFIG_80211AC_VHT
-
-	//Parsing VHT CAP IE
-	p = rtw_get_ie(ie + _BEACON_IE_OFFSET_, EID_VHTCapability, &ie_len, (pbss_network->IELength - _BEACON_IE_OFFSET_));
-	if(p && ie_len>0)
-	{	
-		vht_cap = true; 
-	}
-	//Parsing VHT OPERATION IE
-	
-
-	pmlmepriv->vhtpriv.vht_option = false;
-	// if channel in 5G band, then add vht ie .
-	if ((pbss_network->Configuration.DSConfig > 14) && 
-		(pmlmepriv->htpriv.ht_option == true) &&
-		(pregistrypriv->vht_enable)) 
-	{
-		if(vht_cap == true)
-		{
-			pmlmepriv->vhtpriv.vht_option = true;
-		}
-		else if(pregistrypriv->vht_enable == 2) // auto enabled
-		{
-			u8	cap_len, operation_len;
-
-			rtw_vht_use_default_setting(padapter);
-
-			// VHT Capabilities element
-			cap_len = rtw_build_vht_cap_ie(padapter, pbss_network->IEs + pbss_network->IELength);
-			pbss_network->IELength += cap_len;
-
-			// VHT Operation element
-			operation_len = rtw_build_vht_operation_ie(padapter, pbss_network->IEs + pbss_network->IELength, pbss_network->Configuration.DSConfig);
-			pbss_network->IELength += operation_len;
-
-			pmlmepriv->vhtpriv.vht_option = true;
-		}		
-	}
-#endif //CONFIG_80211AC_VHT
 
 	pbss_network->Length = get_WLAN_BSSID_EX_sz((WLAN_BSSID_EX  *)pbss_network);
 
@@ -2984,22 +2911,6 @@ void sta_info_update(_adapter *padapter, struct sta_info *psta)
 	if(pmlmepriv->htpriv.ht_option == false)	
 		psta->htpriv.ht_option = false;
 
-#ifdef CONFIG_80211AC_VHT
-	//update 802.11AC vht cap.
-	if(WLAN_STA_VHT&flags)
-	{
-		psta->vhtpriv.vht_option = true;
-	}
-	else		
-	{
-		psta->vhtpriv.vht_option = false;
-	}
-
-	if(pmlmepriv->vhtpriv.vht_option == false)
-		psta->vhtpriv.vht_option = false;
-#endif	
-
-
 	update_sta_info_apmode(padapter, psta);
 		
 
@@ -3245,86 +3156,6 @@ void concurrent_set_ap_chbw(_adapter *padapter, u8 channel, u8 channel_offset, u
 			change_band = true;
 
 		cur_channel = pbuddy_mlmeext->cur_channel;
-
-#ifdef CONFIG_80211AC_VHT
-		if(cur_bwmode == CHANNEL_WIDTH_80)
-		{
-			u8 *pvht_cap_ie, *pvht_op_ie;
-			int vht_cap_ielen, vht_op_ielen;
-			
-			pvht_cap_ie = rtw_get_ie((pnetwork->IEs + sizeof(NDIS_802_11_FIXED_IEs)), EID_VHTCapability, &vht_cap_ielen, (pnetwork->IELength - sizeof(NDIS_802_11_FIXED_IEs)));
-			pvht_op_ie = rtw_get_ie((pnetwork->IEs + sizeof(NDIS_802_11_FIXED_IEs)), EID_VHTOperation, &vht_op_ielen, (pnetwork->IELength - sizeof(NDIS_802_11_FIXED_IEs)));
-						
-			if(pbuddy_mlmeext->cur_channel <= 14) // downgrade to 20/40Mhz
-			{
-				//modify vht cap ie
-				if( pvht_cap_ie && vht_cap_ielen)
-				{
-					SET_VHT_CAPABILITY_ELE_SHORT_GI80M(pvht_cap_ie+2, 0);
-				}
-				
-				//modify vht op ie
-				if( pvht_op_ie && vht_op_ielen)
-				{
-					SET_VHT_OPERATION_ELE_CHL_WIDTH(pvht_op_ie+2, 0); //change to 20/40Mhz
-					SET_VHT_OPERATION_ELE_CHL_CENTER_FREQ1(pvht_op_ie+2, 0);
-					SET_VHT_OPERATION_ELE_CHL_CENTER_FREQ2(pvht_op_ie+2, 0);
-					//SET_VHT_OPERATION_ELE_BASIC_MCS_SET(p+2, 0xFFFF);					
-					cur_bwmode = CHANNEL_WIDTH_40;
-				}		
-			}
-			else
-			{
-				u8	center_freq;
-				
-				cur_bwmode = CHANNEL_WIDTH_80;
-				
-				if(pbuddy_mlmeext->cur_bwmode == CHANNEL_WIDTH_40 ||
-					pbuddy_mlmeext->cur_bwmode == CHANNEL_WIDTH_80)
-				{
-					cur_ch_offset = pbuddy_mlmeext->cur_ch_offset;
-				}
-				else if(pbuddy_mlmeext->cur_bwmode == CHANNEL_WIDTH_20)
-				{
-					cur_ch_offset =  rtw_get_offset_by_ch(cur_channel);
-				}	
-
-				//modify ht info ie
-				if(pht_info)
-					pht_info->infos[0] &= ~HT_INFO_HT_PARAM_SECONDARY_CHNL_OFF_MASK;
-				
-				switch(cur_ch_offset)
-				{
-					case HAL_PRIME_CHNL_OFFSET_LOWER:
-						if(pht_info)
-							pht_info->infos[0] |= HT_INFO_HT_PARAM_SECONDARY_CHNL_ABOVE;		
-						//cur_bwmode = CHANNEL_WIDTH_40;
-						break;
-					case HAL_PRIME_CHNL_OFFSET_UPPER:
-						if(pht_info)
-							pht_info->infos[0] |= HT_INFO_HT_PARAM_SECONDARY_CHNL_BELOW;						
-						//cur_bwmode = CHANNEL_WIDTH_40;
-						break;
-					case HAL_PRIME_CHNL_OFFSET_DONT_CARE:							
-					default:
-						if(pht_info)
-							pht_info->infos[0] &= ~HT_INFO_HT_PARAM_SECONDARY_CHNL_OFF_MASK;
-						cur_bwmode = CHANNEL_WIDTH_20;
-						cur_ch_offset = HAL_PRIME_CHNL_OFFSET_DONT_CARE;
-						break;					
-				}
-
-				//modify vht op ie
-				center_freq = rtw_get_center_ch(cur_channel, cur_bwmode, HAL_PRIME_CHNL_OFFSET_LOWER);
-				if( pvht_op_ie && vht_op_ielen)
-					SET_VHT_OPERATION_ELE_CHL_CENTER_FREQ1(pvht_op_ie+2, center_freq);
-
-				set_channel_bwmode(padapter, cur_channel, cur_ch_offset, cur_bwmode);
-				
-			}
-			
-		}
-#endif //CONFIG_80211AC_VHT
 
 		if(cur_bwmode == CHANNEL_WIDTH_40)
 		{

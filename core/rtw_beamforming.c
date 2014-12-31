@@ -655,9 +655,6 @@ bool	beamforming_init_entry(PADAPTER	adapter, struct sta_info *psta, u8* idx)
 {
 	struct mlme_priv	*pmlmepriv = &(adapter->mlmepriv);
 	struct ht_priv		*phtpriv = &(pmlmepriv->htpriv);
-#ifdef CONFIG_80211AC_VHT	
-	struct vht_priv		*pvhtpriv = &(pmlmepriv->vhtpriv);
-#endif
 	struct mlme_ext_priv	*pmlmeext = &(adapter->mlmeextpriv);
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 	struct beamforming_entry	*pBeamformEntry = NULL;
@@ -668,11 +665,7 @@ bool	beamforming_init_entry(PADAPTER	adapter, struct sta_info *psta, u8* idx)
 	BEAMFORMING_CAP	beamform_cap = BEAMFORMING_CAP_NONE;
 
 	// The current setting does not support Beaforming
-	if (0 == phtpriv->beamform_cap 
-#ifdef CONFIG_80211AC_VHT
-		&& 0 == pvhtpriv->beamform_cap
-#endif
-		) {
+	if (0 == phtpriv->beamform_cap) {
 		DBG_871X("The configuration disabled Beamforming! Skip...\n");
 		return false;
 	}
@@ -696,19 +689,6 @@ bool	beamforming_init_entry(PADAPTER	adapter, struct sta_info *psta, u8* idx)
 		// We are Beamformer because the STA is Beamformee
 		if(TEST_FLAG(cur_beamform, BEAMFORMING_HT_BEAMFORMEE_ENABLE))
 			beamform_cap =(BEAMFORMING_CAP)(beamform_cap | BEAMFORMER_CAP_HT_EXPLICIT);
-#ifdef CONFIG_80211AC_VHT
-		if (IsSupportedVHT(wireless_mode)) {
-			//3 // VHT
-			cur_beamform = psta->vhtpriv.beamform_cap;
-
-			// We are Beamformee because the STA is Beamformer
-			if(TEST_FLAG(cur_beamform, BEAMFORMING_VHT_BEAMFORMER_ENABLE))
-				beamform_cap =(BEAMFORMING_CAP)(beamform_cap |BEAMFORMEE_CAP_VHT_SU);
-			// We are Beamformer because the STA is Beamformee
-			if(TEST_FLAG(cur_beamform, BEAMFORMING_VHT_BEAMFORMEE_ENABLE))
-				beamform_cap =(BEAMFORMING_CAP)(beamform_cap |BEAMFORMER_CAP_VHT_SU);
-		}
-#endif //CONFIG_80211AC_VHT
 
 		if(beamform_cap == BEAMFORMING_CAP_NONE)
 			return false;

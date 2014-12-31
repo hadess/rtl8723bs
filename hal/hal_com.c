@@ -752,28 +752,18 @@ void rtw_hal_update_sta_rate_mask(PADAPTER padapter, struct sta_info *psta)
 			tx_ra_bitmap |= rtw_get_bit_value_from_ieee_value(psta->bssrateset[i]&0x7f);
 	}
 
-#ifdef CONFIG_80211AC_VHT
-	//AC mode ra_bitmap
-	if(psta->vhtpriv.vht_option) 
+	//n mode ra_bitmap
+	if(psta->htpriv.ht_option) 
 	{
-		tx_ra_bitmap |= (rtw_vht_rate_to_bitmap(psta->vhtpriv.vht_mcs_map) << 12);
-	}
-	else
-#endif //CONFIG_80211AC_VHT
-	{
-		//n mode ra_bitmap
-		if(psta->htpriv.ht_option) 
-		{
-			rtw_hal_get_hwreg(padapter, HW_VAR_RF_TYPE, (u8 *)(&rf_type));
-			if(rf_type == RF_2T2R)
-				limit=16;// 2R
-			else
-				limit=8;//  1R
+		rtw_hal_get_hwreg(padapter, HW_VAR_RF_TYPE, (u8 *)(&rf_type));
+		if(rf_type == RF_2T2R)
+			limit=16;// 2R
+		else
+			limit=8;//  1R
 
-			for (i=0; i<limit; i++) {
-				if (psta->htpriv.ht_cap.supp_mcs_set[i/8] & BIT(i%8))
-					tx_ra_bitmap |= BIT(i+12);
-			}
+		for (i=0; i<limit; i++) {
+			if (psta->htpriv.ht_cap.supp_mcs_set[i/8] & BIT(i%8))
+				tx_ra_bitmap |= BIT(i+12);
 		}
 	}
 

@@ -182,10 +182,6 @@ struct sta_info {
 
 	struct ht_priv	htpriv;
 
-#ifdef CONFIG_80211AC_VHT
-	struct vht_priv	vhtpriv;
-#endif
-
 	//Notes:	
 	//STA_Mode:
 	//curr_network(mlme_priv/security_priv/qos/ht) + sta_info: (STA & AP) CAP/INFO	

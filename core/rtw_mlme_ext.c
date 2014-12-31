@@ -2036,32 +2036,6 @@ unsigned int OnAssocReq(_adapter *padapter, union recv_frame *precv_frame)
 		//goto OnAssocReqFail;
 	}
 
-#ifdef CONFIG_80211AC_VHT
-	_rtw_memset(&pstat->vhtpriv, 0, sizeof(struct vht_priv));
-	if (elems.vht_capabilities && elems.vht_capabilities_len == 12) {
-		pstat->flags |= WLAN_STA_VHT;
-
-		_rtw_memcpy(pstat->vhtpriv.vht_cap, elems.vht_capabilities, 12);
-
-		if (elems.vht_op_mode_notify && elems.vht_op_mode_notify_len == 1) {
-			_rtw_memcpy(&pstat->vhtpriv.vht_op_mode_notify, elems.vht_op_mode_notify, 1);
-		}
-		else // for Frame without Operating Mode notify ie; default: 80M
-		{
-			pstat->vhtpriv.vht_op_mode_notify = CHANNEL_WIDTH_80;
-		}
-	}
-	else {
-		pstat->flags &= ~WLAN_STA_VHT;
-	}
-
-	if((pmlmepriv->vhtpriv.vht_option == false) && (pstat->flags&WLAN_STA_VHT))
-	{
-		status = _STATS_FAILURE_;
-		goto OnAssocReqFail;
-	}
-#endif /* CONFIG_80211AC_VHT */
-
        //
        //if (hapd->iface->current_mode->mode == HOSTAPD_MODE_IEEE80211G)//?
 	pstat->flags |= WLAN_STA_NONERP;	
@@ -2276,16 +2250,6 @@ unsigned int OnAssocRsp(_adapter *padapter, union recv_frame *precv_frame)
 			case _HT_EXTRA_INFO_IE_:	//HT info
 				HT_info_handler(padapter, pIE);
 				break;
-
-#ifdef CONFIG_80211AC_VHT
-			case EID_VHTCapability:
-				VHT_caps_handler(padapter, pIE);
-				break;
-
-			case EID_VHTOperation:
-				VHT_operation_handler(padapter, pIE);
-				break;
-#endif
 
 			case _ERPINFO_IE_:
 				ERP_IE_handler(padapter, pIE);
@@ -2924,44 +2888,7 @@ unsigned int OnAction_wmm(_adapter *padapter, union recv_frame *precv_frame)
 
 unsigned int OnAction_vht(_adapter *padapter, union recv_frame *precv_frame)
 {
-#ifdef CONFIG_80211AC_VHT
-	struct rx_pkt_attrib *prxattrib = &precv_frame->u.hdr.attrib;
-	u8 *pframe = precv_frame->u.hdr.rx_data;
-	uint frame_len = precv_frame->u.hdr.len;
-	u8 *frame_body = pframe + sizeof(struct rtw_ieee80211_hdr_3addr);
-	u8 category, action;
-	struct sta_info *psta = NULL;
-
-	/* check RA matches or not */
-	if (!_rtw_memcmp(myid(&(padapter->eeprompriv)), GetAddr1Ptr(pframe), ETH_ALEN))
-		goto exit;
-
-	category = frame_body[0];
-	if(category != RTW_WLAN_CATEGORY_VHT)
-		goto exit;
-
-	action = frame_body[1];
-	switch (action) {
-	case RTW_WLAN_ACTION_VHT_COMPRESSED_BEAMFORMING:
-#ifdef CONFIG_BEAMFORMING
-		//DBG_871X("RTW_WLAN_ACTION_VHT_COMPRESSED_BEAMFORMING\n");
-		beamforming_get_report_frame(padapter, precv_frame);
-#endif //CONFIG_BEAMFORMING
-		break;
-	case RTW_WLAN_ACTION_VHT_OPMODE_NOTIFICATION:
-		// CategoryCode(1) + ActionCode(1) + OpModeNotification(1)
-		//DBG_871X("RTW_WLAN_ACTION_VHT_OPMODE_NOTIFICATION\n");
-		psta = rtw_get_stainfo(&padapter->stapriv, prxattrib->ta);
-		if (psta)
-			rtw_process_vht_op_mode_notify(padapter, &frame_body[2], psta);
-		break;
-	default:
-		break;
-	}
-
-exit:
-#endif //CONFIG_80211AC_VHT
-
+/*DEADCODE */
 	return _SUCCESS;
 }
 
@@ -4040,31 +3967,6 @@ void issue_asocrsp(_adapter *padapter, unsigned short status, struct sta_info *p
 		
 	}	
 
-#ifdef CONFIG_80211AC_VHT
-	if ((pstat->flags & WLAN_STA_VHT) && (pmlmepriv->vhtpriv.vht_option))
-	{
-		u32 ie_len=0;
-
-		//FILL VHT CAP IE
-		pbuf = rtw_get_ie(ie + _BEACON_IE_OFFSET_, EID_VHTCapability, &ie_len, (pnetwork->IELength - _BEACON_IE_OFFSET_));
-		if(pbuf && ie_len>0)
-		{
-			_rtw_memcpy(pframe, pbuf, ie_len+2);
-			pframe += (ie_len+2);
-			pattrib->pktlen +=(ie_len+2);
-		}
-
-		//FILL VHT OPERATION IE
-		pbuf = rtw_get_ie(ie + _BEACON_IE_OFFSET_, EID_VHTOperation, &ie_len, (pnetwork->IELength - _BEACON_IE_OFFSET_));
-		if(pbuf && ie_len>0)
-		{
-			_rtw_memcpy(pframe, pbuf, ie_len+2);
-			pframe += (ie_len+2);
-			pattrib->pktlen +=(ie_len+2);
-		}
-	}
-#endif //CONFIG_80211AC_VHT
-
 	//FILL WMM IE
 	if ((pstat->flags & WLAN_STA_WME) && (pmlmepriv->qospriv.qos_option))
 	{
@@ -4346,19 +4248,6 @@ void issue_assocreq(_adapter *padapter)
 					pframe = rtw_set_ie(pframe, EID_EXTCapability, pIE->Length, pIE->data, &(pattrib->pktlen));
 				}
 				break;
-#ifdef CONFIG_80211AC_VHT
-			case EID_VHTCapability:
-				if (padapter->mlmepriv.vhtpriv.vht_option ==true) {
-					pframe = rtw_set_ie(pframe, EID_VHTCapability, pIE->Length, pIE->data, &(pattrib->pktlen));
-				}
-				break;
-
-			case EID_OpModeNotification:
-				if (padapter->mlmepriv.vhtpriv.vht_option ==true) {
-					pframe = rtw_set_ie(pframe, EID_OpModeNotification, pIE->Length, pIE->data, &(pattrib->pktlen));
-				}
-				break;
-#endif // CONFIG_80211AC_VHT
 			default:
 				break;
 		}
@@ -6912,10 +6801,6 @@ void update_sta_info(_adapter *padapter, struct sta_info *psta)
 	if(pmlmepriv->qospriv.qos_option)
 		psta->qos_option = true;
 
-#ifdef CONFIG_80211AC_VHT
-	_rtw_memcpy(&psta->vhtpriv, &pmlmepriv->vhtpriv, sizeof(struct vht_priv));
-#endif //CONFIG_80211AC_VHT
-
 	update_ldpc_stbc_cap(psta);
 
 	_enter_critical_bh(&psta->lock, &irqL);
@@ -7062,11 +6947,6 @@ void mlmeext_joinbss_event_callback(_adapter *padapter, int join_res)
 
 	//HT
 	HTOnAssocRsp(padapter);
-
-#ifdef CONFIG_80211AC_VHT
-	//VHT
-	VHTOnAssocRsp(padapter);
-#endif
 
 #ifndef CONFIG_CONCURRENT_MODE
 	//	Call set_channel_bwmode when the CONFIG_CONCURRENT_MODE doesn't be defined.
@@ -8170,20 +8050,6 @@ u8 join_cmd_hdl(_adapter *padapter, u8 *pbuf)
 					}
 				}
 				break;
-#ifdef CONFIG_80211AC_VHT
-			case EID_VHTCapability://Get VHT Cap IE.
-				pmlmeinfo->VHT_enable = 1;
-				break;
-
-			case EID_VHTOperation://Get VHT Operation IE.
-				if((GET_VHT_OPERATION_ELE_CHL_WIDTH(pIE->data) >= 1) 
-					&& ((pregpriv->bw_mode >> 4) >= CHANNEL_WIDTH_80)) {
-					pmlmeext->cur_bwmode = CHANNEL_WIDTH_80;
-					DBG_871X("VHT center ch = %d\n", GET_VHT_OPERATION_ELE_CENTER_FREQ1(pIE->data));
-					DBG_871X("set VHT ch/bw before connected\n");
-				}
-				break;
-#endif
 			default:
 				break;
 		}
@@ -9597,86 +9463,7 @@ void concurrent_chk_joinbss_done(_adapter *padapter, int join_res)
 			}
 
 			pbuddy_mlmeext->cur_channel = pmlmeext->cur_channel;
-#ifdef CONFIG_80211AC_VHT
-			if(pbuddy_mlmeext->cur_bwmode  == CHANNEL_WIDTH_80)
-			{
-				u8 *pvht_cap_ie, *pvht_op_ie;
-				int vht_cap_ielen, vht_op_ielen;
-			
-				pvht_cap_ie = rtw_get_ie((pbuddy_network_mlmeext->IEs + sizeof(NDIS_802_11_FIXED_IEs)), EID_VHTCapability, &vht_cap_ielen, (pbuddy_network_mlmeext->IELength - sizeof(NDIS_802_11_FIXED_IEs)));
-				pvht_op_ie = rtw_get_ie((pbuddy_network_mlmeext->IEs + sizeof(NDIS_802_11_FIXED_IEs)), EID_VHTOperation, &vht_op_ielen, (pbuddy_network_mlmeext->IELength - sizeof(NDIS_802_11_FIXED_IEs)));
-						
-				if(pmlmeext->cur_channel <= 14) // downgrade to 20/40Mhz
-				{
-					//modify vht cap ie
-					if( pvht_cap_ie && vht_cap_ielen)
-					{
-						SET_VHT_CAPABILITY_ELE_SHORT_GI80M(pvht_cap_ie+2, 0);
-					}
-				
-					//modify vht op ie
-					if( pvht_op_ie && vht_op_ielen)
-					{
-						SET_VHT_OPERATION_ELE_CHL_WIDTH(pvht_op_ie+2, 0); //change to 20/40Mhz
-						SET_VHT_OPERATION_ELE_CHL_CENTER_FREQ1(pvht_op_ie+2, 0);
-						SET_VHT_OPERATION_ELE_CHL_CENTER_FREQ2(pvht_op_ie+2, 0);
-						//SET_VHT_OPERATION_ELE_BASIC_MCS_SET(p+2, 0xFFFF);					
-						pbuddy_mlmeext->cur_bwmode = CHANNEL_WIDTH_40;
-					}		
-				}
-				else
-				{
-					u8	center_freq;
-				
-					pbuddy_mlmeext->cur_bwmode = CHANNEL_WIDTH_80;
-				
-					if(pmlmeext->cur_bwmode == CHANNEL_WIDTH_40 ||
-						pmlmeext->cur_bwmode == CHANNEL_WIDTH_80)
-					{
-						pbuddy_mlmeext->cur_ch_offset = pmlmeext->cur_ch_offset;
-					}
-					else if(pmlmeext->cur_bwmode == CHANNEL_WIDTH_20)
-					{
-						pbuddy_mlmeext->cur_ch_offset =  rtw_get_offset_by_ch(pmlmeext->cur_channel);
-					}	
 
-					//modify ht info ie
-					if(pht_info)
-						pht_info->infos[0] &= ~HT_INFO_HT_PARAM_SECONDARY_CHNL_OFF_MASK;
-				
-					switch(pbuddy_mlmeext->cur_ch_offset)
-					{
-						case HAL_PRIME_CHNL_OFFSET_LOWER:
-							if(pht_info)
-								pht_info->infos[0] |= HT_INFO_HT_PARAM_SECONDARY_CHNL_ABOVE;		
-							//cur_bwmode = CHANNEL_WIDTH_40;
-							break;
-						case HAL_PRIME_CHNL_OFFSET_UPPER:
-							if(pht_info)
-								pht_info->infos[0] |= HT_INFO_HT_PARAM_SECONDARY_CHNL_BELOW;						
-							//cur_bwmode = CHANNEL_WIDTH_40;
-							break;
-						case HAL_PRIME_CHNL_OFFSET_DONT_CARE:							
-						default:
-							if(pht_info)
-								pht_info->infos[0] &= ~HT_INFO_HT_PARAM_SECONDARY_CHNL_OFF_MASK;
-							pbuddy_mlmeext->cur_bwmode = CHANNEL_WIDTH_20;
-							pbuddy_mlmeext->cur_ch_offset = HAL_PRIME_CHNL_OFFSET_DONT_CARE;
-							break;					
-					}
-
-					//modify vht op ie
-					center_freq = rtw_get_center_ch(pbuddy_mlmeext->cur_channel, pbuddy_mlmeext->cur_bwmode, HAL_PRIME_CHNL_OFFSET_LOWER);
-					if( pvht_op_ie && vht_op_ielen)
-						SET_VHT_OPERATION_ELE_CHL_CENTER_FREQ1(pvht_op_ie+2, center_freq);
-
-					set_channel_bwmode(padapter, pbuddy_mlmeext->cur_channel, pbuddy_mlmeext->cur_ch_offset, pbuddy_mlmeext->cur_bwmode);
-				
-				}
-			
-			}
-#endif //CONFIG_80211AC_VHT
-			
 			if(pbuddy_mlmeext->cur_bwmode == CHANNEL_WIDTH_40)		
 			{
 				p = rtw_get_ie((pbuddy_network_mlmeext->IEs + sizeof(NDIS_802_11_FIXED_IEs)), _HT_ADD_INFO_IE_, &ie_len, (pbuddy_network_mlmeext->IELength - sizeof(NDIS_802_11_FIXED_IEs)));
@@ -10184,14 +9971,6 @@ u8 tdls_hdl(_adapter *padapter, unsigned char *pbuf)
 
 				if (ptdls_sta->ra_mask & 0xff0)
 					sta_band |= WIRELESS_11A;
-
-				// 5G band
-				#ifdef CONFIG_80211AC_VHT
-				if (ptdls_sta->vhtpriv.vht_option)  {
-					sta_band = WIRELESS_11_5AC;
-				}		
-				#endif
-				
 			} else {
 				if (ptdls_sta->ra_mask & 0xffff000)
 					sta_band |= WIRELESS_11_24N;

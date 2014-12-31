@@ -419,16 +419,8 @@ u8	query_ra_short_GI(struct sta_info *psta)
 {
 	u8	sgi = false, sgi_20m = false, sgi_40m = false, sgi_80m = false;
 
-#ifdef CONFIG_80211AC_VHT
-	if (psta->vhtpriv.vht_option) {
-		sgi_80m= psta->vhtpriv.sgi_80m;
-	}
-	else
-#endif //CONFIG_80211AC_VHT
-	{
-		sgi_20m = psta->htpriv.sgi_20m;
-		sgi_40m = psta->htpriv.sgi_40m;
-	}
+	sgi_20m = psta->htpriv.sgi_20m;
+	sgi_40m = psta->htpriv.sgi_40m;
 
 	switch(psta->bw_mode){
 		case CHANNEL_WIDTH_80:

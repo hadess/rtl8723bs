@@ -449,9 +449,6 @@ struct mlme_priv {
 
 	struct ht_priv	htpriv;
 
-#ifdef CONFIG_80211AC_VHT
-	struct vht_priv	vhtpriv;
-#endif
 #ifdef CONFIG_BEAMFORMING
 	struct beamforming_info	beamforming_info;
 #endif
