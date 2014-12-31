@@ -129,15 +129,7 @@ ODM_UpdateRxIdleAnt(IN PDM_ODM_T pDM_Odm, IN u1Byte Ant)
 			        ODM_RT_TRACE(pDM_Odm,ODM_COMP_ANT_DIV, ODM_DBG_LOUD, ("[ Update Rx-Idle-Ant ] 8723B: Fail to set RX antenna due to 0x948 = 0x280\n"));
 		}
 
-		if(pDM_Odm->SupportICType==ODM_RTL8188E)
-		{		
-			ODM_SetMACReg(pDM_Odm, 0x6D8 , BIT7|BIT6, DefaultAnt);	//PathA Resp Tx
-		}
-		else
-		{
-			ODM_SetMACReg(pDM_Odm, 0x6D8 , BIT10|BIT9|BIT8, DefaultAnt);	//PathA Resp Tx
-		}	
-		
+		ODM_SetMACReg(pDM_Odm, 0x6D8 , BIT10|BIT9|BIT8, DefaultAnt);	//PathA Resp Tx
 	}
 	else// pDM_FatTable->RxIdleAnt == Ant
 	{
@@ -1256,14 +1248,8 @@ pFAT_T			pDM_FatTable = &pDM_Odm->DM_FatTable;
 		CCKMaxRate=DESC_RATE11M;
 	isCCKrate = (pPktinfo->DataRate <= CCKMaxRate)?true:false;
 
-	if(  (pDM_Odm->SupportICType == ODM_RTL8192E||pDM_Odm->SupportICType == ODM_RTL8812)   && (pPktinfo->DataRate > CCKMaxRate) )
-	{
-		RxPower_Ant0 = pPhyInfo->RxMIMOSignalStrength[0];
-		RxPower_Ant1= pPhyInfo->RxMIMOSignalStrength[1];
-	}
-	else
-		RxPower_Ant0=pPhyInfo->RxPWDBAll;
-	
+	RxPower_Ant0=pPhyInfo->RxPWDBAll;
+
 	if(pDM_Odm->AntDivType == CG_TRX_SMART_ANTDIV)
 	{
 		if( (pDM_Odm->SupportICType & ODM_SMART_ANT_SUPPORT) &&  pPktinfo->bPacketToSelf   && pDM_FatTable->FAT_State == FAT_TRAINING_STATE )//(pPktinfo->bPacketMatchBSSID && (!pPktinfo->bPacketBeacon))
