@@ -310,21 +310,13 @@ _func_enter_;
 _func_exit_;
 	return;
 }
-static void rtw_decide_chip_type_by_device_id(PADAPTER padapter, const struct sdio_device_id  *pdid)
-{
-	padapter->chip_type = pdid->driver_data;
-
-	padapter->chip_type = RTL8723B;
-}
 
 void rtw_set_hal_ops(PADAPTER padapter)
 {
 	//alloc memory for HAL DATA
 	rtw_hal_data_init(padapter);
 
-	if(padapter->chip_type == RTL8723B){
-		rtl8723bs_set_hal_ops(padapter);
-	}
+	rtl8723bs_set_hal_ops(padapter);
 }
 
 static void sd_intf_start(PADAPTER padapter)
@@ -386,9 +378,6 @@ _adapter *rtw_sdio_if1_init(struct dvobj_priv *dvobj, const struct sdio_device_i
 	#endif
 #endif
 
-	padapter->interface_type = RTW_SDIO;
-	rtw_decide_chip_type_by_device_id(padapter, pdid);
-	
 	//3 1. init network device data
 	pnetdev = rtw_init_netdev(padapter);
 	if (!pnetdev)

@@ -3819,8 +3819,6 @@ inline bool xmitframe_hiq_filter(struct xmit_frame *xmitframe)
 	_adapter *adapter = xmitframe->padapter;
 	struct registry_priv *registry = &adapter->registrypriv;
 
-if (adapter->interface_type != RTW_PCIE) {
-
 	if (registry->hiq_filter == RTW_HIQ_FILTER_ALLOW_SPECIAL) {
 	
 		struct pkt_attrib *attrib = &xmitframe->attrib;
@@ -3846,7 +3844,7 @@ if (adapter->interface_type != RTW_PCIE) {
 	else {
 		rtw_warn_on(1);
 	}
-}
+
 	return allow;
 }
 

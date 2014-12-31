@@ -8905,10 +8905,8 @@ u8 chk_bmc_sleepq_hdl(_adapter *padapter, unsigned char *pbuf)
 		//_exit_critical_bh(&psta_bmc->sleep_q.lock, &irqL);
 		_exit_critical_bh(&pxmitpriv->lock, &irqL);
 
-		if (padapter->interface_type != RTW_PCIE) {
-			/* check hi queue and bmc_sleepq */
-			rtw_chk_hi_queue_cmd(padapter);
-		}
+		/* check hi queue and bmc_sleepq */
+		rtw_chk_hi_queue_cmd(padapter);
 	}
 #endif
 

@@ -1765,20 +1765,8 @@ int check_phy_efuse_tx_power_info_valid(PADAPTER padapter) {
 	int index = 0;
 	u16 tx_index_offset = 0x0000;
 
-	switch(padapter->chip_type) {
-		case RTL8723B:
-			tx_index_offset = EEPROM_TX_PWR_INX_8723B;
-		break;
-		case RTL8188E:
-			tx_index_offset = EEPROM_TX_PWR_INX_88E;
-		break;
-		case RTL8192E:
-			tx_index_offset = EEPROM_TX_PWR_INX_8192E;
-		break;
-		default:
-			tx_index_offset = 0x0010;
-		break;
-	}
+	tx_index_offset = EEPROM_TX_PWR_INX_8723B;
+
 	for (index = 0 ; index < 12 ; index++) {
 		if (pContent[tx_index_offset + index] == 0xFF) {
 			return false;
@@ -1795,45 +1783,10 @@ int check_phy_efuse_macaddr_info_valid(PADAPTER padapter) {
 	u8 val = 0;
 	u16 addr_offset = 0x0000;
 
-	switch(padapter->chip_type) {
-		case RTL8723B:
-			if (padapter->interface_type == RTW_USB) {
-				addr_offset = EEPROM_MAC_ADDR_8723BU;
-				DBG_871X("%s: interface is USB\n", __func__);
-			} else if (padapter->interface_type == RTW_SDIO) {
-				addr_offset = EEPROM_MAC_ADDR_8723BS;
-				DBG_871X("%s: interface is SDIO\n", __func__);
-			} else if (padapter->interface_type == RTW_PCIE) {
-				addr_offset = EEPROM_MAC_ADDR_8723BE;
-				DBG_871X("%s: interface is PCIE\n", __func__);
-			} else if (padapter->interface_type == RTW_GSPI) {
-				//addr_offset = EEPROM_MAC_ADDR_8723BS;
-				DBG_871X("%s: interface is GSPI\n", __func__);
-			}
-		break;
-		case RTL8188E:
-			if (padapter->interface_type == RTW_USB) {
-				addr_offset = EEPROM_MAC_ADDR_88EU;
-				DBG_871X("%s: interface is USB\n", __func__);
-			} else if (padapter->interface_type == RTW_SDIO) {
-				addr_offset = EEPROM_MAC_ADDR_88ES;
-				DBG_871X("%s: interface is SDIO\n", __func__);
-			} else if (padapter->interface_type == RTW_PCIE) {
-				addr_offset = EEPROM_MAC_ADDR_88EE;
-				DBG_871X("%s: interface is PCIE\n", __func__);
-			} else if (padapter->interface_type == RTW_GSPI) {
-				//addr_offset = EEPROM_MAC_ADDR_8723BS;
-				DBG_871X("%s: interface is GSPI\n", __func__);
-			}
-		break;
-	}
+	addr_offset = EEPROM_MAC_ADDR_8723BS;
+	DBG_871X("%s: interface is SDIO\n", __func__);
 
-	if (addr_offset == 0x0000) {
-		DBG_871X("phy efuse MAC addr offset is 0!!\n");
-		return false;
-	} else {
-		rtw_efuse_map_read(padapter, addr_offset, 1, &val);
-	}
+	rtw_efuse_map_read(padapter, addr_offset, 1, &val);
 
 	if (val == 0xFF) {
 		return false;
@@ -1951,38 +1904,8 @@ void Hal_GetPhyEfuseMACAddr(PADAPTER padapter, u8* mac_addr) {
 	int i = 0;
 	u16 addr_offset = 0x0000;
 
-	switch(padapter->chip_type) {
-		case RTL8723B:
-			if (padapter->interface_type == RTW_USB) {
-				addr_offset = EEPROM_MAC_ADDR_8723BU;
-				DBG_871X("%s: interface is USB\n", __func__);
-			} else if (padapter->interface_type == RTW_SDIO) {
-				addr_offset = EEPROM_MAC_ADDR_8723BS;
-				DBG_871X("%s: interface is SDIO\n", __func__);
-			} else if (padapter->interface_type == RTW_PCIE) {
-				addr_offset = EEPROM_MAC_ADDR_8723BE;
-				DBG_871X("%s: interface is PCIE\n", __func__);
-			} else if (padapter->interface_type == RTW_GSPI){
-				//addr_offset = EEPROM_MAC_ADDR_8723BS;
-				DBG_871X("%s: interface is GSPI\n", __func__);
-			}
-		break;
-		case RTL8188E:
-			if (padapter->interface_type == RTW_USB) {
-				addr_offset = EEPROM_MAC_ADDR_88EU;
-				DBG_871X("%s: interface is USB\n", __func__);
-			} else if (padapter->interface_type == RTW_SDIO) {
-				addr_offset = EEPROM_MAC_ADDR_88ES;
-				DBG_871X("%s: interface is SDIO\n", __func__);
-			} else if (padapter->interface_type == RTW_PCIE) {
-				addr_offset = EEPROM_MAC_ADDR_88EE;
-				DBG_871X("%s: interface is PCIE\n", __func__);
-			} else if (padapter->interface_type == RTW_GSPI){
-				//addr_offset = EEPROM_MAC_ADDR_8723BS;
-				DBG_871X("%s: interface is GSPI\n", __func__);
-			}
-		break;
-	}
+	addr_offset = EEPROM_MAC_ADDR_8723BS;
+	DBG_871X("%s: interface is SDIO\n", __func__);
 
 	rtw_efuse_map_read(padapter, addr_offset, ETH_ALEN, mac_addr);
 

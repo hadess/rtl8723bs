@@ -1404,10 +1404,6 @@ _adapter *rtw_drv_add_vir_if(_adapter *primary_padapter,
 	SET_NETDEV_DEV(pnetdev, dvobj_to_dev(pdvobjpriv));
 	rtw_wdev_alloc(padapter, dvobj_to_dev(pdvobjpriv));
 
-	//set interface_type/chip_type
-	padapter->interface_type = primary_padapter->interface_type;
-	padapter->chip_type = primary_padapter->chip_type;
-
 	//step 2. hook HalFunc, allocate HalData
 	//hal_set_hal_ops(padapter);
 	rtw_set_hal_ops(padapter);
@@ -1731,10 +1727,6 @@ _adapter *rtw_drv_if2_init(_adapter *primary_padapter,
 
 	SET_NETDEV_DEV(pnetdev, dvobj_to_dev(pdvobjpriv));
 	rtw_wdev_alloc(padapter, dvobj_to_dev(pdvobjpriv));
-
-	//set interface_type/chip_type
-	padapter->interface_type = primary_padapter->interface_type;
-	padapter->chip_type = primary_padapter->chip_type;
 
 	//step 2. hook HalFunc, allocate HalData
 	//hal_set_hal_ops(padapter);
