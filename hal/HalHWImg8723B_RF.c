@@ -21,7 +21,6 @@
 
 #include "odm_precomp.h"
 
-#if (RTL8723B_SUPPORT == 1)
 static bool
 CheckPositive(
     IN  PDM_ODM_T     pDM_Odm,
@@ -689,6 +688,3 @@ ODM_ReadAndConfig_MP_8723B_TXPWR_LMT(
 	}
 
 }
-
-#endif // end of HWIMG_SUPPORT
-

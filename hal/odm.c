@@ -2167,9 +2167,7 @@ odm_SwAntDetectInit(
 	)
 {
 	pSWAT_T		pDM_SWAT_Table = &pDM_Odm->DM_SWAT_Table;
-#if (RTL8723B_SUPPORT == 1)
 	pDM_SWAT_Table->SWAS_NoLink_BK_Reg92c = ODM_Read4Byte(pDM_Odm, rDPDT_control);
-#endif
 	pDM_SWAT_Table->PreAntenna = MAIN_ANT;
 	pDM_SWAT_Table->CurAntenna = MAIN_ANT;
 	pDM_SWAT_Table->SWAS_NoLink_State = 0;
@@ -2391,8 +2389,7 @@ ODM_SingleDualAntennaDetection(
 	CurrentChannel = ODM_GetRFReg(pDM_Odm, ODM_RF_PATH_A, ODM_CHANNEL, bRFRegOffsetMask);
 	RfLoopReg = ODM_GetRFReg(pDM_Odm, ODM_RF_PATH_A, 0x00, bRFRegOffsetMask);
 	if(!(pDM_Odm->SupportICType == ODM_RTL8723B))
-	ODM_SetBBReg(pDM_Odm, rFPGA0_XA_RFInterfaceOE, ODM_DPDT, Antenna_A);  // change to Antenna A
-#if (RTL8723B_SUPPORT == 1)
+		ODM_SetBBReg(pDM_Odm, rFPGA0_XA_RFInterfaceOE, ODM_DPDT, Antenna_A);  // change to Antenna A
 	else
 	{
 		Reg92c = ODM_GetBBReg(pDM_Odm, 0x92c, bMaskDWord);
@@ -2403,7 +2400,6 @@ ODM_SingleDualAntennaDetection(
 		ODM_SetBBReg(pDM_Odm, rS0S1_PathSwitch, 0x3ff, 0x000);
 		ODM_SetBBReg(pDM_Odm, AGC_table_select, BIT31, 0x0);
 	}
-#endif
 	ODM_StallExecution(10);
 	
 	//Store A Path Register 88c, c08, 874, c50
@@ -2492,10 +2488,8 @@ ODM_SingleDualAntennaDetection(
 	 // change to Antenna B
 	if(pDM_Odm->SupportICType & (ODM_RTL8723A|ODM_RTL8192C))
 		ODM_SetBBReg(pDM_Odm, rFPGA0_XA_RFInterfaceOE, ODM_DPDT, Antenna_B); 
-#if (RTL8723B_SUPPORT == 1)
 	else if(pDM_Odm->SupportICType == ODM_RTL8723B)
 		ODM_SetBBReg(pDM_Odm, rDPDT_control, 0x3, 0x2);
-#endif
 
 	ODM_StallExecution(10);	
 
@@ -2511,10 +2505,8 @@ ODM_SingleDualAntennaDetection(
 	// change to open case
 	if(pDM_Odm->SupportICType & (ODM_RTL8723A|ODM_RTL8192C))
 		ODM_SetBBReg(pDM_Odm, rFPGA0_XA_RFInterfaceOE, ODM_DPDT, 0);  // change to Antenna A
-#if (RTL8723B_SUPPORT == 1)
 	else if(pDM_Odm->SupportICType == ODM_RTL8723B)
 		ODM_SetBBReg(pDM_Odm, rDPDT_control, 0x3, 0x0);
-#endif
 
 	ODM_StallExecution(10);	
 	
@@ -2533,7 +2525,6 @@ ODM_SingleDualAntennaDetection(
 	//1 Return to antanna A
 	if(pDM_Odm->SupportICType & (ODM_RTL8723A|ODM_RTL8192C))
 		ODM_SetBBReg(pDM_Odm, rFPGA0_XA_RFInterfaceOE, ODM_DPDT, Antenna_A);  // change to Antenna A
-#if (RTL8723B_SUPPORT == 1)
 	else if(pDM_Odm->SupportICType == ODM_RTL8723B)
 	{
 		// external DPDT
@@ -2543,7 +2534,7 @@ ODM_SingleDualAntennaDetection(
 		ODM_SetBBReg(pDM_Odm, rS0S1_PathSwitch, bMaskDWord, Reg948);
 		ODM_SetBBReg(pDM_Odm, AGC_table_select, bMaskDWord, Regb2c);
 	}
-#endif
+
 	ODM_SetBBReg(pDM_Odm, rFPGA0_AnalogParameter4, bMaskDWord, Reg88c);
 	ODM_SetBBReg(pDM_Odm, rOFDM0_TRMuxPar, bMaskDWord, Regc08);
 	ODM_SetBBReg(pDM_Odm, rFPGA0_XCD_RFInterfaceSW, bMaskDWord, Reg874);

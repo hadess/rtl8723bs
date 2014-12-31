@@ -211,8 +211,6 @@
  * Outsource  Related Config
  */
 
-#define RTL8723B_SUPPORT				1
-
 #define RATE_ADAPTIVE_SUPPORT 			0
 #define POWER_TRAINING_ACTIVE			0
 
