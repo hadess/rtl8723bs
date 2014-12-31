@@ -91,18 +91,9 @@ _OUTSRC_FILES := hal/odm_debug.o	\
 		
 ifeq ($(CONFIG_BT_COEXIST), y)
 EXTRA_CFLAGS += -I$(src)/hal/OUTSRC-BTCoexist
-_OUTSRC_FILES += hal/HalBtc8188c2Ant.o \
-				hal/HalBtc8192d2Ant.o \
-				hal/HalBtc8192e1Ant.o \
-				hal/HalBtc8192e2Ant.o \
-				hal/HalBtc8723a1Ant.o \
-				hal/HalBtc8723a2Ant.o \
+_OUTSRC_FILES += \
 				hal/HalBtc8723b1Ant.o \
-				hal/HalBtc8723b2Ant.o \
-				hal/HalBtc8812a1Ant.o \
-				hal/HalBtc8812a2Ant.o \
-				hal/HalBtc8821a1Ant.o \
-				hal/HalBtc8821a2Ant.o
+				hal/HalBtc8723b2Ant.o
 endif
 
 ########### HAL_RTL8723B #################################
