@@ -548,14 +548,10 @@ ODM_DMInit(
 	if ( *(pDM_Odm->mp_mode) != 1)
 	odm_PathDiversityInit(pDM_Odm);
 
-	if(pDM_Odm->SupportICType & ODM_IC_11N_SERIES)
-	{
-		odm_DynamicBBPowerSavingInit(pDM_Odm);
-		odm_DynamicTxPowerInit(pDM_Odm);
+	odm_DynamicBBPowerSavingInit(pDM_Odm);
+	odm_DynamicTxPowerInit(pDM_Odm);
 
-		odm_SwAntDetectInit(pDM_Odm);
-	}
-
+	odm_SwAntDetectInit(pDM_Odm);
 }
 
 void
@@ -625,16 +621,13 @@ ODM_DMWatchdog(
 	odm_DynamicTxPower(pDM_Odm);	
 	odm_AntennaDiversity(pDM_Odm);
 
-	if(pDM_Odm->SupportICType & ODM_IC_11N_SERIES)
-	{
-		ODM_TXPowerTrackingCheck(pDM_Odm);
+	ODM_TXPowerTrackingCheck(pDM_Odm);
 
-		//odm_EdcaTurboCheck(pDM_Odm);
+	//odm_EdcaTurboCheck(pDM_Odm);
 
 	//2010.05.30 LukeLee: For CE platform, files in IC subfolders may not be included to be compiled,
 	// so compile flags must be left here to prevent from compile errors
-	        odm_DynamicBBPowerSaving(pDM_Odm);
-	}
+	odm_DynamicBBPowerSaving(pDM_Odm);
 	pDM_Odm->PhyDbgInfo.NumQryBeaconPkt = 0;
 
 	odm_dtc(pDM_Odm);
