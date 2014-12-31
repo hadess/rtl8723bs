@@ -104,23 +104,13 @@ void
 odm_DynamicTxPowerNIC(
 	IN		void *					pDM_VOID
 	)
-{	
+{
+/*DEADCODE
 	PDM_ODM_T		pDM_Odm = (PDM_ODM_T)pDM_VOID;
 	
 	if (!(pDM_Odm->SupportAbility & ODM_BB_DYNAMIC_TXPWR))
 		return;
-
-	if(pDM_Odm->SupportICType == ODM_RTL8192C)	
-	{
-		odm_DynamicTxPower_92C(pDM_Odm);
-	}
-	else if(pDM_Odm->SupportICType == ODM_RTL8192D)
-	{
-		odm_DynamicTxPower_92D(pDM_Odm);
-	}
-	else if (pDM_Odm->SupportICType == ODM_RTL8821)
-	{
-	}
+*/
 }
 
 void
@@ -128,8 +118,10 @@ odm_DynamicTxPowerAP(
 	IN		void *					pDM_VOID
 
 	)
-{	
+{
+/*DEADCODE
 	PDM_ODM_T		pDM_Odm = (PDM_ODM_T)pDM_VOID;
+*/
 }
 
 

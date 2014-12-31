@@ -288,7 +288,7 @@ odm_SearchPwdBLowerBound(
 				else if(pDM_Odm->SupportICType & ODM_IC_11AC_SERIES)
 					value32 = ODM_GetBBReg(pDM_Odm,ODM_REG_RPT_11AC, bMaskDWord);
 			
-				if (value32 & BIT30 && (pDM_Odm->SupportICType & (ODM_RTL8723A|ODM_RTL8723B|ODM_RTL8188E)))
+				if (value32 & BIT30)
 					pDM_Odm->txEdcca1 = pDM_Odm->txEdcca1 + 1;
 				else if(value32 & BIT29)
 					pDM_Odm->txEdcca1 = pDM_Odm->txEdcca1 + 1;
@@ -730,69 +730,16 @@ odm_DIG(
 	
 
 	//1 Update status
-	if(pDM_Odm->SupportICType == ODM_RTL8192D)
-	{
-		if(*(pDM_Odm->pMacPhyMode) == ODM_DMSP)
-		{
-			if(*(pDM_Odm->pbMasterOfDMSP))
-			{
-				DIG_Dynamic_MIN = pDM_DigTable->DIG_Dynamic_MIN_0;
-				FirstConnect = (pDM_Odm->bLinked) && (pDM_DigTable->bMediaConnect_0 == false);
-				FirstDisConnect = (!pDM_Odm->bLinked) && (pDM_DigTable->bMediaConnect_0 == true);
-			}
-			else
-			{
-				DIG_Dynamic_MIN = pDM_DigTable->DIG_Dynamic_MIN_1;
-				FirstConnect = (pDM_Odm->bLinked) && (pDM_DigTable->bMediaConnect_1 == false);
-				FirstDisConnect = (!pDM_Odm->bLinked) && (pDM_DigTable->bMediaConnect_1 == true);
-			}
-		}
-		else
-		{
-			if(*(pDM_Odm->pBandType) == ODM_BAND_5G)
-			{
-				DIG_Dynamic_MIN = pDM_DigTable->DIG_Dynamic_MIN_0;
-				FirstConnect = (pDM_Odm->bLinked) && (pDM_DigTable->bMediaConnect_0 == false);
-				FirstDisConnect = (!pDM_Odm->bLinked) && (pDM_DigTable->bMediaConnect_0 == true);
-			}
-			else
-			{
-				DIG_Dynamic_MIN = pDM_DigTable->DIG_Dynamic_MIN_1;
-				FirstConnect = (pDM_Odm->bLinked) && (pDM_DigTable->bMediaConnect_1 == false);
-				FirstDisConnect = (!pDM_Odm->bLinked) && (pDM_DigTable->bMediaConnect_1 == true);
-			}
-		}
-	}
-	else
-	{	
-		DIG_Dynamic_MIN = pDM_DigTable->DIG_Dynamic_MIN_0;
-		FirstConnect = (pDM_Odm->bLinked) && (pDM_DigTable->bMediaConnect_0 == false);
-		FirstDisConnect = (!pDM_Odm->bLinked) && (pDM_DigTable->bMediaConnect_0 == true);
-	}
+	DIG_Dynamic_MIN = pDM_DigTable->DIG_Dynamic_MIN_0;
+	FirstConnect = (pDM_Odm->bLinked) && (pDM_DigTable->bMediaConnect_0 == false);
+	FirstDisConnect = (!pDM_Odm->bLinked) && (pDM_DigTable->bMediaConnect_0 == true);
 
 	//1 Boundary Decision
-	if((pDM_Odm->SupportICType & ODM_RTL8192C) && (pDM_Odm->BoardType & (ODM_BOARD_EXT_LNA | ODM_BOARD_EXT_PA)))
-	{
-		//2 High power case
-		dm_dig_max = DM_DIG_MAX_NIC_HP;
-		dm_dig_min = DM_DIG_MIN_NIC_HP;
-		DIG_MaxOfMin = DM_DIG_MAX_AP_HP;
-	}
-	else
-	{
-		//2 For WIN\CE
-		if(pDM_Odm->SupportICType >= ODM_RTL8188E)
-			dm_dig_max = 0x5A;
-		else
-			dm_dig_max = DM_DIG_MAX_NIC;
-		
-		if(pDM_Odm->SupportICType != ODM_RTL8821)
-			dm_dig_min = DM_DIG_MIN_NIC;
-		else
-			dm_dig_min = 0x1C;
+	//2 For WIN\CE
+	dm_dig_max = 0x5A;
+	dm_dig_min = DM_DIG_MIN_NIC;
+	DIG_MaxOfMin = DM_DIG_MAX_AP;
 
-		DIG_MaxOfMin = DM_DIG_MAX_AP;
-	}
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG(): Absolutly upper bound = 0x%x, lower bound = 0x%x\n",dm_dig_max, dm_dig_min));
 
 	//1 Adjust boundary by RSSI
@@ -800,7 +747,7 @@ odm_DIG(
 	{
 		//2 Modify DIG upper bound
 		//4 Modify DIG upper bound for 92E, 8723A\B, 8821 & 8812 BT
-		if((pDM_Odm->SupportICType & (ODM_RTL8192E|ODM_RTL8723B|ODM_RTL8812|ODM_RTL8821|ODM_RTL8723A)) && (pDM_Odm->bBtLimitedDig==1))
+		if(pDM_Odm->bBtLimitedDig==1)
 		{
 			offset = 10;
 			ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG(): Coex. case: Force upper bound to RSSI + %d !!!!!!\n", offset));		
@@ -910,9 +857,6 @@ odm_DIG(
 					if(CurrentIGI < DIG_MaxOfMin)
 						CurrentIGI = DIG_MaxOfMin;
 				}
-
-				if(pDM_Odm->SupportICType == ODM_RTL8812)
-					ODM_ConfigBBWithHeaderFile(pDM_Odm, CONFIG_BB_AGC_TAB_DIFF);
 			}
 
 			ODM_RT_TRACE(pDM_Odm,	ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG(): First connect case: IGI does on-shot to 0x%x\n", CurrentIGI));
@@ -1231,27 +1175,10 @@ odm_FAThresholdCheck(
 	
 	if(pDM_Odm->bLinked && (bPerformance||bDFSBand))
 	{
-		if(pDM_Odm->SupportICType == ODM_RTL8192D)
-		{
-			// 8192D special case
-			dm_FA_thres[0] = DM_DIG_FA_TH0_92D;
-			dm_FA_thres[1] = DM_DIG_FA_TH1_92D;
-			dm_FA_thres[2] = DM_DIG_FA_TH2_92D;
-		}
-		else if(pDM_Odm->SupportICType == ODM_RTL8723A && pDM_Odm->bBtLimitedDig)
-		{
-			// 8723A BT special case
-			dm_FA_thres[0] = DM_DIG_FA_TH0;
-			dm_FA_thres[1] = 0x250;
-			dm_FA_thres[2] = 0x300;
-		}
-		else
-		{
-			// For NIC
-			dm_FA_thres[0] = DM_DIG_FA_TH0;
-			dm_FA_thres[1] = DM_DIG_FA_TH1;
-			dm_FA_thres[2] = DM_DIG_FA_TH2;
-		}
+		// For NIC
+		dm_FA_thres[0] = DM_DIG_FA_TH0;
+		dm_FA_thres[1] = DM_DIG_FA_TH1;
+		dm_FA_thres[2] = DM_DIG_FA_TH2;
 	}
 	else
 	{

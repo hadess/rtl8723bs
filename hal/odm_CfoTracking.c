@@ -39,49 +39,9 @@ odm_SetCrystalCap(
 
 	pCfoTrack->CrystalCap = CrystalCap;
 
-	if(pDM_Odm->SupportICType & ODM_RTL8192D)
-	{
-		ODM_SetBBReg(pDM_Odm, REG_AFE_XTAL_CTRL, 0x000000F0, CrystalCap & 0x0F);
-		ODM_SetBBReg(pDM_Odm, REG_AFE_PLL_CTRL, 0xF0000000, ((CrystalCap & 0xF0) >> 4));
-	}
-	else if(pDM_Odm->SupportICType & ODM_RTL8188E)
-	{
-		// write 0x24[22:17] = 0x24[16:11] = CrystalCap
-		CrystalCap = CrystalCap & 0x3F;
-		ODM_SetBBReg(pDM_Odm, REG_AFE_XTAL_CTRL, 0x007ff800, (CrystalCap | (CrystalCap << 6)));
-	}
-	else if(pDM_Odm->SupportICType & ODM_RTL8812)
-	{
-		// write 0x2C[30:25] = 0x2C[24:19] = CrystalCap
-		CrystalCap = CrystalCap & 0x3F;
-		ODM_SetBBReg(pDM_Odm, REG_MAC_PHY_CTRL, 0x7FF80000, (CrystalCap | (CrystalCap << 6)));
-	}	
-	else if (((pDM_Odm->SupportICType & ODM_RTL8723A) && bEEPROMCheck) ||
-		(pDM_Odm->SupportICType & ODM_RTL8723B) ||(pDM_Odm->SupportICType & ODM_RTL8192E) ||
-		(pDM_Odm->SupportICType & ODM_RTL8821))
-	{
-		// 0x2C[23:18] = 0x2C[17:12] = CrystalCap
-		CrystalCap = CrystalCap & 0x3F;
-		ODM_SetBBReg(pDM_Odm, REG_MAC_PHY_CTRL, 0x00FFF000, (CrystalCap | (CrystalCap << 6)));	
-	}
-	else if(pDM_Odm->SupportICType & ODM_RTL8821B)
-	{
-		// write 0x28[6:1] = 0x24[30:25] = CrystalCap
-		CrystalCap = CrystalCap & 0x3F;
-		ODM_SetBBReg(pDM_Odm, REG_AFE_XTAL_CTRL, 0x7E000000, CrystalCap);
-		ODM_SetBBReg(pDM_Odm, REG_AFE_PLL_CTRL, 0x7E, CrystalCap);	
-	}
-	else if(pDM_Odm->SupportICType & ODM_RTL8814A)
-	{
-		// write 0x2C[26:21] = 0x2C[20:15] = CrystalCap
-		CrystalCap = CrystalCap & 0x3F;
-		ODM_SetBBReg(pDM_Odm, REG_MAC_PHY_CTRL, 0x07FF8000, (CrystalCap | (CrystalCap << 6)));
-	}
-	else 
-	{
-		ODM_RT_TRACE(pDM_Odm, ODM_COMP_CFO_TRACKING, ODM_DBG_LOUD, ("odm_SetCrystalCap(): Use default setting.\n"));
-		ODM_SetBBReg(pDM_Odm, REG_MAC_PHY_CTRL, 0xFFF000, (CrystalCap | (CrystalCap << 6)));
-	}
+	// 0x2C[23:18] = 0x2C[17:12] = CrystalCap
+	CrystalCap = CrystalCap & 0x3F;
+	ODM_SetBBReg(pDM_Odm, REG_MAC_PHY_CTRL, 0x00FFF000, (CrystalCap | (CrystalCap << 6)));	
 
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CFO_TRACKING, ODM_DBG_LOUD, ("odm_SetCrystalCap(): CrystalCap = 0x%x\n", CrystalCap));
 }

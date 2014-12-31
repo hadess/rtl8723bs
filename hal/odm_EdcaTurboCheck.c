@@ -112,14 +112,6 @@ odm_EdcaTurboCheckCE(
 		return;
 	}
 
-	if(	(pDM_Odm->SupportICType == ODM_RTL8192C) ||
-		(pDM_Odm->SupportICType == ODM_RTL8723A) ||
-		(pDM_Odm->SupportICType == ODM_RTL8188E))
-	{
-		if((IOTPeer == HT_IOT_PEER_RALINK)||(IOTPeer == HT_IOT_PEER_ATHEROS))
-			bBiasOnRx = true;
-	}
-
 	// Check if the status needs to be changed.
 	if((bbtchange) || (!precvpriv->bIsAnyNonBEPkts) )
 	{
@@ -152,23 +144,8 @@ odm_EdcaTurboCheckCE(
 
 		//if ((pDM_Odm->DM_EDCA_Table.prv_traffic_idx != trafficIndex) || (!pDM_Odm->DM_EDCA_Table.bCurrentTurboEDCA))
 		{
-			if(ICType==ODM_RTL8192D)
-			{      
-				// Single PHY
-				if(pDM_Odm->RFType==ODM_2T2R)
-				{
-					EDCA_BE_UL = 0x60a42b;    //0x5ea42b;
-					EDCA_BE_DL = 0x60a42b;    //0x5ea42b;
-				}
-				else
-				{
-					EDCA_BE_UL = 0x6ea42b;
-					EDCA_BE_DL = 0x6ea42b;
-				}
-			}
-		
 			//92D txop can't be set to 0x3e for cisco1250
-			if((ICType!=ODM_RTL8192D) && (IOTPeer== HT_IOT_PEER_CISCO) &&(WirelessMode==ODM_WM_N24G))
+			if((IOTPeer== HT_IOT_PEER_CISCO) &&(WirelessMode==ODM_WM_N24G))
 			{
 				EDCA_BE_DL = edca_setting_DL[IOTPeer];
 				EDCA_BE_UL = edca_setting_UL[IOTPeer];
@@ -191,14 +168,6 @@ odm_EdcaTurboCheckCE(
 			{
 				// Set DL EDCA for Atheros peer to 0x3ea42b. Suggested by SD3 Wilson for ASUS TP issue. 
 				EDCA_BE_DL = edca_setting_DL[IOTPeer];
-			}
-
-			if((ICType==ODM_RTL8812)||(ICType==ODM_RTL8821)||(ICType==ODM_RTL8192E))           //add 8812AU/8812AE
-			{
-				EDCA_BE_UL = 0x5ea42b;
-				EDCA_BE_DL = 0x5ea42b;
-
-				ODM_RT_TRACE(pDM_Odm,ODM_COMP_EDCA_TURBO,ODM_DBG_LOUD,("8812A: EDCA_BE_UL=0x%x EDCA_BE_DL =0x%x",EDCA_BE_UL,EDCA_BE_DL));
 			}
 
 			if (trafficIndex == DOWN_LINK)

@@ -281,151 +281,12 @@ odm_RxPhyStatus92CSeries_Parsing(
 		//2011.11.28 LukeLee: 88E use different LNA & VGA gain table
 		//The RSSI formula should be modified according to the gain table
 		//In 88E, cck_highpwr is always set to 1
-		if(pDM_Odm->SupportICType & (ODM_RTL8188E|ODM_RTL8192E|ODM_RTL8723B))
-		{
-			LNA_idx = ((cck_agc_rpt & 0xE0) >>5);
-			VGA_idx = (cck_agc_rpt & 0x1F); 
-			if(pDM_Odm->SupportICType & (ODM_RTL8188E|ODM_RTL8192E))
-			{
-				switch(LNA_idx)
-				{
-					case 7:
-						if(VGA_idx <= 27)
-							rx_pwr_all = -100 + 2*(27-VGA_idx); //VGA_idx = 27~2
-						else
-							rx_pwr_all = -100;
-						break;
-					case 6:
-							rx_pwr_all = -48 + 2*(2-VGA_idx); //VGA_idx = 2~0
-						break;
-					case 5:
-							rx_pwr_all = -42 + 2*(7-VGA_idx); //VGA_idx = 7~5
-						break;
-					case 4:
-							rx_pwr_all = -36 + 2*(7-VGA_idx); //VGA_idx = 7~4
-						break;
-					case 3:
-							//rx_pwr_all = -28 + 2*(7-VGA_idx); //VGA_idx = 7~0
-							rx_pwr_all = -24 + 2*(7-VGA_idx); //VGA_idx = 7~0
-						break;
-					case 2:
-						if(cck_highpwr)
-							rx_pwr_all = -12 + 2*(5-VGA_idx); //VGA_idx = 5~0
-						else
-							rx_pwr_all = -6+ 2*(5-VGA_idx);
-						break;
-					case 1:
-							rx_pwr_all = 8-2*VGA_idx;
-						break;
-					case 0:
-							rx_pwr_all = 14-2*VGA_idx;
-						break;
-					default:
-						//DbgPrint("CCK Exception default\n");
-						break;
-				}
-				rx_pwr_all += 6;
-
-				//2012.10.08 LukeLee: Modify for 92E CCK RSSI
-				if(pDM_Odm->SupportICType == ODM_RTL8192E)
-					rx_pwr_all += 10;
-				
-				PWDB_ALL = odm_QueryRxPwrPercentage(rx_pwr_all);
-				if(cck_highpwr == false)
-				{
-					if(PWDB_ALL >= 80)
-						PWDB_ALL = ((PWDB_ALL-80)<<1)+((PWDB_ALL-80)>>1)+80;
-					else if((PWDB_ALL <= 78) && (PWDB_ALL >= 20))
-						PWDB_ALL += 3;
-					if(PWDB_ALL>100)
-						PWDB_ALL = 100;
-				}
-			}
-			else if(pDM_Odm->SupportICType & (ODM_RTL8723B))
-			{
-				rx_pwr_all = odm_CCKRSSI_8723B(LNA_idx,VGA_idx);
-				PWDB_ALL = odm_QueryRxPwrPercentage(rx_pwr_all);
-				if(PWDB_ALL>100)
-					PWDB_ALL = 100;	
-			}
-		}		
-		else
-		{
-			if(!cck_highpwr)
-			{			
-				report =( cck_agc_rpt & 0xc0 )>>6;
-				switch(report)
-				{
-					// 03312009 modified by cosa
-					// Modify the RF RNA gain value to -40, -20, -2, 14 by Jenyu's suggestion
-					// Note: different RF with the different RNA gain.
-					case 0x3:
-						rx_pwr_all = -46 - (cck_agc_rpt & 0x3e);
-						break;
-					case 0x2:
-						rx_pwr_all = -26 - (cck_agc_rpt & 0x3e);
-						break;
-					case 0x1:
-						rx_pwr_all = -12 - (cck_agc_rpt & 0x3e);
-						break;
-					case 0x0:
-						rx_pwr_all = 16 - (cck_agc_rpt & 0x3e);
-						break;
-				}
-			}
-			else
-			{
-				//report = pDrvInfo->cfosho[0] & 0x60;			
-				//report = pPhyStaRpt->cck_agc_rpt_ofdm_cfosho_a& 0x60;
-				
-				report = (cck_agc_rpt & 0x60)>>5;
-				switch(report)
-				{
-					case 0x3:
-						rx_pwr_all = -46 - ((cck_agc_rpt & 0x1f)<<1) ;
-						break;
-					case 0x2:
-						rx_pwr_all = -26 - ((cck_agc_rpt & 0x1f)<<1);
-						break;
-					case 0x1:
-						rx_pwr_all = -12 - ((cck_agc_rpt & 0x1f)<<1) ;
-						break;
-					case 0x0:
-						rx_pwr_all = 16 - ((cck_agc_rpt & 0x1f)<<1) ;
-						break;
-				}
-			}
-
-			PWDB_ALL = odm_QueryRxPwrPercentage(rx_pwr_all);
-
-			//Modification for ext-LNA board
-			if(pDM_Odm->BoardType & (ODM_BOARD_EXT_LNA | ODM_BOARD_EXT_PA))
-			{
-				if((cck_agc_rpt>>7) == 0){
-					PWDB_ALL = (PWDB_ALL>94)?100:(PWDB_ALL +6);
-				}
-				else	
-	                   {
-					if(PWDB_ALL > 38)
-						PWDB_ALL -= 16;
-					else
-						PWDB_ALL = (PWDB_ALL<=16)?(PWDB_ALL>>2):(PWDB_ALL -12);
-				}             
-
-				//CCK modification
-				if(PWDB_ALL > 25 && PWDB_ALL <= 60)
-					PWDB_ALL += 6;
-				//else if (PWDB_ALL <= 25)
-				//	PWDB_ALL += 8;
-			}
-			else//Modification for int-LNA board
-			{
-				if(PWDB_ALL > 99)
-				  	PWDB_ALL -= 8;
-				else if(PWDB_ALL > 50 && PWDB_ALL <= 68)
-					PWDB_ALL += 4;
-			}
-		}
+		LNA_idx = ((cck_agc_rpt & 0xE0) >>5);
+		VGA_idx = (cck_agc_rpt & 0x1F); 
+		rx_pwr_all = odm_CCKRSSI_8723B(LNA_idx,VGA_idx);
+		PWDB_ALL = odm_QueryRxPwrPercentage(rx_pwr_all);
+		if(PWDB_ALL>100)
+			PWDB_ALL = 100;	
 	
 		pPhyInfo->RxPWDBAll = PWDB_ALL;
 		pPhyInfo->BTRxRSSIPercentage = PWDB_ALL;
@@ -484,21 +345,6 @@ odm_RxPhyStatus92CSeries_Parsing(
 			total_rssi += RSSI;
 			//RT_DISP(FRX, RX_PHY_SS, ("RF-%d RXPWR=%x RSSI=%d\n", i, rx_pwr[i], RSSI));
 
-			//Modification for ext-LNA board
-			if(pDM_Odm->SupportICType&ODM_RTL8192C)
-			{	
-				if(pDM_Odm->BoardType & (ODM_BOARD_EXT_LNA | ODM_BOARD_EXT_PA))
-				{
-					if((pPhyStaRpt->path_agc[i].trsw) == 1)
-						RSSI = (RSSI>94)?100:(RSSI +6);
-					else
-						RSSI = (RSSI<=16)?(RSSI>>3):(RSSI -16);
-
-					if((RSSI <= 34) && (RSSI >=4))
-						RSSI -= 4;
-				}		
-			}
-		
 			pPhyInfo->RxMIMOSignalStrength[i] =(u1Byte) RSSI;
 
 			//Get Rx snr value in DB		
@@ -662,82 +508,7 @@ odm_RxPhyStatusJaguarSeries_Parsing(
 		
 		LNA_idx = ((cck_agc_rpt & 0xE0) >>5);
 		VGA_idx = (cck_agc_rpt & 0x1F); 
-		if(pDM_Odm->SupportICType == ODM_RTL8812)
-		{
-			switch(LNA_idx)
-			{
-				case 7:
-					if(VGA_idx <= 27)
-						rx_pwr_all = -100 + 2*(27-VGA_idx); //VGA_idx = 27~2
-					else
-						rx_pwr_all = -100;
-					break;
-				case 6:
-						rx_pwr_all = -48 + 2*(2-VGA_idx); //VGA_idx = 2~0
-					break;
-				case 5:
-						rx_pwr_all = -42 + 2*(7-VGA_idx); //VGA_idx = 7~5
-					break;
-				case 4:
-						rx_pwr_all = -36 + 2*(7-VGA_idx); //VGA_idx = 7~4
-					break;
-				case 3:
-						//rx_pwr_all = -28 + 2*(7-VGA_idx); //VGA_idx = 7~0
-						rx_pwr_all = -24 + 2*(7-VGA_idx); //VGA_idx = 7~0
-					break;
-				case 2:
-					if(cck_highpwr)
-						rx_pwr_all = -12 + 2*(5-VGA_idx); //VGA_idx = 5~0
-					else
-						rx_pwr_all = -6+ 2*(5-VGA_idx);
-					break;
-				case 1:
-						rx_pwr_all = 8-2*VGA_idx;
-					break;
-				case 0:
-						rx_pwr_all = 14-2*VGA_idx;
-					break;
-				default:
-					//DbgPrint("CCK Exception default\n");
-					break;
-			}
-			rx_pwr_all += 6;
-			PWDB_ALL = odm_QueryRxPwrPercentage(rx_pwr_all);
-			if(cck_highpwr == false)
-			{
-				if(PWDB_ALL >= 80)
-					PWDB_ALL = ((PWDB_ALL-80)<<1)+((PWDB_ALL-80)>>1)+80;
-				else if((PWDB_ALL <= 78) && (PWDB_ALL >= 20))
-					PWDB_ALL += 3;
-				if(PWDB_ALL>100)
-					PWDB_ALL = 100;
-			}
-		}
-		else if(pDM_Odm->SupportICType == ODM_RTL8821)
-		{
-			s1Byte Pout = -6;
-				
-			switch(LNA_idx)
-				{
-				case 5:
-					rx_pwr_all = Pout -32 -(2*VGA_idx);
-						break;
-				case 4:
-					rx_pwr_all = Pout -24 -(2*VGA_idx);
-						break;
-				case 2:
-					rx_pwr_all = Pout -11 -(2*VGA_idx);
-						break;
-				case 1:
-					rx_pwr_all = Pout + 5 -(2*VGA_idx);
-						break;
-				case 0:
-					rx_pwr_all = Pout + 21 -(2*VGA_idx);
-						break;
-				}
-			PWDB_ALL = odm_QueryRxPwrPercentage(rx_pwr_all);
-		}
-	
+
 		pPhyInfo->RxPWDBAll = PWDB_ALL;
 		//if(pPktinfo->StationID == 0)
 		//{
@@ -826,10 +597,7 @@ odm_RxPhyStatusJaguarSeries_Parsing(
 		// (3)PWDB, Average PWDB cacluated by hardware (for rate adaptive)
 		//
 		//2012.05.25 LukeLee: Testchip AGC report is wrong, it should be restored back to old formula in MP chip
-		if((pDM_Odm->SupportICType & (ODM_RTL8812|ODM_RTL8821)) && (!pDM_Odm->bIsMPChip))
-			rx_pwr_all = (pPhyStaRpt->pwdb_all& 0x7f) -110;
-		else
-			rx_pwr_all = (((pPhyStaRpt->pwdb_all) >> 1 )& 0x7f) -110;	 //OLD FORMULA
+		rx_pwr_all = (((pPhyStaRpt->pwdb_all) >> 1 )& 0x7f) -110;	 //OLD FORMULA
 
 
 		PWDB_ALL_BT = PWDB_ALL = odm_QueryRxPwrPercentage(rx_pwr_all);	
@@ -1256,14 +1024,11 @@ ODM_ConfigRFWithHeaderFile(
 				("pDM_Odm->SupportPlatform: 0x%X, pDM_Odm->SupportInterface: 0x%X, pDM_Odm->BoardType: 0x%X\n",
 				pDM_Odm->SupportPlatform, pDM_Odm->SupportInterface, pDM_Odm->BoardType));
 
-	if (pDM_Odm->SupportICType == ODM_RTL8723B)
-	{
-		if(ConfigType == CONFIG_RF_RADIO) {
-			READ_AND_CONFIG(8723B,_RadioA);
-		}
-		else if(ConfigType == CONFIG_RF_TXPWR_LMT) {
-			READ_AND_CONFIG(8723B,_TXPWR_LMT);
-		}
+	if(ConfigType == CONFIG_RF_RADIO) {
+		READ_AND_CONFIG(8723B,_RadioA);
+	}
+	else if(ConfigType == CONFIG_RF_TXPWR_LMT) {
+		READ_AND_CONFIG(8723B,_TXPWR_LMT);
 	}
 
 	return HAL_STATUS_SUCCESS;
@@ -1280,14 +1045,8 @@ ODM_ConfigRFWithTxPwrTrackHeaderFile(
 				 ("pDM_Odm->SupportPlatform: 0x%X, pDM_Odm->SupportInterface: 0x%X, pDM_Odm->BoardType: 0x%X\n",
 				 pDM_Odm->SupportPlatform, pDM_Odm->SupportInterface, pDM_Odm->BoardType));
 
-	if(0)
-	{
-	}
-	else if(pDM_Odm->SupportICType == ODM_RTL8723B)
-	{
-		if (pDM_Odm->SupportInterface == ODM_ITRF_SDIO)
-			READ_AND_CONFIG(8723B,_TxPowerTrack_SDIO); 			
-	}
+	if (pDM_Odm->SupportInterface == ODM_ITRF_SDIO)
+		READ_AND_CONFIG(8723B,_TxPowerTrack_SDIO); 			
 
 	return HAL_STATUS_SUCCESS;
 }
@@ -1306,21 +1065,17 @@ ODM_ConfigBBWithHeaderFile(
 				("pDM_Odm->SupportPlatform: 0x%X, pDM_Odm->SupportInterface: 0x%X, pDM_Odm->BoardType: 0x%X\n",
 				pDM_Odm->SupportPlatform, pDM_Odm->SupportInterface, pDM_Odm->BoardType));
 
-    if(pDM_Odm->SupportICType == ODM_RTL8723B)
+	if(ConfigType == CONFIG_BB_PHY_REG)
 	{
-
-		if(ConfigType == CONFIG_BB_PHY_REG)
-		{
-			READ_AND_CONFIG(8723B,_PHY_REG);
-		}
-		else if(ConfigType == CONFIG_BB_AGC_TAB)
-		{
-			READ_AND_CONFIG(8723B,_AGC_TAB);
-		}
-		else if(ConfigType == CONFIG_BB_PHY_REG_PG)
-		{
-			READ_AND_CONFIG(8723B,_PHY_REG_PG);
-		}
+		READ_AND_CONFIG(8723B,_PHY_REG);
+	}
+	else if(ConfigType == CONFIG_BB_AGC_TAB)
+	{
+		READ_AND_CONFIG(8723B,_AGC_TAB);
+	}
+	else if(ConfigType == CONFIG_BB_PHY_REG_PG)
+	{
+		READ_AND_CONFIG(8723B,_PHY_REG_PG);
 	}
 
 	return HAL_STATUS_SUCCESS; 
@@ -1341,10 +1096,7 @@ ODM_ConfigMACWithHeaderFile(
 				("pDM_Odm->SupportPlatform: 0x%X, pDM_Odm->SupportInterface: 0x%X, pDM_Odm->BoardType: 0x%X\n",
 				pDM_Odm->SupportPlatform, pDM_Odm->SupportInterface, pDM_Odm->BoardType));
 	
-	if (pDM_Odm->SupportICType == ODM_RTL8723B)
-	{
-		READ_AND_CONFIG(8723B,_MAC_REG);
-	}
+	READ_AND_CONFIG(8723B,_MAC_REG);
 
 	return result;
 } 
@@ -1358,30 +1110,27 @@ ODM_ConfigFWWithHeaderFile(
 	)
 {
 
-	if (pDM_Odm->SupportICType == ODM_RTL8723B)
+	if (ConfigType == CONFIG_FW_NIC)
 	{
-		if (ConfigType == CONFIG_FW_NIC)
-		{
-			READ_FIRMWARE(8723B,_FW_NIC);
-		}
-		else if (ConfigType == CONFIG_FW_WoWLAN)
-		{
-			READ_FIRMWARE(8723B,_FW_WoWLAN);
-		}
+		READ_FIRMWARE(8723B,_FW_NIC);
+	}
+	else if (ConfigType == CONFIG_FW_WoWLAN)
+	{
+		READ_FIRMWARE(8723B,_FW_WoWLAN);
+	}
 #ifdef CONFIG_AP_WOWLAN
-		else if (ConfigType == CONFIG_FW_AP_WoWLAN)
-		{
-			READ_FIRMWARE(8723B,_FW_AP_WoWLAN);
-		}
+	else if (ConfigType == CONFIG_FW_AP_WoWLAN)
+	{
+		READ_FIRMWARE(8723B,_FW_AP_WoWLAN);
+	}
 #endif
-		else if (ConfigType == CONFIG_FW_BT)
-		{
-			READ_FIRMWARE_MP(8723B,_FW_BT);
-		}
-		else if (ConfigType == CONFIG_FW_MP)
-		{
-			READ_FIRMWARE_MP(8723B,_FW_MP);
-		}
+	else if (ConfigType == CONFIG_FW_BT)
+	{
+		READ_FIRMWARE_MP(8723B,_FW_BT);
+	}
+	else if (ConfigType == CONFIG_FW_MP)
+	{
+		READ_FIRMWARE_MP(8723B,_FW_MP);
 	}
 	return HAL_STATUS_SUCCESS;    
 } 

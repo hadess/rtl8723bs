@@ -59,14 +59,11 @@ odm_DIG_8723(
 	}
 
 	//add by Neil Chen to avoid PSD is processing
-	if(pDM_Odm->SupportICType&(ODM_RTL8723A|ODM_RTL8723B))
-	{
-	        if(pDM_Odm->bDMInitialGainEnable == false)
-	        {
-		        ODM_RT_TRACE(pDM_Odm,ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG() Return: PSD is Processing \n"));
-		        return;
-	        }
-	}
+       if(pDM_Odm->bDMInitialGainEnable == false)
+       {
+               ODM_RT_TRACE(pDM_Odm,ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG() Return: PSD is Processing \n"));
+               return;
+       }
 		
 	
 	DIG_Dynamic_MIN = pDM_DigTable->DIG_Dynamic_MIN_0;
@@ -96,66 +93,59 @@ odm_DIG_8723(
 
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG(): RSSI=0x%x\n",pDM_Odm->RSSI_Min));
 
-	if(pDM_Odm->SupportICType >= ODM_RTL8723B)
-		dm_dig_max = 0x5A;
-	else
-		dm_dig_max = DM_DIG_MAX_NIC;
+	dm_dig_max = 0x5A;
 
 			
 	dm_dig_min = DM_DIG_MIN_NIC_8723;
 		
 	if(pDM_Odm->bLinked)
 	{
-		if(pDM_Odm->SupportICType&(ODM_RTL8723B))
+		//BT is Concurrent
+		if(pDM_Odm->bBtLimitedDig)
 		{
-			//BT is Concurrent
-			if(pDM_Odm->bBtLimitedDig)
+			if(( pDM_Odm->RSSI_Min + 10) > DM_DIG_MAX_NIC )
+				pDM_DigTable->rx_gain_range_max = DM_DIG_MAX_NIC;
+			else if(( pDM_Odm->RSSI_Min + 10) < DM_DIG_MIN_NIC )
+				pDM_DigTable->rx_gain_range_max = DM_DIG_MIN_NIC;
+			else
+				pDM_DigTable->rx_gain_range_max = pDM_Odm->RSSI_Min + 10;
+		
+			if(pDM_Odm->RSSI_Min>10)
 			{
-				if(( pDM_Odm->RSSI_Min + 10) > DM_DIG_MAX_NIC )
-					pDM_DigTable->rx_gain_range_max = DM_DIG_MAX_NIC;
-				else if(( pDM_Odm->RSSI_Min + 10) < DM_DIG_MIN_NIC )
-					pDM_DigTable->rx_gain_range_max = DM_DIG_MIN_NIC;
+				if((pDM_Odm->RSSI_Min - 10) > DM_DIG_MAX_NIC)
+					DIG_Dynamic_MIN = DM_DIG_MAX_NIC;
+				else if((pDM_Odm->RSSI_Min - 10) < DM_DIG_MIN_NIC_8723)
+					DIG_Dynamic_MIN = DM_DIG_MIN_NIC_8723;
 				else
-					pDM_DigTable->rx_gain_range_max = pDM_Odm->RSSI_Min + 10;
-			
-				if(pDM_Odm->RSSI_Min>10)
-				{
-					if((pDM_Odm->RSSI_Min - 10) > DM_DIG_MAX_NIC)
-						DIG_Dynamic_MIN = DM_DIG_MAX_NIC;
-					else if((pDM_Odm->RSSI_Min - 10) < DM_DIG_MIN_NIC_8723)
-						DIG_Dynamic_MIN = DM_DIG_MIN_NIC_8723;
-					else
-						DIG_Dynamic_MIN = pDM_Odm->RSSI_Min - 10;
-				}
-				else
-					DIG_Dynamic_MIN=DM_DIG_MIN_NIC_8723;
+					DIG_Dynamic_MIN = pDM_Odm->RSSI_Min - 10;
 			}
 			else
-			{
-				if((pDM_Odm->RSSI_Min + 20) > dm_dig_max )
-					pDM_DigTable->rx_gain_range_max = dm_dig_max;
-				else if((pDM_Odm->RSSI_Min + 20) < dm_dig_min )
-					pDM_DigTable->rx_gain_range_max = dm_dig_min;
-				else
-					pDM_DigTable->rx_gain_range_max = pDM_Odm->RSSI_Min + 20;
-
-
-				if(pDM_Odm->RSSI_Min>20)
-				{
-					if((pDM_Odm->RSSI_Min - 20) > DM_DIG_MAX_NIC)
-						DIG_Dynamic_MIN = DM_DIG_MAX_NIC;
-					else if((pDM_Odm->RSSI_Min - 20) < DM_DIG_MIN_NIC_8723)
-						DIG_Dynamic_MIN = DM_DIG_MIN_NIC_8723;
-					else
-						DIG_Dynamic_MIN = pDM_Odm->RSSI_Min -20;
-				}
-				else
-					DIG_Dynamic_MIN=DM_DIG_MIN_NIC_8723;
-				
-				
-			}
+				DIG_Dynamic_MIN=DM_DIG_MIN_NIC_8723;
 		}
+		else
+		{
+			if((pDM_Odm->RSSI_Min + 20) > dm_dig_max )
+				pDM_DigTable->rx_gain_range_max = dm_dig_max;
+			else if((pDM_Odm->RSSI_Min + 20) < dm_dig_min )
+				pDM_DigTable->rx_gain_range_max = dm_dig_min;
+			else
+				pDM_DigTable->rx_gain_range_max = pDM_Odm->RSSI_Min + 20;
 
+
+			if(pDM_Odm->RSSI_Min>20)
+			{
+				if((pDM_Odm->RSSI_Min - 20) > DM_DIG_MAX_NIC)
+					DIG_Dynamic_MIN = DM_DIG_MAX_NIC;
+				else if((pDM_Odm->RSSI_Min - 20) < DM_DIG_MIN_NIC_8723)
+					DIG_Dynamic_MIN = DM_DIG_MIN_NIC_8723;
+				else
+					DIG_Dynamic_MIN = pDM_Odm->RSSI_Min -20;
+			}
+			else
+				DIG_Dynamic_MIN=DM_DIG_MIN_NIC_8723;
+			
+			
+		}
 	}
 	else
 	{
@@ -233,29 +223,25 @@ odm_DIG_8723(
 		else
 		{
 			//FA for Combo IC--NeilChen--2012--09--28 
-			if(pDM_Odm->SupportICType == ODM_RTL8723B)
+			//WLAN and BT ConCurrent
+			if(pDM_Odm->bBtLimitedDig)
 			{
-     					//WLAN and BT ConCurrent
-				if(pDM_Odm->bBtLimitedDig)
-				{
-					if(pFalseAlmCnt->Cnt_all > 0x500)
-						CurrentIGI = CurrentIGI + 4;
-					else if (pFalseAlmCnt->Cnt_all > 0x300)
-						CurrentIGI = CurrentIGI + 2;
-					else if(pFalseAlmCnt->Cnt_all <0x150)
-						CurrentIGI = CurrentIGI -2;
-				}
-				else //Not Concurrent
-				{
-					if(pFalseAlmCnt->Cnt_all > 0x400)
-						CurrentIGI = CurrentIGI + 4;//pDM_DigTable->CurIGValue = pDM_DigTable->PreIGValue+2;
-					else if (pFalseAlmCnt->Cnt_all > 0x200)
-						CurrentIGI = CurrentIGI + 2;//pDM_DigTable->CurIGValue = pDM_DigTable->PreIGValue+1;
-					else if(pFalseAlmCnt->Cnt_all < 0x100)
-						CurrentIGI = CurrentIGI - 2;//pDM_DigTable->CurIGValue =pDM_DigTable->PreIGValue-1;	
-				}
+				if(pFalseAlmCnt->Cnt_all > 0x500)
+					CurrentIGI = CurrentIGI + 4;
+				else if (pFalseAlmCnt->Cnt_all > 0x300)
+					CurrentIGI = CurrentIGI + 2;
+				else if(pFalseAlmCnt->Cnt_all <0x150)
+					CurrentIGI = CurrentIGI -2;
 			}
-		
+			else //Not Concurrent
+			{
+				if(pFalseAlmCnt->Cnt_all > 0x400)
+					CurrentIGI = CurrentIGI + 4;//pDM_DigTable->CurIGValue = pDM_DigTable->PreIGValue+2;
+				else if (pFalseAlmCnt->Cnt_all > 0x200)
+					CurrentIGI = CurrentIGI + 2;//pDM_DigTable->CurIGValue = pDM_DigTable->PreIGValue+1;
+				else if(pFalseAlmCnt->Cnt_all < 0x100)
+					CurrentIGI = CurrentIGI - 2;//pDM_DigTable->CurIGValue =pDM_DigTable->PreIGValue-1;	
+			}
 		}
 	}	
 	else
