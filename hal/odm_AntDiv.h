@@ -33,9 +33,6 @@
 
 #define	TX_BY_REG	0
 
-#define ODM_ANTDIV_SUPPORT		(ODM_RTL8723B)
-#define ODM_N_ANTDIV_SUPPORT		(ODM_RTL8723B)
-
 #define ANTDIV_ON 1
 #define ANTDIV_OFF 0
 

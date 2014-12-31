@@ -86,13 +86,10 @@ odm_AntDiv_on_off( IN PDM_ODM_T	pDM_Odm ,IN u1Byte swch)
 	if(pDM_Odm->AntDivType==S0S1_SW_ANTDIV || pDM_Odm->AntDivType==CGCS_RX_SW_ANTDIV) 
 		return;
 
-	if(pDM_Odm->SupportICType & ODM_N_ANTDIV_SUPPORT)
-	{
-		ODM_RT_TRACE(pDM_Odm,ODM_COMP_ANT_DIV, ODM_DBG_LOUD, ("(( Turn %s )) N-Series HW-AntDiv block\n",(swch==ANTDIV_ON)?"ON" : "OFF"));
-		ODM_SetBBReg(pDM_Odm, 0xc50 , BIT7, swch); //OFDM AntDiv function block enable
-		if( pDM_Odm->AntDivType != S0S1_SW_ANTDIV)
-		        ODM_SetBBReg(pDM_Odm, 0xa00 , BIT15, swch); //CCK AntDiv function block enable
-	}
+	ODM_RT_TRACE(pDM_Odm,ODM_COMP_ANT_DIV, ODM_DBG_LOUD, ("(( Turn %s )) N-Series HW-AntDiv block\n",(swch==ANTDIV_ON)?"ON" : "OFF"));
+	ODM_SetBBReg(pDM_Odm, 0xc50 , BIT7, swch); //OFDM AntDiv function block enable
+	if( pDM_Odm->AntDivType != S0S1_SW_ANTDIV)
+	        ODM_SetBBReg(pDM_Odm, 0xa00 , BIT15, swch); //CCK AntDiv function block enable
 }
 
 void
@@ -119,15 +116,12 @@ ODM_UpdateRxIdleAnt(IN PDM_ODM_T pDM_Odm, IN u1Byte Ant)
 			OptionalAnt =  ANT1_2G;
 		}
 	
-		if(pDM_Odm->SupportICType & ODM_N_ANTDIV_SUPPORT)
-		{
-			value32 = ODM_GetBBReg(pDM_Odm, 0x948, 0xFFF);
-			
-			if (value32 !=0x280)
-			        ODM_UpdateRxIdleAnt_8723B(pDM_Odm, Ant, DefaultAnt, OptionalAnt);
-		        else
-			        ODM_RT_TRACE(pDM_Odm,ODM_COMP_ANT_DIV, ODM_DBG_LOUD, ("[ Update Rx-Idle-Ant ] 8723B: Fail to set RX antenna due to 0x948 = 0x280\n"));
-		}
+		value32 = ODM_GetBBReg(pDM_Odm, 0x948, 0xFFF);
+		
+		if (value32 !=0x280)
+		        ODM_UpdateRxIdleAnt_8723B(pDM_Odm, Ant, DefaultAnt, OptionalAnt);
+	        else
+		        ODM_RT_TRACE(pDM_Odm,ODM_COMP_ANT_DIV, ODM_DBG_LOUD, ("[ Update Rx-Idle-Ant ] 8723B: Fail to set RX antenna due to 0x948 = 0x280\n"));
 
 		ODM_SetMACReg(pDM_Odm, 0x6D8 , BIT10|BIT9|BIT8, DefaultAnt);	//PathA Resp Tx
 	}
@@ -1093,14 +1087,11 @@ ODM_AntDivInit(
 	//---
 	if(pDM_Odm->AntDivType != CGCS_RX_HW_ANTDIV)
 	{
-		if(pDM_Odm->SupportICType & ODM_N_ANTDIV_SUPPORT)
-		{
-			#if TX_BY_REG
-			ODM_SetBBReg(pDM_Odm, 0x80c , BIT21, 0); //Reg80c[21]=1'b0		//from Reg
-			#else
-			ODM_SetBBReg(pDM_Odm, 0x80c , BIT21, 1);
-			#endif
-		}	
+		#if TX_BY_REG
+		ODM_SetBBReg(pDM_Odm, 0x80c , BIT21, 0); //Reg80c[21]=1'b0		//from Reg
+		#else
+		ODM_SetBBReg(pDM_Odm, 0x80c , BIT21, 1);
+		#endif
 	}
 		
 	//2 [--8723B---]
@@ -1177,8 +1168,7 @@ ODM_AntDiv(
 		{
 			odm_AntDiv_on_off(pDM_Odm, ANTDIV_OFF);
 
-			if(pDM_Odm->SupportICType & ODM_N_ANTDIV_SUPPORT)
-				ODM_SetBBReg(pDM_Odm, 0x80c , BIT21, 0);
+			ODM_SetBBReg(pDM_Odm, 0x80c , BIT21, 0);
 
 			if(pDM_Odm->AntType == ODM_FIX_MAIN_ANT)
 				ODM_UpdateRxIdleAnt(pDM_Odm, MAIN_ANT);
@@ -1193,8 +1183,7 @@ ODM_AntDiv(
 		if(pDM_Odm->AntType != pDM_Odm->pre_AntType)
 		{
 			odm_AntDiv_on_off(pDM_Odm, ANTDIV_ON);
-			 if(pDM_Odm->SupportICType & ODM_N_ANTDIV_SUPPORT)
-				ODM_SetBBReg(pDM_Odm, 0x80c , BIT21, 1);
+			ODM_SetBBReg(pDM_Odm, 0x80c , BIT21, 1);
 		}
 		pDM_Odm->pre_AntType=pDM_Odm->AntType;
 	}
@@ -1244,8 +1233,7 @@ pFAT_T			pDM_FatTable = &pDM_Odm->DM_FatTable;
 
 	u1Byte			RxPower_Ant0, RxPower_Ant1;	
 
-	if(pDM_Odm->SupportICType & ODM_N_ANTDIV_SUPPORT)
-		CCKMaxRate=DESC_RATE11M;
+	CCKMaxRate=DESC_RATE11M;
 	isCCKrate = (pPktinfo->DataRate <= CCKMaxRate)?true:false;
 
 	RxPower_Ant0=pPhyInfo->RxPWDBAll;
@@ -1256,7 +1244,7 @@ pFAT_T			pDM_FatTable = &pDM_Odm->DM_FatTable;
 	}
 	else //AntDivType != CG_TRX_SMART_ANTDIV 
 	{
-		if(  ( pDM_Odm->SupportICType & ODM_ANTDIV_SUPPORT ) &&  (pPktinfo->bPacketToSelf || pPktinfo->bPacketMatchBSSID)  )
+		if(pPktinfo->bPacketToSelf || pPktinfo->bPacketMatchBSSID)
 		{
 			if(isCCKrate && (pDM_Odm->AntDivType == S0S1_SW_ANTDIV))
 			{
