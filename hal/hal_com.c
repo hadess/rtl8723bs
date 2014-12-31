@@ -752,7 +752,6 @@ void rtw_hal_update_sta_rate_mask(PADAPTER padapter, struct sta_info *psta)
 			tx_ra_bitmap |= rtw_get_bit_value_from_ieee_value(psta->bssrateset[i]&0x7f);
 	}
 
-#ifdef CONFIG_80211N_HT
 #ifdef CONFIG_80211AC_VHT
 	//AC mode ra_bitmap
 	if(psta->vhtpriv.vht_option) 
@@ -777,7 +776,6 @@ void rtw_hal_update_sta_rate_mask(PADAPTER padapter, struct sta_info *psta)
 			}
 		}
 	}
-#endif //CONFIG_80211N_HT
 
 	psta->ra_mask = tx_ra_bitmap;
 	psta->init_rate = get_highest_rate_idx(tx_ra_bitmap)&0x3f;

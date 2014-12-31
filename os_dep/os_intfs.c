@@ -93,7 +93,6 @@ int rtw_uapsd_acbe_en = 0;
 int rtw_uapsd_acvi_en = 0;
 int rtw_uapsd_acvo_en = 0;
 
-#ifdef CONFIG_80211N_HT
 int rtw_ht_enable = 1;
 // 0: 20 MHz, 1: 40 MHz, 2: 80 MHz, 3: 160MHz, 4: 80+80MHz
 // 2.4G use bit 0 ~ 3, 5G use bit 4 ~ 7
@@ -115,7 +114,6 @@ int rtw_ldpc_cap = 0x33;
 int rtw_stbc_cap = 0x13;
 // BIT0: Enable VHT Beamformer, BIT1: Enable VHT Beamformee, BIT4: Enable HT Beamformer, BIT5: Enable HT Beamformee
 int rtw_beamform_cap = 0x2;
-#endif //CONFIG_80211N_HT
 
 #ifdef CONFIG_80211AC_VHT
 int rtw_vht_enable = 1; //0:disable, 1:enable, 2:force auto enable
@@ -208,13 +206,11 @@ module_param(rtw_vrtl_carrier_sense, int, 0644);
 module_param(rtw_vcs_type, int, 0644);
 module_param(rtw_busy_thresh, int, 0644);
 
-#ifdef CONFIG_80211N_HT
 module_param(rtw_ht_enable, int, 0644);
 module_param(rtw_bw_mode, int, 0644);
 module_param(rtw_ampdu_enable, int, 0644);
 module_param(rtw_rx_stbc, int, 0644);
 module_param(rtw_ampdu_amsdu, int, 0644);
-#endif //CONFIG_80211N_HT
 #ifdef CONFIG_80211AC_VHT
 module_param(rtw_vht_enable, int, 0644);
 #endif //CONFIG_80211AC_VHT
@@ -389,7 +385,6 @@ _func_enter_;
 	registry_par->uapsd_acvi_en = (u8)rtw_uapsd_acvi_en;
 	registry_par->uapsd_acvo_en = (u8)rtw_uapsd_acvo_en;
 
-#ifdef CONFIG_80211N_HT
 	registry_par->ht_enable = (u8)rtw_ht_enable;
 	registry_par->bw_mode = (u8)rtw_bw_mode;
 	registry_par->ampdu_enable = (u8)rtw_ampdu_enable;
@@ -399,7 +394,6 @@ _func_enter_;
 	registry_par->ldpc_cap = (u8)rtw_ldpc_cap;
 	registry_par->stbc_cap = (u8)rtw_stbc_cap;
 	registry_par->beamform_cap = (u8)rtw_beamform_cap;
-#endif
 
 #ifdef CONFIG_80211AC_VHT
 	registry_par->vht_enable = (u8)rtw_vht_enable;
@@ -866,9 +860,7 @@ u8 rtw_init_default_value(_adapter *padapter)
 	//pmlmepriv->qospriv.qos_option = pregistrypriv->wmm_enable;
 
 	//ht_priv
-#ifdef CONFIG_80211N_HT
 	pmlmepriv->htpriv.ampdu_enable = false;//set to disabled
-#endif
 
 	//security_priv
 	//rtw_get_encrypt_decrypt_from_registrypriv(padapter);

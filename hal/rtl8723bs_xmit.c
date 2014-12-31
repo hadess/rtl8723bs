@@ -650,7 +650,6 @@ s32 rtl8723bs_hal_xmit(PADAPTER padapter, struct xmit_frame *pxmitframe)
 	pxmitframe->attrib.qsel = pxmitframe->attrib.priority;
 	pxmitpriv = &padapter->xmitpriv;
 
-#ifdef CONFIG_80211N_HT
 	if ((pxmitframe->frame_tag == DATA_FRAMETAG) &&
 		(pxmitframe->attrib.ether_type != 0x0806) &&
 		(pxmitframe->attrib.ether_type != 0x888e) &&
@@ -659,7 +658,6 @@ s32 rtl8723bs_hal_xmit(PADAPTER padapter, struct xmit_frame *pxmitframe)
 		if (padapter->mlmepriv.LinkDetectInfo.bBusyTraffic == true)
 			rtw_issue_addbareq_cmd(padapter, pxmitframe);
 	}
-#endif
 
 	_enter_critical_bh(&pxmitpriv->lock, &irql);
 	err = rtw_xmitframe_enqueue(padapter, pxmitframe);

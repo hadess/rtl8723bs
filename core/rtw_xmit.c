@@ -419,7 +419,6 @@ u8	query_ra_short_GI(struct sta_info *psta)
 {
 	u8	sgi = false, sgi_20m = false, sgi_40m = false, sgi_80m = false;
 
-#ifdef CONFIG_80211N_HT
 #ifdef CONFIG_80211AC_VHT
 	if (psta->vhtpriv.vht_option) {
 		sgi_80m= psta->vhtpriv.sgi_80m;
@@ -430,7 +429,6 @@ u8	query_ra_short_GI(struct sta_info *psta)
 		sgi_20m = psta->htpriv.sgi_20m;
 		sgi_40m = psta->htpriv.sgi_40m;
 	}
-#endif
 
 	switch(psta->bw_mode){
 		case CHANNEL_WIDTH_80:
@@ -619,7 +617,6 @@ static void update_attrib_phy_info(_adapter *padapter, struct pkt_attrib *pattri
 	pattrib->ldpc = psta->ldpc;
 	pattrib->stbc = psta->stbc;
 
-#ifdef CONFIG_80211N_HT
 	pattrib->ht_en = psta->htpriv.ht_option;
 	pattrib->ch_offset = psta->htpriv.ch_offset;
 	pattrib->ampdu_en = false;
@@ -628,7 +625,7 @@ static void update_attrib_phy_info(_adapter *padapter, struct pkt_attrib *pattri
 		pattrib->ampdu_spacing = padapter->driver_ampdu_spacing;
 	else
 		pattrib->ampdu_spacing = psta->htpriv.rx_ampdu_min_spacing;
-#endif //CONFIG_80211N_HT
+
 	//if(pattrib->ht_en && psta->htpriv.ampdu_enable)
 	//{
 	//	if(psta->htpriv.agg_enable_bitmap & BIT(pattrib->priority))
@@ -1513,12 +1510,10 @@ _func_enter_;
 					//pattrib->qos_en = ptdls_sta->qos_option;
 
 					pattrib->raid = psta->raid;
-#ifdef CONFIG_80211N_HT
 					pattrib->bwmode = psta->bw_mode;
 					pattrib->ht_en = psta->htpriv.ht_option;
 					pattrib->ch_offset = psta->htpriv.ch_offset;
 					pattrib->sgi= query_ra_short_GI(psta);
-#endif //CONFIG_80211N_HT
 				}
 #endif //CONFIG_TDLS
 
@@ -1529,7 +1524,6 @@ _func_enter_;
 
 				SetSeqNum(hdr, pattrib->seqnum);
 
-#ifdef CONFIG_80211N_HT
 				//check if enable ampdu
 				if(pattrib->ht_en && psta->htpriv.ampdu_enable)
 				{
@@ -1564,7 +1558,6 @@ _func_enter_;
 					}
 
 				}
-#endif //CONFIG_80211N_HT
 			}
 		}
 		

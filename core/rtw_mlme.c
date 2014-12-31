@@ -1836,9 +1836,7 @@ static void rtw_joinbss_update_network(_adapter *padapter, struct wlan_network *
 	rtw_update_protection(padapter, (cur_network->network.IEs) + sizeof (NDIS_802_11_FIXED_IEs), 
 									(cur_network->network.IELength));
 
-#ifdef CONFIG_80211N_HT			
 	rtw_update_ht_cap(padapter, cur_network->network.IEs, cur_network->network.IELength, (u8) cur_network->network.Configuration.DSConfig);
-#endif
 }
 
 //Notes: the fucntion could be > passive_level (the same context as Rx tasklet)
@@ -3555,16 +3553,9 @@ void rtw_joinbss_reset(_adapter *padapter)
 	u8	threshold;
 	struct mlme_priv	*pmlmepriv = &padapter->mlmepriv;
 
-#ifdef CONFIG_80211N_HT	
 	struct ht_priv		*phtpriv = &pmlmepriv->htpriv;
-#endif
 
 	//todo: if you want to do something io/reg/hw setting before join_bss, please add code here
-	
-
-
-
-#ifdef CONFIG_80211N_HT
 
 	pmlmepriv->num_FortyMHzIntolerant = 0;
 
@@ -3587,11 +3578,8 @@ void rtw_joinbss_reset(_adapter *padapter)
 		threshold = 1;
 		rtw_hal_set_hwreg(padapter, HW_VAR_RXDMA_AGG_PG_TH, (u8 *)(&threshold));
 	}
-#endif
 }
 
-
-#ifdef CONFIG_80211N_HT
 void	rtw_ht_use_default_setting(_adapter *padapter)
 {
 	struct mlme_priv 		*pmlmepriv = &padapter->mlmepriv;
@@ -4176,7 +4164,6 @@ void rtw_append_exented_cap(_adapter *padapter, u8 *out_ie, uint *pout_len)
 
 	pframe = rtw_set_ie(out_ie+*pout_len, EID_EXTCapability, 8, cap_content , pout_len);
 }
-#endif
 
 #ifdef CONFIG_LAYER2_ROAMING
 inline void rtw_set_to_roam(_adapter *adapter, u8 to_roam)

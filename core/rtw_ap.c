@@ -459,7 +459,6 @@ void	expire_timeout_chk(_adapter *padapter)
 		}
 
 #ifndef CONFIG_ACTIVE_KEEP_ALIVE_CHECK
-#ifdef CONFIG_80211N_HT
 #ifdef CONFIG_TX_MCAST2UNI
 		if ( (psta->flags & WLAN_STA_HT) && (psta->htpriv.agg_enable_bitmap || psta->under_exist_checking) ) {
 			// check sta by delba(addba) for 11n STA 
@@ -480,7 +479,6 @@ void	expire_timeout_chk(_adapter *padapter)
 			}
 		}
 #endif //CONFIG_TX_MCAST2UNI
-#endif //CONFIG_80211N_HT
 #endif //CONFIG_ACTIVE_KEEP_ALIVE_CHECK
 
 		if (psta->expire_to <= 0)
@@ -494,7 +492,6 @@ void	expire_timeout_chk(_adapter *padapter)
 			}
 
 #ifndef CONFIG_ACTIVE_KEEP_ALIVE_CHECK
-#ifdef CONFIG_80211N_HT
 
 #define KEEP_ALIVE_TRYCNT (3)
 
@@ -552,7 +549,6 @@ void	expire_timeout_chk(_adapter *padapter)
 				DBG_871X("change to another methods to check alive if staion is at ps mode\n");
 			}	
 			
-#endif //CONFIG_80211N_HT
 #endif //CONFIG_ACTIVE_KEEP_ALIVE_CHECK	
 			if (psta->state & WIFI_SLEEP_STATE) {
 				if (!(psta->state & WIFI_STA_ALIVE_CHK_STATE)) {
@@ -678,12 +674,10 @@ void add_RATid(_adapter *padapter, struct sta_info *psta, u8 rssi_level)
 	struct mlme_priv *pmlmepriv = &(padapter->mlmepriv);
 	WLAN_BSSID_EX *pcur_network = (WLAN_BSSID_EX *)&pmlmepriv->cur_network.network;
 
-#ifdef CONFIG_80211N_HT
 	if(psta)
 		psta_ht = &psta->htpriv;
 	else
 		return;
-#endif //CONFIG_80211N_HT
 
 	if(!(psta->state & _FW_LINKED))
 		return;
@@ -883,9 +877,7 @@ void update_bmc_sta(_adapter *padapter)
 		pmlmeinfo->FW_sta_info[psta->mac_id].psta = psta;
 
 		psta->qos_option = 0;
-#ifdef CONFIG_80211N_HT	
 		psta->htpriv.ht_option = false;
-#endif //CONFIG_80211N_HT
 
 		psta->ieee8021x_blocked = 0;
 
@@ -958,10 +950,8 @@ void update_sta_info_apmode(_adapter *padapter, struct sta_info *psta)
 	struct mlme_priv *pmlmepriv = &(padapter->mlmepriv);
 	struct security_priv *psecuritypriv = &padapter->securitypriv;
 	struct mlme_ext_priv	*pmlmeext = &(padapter->mlmeextpriv);
-#ifdef CONFIG_80211N_HT
 	struct ht_priv	*phtpriv_ap = &pmlmepriv->htpriv;
 	struct ht_priv	*phtpriv_sta = &psta->htpriv;
-#endif //CONFIG_80211N_HT
 	u8	cur_ldpc_cap=0, cur_stbc_cap=0, cur_beamform_cap=0;
 	//set intf_tag to if1
 	//psta->intf_tag = 0;
@@ -985,7 +975,7 @@ void update_sta_info_apmode(_adapter *padapter, struct sta_info *psta)
 	
 	//ERP
 	VCS_update(padapter, psta);
-#ifdef CONFIG_80211N_HT	
+
 	//HT related cap
 	if(phtpriv_sta->ht_option)
 	{
@@ -1085,7 +1075,6 @@ void update_sta_info_apmode(_adapter *padapter, struct sta_info *psta)
 	send_delba(padapter, 1, psta->hwaddr);// // originator
 	phtpriv_sta->agg_enable_bitmap = 0x0;//reset
 	phtpriv_sta->candidate_tid_bitmap = 0x0;//reset
-#endif //CONFIG_80211N_HT
 
 #ifdef CONFIG_80211AC_VHT
 	update_sta_vht_info_apmode(padapter, psta);
@@ -1115,17 +1104,13 @@ static void update_ap_info(_adapter *padapter, struct sta_info *psta)
 	WLAN_BSSID_EX *pnetwork = (WLAN_BSSID_EX *)&pmlmepriv->cur_network.network;
 	struct security_priv *psecuritypriv = &padapter->securitypriv;
 	struct mlme_ext_priv	*pmlmeext = &(padapter->mlmeextpriv);
-#ifdef CONFIG_80211N_HT
 	struct ht_priv	*phtpriv_ap = &pmlmepriv->htpriv;
-#endif //CONFIG_80211N_HT
-
 
 	psta->wireless_mode = pmlmeext->cur_wireless_mode;
 
 	psta->bssratelen = rtw_get_rateset_len(pnetwork->SupportedRates);
 	_rtw_memcpy(psta->bssrateset, pnetwork->SupportedRates, psta->bssratelen);
 
-#ifdef CONFIG_80211N_HT	
 	//HT related cap
 	if(phtpriv_ap->ht_option)
 	{
@@ -1164,8 +1149,6 @@ static void update_ap_info(_adapter *padapter, struct sta_info *psta)
 #ifdef CONFIG_80211AC_VHT
 	_rtw_memcpy(&psta->vhtpriv, &pmlmepriv->vhtpriv, sizeof(struct vht_priv));
 #endif //CONFIG_80211AC_VHT
-
-#endif //CONFIG_80211N_HT
 }
 
 static void update_hw_ht_param(_adapter *padapter)
@@ -1253,7 +1236,6 @@ void start_bss_network(_adapter *padapter, u8 *pbuf)
 	//pmlmeinfo->HT_enable;
 	if(pmlmepriv->qospriv.qos_option)
 		pmlmeinfo->WMM_enable = true;
-#ifdef CONFIG_80211N_HT
 	if(pmlmepriv->htpriv.ht_option)
 	{
 		pmlmeinfo->WMM_enable = true;
@@ -1263,7 +1245,6 @@ void start_bss_network(_adapter *padapter, u8 *pbuf)
 
 		update_hw_ht_param(padapter);
 	}
-#endif //#CONFIG_80211N_HT
 
 #ifdef CONFIG_80211AC_VHT
 	if(pmlmepriv->vhtpriv.vht_option) {
@@ -1326,7 +1307,7 @@ void start_bss_network(_adapter *padapter, u8 *pbuf)
 		//rtw_hal_set_hwreg(padapter, HW_VAR_INITIAL_GAIN, (u8 *)(&initialgain));
 	
 	}
-#ifdef CONFIG_80211N_HT
+
 	//set channel, bwmode	
 	p = rtw_get_ie((pnetwork->IEs + sizeof(NDIS_802_11_FIXED_IEs)), _HT_ADD_INFO_IE_, &ie_len, (pnetwork->IELength - sizeof(NDIS_802_11_FIXED_IEs)));
 	if( p && ie_len)
@@ -1367,8 +1348,6 @@ void start_bss_network(_adapter *padapter, u8 *pbuf)
 		}
 					
 	}
-#endif //CONFIG_80211N_HT
-
 #ifdef CONFIG_80211AC_VHT
 	p = rtw_get_ie((pnetwork->IEs + sizeof(NDIS_802_11_FIXED_IEs)), EID_VHTOperation, &ie_len, (pnetwork->IELength - sizeof(NDIS_802_11_FIXED_IEs)));
 	if( p && ie_len)
@@ -1717,7 +1696,7 @@ int rtw_check_beacon_data(_adapter *padapter, u8 *pbuf,  int len)
 			}			
 		}		
 	}
-#ifdef CONFIG_80211N_HT
+
 	//parsing HT_CAP_IE
 	p = rtw_get_ie(ie + _BEACON_IE_OFFSET_, _HT_CAPABILITY_IE_, &ie_len, (pbss_network->IELength - _BEACON_IE_OFFSET_));
 	if(p && ie_len>0)
@@ -1812,7 +1791,7 @@ int rtw_check_beacon_data(_adapter *padapter, u8 *pbuf,  int len)
 	{
 		pHT_info_ie=p;
 	}
-#endif //CONFIG_80211N_HT
+
 	switch(network_type)
 	{
 		case WIRELESS_11B:
@@ -1834,7 +1813,6 @@ int rtw_check_beacon_data(_adapter *padapter, u8 *pbuf,  int len)
 	
 	pmlmepriv->cur_network.network_type = network_type;
 
-#ifdef CONFIG_80211N_HT
 	pmlmepriv->htpriv.ht_option = false;
 
 	if( (psecuritypriv->wpa2_pairwise_cipher&WPA_CIPHER_TKIP) ||
@@ -1859,7 +1837,6 @@ int rtw_check_beacon_data(_adapter *padapter, u8 *pbuf,  int len)
 		
 		HT_info_handler(padapter, (PNDIS_802_11_VARIABLE_IEs)pHT_info_ie);
 	}
-#endif
 
 #ifdef CONFIG_80211AC_VHT
 
@@ -2449,8 +2426,6 @@ void update_beacon(_adapter *padapter, u8 ie_id, u8 *oui, u8 tx)
 	
 }
 
-#ifdef CONFIG_80211N_HT
-
 /*
 op_mode
 Set to 0 (HT pure) under the followign conditions
@@ -2533,8 +2508,6 @@ static int rtw_ht_operation_update(_adapter *padapter)
 	return op_mode_changes;
 	
 }
-
-#endif /* CONFIG_80211N_HT */
 
 void associated_clients_update(_adapter *padapter, u8 updated)
 {
@@ -2710,8 +2683,6 @@ void bss_cap_update_on_sta_join(_adapter *padapter, struct sta_info *psta)
 		}
 	}	
 	
-#ifdef CONFIG_80211N_HT
-
 	if (psta->flags & WLAN_STA_HT) 
 	{
 		u16 ht_capab = le16_to_cpu(psta->htpriv.ht_cap.cap_info);
@@ -2766,8 +2737,6 @@ void bss_cap_update_on_sta_join(_adapter *padapter, struct sta_info *psta)
 		update_beacon(padapter, _HT_CAPABILITY_IE_, NULL, false);
 		update_beacon(padapter, _HT_ADD_INFO_IE_, NULL, true);
 	}	
-	
-#endif /* CONFIG_80211N_HT */
 
 	//update associcated stations cap.
 	associated_clients_update(padapter,  beacon_updated);
@@ -2817,8 +2786,6 @@ u8 bss_cap_update_on_sta_leave(_adapter *padapter, struct sta_info *psta)
 		}	
 	}
 	
-#ifdef CONFIG_80211N_HT
-
 	if (psta->no_ht_gf_set) {
 		psta->no_ht_gf_set = 0;
 		pmlmepriv->num_sta_ht_no_gf--;
@@ -2839,8 +2806,6 @@ u8 bss_cap_update_on_sta_leave(_adapter *padapter, struct sta_info *psta)
 		update_beacon(padapter, _HT_CAPABILITY_IE_, NULL, false);
 		update_beacon(padapter, _HT_ADD_INFO_IE_, NULL, true);
 	}
-	
-#endif /* CONFIG_80211N_HT */
 
 	//update associcated stations cap.
 	//associated_clients_update(padapter,  beacon_updated); //move it to avoid deadlock
@@ -2864,14 +2829,11 @@ u8 ap_free_sta(_adapter *padapter, struct sta_info *psta, bool active, u16 reaso
 
 	if (active == true)
 	{
-#ifdef CONFIG_80211N_HT
 		//tear down Rx AMPDU
 		send_delba(padapter, 0, psta->hwaddr);// recipient
 	
 		//tear down TX AMPDU
 		send_delba(padapter, 1, psta->hwaddr);// // originator
-		
-#endif //CONFIG_80211N_HT
 
 		issue_deauth(padapter, psta->hwaddr, reason);
 	}
@@ -3008,8 +2970,6 @@ void sta_info_update(_adapter *padapter, struct sta_info *psta)
 	if(pmlmepriv->qospriv.qos_option == 0)	
 		psta->qos_option = 0;
 
-		
-#ifdef CONFIG_80211N_HT		
 	//update 802.11n ht cap.
 	if(WLAN_STA_HT&flags)
 	{
@@ -3023,7 +2983,6 @@ void sta_info_update(_adapter *padapter, struct sta_info *psta)
 		
 	if(pmlmepriv->htpriv.ht_option == false)	
 		psta->htpriv.ht_option = false;
-#endif
 
 #ifdef CONFIG_80211AC_VHT
 	//update 802.11AC vht cap.
@@ -3147,18 +3106,14 @@ void start_ap_mode(_adapter *padapter)
 	pmlmepriv->num_sta_no_short_preamble = 0;
 
 	pmlmepriv->num_sta_ht_no_gf = 0;
-#ifdef CONFIG_80211N_HT
 	pmlmepriv->num_sta_no_ht = 0;
-#endif //CONFIG_80211N_HT
 	pmlmepriv->num_sta_ht_20mhz = 0;
 
 	pmlmepriv->olbc = false;
 
 	pmlmepriv->olbc_ht = false;
 	
-#ifdef CONFIG_80211N_HT
 	pmlmepriv->ht_op_mode = 0;
-#endif
 
 	for(i=0; i<NUM_STA; i++)
 		pstapriv->sta_aid[i] = NULL;
