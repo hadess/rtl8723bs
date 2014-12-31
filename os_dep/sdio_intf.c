@@ -315,7 +315,6 @@ static void rtw_decide_chip_type_by_device_id(PADAPTER padapter, const struct sd
 	padapter->chip_type = pdid->driver_data;
 
 	padapter->chip_type = RTL8723B;
-	padapter->HardwareType = HARDWARE_TYPE_RTL8723BS;
 }
 
 void rtw_set_hal_ops(PADAPTER padapter)
