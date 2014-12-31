@@ -2030,17 +2030,10 @@ odm_AntennaDiversityInit(
 	if(*(pDM_Odm->mp_mode) == true)
 		return;
 
-	if(pDM_Odm->SupportICType & (ODM_OLD_IC_ANTDIV_SUPPORT))
-	{
-		//DEADCODE
-	}
-	else
-	{
-		#if(defined(CONFIG_HW_ANTENNA_DIVERSITY))
-		ODM_AntDiv_Config(pDM_Odm);
-		ODM_AntDivInit(pDM_Odm);
-		#endif
-	}
+	#if(defined(CONFIG_HW_ANTENNA_DIVERSITY))
+	ODM_AntDiv_Config(pDM_Odm);
+	ODM_AntDivInit(pDM_Odm);
+	#endif
 }
 
 void
@@ -2051,16 +2044,9 @@ odm_AntennaDiversity(
 	if(*(pDM_Odm->mp_mode) == true)
 		return;
 
-	if(pDM_Odm->SupportICType & (ODM_OLD_IC_ANTDIV_SUPPORT))
-	{
-		//DEADCODE
-	}
-	else
-	{
-		#if(defined(CONFIG_HW_ANTENNA_DIVERSITY))
-		ODM_AntDiv(pDM_Odm);
-		#endif
-	}
+	#if(defined(CONFIG_HW_ANTENNA_DIVERSITY))
+	ODM_AntDiv(pDM_Odm);
+	#endif
 }
 
 
