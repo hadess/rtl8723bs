@@ -1252,13 +1252,7 @@ pFAT_T			pDM_FatTable = &pDM_Odm->DM_FatTable;
 
 	if(pDM_Odm->AntDivType == CG_TRX_SMART_ANTDIV)
 	{
-		if( (pDM_Odm->SupportICType & ODM_SMART_ANT_SUPPORT) &&  pPktinfo->bPacketToSelf   && pDM_FatTable->FAT_State == FAT_TRAINING_STATE )//(pPktinfo->bPacketMatchBSSID && (!pPktinfo->bPacketBeacon))
-		{
-			u1Byte	antsel_tr_mux;
-			antsel_tr_mux = (pDM_FatTable->antsel_rx_keep_2<<2) |(pDM_FatTable->antsel_rx_keep_1 <<1) |pDM_FatTable->antsel_rx_keep_0;
-			pDM_FatTable->antSumRSSI[antsel_tr_mux] += RxPower_Ant0;
-			pDM_FatTable->antRSSIcnt[antsel_tr_mux]++;
-		}
+		/*DEADCODE*/
 	}
 	else //AntDivType != CG_TRX_SMART_ANTDIV 
 	{
