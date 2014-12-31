@@ -83,8 +83,6 @@ odm_AntselStatistics(
 	IN		u4Byte			RxPWDBAll
 );
 
-#if (RTL8723B_SUPPORT == 1)||(RTL8821A_SUPPORT == 1)
-
 void
 ODM_SW_AntDiv_Callback(void *FunctionContext);
 
@@ -107,8 +105,6 @@ odm_S0S1_SwAntDivByCtrlFrame_ProcessRSSI(
 	IN		PODM_PHY_INFO_T		pPhyInfo,
 	IN		PODM_PACKET_INFO_T		pPktinfo
 	);
-
-#endif
 
 void
 ODM_AntDivInit(

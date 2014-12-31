@@ -36,12 +36,6 @@ odm_PathDiversityInit(
 		ODM_RT_TRACE(pDM_Odm, ODM_COMP_PATH_DIV,ODM_DBG_LOUD,("Return: Not Support PathDiv\n"));
 		return;
 	}
-
-#if RTL8812A_SUPPORT
-
-	if(pDM_Odm->SupportICType & ODM_RTL8812)
-		ODM_PathDiversityInit_8812A(pDM_Odm);
-#endif
 }
 
 void
@@ -55,10 +49,4 @@ odm_PathDiversity(
 		ODM_RT_TRACE(pDM_Odm, ODM_COMP_PATH_DIV,ODM_DBG_LOUD,("Return: Not Support PathDiv\n"));
 		return;
 	}
-
-#if RTL8812A_SUPPORT
-
-	if(pDM_Odm->SupportICType & ODM_RTL8812)
-		ODM_PathDiversity_8812A(pDM_Odm);
-#endif	
 }

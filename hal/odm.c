@@ -553,23 +553,8 @@ ODM_DMInit(
 		odm_DynamicBBPowerSavingInit(pDM_Odm);
 		odm_DynamicTxPowerInit(pDM_Odm);
 
-#if (RTL8188E_SUPPORT == 1)
-		if(pDM_Odm->SupportICType==ODM_RTL8188E)
-		{
-			odm_PrimaryCCA_Init(pDM_Odm);
-			ODM_RAInfo_Init_all(pDM_Odm);
-		}
-#endif
-
-	#if (RTL8723B_SUPPORT == 1)
 		if(pDM_Odm->SupportICType == ODM_RTL8723B)
 			odm_SwAntDetectInit(pDM_Odm);
-	#endif
-
-	#if (RTL8192E_SUPPORT == 1)
-		if(pDM_Odm->SupportICType==ODM_RTL8192E)
-			odm_PrimaryCCA_Check_Init(pDM_Odm);
-	#endif
 	}
 
 }
@@ -641,11 +626,6 @@ ODM_DMWatchdog(
 	odm_DynamicTxPower(pDM_Odm);	
 	odm_AntennaDiversity(pDM_Odm);
 
-#if (RTL8192E_SUPPORT == 1)
-        if(pDM_Odm->SupportICType==ODM_RTL8192E)
-                odm_DynamicPrimaryCCA_Check(pDM_Odm); 
-#endif
-
 	if(pDM_Odm->SupportICType & ODM_IC_11AC_SERIES)
 	{
 		ODM_TXPowerTrackingCheck(pDM_Odm);
@@ -660,16 +640,7 @@ ODM_DMWatchdog(
 
 	//2010.05.30 LukeLee: For CE platform, files in IC subfolders may not be included to be compiled,
 	// so compile flags must be left here to prevent from compile errors
-#if (RTL8192D_SUPPORT == 1)
-	        if(pDM_Odm->SupportICType==ODM_RTL8192D)
-	                ODM_DynamicEarlyMode(pDM_Odm);
-#endif
 	        odm_DynamicBBPowerSaving(pDM_Odm);
-#if (RTL8188E_SUPPORT == 1)
-	        if(pDM_Odm->SupportICType==ODM_RTL8188E)
-	                odm_DynamicPrimaryCCA(pDM_Odm);	
-#endif
-
 	}
 	pDM_Odm->PhyDbgInfo.NumQryBeaconPkt = 0;
 
@@ -1533,28 +1504,6 @@ odm_RefreshRateAdaptiveMaskCE(
 			if(IS_MCAST( pstat->hwaddr))
 				continue;
 
-			#if((RTL8812A_SUPPORT==1)||(RTL8821A_SUPPORT==1))
-			if((pDM_Odm->SupportICType == ODM_RTL8812)||(pDM_Odm->SupportICType == ODM_RTL8821))
-			{
-				if(pstat->rssi_stat.UndecoratedSmoothedPWDB < pRA->LdpcThres)
-				{
-					pRA->bUseLdpc = true;
-					pRA->bLowerRtsRate = true;
-					if((pDM_Odm->SupportICType == ODM_RTL8821) && (pDM_Odm->CutVersion == ODM_CUT_A))
-						Set_RA_LDPC_8812(pstat, true);
-					//DbgPrint("RSSI=%d, bUseLdpc = true\n", pHalData->UndecoratedSmoothedPWDB);
-				}
-				else if(pstat->rssi_stat.UndecoratedSmoothedPWDB > (pRA->LdpcThres-5))
-				{
-					pRA->bUseLdpc = false;
-					pRA->bLowerRtsRate = false;
-					if((pDM_Odm->SupportICType == ODM_RTL8821) && (pDM_Odm->CutVersion == ODM_CUT_A))
-						Set_RA_LDPC_8812(pstat, false);
-					//DbgPrint("RSSI=%d, bUseLdpc = false\n", pHalData->UndecoratedSmoothedPWDB);
-				}
-			}
-			#endif
-
 			if( true == ODM_RAStateCheck(pDM_Odm, pstat->rssi_stat.UndecoratedSmoothedPWDB, false , &pstat->rssi_level) )
 			{
 				ODM_RT_TRACE(pDM_Odm, ODM_COMP_RA_MASK, ODM_DBG_LOUD, ("RSSI:%d, RSSI_LEVEL:%d\n", pstat->rssi_stat.UndecoratedSmoothedPWDB, pstat->rssi_level));
@@ -1776,19 +1725,6 @@ odm_RSSIMonitorCheckCE(
 	if(pDM_Odm->bLinked != true)
 		return;
 
-	#if((RTL8812A_SUPPORT==1)||(RTL8821A_SUPPORT==1))
-	if((pDM_Odm->SupportICType == ODM_RTL8812)||(pDM_Odm->SupportICType == ODM_RTL8821))
-	{
-		u64	curTxOkCnt = pdvobjpriv->traffic_stat.cur_tx_bytes;
-		u64	curRxOkCnt = pdvobjpriv->traffic_stat.cur_rx_bytes;
-
-		if(curRxOkCnt >(curTxOkCnt*6))
-			UL_DL_STATE = 1;
-		else
-			UL_DL_STATE = 0;
-	}
-	#endif
-
        FirstConnect = (pDM_Odm->bLinked) && (pRA_Table->firstconnect == false);    
 	pRA_Table->firstconnect = pDM_Odm->bLinked;
 
@@ -1890,11 +1826,7 @@ odm_RSSIMonitorCheckCE(
 
 					if(psta->rssi_stat.UndecoratedSmoothedPWDB != (-1)){
 						//printk("%s==> mac_id(%d),rssi(%d)\n",__FUNCTION__,psta->mac_id,psta->rssi_stat.UndecoratedSmoothedPWDB);
-						#if(RTL8192D_SUPPORT==1)
-						PWDB_rssi[sta_cnt++] = (psta->mac_id | (psta->rssi_stat.UndecoratedSmoothedPWDB<<16) | ((Adapter->stapriv.asoc_sta_count+1) << 8));
-						#else
 						PWDB_rssi[sta_cnt++] = (psta->mac_id | (psta->rssi_stat.UndecoratedSmoothedPWDB<<16) );
-						#endif
 					}
 				}
 			
@@ -1912,42 +1844,9 @@ odm_RSSIMonitorCheckCE(
 			if(PWDB_rssi[i] != (0)){
 				if(pHalData->fw_ractrl == true)// Report every sta's RSSI to FW
 				{
-					#if(RTL8192D_SUPPORT==1)
-					if(pDM_Odm->SupportICType == ODM_RTL8192D){
-						FillH2CCmd92D(Adapter, H2C_RSSI_REPORT, 3, (u8 *)(&PWDB_rssi[i]));		
-					}
-					#endif
-					
-					#if((RTL8192C_SUPPORT==1)||(RTL8723A_SUPPORT==1))
-					if((pDM_Odm->SupportICType == ODM_RTL8192C)||(pDM_Odm->SupportICType == ODM_RTL8723A)){
-						rtl8192c_set_rssi_cmd(Adapter, (u8*)&PWDB_rssi[i]);
-					}
-					#endif
-					
-					#if((RTL8812A_SUPPORT==1)||(RTL8821A_SUPPORT==1))
-					if((pDM_Odm->SupportICType == ODM_RTL8812)||(pDM_Odm->SupportICType == ODM_RTL8821)){	
-						PWDB_rssi[i] |= (UL_DL_STATE << 24);
-						rtl8812_set_rssi_cmd(Adapter, (u8 *)(&PWDB_rssi[i]));
-					}
-					#endif
-					#if(RTL8192E_SUPPORT==1)
-					if(pDM_Odm->SupportICType == ODM_RTL8192E){
-						rtl8192e_set_rssi_cmd(Adapter, (u8 *)(&PWDB_rssi[i]));
-					}
-					#endif
-					#if(RTL8723B_SUPPORT==1)
 					if(pDM_Odm->SupportICType == ODM_RTL8723B){
 						rtl8723b_set_rssi_cmd(Adapter, (u8 *)(&PWDB_rssi[i]));
 					}
-					#endif
-				}
-				else{
-					#if((RTL8188E_SUPPORT==1)&&(RATE_ADAPTIVE_SUPPORT == 1))
-					if(pDM_Odm->SupportICType == ODM_RTL8188E){
-						ODM_RA_SetRSSI_8188E(
-						&(pHalData->odmpriv), (PWDB_rssi[i]&0xFF), (u8)((PWDB_rssi[i]>>16) & 0xFF));
-					}
-					#endif
 				}
 			}
 		}		
@@ -1975,9 +1874,6 @@ odm_RSSIMonitorCheckCE(
 
 	FindMinimumRSSI(Adapter);//get pdmpriv->MinUndecoratedPWDBForDM
 
-	#if(RTL8192D_SUPPORT==1)
-	FindMinimumRSSI_Dmsp(Adapter);
-	#endif
 	pDM_Odm->RSSI_Min = pdmpriv->MinUndecoratedPWDBForDM;
 	//ODM_CmnInfoUpdate(&pHalData->odmpriv ,ODM_CMNINFO_RSSI_MIN, pdmpriv->MinUndecoratedPWDBForDM);
 }
@@ -2074,15 +1970,6 @@ getSwingIndex(
 		pSwingTable = OFDMSwingTable_New;
 		swingTableSize = OFDM_TABLE_SIZE;
 	} else {
-#if ((RTL8812A_SUPPORT==1)||(RTL8821A_SUPPORT==1))
-		if (pDM_Odm->SupportICType == ODM_RTL8812 || pDM_Odm->SupportICType == ODM_RTL8821)
-		{
-			bbSwing = PHY_GetTxBBSwing_8812A(Adapter, pHalData->CurrentBandType, ODM_RF_PATH_A);
-			pSwingTable = TxScalingTable_Jaguar;
-			swingTableSize = TXSCALE_TABLE_SIZE;
-		}
-		else
-#endif
 		{
 			bbSwing = 0;
 			pSwingTable = OFDMSwingTable;
@@ -2242,9 +2129,7 @@ odm_AntennaDiversityInit(
 
 	if(pDM_Odm->SupportICType & (ODM_OLD_IC_ANTDIV_SUPPORT))
 	{
-		#if (RTL8192C_SUPPORT==1) 
-		ODM_OldIC_AntDiv_Init(pDM_Odm);
-		#endif
+		//DEADCODE
 	}
 	else
 	{
@@ -2265,9 +2150,7 @@ odm_AntennaDiversity(
 
 	if(pDM_Odm->SupportICType & (ODM_OLD_IC_ANTDIV_SUPPORT))
 	{
-		#if (RTL8192C_SUPPORT==1) 
-		ODM_OldIC_AntDiv(pDM_Odm);
-		#endif
+		//DEADCODE
 	}
 	else
 	{

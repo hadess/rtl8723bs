@@ -389,108 +389,17 @@ ODM_FillH2CCmd(
 {
 	PADAPTER 		Adapter = pDM_Odm->Adapter;
 
-	if(pDM_Odm->SupportICType & ODM_IC_11AC_SERIES)
-	{
 		switch(ElementID)
 		{
 			case ODM_H2C_RSSI_REPORT:
-
-	#if((RTL8812A_SUPPORT==1) ||(RTL8821A_SUPPORT==1))
-				FillH2CCmd_8812(Adapter, H2C_8812_RSSI_REPORT, CmdLen, pCmdBuffer);
-	#endif
-				break;
-			default:
-				break;
-		}
-
-	}
-	else if(pDM_Odm->SupportICType == ODM_RTL8192E)
-	{
-		switch(ElementID)
-		{
-			case ODM_H2C_RSSI_REPORT:
-	#if(RTL8192E_SUPPORT==1)
-				FillH2CCmd_8192E(Adapter, H2C_8192E_RSSI_REPORT, CmdLen, pCmdBuffer);
-	#endif
-				break;
-			default:
-				break;
-		}	
-	}
-	else if(pDM_Odm->SupportICType == ODM_RTL8723B)
-	{
-		switch(ElementID)
-		{
-			case ODM_H2C_RSSI_REPORT:
-	#if(RTL8723B_SUPPORT==1)
 				FillH2CCmd8723B(Adapter, H2C_8723B_RSSI_SETTING, CmdLen, pCmdBuffer);
-	#endif
 				break;
 			case ODM_H2C_WIFI_CALIBRATION:
-	#if(RTL8723B_SUPPORT==1)
 				FillH2CCmd8723B(Adapter, H2C_8723B_BT_WLAN_CALIBRATION, CmdLen, pCmdBuffer);
-	#endif
 			   	break;
 			default:
 				break;			   
 		}
-
-	}
-	else if(pDM_Odm->SupportICType == ODM_RTL8188E)
-	{
-		switch(ElementID)
-		{
-			case ODM_H2C_RSSI_REPORT:
-				//if((pDM_Odm->CutVersion == ODM_CUT_I) && (!pDM_Odm->RaSupport88E)){
-				if(!pDM_Odm->RaSupport88E){
-	#if(RTL8188E_SUPPORT==1)
-					FillH2CCmd_88E(Adapter, H2C_RSSI_REPORT, CmdLen, pCmdBuffer);
-	#endif
-				}
-				break;
-			default:
-				break;
-		}
-	}
-	else if(pDM_Odm->SupportICType == ODM_RTL8723A)
-	{
-		switch(ElementID)
-		{
-			case ODM_H2C_RSSI_REPORT:
-	#if(RTL8723A_SUPPORT==1)
-				FillH2CCmd(Adapter, RSSI_SETTING_EID, CmdLen, pCmdBuffer);
-	#endif
-				break;
-			default:
-				break;
-		}
-	}
-	else if(pDM_Odm->SupportICType == ODM_RTL8192D)
-	{
-		switch(ElementID)
-		{
-			case ODM_H2C_RSSI_REPORT:
-	#if(RTL8192D_SUPPORT==1)
-			FillH2CCmd92D(Adapter, H2C_RSSI_REPORT, CmdLen, pCmdBuffer);	
-	#endif
-				break;
-			default:
-				break;
-		}
-	}
-	else
-	{
-		switch(ElementID)
-		{
-			case ODM_H2C_RSSI_REPORT:
-	#if(RTL8192C_SUPPORT==1)
-				rtl8192c_FillH2CCmd(Adapter, RSSI_SETTING_EID, CmdLen, pCmdBuffer);
-	#endif
-				break;
-			default:
-				break;
-		}
-	}
 }
 
 u4Byte

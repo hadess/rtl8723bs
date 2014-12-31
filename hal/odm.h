@@ -100,11 +100,7 @@
 #define	Smooth_TH_3	4
 #define   Smooth_Step_Size 5
 #define	Adaptive_SIR	1
-#if(RTL8723_FPGA_VERIFICATION == 1)
-#define	PSD_RESCAN		1
-#else
 #define	PSD_RESCAN		4
-#endif
 #define	PSD_SCAN_INTERVAL	700 //ms
 
 
@@ -232,11 +228,9 @@ typedef struct _SW_Antenna_Switch_
 	u1Byte		Train_time;
 	u1Byte		Train_time_flag;
 	RT_TIMER 	SwAntennaSwitchTimer;
-#if (RTL8723B_SUPPORT == 1)||(RTL8821A_SUPPORT == 1)	
 	RT_TIMER 	SwAntennaSwitchTimer_8723B;
 	u4Byte		PktCnt_SWAntDivByCtrlFrame;
 	bool		bSWAntDivByCtrlFrame;
-#endif
 
 /* CE Platform use
 #ifdef CONFIG_SW_ANTENNA_DIVERSITY
@@ -291,11 +285,7 @@ typedef struct _ODM_RATE_ADAPTIVE
 #define IQK_MAC_REG_NUM		4
 #define IQK_ADDA_REG_NUM		16
 #define IQK_BB_REG_NUM_MAX	10
-#if (RTL8192D_SUPPORT==1) 
-#define IQK_BB_REG_NUM		10
-#else
 #define IQK_BB_REG_NUM		9
-#endif
 #define HP_THERMAL_NUM		8
 
 #define AVG_THERMAL_NUM		8
