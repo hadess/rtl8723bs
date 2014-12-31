@@ -625,13 +625,7 @@ ODM_DMWatchdog(
 	odm_DynamicTxPower(pDM_Odm);	
 	odm_AntennaDiversity(pDM_Odm);
 
-	if(pDM_Odm->SupportICType & ODM_IC_11AC_SERIES)
-	{
-		ODM_TXPowerTrackingCheck(pDM_Odm);
-
-		odm_IQCalibrate(pDM_Odm);
-	}
-	else if(pDM_Odm->SupportICType & ODM_IC_11N_SERIES)
+	if(pDM_Odm->SupportICType & ODM_IC_11N_SERIES)
 	{
 		ODM_TXPowerTrackingCheck(pDM_Odm);
 

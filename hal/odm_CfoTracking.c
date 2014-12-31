@@ -234,9 +234,6 @@ ODM_CfoTracking(
 		ODM_RT_TRACE(pDM_Odm, ODM_COMP_CFO_TRACKING, ODM_DBG_LOUD, ("ODM_CfoTracking(): Crystal cap = 0x%x, Default Crystal cap = 0x%x\n", 
 			pCfoTrack->CrystalCap, pCfoTrack->DefXCap));
 
-		if(pDM_Odm->SupportICType & ODM_IC_11AC_SERIES)
-			return;
-		
 		//3 2. Dynamic ATC switch
 		if(CFO_ave < CFO_TH_ATC && CFO_ave > -CFO_TH_ATC)
 		{

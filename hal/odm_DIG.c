@@ -79,21 +79,7 @@ odm_NHMCounterStatisticsInit(
 {
 	PDM_ODM_T		pDM_Odm = (PDM_ODM_T)pDM_VOID;
 
-	if(pDM_Odm->SupportICType & ODM_IC_11AC_SERIES)
-	{
-		//PHY parameters initialize for ac series
-		ODM_Write2Byte(pDM_Odm, ODM_REG_NHM_TIMER_11AC+2, 0x2710);	//0x990[31:16]=0x2710	Time duration for NHM unit: 4us, 0x2710=40ms
-		ODM_Write2Byte(pDM_Odm, ODM_REG_NHM_TH9_TH10_11AC+2, 0xffff);	//0x994[31:16]=0xffff	th_9, th_10
-		//ODM_Write4Byte(pDM_Odm, ODM_REG_NHM_TH3_TO_TH0_11AC, 0xffffff5c);	//0x998=0xffffff5c 		th_3, th_2, th_1, th_0
-		ODM_Write4Byte(pDM_Odm, ODM_REG_NHM_TH3_TO_TH0_11AC, 0xffffff52);	//0x998=0xffffff52 		th_3, th_2, th_1, th_0
-		ODM_Write4Byte(pDM_Odm, ODM_REG_NHM_TH7_TO_TH4_11AC, 0xffffffff);	//0x99c=0xffffffff		th_7, th_6, th_5, th_4
-		ODM_SetBBReg(pDM_Odm, ODM_REG_NHM_TH8_11AC, bMaskByte0, 0xff);		//0x9a0[7:0]=0xff		th_8
-		ODM_SetBBReg(pDM_Odm, ODM_REG_NHM_TH9_TH10_11AC, BIT8|BIT9|BIT10, 0x7);	//0x994[9:8]=3			enable CCX
-		ODM_SetBBReg(pDM_Odm, ODM_REG_NHM_9E8_11AC, BIT0, 0x1);		//0x9e8[7]=1			max power among all RX ants	
-				
-		//panic_printk("RTL8812AU phy parameters init %s,%d\n", __FUNCTION__, __LINE__);
-	}
-	else if (pDM_Odm->SupportICType & ODM_IC_11N_SERIES)
+	if (pDM_Odm->SupportICType & ODM_IC_11N_SERIES)
 	{
 		//PHY parameters initialize for n series
 		ODM_Write2Byte(pDM_Odm, ODM_REG_NHM_TIMER_11N+2, 0x2710);	//0x894[31:16]=0x2710	Time duration for NHM unit: 4us, 0x2710=40ms
@@ -130,9 +116,7 @@ odm_GetNHMCounterStatistics(
 	PDM_ODM_T	pDM_Odm = (PDM_ODM_T)pDM_VOID;
 	u4Byte		value32 = 0;
 
-	if (pDM_Odm->SupportICType & ODM_IC_11AC_SERIES)
-		value32 = ODM_GetBBReg(pDM_Odm, ODM_REG_NHM_CNT_11AC, bMaskDWord);
-	else if (pDM_Odm->SupportICType & ODM_IC_11N_SERIES)
+	if (pDM_Odm->SupportICType & ODM_IC_11N_SERIES)
 		value32 = ODM_GetBBReg(pDM_Odm, ODM_REG_NHM_CNT_11N, bMaskDWord);
 
 	pDM_Odm->NHM_cnt_0 = (u1Byte)(value32 & bMaskByte0);
@@ -144,13 +128,8 @@ odm_NHMCounterStatisticsReset(
 	)
 {
 	PDM_ODM_T	pDM_Odm = (PDM_ODM_T)pDM_VOID;
-	
-	if (pDM_Odm->SupportICType & ODM_IC_11AC_SERIES)
-	{           		
-    		ODM_SetBBReg(pDM_Odm, ODM_REG_NHM_TH9_TH10_11AC, BIT1, 0);
-    		ODM_SetBBReg(pDM_Odm, ODM_REG_NHM_TH9_TH10_11AC, BIT1, 1);
-	}
-	else if (pDM_Odm->SupportICType & ODM_IC_11N_SERIES)
+
+	if (pDM_Odm->SupportICType & ODM_IC_11N_SERIES)
 	{
     		ODM_SetBBReg(pDM_Odm, ODM_REG_NHM_TH9_TH10_11N, BIT1, 0);
     		ODM_SetBBReg(pDM_Odm, ODM_REG_NHM_TH9_TH10_11N, BIT1, 1);
@@ -285,8 +264,6 @@ odm_SearchPwdBLowerBound(
 				{
 				if (pDM_Odm->SupportICType & ODM_IC_11N_SERIES)
 					value32 = ODM_GetBBReg(pDM_Odm,ODM_REG_RPT_11N, bMaskDWord);
-				else if(pDM_Odm->SupportICType & ODM_IC_11AC_SERIES)
-					value32 = ODM_GetBBReg(pDM_Odm,ODM_REG_RPT_11AC, bMaskDWord);
 			
 				if (value32 & BIT30)
 					pDM_Odm->txEdcca1 = pDM_Odm->txEdcca1 + 1;
@@ -397,9 +374,6 @@ odm_Adaptivity(
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_DIG, ODM_DBG_LOUD, ("ForceEDCCA=%d, IGI_Base=0x%x, TH_L2H_ini = %d, TH_EDCCA_HL_diff = %d, AdapEn_RSSI = %d\n", 
 		pDM_Odm->ForceEDCCA, pDM_Odm->IGI_Base, pDM_Odm->TH_L2H_ini, pDM_Odm->TH_EDCCA_HL_diff, pDM_Odm->AdapEn_RSSI));
 
-	if(pDM_Odm->SupportICType & ODM_IC_11AC_SERIES)
-		ODM_SetBBReg(pDM_Odm, 0x800, BIT10, 0); //ADC_mask enable
-
 	if(*pDM_Odm->pBandWidth == ODM_BW20M) //CHANNEL_WIDTH_20
 		IGI_target = pDM_Odm->IGI_Base;
 	else if(*pDM_Odm->pBandWidth == ODM_BW40M)
@@ -415,8 +389,6 @@ odm_Adaptivity(
 	{
 		if (pDM_Odm->SupportICType & ODM_IC_11N_SERIES)
 			ODM_SetBBReg(pDM_Odm,ODM_REG_DBG_RPT_11N, bMaskDWord, 0x208);
-		else if(pDM_Odm->SupportICType & ODM_IC_11AC_SERIES)
-			ODM_SetBBReg(pDM_Odm,ODM_REG_DBG_RPT_11AC, bMaskDWord, 0x209);
 		odm_SearchPwdBLowerBound(pDM_Odm, pDM_Odm->IGI_target );
 	}
 		
@@ -532,11 +504,6 @@ ODM_Write_DIG(
 		if(pDM_Odm->RFType > ODM_1T1R)
 			ODM_SetBBReg(pDM_Odm, ODM_REG(IGI_B,pDM_Odm), ODM_BIT(IGI,pDM_Odm), CurrentIGI);
 
-		if((pDM_Odm->SupportICType & ODM_IC_11AC_SERIES) && (pDM_Odm->RFType > ODM_2T2R))
-		{
-			ODM_SetBBReg(pDM_Odm, ODM_REG(IGI_C,pDM_Odm), ODM_BIT(IGI,pDM_Odm), CurrentIGI);
-			ODM_SetBBReg(pDM_Odm, ODM_REG(IGI_D,pDM_Odm), ODM_BIT(IGI,pDM_Odm), CurrentIGI);
-		}
 		pDM_DigTable->CurIGValue = CurrentIGI;
 	}
 
@@ -1085,45 +1052,6 @@ odm_FalseAlarmCounterStatistics(
 			FalseAlmCnt->Cnt_Parity_Fail, FalseAlmCnt->Cnt_Rate_Illegal));
 		ODM_RT_TRACE(pDM_Odm,ODM_COMP_FA_CNT, ODM_DBG_LOUD, ("Cnt_Crc8_fail=%d, Cnt_Mcs_fail=%d\n",
 		FalseAlmCnt->Cnt_Crc8_fail, FalseAlmCnt->Cnt_Mcs_fail));
-	}
-	else if(pDM_Odm->SupportICType & ODM_IC_11AC_SERIES)
-	{
-		u4Byte CCKenable;
-		u4Byte Cnt_Ofdm_fail_temp = 0;
-		
-		//read OFDM FA counter
-		FalseAlmCnt->Cnt_Ofdm_fail = ODM_GetBBReg(pDM_Odm, ODM_REG_OFDM_FA_11AC, bMaskLWord);
-		FalseAlmCnt->Cnt_Cck_fail = ODM_GetBBReg(pDM_Odm, ODM_REG_CCK_FA_11AC, bMaskLWord);
-
-		//read CCK/OFDM CCA counter
-		ret_value = ODM_GetBBReg(pDM_Odm, ODM_REG_CCK_CCA_CNT_11AC, bMaskDWord);
-		FalseAlmCnt->Cnt_OFDM_CCA = (ret_value & 0xffff0000) >> 16;
-		FalseAlmCnt->Cnt_CCK_CCA = ret_value & 0xffff;
-
-		// reset OFDM FA coutner
-		ODM_SetBBReg(pDM_Odm, ODM_REG_OFDM_FA_RST_11AC, BIT17, 1);
-		ODM_SetBBReg(pDM_Odm, ODM_REG_OFDM_FA_RST_11AC, BIT17, 0);
-
-		// reset CCK FA counter
-		ODM_SetBBReg(pDM_Odm, ODM_REG_CCK_FA_RST_11AC, BIT15, 0);
-		ODM_SetBBReg(pDM_Odm, ODM_REG_CCK_FA_RST_11AC, BIT15, 1);
-
-		// reset CCA counter
-		ODM_SetBBReg(pDM_Odm, ODM_REG_RST_RPT_11AC, BIT0, 1);
-		ODM_SetBBReg(pDM_Odm, ODM_REG_RST_RPT_11AC, BIT0, 0);
-
-		CCKenable =  ODM_GetBBReg(pDM_Odm, ODM_REG_BB_RX_PATH_11AC, BIT28);
-		if(CCKenable)//if(*pDM_Odm->pBandType == ODM_BAND_2_4G)
-		{
-			FalseAlmCnt->Cnt_all = FalseAlmCnt->Cnt_Ofdm_fail + FalseAlmCnt->Cnt_Cck_fail;
-			FalseAlmCnt->Cnt_CCA_all = FalseAlmCnt->Cnt_CCK_CCA + FalseAlmCnt->Cnt_OFDM_CCA;
-		}
-		else
-		{
-			FalseAlmCnt->Cnt_all = FalseAlmCnt->Cnt_Ofdm_fail;
-			FalseAlmCnt->Cnt_CCA_all = FalseAlmCnt->Cnt_OFDM_CCA;
-		}
-
 	}
 
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_FA_CNT, ODM_DBG_LOUD, ("Cnt_OFDM_CCA=%d\n",	FalseAlmCnt->Cnt_OFDM_CCA));

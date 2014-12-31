@@ -617,7 +617,6 @@ typedef enum tag_ODM_Support_IC_Type_Definition
 }ODM_IC_TYPE_E;
 
 #define ODM_IC_11N_SERIES		ODM_RTL8723B
-#define ODM_IC_11AC_SERIES		0
 
 //ODM_CMNINFO_CUT_VER
 typedef enum tag_ODM_Cut_Version_Definition

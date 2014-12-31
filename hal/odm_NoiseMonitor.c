@@ -182,15 +182,7 @@ s2Byte ODM_InbandNoise_Monitor(void * pDM_VOID,u8 bPauseDIG,u8 IGIValue,u32 max_
 {
 
 	PDM_ODM_T	pDM_Odm = (PDM_ODM_T)pDM_VOID;
-	if(pDM_Odm->SupportICType & ODM_IC_11AC_SERIES )
-	{
-		//odm_InbandNoise_Monitor_JaguarSeries(pDM_Odm,bPauseDIG,IGIValue,max_time);
-		return 0;
-	}
-	else
-	{
-		return odm_InbandNoise_Monitor_NSeries(pDM_VOID,bPauseDIG,IGIValue,max_time);
-	}
+	return odm_InbandNoise_Monitor_NSeries(pDM_VOID,bPauseDIG,IGIValue,max_time);
 }
 
 
