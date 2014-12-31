@@ -257,6 +257,7 @@ u32	beamforming_get_report_frame(PADAPTER	 Adapter, union recv_frame *precv_fram
 
 void	beamforming_get_ndpa_frame(PADAPTER	 Adapter, union recv_frame *precv_frame)
 {
+/*DEADCODE
 	u8	*ta;
 	u8	idx, Sequence;
 	u8	*pframe = precv_frame->u.hdr.rx_data;
@@ -264,46 +265,8 @@ void	beamforming_get_ndpa_frame(PADAPTER	 Adapter, union recv_frame *precv_frame
 	struct beamforming_entry	*pBeamformEntry = NULL;
 
 	//DBG_871X("beamforming_get_ndpa_frame\n");
-
-	if(IS_HARDWARE_TYPE_8812(Adapter) == false)
-		return;
-	else if(GetFrameSubType(pframe) != WIFI_NDPA)
-		return;
-
-	ta = GetAddr2Ptr(pframe);
-	// Remove signaling TA. 
-	ta[0] = ta[0] & 0xFE; 
-	
-	pBeamformEntry = beamforming_get_entry_by_addr(pmlmepriv, ta, &idx);
-
-	if(pBeamformEntry == NULL)
-		return;
-	else if(!(pBeamformEntry->beamforming_entry_cap & BEAMFORMEE_CAP_VHT_SU))
-		return;
-	else if(pBeamformEntry->LogSuccessCnt > 1)
-		return;
-
-	Sequence = (pframe[16]) >> 2;
-
-	if(pBeamformEntry->LogSeq != Sequence)
-	{
-		/* Previous frame doesn't retry when meet new sequence number */
-		if(pBeamformEntry->LogSeq != 0xff && pBeamformEntry->LogRetryCnt == 0)
-			pBeamformEntry->LogSuccessCnt++;
-		
-		pBeamformEntry->LogSeq = Sequence;
-		pBeamformEntry->LogRetryCnt = 0;
-	}	
-	else
-	{
-		if(pBeamformEntry->LogRetryCnt == 3)
-			beamforming_wk_cmd(Adapter, BEAMFORMING_CTRL_SOUNDING_CLK, NULL, 0, 1);
-
-		pBeamformEntry->LogRetryCnt++;
-	}
-
-	DBG_871X("%s LogSeq %d LogRetryCnt %d LogSuccessCnt %d\n", 
-			__FUNCTION__, pBeamformEntry->LogSeq, pBeamformEntry->LogRetryCnt, pBeamformEntry->LogSuccessCnt);
+*/
+	return;
 }
 
 bool	issue_ht_ndpa_packet(PADAPTER Adapter, u8 *ra, CHANNEL_WIDTH bw, u8 qidx)

@@ -2039,34 +2039,10 @@ odm_IQCalibrate(
 		IN	PDM_ODM_T	pDM_Odm 
 		)
 {
+/*DEADCODE
 	PADAPTER	Adapter = pDM_Odm->Adapter;
-	
-	if(!IS_HARDWARE_TYPE_JAGUAR(Adapter))
-		return;
-	else if(IS_HARDWARE_TYPE_8812AU(Adapter))
-		return;
-#if (RTL8821A_SUPPORT == 1)
-	if(pDM_Odm->bLinked)
-	{
-		if((*pDM_Odm->pChannel != pDM_Odm->preChannel) && (!*pDM_Odm->pbScanInProcess))
-		{
-			pDM_Odm->preChannel = *pDM_Odm->pChannel;
-			pDM_Odm->LinkedInterval = 0;
-		}
-
-		if(pDM_Odm->LinkedInterval < 3)
-			pDM_Odm->LinkedInterval++;
-		
-		if(pDM_Odm->LinkedInterval == 2)
-		{
-			// Mark out IQK flow to prevent tx stuck. by Maddest 20130306
-			// Open it verified by James 20130715
-			PHY_IQCalibrate_8821A(Adapter, false);
-		}
-	}
-	else
-		pDM_Odm->LinkedInterval = 0;
-#endif
+*/
+	return;
 }
 
 
@@ -2214,24 +2190,7 @@ odm_TXPowerTrackingCheckCE(
 	)
 {
 	PADAPTER	Adapter = pDM_Odm->Adapter;
-	#if( (RTL8192C_SUPPORT==1) ||  (RTL8723A_SUPPORT==1) )
-	if(IS_HARDWARE_TYPE_8192C(Adapter)){
-		rtl8192c_odm_CheckTXPowerTracking(Adapter);
-		return;
-	}
-	#endif
 
-	#if (RTL8192D_SUPPORT==1) 
-	if(IS_HARDWARE_TYPE_8192D(Adapter)){	
-		#if (RTL8192D_EASY_SMART_CONCURRENT == 1)
-		if(!Adapter->bSlaveOfDMSP)
-		#endif
-			rtl8192d_odm_CheckTXPowerTracking(Adapter);
-		return;	
-	}
-	#endif
-
-	#if(((RTL8188E_SUPPORT==1) ||  (RTL8812A_SUPPORT==1) ||  (RTL8821A_SUPPORT==1) ||  (RTL8192E_SUPPORT==1)  ||  (RTL8723B_SUPPORT==1)  ))
 	if(!(pDM_Odm->SupportAbility & ODM_RF_TX_PWR_TRACK))
 	{
 		return;
@@ -2240,11 +2199,8 @@ odm_TXPowerTrackingCheckCE(
 	if(!pDM_Odm->RFCalibrateInfo.TM_Trigger)		//at least delay 1 sec
 	{
 		//pHalData->TxPowerCheckCnt++;	//cosa add for debug
-		if(IS_HARDWARE_TYPE_8188E(Adapter) || IS_HARDWARE_TYPE_JAGUAR(Adapter) || IS_HARDWARE_TYPE_8192E(Adapter)||IS_HARDWARE_TYPE_8723B(Adapter))
-			ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_T_METER_NEW, (BIT17 | BIT16), 0x03);
-		else
-			ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_T_METER_OLD, bRFRegOffsetMask, 0x60);
-		
+		ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_T_METER_NEW, (BIT17 | BIT16), 0x03);
+
 		//DBG_871X("Trigger Thermal Meter!!\n");
 		
 		pDM_Odm->RFCalibrateInfo.TM_Trigger = 1;
@@ -2256,7 +2212,6 @@ odm_TXPowerTrackingCheckCE(
 		ODM_TXPowerTrackingCallback_ThermalMeter(Adapter);
 		pDM_Odm->RFCalibrateInfo.TM_Trigger = 0;
 	}
-	#endif
 }
 
 void

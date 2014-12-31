@@ -571,7 +571,7 @@ static void update_attrib_vcs_info(_adapter *padapter, struct xmit_frame *pxmitf
 			//to do list: check MIMO power save condition.
 
 			//check AMPDU aggregation for TXOP
-			if((pattrib->ampdu_en==true) && (!IS_HARDWARE_TYPE_8812(padapter)))
+			if(pattrib->ampdu_en==true)
 			{
 				pattrib->vcs_mode = RTS_CTS;
 				break;
