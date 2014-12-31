@@ -1100,31 +1100,6 @@ odm_FalseAlarmCounterStatistics(
 		FalseAlmCnt->Cnt_OFDM_CCA = (ret_value & 0xffff0000) >> 16;
 		FalseAlmCnt->Cnt_CCK_CCA = ret_value & 0xffff;
 
-		// For 8881A
-		if(pDM_Odm->SupportICType == ODM_RTL8881A)
-		{
-			if(FalseAlmCnt->Cnt_Ofdm_fail >= FalseAlmCnt->Cnt_Ofdm_fail_pre)
-			{
-				Cnt_Ofdm_fail_temp = FalseAlmCnt->Cnt_Ofdm_fail_pre;
-				FalseAlmCnt->Cnt_Ofdm_fail_pre = FalseAlmCnt->Cnt_Ofdm_fail;
-				FalseAlmCnt->Cnt_Ofdm_fail = FalseAlmCnt->Cnt_Ofdm_fail - Cnt_Ofdm_fail_temp;
-			}
-			else
-				FalseAlmCnt->Cnt_Ofdm_fail_pre = FalseAlmCnt->Cnt_Ofdm_fail;
-			ODM_RT_TRACE(pDM_Odm,ODM_COMP_FA_CNT, ODM_DBG_LOUD, ("Cnt_Ofdm_fail=%d\n",	FalseAlmCnt->Cnt_Ofdm_fail_pre));
-			ODM_RT_TRACE(pDM_Odm,ODM_COMP_FA_CNT, ODM_DBG_LOUD, ("Cnt_Ofdm_fail_pre=%d\n",	Cnt_Ofdm_fail_temp));
-			
-			// Reset FA counter by enable/disable OFDM
-			if(FalseAlmCnt->Cnt_Ofdm_fail_pre >= 0x7fff)
-			{
-				// reset OFDM
-				ODM_SetBBReg(pDM_Odm, ODM_REG_BB_RX_PATH_11AC, BIT29,0);
-				ODM_SetBBReg(pDM_Odm, ODM_REG_BB_RX_PATH_11AC, BIT29,1);
-				FalseAlmCnt->Cnt_Ofdm_fail_pre = 0;
-				ODM_RT_TRACE(pDM_Odm,ODM_COMP_FA_CNT, ODM_DBG_LOUD, ("Reset false alarm counter\n"));
-			}
-		}
-
 		// reset OFDM FA coutner
 		ODM_SetBBReg(pDM_Odm, ODM_REG_OFDM_FA_RST_11AC, BIT17, 1);
 		ODM_SetBBReg(pDM_Odm, ODM_REG_OFDM_FA_RST_11AC, BIT17, 0);

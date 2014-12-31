@@ -33,8 +33,6 @@
 
 #define	TX_BY_REG	0
 
-#define ODM_RTL8881A 0   //Just for windows driver to jointly use ODM-driver
-
 #define ODM_ANTDIV_SUPPORT		(ODM_RTL8723B)
 #define ODM_N_ANTDIV_SUPPORT		(ODM_RTL8723B)
 #define ODM_SMART_ANT_SUPPORT		(0)
