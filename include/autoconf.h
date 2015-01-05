@@ -229,7 +229,7 @@
 /*
  * Debug Related Config
  */
-#define CONFIG_DEBUG
+#undef CONFIG_DEBUG
 
 #ifdef CONFIG_DEBUG
 #define DBG	1	// for ODM & BTCOEX debug
@@ -242,6 +242,6 @@
 
 //#define DBG_XMIT_BUF
 //#define DBG_XMIT_BUF_EXT
-#define DBG_CHECK_FW_PS_STATE
-#define DBG_CHECK_FW_PS_STATE_H2C
+//#define DBG_CHECK_FW_PS_STATE
+//#define DBG_CHECK_FW_PS_STATE_H2C
 
