@@ -98,7 +98,7 @@ endif
 
 ########### HAL_RTL8723B #################################
 RTL871X = rtl8723b
-MODULE_NAME = 8723bs
+MODULE_NAME = r8723bs
 
 _HAL_INTFS_FILES += hal/HalPwrSeqCmd.o \
 					hal/Hal8723BPwrSeq.o
@@ -113,9 +113,9 @@ _HAL_INTFS_FILES +=	hal/$(RTL871X)_hal_init.o \
 
 _HAL_INTFS_FILES +=	\
 			hal/sdio_halinit.o \
-			hal/rtl$(MODULE_NAME)_led.o \
-			hal/rtl$(MODULE_NAME)_xmit.o \
-			hal/rtl$(MODULE_NAME)_recv.o
+			hal/rtl8723bs_led.o \
+			hal/rtl8723bs_xmit.o \
+			hal/rtl8723bs_recv.o
 
 _HAL_INTFS_FILES += hal/sdio_ops.o
 
@@ -153,11 +153,7 @@ endif
 
 ifeq ($(CONFIG_EFUSE_CONFIG_FILE), y)
 EXTRA_CFLAGS += -DCONFIG_EFUSE_CONFIG_FILE
-ifeq ($(MODULE_NAME), 8189es)
-EXTRA_CFLAGS += -DEFUSE_MAP_PATH=\"/system/etc/wifi/wifi_efuse_8189e.map\"
-else
-EXTRA_CFLAGS += -DEFUSE_MAP_PATH=\"/system/etc/wifi/wifi_efuse_$(MODULE_NAME).map\"
-endif
+EXTRA_CFLAGS += -DEFUSE_MAP_PATH=\"/system/etc/wifi/wifi_efuse_8723bs.map\"
 EXTRA_CFLAGS += -DWIFIMAC_PATH=\"/data/wifimac.txt\"
 endif
 
@@ -223,10 +219,6 @@ KVER  := $(shell uname -r)
 KSRC := /lib/modules/$(KVER)/build
 MODDESTDIR := /lib/modules/$(KVER)/kernel/drivers/net/wireless/
 INSTALL_PREFIX :=
-endif
-
-ifneq ($(USER_MODULE_NAME),)
-MODULE_NAME := $(USER_MODULE_NAME)
 endif
 
 ifneq ($(KERNELRELEASE),)
