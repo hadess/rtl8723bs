@@ -177,7 +177,16 @@ static void Init_ODM_ComInfo_8723b(PADAPTER	Adapter)
 		ODM_CmnInfoUpdate(pDM_Odm,ODM_CMNINFO_RF_TYPE,ODM_1T2R);
 	}
 
+	#ifdef CONFIG_DISABLE_ODM
 	pdmpriv->InitODMFlag = 0;
+	#else
+	pdmpriv->InitODMFlag =	ODM_RF_CALIBRATION		|
+							ODM_RF_TX_PWR_TRACK	//|
+							;	
+	//if(pHalData->AntDivCfg)
+	//	pdmpriv->InitODMFlag |= ODM_BB_ANT_DIV;
+	#endif	
+
 	ODM_CmnInfoUpdate(pDM_Odm,ODM_CMNINFO_ABILITY,pdmpriv->InitODMFlag);
 }
 
@@ -214,7 +223,9 @@ static void Update_ODM_ComInfo_8723b(PADAPTER	Adapter)
 		pdmpriv->InitODMFlag |= ODM_BB_ANT_DIV;
 #endif
 
+#ifdef CONFIG_DISABLE_ODM
 	pdmpriv->InitODMFlag = 0;
+#endif//CONFIG_DISABLE_ODM
 
 	//
 	// Pointer reference
