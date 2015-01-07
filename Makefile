@@ -109,7 +109,7 @@ _HAL_INTFS_FILES +=	hal/$(RTL871X)_hal_init.o \
 			hal/$(RTL871X)_dm.o \
 			hal/$(RTL871X)_rxdesc.o \
 			hal/$(RTL871X)_cmd.o \
-			
+			hal/rtl8723b_sreset.o
 
 _HAL_INTFS_FILES +=	\
 			hal/sdio_halinit.o \
@@ -244,7 +244,8 @@ rtk_core :=	core/rtw_cmd.o \
 		core/rtw_btcoex.o \
 		core/rtw_beamforming.o \
 		core/rtw_odm.o \
-		core/rtw_efuse.o
+		core/rtw_efuse.o \
+		core/rtw_sreset.o
 
 $(MODULE_NAME)-y += $(rtk_core)
 

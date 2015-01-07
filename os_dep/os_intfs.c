@@ -963,6 +963,11 @@ u8 rtw_reset_drv_sw(_adapter *padapter)
 
 	_clr_fwstate_(pmlmepriv, _FW_UNDER_SURVEY |_FW_UNDER_LINKING);
 
+#ifdef DBG_CONFIG_ERROR_DETECT
+	if (is_primary_adapter(padapter))
+		rtw_hal_sreset_reset_value(padapter);
+#endif
+
 	pwrctrlpriv->pwr_state_check_cnts = 0;
 
 	//mlmeextpriv
@@ -1068,6 +1073,10 @@ _func_enter_;
 
 	rtw_hal_dm_init(padapter);
 	rtw_hal_sw_led_init(padapter);
+
+#ifdef DBG_CONFIG_ERROR_DETECT
+	rtw_hal_sreset_init(padapter);
+#endif
 
 #ifdef CONFIG_INTEL_WIDI
 	if(rtw_init_intel_widi(padapter) == _FAIL)
@@ -2089,9 +2098,17 @@ int rtw_ips_pwr_up(_adapter *padapter)
 {
 	int result;
 	PHAL_DATA_TYPE pHalData = GET_HAL_DATA(padapter);
+#ifdef DBG_CONFIG_ERROR_DETECT
+	struct sreset_priv *psrtpriv = &pHalData->srestpriv;
+#endif//#ifdef DBG_CONFIG_ERROR_DETECT
 	unsigned long start_time = jiffies;
 	DBG_871X("===>  rtw_ips_pwr_up..............\n");
 
+#if defined(CONFIG_SWLPS_IN_IPS) || defined(CONFIG_FWLPS_IN_IPS)
+#ifdef DBG_CONFIG_ERROR_DETECT
+	if (psrtpriv->silent_reset_inprogress == true)
+#endif//#ifdef DBG_CONFIG_ERROR_DETECT		
+#endif //defined(CONFIG_SWLPS_IN_IPS) || defined(CONFIG_FWLPS_IN_IPS)
 	rtw_reset_drv_sw(padapter);
 
 	result = ips_netdrv_open(padapter);
@@ -2121,9 +2138,17 @@ void rtw_ips_dev_unload(_adapter *padapter)
 	struct net_device *pnetdev= (struct net_device*)padapter->pnetdev;
 	struct xmit_priv	*pxmitpriv = &(padapter->xmitpriv);
 	PHAL_DATA_TYPE pHalData = GET_HAL_DATA(padapter);
+#ifdef DBG_CONFIG_ERROR_DETECT	
+	struct sreset_priv *psrtpriv = &pHalData->srestpriv;
+#endif//#ifdef DBG_CONFIG_ERROR_DETECT
 	DBG_871X("====> %s...\n",__FUNCTION__);
 
 
+#if defined(CONFIG_SWLPS_IN_IPS) || defined(CONFIG_FWLPS_IN_IPS)
+#ifdef DBG_CONFIG_ERROR_DETECT
+	if (psrtpriv->silent_reset_inprogress == true)
+#endif //#ifdef DBG_CONFIG_ERROR_DETECT		
+#endif //defined(CONFIG_SWLPS_IN_IPS) || defined(CONFIG_FWLPS_IN_IPS)
 	{
 		rtw_hal_set_hwreg(padapter, HW_VAR_FIFO_CLEARN_UP, 0);
 

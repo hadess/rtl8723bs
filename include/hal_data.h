@@ -505,6 +505,9 @@ typedef struct hal_com_data
 
 	struct dm_priv	dmpriv;
 	DM_ODM_T 		odmpriv;
+#ifdef DBG_CONFIG_ERROR_DETECT
+	struct sreset_priv srestpriv;
+#endif //#ifdef DBG_CONFIG_ERROR_DETECT
 
 #ifdef CONFIG_BT_COEXIST
 	// For bluetooth co-existance

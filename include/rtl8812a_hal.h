@@ -39,6 +39,10 @@
 #include "Hal8821APwrSeq.h" //for 8821A/8811A
 #include "Hal8812PhyReg.h"
 #include "Hal8812PhyCfg.h"
+#ifdef DBG_CONFIG_ERROR_DETECT
+#include "rtl8812a_sreset.h"
+#endif
+
 
 //---------------------------------------------------------------------
 //		RTL8812AU From header

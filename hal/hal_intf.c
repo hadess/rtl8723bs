@@ -572,6 +572,62 @@ s32	rtw_hal_hostap_mgnt_xmit_entry(_adapter *padapter, _pkt *pkt)
 }
 #endif //CONFIG_HOSTAPD_MLME
 
+#ifdef DBG_CONFIG_ERROR_DETECT
+void	rtw_hal_sreset_init(_adapter *padapter)
+{
+	if(padapter->HalFunc.sreset_init_value)
+		padapter->HalFunc.sreset_init_value(padapter); 
+}
+void rtw_hal_sreset_reset(_adapter *padapter)
+{
+	padapter = GET_PRIMARY_ADAPTER(padapter);
+
+	if(padapter->HalFunc.silentreset)
+		padapter->HalFunc.silentreset(padapter);
+}
+
+void rtw_hal_sreset_reset_value(_adapter *padapter)
+{
+	if(padapter->HalFunc.sreset_reset_value)
+		padapter->HalFunc.sreset_reset_value(padapter);
+}
+
+void rtw_hal_sreset_xmit_status_check(_adapter *padapter)
+{
+	if (!is_primary_adapter(padapter))
+		return;
+
+	if(padapter->HalFunc.sreset_xmit_status_check)
+		padapter->HalFunc.sreset_xmit_status_check(padapter);		
+}
+void rtw_hal_sreset_linked_status_check(_adapter *padapter)
+{
+	if (!is_primary_adapter(padapter))
+		return;
+
+	if(padapter->HalFunc.sreset_linked_status_check)
+		padapter->HalFunc.sreset_linked_status_check(padapter);	
+}
+u8   rtw_hal_sreset_get_wifi_status(_adapter *padapter)
+{
+	u8 status = 0;
+	if(padapter->HalFunc.sreset_get_wifi_status)				
+		status = padapter->HalFunc.sreset_get_wifi_status(padapter);       
+	return status;
+}
+
+bool rtw_hal_sreset_inprogress(_adapter *padapter)
+{
+	bool inprogress = false;
+
+	padapter = GET_PRIMARY_ADAPTER(padapter);
+
+	if(padapter->HalFunc.sreset_inprogress)
+		inprogress = padapter->HalFunc.sreset_inprogress(padapter);
+	return inprogress;
+}
+#endif	//DBG_CONFIG_ERROR_DETECT
+
 #ifdef CONFIG_IOL
 int rtw_hal_iol_cmd(ADAPTER *adapter, struct xmit_frame *xmit_frame, u32 max_wating_ms, u32 bndy_cnt)
 {

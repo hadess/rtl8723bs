@@ -1,5 +1,4 @@
 /******************************************************************************
- * Customer code to add GPIO control during WLAN start/stop
  *
  * Copyright(c) 2007 - 2011 Realtek Corporation. All rights reserved.
  *
@@ -18,18 +17,13 @@
  *
  *
  ******************************************************************************/
-#include "drv_types.h"
+#ifndef _RTL8723B_SRESET_H_
+#define _RTL8723B_SRESET_H_
 
-int rtw_wifi_gpio_init(void)
-{
-	return 0;
-}
-
-void rtw_wifi_gpio_wlan_ctrl(int onoff)
-{
-}
+#include <rtw_sreset.h>
 
 #ifdef DBG_CONFIG_ERROR_DETECT
 extern void rtl8723b_sreset_xmit_status_check(_adapter *padapter);
 extern void rtl8723b_sreset_linked_status_check(_adapter *padapter);
+#endif
 #endif

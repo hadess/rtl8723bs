@@ -1611,4 +1611,39 @@ int proc_get_btcoex_info(struct seq_file *m, void *v)
 }
 #endif /* CONFIG_BT_COEXIST */
 
+#if defined(DBG_CONFIG_ERROR_DETECT)
+int proc_get_sreset(struct seq_file *m, void *v)
+{
+	struct net_device *dev = m->private;
+	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
+	struct mlme_priv *pmlmepriv = &(padapter->mlmepriv);
+
+	return 0;
+}
+
+ssize_t proc_set_sreset(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
+{
+	struct net_device *dev = data;
+	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
+	char tmp[32];
+	s32 trigger_point;
+
+	if (count < 1)
+		return -EFAULT;
+
+	if (buffer && !copy_from_user(tmp, buffer, sizeof(tmp))) {		
+
+		int num = sscanf(tmp, "%d", &trigger_point);
+
+		if (trigger_point == SRESET_TGP_NULL)
+			rtw_hal_sreset_reset(padapter);
+		else
+			sreset_set_trigger_point(padapter, trigger_point);
+	}
+	
+	return count;
+	
+}
+#endif /* DBG_CONFIG_ERROR_DETECT */
+
 #endif

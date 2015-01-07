@@ -33,6 +33,10 @@
 #include "Hal8723BPwrSeq.h"
 #include "Hal8723BPhyReg.h"
 #include "Hal8723BPhyCfg.h"
+#ifdef DBG_CONFIG_ERROR_DETECT
+#include "rtl8723b_sreset.h"
+#endif
+
 
 //---------------------------------------------------------------------
 //		RTL8723B From file

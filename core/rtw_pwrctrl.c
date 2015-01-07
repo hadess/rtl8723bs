@@ -2137,6 +2137,18 @@ int _rtw_pwr_wakeup(_adapter *padapter, u32 ips_deffer_ms, const char *caller)
 			DBG_871X("%s wait ps_processing done\n", __func__);
 	}
 
+#ifdef DBG_CONFIG_ERROR_DETECT
+	if (rtw_hal_sreset_inprogress(padapter)) {
+		DBG_871X("%s wait sreset_inprogress...\n", __func__);
+		while (rtw_hal_sreset_inprogress(padapter) && jiffies_to_msecs(jiffies - start) <= 4000)
+			rtw_msleep_os(10);
+		if (rtw_hal_sreset_inprogress(padapter))
+			DBG_871X("%s wait sreset_inprogress timeout\n", __func__);
+		else
+			DBG_871X("%s wait sreset_inprogress done\n", __func__);
+	}
+#endif
+
 	if (pwrpriv->bInternalAutoSuspend == false && pwrpriv->bInSuspend) {
 		DBG_871X("%s wait bInSuspend...\n", __func__);
 		while (pwrpriv->bInSuspend 

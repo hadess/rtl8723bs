@@ -40,6 +40,11 @@
 #include "rtl8723a_led.h"
 #include "Hal8723PwrSeq.h"
 
+#ifdef DBG_CONFIG_ERROR_DETECT
+#include "rtl8723a_sreset.h"
+#endif
+
+
 	//2TODO: We should define 8192S firmware related macro settings here!!
 	#define RTL819X_DEFAULT_RF_TYPE			RF_1T2R
 	#define RTL819X_TOTAL_RF_PATH				2
