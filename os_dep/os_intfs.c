@@ -2092,8 +2092,6 @@ int rtw_ips_pwr_up(_adapter *padapter)
 	unsigned long start_time = jiffies;
 	DBG_871X("===>  rtw_ips_pwr_up..............\n");
 
-	rtw_reset_drv_sw(padapter);
-
 	result = ips_netdrv_open(padapter);
 
 	rtw_led_control(padapter, LED_CTL_NO_LINK);
@@ -2123,15 +2121,6 @@ void rtw_ips_dev_unload(_adapter *padapter)
 	PHAL_DATA_TYPE pHalData = GET_HAL_DATA(padapter);
 	DBG_871X("====> %s...\n",__FUNCTION__);
 
-
-	{
-		rtw_hal_set_hwreg(padapter, HW_VAR_FIFO_CLEARN_UP, 0);
-
-		if (padapter->intf_stop)
-		{
-			padapter->intf_stop(padapter);
-		}
-	}
 
 	if(padapter->bSurpriseRemoved == false)
 	{
