@@ -43,7 +43,6 @@
 #endif
 #define CONFIG_RECV_REORDERING_CTRL
 
-#ifdef CONFIG_IOCTL_CFG80211
 	/*
 	 * Indecate new sta asoc through cfg80211_new_sta
 	 * If kernel version >= 3.2 or
@@ -53,7 +52,6 @@
 	//#define RTW_USE_CFG80211_STA_EVENT
 	//#define CONFIG_DEBUG_CFG80211
 	#define CONFIG_SET_SCAN_DENY_TIMER
-#endif
 
 #define CONFIG_AP_MODE
 #ifdef CONFIG_AP_MODE
