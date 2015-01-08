@@ -291,7 +291,7 @@ void Hal_DetectWoWMode(PADAPTER pAdapter);
 void rtl8723b_start_thread(_adapter *padapter);
 void rtl8723b_stop_thread(_adapter *padapter);
 
-#if defined(CONFIG_CHECK_BT_HANG) && defined(CONFIG_BT_COEXIST)
+#if defined(CONFIG_CHECK_BT_HANG)
 void rtl8723bs_init_checkbthang_workqueue(_adapter * adapter);
 void rtl8723bs_free_checkbthang_workqueue(_adapter * adapter);
 void rtl8723bs_cancle_checkbthang_workqueue(_adapter * adapter);

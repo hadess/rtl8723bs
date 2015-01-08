@@ -436,10 +436,8 @@ const struct rtw_proc_hdl adapter_proc_hdls [] = {
 	//{"path_rssi", proc_get_two_path_rssi, NULL},
 	{"rssi_disp",proc_get_rssi_disp, proc_set_rssi_disp},
 
-#ifdef CONFIG_BT_COEXIST
 	{"btcoex_dbg", proc_get_btcoex_dbg, proc_set_btcoex_dbg},
 	{"btcoex", proc_get_btcoex_info, NULL},
-#endif /* CONFIG_BT_COEXIST */
 
 	{"linked_info_dump",proc_get_linked_info_dump,proc_set_linked_info_dump},
 #ifdef CONFIG_DBG_COUNTER

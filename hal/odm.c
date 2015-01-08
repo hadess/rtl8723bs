@@ -2192,9 +2192,8 @@ ODM_SingleDualAntennaDefaultSetting(
 	pSWAT_T		pDM_SWAT_Table = &pDM_Odm->DM_SWAT_Table;
 	PADAPTER	pAdapter	 =  pDM_Odm->Adapter;
 	u1Byte btAntNum = 2;
-#ifdef CONFIG_BT_COEXIST
+
 	btAntNum = hal_btcoex_GetPgAntNum(pAdapter);
-#endif
 
 	// Set default antenna A and B status
 	if(btAntNum == 2)
@@ -2203,7 +2202,6 @@ ODM_SingleDualAntennaDefaultSetting(
 		pDM_SWAT_Table->ANTB_ON=true;
 		//RT_TRACE(COMP_ANTENNA, DBG_LOUD, ("Dual antenna\n"));
 	}
-#ifdef CONFIG_BT_COEXIST
 	else if(btAntNum == 1)
 	{// Set antenna A as default
 		pDM_SWAT_Table->ANTA_ON=true;
@@ -2214,7 +2212,6 @@ ODM_SingleDualAntennaDefaultSetting(
 	{
 		//RT_ASSERT(false, ("Incorrect antenna number!!\n"));
 	}
-#endif
 }
 
 

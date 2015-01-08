@@ -1203,7 +1203,6 @@ _func_enter_;
 
 	if (psmode > 0)
 	{
-#ifdef CONFIG_BT_COEXIST
 		if (rtw_btcoex_IsBtControlLps(padapter) == true)
 		{
 			PowerState = rtw_btcoex_RpwmVal(padapter);
@@ -1218,7 +1217,6 @@ _func_enter_;
 			}
 		}
 		else
-#endif // CONFIG_BT_COEXIST
 		{
 			PowerState = 0x00;// AllON(0x0C), RFON(0x04), RFOFF(0x00)
 			byte5 = 0x40;
@@ -1303,9 +1301,7 @@ _func_enter_;
 	}
 #endif
 
-#ifdef CONFIG_BT_COEXIST
 	rtw_btcoex_RecordPwrMode(padapter, u1H2CPwrModeParm, H2C_PWRMODE_LEN);
-#endif // CONFIG_BT_COEXIST
 
 	RT_PRINT_DATA(_module_hal_init_c_, _drv_always_, "u1H2CPwrModeParm:", u1H2CPwrModeParm, H2C_PWRMODE_LEN);
 
@@ -2485,7 +2481,6 @@ void rtl8723b_fw_try_ap_cmd(PADAPTER padapter, u32 need_ack)
 }
 #endif
 
-#ifdef CONFIG_BT_COEXIST
 static void ConstructBtNullFunctionData(
 	PADAPTER padapter,
 	u8 *pframe,
@@ -2764,7 +2759,6 @@ void rtl8723b_download_BTCoex_AP_mode_rsvd_page(PADAPTER padapter)
 	val8 &= ~BIT(0); // ~ENSWBCN
 	rtw_write8(padapter, REG_CR+1, val8);
 }
-#endif // CONFIG_BT_COEXIST
 
 #ifdef CONFIG_TSF_RESET_OFFLOAD
 /*

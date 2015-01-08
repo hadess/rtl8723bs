@@ -22,7 +22,6 @@ EXTRA_LDFLAGS += --strip-debug
 
 ########################## Features ###########################
 CONFIG_HW_PWRP_DETECTION = n
-CONFIG_BT_COEXIST = y
 CONFIG_INTEL_WIDI = n
 CONFIG_WAPI_SUPPORT = n
 CONFIG_EXT_CLK = n
@@ -87,12 +86,10 @@ _OUTSRC_FILES := hal/odm_debug.o	\
 		hal/odm_CfoTracking.o\
 		hal/odm_NoiseMonitor.o
 		
-ifeq ($(CONFIG_BT_COEXIST), y)
 EXTRA_CFLAGS += -I$(src)/hal/OUTSRC-BTCoexist
 _OUTSRC_FILES += \
 				hal/HalBtc8723b1Ant.o \
 				hal/HalBtc8723b2Ant.o
-endif
 
 ########### HAL_RTL8723B #################################
 MODULE_NAME = r8723bs
@@ -129,10 +126,6 @@ _OUTSRC_FILES += hal/HalHWImg8723B_BB.o\
 
 ifeq ($(CONFIG_HW_PWRP_DETECTION), y)
 EXTRA_CFLAGS += -DCONFIG_HW_PWRP_DETECTION
-endif
-
-ifeq ($(CONFIG_BT_COEXIST), y)
-EXTRA_CFLAGS += -DCONFIG_BT_COEXIST
 endif
 
 ifeq ($(CONFIG_INTEL_WIDI), y)

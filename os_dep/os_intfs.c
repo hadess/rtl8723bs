@@ -118,7 +118,6 @@ int rtw_low_power = 0;
 int rtw_wifi_spec = 0;
 int rtw_channel_plan = RT_CHANNEL_DOMAIN_MAX;
 
-#ifdef CONFIG_BT_COEXIST
 int rtw_btcoex_enable = 1;
 module_param(rtw_btcoex_enable, int, 0644);
 MODULE_PARM_DESC(rtw_btcoex_enable, "Enable BT co-existence mechanism");
@@ -128,7 +127,6 @@ int rtw_bt_ampdu =1 ;// 0:Disable BT control A-MPDU, 1:Enable BT control A-MPDU.
 int rtw_ant_num = -1; // <0: undefined, >0: Antenna number
 module_param(rtw_ant_num, int, 0644);
 MODULE_PARM_DESC(rtw_ant_num, "Antenna number setting");
-#endif
 
 int rtw_AcceptAddbaReq = true;// 0:Reject AP's Add BA req, 1:Accept AP's Add BA req.
 
@@ -393,13 +391,11 @@ _func_enter_;
 
 	registry_par->channel_plan = (u8)rtw_channel_plan;
 
-#ifdef CONFIG_BT_COEXIST
 	registry_par->btcoex = (u8)rtw_btcoex_enable;
 	registry_par->bt_iso = (u8)rtw_bt_iso;
 	registry_par->bt_sco = (u8)rtw_bt_sco;
 	registry_par->bt_ampdu = (u8)rtw_bt_ampdu;
 	registry_par->ant_num = (s8)rtw_ant_num;
-#endif
 
 	registry_par->bAcceptAddbaReq = (u8)rtw_AcceptAddbaReq;
 
@@ -2558,9 +2554,7 @@ void rtw_dev_unload(PADAPTER padapter)
 
 		if (padapter->bSurpriseRemoved == false)
 		{
-#ifdef CONFIG_BT_COEXIST
 			rtw_btcoex_IpsNotify(padapter, pwrctl->ips_mode_req);
-#endif
 #ifdef CONFIG_WOWLAN
 			if (pwrctl->bSupportRemoteWakeup == true && 
 				pwrctl->wowlan_mode ==true) {
@@ -2989,7 +2983,6 @@ int rtw_suspend_common(_adapter *padapter)
 
 	rtw_stop_cmd_thread(padapter);
 	
-#ifdef CONFIG_BT_COEXIST
 	// wait for the latest FW to remove this condition.
 	if (check_fwstate(pmlmepriv, WIFI_AP_STATE) == true) {
 		rtw_btcoex_SuspendNotify(padapter, 0);
@@ -3003,7 +2996,6 @@ int rtw_suspend_common(_adapter *padapter)
 		rtw_btcoex_SuspendNotify(padapter, 1);
 		DBG_871X("STATION\n");
 	}
-#endif // CONFIG_BT_COEXIST
 
 	rtw_ps_deny_cancel(padapter, PS_DENY_SUSPEND);
 
@@ -3564,9 +3556,7 @@ int rtw_resume_common(_adapter *padapter)
 		rtw_resume_process_normal(padapter);
 	}
 
-	#ifdef CONFIG_BT_COEXIST
 	rtw_btcoex_SuspendNotify(padapter, 0);
-	#endif // CONFIG_BT_COEXIST
 
 	if (pwrpriv) {
 		pwrpriv->bInSuspend = false;

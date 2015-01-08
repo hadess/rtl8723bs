@@ -309,9 +309,7 @@ struct hal_ops {
 	s32 (*c2h_handler)(_adapter *padapter, u8 *c2h_evt);
 	c2h_id_filter c2h_id_filter_ccx;
 
-#ifdef CONFIG_BT_COEXIST
 	s32 (*fill_h2c_cmd)(PADAPTER, u8 ElementID, u32 CmdLen, u8 *pCmdBuffer);
-#endif // CONFIG_BT_COEXIST
 };
 
 typedef	enum _RT_EEPROM_TYPE{
@@ -483,9 +481,7 @@ s32 rtw_hal_is_disable_sw_channel_plan(PADAPTER padapter);
 s32 rtw_hal_macid_sleep(PADAPTER padapter, u32 macid);
 s32 rtw_hal_macid_wakeup(PADAPTER padapter, u32 macid);
 
-#ifdef CONFIG_BT_COEXIST
 s32 rtw_hal_fill_h2c_cmd(PADAPTER, u8 ElementID, u32 CmdLen, u8 *pCmdBuffer);
-#endif // CONFIG_BT_COEXIST
 
 #endif //__HAL_INTF_H__
 

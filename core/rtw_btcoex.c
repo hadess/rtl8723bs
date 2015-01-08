@@ -17,8 +17,6 @@
  *
  *
  ******************************************************************************/
-#ifdef CONFIG_BT_COEXIST
-
 #include <rtw_btcoex.h>
 #include <hal_btcoex.h>
 
@@ -327,5 +325,3 @@ void rtw_btcoex_LPS_Leave(PADAPTER padapter)
 		pwrpriv->bpower_saving = false;
 	}
 }
-#endif // CONFIG_BT_COEXIST
-

@@ -889,12 +889,11 @@ void hw_var_port_switch(_adapter *adapter)
 		rtw_write8(adapter, REG_BSSID1+i, bssid[i]);
 
 	/* write bcn ctl */
-#ifdef CONFIG_BT_COEXIST
 	// always enable port0 beacon function for PSTDMA
 	bcn_ctrl_1 |= EN_BCN_FUNCTION;
 	// always disable port1 beacon function for PSTDMA
 	bcn_ctrl &= ~EN_BCN_FUNCTION;
-#endif
+
 	rtw_write8(adapter, REG_BCN_CTRL, bcn_ctrl_1);
 	rtw_write8(adapter, REG_BCN_CTRL_1, bcn_ctrl);
 

@@ -370,11 +370,9 @@ ssize_t proc_set_en_fwps(struct file *file, const char __user *buffer, size_t co
 int proc_get_rssi_disp(struct seq_file *m, void *v);
 ssize_t proc_set_rssi_disp(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data);
 
-#ifdef CONFIG_BT_COEXIST
 int proc_get_btcoex_dbg(struct seq_file *m, void *v);
 ssize_t proc_set_btcoex_dbg(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data);
 int proc_get_btcoex_info(struct seq_file *m, void *v);
-#endif /* CONFIG_BT_COEXIST */
 
 int proc_get_odm_dbg_comp(struct seq_file *m, void *v);
 ssize_t proc_set_odm_dbg_comp(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data);

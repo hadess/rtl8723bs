@@ -19,8 +19,6 @@
  ******************************************************************************/
 #define __HAL_BTCOEX_C__
 
-#ifdef CONFIG_BT_COEXIST
-
 #include <hal_data.h>
 #include <hal_btcoex.h>
 #include <Mp_Precomp.h>
@@ -2403,5 +2401,3 @@ u8 hal_btcoex_IsBtLinkExist(PADAPTER padapter)
 
 	return false;
 }
-#endif // CONFIG_BT_COEXIST
-

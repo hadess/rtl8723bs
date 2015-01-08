@@ -275,9 +275,8 @@ rtl8723b_InitHalDm(
 	pdmpriv->DM_Type = DM_Type_ByDriver;
 	pdmpriv->DMFlag = DYNAMIC_FUNC_DISABLE;
 
-#ifdef CONFIG_BT_COEXIST
 	pdmpriv->DMFlag |= DYNAMIC_FUNC_BT;
-#endif
+
 	pdmpriv->InitDMFlag = pdmpriv->DMFlag;
 
 	Update_ODM_ComInfo_8723b(Adapter);
@@ -438,9 +437,8 @@ rtl8723b_HalDmWatchDog(
 		//FindMinimumRSSI_8723b(Adapter);
 		//ODM_CmnInfoUpdate(&pHalData->odmpriv ,ODM_CMNINFO_RSSI_MIN, pdmpriv->MinUndecoratedPWDBForDM);
 
-#ifdef CONFIG_BT_COEXIST
 		bBtDisabled = rtw_btcoex_IsBtDisabled(Adapter);
-#endif // CONFIG_BT_COEXIST
+
 		ODM_CmnInfoUpdate(&pHalData->odmpriv, ODM_CMNINFO_BT_ENABLED, ((bBtDisabled == true)?false:true));
 
 		ODM_DMWatchdog(&pHalData->odmpriv);

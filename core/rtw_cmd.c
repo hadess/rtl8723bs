@@ -2219,13 +2219,8 @@ static void collect_traffic_statistics(_adapter *padapter)
 u8 traffic_status_watchdog(_adapter *padapter, u8 from_timer)
 {
 	u8	bEnterPS = false;
-#ifdef CONFIG_BT_COEXIST
 	u16	BusyThresholdHigh = 25;
 	u16	BusyThresholdLow = 10;
-#else
-	u16	BusyThresholdHigh = 100;
-	u16	BusyThresholdLow = 75;
-#endif
 	u16	BusyThreshold = BusyThresholdHigh;
 	u8	bBusyTraffic = false, bTxBusyTraffic = false, bRxBusyTraffic = false;
 	u8	bHigherBusyTraffic = false, bHigherBusyRxTraffic = false, bHigherBusyTxTraffic = false;
@@ -2472,12 +2467,10 @@ void dynamic_chk_wk_hdl(_adapter *padapter)
 
 	//check_hw_pbc(padapter, pdrvextra_cmd->pbuf, pdrvextra_cmd->type);
 
-#ifdef CONFIG_BT_COEXIST
 	//
 	// BT-Coexist
 	//
 	rtw_btcoex_Handler(padapter);
-#endif
 
 	
 #ifdef CONFIG_IPS_CHECK_IN_WD
@@ -2508,9 +2501,8 @@ _func_enter_;
 	{
 		case LPS_CTRL_SCAN:
 			//DBG_871X("LPS_CTRL_SCAN \n");
-#ifdef CONFIG_BT_COEXIST
 			rtw_btcoex_ScanNotify(padapter, true);
-#endif // CONFIG_BT_COEXIST
+
 			if (check_fwstate(pmlmepriv, _FW_LINKED) == true)
 			{
 				// connect
@@ -2527,25 +2519,19 @@ _func_enter_;
 			// Reset LPS Setting
 			pwrpriv->LpsIdleCount = 0;
 			rtw_hal_set_hwreg(padapter, HW_VAR_H2C_FW_JOINBSSRPT, (u8 *)(&mstatus));
-#ifdef CONFIG_BT_COEXIST
 			rtw_btcoex_MediaStatusNotify(padapter, mstatus);
-#endif // CONFIG_BT_COEXIST
 			break;
 		case LPS_CTRL_DISCONNECT:
 			//DBG_871X("LPS_CTRL_DISCONNECT \n");
 			mstatus = 0;//disconnect
-#ifdef CONFIG_BT_COEXIST
 			rtw_btcoex_MediaStatusNotify(padapter, mstatus);
-#endif // CONFIG_BT_COEXIST
 			LPS_Leave(padapter, "LPS_CTRL_DISCONNECT");
 			rtw_hal_set_hwreg(padapter, HW_VAR_H2C_FW_JOINBSSRPT, (u8 *)(&mstatus));
 			break;
 		case LPS_CTRL_SPECIAL_PACKET:
 			//DBG_871X("LPS_CTRL_SPECIAL_PACKET \n");
 			pwrpriv->DelayLPSLastTimeStamp = jiffies;
-#ifdef CONFIG_BT_COEXIST
 			rtw_btcoex_SpecialPacketNotify(padapter, PACKET_DHCP);
-#endif // CONFIG_BT_COEXIST
 			LPS_Leave(padapter, "LPS_CTRL_SPECIAL_PACKET");
 			break;
 		case LPS_CTRL_LEAVE:
@@ -2659,10 +2645,8 @@ void rtw_lps_change_dtim_hdl(_adapter *padapter, u8 dtim)
 	if(dtim <=0 || dtim > 16)
 		return;
 
-#ifdef CONFIG_BT_COEXIST
 	if (rtw_btcoex_IsBtControlLps(padapter) == true)
 		return;
-#endif
 
 #ifdef CONFIG_LPS_LCLK
 	_enter_pwrlock(&pwrpriv->lock);
@@ -3017,7 +3001,6 @@ exit:
 }
 #endif
 
-#ifdef CONFIG_BT_COEXIST
 struct btinfo {
 	u8 cid;
 	u8 len;
@@ -3156,7 +3139,6 @@ u8 rtw_btinfo_cmd(_adapter *adapter, u8 *buf, u16 len)
 exit:
 	return res;
 }
-#endif
 
 //#ifdef CONFIG_C2H_PACKET_EN
 u8 rtw_c2h_packet_wk_cmd(PADAPTER padapter, u8 *pbuf, u16 length)
@@ -3414,11 +3396,9 @@ u8 rtw_drvextra_cmd_hdl(_adapter *padapter, unsigned char *pbuf)
 		case DM_RA_MSK_WK_CID:
 			rtw_dm_ra_mask_hdl(padapter, (struct sta_info *)pdrvextra_cmd->pbuf);
 			break;
-#ifdef CONFIG_BT_COEXIST
 		case BTINFO_WK_CID:
 			rtw_btinfo_hdl(padapter ,pdrvextra_cmd->pbuf, pdrvextra_cmd->size);
 			break;
-#endif
 		default:
 			break;
 	}

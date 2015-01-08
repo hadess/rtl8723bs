@@ -23,9 +23,7 @@
 #if 1//def  CONFIG_SINGLE_IMG
 
 #include "odm_precomp.h"
-#ifdef CONFIG_BT_COEXIST
 #include <hal_btcoex.h>
-#endif
 
 #include <hal_sdio.h>
 
@@ -114,13 +112,11 @@ typedef enum _RT_AMPDU_BRUST_MODE{
 //#define HP_THERMAL_NUM		8
 //###### duplicate code,will move to ODM #########
 
-#if defined(CONFIG_BT_COEXIST)
 typedef enum _MACPHY_MODE_8192D{
 	SINGLEMAC_SINGLEPHY,	//SMSP
 	DUALMAC_DUALPHY,		//DMDP
 	DUALMAC_SINGLEPHY,	//DMSP	
 }MACPHY_MODE_8192D,*PMACPHY_MODE_8192D;
-#endif
 
 #ifdef CONFIG_USB_RX_AGGREGATION
 typedef enum _USB_RX_AGG_MODE{
@@ -506,10 +502,8 @@ typedef struct hal_com_data
 	struct dm_priv	dmpriv;
 	DM_ODM_T 		odmpriv;
 
-#ifdef CONFIG_BT_COEXIST
 	// For bluetooth co-existance
 	BT_COEXIST		bt_coexist;
-#endif // CONFIG_BT_COEXIST
 
 	// Interrupt relatd register information.
 	u32			SysIntrStatus;

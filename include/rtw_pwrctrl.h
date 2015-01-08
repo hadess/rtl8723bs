@@ -40,9 +40,7 @@
 #define RECV_ALIVE	BIT(1)
 #define CMD_ALIVE	BIT(2)
 #define EVT_ALIVE	BIT(3)
-#ifdef CONFIG_BT_COEXIST
 #define BTCOEX_ALIVE	BIT(4)
-#endif // CONFIG_BT_COEXIST
 
 
 enum Power_Mgnt
@@ -308,10 +306,10 @@ struct pwrctrl_priv
 
 	u8		bInternalAutoSuspend;
 	u8		bInSuspend;
-#ifdef	CONFIG_BT_COEXIST
+
 	u8		bAutoResume;
 	u8		autopm_cnt;
-#endif
+
 	u8		bSupportRemoteWakeup;	
 	u8		wowlan_wake_reason;
 	u8		wowlan_ap_mode;

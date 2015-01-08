@@ -88,7 +88,6 @@
 /*
  * Hardware Related Config
  */
-//#define CONFIG_BT_COEXIST	// set from Makefile
 //#define CONFIG_ANTENNA_DIVERSITY
 //#define SUPPORT_HW_RFOFF_DETECTED
 
@@ -152,7 +151,6 @@
 	#define CONFIG_FWLPS_IN_IPS // issue H2C command to let FW do LPS when entering IPS
 	#endif
 
-#ifdef CONFIG_BT_COEXIST
 	// for ODM and outsrc BT-Coex
 	#define BT_30_SUPPORT 1
 
@@ -163,9 +161,6 @@
 	#ifndef CONFIG_C2H_PACKET_EN
 		#define CONFIG_C2H_PACKET_EN
 	#endif
-#else // !CONFIG_BT_COEXIST
-	#define BT_30_SUPPORT 0
-#endif // !CONFIG_BT_COEXIST
 
 
 #ifdef CONFIG_ANTENNA_DIVERSITY

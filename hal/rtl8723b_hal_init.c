@@ -2305,10 +2305,10 @@ void rtl8723b_InitBeaconParameters(PADAPTER padapter)
 
 	val8 = DIS_TSF_UDT;
 	val16 = val8 | (val8 << 8); // port0 and port1
-#ifdef CONFIG_BT_COEXIST
+
 	// Enable prot0 beacon function for PSTDMA
 	val16 |= EN_BCN_FUNCTION;
-#endif
+
 	rtw_write16(padapter, REG_BCN_CTRL, val16);
 
 	// TODO: Remove these magic number
@@ -2610,13 +2610,10 @@ void UpdateHalRAMask8723B(PADAPTER padapter, u32 mac_id, u8 rssi_level)
 
 	mask &= rate_bitmap;
 
-#ifdef CONFIG_BT_COEXIST
 	rate_bitmap = rtw_btcoex_GetRaMask(padapter);
 	mask &= ~rate_bitmap;
-#endif // CONFIG_BT_COEXIST
 
 #ifdef CONFIG_CMCC_TEST
-#ifdef CONFIG_BT_COEXIST
 	if(pmlmeext->cur_wireless_mode & WIRELESS_11G) {
 		if (mac_id == 0) {
 			DBG_871X("CMCC_BT update raid entry, mask=0x%x\n", mask);
@@ -2625,7 +2622,6 @@ void UpdateHalRAMask8723B(PADAPTER padapter, u32 mac_id, u8 rssi_level)
 			DBG_871X("CMCC_BT update raid entry, mask=0x%x\n", mask);
 		}
 	}
-#endif
 #endif
 
 	if(pHalData->fw_ractrl == true)
@@ -2695,9 +2691,7 @@ void rtl8723b_set_hal_ops(struct hal_ops *pHalFunc)
 	pHalFunc->c2h_handler = c2h_handler_8723b;
 	pHalFunc->c2h_id_filter_ccx = c2h_id_filter_ccx_8723b;
 
-#ifdef CONFIG_BT_COEXIST
 	pHalFunc->fill_h2c_cmd = &FillH2CCmd8723B;
-#endif // CONFIG_BT_COEXIST
 }
 
 void rtl8723b_InitAntenna_Selection(PADAPTER padapter)
@@ -3592,7 +3586,6 @@ Hal_EfuseParseBTCoexistInfo_8723B(
 		pHalData->ant_path = ODM_RF_PATH_A;
 	}
 
-#ifdef CONFIG_BT_COEXIST
 	if (padapter->registrypriv.ant_num > 0) {
 		DBG_8192C("%s: Apply driver defined antenna number(%d) to replace origin(%d)\n",
 			__FUNCTION__,
@@ -3620,7 +3613,6 @@ Hal_EfuseParseBTCoexistInfo_8723B(
 	{
 		rtw_btcoex_SetSingleAntPath(padapter, pHalData->ant_path);
 	}
-#endif // CONFIG_BT_COEXIST
 
 	DBG_8192C("%s: %s BT-coex, ant_num=%d\n",
 		__FUNCTION__,
@@ -4712,11 +4704,11 @@ static void hw_var_set_bcn_func(PADAPTER padapter, u8 variable, u8 *val)
 		u8 val8;
 		val8 = rtw_read8(padapter, bcn_ctrl_reg);
 		val8 &= ~(EN_BCN_FUNCTION | EN_TXBCN_RPT);
-#ifdef CONFIG_BT_COEXIST
+
 		// Always enable port0 beacon function for PSTDMA
 		if (REG_BCN_CTRL == bcn_ctrl_reg)
 			val8 |= EN_BCN_FUNCTION;
-#endif
+
 		rtw_write8(padapter, bcn_ctrl_reg, val8);
 	}
 }
@@ -5246,11 +5238,9 @@ s32 c2h_handler_8723b(PADAPTER padapter, u8 *buf)
 			}
 			break;
 
-#ifdef CONFIG_BT_COEXIST
 		case C2H_8723B_BT_INFO:
 			rtw_btcoex_BtInfoNotify(padapter, pC2hEvent->plen, pC2hEvent->payload);
 			break;
-#endif
 
 		default:
 			break;
@@ -5325,11 +5315,9 @@ static void process_c2h_event(PADAPTER padapter, PC2H_EVT_HDR pC2hEvent, u8 *c2h
 			}
 			break;
 
-#ifdef CONFIG_BT_COEXIST
 		case C2H_8723B_BT_INFO:
 			rtw_btcoex_BtInfoNotify(padapter, pC2hEvent->CmdLen, c2hBuf);
 			break;
-#endif
 
 		default:
 			break;
@@ -5547,15 +5535,12 @@ _func_enter_;
 		case HW_VAR_MLME_SITESURVEY:
 			hw_var_set_mlme_sitesurvey(padapter, variable,  val);
 
-#ifdef CONFIG_BT_COEXIST
 			rtw_btcoex_ScanNotify(padapter, *val?true:false);
-#endif // CONFIG_BT_COEXIST
 			break;
 
 		case HW_VAR_MLME_JOIN:
 			hw_var_set_mlme_join(padapter, variable, val);
 
-#ifdef CONFIG_BT_COEXIST
 			switch (*val)
 			{
 				case 0:
@@ -5571,7 +5556,6 @@ _func_enter_;
 //					rtw_btcoex_MediaStatusNotify(padapter, RT_MEDIA_CONNECT);
 					break;
 			}
-#endif // CONFIG_BT_COEXIST
 			break;
 
 		case HW_VAR_ON_RCR_AM:
@@ -6006,13 +5990,11 @@ _func_enter_;
 			break;
 
 		case HW_VAR_DL_RSVD_PAGE:
-#ifdef CONFIG_BT_COEXIST
 			if (check_fwstate(&padapter->mlmepriv, WIFI_AP_STATE) == true)
 			{
 				rtl8723b_download_BTCoex_AP_mode_rsvd_page(padapter);
 			}
 			else
-#endif // CONFIG_BT_COEXIST
 			{
 				rtl8723b_download_rsvd_page(padapter, RT_MEDIA_CONNECT);
 			}
@@ -6348,7 +6330,7 @@ void rtl8723b_stop_thread(_adapter *padapter)
 #endif
 }
 
-#if defined(CONFIG_CHECK_BT_HANG) && defined(CONFIG_BT_COEXIST)
+#if defined(CONFIG_CHECK_BT_HANG)
 extern void check_bt_status_work(void *data);
 void rtl8723bs_init_checkbthang_workqueue(_adapter * adapter)
 {

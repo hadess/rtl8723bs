@@ -191,7 +191,6 @@ u8 _InitPowerOn_8723BS(PADAPTER padapter)
 				| PROTOCOL_EN | SCHEDULE_EN | ENSEC | CALTMR_EN);
 	rtw_write16(padapter, REG_CR, value16);
 
-#ifdef CONFIG_BT_COEXIST
 	rtw_btcoex_PowerOnSetting(padapter);
 
 	// external switch to S1
@@ -213,7 +212,6 @@ u8 _InitPowerOn_8723BS(PADAPTER padapter)
 	value8 &= ~BIT(0); // BIT_SW_DPDT_SEL_DATA, DPDT_SEL default configuration
 	rtw_write8(padapter, REG_PAD_CTRL1_8723B, value8);
 //	DBG_8192C("%s: REG_PAD_CTRL1(0x%x)=0x%02X\n", __FUNCTION__, REG_PAD_CTRL1_8723B, rtw_read8(padapter, REG_PAD_CTRL1_8723B));
-#endif // CONFIG_BT_COEXIST
 
 #ifdef CONFIG_GPIO_WAKEUP
 	HostWakeUpGpioClear(padapter);
@@ -991,11 +989,7 @@ static u32 rtl8723bs_hal_init(PADAPTER padapter)
 
 		pHalData->LastHMEBoxNum = 0;
 
-#ifdef CONFIG_BT_COEXIST
 		rtw_btcoex_HAL_Initialize(padapter, false);
-#else
-		rtw_btcoex_HAL_Initialize(padapter, true);
-#endif // CONFIG_BT_COEXIST
 
 		return _SUCCESS;
 	}
@@ -1049,11 +1043,7 @@ static u32 rtl8723bs_hal_init(PADAPTER padapter)
 
 		rtw_hal_set_hwreg(padapter, HW_VAR_APFM_ON_MAC, &bMacPwrCtrlOn);		
 
-#ifdef CONFIG_BT_COEXIST
 		rtw_btcoex_HAL_Initialize(padapter, false);
-#else
-		rtw_btcoex_HAL_Initialize(padapter, true);
-#endif // CONFIG_BT_COEXIST
 
 #ifdef DBG_CHECK_FW_PS_STATE
 		if(rtw_fw_ps_state(padapter) == _FAIL)
@@ -1310,16 +1300,14 @@ static u32 rtl8723bs_hal_init(PADAPTER padapter)
 				rtw_msleep_os(50);
 			} while (jiffies_to_msecs(jiffies - start_time) <= 400);
 
-#ifdef CONFIG_BT_COEXIST
 			rtw_btcoex_IQKNotify(padapter, true);
-#endif
+
 			restore_iqk_rst = (pwrpriv->bips_processing==true)?true:false;
 			b2Ant = pHalData->EEPROMBluetoothAntNum==Ant_x2?true:false;
 			PHY_IQCalibrate_8723B(padapter, false, restore_iqk_rst, b2Ant, pHalData->ant_path);
 			pHalData->odmpriv.RFCalibrateInfo.bIQKInitialized = true;
-#ifdef CONFIG_BT_COEXIST
+
 			rtw_btcoex_IQKNotify(padapter, false);
-#endif
 
 			/* Inform WiFi FW that it is the finish of IQK */
 			h2cCmdBuf = 0;
@@ -1329,12 +1317,8 @@ static u32 rtl8723bs_hal_init(PADAPTER padapter)
 		}
 	}
 
-#ifdef CONFIG_BT_COEXIST
 	// Init BT hw config.
 	rtw_btcoex_HAL_Initialize(padapter, false);
-#else
-	rtw_btcoex_HAL_Initialize(padapter, true);
-#endif
 
 	RT_TRACE(_module_hci_hal_init_c_, _drv_info_, ("-%s\n", __FUNCTION__));
 
@@ -2439,7 +2423,7 @@ _func_enter_;
 //	pHalFunc->hostap_mgnt_xmit_entry = &rtl8192cu_hostap_mgnt_xmit_entry;
 #endif
 
-#if defined(CONFIG_CHECK_BT_HANG) && defined(CONFIG_BT_COEXIST)
+#if defined(CONFIG_CHECK_BT_HANG)
 	pHalFunc->hal_init_checkbthang_workqueue = &rtl8723bs_init_checkbthang_workqueue;
 	pHalFunc->hal_free_checkbthang_workqueue = &rtl8723bs_free_checkbthang_workqueue;
 	pHalFunc->hal_cancle_checkbthang_workqueue = &rtl8723bs_cancle_checkbthang_workqueue;

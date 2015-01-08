@@ -4859,7 +4859,6 @@ void issue_action_BA(_adapter *padapter, unsigned char *raddr, unsigned char act
 				} while (pmlmeinfo->dialogToken == 0);
 				pframe = rtw_set_fixed_ie(pframe, 1, &(pmlmeinfo->dialogToken), &(pattrib->pktlen));
 
-#ifdef CONFIG_BT_COEXIST
 				if (rtw_btcoex_IsBTCoexCtrlAMPDUSize(padapter) == true)
 				{
 					// A-MSDU NOT Supported
@@ -4872,7 +4871,6 @@ void issue_action_BA(_adapter *padapter, unsigned char *raddr, unsigned char act
 					BA_para_set |= (8 << 6) & RTW_IEEE80211_ADDBA_PARAM_BUF_SIZE_MASK;
 				}
 				else
-#endif
 				{
 					BA_para_set = (0x1002 | ((status & 0xf) << 2)); //immediate ack & 64 buffer size
 				}
@@ -4924,7 +4922,6 @@ void issue_action_BA(_adapter *padapter, unsigned char *raddr, unsigned char act
 				else
 					BA_para_set = ((le16_to_cpu(pmlmeinfo->ADDBA_req.BA_para_set) & 0x3f) | 0x1000); //64 buffer size	
 
-#ifdef CONFIG_BT_COEXIST
 				if (rtw_btcoex_IsBTCoexCtrlAMPDUSize(padapter) == true && 
 					padapter->driver_rx_ampdu_factor == 0xFF)
 				{
@@ -4932,7 +4929,6 @@ void issue_action_BA(_adapter *padapter, unsigned char *raddr, unsigned char act
 					BA_para_set &= ~RTW_IEEE80211_ADDBA_PARAM_BUF_SIZE_MASK;
 					BA_para_set |= (8 << 6) & RTW_IEEE80211_ADDBA_PARAM_BUF_SIZE_MASK;
 				}
-#endif
 
 				if(pregpriv->ampdu_amsdu==0)//disabled
 					BA_para_set = cpu_to_le16(BA_para_set & ~BIT(0));
@@ -7777,14 +7773,12 @@ u8 setopmode_hdl(_adapter *padapter, u8 *pbuf)
 		}
 	}	
 
-#ifdef CONFIG_BT_COEXIST
 	if (psetop->mode == Ndis802_11APMode)
 	{
 		// Do this after port switch to
 		// prevent from downloading rsvd page to wrong port
 		rtw_btcoex_MediaStatusNotify(padapter, 1); //connect 
 	}
-#endif // CONFIG_BT_COEXIST
 
 	return H2C_SUCCESS;
 	

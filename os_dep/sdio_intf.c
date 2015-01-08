@@ -416,9 +416,7 @@ _adapter *rtw_sdio_if1_init(struct dvobj_priv *dvobj, const struct sdio_device_i
 
 	rtw_hal_chip_configure(padapter);
 
-#ifdef CONFIG_BT_COEXIST
 	rtw_btcoex_Initialize(padapter);
-#endif // CONFIG_BT_COEXIST
 
 	//3 6. read efuse/eeprom data
 	rtw_hal_read_chip_info(padapter);
@@ -634,9 +632,7 @@ _func_enter_;
 	rtw_drv_if2_stop(dvobj->if2);
 #endif
 
-#ifdef CONFIG_BT_COEXIST
 	rtw_btcoex_HaltNotify(padapter);
-#endif
 
 	rtw_sdio_if1_deinit(padapter);
 

@@ -215,13 +215,13 @@ struct registry_priv
 	u8	wifi_spec;// !turbo_mode
 
 	u8	channel_plan;
-#ifdef CONFIG_BT_COEXIST
+
 	u8	btcoex;
 	u8	bt_iso;
 	u8	bt_sco;
 	u8	bt_ampdu;
 	s8	ant_num;
-#endif
+
 	bool	bAcceptAddbaReq;
 
 	u8	antdiv_cfg;
@@ -863,9 +863,7 @@ __inline static u8 *myid(struct eeprom_priv *peepriv)
 #include <sdio_ops.h>
 #include <sdio_hal.h>
 
-#ifdef CONFIG_BT_COEXIST
 #include <rtw_btcoex.h>
-#endif // CONFIG_BT_COEXIST
 
 #endif //__DRV_TYPES_H__
 

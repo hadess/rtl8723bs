@@ -684,7 +684,6 @@ s32 rtw_hal_macid_wakeup(PADAPTER padapter, u32 macid)
 	return _SUCCESS;
 }
 
-#ifdef CONFIG_BT_COEXIST
 s32 rtw_hal_fill_h2c_cmd(PADAPTER padapter, u8 ElementID, u32 CmdLen, u8 *pCmdBuffer)
 {
 	s32 ret = _FAIL;
@@ -698,6 +697,3 @@ s32 rtw_hal_fill_h2c_cmd(PADAPTER padapter, u8 ElementID, u32 CmdLen, u8 *pCmdBu
 
 	return ret;
 }
-#endif // CONFIG_BT_COEXIST
-
-

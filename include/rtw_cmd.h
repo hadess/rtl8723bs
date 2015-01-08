@@ -1021,9 +1021,7 @@ extern u8 rtw_ps_cmd(_adapter*padapter);
 u8 rtw_chk_hi_queue_cmd(_adapter*padapter);
 #endif
 
-#ifdef CONFIG_BT_COEXIST
 u8 rtw_btinfo_cmd(PADAPTER padapter, u8 *pbuf, u16 length);
-#endif
 
 u8 rtw_set_ch_cmd(_adapter*padapter, u8 ch, u8 bw, u8 ch_offset, u8 enqueue);
 extern u8 rtw_set_chplan_cmd(_adapter*padapter, u8 chplan, u8 enqueue, u8 swconfig);

@@ -3570,7 +3570,6 @@ static void rtw_dbg_mode_hdl(_adapter *padapter, u32 id, u8 *pdata, u32 len)
 			DBG_871X("==> trigger gpio 0\n");
 			rtw_hal_set_hwreg(padapter, HW_VAR_TRIGGER_GPIO_0, 0);
 			break;	
-#ifdef CONFIG_BT_COEXIST
 		case GEN_MP_IOCTL_SUBCODE(SET_DM_BT):			
 			DBG_871X("==> set dm_bt_coexist:%x\n",*(u8 *)pdata);
 			rtw_hal_set_hwreg(padapter, HW_VAR_BT_SET_COEXIST, pdata);
@@ -3579,7 +3578,6 @@ static void rtw_dbg_mode_hdl(_adapter *padapter, u32 id, u8 *pdata, u32 len)
 			DBG_871X("==> delete ba:%x\n",*(u8 *)pdata);
 			rtw_hal_set_hwreg(padapter, HW_VAR_BT_ISSUE_DELBA, pdata);
 			break;
-#endif
 		default:
 			break;
 	}
@@ -8349,7 +8347,6 @@ static int rtw_test(
 		return -EFAULT;
 	}
 
-#ifdef CONFIG_BT_COEXIST
 	if (strcmp(pch, "bton") == 0)
 	{
 		rtw_btcoex_SetManualControl(padapter, false);
@@ -8397,7 +8394,6 @@ static int rtw_test(
 
 		wrqu->data.length = strlen(extra) + 1;
 	}
-#endif // CONFIG_BT_COEXIST
 
 	rtw_mfree(pbuf, len);
 	return 0;

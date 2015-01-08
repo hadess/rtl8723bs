@@ -104,9 +104,7 @@ void ips_enter(_adapter * padapter)
 	struct pwrctrl_priv *pwrpriv = adapter_to_pwrctl(padapter);
 
 
-#ifdef CONFIG_BT_COEXIST
 	rtw_btcoex_IpsNotify(padapter, pwrpriv->ips_mode_req);
-#endif // CONFIG_BT_COEXIST
 
 	_enter_pwrlock(&pwrpriv->lock);
 	_ips_enter(padapter);
@@ -164,10 +162,8 @@ int ips_leave(_adapter * padapter)
 	if (_SUCCESS == ret)
 		ODM_DMReset(&GET_HAL_DATA(padapter)->odmpriv);
 
-#ifdef CONFIG_BT_COEXIST
 	if (_SUCCESS == ret)
 		rtw_btcoex_IpsNotify(padapter, IPS_NONE);
-#endif // CONFIG_BT_COEXIST
 
 	return ret;
 }
@@ -343,7 +339,7 @@ void rtw_ps_processor(_adapter*padapter)
 	if((pwrpriv->rf_pwrstate == rf_on) && ((pwrpriv->pwr_state_check_cnts%4)==0))
 	{
 		DBG_871X("==>%s .fw_state(%x)\n",__FUNCTION__,get_fwstate(pmlmepriv));
-		#if defined (CONFIG_BT_COEXIST)&& defined (CONFIG_AUTOSUSPEND)
+		#if defined (CONFIG_AUTOSUSPEND)
 		#else
 		pwrpriv->change_rfpwrstate = rf_off;
 		#endif
@@ -356,7 +352,7 @@ void rtw_ps_processor(_adapter*padapter)
 			if(padapter->net_closed == true)
 				pwrpriv->ps_flag = true;
 
-			#if defined (CONFIG_BT_COEXIST)&& defined (CONFIG_AUTOSUSPEND)
+			#if defined (CONFIG_AUTOSUSPEND)
 			if (true==pwrpriv->bInternalAutoSuspend) {
 				DBG_871X("<==%s .pwrpriv->bInternalAutoSuspend)(%x)\n",__FUNCTION__,pwrpriv->bInternalAutoSuspend);
 			} else {
@@ -368,7 +364,7 @@ void rtw_ps_processor(_adapter*padapter)
 			#else
 			padapter->bCardDisableWOHSM = true;
 			autosuspend_enter(padapter);
-			#endif	//if defined (CONFIG_BT_COEXIST)&& defined (CONFIG_AUTOSUSPEND)
+			#endif	//if defined (CONFIG_AUTOSUSPEND)
 		}		
 		else if(pwrpriv->bHWPwrPindetect)
 		{
@@ -376,9 +372,9 @@ void rtw_ps_processor(_adapter*padapter)
 		else
 		#endif //CONFIG_AUTOSUSPEND
 		{
-			#if defined (CONFIG_BT_COEXIST)&& defined (CONFIG_AUTOSUSPEND)
+			#if defined (CONFIG_AUTOSUSPEND)
 			pwrpriv->change_rfpwrstate = rf_off;
-			#endif	//defined (CONFIG_BT_COEXIST)&& defined (CONFIG_AUTOSUSPEND)
+			#endif	//defined (CONFIG_AUTOSUSPEND)
 
 			#ifdef CONFIG_IPS
 			ips_enter(padapter);			
@@ -424,9 +420,7 @@ void	traffic_check_for_leave_lps(PADAPTER padapter, u8 tx, u32 tx_packets)
 			{
 				if ((adapter_to_pwrctl(padapter)->bLeisurePs) 
 					&& (adapter_to_pwrctl(padapter)->pwr_mode != PS_MODE_ACTIVE)
-#ifdef CONFIG_BT_COEXIST
 					&& (rtw_btcoex_IsBtControlLps(padapter) == false)
-#endif
 					)
 				{
 					DBG_871X("leave lps via Tx = %d\n", xmit_cnt);			
@@ -445,9 +439,7 @@ void	traffic_check_for_leave_lps(PADAPTER padapter, u8 tx, u32 tx_packets)
 		{
 			if ((adapter_to_pwrctl(padapter)->bLeisurePs)
 				&& (adapter_to_pwrctl(padapter)->pwr_mode != PS_MODE_ACTIVE)
-#ifdef CONFIG_BT_COEXIST		
 				&& (rtw_btcoex_IsBtControlLps(padapter) == false)
-#endif
 				)
 			{	
 				DBG_871X("leave lps via Rx = %d\n", pmlmepriv->LinkDetectInfo.NumRxUnicastOkInPeriod);	
@@ -695,14 +687,6 @@ _func_enter_;
 	if (pwrpriv->pwr_mode == ps_mode)
 	{
 		if (PS_MODE_ACTIVE == ps_mode) return;
-
-#ifndef CONFIG_BT_COEXIST
-		if ((pwrpriv->smart_ps == smart_ps) &&
-			(pwrpriv->bcn_ant_mode == bcn_ant_mode))
-		{
-			return;
-		}
-#endif // !CONFIG_BT_COEXIST
 	}
 
 #ifdef CONFIG_LPS_LCLK
@@ -713,14 +697,11 @@ _func_enter_;
 	if(ps_mode == PS_MODE_ACTIVE)
 	{
 		if (1
-#ifdef CONFIG_BT_COEXIST
 			&& (((rtw_btcoex_IsBtControlLps(padapter) == false)
 					)
 				|| ((rtw_btcoex_IsBtControlLps(padapter) == true)
 					&& (rtw_btcoex_IsLpsOn(padapter) == false))
 				)
-#else // !CONFIG_BT_COEXIST
-#endif // !CONFIG_BT_COEXIST
 			)
 		{
 			DBG_871X(FUNC_ADPT_FMT" Leave 802.11 power save - %s\n",
@@ -779,18 +760,14 @@ _func_enter_;
 			rtw_hal_set_hwreg(padapter, HW_VAR_H2C_FW_PWRMODE, (u8 *)(&ps_mode));
 			pwrpriv->bFwCurrentInPSMode = false;
 
-#ifdef CONFIG_BT_COEXIST
 			rtw_btcoex_LpsNotify(padapter, ps_mode);
-#endif // CONFIG_BT_COEXIST
 		}
 	}
 	else
 	{
 		if ((PS_RDY_CHECK(padapter) && check_fwstate(&padapter->mlmepriv, WIFI_ASOC_STATE))
-#ifdef CONFIG_BT_COEXIST
 			|| ((rtw_btcoex_IsBtControlLps(padapter) == true)
 				&& (rtw_btcoex_IsLpsOn(padapter) == true))
-#endif
 			)
 		{
 			u8 pslv;
@@ -819,9 +796,7 @@ _func_enter_;
 			_exit_critical_bh(&pstapriv->sta_hash_lock, &irqL);
 #endif //CONFIG_TDLS
 
-#ifdef CONFIG_BT_COEXIST
 			rtw_btcoex_LpsNotify(padapter, ps_mode);
-#endif // CONFIG_BT_COEXIST
 
 			pwrpriv->bFwCurrentInPSMode = true;
 			pwrpriv->pwr_mode = ps_mode;
@@ -835,7 +810,6 @@ _func_enter_;
 				pslv = PS_STATE_S0;
 #endif // CONFIG_LPS_LCLK
 
-#ifdef CONFIG_BT_COEXIST
 			if ((rtw_btcoex_IsBtDisabled(padapter) == false)
 				&& (rtw_btcoex_IsBtControlLps(padapter) == true))
 			{
@@ -845,7 +819,6 @@ _func_enter_;
 				if (val8 & BIT(4))
 					pslv = PS_STATE_S2;
 			}
-#endif // CONFIG_BT_COEXIST
 
 			rtw_set_rpwm(padapter, pslv);
 		}
@@ -915,10 +888,8 @@ _func_enter_;
 
 //	DBG_871X("+LeisurePSEnter\n");
 
-#ifdef CONFIG_BT_COEXIST
 	if (rtw_btcoex_IsBtControlLps(padapter) == true)
 		return;
-#endif
 
 	/* Skip lps enter request if number of assocated adapters is not 1 */
 	for (i = 0; i < dvobj->iface_nums; i++) {
@@ -977,10 +948,8 @@ _func_enter_;
 
 //	DBG_871X("+LeisurePSLeave\n");
 
-#ifdef CONFIG_BT_COEXIST
 	if (rtw_btcoex_IsBtControlLps(padapter) == true)
 		return;
-#endif
 
 	if (pwrpriv->bLeisurePs)
 	{
@@ -1483,7 +1452,6 @@ _func_enter_;
 	pwrctrl = adapter_to_pwrctl(padapter);
 	pslv = PS_STATE_S0;
 
-#ifdef CONFIG_BT_COEXIST
 	if ((rtw_btcoex_IsBtDisabled(padapter) == false)
 		&& (rtw_btcoex_IsBtControlLps(padapter) == true))
 	{
@@ -1493,7 +1461,6 @@ _func_enter_;
 		if (val8 & BIT(4))
 			pslv = PS_STATE_S2;
 	}
-#endif // CONFIG_BT_COEXIST
 
 	_enter_pwrlock(&pwrctrl->lock);
 
@@ -1715,7 +1682,6 @@ _func_enter_;
 	pwrctrl = adapter_to_pwrctl(padapter);
 	pslv = PS_STATE_S0;
 
-#ifdef CONFIG_BT_COEXIST
 	if ((rtw_btcoex_IsBtDisabled(padapter) == false)
 		&& (rtw_btcoex_IsBtControlLps(padapter) == true))
 	{
@@ -1725,7 +1691,6 @@ _func_enter_;
 		if (val8 & BIT(4))
 			pslv = PS_STATE_S2;
 	}
-#endif // CONFIG_BT_COEXIST
 
 	_enter_pwrlock(&pwrctrl->lock);
 
@@ -1767,7 +1732,6 @@ _func_enter_;
 	pwrctrl = adapter_to_pwrctl(padapter);
 	pslv = PS_STATE_S0;
 
-#ifdef CONFIG_BT_COEXIST
 	if ((rtw_btcoex_IsBtDisabled(padapter) == false)
 		&& (rtw_btcoex_IsBtControlLps(padapter) == true))
 	{
@@ -1777,7 +1741,6 @@ _func_enter_;
 		if (val8 & BIT(4))
 			pslv = PS_STATE_S2;
 	}
-#endif // CONFIG_BT_COEXIST
 
 	_enter_pwrlock(&pwrctrl->lock);
 
@@ -2166,7 +2129,7 @@ int _rtw_pwr_wakeup(_adapter *padapter, u32 ips_deffer_ms, const char *caller)
 	//I think this should be check in IPS, LPS, autosuspend functions...
 	if (check_fwstate(pmlmepriv, _FW_LINKED) == true)
 	{
-#if defined (CONFIG_BT_COEXIST)&& defined (CONFIG_AUTOSUSPEND)
+#if defined (CONFIG_AUTOSUSPEND)
 		if(true==pwrpriv->bInternalAutoSuspend){
 			if(0==pwrpriv->autopm_cnt){
 			if (usb_autopm_get_interface(adapter_to_dvobj(padapter)->pusbintf) < 0) 
@@ -2175,12 +2138,12 @@ int _rtw_pwr_wakeup(_adapter *padapter, u32 ips_deffer_ms, const char *caller)
 			}			
 			pwrpriv->autopm_cnt++;
 			}
-#endif	//#if defined (CONFIG_BT_COEXIST)&& defined (CONFIG_AUTOSUSPEND)
+#endif	//#if defined (CONFIG_AUTOSUSPEND)
 		ret = _SUCCESS;
 		goto exit;
-#if defined (CONFIG_BT_COEXIST)&& defined (CONFIG_AUTOSUSPEND)
+#if defined (CONFIG_AUTOSUSPEND)
 		}
-#endif	//#if defined (CONFIG_BT_COEXIST)&& defined (CONFIG_AUTOSUSPEND)
+#endif	//#if defined (CONFIG_AUTOSUSPEND)
 	}	
 
 	if(rf_off == pwrpriv->rf_pwrstate )
