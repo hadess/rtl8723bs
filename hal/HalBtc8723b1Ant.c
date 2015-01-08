@@ -12,7 +12,7 @@
 // include files
 //============================================================
 #include "Mp_Precomp.h"
-#if(BT_30_SUPPORT == 1)
+
 //============================================================
 // Global variables, these are static variables
 //============================================================
@@ -4052,7 +4052,3 @@ EXhalbtc8723b1ant_Periodical(
 	pCoexSta->specialPktPeriodCnt++;
 #endif
 }
-
-
-#endif
-

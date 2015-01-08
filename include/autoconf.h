@@ -151,9 +151,6 @@
 	#define CONFIG_FWLPS_IN_IPS // issue H2C command to let FW do LPS when entering IPS
 	#endif
 
-	// for ODM and outsrc BT-Coex
-	#define BT_30_SUPPORT 1
-
 	#ifndef CONFIG_LPS
 		#define CONFIG_LPS	// download reserved page to FW
 	#endif
