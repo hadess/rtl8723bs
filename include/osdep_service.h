@@ -26,13 +26,6 @@
 #define RTW_RX_HANDLED 2
 //#define RTW_STATUS_TIMEDOUT -110
 
-#undef true
-#define true		1
-
-#undef false
-#define false		0
-
-
 #include <osdep_service_linux.h>
 
 #define RTW_TIMER_HDL_NAME(name) rtw_##name##_timer_hdl
