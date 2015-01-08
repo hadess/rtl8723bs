@@ -128,7 +128,6 @@
 #endif	// CONFIG_CONCURRENT_MODE
 
 
-#ifdef CONFIG_POWER_SAVING
 	#define CONFIG_IPS
 	#define CONFIG_LPS
 
@@ -152,8 +151,6 @@
 	//#define CONFIG_SWLPS_IN_IPS // Do SW LPS flow when entering and leaving IPS
 	#define CONFIG_FWLPS_IN_IPS // issue H2C command to let FW do LPS when entering IPS
 	#endif
-	
-#endif // #ifdef CONFIG_POWER_SAVING
 
 #ifdef CONFIG_BT_COEXIST
 	// for ODM and outsrc BT-Coex

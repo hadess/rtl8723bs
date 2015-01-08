@@ -21,7 +21,6 @@ EXTRA_CFLAGS += -I$(src)/include -I$(src)/hal
 EXTRA_LDFLAGS += --strip-debug
 
 ########################## Features ###########################
-CONFIG_POWER_SAVING = y
 CONFIG_HW_PWRP_DETECTION = n
 CONFIG_BT_COEXIST = y
 CONFIG_INTEL_WIDI = n
@@ -128,10 +127,6 @@ _OUTSRC_FILES += hal/HalHWImg8723B_BB.o\
 
 ########### END OF PATH  #################################
 
-
-ifeq ($(CONFIG_POWER_SAVING), y)
-EXTRA_CFLAGS += -DCONFIG_POWER_SAVING
-endif
 
 ifeq ($(CONFIG_HW_PWRP_DETECTION), y)
 EXTRA_CFLAGS += -DCONFIG_HW_PWRP_DETECTION
