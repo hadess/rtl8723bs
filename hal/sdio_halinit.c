@@ -21,10 +21,6 @@
 
 #include <rtl8723b_hal.h>
 
-#ifdef CONFIG_EFUSE_CONFIG_FILE
-#include <linux/fs.h>
-#include <asm/uaccess.h>
-#endif
 #include "hal_com_h2c.h"
 /*
  * Description:
@@ -1690,78 +1686,6 @@ Hal_EfuseParseBoardType_8723BS(
 	RT_TRACE(_module_hci_hal_init_c_, _drv_info_, ("Board Type: 0x%2x\n", pHalData->BoardType));
 }
 
-#ifdef CONFIG_EFUSE_CONFIG_FILE
-static void
-Hal_ReadMACAddrFromFile_8723BS(
-	PADAPTER		padapter
-	)
-{
-	u32 i;
-	struct file *fp;
-	mm_segment_t fs;
-	u8 source_addr[18];
-	loff_t pos = 0;
-	unsigned long	curtime = jiffies;
-	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(padapter);
-	u8 *head, *end;
-
-	u8 null_mac_addr[ETH_ALEN] = {0, 0, 0,0, 0, 0};
-	u8 multi_mac_addr[ETH_ALEN] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
-
-	_rtw_memset(source_addr, 0, 18);
-	_rtw_memset(pEEPROM->mac_addr, 0, ETH_ALEN);
-
-	fp = filp_open("/data/wifimac.txt", O_RDWR,  0644);
-	if (IS_ERR(fp)) {
-		RT_TRACE(_module_hci_hal_init_c_, _drv_err_, ("Error, wifi mac address file doesn't exist.\n"));
-	} else {
-		fs = get_fs();
-		set_fs(KERNEL_DS);
-
-		DBG_871X("wifi mac address:\n");
-		vfs_read(fp, source_addr, 18, &pos);
-		source_addr[17] = ':';
-
-		head = end = source_addr;
-		for (i=0; i<ETH_ALEN; i++) {
-			while (end && (*end != ':') )
-				end++;
-
-			if (end && (*end == ':') )
-				*end = '\0';
-
-			pEEPROM->mac_addr[i] = simple_strtoul(head, NULL, 16 );
-
-			if (end) {
-				end++;
-				head = end;
-			}
-			DBG_871X("%02x \n", pEEPROM->mac_addr[i]);
-		}
-		DBG_871X("\n");
-		set_fs(fs);
-
-		filp_close(fp, NULL);
-	}
-
-	if ( (_rtw_memcmp(pEEPROM->mac_addr, null_mac_addr, ETH_ALEN)) ||
-		(_rtw_memcmp(pEEPROM->mac_addr, multi_mac_addr, ETH_ALEN)) ) {
-		pEEPROM->mac_addr[0] = 0x00;
-		pEEPROM->mac_addr[1] = 0xe0;
-		pEEPROM->mac_addr[2] = 0x4c;
-		pEEPROM->mac_addr[3] = (u8)(curtime & 0xff) ;
-		pEEPROM->mac_addr[4] = (u8)((curtime>>8) & 0xff) ;
-		pEEPROM->mac_addr[5] = (u8)((curtime>>16) & 0xff) ;
-	}
-
-	RT_TRACE(_module_hci_hal_init_c_, _drv_notice_,
-		 ("Hal_ReadMACAddrFromFile_8723BS: Permanent Address = %02x-%02x-%02x-%02x-%02x-%02x\n",
-		  pEEPROM->mac_addr[0], pEEPROM->mac_addr[1],
-		  pEEPROM->mac_addr[2], pEEPROM->mac_addr[3],
-		  pEEPROM->mac_addr[4], pEEPROM->mac_addr[5]));
-}
-#endif
-
 static void
 _ReadEfuseInfo8723BS(
 	IN PADAPTER			padapter
@@ -1769,9 +1693,6 @@ _ReadEfuseInfo8723BS(
 {
 	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(padapter);
 	u8*			hwinfo = NULL;
-#ifdef CONFIG_EFUSE_CONFIG_FILE
-	struct file *fp;
-#endif //CONFIG_EFUSE_CONFIG_FILE
 
 	RT_TRACE(_module_hci_hal_init_c_, _drv_info_, ("====>_ReadEfuseInfo8723BS()\n"));
 
@@ -1786,38 +1707,10 @@ _ReadEfuseInfo8723BS(
 
 	Hal_InitPGData(padapter, hwinfo);
 
-#ifdef CONFIG_EFUSE_CONFIG_FILE
-	if (check_phy_efuse_tx_power_info_valid(padapter) == false) {
-		fp = filp_open(EFUSE_MAP_PATH, O_RDONLY, 0);
-		if (fp == NULL || IS_ERR(fp)) {
-			DBG_871X("[WARNING] invalid phy efuse and no efuse file, use driver default!!\n");
-		} else {
-			Hal_readPGDataFromConfigFile(padapter, fp);
-			filp_close(fp, NULL);
-		}
-	}
-#endif //CONFIG_EFUSE_CONFIG_FILE
-
 	Hal_EfuseParseIDCode(padapter, hwinfo);
 	Hal_EfuseParseEEPROMVer_8723B(padapter, hwinfo, pEEPROM->bautoload_fail_flag);
 
-#ifdef CONFIG_EFUSE_CONFIG_FILE
-	if (check_phy_efuse_macaddr_info_valid(padapter) == true) {
-		DBG_871X("using phy efuse mac\n");
-		Hal_GetPhyEfuseMACAddr(padapter, pEEPROM->mac_addr);
-	} else {
-		fp = filp_open(WIFIMAC_PATH, O_RDONLY, 0);
-		if (fp == NULL || IS_ERR(fp)) {
-			DBG_871X("wifimac does not exist!!\n");
-			Hal_GetPhyEfuseMACAddr(padapter, pEEPROM->mac_addr);
-		} else {
-			Hal_ReadMACAddrFromFile(padapter, fp);
-			filp_close(fp, NULL);
-		}
-	}
-#else //CONFIG_EFUSE_CONFIG_FILE
 	Hal_EfuseParseMACAddr_8723BS(padapter, hwinfo, pEEPROM->bautoload_fail_flag);
-#endif
 
 	Hal_EfuseParseTxPowerInfo_8723B(padapter, hwinfo, pEEPROM->bautoload_fail_flag);
 	Hal_EfuseParseBoardType_8723BS(padapter, hwinfo, pEEPROM->bautoload_fail_flag);

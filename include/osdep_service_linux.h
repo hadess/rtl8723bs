@@ -65,10 +65,6 @@
 	#include <linux/earlysuspend.h>
 #endif //CONFIG_HAS_EARLYSUSPEND
 
-#ifdef CONFIG_EFUSE_CONFIG_FILE
-	#include <linux/fs.h>
-#endif //CONFIG_EFUSE_CONFIG_FILE
-
 	typedef struct 	semaphore _sema;
 	typedef	spinlock_t	_lock;
 	typedef struct mutex 		_mutex;

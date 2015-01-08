@@ -326,14 +326,6 @@ void rtw_dump_raw_rssi_info(_adapter *padapter);
 #endif
 
 #define		HWSET_MAX_SIZE			512
-#ifdef CONFIG_EFUSE_CONFIG_FILE
-#define		EFUSE_FILE_COLUMN_NUM		16
-u32 Hal_readPGDataFromConfigFile(PADAPTER padapter, struct file *fp);
-void Hal_ReadMACAddrFromFile(PADAPTER padapter, struct file *fp);
-void Hal_GetPhyEfuseMACAddr(PADAPTER padapter, u8* mac_addr);
-int check_phy_efuse_tx_power_info_valid(PADAPTER padapter);
-int check_phy_efuse_macaddr_info_valid(PADAPTER padapter);
-#endif //CONFIG_EFUSE_CONFIG_FILE
 
 #ifdef CONFIG_RF_GAIN_OFFSET
 void rtw_bb_rf_gain_offset(_adapter *padapter);
