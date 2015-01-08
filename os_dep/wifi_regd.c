@@ -265,13 +265,6 @@ static void _rtw_reg_apply_radar_flags(struct wiphy *wiphy)
 		ch = &sband->channels[i];
 		if (!_rtw_is_radar_freq(ch->center_freq))
 			continue;
-#ifdef CONFIG_DFS
-		if (!(ch->flags & IEEE80211_CHAN_DISABLED)) {
-			ch->flags |= IEEE80211_CHAN_RADAR;
-			ch->flags |= IEEE80211_CHAN_NO_IR;
-		}
-#endif //CONFIG_DFS
-
 #if 0
 		/*
 		 * We always enable radar detection/DFS on this

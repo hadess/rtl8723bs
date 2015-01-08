@@ -540,22 +540,6 @@ static u8 init_channel_set(_adapter* padapter, u8 ChannelPlan, RT_CHANNEL_INFO *
 	{
 		for(index=0;index<RTW_ChannelPlan5G[Index5G].Len;index++)
 		{
-#ifdef CONFIG_DFS
-			channel_set[chanset_size].ChannelNum = RTW_ChannelPlan5G[Index5G].Channel[index];
-			if ( channel_set[chanset_size].ChannelNum <= 48 
-				|| channel_set[chanset_size].ChannelNum >= 149 )
-			{
-				if(RT_CHANNEL_DOMAIN_WORLD_WIDE_5G == ChannelPlan)//passive scan for all 5G channels
-					channel_set[chanset_size].ScanType = SCAN_PASSIVE;
-				else
-					channel_set[chanset_size].ScanType = SCAN_ACTIVE;
-			}
-			else
-			{
-				channel_set[chanset_size].ScanType = SCAN_PASSIVE;
-			}
-			chanset_size++;
-#else /* CONFIG_DFS */
 			if ( RTW_ChannelPlan5G[Index5G].Channel[index] <= 48 
 				|| RTW_ChannelPlan5G[Index5G].Channel[index] >= 149 ) {
 				channel_set[chanset_size].ChannelNum = RTW_ChannelPlan5G[Index5G].Channel[index];
@@ -566,7 +550,6 @@ static u8 init_channel_set(_adapter* padapter, u8 ChannelPlan, RT_CHANNEL_INFO *
 				DBG_871X("%s(): channel_set[%d].ChannelNum = %d\n", __FUNCTION__, chanset_size, channel_set[chanset_size].ChannelNum);
 				chanset_size++;
 			}
-#endif /* CONFIG_DFS */
 		}
 	}
 
@@ -1176,10 +1159,6 @@ unsigned int OnBeacon(_adapter *padapter, union recv_frame *precv_frame)
 				}
 
 				adaptive_early_32k(pmlmeext, pframe, len);			 	
-				
-#ifdef CONFIG_DFS
-				process_csa_ie(padapter, pframe, len);	//channel switch announcement
-#endif //CONFIG_DFS
 
 				#if 0 //move to validate_recv_mgnt_frame
 				psta->sta_stats.rx_mgnt_pkts++;
@@ -4035,14 +4014,6 @@ void issue_assocreq(_adapter *padapter)
 	int	bssrate_len = 0, sta_bssrate_len = 0;
 	u8	vs_ie_length = 0;
 
-#ifdef CONFIG_DFS
-	u16	cap;
-
-	/* Dot H */
-	u8 pow_cap_ele[2] = { 0x00 };
-	u8 sup_ch[ 30 * 2 ] = {0x00 }, sup_ch_idx = 0, idx_5g = 2;	//For supported channel
-#endif //CONFIG_DFS
-
 	if ((pmgntframe = alloc_mgtxmitframe(pxmitpriv)) == NULL)
 		goto exit;
 
@@ -4070,14 +4041,7 @@ void issue_assocreq(_adapter *padapter)
 	pattrib->pktlen = sizeof(struct rtw_ieee80211_hdr_3addr);
 
 	//caps
-
-#ifdef CONFIG_DFS
-	_rtw_memcpy(&cap, rtw_get_capability_from_ie(pmlmeinfo->network.IEs), 2);
-	cap |= cap_SpecMgmt;
-	_rtw_memcpy(pframe, &cap, 2);
-#else
 	_rtw_memcpy(pframe, rtw_get_capability_from_ie(pmlmeinfo->network.IEs), 2);
-#endif //CONFIG_DFS
 
 	pframe += 2;
 	pattrib->pktlen += 2;
@@ -4091,33 +4055,6 @@ void issue_assocreq(_adapter *padapter)
 
 	//SSID
 	pframe = rtw_set_ie(pframe, _SSID_IE_,  pmlmeinfo->network.Ssid.SsidLength, pmlmeinfo->network.Ssid.Ssid, &(pattrib->pktlen));
-
-#ifdef CONFIG_DFS
-	/* Dot H */
-	if(pmlmeext->cur_channel > 14)
-	{
-		pow_cap_ele[0] = 13;	// Minimum transmit power capability
-		pow_cap_ele[1] = 21;	// Maximum transmit power capability
-		pframe = rtw_set_ie(pframe, EID_PowerCap, 2, pow_cap_ele, &(pattrib->pktlen));
-
-		//supported channels
-		do{
-			if( pmlmeext->channel_set[sup_ch_idx].ChannelNum <= 14 )
-			{
-				sup_ch[0] = 1;	//First channel number
-				sup_ch[1] = pmlmeext->channel_set[sup_ch_idx].ChannelNum;	//Number of channel
-			}
-			else
-			{
-				sup_ch[idx_5g++] = pmlmeext->channel_set[sup_ch_idx].ChannelNum;
-				sup_ch[idx_5g++] = 1;
-			}
-			sup_ch_idx++;
-		}
-		while( pmlmeext->channel_set[sup_ch_idx].ChannelNum != 0 );
-		pframe = rtw_set_ie(pframe, EID_SupportedChannels, idx_5g, sup_ch, &(pattrib->pktlen));
-	}
-#endif //CONFIG_DFS
 
 	//supported rate & extended supported rate
 
@@ -8132,16 +8069,8 @@ u8 disconnect_hdl(_adapter *padapter, unsigned char *pbuf)
 
 	if (is_client_associated_to_ap(padapter))
 	{
-#ifdef CONFIG_DFS
-		if(padapter->mlmepriv.handle_dfs == false)
-#endif //CONFIG_DFS
 			issue_deauth_ex(padapter, pnetwork->MacAddress, WLAN_REASON_DEAUTH_LEAVING, param->deauth_timeout_ms/100, 100);
 	}
-
-#ifdef CONFIG_DFS
-	if( padapter->mlmepriv.handle_dfs == true )
-		padapter->mlmepriv.handle_dfs = false;
-#endif //CONFIG_DFS
 
 	if(((pmlmeinfo->state&0x03) == WIFI_FW_ADHOC_STATE) || ((pmlmeinfo->state&0x03) == WIFI_FW_AP_STATE))
 	{
@@ -9874,40 +9803,7 @@ u8 led_blink_hdl(_adapter *padapter, unsigned char *pbuf)
 
 u8 set_csa_hdl(_adapter *padapter, unsigned char *pbuf)
 {
-#ifdef CONFIG_DFS
-	struct SetChannelSwitch_param *setChannelSwitch_param;
-	u8 new_ch_no;
-	u8 gval8 = 0x00, sval8 = 0xff;
-
-	if(!pbuf)
-		return H2C_PARAMETERS_ERROR;
-
-	setChannelSwitch_param = (struct SetChannelSwitch_param *)pbuf;
-	new_ch_no = setChannelSwitch_param->new_ch_no;
-
-	rtw_hal_get_hwreg(padapter, HW_VAR_TXPAUSE, &gval8);
-
-	rtw_hal_set_hwreg(padapter, HW_VAR_TXPAUSE, &sval8);
-
-	DBG_871X("DFS detected! Swiching channel to %d!\n", new_ch_no);
-	SelectChannel(padapter, new_ch_no);
-
-	rtw_hal_set_hwreg(padapter, HW_VAR_TXPAUSE, &gval8);
-
-	rtw_disassoc_cmd(padapter, 0, false);
-	rtw_indicate_disconnect(padapter);
-	rtw_free_assoc_resources(padapter, 1);
-	rtw_free_network_queue(padapter, true);
-
-	if ( ((new_ch_no >= 52) && (new_ch_no <= 64)) ||((new_ch_no >= 100) && (new_ch_no <= 140)) ) {
-		DBG_871X("Switched to DFS band (ch %02x) again!!\n", new_ch_no);
-	}
-
-	return 	H2C_SUCCESS;
-#else
 	return	H2C_REJECTED;
-#endif //CONFIG_DFS
-
 }
 
 // TDLS_ESTABLISHED	: write RCR DATA BIT

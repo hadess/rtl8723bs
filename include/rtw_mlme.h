@@ -453,10 +453,6 @@ struct mlme_priv {
 	struct beamforming_info	beamforming_info;
 #endif
 
-#ifdef CONFIG_DFS
-	u8	handle_dfs;
-#endif //CONFIG_DFS
-
 	RT_LINK_DETECT_T	LinkDetectInfo;
 	_timer	dynamic_chk_timer; //dynamic/periodic check timer
 
