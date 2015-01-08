@@ -40,33 +40,12 @@ static struct country_code_to_enum_rd allCountries[] = {
 	REG_RULE(2484-10, 2484+10, 40, 0, 20,	\
 	NL80211_RRF_PASSIVE_SCAN | NL80211_RRF_NO_OFDM)
 
-/* 5G chan 36 - chan 64 */
-#define RTW_5GHZ_5150_5350	\
-	REG_RULE(5150-10, 5350+10, 40, 0, 30,	\
-	NL80211_RRF_PASSIVE_SCAN | NL80211_RRF_NO_IBSS)
-
-/* 5G chan 100 - chan 165 */
-#define RTW_5GHZ_5470_5850	\
-	REG_RULE(5470-10, 5850+10, 40, 0, 30, \
-	NL80211_RRF_PASSIVE_SCAN | NL80211_RRF_NO_IBSS)
-
-/* 5G chan 149 - chan 165 */
-#define RTW_5GHZ_5725_5850	\
-	REG_RULE(5725-10, 5850+10, 40, 0, 30, \
-	NL80211_RRF_PASSIVE_SCAN | NL80211_RRF_NO_IBSS)
-
-/* 5G chan 36 - chan 165 */
-#define RTW_5GHZ_5150_5850	\
-	REG_RULE(5150-10, 5850+10, 40, 0, 30,	\
-	NL80211_RRF_PASSIVE_SCAN | NL80211_RRF_NO_IBSS)
-
 static const struct ieee80211_regdomain rtw_regdom_rd = {
 	.n_reg_rules = 3,
 	.alpha2 = "99",
 	.reg_rules = {
 		      RTW_2GHZ_CH01_11,
 		      RTW_2GHZ_CH12_13,
-		      RTW_5GHZ_5150_5850,
 		      }
 };
 
@@ -92,8 +71,6 @@ static const struct ieee80211_regdomain rtw_regdom_no_midband = {
 	.alpha2 = "99",
 	.reg_rules = {
 		      RTW_2GHZ_CH01_11,
-		      RTW_5GHZ_5150_5350,
-		      RTW_5GHZ_5725_5850,
 		      }
 };
 
@@ -103,7 +80,6 @@ static const struct ieee80211_regdomain rtw_regdom_60_64 = {
 	.reg_rules = {
 		      RTW_2GHZ_CH01_11,
 		      RTW_2GHZ_CH12_13,
-		      RTW_5GHZ_5725_5850,
 		      }
 };
 
@@ -114,7 +90,6 @@ static const struct ieee80211_regdomain rtw_regdom_14_60_64 = {
 		      RTW_2GHZ_CH01_11,
 		      RTW_2GHZ_CH12_13,
 		      RTW_2GHZ_CH14,
-		      RTW_5GHZ_5725_5850,
 		      }
 };
 
@@ -246,63 +221,18 @@ static void _rtw_reg_apply_active_scan_flags(struct wiphy *wiphy,
 }
 #endif
 
-/*
- * Always apply Radar/DFS rules on
- * freq range 5260 MHz - 5700 MHz
- */
-static void _rtw_reg_apply_radar_flags(struct wiphy *wiphy)
-{
-	struct ieee80211_supported_band *sband;
-	struct ieee80211_channel *ch;
-	unsigned int i;
-
-	if (!wiphy->bands[IEEE80211_BAND_5GHZ])
-		return;
-
-	sband = wiphy->bands[IEEE80211_BAND_5GHZ];
-
-	for (i = 0; i < sband->n_channels; i++) {
-		ch = &sband->channels[i];
-		if (!_rtw_is_radar_freq(ch->center_freq))
-			continue;
-#if 0
-		/*
-		 * We always enable radar detection/DFS on this
-		 * frequency range. Additionally we also apply on
-		 * this frequency range:
-		 * - If STA mode does not yet have DFS supports disable
-		 *  active scanning
-		 * - If adhoc mode does not support DFS yet then disable
-		 *  adhoc in the frequency.
-		 * - If AP mode does not yet support radar detection/DFS
-		 *  do not allow AP mode
-		 */
-		if (!(ch->flags & IEEE80211_CHAN_DISABLED))
-			ch->flags |= IEEE80211_CHAN_RADAR |
-			    IEEE80211_CHAN_NO_IBSS |
-			    IEEE80211_CHAN_PASSIVE_SCAN;
-#endif
-	}
-}
-
 static int rtw_ieee80211_channel_to_frequency(int chan, int band)
 {
 	/* see 802.11 17.3.8.3.2 and Annex J
 	 * there are overlapping channel numbers in 5GHz and 2GHz bands */
 
-	if (band == IEEE80211_BAND_5GHZ) {
-		if (chan >= 182 && chan <= 196)
-			return 4000 + chan * 5;
-		else
-			return 5000 + chan * 5;
-	} else {		/* IEEE80211_BAND_2GHZ */
-		if (chan == 14)
-			return 2484;
-		else if (chan < 14)
-			return 2407 + chan * 5;
-		else
-			return 0;	/* not supported */
-	}
+	/* IEEE80211_BAND_2GHZ */
+	if (chan == 14)
+		return 2484;
+	else if (chan < 14)
+		return 2407 + chan * 5;
+	else
+		return 0;	/* not supported */
 }
 
 static void _rtw_reg_apply_flags(struct wiphy *wiphy)
@@ -337,15 +267,9 @@ static void _rtw_reg_apply_flags(struct wiphy *wiphy)
 	// channels apply by channel plans.
 	for (i = 0; i < max_chan_nums; i++) {
 		channel = channel_set[i].ChannelNum;
-		if (channel <= 14)
-			freq =
-			    rtw_ieee80211_channel_to_frequency(channel,
-							       IEEE80211_BAND_2GHZ);
-		else
-			freq =
-			    rtw_ieee80211_channel_to_frequency(channel,
-							       IEEE80211_BAND_5GHZ);
-
+		freq =
+		    rtw_ieee80211_channel_to_frequency(channel,
+						       IEEE80211_BAND_2GHZ);
 
 		ch = ieee80211_get_channel(wiphy, freq);
 		if (ch) {
@@ -423,9 +347,6 @@ static int _rtw_reg_notifier_apply(struct wiphy *wiphy,
 	/* Hard code flags */
 	_rtw_reg_apply_flags(wiphy);
 
-	/* We always apply this */
-	_rtw_reg_apply_radar_flags(wiphy);
-
 	switch (request->initiator) {
 	case NL80211_REGDOM_SET_BY_DRIVER:
 		DBG_8192C("%s: %s\n", __func__, "NL80211_REGDOM_SET_BY_DRIVER");
@@ -488,7 +409,6 @@ static void _rtw_regd_init_wiphy(struct rtw_regulatory *reg,
 
 	/* Hard code flags */
 	_rtw_reg_apply_flags(wiphy);
-	_rtw_reg_apply_radar_flags(wiphy);
 	_rtw_reg_apply_world_flags(wiphy, NL80211_REGDOM_SET_BY_DRIVER, reg);
 }
 
