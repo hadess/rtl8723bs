@@ -159,9 +159,7 @@ struct oid_obj_priv {
 	uint (*oidfuns)(struct oid_par_priv *poid_par_priv);	
 };
 
-#if defined(CONFIG_WIRELESS_EXT)
 extern struct iw_handler_def  rtw_handlers_def;
-#endif
 
 extern void rtw_request_wps_pbc_event(_adapter *padapter);
 
