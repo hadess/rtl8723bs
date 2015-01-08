@@ -97,18 +97,17 @@ _OUTSRC_FILES += \
 endif
 
 ########### HAL_RTL8723B #################################
-RTL871X = rtl8723b
 MODULE_NAME = r8723bs
 
 _HAL_INTFS_FILES += hal/HalPwrSeqCmd.o \
 					hal/Hal8723BPwrSeq.o
 
-_HAL_INTFS_FILES +=	hal/$(RTL871X)_hal_init.o \
-			hal/$(RTL871X)_phycfg.o \
-			hal/$(RTL871X)_rf6052.o \
-			hal/$(RTL871X)_dm.o \
-			hal/$(RTL871X)_rxdesc.o \
-			hal/$(RTL871X)_cmd.o \
+_HAL_INTFS_FILES +=	hal/rtl8723b_hal_init.o \
+			hal/rtl8723b_phycfg.o \
+			hal/rtl8723b_rf6052.o \
+			hal/rtl8723b_dm.o \
+			hal/rtl8723b_rxdesc.o \
+			hal/rtl8723b_cmd.o \
 			
 
 _HAL_INTFS_FILES +=	\
