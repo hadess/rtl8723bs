@@ -1356,51 +1356,6 @@ void UpdateInterruptMask8723BSdio(PADAPTER padapter, u32 AddMSR, u32 RemoveMSR)
 	EnableInterrupt8723BSdio(padapter);
 }
 
-#ifdef CONFIG_MAC_LOOPBACK_DRIVER
-static void sd_recv_loopback(PADAPTER padapter, u32 size)
-{
-	PLOOPBACKDATA ploopback;
-	u32 readsize, allocsize;
-	u8 *preadbuf;
-
-
-	readsize = size;
-	DBG_8192C("%s: read size=%d\n", __func__, readsize);
-	allocsize = _RND(readsize, adapter_to_dvobj(padapter)->intf_data.block_transfer_len);
-
-	ploopback = padapter->ploopback;
-	if (ploopback) {
-		ploopback->rxsize = readsize;
-		preadbuf = ploopback->rxbuf;
-	}
-	else {
-		preadbuf = rtw_malloc(allocsize);
-		if (preadbuf == NULL) {
-			DBG_8192C("%s: malloc fail size=%d\n", __func__, allocsize);
-			return;
-		}
-	}
-
-//	rtw_read_port(padapter, WLAN_RX0FF_DEVICE_ID, readsize, preadbuf);
-	sdio_read_port(&padapter->iopriv.intf, WLAN_RX0FF_DEVICE_ID, readsize, preadbuf);
-
-	if (ploopback)
-		_rtw_up_sema(&ploopback->sema);
-	else {
-		u32 i;
-
-		DBG_8192C("%s: drop pkt\n", __func__);
-		for (i = 0; i < readsize; i+=4) {
-			DBG_8192C("%08X", *(u32*)(preadbuf + i));
-			if ((i+4) & 0x1F) printk(" ");
-			else printk("\n");
-		}
-		printk("\n");
-		rtw_mfree(preadbuf, allocsize);
-	}
-}
-#endif // CONFIG_MAC_LOOPBACK_DRIVER
-
 #ifdef CONFIG_SDIO_RX_COPY
 static struct recv_buf* sd_recv_rxfifo(PADAPTER padapter, u32 size)
 {
@@ -1671,9 +1626,6 @@ void sd_int_dpc(PADAPTER padapter)
 			phal->SdioRxFIFOSize = SdioLocalCmd52Read2Byte(padapter, SDIO_REG_RX0_REQ_LEN);
 			if (phal->SdioRxFIFOSize != 0)
 			{
-#ifdef CONFIG_MAC_LOOPBACK_DRIVER
-				sd_recv_loopback(padapter, phal->SdioRxFIFOSize);
-#else
 				precvbuf = sd_recv_rxfifo(padapter, phal->SdioRxFIFOSize);
 				if (precvbuf)
 				     	sd_rxhandler(padapter, precvbuf);
@@ -1685,7 +1637,6 @@ void sd_int_dpc(PADAPTER padapter)
 						break;
 				}
 				phal->SdioRxFIFOSize = 0;
-#endif
 			}
 			else
 				break;

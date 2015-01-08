@@ -538,10 +538,6 @@ void _InitWMACSetting(PADAPTER padapter)
 	pHalData->ReceiveConfig |= RCR_CBSSID_DATA | RCR_CBSSID_BCN | RCR_AMF;
 	pHalData->ReceiveConfig |= RCR_HTC_LOC_CTRL;
 	pHalData->ReceiveConfig |= RCR_APP_PHYST_RXFF | RCR_APP_ICV | RCR_APP_MIC;
-#ifdef CONFIG_MAC_LOOPBACK_DRIVER
-	pHalData->ReceiveConfig |= RCR_AAP;
-	pHalData->ReceiveConfig |= RCR_ADD3 | RCR_APWRMGT | RCR_ACRC32 | RCR_ADF;
-#endif
 	rtw_write32(padapter, REG_RCR, pHalData->ReceiveConfig);
 
 	// Accept all multicast address
@@ -1253,17 +1249,6 @@ static u32 rtl8723bs_hal_init(PADAPTER padapter)
 	// set 0x0 to 0xFF by tynli. Default enable HW SEQ NUM.
 	rtw_write8(padapter, REG_HWSEQ_CTRL, 0xFF);
 
-
-#ifdef CONFIG_MAC_LOOPBACK_DRIVER
-	u1bTmp = rtw_read8(padapter, REG_SYS_FUNC_EN);
-	u1bTmp &= ~(FEN_BBRSTB|FEN_BB_GLB_RSTn);
-	rtw_write8(padapter, REG_SYS_FUNC_EN,u1bTmp);
-
-	rtw_write8(padapter, REG_RD_CTRL, 0x0F);
-	rtw_write8(padapter, REG_RD_CTRL+1, 0xCF);
-	rtw_write8(padapter, REG_TXPKTBUF_WMAC_LBK_BF_HD, 0x80);
-	rtw_write32(padapter, REG_CR, 0x0b0202ff);
-#endif
 
 	//
 	// Configure SDIO TxRx Control to enable Rx DMA timer masking.
