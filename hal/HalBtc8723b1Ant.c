@@ -1870,7 +1870,7 @@ halbtc8723b1ant_TdmaDurationAdjustForAcl(
 			if (dn <= 0)
 				dn = 0;				 
 
-			if(up >= n)	// if ³sÄò n ­Ó2¬í retry count¬°0, «h½Õ¼eWiFi duration
+			if(up >= n)	// if é€£çºŒ n å€‹2ç§’ retry countç‚º0, å‰‡èª¿å¯¬WiFi duration
 			{
 				WaitCount = 0; 
 				n = 3;
@@ -1888,14 +1888,14 @@ halbtc8723b1ant_TdmaDurationAdjustForAcl(
 			if (up <= 0)
 				up = 0;
 
-			if (dn == 2)	// if ³sÄò 2 ­Ó2¬í retry count< 3, «h½Õ¯¶WiFi duration
+			if (dn == 2)	// if é€£çºŒ 2 å€‹2ç§’ retry count< 3, å‰‡èª¿çª„WiFi duration
 			{
 				if (WaitCount <= 2)
-					m++; // Á×§K¤@ª½¦b¨â­Ólevel¤¤¨Ó¦^
+					m++; // é¿å…ä¸€ç›´åœ¨å…©å€‹levelä¸­ä¾†å›
 				else
 					m = 1;
 
-				if ( m >= 20) //m ³Ì¤j­È = 20 ' ³Ì¤j120¬í recheck¬O§_½Õ¾ã WiFi duration.
+				if ( m >= 20) //m æœ€å¤§å€¼ = 20 ' æœ€å¤§120ç§’ recheckæ˜¯å¦èª¿æ•´ WiFi duration.
 					m = 20;
 
 				n = 3*m;
@@ -1906,14 +1906,14 @@ halbtc8723b1ant_TdmaDurationAdjustForAcl(
 				BTC_PRINT(BTC_MSG_ALGORITHM, ALGO_TRACE_FW_DETAIL, ("[BTCoex], Decrease wifi duration for retryCounter<3!!\n"));
 			}
 		}
-		else  //retry count > 3, ¥u­n1¦¸ retry count > 3, «h½Õ¯¶WiFi duration
+		else  //retry count > 3, åªè¦1æ¬¡ retry count > 3, å‰‡èª¿çª„WiFi duration
 		{
 			if (WaitCount == 1)
-				m++; // Á×§K¤@ª½¦b¨â­Ólevel¤¤¨Ó¦^
+				m++; // é¿å…ä¸€ç›´åœ¨å…©å€‹levelä¸­ä¾†å›
 			else
 				m = 1;
 
-			if ( m >= 20) //m ³Ì¤j­È = 20 ' ³Ì¤j120¬í recheck¬O§_½Õ¾ã WiFi duration.
+			if ( m >= 20) //m æœ€å¤§å€¼ = 20 ' æœ€å¤§120ç§’ recheckæ˜¯å¦èª¿æ•´ WiFi duration.
 				m = 20;
 
 			n = 3*m;
