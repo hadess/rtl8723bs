@@ -224,10 +224,6 @@ struct sta_info {
 	u8 ht_20mhz_set;
 #endif	// CONFIG_NATIVEAP_MLME
 
-#ifdef CONFIG_ATMEL_RC_PATCH
-	u8 flag_atmel_rc;
-#endif
-
 	unsigned int tx_ra_bitmap;
 	u8 qos_info;
 
@@ -410,11 +406,6 @@ struct	sta_priv {
 
 	struct wlan_acl_pool acl_list;
 #endif
-
-#ifdef CONFIG_ATMEL_RC_PATCH
-	u8 atmel_rc_pattern [6];
-#endif
-
 };
 
 

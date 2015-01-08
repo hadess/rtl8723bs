@@ -815,14 +815,6 @@ unsigned int OnProbeReq(_adapter *padapter, union recv_frame *precv_frame)
 	uint len = precv_frame->u.hdr.len;
 	u8 is_valid_p2p_probereq = false;
 
-#ifdef CONFIG_ATMEL_RC_PATCH
-	u8 *target_ie=NULL, *wps_ie=NULL;
-	u8 *start;
-	uint search_len = 0, wps_ielen = 0, target_ielen = 0;
-	struct sta_info	*psta;
-	struct sta_priv *pstapriv = &padapter->stapriv;
-#endif
-
 	if(check_fwstate(pmlmepriv, WIFI_STATION_STATE))
 	{
 		return _SUCCESS;
@@ -836,25 +828,6 @@ unsigned int OnProbeReq(_adapter *padapter, union recv_frame *precv_frame)
 
 
 	//DBG_871X("+OnProbeReq\n");
-
-
-#ifdef CONFIG_ATMEL_RC_PATCH
-		if ((wps_ie = rtw_get_wps_ie(
-			pframe + WLAN_HDR_A3_LEN + _PROBEREQ_IE_OFFSET_,
-			len - WLAN_HDR_A3_LEN - _PROBEREQ_IE_OFFSET_,
-			 NULL, &wps_ielen))) {
-		
-			target_ie = rtw_get_wps_attr_content( wps_ie, wps_ielen, WPS_ATTR_MANUFACTURER, NULL, &target_ielen);
-		}
-		if ((target_ie && (target_ielen == 4)) && (true ==_rtw_memcmp((void *)target_ie, "Ozmo",4 ))) {
-			//psta->flag_atmel_rc = 1;
-			unsigned char *sa_addr = get_sa(pframe);
-			printk("%s: Find Ozmo RC -- %02x:%02x:%02x:%02x:%02x:%02x  \n\n",
-				__func__, *sa_addr, *(sa_addr+1), *(sa_addr+2), *(sa_addr+3), *(sa_addr+4), *(sa_addr+5));
-			_rtw_memcpy(  pstapriv->atmel_rc_pattern, get_sa(pframe), ETH_ALEN);
-		}
-#endif
-
 
 #ifdef CONFIG_AUTO_AP_MODE
 	if(check_fwstate(pmlmepriv, _FW_LINKED) == true &&
@@ -5287,7 +5260,7 @@ void site_survey(_adapter *padapter)
 		//rtw_hal_get_hwreg(padapter, HW_VAR_TXPAUSE, (u8 *)(&val8));
 		//val8 |= 0x0f;
 		//rtw_hal_set_hwreg(padapter, HW_VAR_TXPAUSE, (u8 *)(&val8));
-#if defined(CONFIG_STA_MODE_SCAN_UNDER_AP_MODE) || defined(CONFIG_ATMEL_RC_PATCH)
+#if defined(CONFIG_STA_MODE_SCAN_UNDER_AP_MODE)
 		if((padapter->pbuddy_adapter->mlmeextpriv.mlmext_info.state&0x03) == WIFI_FW_AP_STATE)
 		{
 			if( pmlmeinfo->scan_cnt == RTW_SCAN_NUM_OF_CH )
@@ -5323,7 +5296,7 @@ void site_survey(_adapter *padapter)
 				SelectChannel(padapter, survey_channel);
 		}
 
-#if defined(CONFIG_STA_MODE_SCAN_UNDER_AP_MODE) || defined(CONFIG_ATMEL_RC_PATCH) 
+#if defined(CONFIG_STA_MODE_SCAN_UNDER_AP_MODE)
 		if( stay_buddy_ch == 1 )
 		{
 			val8 = 0; //survey done
@@ -5368,22 +5341,7 @@ void site_survey(_adapter *padapter)
 			}
 		}
 
-#if  defined(CONFIG_ATMEL_RC_PATCH)
-		// treat wlan0 & p2p0 in same way, may be changed in near feature.
-		// assume home channel is 6, channel switch sequence will be 
-		//	1,2-6-3,4-6-5,6-6-7,8-6-9,10-6-11,12-6-13,14
-		//if (rtw_p2p_chk_state(pwdinfo, P2P_STATE_NONE)==true)
-
-		if( stay_buddy_ch == 1 ){
-			channel_scan_time_ms = pmlmeext->chan_scan_time * RTW_STAY_AP_CH_MILLISECOND;			
-		}
-		else {
-			if( check_fwstate(pmlmepriv, _FW_LINKED) == true)
-				channel_scan_time_ms = 20;
-			else
-				channel_scan_time_ms = 40
-		}
-#elif defined(CONFIG_STA_MODE_SCAN_UNDER_AP_MODE)
+#if defined(CONFIG_STA_MODE_SCAN_UNDER_AP_MODE)
 		if( stay_buddy_ch == 1 )
 			channel_scan_time_ms = pmlmeext->chan_scan_time * RTW_STAY_AP_CH_MILLISECOND ;
 		else		
@@ -5440,7 +5398,7 @@ void site_survey(_adapter *padapter)
 #endif
 
 		{
-#if defined(CONFIG_STA_MODE_SCAN_UNDER_AP_MODE) || defined(CONFIG_ATMEL_RC_PATCH) 
+#if defined(CONFIG_STA_MODE_SCAN_UNDER_AP_MODE)
 			pmlmeinfo->scan_cnt = 0;
 #endif
 
@@ -7406,7 +7364,7 @@ void survey_timer_hdl(_adapter *padapter)
 	{
 		if(pmlmeext->sitesurvey_res.state ==  SCAN_PROCESS)
 		{
-#if defined(CONFIG_STA_MODE_SCAN_UNDER_AP_MODE) || defined(CONFIG_ATMEL_RC_PATCH) 
+#if defined(CONFIG_STA_MODE_SCAN_UNDER_AP_MODE)
 			if( padapter->mlmeextpriv.mlmext_info.scan_cnt != RTW_SCAN_NUM_OF_CH )
 #endif
 				pmlmeext->sitesurvey_res.channel_idx++;
