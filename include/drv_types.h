@@ -553,9 +553,9 @@ struct dvobj_priv
 	u8	Queue2Pipe[HW_QUEUE_ENTRY];//for out pipe mapping
 
 	u8	irq_alloc;
-	ATOMIC_T continual_io_error;
+	atomic_t continual_io_error;
 
-	ATOMIC_T disable_func;
+	atomic_t disable_func;
 
 	struct pwrctrl_priv pwrctl_priv;
 
@@ -799,23 +799,23 @@ struct _ADAPTER{
 #define DF_RX_BIT		BIT1
 #define DF_IO_BIT		BIT2
 
-//#define RTW_DISABLE_FUNC(padapter, func) (ATOMIC_ADD(&adapter_to_dvobj(padapter)->disable_func, (func)))
-//#define RTW_ENABLE_FUNC(padapter, func) (ATOMIC_SUB(&adapter_to_dvobj(padapter)->disable_func, (func)))
+//#define RTW_DISABLE_FUNC(padapter, func) (atomic_add(&adapter_to_dvobj(padapter)->disable_func, (func)))
+//#define RTW_ENABLE_FUNC(padapter, func) (atomic_sub(&adapter_to_dvobj(padapter)->disable_func, (func)))
 __inline static void RTW_DISABLE_FUNC(_adapter*padapter, int func_bit)
 {
-	int	df = ATOMIC_READ(&adapter_to_dvobj(padapter)->disable_func);
+	int	df = atomic_read(&adapter_to_dvobj(padapter)->disable_func);
 	df |= func_bit;
-	ATOMIC_SET(&adapter_to_dvobj(padapter)->disable_func, df);
+	atomic_set(&adapter_to_dvobj(padapter)->disable_func, df);
 }
 
 __inline static void RTW_ENABLE_FUNC(_adapter*padapter, int func_bit)
 {
-	int	df = ATOMIC_READ(&adapter_to_dvobj(padapter)->disable_func);
+	int	df = atomic_read(&adapter_to_dvobj(padapter)->disable_func);
 	df &= ~(func_bit);
-	ATOMIC_SET(&adapter_to_dvobj(padapter)->disable_func, df);
+	atomic_set(&adapter_to_dvobj(padapter)->disable_func, df);
 }
 
-#define RTW_IS_FUNC_DISABLED(padapter, func_bit) (ATOMIC_READ(&adapter_to_dvobj(padapter)->disable_func) & (func_bit))
+#define RTW_IS_FUNC_DISABLED(padapter, func_bit) (atomic_read(&adapter_to_dvobj(padapter)->disable_func) & (func_bit))
 
 #define RTW_CANNOT_IO(padapter) \
 			((padapter)->bSurpriseRemoved || \

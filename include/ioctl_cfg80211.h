@@ -97,8 +97,8 @@ struct rtw_wdev_priv
 	bool power_mgmt;
 
 #ifdef CONFIG_CONCURRENT_MODE
-	ATOMIC_T ro_ch_to;
-	ATOMIC_T switch_ch_to;	
+	atomic_t ro_ch_to;
+	atomic_t switch_ch_to;	
 #endif	
 	
 };

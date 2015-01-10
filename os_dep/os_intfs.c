@@ -897,7 +897,7 @@ struct dvobj_priv *devobj_init(void)
 
 	pdvobj->processing_dev_remove = false;
 
-	ATOMIC_SET(&pdvobj->disable_func, 0);
+	atomic_set(&pdvobj->disable_func, 0);
 
 	_rtw_spinlock_init(&pdvobj->cam_ctl.lock);
 
@@ -2530,7 +2530,7 @@ void rtw_dev_unload(PADAPTER padapter)
 		if (!pwrctl->bInternalAutoSuspend)
 			rtw_stop_drv_threads(padapter);
 
-		while(ATOMIC_READ(&(pcmdpriv->cmdthd_running)) == true){
+		while(atomic_read(&(pcmdpriv->cmdthd_running)) == true){
 			if (cnt > 5) {
 				DBG_871X("stop cmdthd timeout\n");
 				break;

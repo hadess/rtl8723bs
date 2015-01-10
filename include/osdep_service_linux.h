@@ -254,9 +254,6 @@ static inline void rtw_merge_string(char *dst, int dst_len, char *src1, char *sr
 // limitation of path length
 #define PATH_LENGTH_MAX PATH_MAX
 
-//Atomic integer operations
-#define ATOMIC_T atomic_t
-
 #define rtw_netdev_priv(netdev) ( ((struct rtw_netdev_priv_indicator *)netdev_priv(netdev))->priv )
 
 #define NDEV_FMT "%s"

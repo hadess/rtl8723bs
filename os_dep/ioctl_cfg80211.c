@@ -3887,11 +3887,11 @@ static int _cfg80211_rtw_mgmt_tx(_adapter *padapter, u8 tx_ch, const u8 *buf, si
 
 			u16 ext_listen_period;
 			
-			if (ATOMIC_READ(&pwdev_priv->switch_ch_to)==1) {
+			if (atomic_read(&pwdev_priv->switch_ch_to)==1) {
 				DBG_8192C("%s, issue nulldata pwrbit=1\n", __func__);
 				issue_nulldata(padapter->pbuddy_adapter, NULL, 1, 3, 500);
 
-				ATOMIC_SET(&pwdev_priv->switch_ch_to, 0);
+				atomic_set(&pwdev_priv->switch_ch_to, 0);
 
 				//DBG_8192C("%s, set switch ch timer, period=%d\n", __func__, pwdinfo->ext_listen_period);
 				//_set_timer(&pwdinfo->ap_p2p_switch_timer, pwdinfo->ext_listen_period);
@@ -4870,8 +4870,8 @@ int rtw_wdev_alloc(_adapter *padapter, struct device *dev)
 		pwdev_priv->power_mgmt = false;
 	
 #ifdef CONFIG_CONCURRENT_MODE
-	ATOMIC_SET(&pwdev_priv->switch_ch_to, 1);	
-	ATOMIC_SET(&pwdev_priv->ro_ch_to, 1);	
+	atomic_set(&pwdev_priv->switch_ch_to, 1);	
+	atomic_set(&pwdev_priv->ro_ch_to, 1);	
 #endif
 
 	return ret;

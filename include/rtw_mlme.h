@@ -433,7 +433,7 @@ struct mlme_priv {
 
 	#ifdef CONFIG_SET_SCAN_DENY_TIMER
 	_timer set_scan_deny_timer;
-	ATOMIC_T set_scan_deny; //0: allowed, 1: deny
+	atomic_t set_scan_deny; //0: allowed, 1: deny
 	#endif
 
 	struct qos_priv qospriv;
@@ -543,7 +543,7 @@ struct mlme_priv {
 	int	widi_state;
 	int	listen_state;
 	_timer	listen_timer;
-	ATOMIC_T	rx_probe_rsp; // 1:receive probe respone from RDS source.
+	atomic_t	rx_probe_rsp; // 1:receive probe respone from RDS source.
 	u8	*l2sdTaBuffer;
 	u8	channel_idx;
 	u8	group_cnt;	//In WiDi 3.5, they specified another scan algo. for WFD/RDS co-existed

@@ -326,17 +326,6 @@ extern void rtw_softap_lock_suspend(void);
 extern void rtw_softap_unlock_suspend(void);
 #endif
 
-extern void ATOMIC_SET(ATOMIC_T *v, int i);
-extern int ATOMIC_READ(ATOMIC_T *v);
-extern void ATOMIC_ADD(ATOMIC_T *v, int i);
-extern void ATOMIC_SUB(ATOMIC_T *v, int i);
-extern void ATOMIC_INC(ATOMIC_T *v);
-extern void ATOMIC_DEC(ATOMIC_T *v);
-extern int ATOMIC_ADD_RETURN(ATOMIC_T *v, int i);
-extern int ATOMIC_SUB_RETURN(ATOMIC_T *v, int i);
-extern int ATOMIC_INC_RETURN(ATOMIC_T *v);
-extern int ATOMIC_DEC_RETURN(ATOMIC_T *v);
-
 //File operation APIs, just for linux now
 extern int rtw_is_file_readable(char *path);
 extern int rtw_retrive_from_file(char *path, u8* buf, u32 sz);

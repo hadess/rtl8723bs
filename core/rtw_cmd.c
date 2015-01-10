@@ -90,7 +90,7 @@ _func_enter_;
 #endif		
 	
 	//allocate DMA-able/Non-Page memory for cmd_buf and rsp_buf
-	ATOMIC_SET(&pevtpriv->event_seq, 0);
+	atomic_set(&pevtpriv->event_seq, 0);
 	pevtpriv->evt_done_cnt = 0;
 
 #ifdef CONFIG_EVENT_THREAD_MODE
@@ -320,7 +320,7 @@ int rtw_cmd_filter(struct cmd_priv *pcmdpriv, struct cmd_obj *cmd_obj)
 		bAllow = true;
 
 	if( (pcmdpriv->padapter->hw_init_completed ==false && bAllow == false)
-		|| ATOMIC_READ(&(pcmdpriv->cmdthd_running)) == false	//com_thread not running
+		|| atomic_read(&(pcmdpriv->cmdthd_running)) == false	//com_thread not running
 	)
 	{
 		//DBG_871X("%s:%s: drop cmdcode:%u, hw_init_completed:%u, cmdthd_running:%u\n", caller_func, __FUNCTION__,
@@ -421,7 +421,7 @@ _func_exit_;
 void rtw_stop_cmd_thread(_adapter *adapter)
 {
 	if(adapter->cmdThread &&
-		ATOMIC_READ(&(adapter->cmdpriv.cmdthd_running)) == true &&
+		atomic_read(&(adapter->cmdpriv.cmdthd_running)) == true &&
 		adapter->cmdpriv.stop_req == 0)
 	{
 		adapter->cmdpriv.stop_req = 1;
@@ -451,7 +451,7 @@ _func_enter_;
 	prspbuf = pcmdpriv->rsp_buf;
 
 	pcmdpriv->stop_req = 0;
-	ATOMIC_SET(&(pcmdpriv->cmdthd_running), true);
+	atomic_set(&(pcmdpriv->cmdthd_running), true);
 	_rtw_up_sema(&pcmdpriv->terminate_cmdthread_sema);
 
 	RT_TRACE(_module_rtl871x_cmd_c_,_drv_info_,("start r871x rtw_cmd_thread !!!!\n"));
@@ -622,7 +622,7 @@ post_process:
 	}while(1);
 
 	_rtw_up_sema(&pcmdpriv->terminate_cmdthread_sema);
-	ATOMIC_SET(&(pcmdpriv->cmdthd_running), false);
+	atomic_set(&(pcmdpriv->cmdthd_running), false);
 
 _func_exit_;
 

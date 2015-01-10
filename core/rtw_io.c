@@ -376,7 +376,7 @@ int rtw_inc_and_chk_continual_io_error(struct dvobj_priv *dvobj)
 {
 	int ret = false;
 	int value;
-	if( (value=ATOMIC_INC_RETURN(&dvobj->continual_io_error)) > MAX_CONTINUAL_IO_ERR) {
+	if( (value=atomic_inc_return(&dvobj->continual_io_error)) > MAX_CONTINUAL_IO_ERR) {
 		DBG_871X("[dvobj:%p][ERROR] continual_io_error:%d > %d\n", dvobj, value, MAX_CONTINUAL_IO_ERR);
 		ret = true;
 	} else {
@@ -390,5 +390,5 @@ int rtw_inc_and_chk_continual_io_error(struct dvobj_priv *dvobj)
 */
 void rtw_reset_continual_io_error(struct dvobj_priv *dvobj)
 {
-	ATOMIC_SET(&dvobj->continual_io_error, 0);	
+	atomic_set(&dvobj->continual_io_error, 0);	
 }
