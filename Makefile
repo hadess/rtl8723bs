@@ -59,7 +59,6 @@ _OS_INTFS_FILES :=	os_dep/osdep_service.o \
 			os_dep/wifi_regd.o \
 			os_dep/rtw_android.o \
 			os_dep/rtw_proc.o \
-			os_dep/custom_gpio_linux.o \
 			os_dep/sdio_ops_linux.o
 
 _HAL_INTFS_FILES :=	hal/hal_intf.o \
