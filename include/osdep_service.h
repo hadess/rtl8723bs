@@ -186,8 +186,6 @@ extern void	rtw_sleep_schedulable(int ms);
 extern void	rtw_msleep_os(int ms);
 extern void	rtw_usleep_os(int us);
 
-extern u32 	rtw_atoi(u8* s);
-
 extern void	rtw_mdelay_os(int ms);
 extern void	rtw_udelay_os(int us);
 

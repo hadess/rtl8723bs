@@ -480,6 +480,7 @@ int rtw_android_set_miracast_mode(struct net_device *net, char *command, int tot
 int get_int_from_command( char* pcmd )
 {
 	int i = 0;
+	int ret = 0;
 
 	for( i = 0; i < strlen( pcmd ); i++ )
 	{
@@ -490,7 +491,9 @@ int get_int_from_command( char* pcmd )
 			break;
 		}
 	}
-	return ( rtw_atoi( pcmd + i ) );
+	if (kstrtoint(pcmd + i, 10, &ret) < 0)
+		ret = 0;
+	return ret;
 }
 
 #ifdef CONFIG_GTK_OL
@@ -805,7 +808,8 @@ int rtw_android_priv_cmd(struct net_device *net, struct ifreq *ifr, int cmd)
 			
 			ptr += 9;//string command length of  "SET_DTIM";
 
-			dtim = rtw_atoi(ptr);
+			if (kstrtou8(ptr, 10, &dtim) < 0)
+				dtim = 0;
 
 			DBG_871X("DTIM=%d\n", dtim);
 
