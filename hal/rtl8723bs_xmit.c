@@ -552,7 +552,7 @@ next:
 	return _SUCCESS;
 }
 
-thread_return rtl8723bs_xmit_thread(thread_context context)
+int rtl8723bs_xmit_thread(void * context)
 {
 	s32 ret;
 	PADAPTER padapter;

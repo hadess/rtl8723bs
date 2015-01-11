@@ -38,7 +38,7 @@ typedef struct sdio_data
 	u32 block_transfer_len;
 
 	struct sdio_func	 *func;
-	_thread_hdl_ sys_sdio_irq_thd;
+	void * sys_sdio_irq_thd;
 } SDIO_DATA, *PSDIO_DATA;
 
 #endif

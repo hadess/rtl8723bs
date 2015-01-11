@@ -612,7 +612,7 @@ extern void rtw_wmm_event_callback(PADAPTER padapter, u8 *pbuf);
 extern void rtw_join_timeout_handler(RTW_TIMER_HDL_ARGS);
 extern void _rtw_scan_timeout_handler(RTW_TIMER_HDL_ARGS);
 
-thread_return event_thread(thread_context context);
+int event_thread(void * context);
 
 extern void rtw_free_network_queue(_adapter *adapter,u8 isfreeall);
 extern int rtw_init_mlme_priv(_adapter *adapter);// (struct mlme_priv *pmlmepriv);

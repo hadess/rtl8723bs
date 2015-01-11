@@ -457,7 +457,7 @@ s32 rtl8723bs_hal_xmit(PADAPTER padapter, struct xmit_frame *pxmitframe);
 s32 rtl8723bs_mgnt_xmit(PADAPTER padapter, struct xmit_frame *pmgntframe);
 s32	rtl8723bs_hal_xmitframe_enqueue(_adapter *padapter, struct xmit_frame *pxmitframe);
 s32 rtl8723bs_xmit_buf_handler(PADAPTER padapter);
-thread_return rtl8723bs_xmit_thread(thread_context context);
+int rtl8723bs_xmit_thread(void * context);
 #define hal_xmit_handler rtl8723bs_xmit_buf_handler
 
 u8	BWMapping_8723B(PADAPTER Adapter, struct pkt_attrib *pattrib);

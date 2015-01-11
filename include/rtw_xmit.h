@@ -505,7 +505,7 @@ struct	xmit_priv	{
 #ifdef CONFIG_SDIO_TX_TASKLET
 	struct tasklet_struct xmit_tasklet;
 #else
-	_thread_hdl_	SdioXmitThread;
+	void *	SdioXmitThread;
 	_sema		SdioXmitSema;
 	_sema		SdioXmitTerminateSema;
 #endif /* CONFIG_SDIO_TX_TASKLET */
@@ -615,7 +615,7 @@ void enqueue_pending_xmitbuf_to_head(struct xmit_priv *pxmitpriv, struct xmit_bu
 struct xmit_buf*	dequeue_pending_xmitbuf(struct xmit_priv *pxmitpriv);
 struct xmit_buf*	dequeue_pending_xmitbuf_under_survey(struct xmit_priv *pxmitpriv);
 sint	check_pending_xmitbuf(struct xmit_priv *pxmitpriv);
-thread_return	rtw_xmit_thread(thread_context context);
+int	rtw_xmit_thread(void * context);
 #endif
 
 static void do_queue_select(_adapter * padapter, struct pkt_attrib * pattrib);

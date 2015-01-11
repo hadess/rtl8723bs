@@ -672,10 +672,10 @@ struct _ADAPTER{
 	u8	init_adpt_in_progress;
 	u8	bHaltInProgress;
 
-	_thread_hdl_ cmdThread;
-	_thread_hdl_ evtThread;
-	_thread_hdl_ xmitThread;
-	_thread_hdl_ recvThread;
+	void * cmdThread;
+	void * evtThread;
+	void * xmitThread;
+	void * recvThread;
 
  	u32 (*intf_init)(struct dvobj_priv *dvobj);
 	void (*intf_deinit)(struct dvobj_priv *dvobj);
