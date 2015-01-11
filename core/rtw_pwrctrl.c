@@ -753,7 +753,7 @@ _func_enter_;
 						pdbgpriv->dbg_wow_leave_ps_fail_cnt++;
 						break;
 					}
-					rtw_usleep_os(100);
+					msleep(1);
 				} while (1); 
 			}
 #endif
@@ -864,7 +864,7 @@ s32 LPS_RF_ON_check(PADAPTER padapter, u32 delay_ms)
 			DBG_871X("%s: Wait for FW LPS leave more than %u ms!!!\n", __FUNCTION__, delay_ms);
 			break;
 		}
-		rtw_usleep_os(100);
+		msleep(1);
 	}
 
 	return err;

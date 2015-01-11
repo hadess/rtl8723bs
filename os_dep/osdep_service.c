@@ -240,15 +240,6 @@ void rtw_sleep_schedulable(int ms)
     return;
 }
 
-void rtw_usleep_os(int us)
-{
-      // msleep((unsigned int)us);
-      if ( 1 < (us/1000) )
-                msleep(1);
-      else
-		msleep( (us/1000) + 1);
-}
-
 #define RTW_SUSPEND_LOCK_NAME "rtw_wifi"
 #define RTW_SUSPEND_EXT_LOCK_NAME "rtw_wifi_ext"
 #define RTW_SUSPEND_RX_LOCK_NAME "rtw_wifi_rx"

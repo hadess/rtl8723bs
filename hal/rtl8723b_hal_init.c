@@ -837,7 +837,7 @@ static void Hal_BT_EfusePowerSwitch(
 		
 		// Attention!! Between 0x6A[14] and 0x6A[15] setting need 100us delay
 		// So don't wirte 0x6A[14]=1 and 0x6A[15]=0 together!
-		rtw_usleep_os(100);
+		msleep(1);
 		// disable BT output isolation
 		// 0x6A[15] = 0
 		tempval = rtw_read8(padapter, 0x6B);
@@ -2838,7 +2838,7 @@ s32 rtl8723b_InitLLTTable(PADAPTER padapter)
 			break;
 		}
 
-		rtw_usleep_os(2);
+		msleep(1);
 	} while(1);
 
 	return ret;

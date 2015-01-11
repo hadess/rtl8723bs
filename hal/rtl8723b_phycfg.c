@@ -700,7 +700,7 @@ PHY_BBConfig8723B(
 
 	rtw_write8(Adapter, REG_RF_CTRL, RF_EN|RF_RSTB|RF_SDMRSTB);
 
-	rtw_usleep_os(10);
+	msleep(1);
 
 	PHY_SetRFReg(Adapter, ODM_RF_PATH_A, 0x1, 0xfffff,0x780); 
 
