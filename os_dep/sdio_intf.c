@@ -780,8 +780,6 @@ static int __init rtw_drv_entry(void)
 		goto exit;
 	}
 
-	rtw_android_wifictrl_func_add();
-
 	goto exit;
 
 exit:
@@ -796,8 +794,6 @@ static void __exit rtw_drv_halt(void)
 	sdio_drvpriv.drv_registered = false;
 
 	sdio_unregister_driver(&sdio_drvpriv.r871xs_drv);
-
-	rtw_android_wifictrl_func_del();
 
 	rtw_suspend_lock_uninit();
 	rtw_drv_proc_deinit();

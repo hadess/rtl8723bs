@@ -57,7 +57,6 @@ _OS_INTFS_FILES :=	os_dep/osdep_service.o \
 			os_dep/recv_linux.o \
 			os_dep/ioctl_cfg80211.o \
 			os_dep/wifi_regd.o \
-			os_dep/rtw_android.o \
 			os_dep/rtw_proc.o \
 			os_dep/sdio_ops_linux.o
 

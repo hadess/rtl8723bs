@@ -119,8 +119,6 @@ typedef struct _ADAPTER _adapter, ADAPTER,*PADAPTER;
 #include <ethernet.h>
 #include <circ_buf.h>
 
-#include <rtw_android.h>
-
 #define SPEC_DEV_ID_NONE BIT(0)
 #define SPEC_DEV_ID_DISABLE_HT BIT(1)
 #define SPEC_DEV_ID_ENABLE_PS BIT(2)
