@@ -37,7 +37,7 @@ int rtw_fw_ps_state(PADAPTER padapter)
 	if(registry_par->check_fw_ps != 1)
 		return _SUCCESS;
 	
-	_enter_pwrlock(&pwrpriv->check_32k_lock);
+	down(&pwrpriv->check_32k_lock);
 	
 	if ((padapter->bSurpriseRemoved == true))
 	{
@@ -67,7 +67,7 @@ int rtw_fw_ps_state(PADAPTER padapter)
 
 
 exit_fw_ps_state:
-	_exit_pwrlock(&pwrpriv->check_32k_lock);
+	up(&pwrpriv->check_32k_lock);
 	return ret;
 }
 
@@ -106,9 +106,9 @@ void ips_enter(_adapter * padapter)
 
 	rtw_btcoex_IpsNotify(padapter, pwrpriv->ips_mode_req);
 
-	_enter_pwrlock(&pwrpriv->lock);
+	down(&pwrpriv->lock);
 	_ips_enter(padapter);
-	_exit_pwrlock(&pwrpriv->lock);
+	up(&pwrpriv->lock);
 }
 
 int _ips_leave(_adapter * padapter)
@@ -148,7 +148,7 @@ int ips_leave(_adapter * padapter)
 	if(!is_primary_adapter(padapter))
 		return _SUCCESS;
 
-	_enter_pwrlock(&pwrpriv->lock);
+	down(&pwrpriv->lock);
 	ret = _ips_leave(padapter);
 #ifdef DBG_CHECK_FW_PS_STATE
 	if(rtw_fw_ps_state(padapter) == _FAIL)
@@ -157,7 +157,7 @@ int ips_leave(_adapter * padapter)
 		pdbgpriv->dbg_leave_ips_fail_cnt++;
 	}
 #endif //DBG_CHECK_FW_PS_STATE
-	_exit_pwrlock(&pwrpriv->lock);
+	up(&pwrpriv->lock);
 
 	if (_SUCCESS == ret)
 		ODM_DMReset(&GET_HAL_DATA(padapter)->odmpriv);
@@ -254,9 +254,9 @@ void rtw_ps_processor(_adapter*padapter)
 #endif //SUPPORT_HW_RFOFF_DETECTED
 	u32 ps_deny = 0;
 
-	_enter_pwrlock(&adapter_to_pwrctl(padapter)->lock);
+	down(&adapter_to_pwrctl(padapter)->lock);
 	ps_deny = rtw_ps_deny_get(padapter);
-	_exit_pwrlock(&adapter_to_pwrctl(padapter)->lock);
+	up(&adapter_to_pwrctl(padapter)->lock);
 	if (ps_deny != 0)
 	{
 		DBG_871X(FUNC_ADPT_FMT ": ps_deny=0x%08X, skip power save!\n",
@@ -690,7 +690,7 @@ _func_enter_;
 	}
 
 #ifdef CONFIG_LPS_LCLK
-	_enter_pwrlock(&pwrpriv->lock);
+	down(&pwrpriv->lock);
 #endif
 
 	//if(pwrpriv->pwr_mode == PS_MODE_ACTIVE)
@@ -825,7 +825,7 @@ _func_enter_;
 	}
 
 #ifdef CONFIG_LPS_LCLK
-	_exit_pwrlock(&pwrpriv->lock);
+	up(&pwrpriv->lock);
 #endif
 
 _func_exit_;
@@ -1013,7 +1013,7 @@ _func_enter_;
 		}
 
 #ifdef CONFIG_LPS_LCLK
-		_enter_pwrlock(&pwrpriv->lock);
+		down(&pwrpriv->lock);
 
 #ifndef CONFIG_DETECT_CPWM_BY_POLLING
 		cpwm_orig = 0;
@@ -1061,7 +1061,7 @@ _func_enter_;
 		} while (1);
 #endif // CONFIG_DETECT_CPWM_BY_POLLING
 
-	_exit_pwrlock(&pwrpriv->lock);
+	up(&pwrpriv->lock);
 #endif
 
 #ifdef CONFIG_LPS
@@ -1190,7 +1190,7 @@ _func_enter_;
 	
 	while(1)
 	{
-		_enter_pwrlock(&pwrpriv->lock);
+		down(&pwrpriv->lock);
 
 		if ((padapter->bSurpriseRemoved == true)
 			|| (padapter->hw_init_completed == false)
@@ -1200,7 +1200,7 @@ _func_enter_;
 			bReady = true;
 		}
 
-		_exit_pwrlock(&pwrpriv->lock);
+		up(&pwrpriv->lock);
 
 		if(true == bReady)
 			break;
@@ -1241,13 +1241,13 @@ _func_enter_;
 	}
 #endif
 
-	_enter_pwrlock(&pwrpriv->lock);
+	down(&pwrpriv->lock);
 
 #ifdef CONFIG_LPS_RPWM_TIMER
 	if (pwrpriv->rpwm < PS_STATE_S2)
 	{
 		DBG_871X("%s: Redundant CPWM Int. RPWM=0x%02X CPWM=0x%02x\n", __func__, pwrpriv->rpwm, pwrpriv->cpwm);
-		_exit_pwrlock(&pwrpriv->lock);
+		up(&pwrpriv->lock);
 		goto exit;
 	}
 #endif // CONFIG_LPS_RPWM_TIMER
@@ -1258,13 +1258,13 @@ _func_enter_;
 	if (pwrpriv->cpwm >= PS_STATE_S2)
 	{
 		if (pwrpriv->alives & CMD_ALIVE)
-			_rtw_up_sema(&padapter->cmdpriv.cmd_queue_sema);
+			up(&padapter->cmdpriv.cmd_queue_sema);
 
 		if (pwrpriv->alives & XMIT_ALIVE)
-			_rtw_up_sema(&padapter->xmitpriv.xmit_sema);
+			up(&padapter->xmitpriv.xmit_sema);
 	}
 
-	_exit_pwrlock(&pwrpriv->lock);
+	up(&pwrpriv->lock);
 
 exit:
 	RT_TRACE(_module_rtl871x_pwrctrl_c_, _drv_notice_,
@@ -1299,13 +1299,13 @@ static void rpwmtimeout_workitem_callback(struct work_struct *work)
 	padapter = dvobj->if1;
 //	DBG_871X("+%s: rpwm=0x%02X cpwm=0x%02X\n", __func__, pwrpriv->rpwm, pwrpriv->cpwm);
 
-	_enter_pwrlock(&pwrpriv->lock);
+	down(&pwrpriv->lock);
 	if ((pwrpriv->rpwm == pwrpriv->cpwm) || (pwrpriv->cpwm >= PS_STATE_S2))
 	{
 		DBG_871X("%s: rpwm=0x%02X cpwm=0x%02X CPWM done!\n", __func__, pwrpriv->rpwm, pwrpriv->cpwm);
 		goto exit;
 	}
-	_exit_pwrlock(&pwrpriv->lock);
+	up(&pwrpriv->lock);
 
 	if (rtw_read8(padapter, 0x100) != 0xEA)
 	{
@@ -1322,7 +1322,7 @@ static void rpwmtimeout_workitem_callback(struct work_struct *work)
 		return;
 	}
 
-	_enter_pwrlock(&pwrpriv->lock);
+	down(&pwrpriv->lock);
 
 	if ((pwrpriv->rpwm == pwrpriv->cpwm) || (pwrpriv->cpwm >= PS_STATE_S2))
 	{
@@ -1334,7 +1334,7 @@ static void rpwmtimeout_workitem_callback(struct work_struct *work)
 	pwrpriv->brpwmtimeout = false;
 
 exit:
-	_exit_pwrlock(&pwrpriv->lock);
+	up(&pwrpriv->lock);
 }
 
 /*
@@ -1398,7 +1398,7 @@ _func_enter_;
 	pwrctrl = adapter_to_pwrctl(padapter);
 	pslv = PS_STATE_S2;
 
-	_enter_pwrlock(&pwrctrl->lock);
+	down(&pwrctrl->lock);
 
 	register_task_alive(pwrctrl, task);
 
@@ -1417,7 +1417,7 @@ _func_enter_;
 		}
 	}
 
-	_exit_pwrlock(&pwrctrl->lock);
+	up(&pwrctrl->lock);
 
 #ifdef CONFIG_DETECT_CPWM_BY_POLLING
 	if (_FAIL == res)
@@ -1462,7 +1462,7 @@ _func_enter_;
 			pslv = PS_STATE_S2;
 	}
 
-	_enter_pwrlock(&pwrctrl->lock);
+	down(&pwrctrl->lock);
 
 	unregister_task_alive(pwrctrl, task);
 
@@ -1480,7 +1480,7 @@ _func_enter_;
 		}
 	}
 
-	_exit_pwrlock(&pwrctrl->lock);
+	up(&pwrctrl->lock);
 
 _func_exit_;
 }
@@ -1510,7 +1510,7 @@ _func_enter_;
 	pwrctrl = adapter_to_pwrctl(padapter);
 	pslv = PS_STATE_S2;
 
-	_enter_pwrlock(&pwrctrl->lock);
+	down(&pwrctrl->lock);
 
 	register_task_alive(pwrctrl, XMIT_ALIVE);
 
@@ -1529,7 +1529,7 @@ _func_enter_;
 		}
 	}
 
-	_exit_pwrlock(&pwrctrl->lock);
+	up(&pwrctrl->lock);
 
 #ifdef CONFIG_DETECT_CPWM_BY_POLLING
 	if (_FAIL == res)
@@ -1569,7 +1569,7 @@ _func_enter_;
 	pwrctrl = adapter_to_pwrctl(padapter);
 	pslv = PS_STATE_S2;
 
-	_enter_pwrlock(&pwrctrl->lock);
+	down(&pwrctrl->lock);
 
 	register_task_alive(pwrctrl, CMD_ALIVE);
 
@@ -1588,7 +1588,7 @@ _func_enter_;
 		}
 	}
 
-	_exit_pwrlock(&pwrctrl->lock);
+	up(&pwrctrl->lock);
 
 #ifdef CONFIG_DETECT_CPWM_BY_POLLING
 	if (_FAIL == res)
@@ -1620,14 +1620,14 @@ _func_enter_;
 
 	pwrctrl = adapter_to_pwrctl(padapter);
 
-	_enter_pwrlock(&pwrctrl->lock);
+	down(&pwrctrl->lock);
 
 	register_task_alive(pwrctrl, RECV_ALIVE);
 	RT_TRACE(_module_rtl871x_pwrctrl_c_, _drv_notice_,
 			 ("rtw_register_rx_alive: cpwm=0x%02x alives=0x%08x\n",
 			  pwrctrl->cpwm, pwrctrl->alives));
 
-	_exit_pwrlock(&pwrctrl->lock);
+	up(&pwrctrl->lock);
 
 _func_exit_;
 
@@ -1651,14 +1651,14 @@ _func_enter_;
 
 	pwrctrl = adapter_to_pwrctl(padapter);
 
-	_enter_pwrlock(&pwrctrl->lock);
+	down(&pwrctrl->lock);
 
 	register_task_alive(pwrctrl, EVT_ALIVE);
 	RT_TRACE(_module_rtl871x_pwrctrl_c_, _drv_notice_,
 			 ("rtw_register_evt_alive: cpwm=0x%02x alives=0x%08x\n",
 			  pwrctrl->cpwm, pwrctrl->alives));
 
-	_exit_pwrlock(&pwrctrl->lock);
+	up(&pwrctrl->lock);
 
 _func_exit_;
 
@@ -1692,7 +1692,7 @@ _func_enter_;
 			pslv = PS_STATE_S2;
 	}
 
-	_enter_pwrlock(&pwrctrl->lock);
+	down(&pwrctrl->lock);
 
 	unregister_task_alive(pwrctrl, XMIT_ALIVE);
 
@@ -1710,7 +1710,7 @@ _func_enter_;
 		}
 	}
 
-	_exit_pwrlock(&pwrctrl->lock);
+	up(&pwrctrl->lock);
 
 _func_exit_;
 }
@@ -1742,7 +1742,7 @@ _func_enter_;
 			pslv = PS_STATE_S2;
 	}
 
-	_enter_pwrlock(&pwrctrl->lock);
+	down(&pwrctrl->lock);
 
 	unregister_task_alive(pwrctrl, CMD_ALIVE);
 
@@ -1760,7 +1760,7 @@ _func_enter_;
 		}
 	}
 
-	_exit_pwrlock(&pwrctrl->lock);
+	up(&pwrctrl->lock);
 
 _func_exit_;
 }
@@ -1776,7 +1776,7 @@ _func_enter_;
 
 	pwrctrl = adapter_to_pwrctl(padapter);
 
-	_enter_pwrlock(&pwrctrl->lock);
+	down(&pwrctrl->lock);
 
 	unregister_task_alive(pwrctrl, RECV_ALIVE);
 
@@ -1784,7 +1784,7 @@ _func_enter_;
 			 ("rtw_unregister_rx_alive: cpwm=0x%02x alives=0x%08x\n",
 			  pwrctrl->cpwm, pwrctrl->alives));
 
-	_exit_pwrlock(&pwrctrl->lock);
+	up(&pwrctrl->lock);
 
 _func_exit_;
 }
@@ -1803,7 +1803,7 @@ _func_enter_;
 			 ("rtw_unregister_evt_alive: cpwm=0x%02x alives=0x%08x\n",
 			  pwrctrl->cpwm, pwrctrl->alives));
 
-	_exit_pwrlock(&pwrctrl->lock);
+	up(&pwrctrl->lock);
 
 _func_exit_;
 }
@@ -1824,8 +1824,8 @@ void rtw_init_pwrctrl_priv(PADAPTER padapter)
 
 _func_enter_;
 
-	_init_pwrlock(&pwrctrlpriv->lock);
-	_init_pwrlock(&pwrctrlpriv->check_32k_lock);
+	sema_init(&pwrctrlpriv->lock, 1);
+	sema_init(&pwrctrlpriv->check_32k_lock, 1);
 	pwrctrlpriv->rf_pwrstate = rf_on;
 	pwrctrlpriv->ips_enter_cnts=0;
 	pwrctrlpriv->ips_leave_cnts=0;
@@ -1932,9 +1932,6 @@ _func_enter_;
 	if (pwrctrlpriv->pno_ssid_list != NULL)
 		printk("****** pno_ssid_list memory leak********\n");
 #endif
-
-	_free_pwrlock(&pwrctrlpriv->lock);
-	_free_pwrlock(&pwrctrlpriv->check_32k_lock);
 
 _func_exit_;
 }
@@ -2170,14 +2167,14 @@ void rtw_ps_deny(PADAPTER padapter, PS_DENY_REASON reason)
 
 	pwrpriv = adapter_to_pwrctl(padapter);
 
-	_enter_pwrlock(&pwrpriv->lock);
+	down(&pwrpriv->lock);
 	if (pwrpriv->ps_deny & BIT(reason))
 	{
 		DBG_871X(FUNC_ADPT_FMT ": [WARNING] Reason %d had been set before!!\n",
 			FUNC_ADPT_ARG(padapter), reason);
 	}
 	pwrpriv->ps_deny |= BIT(reason);
-	_exit_pwrlock(&pwrpriv->lock);
+	up(&pwrpriv->lock);
 
 //	DBG_871X("-" FUNC_ADPT_FMT ": Now PS deny for 0x%08X\n",
 //		FUNC_ADPT_ARG(padapter), pwrpriv->ps_deny);
@@ -2197,14 +2194,14 @@ void rtw_ps_deny_cancel(PADAPTER padapter, PS_DENY_REASON reason)
 
 	pwrpriv = adapter_to_pwrctl(padapter);
 
-	_enter_pwrlock(&pwrpriv->lock);
+	down(&pwrpriv->lock);
 	if ((pwrpriv->ps_deny & BIT(reason)) == 0)
 	{
 		DBG_871X(FUNC_ADPT_FMT ": [ERROR] Reason %d had been canceled before!!\n",
 			FUNC_ADPT_ARG(padapter), reason);
 	}
 	pwrpriv->ps_deny &= ~BIT(reason);
-	_exit_pwrlock(&pwrpriv->lock);
+	up(&pwrpriv->lock);
 
 //	DBG_871X("-" FUNC_ADPT_FMT ": Now PS deny for 0x%08X\n",
 //		FUNC_ADPT_ARG(padapter), pwrpriv->ps_deny);

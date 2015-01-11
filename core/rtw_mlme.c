@@ -2461,7 +2461,7 @@ void _rtw_join_timeout_handler (_adapter *adapter)
 
 #if 0
 	if (adapter->bDriverStopped == true){
-		_rtw_up_sema(&pmlmepriv->assoc_terminate);
+		up(&pmlmepriv->assoc_terminate);
 		return;
 	}
 #endif	
@@ -3231,7 +3231,7 @@ _func_enter_;
 
 		_rtw_init_listhead(&pcmd->list);
 
-		//_rtw_init_sema(&(pcmd->cmd_sem), 0);
+		//sema_init(&(pcmd->cmd_sem), 0);
 
 		res = rtw_enqueue_cmd(pcmdpriv, pcmd);
 	}

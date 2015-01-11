@@ -71,8 +71,8 @@ _func_enter_;
 	
 	_rtw_spinlock_init(&pxmitpriv->lock);
 	_rtw_spinlock_init(&pxmitpriv->lock_sctx);
-	_rtw_init_sema(&pxmitpriv->xmit_sema, 0);
-	_rtw_init_sema(&pxmitpriv->terminate_xmitthread_sema, 0);
+	sema_init(&pxmitpriv->xmit_sema, 0);
+	sema_init(&pxmitpriv->terminate_xmitthread_sema, 0);
 
 	/* 
 	Please insert all the queue initializaiton using _rtw_init_queue below
@@ -314,8 +314,6 @@ void  rtw_mfree_xmit_priv_lock (struct xmit_priv *pxmitpriv);
 void  rtw_mfree_xmit_priv_lock (struct xmit_priv *pxmitpriv)
 {
 	_rtw_spinlock_free(&pxmitpriv->lock);
-	_rtw_free_sema(&pxmitpriv->xmit_sema);
-	_rtw_free_sema(&pxmitpriv->terminate_xmitthread_sema);
 
 	_rtw_spinlock_free(&pxmitpriv->be_pending.lock);
 	_rtw_spinlock_free(&pxmitpriv->bk_pending.lock);
@@ -4431,7 +4429,7 @@ void enqueue_pending_xmitbuf(
 	if (pri_adapter->adapter_type > PRIMARY_ADAPTER)
 		pri_adapter = pri_adapter->pbuddy_adapter;
 #endif  //CONCURRENT
-	_rtw_up_sema(&(pri_adapter->xmitpriv.xmit_sema));
+	up(&(pri_adapter->xmitpriv.xmit_sema));
 
 }
 
@@ -4558,7 +4556,7 @@ int rtw_xmit_thread(void * context)
 		flush_signals_thread();
 	} while (_SUCCESS == err);
 
-	_rtw_up_sema(&padapter->xmitpriv.terminate_xmitthread_sema);
+	up(&padapter->xmitpriv.terminate_xmitthread_sema);
 
 	thread_exit();
 }

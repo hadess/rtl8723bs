@@ -200,7 +200,7 @@ void rtw_os_xmit_schedule(_adapter *padapter)
 #endif
 
 	if (_rtw_queue_empty(&padapter->xmitpriv.pending_xmitbuf_queue) == false)
-		_rtw_up_sema(&pri_adapter->xmitpriv.xmit_sema);
+		up(&pri_adapter->xmitpriv.xmit_sema);
 }
 
 static void rtw_check_xmit_resource(_adapter *padapter, _pkt *pkt)

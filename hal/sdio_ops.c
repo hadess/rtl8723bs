@@ -1532,7 +1532,7 @@ void sd_int_dpc(PADAPTER padapter)
 		//	freepage[1],
 		//	freepage[2],
 		//	freepage[3]);
-		_rtw_up_sema(&(padapter->xmitpriv.xmit_sema));
+		up(&(padapter->xmitpriv.xmit_sema));
 	}
 #endif
 	if (phal->sdio_hisr & SDIO_HISR_CPWM1)
