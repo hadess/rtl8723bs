@@ -2537,7 +2537,7 @@ void rtw_dev_unload(PADAPTER padapter)
 			} else {
 				cnt ++;
 				DBG_871X("cmdthd is running(%d)\n", cnt);
-				rtw_msleep_os(10);
+				msleep(10);
 			}
 		}
 
@@ -2952,7 +2952,7 @@ int rtw_suspend_common(_adapter *padapter)
 	pwrpriv->bInSuspend = true;
 	
 	while (pwrpriv->bips_processing == true)
-		rtw_msleep_os(1);		
+		msleep(1);		
 
 #ifdef CONFIG_IOL_READ_EFUSE_MAP
 	if(!padapter->bup){

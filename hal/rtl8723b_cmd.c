@@ -44,7 +44,7 @@ static u8 _is_fw_read_cmd_down(_adapter* padapter, u8 msgbox_num)
 		}
 #ifdef CONFIG_WOWLAN
 		else
-			rtw_msleep_os(1);  		
+			msleep(1);  		
 #endif
 	}while( (!read_down) && (retry_cnts--));
 
@@ -1011,7 +1011,7 @@ static void rtl8723b_set_FwAoacRsvdPage_cmd(PADAPTER padapter, PRSVDPAGE_LOC rsv
 			_rtw_memset(&u1H2CAoacRsvdPageParm, 0, sizeof(u1H2CAoacRsvdPageParm));
 			SET_H2CCMD_AOAC_RSVDPAGE_LOC_NLO_INFO(u1H2CAoacRsvdPageParm, rsvdpageloc->LocPNOInfo);
 			FillH2CCmd8723B(padapter, H2C_AOAC_RSVDPAGE3, H2C_AOAC_RSVDPAGE_LOC_LEN, u1H2CAoacRsvdPageParm);
-			rtw_msleep_os(10);
+			msleep(10);
 		}
 #endif
 	}
@@ -1041,7 +1041,7 @@ static void rtl8723b_set_ap_wow_rsvdpage_cmd(PADAPTER padapter,
 	FillH2CCmd8723B(padapter, H2C_8723B_BCN_RSVDPAGE,
 			H2C_BCN_RSVDPAGE_LEN, rsvdparm);
 
-	rtw_msleep_os(10);
+	msleep(10);
 
 	_rtw_memset(&rsvdparm, 0, sizeof(rsvdparm));
 
@@ -1052,7 +1052,7 @@ static void rtl8723b_set_ap_wow_rsvdpage_cmd(PADAPTER padapter,
 	FillH2CCmd8723B(padapter, H2C_8723B_PROBERSP_RSVDPAGE,
 			H2C_PROBERSP_RSVDPAGE_LEN, rsvdparm);
 
-	rtw_msleep_os(10);
+	msleep(10);
 }
 #endif //CONFIG_AP_WOWLAN
 
@@ -1461,7 +1461,7 @@ exit:
 			DBG_871X("[%d] cmd: 0x81 REG_PNO_STATUS: 0x%02x\n", count, res);
 			res = rtw_read8(padapter, REG_PNO_STATUS);
 			count++;
-			rtw_msleep_os(2);
+			msleep(2);
 		}
 		DBG_871X("cmd: 0x81 REG_PNO_STATUS: 0x%02x\n", res);
 	}
@@ -1500,7 +1500,7 @@ static void rtl8723b_set_FwScanOffloadInfo_cmd(PADAPTER padapter, PRSVDPAGE_LOC 
 	RT_PRINT_DATA(_module_hal_init_c_, _drv_always_, "u1H2CScanOffloadInfoParm:", u1H2CScanOffloadInfoParm, H2C_SCAN_OFFLOAD_CTRL_LEN);
 	FillH2CCmd8723B(padapter, H2C_8723B_D0_SCAN_OFFLOAD_INFO, H2C_SCAN_OFFLOAD_CTRL_LEN, u1H2CScanOffloadInfoParm);
 
-	rtw_msleep_os(20);
+	msleep(20);
 }
 #endif //CONFIG_PNO_SUPPORT
 
@@ -1621,20 +1621,20 @@ _func_enter_;
 		else
 			DBG_871X("%s(): Disconnected, no FwMediaStatusRpt CONNECT\n",__FUNCTION__);
 
-		rtw_msleep_os(2);
+		msleep(2);
 
 		if(!(ppwrpriv->wowlan_pno_enable)) {
 		rtl8723b_set_FwDisconDecision_cmd(padapter, enable);
-		rtw_msleep_os(2);
+		msleep(2);
 		
 			if ((psecpriv->dot11PrivacyAlgrthm != _WEP40_) || (psecpriv->dot11PrivacyAlgrthm != _WEP104_))
 				pkt_type = 1;
 			rtl8723b_set_FwKeepAlive_cmd(padapter, enable, pkt_type);
-		rtw_msleep_os(2);
+		msleep(2);
 		}
 
 		rtl8723b_set_FwWoWlanCtrl_Cmd(padapter, enable);
-		rtw_msleep_os(2);
+		msleep(2);
 
 		rtl8723b_set_FwRemoteWakeCtrl_Cmd(padapter, enable);
 	}
@@ -1644,7 +1644,7 @@ _func_enter_;
 		dump_TX_FIFO(padapter, 11, 128);
 #endif
 		rtl8723b_set_FwRemoteWakeCtrl_Cmd(padapter, enable);
-		rtw_msleep_os(2);			
+		msleep(2);			
 		rtl8723b_set_FwWoWlanCtrl_Cmd(padapter, enable);
 	}
 	
@@ -1736,9 +1736,9 @@ _func_enter_;
 		dump_TX_FIFO(padapter);
 #endif
 	rtl8723b_set_FwAPWoWlanCtrl_Cmd(padapter, enable);
-	rtw_msleep_os(10);
+	msleep(10);
 	rtl8723b_set_Fw_AP_Offload_Cmd(padapter, enable);
-	rtw_msleep_os(10);
+	msleep(10);
 _func_exit_;
 	DBG_871X_LEVEL(_drv_always_, "-%s()-\n", __func__);
 	return ;

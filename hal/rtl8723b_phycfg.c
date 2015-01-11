@@ -1056,7 +1056,7 @@ phy_SpurCalibration_8723B(
 		PHY_SetBBReg(pAdapter, rFPGA0_PSDFunction, bMaskDWord, freq[idx]); 				// Setup PSD
 		PHY_SetBBReg(pAdapter, rFPGA0_PSDFunction, bMaskDWord, 0x400000 | freq[idx]); // Start PSD	
 
-		rtw_msleep_os(30);
+		msleep(30);
 
 		if(PHY_QueryBBReg(pAdapter, rFPGA0_PSDReport, bMaskDWord) >= threshold)
 			b_doNotch = true;

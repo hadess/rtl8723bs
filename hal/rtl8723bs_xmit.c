@@ -46,7 +46,7 @@ static u8 rtw_sdio_wait_enough_TxOQT_space(PADAPTER padapter, u8 agg_num)
 				DBG_871X("%s(%d): QOT free space(%d), agg_num: %d\n",
  				__func__, n, pHalData->SdioTxOQTFreeSpace, agg_num);
 			}	
-			rtw_msleep_os(1);
+			msleep(1);
 			//yield();
 		}
 	}
@@ -131,7 +131,7 @@ query_free_page:
 		if ((polling_num % 0x7F) == 0) {//or 80
 			//DBG_871X("%s: FIFO starvation!(%d) len=%d agg=%d page=(R)%d(A)%d\n",
 			//	__func__, polling_num, pxmitbuf->len, pxmitbuf->agg_num, pframe->pg_num, freePage[PageIdx] + freePage[PUBLIC_QUEUE_IDX]);
-			rtw_msleep_os(1);
+			msleep(1);
 		}
 
 		// Total number of page is NOT available, so update current FIFO status
@@ -536,7 +536,7 @@ next:
 		//here sleep 1ms will cause big TP loss of TX
 		//from 50+ to 40+
 		if(padapter->registrypriv.wifi_spec)
-			rtw_msleep_os(1);
+			msleep(1);
 		else
 			yield();
 		goto next;

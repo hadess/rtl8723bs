@@ -151,7 +151,7 @@ _func_enter_;
 #ifdef CONFIG_C2H_WK
 	_cancel_workitem_sync(&pevtpriv->c2h_wk);
 	while(pevtpriv->c2h_wk_alive)
-		rtw_msleep_os(10);
+		msleep(10);
 
 	while (!rtw_cbuf_empty(pevtpriv->c2h_queue)) {
 		void *c2h;
@@ -2937,7 +2937,7 @@ static void rtw_chk_hi_queue_hdl(_adapter *padapter)
 
 	while(false == empty && jiffies_to_msecs(jiffies - start) < g_wait_hiq_empty)
 	{
-		rtw_msleep_os(100);
+		msleep(100);
 		rtw_hal_get_hwreg(padapter, HW_VAR_CHK_HI_QUEUE_EMPTY, &empty);
 	}
 

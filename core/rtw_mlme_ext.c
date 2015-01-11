@@ -3067,7 +3067,7 @@ s32 dump_mgntframe_and_wait_ack(_adapter *padapter, struct xmit_frame *pmgntfram
 	 return ret;
 #else //!CONFIG_XMIT_ACK
 	dump_mgntframe(padapter, pmgntframe);
-	rtw_msleep_os(50);
+	msleep(50);
 	return _SUCCESS;
 #endif //!CONFIG_XMIT_ACK	 
 }
@@ -3649,7 +3649,7 @@ int issue_probereq_ex(_adapter *padapter, NDIS_802_11_SSID *pssid, u8 *da, u8 ch
 			break;
 
 		if(i < try_cnt && wait_ms > 0 && ret==_FAIL)
-			rtw_msleep_os(wait_ms);
+			msleep(wait_ms);
 
 	}while((i<try_cnt) && ((ret==_FAIL)||(wait_ms==0)));
 
@@ -4327,7 +4327,7 @@ int issue_nulldata(_adapter *padapter, unsigned char *da, unsigned int power_mod
 			break;
 
 		if(i < try_cnt && wait_ms > 0 && ret==_FAIL)
-			rtw_msleep_os(wait_ms);
+			msleep(wait_ms);
 
 	}while((i<try_cnt) && ((ret==_FAIL)||(wait_ms==0)));
 
@@ -4486,7 +4486,7 @@ int issue_qos_nulldata(_adapter *padapter, unsigned char *da, u16 tid, int try_c
 			break;
 
 		if(i < try_cnt && wait_ms > 0 && ret==_FAIL)
-			rtw_msleep_os(wait_ms);
+			msleep(wait_ms);
 
 	}while((i<try_cnt) && ((ret==_FAIL)||(wait_ms==0)));
 
@@ -4597,7 +4597,7 @@ int issue_deauth_ex(_adapter *padapter, u8 *da, unsigned short reason, int try_c
 			break;
 
 		if(i < try_cnt && wait_ms > 0 && ret==_FAIL)
-			rtw_msleep_os(wait_ms);
+			msleep(wait_ms);
 
 	}while((i<try_cnt) && ((ret==_FAIL)||(wait_ms==0)));
 
@@ -8581,7 +8581,7 @@ u8 chk_bmc_sleepq_hdl(_adapter *padapter, unsigned char *pbuf)
 
 	if((pstapriv->tim_bitmap&BIT(0)) && (psta_bmc->sleepq_len>0))
 	{
-		rtw_msleep_os(10);// 10ms, ATIM(HIQ) Windows
+		msleep(10);// 10ms, ATIM(HIQ) Windows
 
 		//_enter_critical_bh(&psta_bmc->sleep_q.lock, &irqL);
 		_enter_critical_bh(&pxmitpriv->lock, &irqL);

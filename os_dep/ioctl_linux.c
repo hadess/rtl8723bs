@@ -2106,7 +2106,7 @@ static int rtw_wx_get_scan(struct net_device *dev, struct iw_request_info *a,
 #ifdef CONFIG_DUALMAC_CONCURRENT
 	while(dc_check_fwstate(padapter, wait_status)== true)
 	{
-		rtw_msleep_os(30);
+		msleep(30);
 		cnt++;
 		if(cnt > wait_for_surveydone )
 			break;
@@ -2115,7 +2115,7 @@ static int rtw_wx_get_scan(struct net_device *dev, struct iw_request_info *a,
 
  	while(check_fwstate(pmlmepriv, wait_status) == true)
 	{	
-		rtw_msleep_os(30);
+		msleep(30);
 		cnt++;
 		if(cnt > wait_for_surveydone )
 			break;
@@ -3685,7 +3685,7 @@ static int rtw_get_ap_info(struct net_device *dev,
   
  	while((check_fwstate(pmlmepriv, (_FW_UNDER_SURVEY|_FW_UNDER_LINKING))) == true)
 	{	
-		rtw_msleep_os(30);
+		msleep(30);
 		cnt++;
 		if(cnt > 100)
 			break;
@@ -6208,7 +6208,7 @@ static int rtw_wowlan_ctrl(struct net_device *dev,
 		padapter->registrypriv.mp_mode = 1;
 
 		while (pwrctrlpriv->bips_processing == true)
-			rtw_msleep_os(1);
+			msleep(1);
 
 		rtw_ps_deny(padapter, PS_DENY_SUSPEND);
 
@@ -6275,7 +6275,7 @@ static int rtw_ap_wowlan_ctrl(struct net_device *dev,
 	if (_rtw_memcmp( extra, "enable", 6 )) {
 		pwrctrlpriv->wowlan_ap_mode = true;
 		while (pwrctrlpriv->bips_processing == true)
-			rtw_msleep_os(1);
+			msleep(1);
 
 		rtw_cancel_all_timer(padapter);
 
@@ -7015,11 +7015,11 @@ static int rtw_mp_efuse_set(struct net_device *dev,
 		// unknown bug workaround, need to fix later
 		addr=0x1ff;
 		rtw_write8(padapter, EFUSE_CTRL+1, (addr & 0xff));
-		rtw_msleep_os(10);
+		msleep(10);
 		rtw_write8(padapter, EFUSE_CTRL+2, ((addr >> 8) & 0x03));
-		rtw_msleep_os(10);
+		msleep(10);
 		rtw_write8(padapter, EFUSE_CTRL+3, 0x72);
-		rtw_msleep_os(10);
+		msleep(10);
 		rtw_read8(padapter, EFUSE_CTRL);
 #endif
 
@@ -7249,11 +7249,11 @@ static int rtw_mp_efuse_set(struct net_device *dev,
 		
 		addr=0x1ff;
 		rtw_write8(padapter, EFUSE_CTRL+1, (addr & 0xff));
-		rtw_msleep_os(10);
+		msleep(10);
 		rtw_write8(padapter, EFUSE_CTRL+2, ((addr >> 8) & 0x03));
-		rtw_msleep_os(10);
+		msleep(10);
 		rtw_write8(padapter, EFUSE_CTRL+3, 0x72);
-		rtw_msleep_os(10);
+		msleep(10);
 		rtw_read8(padapter, EFUSE_CTRL);
 
 		addr = simple_strtoul(tmp[1], &ptmp, 16);
@@ -7372,11 +7372,11 @@ static int rtw_mp_efuse_set(struct net_device *dev,
 
 		addr=0x1ff;
 		rtw_write8(padapter, EFUSE_CTRL+1, (addr & 0xff));
-		rtw_msleep_os(10);
+		msleep(10);
 		rtw_write8(padapter, EFUSE_CTRL+2, ((addr >> 8) & 0x03));
-		rtw_msleep_os(10);
+		msleep(10);
 		rtw_write8(padapter, EFUSE_CTRL+3, 0x72);
-		rtw_msleep_os(10);
+		msleep(10);
 		rtw_read8(padapter, EFUSE_CTRL);
 
 		_rtw_memcpy(pEfuseHal->BTEfuseModifiedMap, pEfuseHal->fakeBTEfuseModifiedMap, EFUSE_BT_MAX_MAP_LEN);

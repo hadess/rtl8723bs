@@ -314,10 +314,6 @@ void rtw_sleep_schedulable(int ms)
     return;
 }
 
-void rtw_msleep_os(int ms)
-{
-  	msleep((unsigned int)ms);
-}
 void rtw_usleep_os(int us)
 {
       // msleep((unsigned int)us);

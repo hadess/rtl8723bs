@@ -257,7 +257,7 @@ void halbtcoutsrc_LeaveLowPower(PBTC_COEXIST pBtCoexist)
 		if (utime > timeout)
 			break;
 
-		rtw_msleep_os(1);
+		msleep(1);
 	} while (1);
 #endif // CONFIG_LPS_LCLK
 }
@@ -1205,7 +1205,7 @@ void halbtcoutsrc_SetBtReg(void *pBtcContext, u8 RegType, u32 RegAddr, u32 Data)
 	CmdBuffer1[2] = ValueToSet[0]; 							/* Set WriteRegValue */
 	rtw_hal_fill_h2c_cmd(padapter, 0x67, 4, &(CmdBuffer1[0]));
 
-	rtw_msleep_os(200);
+	msleep(200);
 	ReqNum++;
 
 	CmdBuffer2[0] |= (OperVer & 0x0f);						/* Set OperVer */

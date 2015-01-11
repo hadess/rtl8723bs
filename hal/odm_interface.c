@@ -324,7 +324,7 @@ ODM_delay_us(IN u4Byte	us)
 void
 ODM_sleep_ms(IN u4Byte	ms)
 {
-	rtw_msleep_os(ms);
+	msleep(ms);
 }
 
 void

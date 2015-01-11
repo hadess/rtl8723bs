@@ -183,7 +183,6 @@ extern s32	rtw_get_time_interval_ms(u32 start, u32 end);
 
 extern void	rtw_sleep_schedulable(int ms);
 
-extern void	rtw_msleep_os(int ms);
 extern void	rtw_usleep_os(int us);
 
 extern void	rtw_mdelay_os(int ms);

@@ -1297,7 +1297,7 @@ static u32 rtl8723bs_hal_init(PADAPTER padapter)
 				if (rtw_read8(padapter, 0x1e7) & 0x01)
 					break;
 
-				rtw_msleep_os(50);
+				msleep(50);
 			} while (jiffies_to_msecs(jiffies - start_time) <= 400);
 
 			rtw_btcoex_IQKNotify(padapter, true);
@@ -1990,7 +1990,7 @@ _func_enter_;
 							mstatus = rtw_read8(padapter, REG_WOW_CTRL);
 							DBG_871X("Loop index: %d :0x%02x\n", trycnt, mstatus);
 							trycnt --;
-							rtw_msleep_os(2);
+							msleep(2);
 						}
 					} 
 					break;
@@ -2039,7 +2039,7 @@ _func_enter_;
 							mstatus = rtw_read8(padapter, REG_WOW_CTRL);
 							DBG_871X_LEVEL(_drv_always_, "Loop index: %d :0x%02x\n", trycnt, mstatus);
 							trycnt --;
-							rtw_msleep_os(10);
+							msleep(10);
 						}
 		
 						if (mstatus & BIT1) {
@@ -2192,7 +2192,7 @@ _func_enter_;
 			DBG_871X_LEVEL(_drv_always_, "Set Enable AP WOWLan cmd\n");
 			rtl8723b_set_ap_wowlan_cmd(padapter, 1);
 			// 6. add some delay for H2C cmd ready
-			rtw_msleep_os(10);
+			msleep(10);
 
 			rtw_write8(padapter, REG_WOWLAN_WAKE_REASON, 0);
 			break;
@@ -2209,7 +2209,7 @@ _func_enter_;
 			DBG_871X_LEVEL(_drv_always_, "Set Disable WOWLan cmd\n");
 			rtl8723b_set_ap_wowlan_cmd(padapter, 0);
 			// 6. add some delay for H2C cmd ready
-			rtw_msleep_os(2);
+			msleep(2);
 #ifdef DBG_CHECK_FW_PS_STATE
 			if (rtw_fw_ps_state(padapter) == _FAIL) {
 				pdbgpriv->dbg_diswow_dload_fw_fail_cnt++;
