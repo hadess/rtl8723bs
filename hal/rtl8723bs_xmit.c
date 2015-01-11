@@ -382,7 +382,7 @@ static s32 xmit_xmitframes(PADAPTER padapter, struct xmit_priv *pxmitpriv)
 							pxmitbuf->priv_data = NULL;
 							enqueue_pending_xmitbuf(pxmitpriv, pxmitbuf);
 							//can not yield under lock
-							//rtw_yield_os();
+							//yield();
 						} else {
 							rtw_free_xmitbuf(pxmitpriv, pxmitbuf);
 						}
@@ -476,7 +476,7 @@ static s32 xmit_xmitframes(PADAPTER padapter, struct xmit_priv *pxmitpriv)
 				rtw_free_xmitframe(pxmitpriv, pframe);
 				pxmitbuf->priv_data = NULL;
 				enqueue_pending_xmitbuf(pxmitpriv, pxmitbuf);
-				rtw_yield_os();
+				yield();
 			}
 			else
 				rtw_free_xmitbuf(pxmitpriv, pxmitbuf);
@@ -538,7 +538,7 @@ next:
 		if(padapter->registrypriv.wifi_spec)
 			rtw_msleep_os(1);
 		else
-			rtw_yield_os();
+			yield();
 		goto next;
 	}
 

@@ -1186,7 +1186,7 @@ _func_enter_;
 	bReady = false;
 	start_time = jiffies;
 
-	rtw_yield_os();
+	yield();
 	
 	while(1)
 	{
