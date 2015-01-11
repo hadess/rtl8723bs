@@ -122,9 +122,9 @@ void update_recvframe_phyinfo(
 
 	pkt_info.bPacketMatchBSSID = ((!IsFrameTypeCtrl(wlanhdr)) &&
 		!pattrib->icv_err && !pattrib->crc_err &&
-		_rtw_memcmp(get_hdr_bssid(wlanhdr), get_bssid(&padapter->mlmepriv), ETH_ALEN));
+		!memcmp(get_hdr_bssid(wlanhdr), get_bssid(&padapter->mlmepriv), ETH_ALEN));
 
-	pkt_info.bPacketToSelf = pkt_info.bPacketMatchBSSID && (_rtw_memcmp(get_ra(wlanhdr), myid(&padapter->eeprompriv), ETH_ALEN));
+	pkt_info.bPacketToSelf = pkt_info.bPacketMatchBSSID && (!memcmp(get_ra(wlanhdr), myid(&padapter->eeprompriv), ETH_ALEN));
 
 	pkt_info.bPacketBeacon = pkt_info.bPacketMatchBSSID && (GetFrameSubType(wlanhdr) == WIFI_BEACON);
 /*
@@ -207,7 +207,7 @@ static s32 pre_recv_entry(union recv_frame *precvframe, struct recv_buf	*precvbu
 		//primary_myid = myid(&primary_padapter->eeprompriv);
 		secondary_myid = myid(&secondary_padapter->eeprompriv);
 
-		if(_rtw_memcmp(paddr1, secondary_myid, ETH_ALEN))
+		if(!memcmp(paddr1, secondary_myid, ETH_ALEN))
 		{
 			//change to secondary interface
 			precvframe->u.hdr.adapter = secondary_padapter;

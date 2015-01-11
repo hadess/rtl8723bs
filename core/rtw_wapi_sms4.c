@@ -466,7 +466,7 @@ u8 WapiCheckPnInSwDecrypt(
 	else
 		pDaddr = header->addr1;
 
-	if ((_rtw_memcmp(pRaddr, padapter->pnetdev->dev_addr, ETH_ALEN) == 0)
+	if ((memcmp(pRaddr, padapter->pnetdev->dev_addr, ETH_ALEN))
 		&&	! (pDaddr)
 		&& (GetFrameType(&fc) == WIFI_QOS_DATA_TYPE))
 		//&& ieee->pHTInfo->bCurrentHTSupport &&
@@ -608,7 +608,7 @@ void SecSWSMS4Encryption(
 	}else{
 		if (!list_empty(&(pWapiInfo->wapiSTAUsedList))){
 			list_for_each_entry(pWapiSta, &pWapiInfo->wapiSTAUsedList, list) {
-				if (0 == memcmp(pWapiSta->PeerMacAddr, pRA, 6)){
+				if (!memcmp(pWapiSta->PeerMacAddr, pRA, 6)){
 					bFindMatchPeer = true;
 					break;
 				}
@@ -707,7 +707,7 @@ u8 SecSWSMS4Decryption(
 
 	if (!list_empty(&(pWapiInfo->wapiSTAUsedList))){
 		list_for_each_entry(pWapiSta, &pWapiInfo->wapiSTAUsedList, list) {
-			if (0 == memcmp(pWapiSta->PeerMacAddr, pTA, 6)){
+			if (!memcmp(pWapiSta->PeerMacAddr, pTA, 6)){
 				bFindMatchPeer = true;
 				break;
 			}
@@ -815,7 +815,7 @@ u8 SecSWSMS4Decryption(
 	WAPI_DATA(WAPI_RX, "Decryption - MIC received", pRecvMic, SMS4_MIC_LEN);
 	WAPI_DATA(WAPI_RX, "Decryption - MIC calculated", MicBuffer, SMS4_MIC_LEN);
 
-	if (0 == memcmp(MicBuffer, pRecvMic, padapter->wapiInfo.extra_postfix_len)){
+	if (!memcmp(MicBuffer, pRecvMic, padapter->wapiInfo.extra_postfix_len)){
 		WAPI_TRACE(WAPI_RX, "%s: Check MIC OK!!\n", __FUNCTION__);
 		if (bUseUpdatedKey){
 			// delete the old key

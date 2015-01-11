@@ -32,7 +32,7 @@ struct beamforming_entry	*beamforming_get_entry_by_addr(struct mlme_priv *pmlmep
 	for(i = 0; i < BEAMFORMING_ENTRY_NUM; i++)
 	{
 		if(	pBeamInfo->beamforming_entry[i].bUsed && 
-			(_rtw_memcmp(ra,pBeamInfo->beamforming_entry[i].mac_addr, ETH_ALEN)))
+			(!memcmp(ra,pBeamInfo->beamforming_entry[i].mac_addr, ETH_ALEN)))
 		{
 			*idx = i;
 			return &(pBeamInfo->beamforming_entry[i]);
@@ -233,7 +233,7 @@ u32	beamforming_get_report_frame(PADAPTER	 Adapter, union recv_frame *precv_fram
 
 	//DBG_871X("%s MacId %d offset=%d\n", __FUNCTION__, pBeamformEntry->mac_id, offset);
 
-	if(_rtw_memcmp(pBeamformEntry->PreCsiReport + offset, pframe+offset, frame_len-offset) == false)
+	if(memcmp(pBeamformEntry->PreCsiReport + offset, pframe+offset, frame_len-offset))
 	{
 		pBeamformEntry->DefaultCsiCnt = 0;
 		//DBG_871X("%s CSI report is NOT the same with previos one\n", __FUNCTION__);

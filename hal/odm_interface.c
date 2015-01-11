@@ -221,7 +221,7 @@ s4Byte ODM_CompareMemory(
 	IN	u4Byte          length
        )
 {
-	return _rtw_memcmp(pBuf1,pBuf2,length);
+	return !memcmp(pBuf1,pBuf2,length);
 }
 
 //

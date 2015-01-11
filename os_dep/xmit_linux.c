@@ -268,9 +268,9 @@ int rtw_mlcst2unicst(_adapter *padapter, struct sk_buff *skb)
 		}
 		
 		/* avoid come from STA1 and send back STA1 */ 
-		if (_rtw_memcmp(psta->hwaddr, &skb->data[6], 6) == true
-			|| _rtw_memcmp(psta->hwaddr, null_addr, 6) == true
-			|| _rtw_memcmp(psta->hwaddr, bc_addr, 6) == true
+		if (!memcmp(psta->hwaddr, &skb->data[6], 6)
+			|| !memcmp(psta->hwaddr, null_addr, 6)
+			|| !memcmp(psta->hwaddr, bc_addr, 6)
 		)
 		{
 			DBG_COUNTER(padapter->tx_logs.os_tx_m2u_ignore_self);

@@ -1751,8 +1751,8 @@ odm_RSSIMonitorCheckCE(
 
 				plist = get_next(plist);
 
-				if(_rtw_memcmp(psta->hwaddr, bcast_addr, ETH_ALEN) || 
-					_rtw_memcmp(psta->hwaddr, myid(&Adapter->eeprompriv), ETH_ALEN))
+				if(!memcmp(psta->hwaddr, bcast_addr, ETH_ALEN) || 
+					!memcmp(psta->hwaddr, myid(&Adapter->eeprompriv), ETH_ALEN))
 					continue;
 
 				if(psta->state & WIFI_ASOC_STATE)

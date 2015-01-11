@@ -649,8 +649,8 @@ static void _mgt_dispatcher(_adapter *padapter, struct mlme_handler *ptable, uni
 	  if(ptable->func)
         {
        	 //receive the frames that ra(a1) is my address or ra(a1) is bc address.
-		if (!_rtw_memcmp(GetAddr1Ptr(pframe), myid(&padapter->eeprompriv), ETH_ALEN) &&
-			!_rtw_memcmp(GetAddr1Ptr(pframe), bc_addr, ETH_ALEN)) 
+		if (memcmp(GetAddr1Ptr(pframe), myid(&padapter->eeprompriv), ETH_ALEN) &&
+			memcmp(GetAddr1Ptr(pframe), bc_addr, ETH_ALEN)) 
 		{
 			return;
 		}
@@ -696,8 +696,8 @@ void mgt_dispatcher(_adapter *padapter, union recv_frame *precv_frame)
 	}
 
 	//receive the frames that ra(a1) is my address or ra(a1) is bc address.
-	if (!_rtw_memcmp(GetAddr1Ptr(pframe), myid(&padapter->eeprompriv), ETH_ALEN) &&
-		!_rtw_memcmp(GetAddr1Ptr(pframe), bc_addr, ETH_ALEN))
+	if (memcmp(GetAddr1Ptr(pframe), myid(&padapter->eeprompriv), ETH_ALEN) &&
+		memcmp(GetAddr1Ptr(pframe), bc_addr, ETH_ALEN))
 	{
 		return;
 	}
@@ -846,10 +846,10 @@ unsigned int OnProbeReq(_adapter *padapter, union recv_frame *precv_frame)
 		if(!p || ielen !=14)
 			goto _non_rc_device;
 
-		if(!_rtw_memcmp(p+2, RC_OUI, sizeof(RC_OUI)))
+		if(memcmp(p+2, RC_OUI, sizeof(RC_OUI)))
 			goto _non_rc_device;
 
-		if(!_rtw_memcmp(p+6, get_sa(pframe), ETH_ALEN))
+		if(memcmp(p+6, get_sa(pframe), ETH_ALEN))
 		{
 			DBG_871X("%s, do rc pairing ("MAC_FMT"), but mac addr mismatch!("MAC_FMT")\n", __FUNCTION__,
 				MAC_ARG(get_sa(pframe)), MAC_ARG(p+6));
@@ -967,7 +967,7 @@ _non_rc_device:
 			goto _issue_probersp;
 		}
 
-		if ( (ielen != 0 && false ==_rtw_memcmp((void *)(p+2), (void *)cur->Ssid.Ssid, cur->Ssid.SsidLength))
+		if ( (ielen != 0 && false ==!memcmp((void *)(p+2), (void *)cur->Ssid.Ssid, cur->Ssid.SsidLength))
 			|| (ielen == 0 && pmlmeinfo->hidden_ssid_mode)
 		)
 		{
@@ -1009,7 +1009,7 @@ unsigned int OnProbeRsp(_adapter *padapter, union recv_frame *precv_frame)
 	}
 
 	#if 0 //move to validate_recv_mgnt_frame
-	if (_rtw_memcmp(GetAddr3Ptr(pframe), get_my_bssid(&pmlmeinfo->network), ETH_ALEN))
+	if (!memcmp(GetAddr3Ptr(pframe), get_my_bssid(&pmlmeinfo->network), ETH_ALEN))
 	{
 		if (pmlmeinfo->state & WIFI_FW_ASSOC_SUCCESS)
 		{
@@ -1067,7 +1067,7 @@ unsigned int OnBeacon(_adapter *padapter, union recv_frame *precv_frame)
 		return _SUCCESS;
 	}
 
-	if (_rtw_memcmp(GetAddr3Ptr(pframe), get_my_bssid(&pmlmeinfo->network), ETH_ALEN))
+	if (!memcmp(GetAddr3Ptr(pframe), get_my_bssid(&pmlmeinfo->network), ETH_ALEN))
 	{
 		if (pmlmeinfo->state & WIFI_FW_AUTH_NULL)
 		{
@@ -1405,7 +1405,7 @@ unsigned int OnAuth(_adapter *padapter, union recv_frame *precv_frame)
 				goto auth_fail;
 			}
 			
-			if (_rtw_memcmp((void *)(p + 2), pstat->chg_txt, 128))
+			if (!memcmp((void *)(p + 2), pstat->chg_txt, 128))
 			{
 				pstat->state &= (~WIFI_FW_AUTH_STATE);
 				pstat->state |= WIFI_FW_AUTH_SUCCESS;
@@ -1474,7 +1474,7 @@ unsigned int OnAuthClient(_adapter *padapter, union recv_frame *precv_frame)
 	DBG_871X("%s\n", __FUNCTION__);
 
 	//check A1 matches or not
-	if (!_rtw_memcmp(myid(&(padapter->eeprompriv)), get_da(pframe), ETH_ALEN))
+	if (memcmp(myid(&(padapter->eeprompriv)), get_da(pframe), ETH_ALEN))
 		return _SUCCESS;
 
 	if (!(pmlmeinfo->state & WIFI_FW_AUTH_STATE))
@@ -1702,7 +1702,7 @@ unsigned int OnAssocReq(_adapter *padapter, union recv_frame *precv_frame)
 	else
 	{
 		// check if ssid match
-		if (!_rtw_memcmp((void *)(p+2), cur->Ssid.Ssid, cur->Ssid.SsidLength))
+		if (memcmp((void *)(p+2), cur->Ssid.Ssid, cur->Ssid.SsidLength))
 			status = _STATS_FAILURE_;
 
 		if (ie_len != cur->Ssid.SsidLength)
@@ -1908,7 +1908,7 @@ unsigned int OnAssocReq(_adapter *padapter, union recv_frame *precv_frame)
 		{
 			p = rtw_get_ie(p, _VENDOR_SPECIFIC_IE_, &ie_len, pkt_len - WLAN_HDR_A3_LEN - ie_offset);
 			if (p != NULL) {
-				if (_rtw_memcmp(p+2, WMM_IE, 6)) {
+				if (!memcmp(p+2, WMM_IE, 6)) {
 
 					pstat->flags |= WLAN_STA_WME;
 					
@@ -2144,7 +2144,7 @@ unsigned int OnAssocRsp(_adapter *padapter, union recv_frame *precv_frame)
 	DBG_871X("%s\n", __FUNCTION__);
 	
 	//check A1 matches or not
-	if (!_rtw_memcmp(myid(&(padapter->eeprompriv)), get_da(pframe), ETH_ALEN))
+	if (memcmp(myid(&(padapter->eeprompriv)), get_da(pframe), ETH_ALEN))
 		return _SUCCESS;
 
 	if (!(pmlmeinfo->state & (WIFI_FW_AUTH_SUCCESS | WIFI_FW_ASSOC_STATE)))
@@ -2183,7 +2183,7 @@ unsigned int OnAssocRsp(_adapter *padapter, union recv_frame *precv_frame)
 		switch (pIE->ElementID)
 		{
 			case _VENDOR_SPECIFIC_IE_:
-				if (_rtw_memcmp(pIE->data, WMM_PARA_OUI, 6))	//WMM
+				if (!memcmp(pIE->data, WMM_PARA_OUI, 6))	//WMM
 				{
 					WMM_param_handler(padapter, pIE);
 				}
@@ -2244,7 +2244,7 @@ unsigned int OnDeAuth(_adapter *padapter, union recv_frame *precv_frame)
 	u8 *pframe = precv_frame->u.hdr.rx_data;
 
 	//check A3
-	if (!(_rtw_memcmp(GetAddr3Ptr(pframe), get_my_bssid(&pmlmeinfo->network), ETH_ALEN)))
+	if (memcmp(GetAddr3Ptr(pframe), get_my_bssid(&pmlmeinfo->network), ETH_ALEN))
 		return _SUCCESS;
 
 	reason = le16_to_cpu(*(unsigned short *)(pframe + WLAN_HDR_A3_LEN));
@@ -2332,7 +2332,7 @@ unsigned int OnDisassoc(_adapter *padapter, union recv_frame *precv_frame)
 	u8 *pframe = precv_frame->u.hdr.rx_data;
 
 	//check A3
-	if (!(_rtw_memcmp(GetAddr3Ptr(pframe), get_my_bssid(&pmlmeinfo->network), ETH_ALEN)))
+	if (memcmp(GetAddr3Ptr(pframe), get_my_bssid(&pmlmeinfo->network), ETH_ALEN))
 		return _SUCCESS;
 
 	reason = le16_to_cpu(*(unsigned short *)(pframe + WLAN_HDR_A3_LEN));
@@ -2521,12 +2521,12 @@ unsigned int OnAction_back(_adapter *padapter, union recv_frame *precv_frame)
 	DBG_871X("%s\n", __FUNCTION__);
 
 	//check RA matches or not	
-	if (!_rtw_memcmp(myid(&(padapter->eeprompriv)), GetAddr1Ptr(pframe), ETH_ALEN))//for if1, sta/ap mode
+	if (memcmp(myid(&(padapter->eeprompriv)), GetAddr1Ptr(pframe), ETH_ALEN))//for if1, sta/ap mode
 		return _SUCCESS;
 
 /*
 	//check A1 matches or not
-	if (!_rtw_memcmp(myid(&(padapter->eeprompriv)), get_da(pframe), ETH_ALEN))
+	if (memcmp(myid(&(padapter->eeprompriv)), get_da(pframe), ETH_ALEN))
 		return _SUCCESS;
 */
 
@@ -2700,7 +2700,7 @@ unsigned int on_action_public_vendor(union recv_frame *precv_frame)
 	uint frame_len = precv_frame->u.hdr.len;
 	u8 *frame_body = pframe + sizeof(struct rtw_ieee80211_hdr_3addr);
 
-	if (_rtw_memcmp(frame_body + 2, P2P_OUI, 4) == true) {
+	if (!memcmp(frame_body + 2, P2P_OUI, 4)) {
 		ret = on_action_public_p2p(precv_frame);
 	}
 
@@ -2741,7 +2741,7 @@ unsigned int on_action_public(_adapter *padapter, union recv_frame *precv_frame)
 	u8 category, action;
 
 	/* check RA matches or not */
-	if (!_rtw_memcmp(myid(&(padapter->eeprompriv)), GetAddr1Ptr(pframe), ETH_ALEN))
+	if (memcmp(myid(&(padapter->eeprompriv)), GetAddr1Ptr(pframe), ETH_ALEN))
 		goto exit;
 
 	category = frame_body[0];
@@ -2770,7 +2770,7 @@ unsigned int OnAction_ht(_adapter *padapter, union recv_frame *precv_frame)
 	u8 category, action;
 
 	/* check RA matches or not */
-	if (!_rtw_memcmp(myid(&(padapter->eeprompriv)), GetAddr1Ptr(pframe), ETH_ALEN))
+	if (memcmp(myid(&(padapter->eeprompriv)), GetAddr1Ptr(pframe), ETH_ALEN))
 		goto exit;
 
 	category = frame_body[0];
@@ -3928,7 +3928,7 @@ void issue_asocrsp(_adapter *padapter, unsigned short status, struct sta_info *p
 		for (pbuf = ie + _BEACON_IE_OFFSET_; ;pbuf+= (ie_len + 2))
 		{			
 			pbuf = rtw_get_ie(pbuf, _VENDOR_SPECIFIC_IE_, &ie_len, (pnetwork->IELength - _BEACON_IE_OFFSET_ - (ie_len + 2)));	
-			if(pbuf && _rtw_memcmp(pbuf+2, WMM_PARA_IE, 6)) 
+			if(pbuf && !memcmp(pbuf+2, WMM_PARA_IE, 6)) 
 			{				
 				_rtw_memcpy(pframe, pbuf, ie_len+2);
 				pframe += (ie_len+2);
@@ -4119,12 +4119,12 @@ void issue_assocreq(_adapter *padapter)
 		switch (pIE->ElementID)
 		{
 			case _VENDOR_SPECIFIC_IE_:
-				if ((_rtw_memcmp(pIE->data, RTW_WPA_OUI, 4)) ||
-						(_rtw_memcmp(pIE->data, WMM_OUI, 4)) ||
-						(_rtw_memcmp(pIE->data, WPS_OUI, 4)))
+				if ((!memcmp(pIE->data, RTW_WPA_OUI, 4)) ||
+						(!memcmp(pIE->data, WMM_OUI, 4)) ||
+						(!memcmp(pIE->data, WPS_OUI, 4)))
 				{	
 					vs_ie_length = pIE->Length;
-					if((!padapter->registrypriv.wifi_spec) && (_rtw_memcmp(pIE->data, WPS_OUI, 4)))
+					if((!padapter->registrypriv.wifi_spec) && (!memcmp(pIE->data, WPS_OUI, 4)))
 					{
 						//Commented by Kurt 20110629
 						//In some older APs, WPS handshake
@@ -5907,7 +5907,7 @@ unsigned int receive_disconnect(_adapter *padapter, unsigned char *MacAddr, unsi
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 
 	//check A3
-	if (!(_rtw_memcmp(MacAddr, get_my_bssid(&pmlmeinfo->network), ETH_ALEN)))
+	if (!(!memcmp(MacAddr, get_my_bssid(&pmlmeinfo->network), ETH_ALEN)))
 		return _SUCCESS;
 
 	DBG_871X("%s\n", __FUNCTION__);
@@ -7887,7 +7887,7 @@ u8 join_cmd_hdl(_adapter *padapter, u8 *pbuf)
 		switch (pIE->ElementID)
 		{
 			case _VENDOR_SPECIFIC_IE_://Get WMM IE.
-				if ( _rtw_memcmp(pIE->data, WMM_OUI, 4) )
+				if ( !memcmp(pIE->data, WMM_OUI, 4) )
 				{
 					WMM_param_handler(padapter, pIE);
 				}

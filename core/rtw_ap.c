@@ -1547,7 +1547,7 @@ int rtw_check_beacon_data(_adapter *padapter, u8 *pbuf,  int len)
 	for (p = ie + _BEACON_IE_OFFSET_; ;p += (ie_len + 2))
 	{
 		p = rtw_get_ie(p, _SSN_IE_1_, &ie_len, (pbss_network->IELength - _BEACON_IE_OFFSET_ - (ie_len + 2)));		
-		if ((p) && (_rtw_memcmp(p+2, OUI1, 4)))
+		if ((p) && (!memcmp(p+2, OUI1, 4)))
 		{
 			if(rtw_parse_wpa_ie(p, ie_len+2, &group_cipher, &pairwise_cipher, NULL) == _SUCCESS)
 			{
@@ -1620,7 +1620,7 @@ int rtw_check_beacon_data(_adapter *padapter, u8 *pbuf,  int len)
 		for (p = ie + _BEACON_IE_OFFSET_; ;p += (ie_len + 2))
 		{			
 			p = rtw_get_ie(p, _VENDOR_SPECIFIC_IE_, &ie_len, (pbss_network->IELength - _BEACON_IE_OFFSET_ - (ie_len + 2)));	
-			if((p) && _rtw_memcmp(p+2, WMM_PARA_IE, 6)) 
+			if((p) && !memcmp(p+2, WMM_PARA_IE, 6)) 
 			{
 				pmlmepriv->qospriv.qos_option = 1;	
 
@@ -1853,7 +1853,7 @@ int rtw_acl_add_sta(_adapter *padapter, u8 *addr)
 		paclnode = LIST_CONTAINOR(plist, struct rtw_wlan_acl_node, list);
 		plist = get_next(plist);
 
-		if(_rtw_memcmp(paclnode->addr, addr, ETH_ALEN))
+		if(!memcmp(paclnode->addr, addr, ETH_ALEN))
 		{
 			if(paclnode->valid == true)
 			{
@@ -1923,7 +1923,7 @@ int rtw_acl_remove_sta(_adapter *padapter, u8 *addr)
 		paclnode = LIST_CONTAINOR(plist, struct rtw_wlan_acl_node, list);
 		plist = get_next(plist);
 
-		if(_rtw_memcmp(paclnode->addr, addr, ETH_ALEN) || _rtw_memcmp(baddr, addr, ETH_ALEN))
+		if(!memcmp(paclnode->addr, addr, ETH_ALEN) || !memcmp(baddr, addr, ETH_ALEN))
 		{
 			if(paclnode->valid == true)
 			{
@@ -2224,19 +2224,19 @@ static void update_bcn_vendor_spec_ie(_adapter *padapter, u8*oui)
 {
 	DBG_871X("%s\n", __FUNCTION__);
 
-	if(_rtw_memcmp(RTW_WPA_OUI, oui, 4))
+	if(!memcmp(RTW_WPA_OUI, oui, 4))
 	{
 		update_bcn_wpa_ie(padapter);
 	}
-	else if(_rtw_memcmp(WMM_OUI, oui, 4))
+	else if(!memcmp(WMM_OUI, oui, 4))
 	{
 		update_bcn_wmm_ie(padapter);
 	}
-	else if(_rtw_memcmp(WPS_OUI, oui, 4))
+	else if(!memcmp(WPS_OUI, oui, 4))
 	{
 		update_bcn_wps_ie(padapter);
 	}
-	else if(_rtw_memcmp(P2P_OUI, oui, 4))
+	else if(!memcmp(P2P_OUI, oui, 4))
 	{
 		update_bcn_p2p_ie(padapter);
 	}

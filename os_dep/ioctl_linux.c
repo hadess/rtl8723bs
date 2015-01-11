@@ -923,7 +923,7 @@ _func_enter_;
 		if(param->u.crypt.set_tx == 1)
 		{
 			list_for_each_entry(pWapiSta, &pWapiInfo->wapiSTAUsedList, list) {
-				if(_rtw_memcmp(pWapiSta->PeerMacAddr,param->sta_addr,6))
+				if(!memcmp(pWapiSta->PeerMacAddr,param->sta_addr,6))
 				{
 					_rtw_memcpy(pWapiSta->lastTxUnicastPN,WapiASUEPNInitialValueSrc,16);
 
@@ -952,7 +952,7 @@ _func_enter_;
 		else
 		{
 			list_for_each_entry(pWapiSta, &pWapiInfo->wapiSTAUsedList, list) {
-				if(_rtw_memcmp(pWapiSta->PeerMacAddr,get_bssid(pmlmepriv),6))
+				if(!memcmp(pWapiSta->PeerMacAddr,get_bssid(pmlmepriv),6))
 				{
 					pWapiSta->wapiMsk.bSet = true;
 					_rtw_memcpy(pWapiSta->wapiMsk.dataKey,param->u.crypt.key,16);
@@ -1124,7 +1124,7 @@ static int rtw_set_wpa_ie(_adapter *padapter, char *pie, unsigned short ielen)
 			{
 				eid = buf[cnt];
 		
-				if((eid==_VENDOR_SPECIFIC_IE_)&&(_rtw_memcmp(&buf[cnt+2], wps_oui, 4)==true))
+				if((eid==_VENDOR_SPECIFIC_IE_)&&(!memcmp(&buf[cnt+2], wps_oui, 4)))
 				{
 					DBG_871X("SET WPS_IE\n");
 
@@ -1414,7 +1414,7 @@ static int rtw_wx_set_pmkid(struct net_device *dev,
         if ( pPMK->cmd == IW_PMKSA_ADD )
         {
                 DBG_871X( "[rtw_wx_set_pmkid] IW_PMKSA_ADD!\n" );
-                if ( _rtw_memcmp( strIssueBssid, strZeroMacAddress, ETH_ALEN ) == true )
+                if ( !memcmp( strIssueBssid, strZeroMacAddress, ETH_ALEN ))
                 {
                     return( intReturn );
                 }
@@ -1427,7 +1427,7 @@ static int rtw_wx_set_pmkid(struct net_device *dev,
 		//overwrite PMKID
 		for(j=0 ; j<NUM_PMKID_CACHE; j++)
 		{
-			if( _rtw_memcmp( psecuritypriv->PMKIDList[j].Bssid, strIssueBssid, ETH_ALEN) ==true )
+			if( !memcmp( psecuritypriv->PMKIDList[j].Bssid, strIssueBssid, ETH_ALEN))
 			{ // BSSID is matched, the same AP => rewrite with new PMKID.
                                 
                                 DBG_871X( "[rtw_wx_set_pmkid] BSSID exists in the PMKList.\n" );
@@ -1463,7 +1463,7 @@ static int rtw_wx_set_pmkid(struct net_device *dev,
                 intReturn = true;
 		for(j=0 ; j<NUM_PMKID_CACHE; j++)
 		{
-			if( _rtw_memcmp( psecuritypriv->PMKIDList[j].Bssid, strIssueBssid, ETH_ALEN) ==true )
+			if( !memcmp( psecuritypriv->PMKIDList[j].Bssid, strIssueBssid, ETH_ALEN))
 			{ // BSSID is matched, the same AP => Remove this PMKID information and reset it. 
                                 _rtw_memset( psecuritypriv->PMKIDList[ j ].Bssid, 0x00, ETH_ALEN );
                                 psecuritypriv->PMKIDList[ j ].bUsed = false;
@@ -1722,7 +1722,7 @@ static int rtw_wx_set_wap(struct net_device *dev,
 
 		src_bssid = temp->sa_data;
 
-		if ((_rtw_memcmp(dst_bssid, src_bssid, ETH_ALEN)) == true)
+		if ((!memcmp(dst_bssid, src_bssid, ETH_ALEN)))
 		{			
 			if(!rtw_set_802_11_infrastructure_mode(padapter, pnetwork->network.InfrastructureMode))
 			{
@@ -1952,7 +1952,7 @@ _func_enter_;
 		
 	}
 	else if(	wrqu->data.length >= WEXT_CSCAN_HEADER_SIZE
-		&& _rtw_memcmp(extra, WEXT_CSCAN_HEADER, WEXT_CSCAN_HEADER_SIZE) == true
+		&& !memcmp(extra, WEXT_CSCAN_HEADER, WEXT_CSCAN_HEADER_SIZE)
 	)
 	{
 		int len = wrqu->data.length -WEXT_CSCAN_HEADER_SIZE;
@@ -2304,7 +2304,7 @@ static int rtw_wx_set_essid(struct net_device *dev,
 				 ("rtw_wx_set_essid: dst_ssid=%s\n",
 				  pnetwork->network.Ssid.Ssid));
 
-			if ((_rtw_memcmp(dst_ssid, src_ssid, ndis_ssid.SsidLength) == true) &&
+			if ((!memcmp(dst_ssid, src_ssid, ndis_ssid.SsidLength)) &&
 				(pnetwork->network.Ssid.SsidLength==ndis_ssid.SsidLength))
 			{
 				RT_TRACE(_module_rtl871x_ioctl_os_c, _drv_info_,
@@ -3730,7 +3730,7 @@ static int rtw_get_ap_info(struct net_device *dev,
 		}		
 		
 	
-		if(_rtw_memcmp(bssid, pnetwork->network.MacAddress, ETH_ALEN) == true)//BSSID match, then check if supporting wpa/wpa2
+		if(!memcmp(bssid, pnetwork->network.MacAddress, ETH_ALEN))//BSSID match, then check if supporting wpa/wpa2
 		{
 			DBG_871X("BSSID:" MAC_FMT "\n", MAC_ARG(bssid));
 			
@@ -3955,7 +3955,7 @@ static int rtw_rereg_nd_name(struct net_device *dev,
 		goto exit;
 	}
 
-	if(_rtw_memcmp(rereg_priv->old_ifname, "disable%d", 9) == true) {
+	if(!memcmp(rereg_priv->old_ifname, "disable%d", 9)) {
 		padapter->ledpriv.bRegUseLed= rereg_priv->old_bRegUseLed;
 		rtw_hal_sw_led_init(padapter);
 		//rtw_ips_mode_req(&padapter->pwrctrlpriv, rereg_priv->old_ips_mode);
@@ -3964,7 +3964,7 @@ static int rtw_rereg_nd_name(struct net_device *dev,
 	strncpy(rereg_priv->old_ifname, new_ifname, IFNAMSIZ);
 	rereg_priv->old_ifname[IFNAMSIZ-1] = 0;
 	
-	if(_rtw_memcmp(new_ifname, "disable%d", 9) == true) {
+	if(!memcmp(new_ifname, "disable%d", 9)) {
 
 		DBG_871X("%s disable\n", __FUNCTION__);
 		// free network queue for Android's timming issue
@@ -6122,7 +6122,7 @@ static int rtw_wx_set_priv(struct net_device *dev,
 		u8 wps_oui[4]={0x0,0x50,0xf2,0x04};		
 	
 		if((_VENDOR_SPECIFIC_IE_ == probereq_wpsie[0]) &&
-			(_rtw_memcmp(&probereq_wpsie[2], wps_oui, 4) ==true))
+			(!memcmp(&probereq_wpsie[2], wps_oui, 4)))
 		{
 			cp_sz = probereq_wpsie_len>MAX_WPS_IE_LEN ? MAX_WPS_IE_LEN:probereq_wpsie_len;
 
@@ -6152,7 +6152,7 @@ static int rtw_wx_set_priv(struct net_device *dev,
 	}
 
 	if(	len >= WEXT_CSCAN_HEADER_SIZE
-		&& _rtw_memcmp(ext, WEXT_CSCAN_HEADER, WEXT_CSCAN_HEADER_SIZE) == true
+		&& !memcmp(ext, WEXT_CSCAN_HEADER, WEXT_CSCAN_HEADER_SIZE)
 	){
 		ret = rtw_wx_set_scan(dev, info, awrq, ext);
 		goto FREE_EXT;
@@ -6203,7 +6203,7 @@ static int rtw_wowlan_ctrl(struct net_device *dev,
 			goto _rtw_wowlan_ctrl_exit_free;
 	}
 
-	if (_rtw_memcmp( extra, "enable", 6 )) {
+	if (!memcmp( extra, "enable", 6 )) {
 
 		padapter->registrypriv.mp_mode = 1;
 
@@ -6228,7 +6228,7 @@ static int rtw_wowlan_ctrl(struct net_device *dev,
 
 		rtw_suspend_wow(padapter);
 
-	} else if (_rtw_memcmp( extra, "disable", 6 )) {
+	} else if (!memcmp( extra, "disable", 6 )) {
 		rtw_resume_process_wow(padapter);
 		padapter->registrypriv.mp_mode = 0;
 	} else {
@@ -6272,7 +6272,7 @@ static int rtw_ap_wowlan_ctrl(struct net_device *dev,
 		goto _rtw_ap_wowlan_ctrl_exit_free;
 	}
 
-	if (_rtw_memcmp( extra, "enable", 6 )) {
+	if (!memcmp( extra, "enable", 6 )) {
 		pwrctrlpriv->wowlan_ap_mode = true;
 		while (pwrctrlpriv->bips_processing == true)
 			msleep(1);
@@ -6295,7 +6295,7 @@ static int rtw_ap_wowlan_ctrl(struct net_device *dev,
 		poidparam.subcode = WOWLAN_AP_ENABLE;
 
 		rtw_hal_set_hwreg(padapter, HW_VAR_AP_WOWLAN,(u8 *)&poidparam);
-	} else if (_rtw_memcmp( extra, "disable", 6 )) {
+	} else if (!memcmp( extra, "disable", 6 )) {
 #ifdef CONFIG_LPS
 		LeaveAllPowerSaveModeDirect(padapter);
 #endif //CONFIG_LPS
@@ -6351,12 +6351,12 @@ static int rtw_pm_set(struct net_device *dev,
 
 	DBG_871X( "[%s] extra = %s\n", __FUNCTION__, extra );
 
-	if ( _rtw_memcmp( extra, "lps=", 4 ) )
+	if ( !memcmp( extra, "lps=", 4 ) )
 	{
 		sscanf(extra+4, "%u", &mode);	
 		ret = rtw_pm_set_lps(padapter,mode);
 	}
-	else if ( _rtw_memcmp( extra, "ips=", 4 ) )
+	else if ( !memcmp( extra, "ips=", 4 ) )
 	{
 		sscanf(extra+4, "%u", &mode);
 		ret = rtw_pm_set_ips(padapter,mode);
@@ -7062,10 +7062,10 @@ static int rtw_mp_efuse_set(struct net_device *dev,
 			goto exit;
 		}
 		*extra = 0;
-		DBG_871X("%s: after rtw_BT_efuse_map_write to _rtw_memcmp \n", __FUNCTION__);
+		DBG_871X("%s: after rtw_BT_efuse_map_write to !memcmp \n", __FUNCTION__);
 		if ( (rtw_efuse_map_read(padapter, addr, cnts, ShadowMapWiFi) == _SUCCESS ) )
 		{
-			if (_rtw_memcmp((void*)ShadowMapWiFi ,(void*)setdata,cnts))
+			if (!memcmp((void*)ShadowMapWiFi ,(void*)setdata,cnts))
 			{ 
 				DBG_871X("%s: WiFi write map afterf compare success\n", __FUNCTION__);
 				sprintf(extra, "WiFi write map compare OK\n");
@@ -7296,10 +7296,10 @@ static int rtw_mp_efuse_set(struct net_device *dev,
 			goto exit;
 		}
 		*extra = 0;
-		DBG_871X("%s: after rtw_BT_efuse_map_write to _rtw_memcmp \n", __FUNCTION__);
+		DBG_871X("%s: after rtw_BT_efuse_map_write to !memcmp \n", __FUNCTION__);
 		if ( (rtw_BT_efuse_map_read(padapter, addr, cnts, ShadowMapBT ) == _SUCCESS ) )
 		{
-			if (_rtw_memcmp((void*)ShadowMapBT ,(void*)setdata,cnts))
+			if (!memcmp((void*)ShadowMapBT ,(void*)setdata,cnts))
 			{ 
 				DBG_871X("%s: BT write map compare OK BTStatus=0x%x\n", __FUNCTION__,BTStatus);
 				sprintf(extra, "BT write map compare OK");
@@ -7412,10 +7412,10 @@ static int rtw_mp_efuse_set(struct net_device *dev,
 		printk("\n");
 #if 1		
 		err = -EFAULT;
-		DBG_871X("%s: rtw_BT_efuse_map_read _rtw_memcmp \n", __FUNCTION__);
+		DBG_871X("%s: rtw_BT_efuse_map_read !memcmp \n", __FUNCTION__);
 		if ( (rtw_BT_efuse_map_read(padapter, 0x00, EFUSE_BT_MAX_MAP_LEN, pEfuseHal->fakeBTEfuseInitMap) == _SUCCESS ) )
 		{ 
-			if (_rtw_memcmp((void*)pEfuseHal->fakeBTEfuseModifiedMap,(void*)pEfuseHal->fakeBTEfuseInitMap,EFUSE_BT_MAX_MAP_LEN))
+			if (!memcmp((void*)pEfuseHal->fakeBTEfuseModifiedMap,(void*)pEfuseHal->fakeBTEfuseInitMap,EFUSE_BT_MAX_MAP_LEN))
 			{ 
 				sprintf(extra, "BT write map compare OK");
 				DBG_871X("%s: BT write map afterf compare success BTStatus=0x%x \n", __FUNCTION__,BTStatus);
@@ -7470,10 +7470,10 @@ static int rtw_mp_efuse_set(struct net_device *dev,
 			goto exit;
 		}
 		*extra = 0;
-		DBG_871X("%s: after rtw_BT_efuse_map_write to _rtw_memcmp \n", __FUNCTION__);
+		DBG_871X("%s: after rtw_BT_efuse_map_write to !memcmp \n", __FUNCTION__);
 		if ( (rtw_efuse_map_read(padapter, 0x00, EFUSE_MAP_SIZE, ShadowMapWiFi) == _SUCCESS ) )
 		{
-			if (_rtw_memcmp((void*)ShadowMapWiFi ,(void*)setdata,cnts))
+			if (!memcmp((void*)ShadowMapWiFi ,(void*)setdata,cnts))
 			{
 				DBG_871X("%s: WiFi write map afterf compare OK\n", __FUNCTION__);
 				sprintf(extra, "WiFi write map compare OK\n");
@@ -7658,7 +7658,7 @@ static int rtw_tdls_enable(struct net_device *dev,
 
 		for(index=0; index< NUM_STA; index++)
 		{
-			if( !_rtw_memcmp(tdls_sta[index], empty_hwaddr, ETH_ALEN) )
+			if( memcmp(tdls_sta[index], empty_hwaddr, ETH_ALEN) )
 			{
 				printk("issue tear down to "MAC_FMT"\n", MAC_ARG(tdls_sta[index]));
 				txmgmt.status_code = _RSON_TDLS_TEAR_UN_RSN_;
@@ -8155,19 +8155,19 @@ static int rtw_tdls(struct net_device *dev,
 
 	DBG_871X( "[%s] extra = %s\n", __FUNCTION__, extra );
 	//	WFD Sigma will use the tdls enable command to let the driver know we want to test the tdls now!
-	if ( _rtw_memcmp( extra, "wfdenable=", 10 ) )
+	if ( !memcmp( extra, "wfdenable=", 10 ) )
 	{
 		wrqu->data.length -=10;
 		rtw_wfd_tdls_enable( dev, info, wrqu, &extra[10] );
 		return ret;
 	}
-	else if ( _rtw_memcmp( extra, "weaksec=", 8 ) )
+	else if ( !memcmp( extra, "weaksec=", 8 ) )
 	{
 		wrqu->data.length -=8;
 		rtw_tdls_weaksec( dev, info, wrqu, &extra[8] );
 		return ret;
 	}
-	else if ( _rtw_memcmp( extra, "tdlsenable=", 11 ) )
+	else if ( !memcmp( extra, "tdlsenable=", 11 ) )
 	{
 		wrqu->data.length -=11;
 		rtw_tdls_enable( dev, info, wrqu, &extra[11] );
@@ -8180,48 +8180,48 @@ static int rtw_tdls(struct net_device *dev,
 		return 0;
 	}
 
-	if ( _rtw_memcmp( extra, "setup=", 6 ) )
+	if ( !memcmp( extra, "setup=", 6 ) )
 	{
 		wrqu->data.length -=6;
 		rtw_tdls_setup( dev, info, wrqu, &extra[6] );
 	}
-	else if (_rtw_memcmp( extra, "tear=", 5 ) )
+	else if (!memcmp( extra, "tear=", 5 ) )
 	{
 		wrqu->data.length -= 5;
 		rtw_tdls_teardown( dev, info, wrqu, &extra[5] );
 	}
-	else if (_rtw_memcmp( extra, "dis=", 4 ) )
+	else if (!memcmp( extra, "dis=", 4 ) )
 	{
 		wrqu->data.length -= 4;
 		rtw_tdls_discovery( dev, info, wrqu, &extra[4] );
 	}
-	else if (_rtw_memcmp( extra, "sw=", 3 ) )
+	else if (!memcmp( extra, "sw=", 3 ) )
 	{
 		wrqu->data.length -= 3;
 		rtw_tdls_ch_switch( dev, info, wrqu, &extra[3] );
 	}
-	else if (_rtw_memcmp( extra, "swoff=", 6 ) )
+	else if (!memcmp( extra, "swoff=", 6 ) )
 	{
 		wrqu->data.length -= 6;
 		rtw_tdls_ch_switch_off( dev, info, wrqu, &extra[6] );
 	}	
-	else if (_rtw_memcmp( extra, "pson=", 5 ) )
+	else if (!memcmp( extra, "pson=", 5 ) )
 	{
 		wrqu->data.length -= 5;
 		rtw_tdls_pson( dev, info, wrqu, &extra[5] );
 	}
-	else if (_rtw_memcmp( extra, "psoff=", 6 ) )
+	else if (!memcmp( extra, "psoff=", 6 ) )
 	{
 		wrqu->data.length -= 6;
 		rtw_tdls_psoff( dev, info, wrqu, &extra[6] );
 	}
 #ifdef CONFIG_WFD
-	else if (_rtw_memcmp( extra, "setip=", 6 ) )
+	else if (!memcmp( extra, "setip=", 6 ) )
 	{
 		wrqu->data.length -= 6;
 		rtw_tdls_setip( dev, info, wrqu, &extra[6] );
 	}
-	else if (_rtw_memcmp( extra, "tprobe=", 6 ) )
+	else if (!memcmp( extra, "tprobe=", 6 ) )
 	{
 		issue_tunneled_probe_req((_adapter *)rtw_netdev_priv(dev));
 	}
@@ -8243,24 +8243,24 @@ static int rtw_tdls_get(struct net_device *dev,
 
 	DBG_871X( "[%s] extra = %s\n", __FUNCTION__, (char*) wrqu->data.pointer );
 
-	if ( _rtw_memcmp( wrqu->data.pointer, "ip", 2 ) )
+	if ( !memcmp( wrqu->data.pointer, "ip", 2 ) )
 	{
 		rtw_tdls_getip( dev, info, wrqu, extra );
 	}
-	if ( _rtw_memcmp( wrqu->data.pointer, "port", 4 ) )
+	if ( !memcmp( wrqu->data.pointer, "port", 4 ) )
 	{
 		rtw_tdls_getport( dev, info, wrqu, extra );
 	}
 	//WFDTDLS, for sigma test
-	if ( _rtw_memcmp( wrqu->data.pointer, "dis", 3 ) )
+	if ( !memcmp( wrqu->data.pointer, "dis", 3 ) )
 	{
 		rtw_tdls_dis_result( dev, info, wrqu, extra );
 	}
-	if ( _rtw_memcmp( wrqu->data.pointer, "status", 6 ) )
+	if ( !memcmp( wrqu->data.pointer, "status", 6 ) )
 	{
 		rtw_wfd_tdls_status( dev, info, wrqu, extra );
 	}
-	if ( _rtw_memcmp( wrqu->data.pointer, "tdls_sta=", 9 ) )
+	if ( !memcmp( wrqu->data.pointer, "tdls_sta=", 9 ) )
 	{
 		rtw_tdls_getsta( dev, info, wrqu, extra );
 	}

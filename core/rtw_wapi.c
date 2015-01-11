@@ -139,7 +139,7 @@ WapiGetEntryForCamWrite(_adapter *padapter,u8 *pMacAddr,u8 KID,bool IsMsk)
 	for(i=0;i<WAPI_CAM_ENTRY_NUM;i++)
 	{
 		if(pWapiInfo->wapiCamEntry[i].IsUsed
-			&& (_rtw_memcmp(pMacAddr, pWapiInfo->wapiCamEntry[i].PeerMacAddr, ETH_ALEN) == true)
+			&& (!memcmp(pMacAddr, pWapiInfo->wapiCamEntry[i].PeerMacAddr, ETH_ALEN))
 			&& pWapiInfo->wapiCamEntry[i].keyidx == KID
 			&& pWapiInfo->wapiCamEntry[i].type == IsMsk)
 		{
@@ -193,7 +193,7 @@ u8 WapiGetEntryForCamClear(_adapter *padapter,u8 *pPeerMac,u8 keyid,u8 IsMsk)
 	for(i=0;i<WAPI_CAM_ENTRY_NUM;i++)
 	{
 		if(pWapiInfo->wapiCamEntry[i].IsUsed
-			&& (_rtw_memcmp(pPeerMac, pWapiInfo->wapiCamEntry[i].PeerMacAddr, ETH_ALEN) == true)
+			&& (!memcmp(pPeerMac, pWapiInfo->wapiCamEntry[i].PeerMacAddr, ETH_ALEN))
 			&& pWapiInfo->wapiCamEntry[i].keyidx == keyid
 			&& pWapiInfo->wapiCamEntry[i].type == IsMsk)
 		{
@@ -399,7 +399,7 @@ u8 rtw_wapi_is_wai_packet(_adapter* padapter,u8 *pkt_data)
 		bFind = false;
 	}else{
 		list_for_each_entry(pWapiSta, &pWapiInfo->wapiSTAUsedList, list){
-			if (_rtw_memcmp(pTaddr, pWapiSta->PeerMacAddr, 6) == true) {
+			if (!memcmp(pTaddr, pWapiSta->PeerMacAddr, 6)) {
 				bFind = true;
 				break;
 			}
@@ -532,7 +532,7 @@ u8 rtw_wapi_check_for_drop(
 		bFind = false;
 	}else{
 		list_for_each_entry(pWapiSta, &pWapiInfo->wapiSTAUsedList, list) {
-			if (_rtw_memcmp(precv_hdr->WapiSrcAddr, pWapiSta->PeerMacAddr, ETH_ALEN) == true) {
+			if (!memcmp(precv_hdr->WapiSrcAddr, pWapiSta->PeerMacAddr, ETH_ALEN)) {
 				bFind = true;
 				break;
 			}
@@ -776,7 +776,7 @@ void rtw_wapi_return_one_sta_info(_adapter *padapter, u8 *MacAddr)
 				return;
 			}
 
-			if (_rtw_memcmp(pWapiStaInfo->PeerMacAddr, MacAddr, ETH_ALEN) == true) {
+			if (!memcmp(pWapiStaInfo->PeerMacAddr, MacAddr, ETH_ALEN)) {
 				pWapiStaInfo->bAuthenticateInProgress = false;
 				pWapiStaInfo->bSetkeyOk = false;
 				_rtw_memset(pWapiStaInfo->PeerMacAddr,0,ETH_ALEN);
@@ -1232,7 +1232,7 @@ void rtw_wapi_get_iv(_adapter *padapter,u8 *pRA, u8*IV)
 		else{
 				list_for_each_entry(pWapiSta, &pWapiInfo->wapiSTAUsedList, list){
 					WAPI_DATA(WAPI_RX,"rtw_wapi_get_iv: peermacaddr ",pWapiSta->PeerMacAddr,6);
-					if (_rtw_memcmp((u8*)pWapiSta->PeerMacAddr, pRA, 6) == true) {
+					if (!memcmp((u8*)pWapiSta->PeerMacAddr, pRA, 6)) {
 						bFindMatchPeer = true;
 						break;
 					}
@@ -1289,7 +1289,7 @@ bool rtw_wapi_drop_for_key_absent(_adapter *padapter,u8 *pRA)
 				if(!list_empty(&pWapiInfo->wapiSTAUsedList)){
 					list_for_each_entry(pWapiSta, &pWapiInfo->wapiSTAUsedList, list){
 						WAPI_DATA(WAPI_RX,"rtw_wapi_drop_for_key_absent: pWapiSta->PeerMacAddr ",pWapiSta->PeerMacAddr,6);
-						if (_rtw_memcmp(pRA, pWapiSta->PeerMacAddr, 6) == true){
+						if (!memcmp(pRA, pWapiSta->PeerMacAddr, 6)){
 							bFindMatchPeer = true;
 							break;
 						}

@@ -1056,7 +1056,7 @@ s16 _rtw_camid_search(_adapter *adapter, u8 *addr, s16 kid)
 	s16 cam_id = -1;
 
 	for (i=0;i<TOTAL_CAM_ENTRY;i++) {
-		if (addr && _rtw_memcmp(dvobj->cam_cache[i].mac, addr, ETH_ALEN) == false)
+		if (addr && memcmp(dvobj->cam_cache[i].mac, addr, ETH_ALEN))
 			continue;
 		if (kid >= 0 && kid != (dvobj->cam_cache[i].ctrl&0x03))
 			continue;
@@ -1275,7 +1275,7 @@ int WMM_param_handler(_adapter *padapter, PNDIS_802_11_VARIABLE_IEs	pIE)
 		return false;
 	}	
 	
-	if(_rtw_memcmp(&(pmlmeinfo->WMM_param), (pIE->data + 6), sizeof(struct WMM_para_element)))
+	if(!memcmp(&(pmlmeinfo->WMM_param), (pIE->data + 6), sizeof(struct WMM_para_element)))
 	{
 		return false;
 	}
@@ -1947,7 +1947,7 @@ int rtw_check_bcn_info(ADAPTER *Adapter, u8 *pframe, u32 packet_len)
 		return _FAIL;
 	}
 
-	if (_rtw_memcmp(cur_network->network.MacAddress, pbssid, 6) == false) {
+	if (memcmp(cur_network->network.MacAddress, pbssid, 6)) {
 		DBG_871X("Oops: rtw_check_network_encrypt linked but recv other bssid bcn\n" MAC_FMT MAC_FMT,
 				MAC_ARG(pbssid), MAC_ARG(cur_network->network.MacAddress));
 		return true;
@@ -2049,7 +2049,7 @@ int rtw_check_bcn_info(ADAPTER *Adapter, u8 *pframe, u32 packet_len)
 				bssid->Ssid.SsidLength, cur_network->network.Ssid.Ssid,
 				cur_network->network.Ssid.SsidLength));
 
-	if (_rtw_memcmp(bssid->Ssid.Ssid, cur_network->network.Ssid.Ssid, 32) == false ||
+	if (memcmp(bssid->Ssid.Ssid, cur_network->network.Ssid.Ssid, 32) ||
 			bssid->Ssid.SsidLength != cur_network->network.Ssid.SsidLength) {
 		if (bssid->Ssid.Ssid[0] != '\0' && bssid->Ssid.SsidLength != 0) { /* not hidden ssid */
 			DBG_871X("%s(), SSID is not match\n", __func__);
@@ -2172,7 +2172,7 @@ void update_beacon_info(_adapter *padapter, u8 *pframe, uint pkt_len, struct sta
 		{
 			case _VENDOR_SPECIFIC_IE_:		
 				//to update WMM paramter set while receiving beacon
-				if (_rtw_memcmp(pIE->data, WMM_PARA_OUI, 6) && pIE->Length == WLAN_WMM_LEN)	//WMM
+				if (!memcmp(pIE->data, WMM_PARA_OUI, 6) && pIE->Length == WLAN_WMM_LEN)	//WMM
 				{
 					(WMM_param_handler(padapter, pIE))? report_wmm_edca_update(padapter): 0;
 				}
@@ -2220,14 +2220,14 @@ unsigned int is_ap_in_tkip(_adapter *padapter)
 			switch (pIE->ElementID)
 			{
 				case _VENDOR_SPECIFIC_IE_:
-					if ((_rtw_memcmp(pIE->data, RTW_WPA_OUI, 4)) && (_rtw_memcmp((pIE->data + 12), WPA_TKIP_CIPHER, 4))) 
+					if ((!memcmp(pIE->data, RTW_WPA_OUI, 4)) && (!memcmp((pIE->data + 12), WPA_TKIP_CIPHER, 4))) 
 					{
 						return true;
 					}
 					break;
 				
 				case _RSN_IE_2_:
-					if (_rtw_memcmp((pIE->data + 8), RSN_TKIP_CIPHER, 4)) 
+					if (!memcmp((pIE->data + 8), RSN_TKIP_CIPHER, 4)) 
 					{
 						return true;
 					}
@@ -2264,15 +2264,15 @@ unsigned int should_forbid_n_rate(_adapter * padapter)
 			switch (pIE->ElementID)
 			{
 				case _VENDOR_SPECIFIC_IE_:
-					if (_rtw_memcmp(pIE->data, RTW_WPA_OUI, 4) &&
-						((_rtw_memcmp((pIE->data + 12), WPA_CIPHER_SUITE_CCMP, 4)) ||
-						  (_rtw_memcmp((pIE->data + 16), WPA_CIPHER_SUITE_CCMP, 4))))
+					if (!memcmp(pIE->data, RTW_WPA_OUI, 4) &&
+						((!memcmp((pIE->data + 12), WPA_CIPHER_SUITE_CCMP, 4)) ||
+						  (!memcmp((pIE->data + 16), WPA_CIPHER_SUITE_CCMP, 4))))
 						return false;
 					break;
 
 				case _RSN_IE_2_:
-					if  ((_rtw_memcmp((pIE->data + 8), RSN_CIPHER_SUITE_CCMP, 4))  ||
-					       (_rtw_memcmp((pIE->data + 12), RSN_CIPHER_SUITE_CCMP, 4)))
+					if  ((!memcmp((pIE->data + 8), RSN_CIPHER_SUITE_CCMP, 4))  ||
+					       (!memcmp((pIE->data + 12), RSN_CIPHER_SUITE_CCMP, 4)))
 					return false;
 
 				default:
@@ -2309,7 +2309,7 @@ unsigned int is_ap_in_wep(_adapter *padapter)
 			switch (pIE->ElementID)
 			{
 				case _VENDOR_SPECIFIC_IE_:
-					if (_rtw_memcmp(pIE->data, RTW_WPA_OUI, 4))
+					if (!memcmp(pIE->data, RTW_WPA_OUI, 4))
 						return false;
 					break;
 
@@ -2549,34 +2549,34 @@ unsigned char check_assoc_AP(u8 *pframe, uint len)
 		switch (pIE->ElementID)
 		{
 			case _VENDOR_SPECIFIC_IE_:
-				if ((_rtw_memcmp(pIE->data, ARTHEROS_OUI1, 3)) || (_rtw_memcmp(pIE->data, ARTHEROS_OUI2, 3)))
+				if ((!memcmp(pIE->data, ARTHEROS_OUI1, 3)) || (!memcmp(pIE->data, ARTHEROS_OUI2, 3)))
 				{
 					DBG_871X("link to Artheros AP\n");
 					return HT_IOT_PEER_ATHEROS;
 				}
-				else if ((_rtw_memcmp(pIE->data, BROADCOM_OUI1, 3))
-							|| (_rtw_memcmp(pIE->data, BROADCOM_OUI2, 3))
-							|| (_rtw_memcmp(pIE->data, BROADCOM_OUI2, 3)))
+				else if ((!memcmp(pIE->data, BROADCOM_OUI1, 3))
+							|| (!memcmp(pIE->data, BROADCOM_OUI2, 3))
+							|| (!memcmp(pIE->data, BROADCOM_OUI2, 3)))
 				{
 					DBG_871X("link to Broadcom AP\n");
 					return HT_IOT_PEER_BROADCOM;
 				}
-				else if (_rtw_memcmp(pIE->data, MARVELL_OUI, 3))
+				else if (!memcmp(pIE->data, MARVELL_OUI, 3))
 				{
 					DBG_871X("link to Marvell AP\n");
 					return HT_IOT_PEER_MARVELL;
 				}
-				else if (_rtw_memcmp(pIE->data, RALINK_OUI, 3))
+				else if (!memcmp(pIE->data, RALINK_OUI, 3))
 				{
 					DBG_871X("link to Ralink AP\n");
 					return HT_IOT_PEER_RALINK;
 				}
-				else if (_rtw_memcmp(pIE->data, CISCO_OUI, 3))
+				else if (!memcmp(pIE->data, CISCO_OUI, 3))
 				{
 					DBG_871X("link to Cisco AP\n");
 					return HT_IOT_PEER_CISCO;
 				}
-				else if (_rtw_memcmp(pIE->data, REALTEK_OUI, 3))
+				else if (!memcmp(pIE->data, REALTEK_OUI, 3))
 				{
 					u32	Vender = HT_IOT_PEER_REALTEK;
 
@@ -2612,7 +2612,7 @@ unsigned char check_assoc_AP(u8 *pframe, uint len)
 					DBG_871X("link to Realtek AP\n");
 					return Vender;
 				}
-				else if (_rtw_memcmp(pIE->data, AIRGOCAP_OUI,3))
+				else if (!memcmp(pIE->data, AIRGOCAP_OUI,3))
 				{
 					DBG_871X("link to Airgo Cap\n");
 					return HT_IOT_PEER_AIRGO;
@@ -3034,10 +3034,10 @@ void rtw_alloc_macid(_adapter *padapter, struct sta_info *psta)
 	struct dvobj_priv *pdvobj = adapter_to_dvobj(padapter);
 
 
-	if(_rtw_memcmp(psta->hwaddr, bc_addr, ETH_ALEN))
+	if(!memcmp(psta->hwaddr, bc_addr, ETH_ALEN))
 		return;
 
-	if(_rtw_memcmp(psta->hwaddr, myid(&padapter->eeprompriv), ETH_ALEN))
+	if(!memcmp(psta->hwaddr, myid(&padapter->eeprompriv), ETH_ALEN))
 	{
 		psta->mac_id = NUM_STA;
 		return;
@@ -3075,10 +3075,10 @@ void rtw_release_macid(_adapter *padapter, struct sta_info *psta)
 	struct dvobj_priv *pdvobj = adapter_to_dvobj(padapter);
 
 
-	if(_rtw_memcmp(psta->hwaddr, bc_addr, ETH_ALEN))
+	if(!memcmp(psta->hwaddr, bc_addr, ETH_ALEN))
 		return;
 
-	if(_rtw_memcmp(psta->hwaddr, myid(&padapter->eeprompriv), ETH_ALEN))
+	if(!memcmp(psta->hwaddr, myid(&padapter->eeprompriv), ETH_ALEN))
 	{
 		return;
 	}
@@ -3268,12 +3268,12 @@ u8 rtw_check_invalid_mac_address(u8 *mac_addr) {
 	u8 multi_mac_addr[ETH_ALEN] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
 	u8 res = false;
 
-	if (_rtw_memcmp(mac_addr, null_mac_addr, ETH_ALEN)) {
+	if (!memcmp(mac_addr, null_mac_addr, ETH_ALEN)) {
 		res = true;
 		goto func_exit;
 	}
 
-	if (_rtw_memcmp(mac_addr, multi_mac_addr, ETH_ALEN)) {
+	if (!memcmp(mac_addr, multi_mac_addr, ETH_ALEN)) {
 		res = true;
 		goto func_exit;
 	}
