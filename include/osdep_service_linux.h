@@ -100,7 +100,7 @@ __inline static _list	*get_list_head(_queue	*queue)
 
 	
 #define LIST_CONTAINOR(ptr, type, member) \
-        ((type *)((char *)(ptr)-(SIZE_T)(&((type *)0)->member)))	
+        ((type *)((char *)(ptr)-(__kernel_size_t)(&((type *)0)->member)))	
 
         
 __inline static void _enter_critical(_lock *plock, _irqL *pirqL)

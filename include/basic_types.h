@@ -32,15 +32,13 @@
 
 	typedef void (*proc_t)(void*);
 
-	typedef 	__kernel_size_t	SIZE_T;	
-	typedef	__kernel_ssize_t	SSIZE_T;
-	#define FIELD_OFFSET(s,field)	((SSIZE_T)&((s*)(0))->field)
+	#define FIELD_OFFSET(s,field)	((__kernel_ssize_t)&((s*)(0))->field)
 
-#define MEM_ALIGNMENT_OFFSET	(sizeof (SIZE_T))
-#define MEM_ALIGNMENT_PADDING	(sizeof(SIZE_T) - 1)
+#define MEM_ALIGNMENT_OFFSET	(sizeof (__kernel_size_t))
+#define MEM_ALIGNMENT_PADDING	(sizeof(__kernel_size_t) - 1)
 
-#define SIZE_PTR SIZE_T
-#define SSIZE_PTR SSIZE_T
+#define SIZE_PTR __kernel_size_t
+#define SSIZE_PTR __kernel_ssize_t
 
 //port from fw by thomas
 // TODO: Belows are Sync from SD7-Driver. It is necessary to check correctness
