@@ -185,8 +185,6 @@ extern void	rtw_sleep_schedulable(int ms);
 
 extern void	rtw_usleep_os(int us);
 
-extern void	rtw_udelay_os(int us);
-
 extern void rtw_init_timer(_timer *ptimer, void *padapter, void *pfunc);
 
 

@@ -260,11 +260,11 @@ phy_RFSerialRead_8723B(
 	PHY_SetBBReg(Adapter, rFPGA0_XA_HSSIParameter2|MaskforPhySet, bMaskDWord, tmplong2 & (~bLSSIReadEdge));			
 	PHY_SetBBReg(Adapter, rFPGA0_XA_HSSIParameter2|MaskforPhySet, bMaskDWord, tmplong2 | bLSSIReadEdge);		
 	
-	rtw_udelay_os(10);
+	udelay(10);
 
 	for(i=0;i<2;i++)
-		rtw_udelay_os(MAX_STALL_TIME);	
-	rtw_udelay_os(10);
+		udelay(MAX_STALL_TIME);	
+	udelay(10);
 
 	if(eRFPath == RF_PATH_A)
 		RfPiEnable = (u1Byte)PHY_QueryBBReg(Adapter, rFPGA0_XA_HSSIParameter1|MaskforPhySet, BIT8);

@@ -28,7 +28,7 @@ void up_clk(_adapter*	padapter,	 u16 *x)
 _func_enter_;
 	*x = *x | _EESK;
 	rtw_write8(padapter, EE_9346CR, (u8)*x);
-	rtw_udelay_os(CLOCK_RATE);
+	udelay(CLOCK_RATE);
 
 _func_exit_;
 	
@@ -39,7 +39,7 @@ void down_clk(_adapter *	padapter, u16 *x	)
 _func_enter_;
 	*x = *x & ~_EESK;
 	rtw_write8(padapter, EE_9346CR, (u8)*x);
-	rtw_udelay_os(CLOCK_RATE);
+	udelay(CLOCK_RATE);
 _func_exit_;	
 }
 
@@ -67,7 +67,7 @@ _func_enter_;
 		goto out;
 		}
 		rtw_write8(padapter, EE_9346CR, (u8)x);
-		rtw_udelay_os(CLOCK_RATE);
+		udelay(CLOCK_RATE);
 		up_clk(padapter, &x);
 		down_clk(padapter, &x);
 		mask = mask >> 1;
@@ -126,10 +126,10 @@ _func_enter_;
 	x &= ~(_EECS | _EESK);
 	rtw_write8(padapter, EE_9346CR,x);
 
-	rtw_udelay_os(CLOCK_RATE);
+	udelay(CLOCK_RATE);
 	x |= _EECS;
 	rtw_write8(padapter, EE_9346CR, x);
-	rtw_udelay_os(CLOCK_RATE);
+	udelay(CLOCK_RATE);
 _func_exit_;		
 }
 
@@ -146,7 +146,7 @@ _func_enter_;
 			res=true;
 			goto exit;
 			}
-		rtw_udelay_os(CLOCK_RATE);
+		udelay(CLOCK_RATE);
 	}
 exit:	
 _func_exit_;			

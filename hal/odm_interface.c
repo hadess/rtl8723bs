@@ -306,13 +306,13 @@ ODM_StallExecution(
 	IN	u4Byte	usDelay
 	)
 {
-	rtw_udelay_os(usDelay);
+	udelay(usDelay);
 }
 
 void
 ODM_delay_us(IN u4Byte	us)
 {
-	rtw_udelay_os(us);
+	udelay(us);
 }
 
 void

@@ -323,11 +323,6 @@ void rtw_usleep_os(int us)
 		msleep( (us/1000) + 1);
 }
 
-void rtw_udelay_os(int us)
-{
-      udelay((unsigned long)us); 
-}
-
 #define RTW_SUSPEND_LOCK_NAME "rtw_wifi"
 #define RTW_SUSPEND_EXT_LOCK_NAME "rtw_wifi_ext"
 #define RTW_SUSPEND_RX_LOCK_NAME "rtw_wifi_rx"

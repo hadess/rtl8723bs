@@ -350,7 +350,7 @@ void rtl8723b_FirmwareSelfReset(PADAPTER padapter)
 			Delay--;
 			if(Delay == 0)
 				break;
-			rtw_udelay_os(50);
+			udelay(50);
 			u1bTmp = rtw_read8(padapter, REG_SYS_FUNC_EN+1);
 		}
 		RT_TRACE(_module_hal_init_c_, _drv_notice_, ("-%s: 8051 reset success (%d)\n", __FUNCTION__, Delay));
@@ -2975,7 +2975,7 @@ void _ResetDigitalProcedure1_92C(PADAPTER padapter, bool bWithoutHWSM)
 
 					while( (retry_cnts++ <100) && (FEN_CPUEN &rtw_read16(padapter, REG_SYS_FUNC_EN)))
 					{
-						rtw_udelay_os(50);//us
+						udelay(50);//us
 						// 2010/08/25 For test only We keep on reset 5051 to prevent fail.
 						//rtw_write8(padapter, REG_HMETFR+3, 0x20);//8051 reset by self
 					}

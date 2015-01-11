@@ -2651,15 +2651,15 @@ phy_ConfigBBWithParaFile(
 					}
 					else if (u4bRegOffset == 0xfb)
 					{
-						rtw_udelay_os(50);
+						udelay(50);
 					}
 					else if (u4bRegOffset == 0xfa)
 					{
-						rtw_udelay_os(5);
+						udelay(5);
 					}
 					else if (u4bRegOffset == 0xf9)
 					{
-						rtw_udelay_os(1);
+						udelay(1);
 					}
 					
 					// Get 2nd hex value as register value.
@@ -2673,7 +2673,7 @@ phy_ConfigBBWithParaFile(
 							pHalData->odmpriv.RFCalibrateInfo.RegA24 = u4bRegValue;
 
 						// Add 1us delay between BB/RF register setting.
-						rtw_udelay_os(1);
+						udelay(1);
 					}
 				}
 			}
@@ -3176,25 +3176,25 @@ PHY_ConfigRFWithParaFile(
 					{
 						//mdelay(5);
 						for(i=0;i<100;i++)
-							rtw_udelay_os(MAX_STALL_TIME);
+							udelay(MAX_STALL_TIME);
 					}
 					else if (u4bRegOffset == 0xfc)
 					{
 						//mdelay(1);
 						for(i=0;i<20;i++)
-							rtw_udelay_os(MAX_STALL_TIME);
+							udelay(MAX_STALL_TIME);
 					}
 					else if (u4bRegOffset == 0xfb)
 					{
-						rtw_udelay_os(50);
+						udelay(50);
 					}
 					else if (u4bRegOffset == 0xfa)
 					{
-						rtw_udelay_os(5);
+						udelay(5);
 					}
 					else if (u4bRegOffset == 0xf9)
 					{
-						rtw_udelay_os(1);
+						udelay(1);
 					}
 					else if(u4bRegOffset == 0xffff)
 					{
@@ -3215,7 +3215,7 @@ PHY_ConfigRFWithParaFile(
 						//0x2b 0x00808		frequency divider.
 						//0x2b 0x53333
 						//0x2c 0x0000c
-						rtw_udelay_os(1);
+						udelay(1);
 					}
 				}
 			}
