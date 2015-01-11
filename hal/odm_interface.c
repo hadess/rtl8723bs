@@ -195,35 +195,6 @@ ODM_FreeMemory(
 	rtw_vmfree(pPtr, length);
 }
 
-void
-ODM_MoveMemory(	
-	IN 	PDM_ODM_T	pDM_Odm,
-	OUT void *		pDest,
-	IN  void *		pSrc,
-	IN  u4Byte		Length
-	)
-{
-	_rtw_memcpy(pDest, pSrc, Length);
-}
-
-void ODM_Memory_Set
-	(IN 	PDM_ODM_T	pDM_Odm,
-		IN  void *	pbuf,
-		IN  s8	value,
-		IN  u4Byte	length)
-{
-	_rtw_memset(pbuf,value, length);
-}
-s4Byte ODM_CompareMemory(
-	IN 	PDM_ODM_T		pDM_Odm,
-	IN	void *           pBuf1,
-	IN	void *           pBuf2,
-	IN	u4Byte          length
-       )
-{
-	return !memcmp(pBuf1,pBuf2,length);
-}
-
 //
 // ODM MISC relative API.
 //
