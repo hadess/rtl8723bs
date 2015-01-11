@@ -41,7 +41,7 @@ odm_ConfigRFReg_8723B(
 	{
 		ODM_SetRFReg(pDM_Odm, RF_PATH, RegAddr, bRFRegOffsetMask, Data);
 		// Add 1us delay between BB/RF register setting.
-		ODM_delay_us(1);
+		udelay(1);
 
 		//For disable/enable test in high temperature, the B6 value will fail to fill. Suggestion by BB Stanley, 2013.06.25.
 		if(Addr == 0xb6)
@@ -50,13 +50,13 @@ odm_ConfigRFReg_8723B(
 			u1Byte	count =0;
 			getvalue = ODM_GetRFReg(pDM_Odm, RF_PATH, Addr, bMaskDWord);	
 
-			ODM_delay_us(1);
+			udelay(1);
 			
 			while((getvalue>>8)!=(Data>>8))
 			{
 				count++;
 				ODM_SetRFReg(pDM_Odm, RF_PATH, RegAddr, bRFRegOffsetMask, Data);
-				ODM_delay_us(1);
+				udelay(1);
 				getvalue = ODM_GetRFReg(pDM_Odm, RF_PATH, Addr, bMaskDWord);
 				ODM_RT_TRACE(pDM_Odm,ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ConfigRFWithHeaderFile: [B6] getvalue 0x%x, Data 0x%x, count %d\n", getvalue, Data,count));			
 				if(count>5)
@@ -70,16 +70,16 @@ odm_ConfigRFReg_8723B(
 			u1Byte	count =0;
 			getvalue = ODM_GetRFReg(pDM_Odm, RF_PATH, Addr, bMaskDWord);	
 
-			ODM_delay_us(1);
+			udelay(1);
 			
 			while(getvalue!=Data)
 			{
 				count++;
 				ODM_SetRFReg(pDM_Odm, RF_PATH, RegAddr, bRFRegOffsetMask, Data);
-				ODM_delay_us(1);
+				udelay(1);
 				//Do LCK againg 
 				ODM_SetRFReg(pDM_Odm, RF_PATH, 0x18, bRFRegOffsetMask, 0x0fc07);
-				ODM_delay_us(1);
+				udelay(1);
 				getvalue = ODM_GetRFReg(pDM_Odm, RF_PATH, Addr, bMaskDWord);
 				ODM_RT_TRACE(pDM_Odm,ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ConfigRFWithHeaderFile: [B2] getvalue 0x%x, Data 0x%x, count %d\n", getvalue, Data,count));			
 				if(count>5)
@@ -142,7 +142,7 @@ odm_ConfigBB_AGC_8723B(
 {
 	ODM_SetBBReg(pDM_Odm, Addr, Bitmask, Data);		
 	// Add 1us delay between BB/RF register setting.
-	ODM_delay_us(1);
+	udelay(1);
 
     ODM_RT_TRACE(pDM_Odm,ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ConfigBBWithHeaderFile: [AGC_TAB] %08X %08X\n", Addr, Data));
 }
@@ -190,18 +190,18 @@ odm_ConfigBB_PHY_8723B(
 	else if (Addr == 0xfc)
 		mdelay(1);
 	else if (Addr == 0xfb)
-		ODM_delay_us(50);
+		udelay(50);
 	else if (Addr == 0xfa)
-		ODM_delay_us(5);
+		udelay(5);
 	else if (Addr == 0xf9)
-		ODM_delay_us(1);
+		udelay(1);
 	else 
 	{
 		ODM_SetBBReg(pDM_Odm, Addr, Bitmask, Data);		
 	}
 	
 	// Add 1us delay between BB/RF register setting.
-	ODM_delay_us(1);
+	udelay(1);
     ODM_RT_TRACE(pDM_Odm,ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ConfigBBWithHeaderFile: [PHY_REG] %08X %08X\n", Addr, Data));
 }
 

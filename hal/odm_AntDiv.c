@@ -288,7 +288,7 @@ ODM_UpdateRxIdleAnt_8723B(
 	u1Temp = ODM_Read1Byte(pDM_Odm, 0x1e6);
 	while((u1Temp != 0x1) && (count < 100))
 	{
-		ODM_delay_us(10);	
+		udelay(10);	
 		u1Temp = ODM_Read1Byte(pDM_Odm, 0x1e6);
 		count++;
 	}
@@ -301,7 +301,7 @@ ODM_UpdateRxIdleAnt_8723B(
 		u1Temp = ODM_Read1Byte(pDM_Odm, 0x1e7);
 		while((!(u1Temp & BIT0))  && (count < 100))
 		{
-			ODM_delay_us(50);	
+			udelay(50);	
 			u1Temp = ODM_Read1Byte(pDM_Odm, 0x1e7);
 			count++;
 		}

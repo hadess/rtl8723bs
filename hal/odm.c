@@ -2095,7 +2095,7 @@ GetPSDData(
 	//Start PSD calculation, Reg808[22]=0->1
 	ODM_SetBBReg(pDM_Odm, 0x808, BIT22, 1);
 	//Need to wait for HW PSD report
-	ODM_StallExecution(1000);
+	udelay(1000);
 	ODM_SetBBReg(pDM_Odm, 0x808, BIT22, 0);
 	//Read PSD report, Reg8B4[15:0]
 	psd_report = ODM_GetBBReg(pDM_Odm,0x8B4, bMaskDWord) & 0x0000FFFF;
@@ -2270,7 +2270,7 @@ ODM_SingleDualAntennaDetection(
 	ODM_SetBBReg(pDM_Odm, rS0S1_PathSwitch, 0x3ff, 0x000);
 	ODM_SetBBReg(pDM_Odm, AGC_table_select, BIT31, 0x0);
 
-	ODM_StallExecution(10);
+	udelay(10);
 	
 	//Store A Path Register 88c, c08, 874, c50
 	Reg88c = ODM_GetBBReg(pDM_Odm, rFPGA0_AnalogParameter4, bMaskDWord);
@@ -2315,7 +2315,7 @@ ODM_SingleDualAntennaDetection(
 	ODM_SetBBReg(pDM_Odm, rIQK_AGC_Pts, bMaskDWord, 0xf9000000);
 	ODM_SetBBReg(pDM_Odm, rIQK_AGC_Pts, bMaskDWord, 0xf8000000);
 	
-	ODM_StallExecution(10000);
+	udelay(10000);
 
 	// PSD report of antenna A
 	PSD_report_tmp=0x0;
@@ -2329,7 +2329,7 @@ ODM_SingleDualAntennaDetection(
 	 // change to Antenna B
 	ODM_SetBBReg(pDM_Odm, rDPDT_control, 0x3, 0x2);
 
-	ODM_StallExecution(10);	
+	udelay(10);	
 
 	// PSD report of antenna B
 	PSD_report_tmp=0x0;
@@ -2343,7 +2343,7 @@ ODM_SingleDualAntennaDetection(
 	// change to open case
 	ODM_SetBBReg(pDM_Odm, rDPDT_control, 0x3, 0x0);
 
-	ODM_StallExecution(10);	
+	udelay(10);	
 	
 	// PSD report of open case
 	PSD_report_tmp=0x0;

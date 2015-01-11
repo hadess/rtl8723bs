@@ -285,14 +285,6 @@ ODM_IsWorkItemScheduled(
 // ODM Timer relative API.
 //
 void
-ODM_StallExecution(	
-	IN	u4Byte	usDelay
-	);
-
-void
-ODM_delay_us(IN u4Byte	us);
-
-void
 ODM_SetTimer(	
 	IN 	PDM_ODM_T		pDM_Odm,
 	IN	PRT_TIMER 		pTimer, 
