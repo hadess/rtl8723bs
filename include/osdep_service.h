@@ -148,9 +148,6 @@ void _rtw_skb_queue_purge(struct sk_buff_head *list);
 #define rtw_netif_rx(ndev, skb) _rtw_netif_rx(ndev, skb)
 #define rtw_skb_queue_purge(sk_buff_head) _rtw_skb_queue_purge(sk_buff_head)
 
-extern void*	rtw_malloc2d(int h, int w, int size);
-extern void	rtw_mfree2d(void *pbuf, int h, int w, int size);
-
 extern void	_rtw_memcpy(void* dec, void* sour, u32 sz);
 extern int	_rtw_memcmp(void *dst, void *src, u32 sz);
 extern void	_rtw_memset(void *pbuf, int c, u32 sz);
