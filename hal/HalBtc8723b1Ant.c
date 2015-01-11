@@ -1282,7 +1282,7 @@ halbtc8723b1ant_SetAntPath(
 				if(u1Tmp & BIT0)
 				{
 					BTC_PRINT(BTC_MSG_INTERFACE, INTF_INIT, ("[BTCoex], ########### BT is calibrating (wait cnt=%d) ###########\n", cntBtCalChk));
-					delay_ms(50);
+					mdelay(50);
 				}
 				else
 				{

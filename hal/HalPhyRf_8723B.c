@@ -554,7 +554,7 @@ phy_PathA_IQK_8723B(
 	// delay x ms
 //	ODM_RT_TRACE(pDM_Odm,ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("Delay %d ms for One shot, path A LOK & IQK.\n", IQK_DELAY_TIME_8723B));
 	//PlatformStallExecution(IQK_DELAY_TIME_8723B*1000);
-	ODM_delay_ms(IQK_DELAY_TIME_8723B);
+	mdelay(IQK_DELAY_TIME_8723B);
 
 	//restore Ant Path
 	ODM_SetBBReg(pDM_Odm, 0x948, bMaskDWord,Path_SEL_BB);
@@ -680,7 +680,7 @@ phy_PathA_RxIQK8723B(
 	// delay x ms
 //	ODM_RT_TRACE(pDM_Odm,ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("Delay %d ms for One shot, path A LOK & IQK.\n", IQK_DELAY_TIME_8723B));
 	//PlatformStallExecution(IQK_DELAY_TIME_8723B*1000);
-	ODM_delay_ms(IQK_DELAY_TIME_8723B);
+	mdelay(IQK_DELAY_TIME_8723B);
 
 	//restore Ant Path
 	ODM_SetBBReg(pDM_Odm, 0x948, bMaskDWord,Path_SEL_BB);
@@ -781,7 +781,7 @@ phy_PathA_RxIQK8723B(
 	// delay x ms
 //	ODM_RT_TRACE(pDM_Odm,ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("Delay %d ms for One shot, path A LOK & IQK.\n", IQK_DELAY_TIME_88E));
 	//PlatformStallExecution(IQK_DELAY_TIME_8723B*1000);
-	ODM_delay_ms(IQK_DELAY_TIME_8723B);
+	mdelay(IQK_DELAY_TIME_8723B);
 
 	//restore Ant Path
 	ODM_SetBBReg(pDM_Odm, 0x948, bMaskDWord,Path_SEL_BB);
@@ -903,7 +903,7 @@ phy_PathB_IQK_8723B(
 	// delay x ms
 //	ODM_RT_TRACE(pDM_Odm,ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("Delay %d ms for One shot, path B LOK & IQK.\n", IQK_DELAY_TIME_88E));
 	//PlatformStallExecution(IQK_DELAY_TIME_88E*1000);
-	ODM_delay_ms(IQK_DELAY_TIME_8723B);
+	mdelay(IQK_DELAY_TIME_8723B);
 
 	//restore Ant Path
 	ODM_SetBBReg(pDM_Odm, 0x948, bMaskDWord,Path_SEL_BB);
@@ -1029,7 +1029,7 @@ phy_PathB_RxIQK8723B(
 	// delay x ms
 //	ODM_RT_TRACE(pDM_Odm,ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("Delay %d ms for One shot, path A LOK & IQK.\n", IQK_DELAY_TIME_88E));
 	//PlatformStallExecution(IQK_DELAY_TIME_88E*1000);
-	ODM_delay_ms(IQK_DELAY_TIME_8723B);
+	mdelay(IQK_DELAY_TIME_8723B);
 
 	//restore Ant Path
 	ODM_SetBBReg(pDM_Odm, 0x948, bMaskDWord,Path_SEL_BB);
@@ -1132,7 +1132,7 @@ phy_PathB_RxIQK8723B(
 	// delay x ms
 //	ODM_RT_TRACE(pDM_Odm,ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("Delay %d ms for One shot, path A LOK & IQK.\n", IQK_DELAY_TIME_88E));
 	//PlatformStallExecution(IQK_DELAY_TIME_88E*1000);
-	ODM_delay_ms(IQK_DELAY_TIME_8723B);
+	mdelay(IQK_DELAY_TIME_8723B);
 
 	//restore Ant Path
 	ODM_SetBBReg(pDM_Odm, 0x948, bMaskDWord,Path_SEL_BB);
@@ -2061,7 +2061,7 @@ phy_LCCalibrate_8723B(
 	ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, 0xB0, bRFRegOffsetMask, 0xDFBE0); // LDO ON
 	ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_CHNLBW, bMask12Bits, LC_Cal|0x08000);
 
-	ODM_delay_ms(100);		
+	mdelay(100);		
 
 	ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, 0xB0, bRFRegOffsetMask, 0xDFFE0); // LDO OFF
 
@@ -2524,7 +2524,7 @@ PHY_LCCalibrate_8723B(
 	StartTime = ODM_GetCurrentTime( pDM_Odm);
 	while(*(pDM_Odm->pbScanInProcess) && timecount < timeout)
 	{
-		ODM_delay_ms(50);
+		mdelay(50);
 		timecount += 50;
 	}	
 	

@@ -989,7 +989,7 @@ halbtc8723b2ant_DacSwing(
 			(pCoexDm->preDacSwingLvl == pCoexDm->curDacSwingLvl) )
 			return;
 	}
-	delay_ms(30);
+	mdelay(30);
 	halbtc8723b2ant_SetSwFullTimeDacSwing(pBtCoexist, bDacSwingOn, dacSwingLvl);
 
 	pCoexDm->bPreDacSwingOn = pCoexDm->bCurDacSwingOn;

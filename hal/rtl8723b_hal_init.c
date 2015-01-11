@@ -5642,9 +5642,9 @@ _func_enter_;
 					ulCommand = CAM_CONTENT_COUNT*ucIndex+i;
 					ulCommand = ulCommand | CAM_POLLINIG | CAM_WRITE;
 					// write content 0 is equall to mark invalid
-					rtw_write32(padapter, WCAMI, ulContent);  //delay_ms(40);
+					rtw_write32(padapter, WCAMI, ulContent);  //mdelay(40);
 					//RT_TRACE(COMP_SEC, DBG_LOUD, ("CAM_empty_entry(): WRITE A4: %lx \n",ulContent));
-					rtw_write32(padapter, RWCAM, ulCommand);  //delay_ms(40);
+					rtw_write32(padapter, RWCAM, ulCommand);  //mdelay(40);
 					//RT_TRACE(COMP_SEC, DBG_LOUD, ("CAM_empty_entry(): WRITE A0: %lx \n",ulCommand));
 				}
 			}

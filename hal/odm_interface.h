@@ -311,11 +311,6 @@ ODM_StallExecution(
 	);
 
 void
-ODM_delay_ms(IN u4Byte	ms);
-
-
-
-void
 ODM_delay_us(IN u4Byte	us);
 
 void

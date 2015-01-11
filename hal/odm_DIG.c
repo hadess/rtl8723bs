@@ -244,7 +244,7 @@ odm_SearchPwdBLowerBound(
 	ODM_SetBBReg(pDM_Odm,rOFDM0_ECCAThreshold, bMaskByte0, (u1Byte)TH_L2H_dmc);
 	ODM_SetBBReg(pDM_Odm,rOFDM0_ECCAThreshold, bMaskByte2, (u1Byte)TH_H2L_dmc);
 
-	ODM_delay_ms(5);
+	mdelay(5);
 		
 		while(bAdjust)
 			{

@@ -3174,13 +3174,13 @@ PHY_ConfigRFWithParaFile(
 					}
 					else if (u4bRegOffset == 0xfd)
 					{
-						//delay_ms(5);
+						//mdelay(5);
 						for(i=0;i<100;i++)
 							rtw_udelay_os(MAX_STALL_TIME);
 					}
 					else if (u4bRegOffset == 0xfc)
 					{
-						//delay_ms(1);
+						//mdelay(1);
 						for(i=0;i<20;i++)
 							rtw_udelay_os(MAX_STALL_TIME);
 					}
