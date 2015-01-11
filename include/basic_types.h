@@ -30,8 +30,6 @@
 
 	typedef	signed int sint;
 
-	typedef void (*proc_t)(void*);
-
 	#define FIELD_OFFSET(s,field)	((__kernel_ssize_t)&((s*)(0))->field)
 
 #define MEM_ALIGNMENT_OFFSET	(sizeof (__kernel_size_t))
