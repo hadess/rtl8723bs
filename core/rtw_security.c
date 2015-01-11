@@ -2454,24 +2454,6 @@ static u8 os_strlen(const char *s)
 	return p - s;
 }
 
-static int os_memcmp(void *s1, void *s2, u8 n)
-{
-	unsigned char *p1 = s1, *p2 = s2;
-
-	if (n == 0)
-		return 0;
-
-	while (*p1 == *p2) {
-		p1++;
-		p2++;
-		n--;
-		if (n == 0)
-			return 0;
-	}
-
-	return *p1 - *p2;
-}
-
 /**
  * hmac_sha256_vector - HMAC-SHA256 over data vector (RFC 2104)
  * @key: Key for HMAC operations
@@ -3004,7 +2986,7 @@ void wpa_tdls_generate_tpk(_adapter *padapter, void * sta)
 	 */
 	len[0] = 32;
 	len[1] = 32;
-	if (os_memcmp(SNonce, ANonce, 32) < 0) {
+	if (memcmp(SNonce, ANonce, 32) < 0) {
 		nonce[0] = SNonce;
 		nonce[1] = ANonce;
 	} else {
@@ -3022,7 +3004,7 @@ void wpa_tdls_generate_tpk(_adapter *padapter, void * sta)
 	 * added by the KDF anyway..
 	 */
 
-	if (os_memcmp(myid(&(padapter->eeprompriv)), psta->hwaddr, ETH_ALEN) < 0) {
+	if (memcmp(myid(&(padapter->eeprompriv)), psta->hwaddr, ETH_ALEN) < 0) {
 		_rtw_memcpy(data, myid(&(padapter->eeprompriv)), ETH_ALEN);
 		_rtw_memcpy(data + ETH_ALEN, psta->hwaddr, ETH_ALEN);
 	} else {
@@ -3145,7 +3127,7 @@ int tdls_verify_mic(u8 *kck, u8 trans_seq,
 		return 0;
 	rx_ftie = ftie+4;
 
-	if (os_memcmp(mic, rx_ftie, 16) == 0) {
+	if (memcmp(mic, rx_ftie, 16) == 0) {
 		//Valid MIC
 		return 1;
 	}
