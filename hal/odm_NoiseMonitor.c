@@ -108,7 +108,7 @@ s16 odm_InbandNoise_Monitor_NSeries(PDM_ODM_T	pDM_Odm,u8 bPauseDIG,u8 IGIValue,u
 		ODM_RT_TRACE(pDM_Odm,ODM_COMP_COMMON, ODM_DBG_LOUD,("sval_a = %d, sval_b = %d\n", 
 			noise_data.sval[ODM_RF_PATH_A], noise_data.sval[ODM_RF_PATH_B]));
 		//mdelay(10);
-		//ODM_sleep_ms(10);
+		//msleep(10);
 
 		for(rf_path = ODM_RF_PATH_A; rf_path < max_rf_path; rf_path++) 
 		{

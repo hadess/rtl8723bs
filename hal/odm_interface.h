@@ -314,9 +314,6 @@ void
 ODM_delay_us(IN u4Byte	us);
 
 void
-ODM_sleep_ms(IN u4Byte	ms);
-
-void
 ODM_sleep_us(IN u4Byte	us);
 
 void
