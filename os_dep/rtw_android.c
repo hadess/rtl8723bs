@@ -1070,7 +1070,7 @@ static void shutdown_card(void)
 			break;
 		}
 
-		rtw_mdelay_os(10);
+		mdelay(10);
 	} while (1);
 
 	// unlock register I/O

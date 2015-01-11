@@ -897,7 +897,7 @@ Hal_EfusePowerSwitch(
 				if (count >= 100)
 					break;
 
-				rtw_mdelay_os(10);
+				mdelay(10);
 			} while (1);
 
 			if (count >= 100)
@@ -2989,7 +2989,7 @@ void _ResetDigitalProcedure1_92C(PADAPTER padapter, bool bWithoutHWSM)
 						//						0x00010100);
 						// 2010/08/31 MH According to Filen's info, if 8051 reset fail, reset MAC directly.
 						rtw_write8(padapter, REG_SYS_FUNC_EN+1, 0x50);	//Reset MAC and Enable 8051
-						rtw_mdelay_os(10);
+						mdelay(10);
 					}
 //					else
 //					RT_TRACE(COMP_INIT, DBG_LOUD, ("=====> 8051 reset success (%d) .\n",retry_cnts));
@@ -5866,7 +5866,7 @@ _func_enter_;
 					// RQPN Load 0
 					rtw_write16(padapter, REG_RQPN_NPQ, 0);
 					rtw_write32(padapter, REG_RQPN, 0x80000000);
-					rtw_mdelay_os(2);
+					mdelay(2);
 				}
 			}
 			break;

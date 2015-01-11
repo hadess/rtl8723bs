@@ -2381,7 +2381,7 @@ _func_enter_;
 			do
 			{
 				yield();
-				//rtw_mdelay_os(10);
+				//mdelay(10);
 				// check rsvd page download OK.
 				rtw_hal_get_hwreg(padapter, HW_VAR_BCN_VALID, (u8*)(&bcn_valid));
 				poll++;
@@ -2713,7 +2713,7 @@ void rtl8723b_download_BTCoex_AP_mode_rsvd_page(PADAPTER padapter)
 		DLBcnCount++;
 		do {
 			yield();
-//			rtw_mdelay_os(10);
+//			mdelay(10);
 			// check rsvd page download OK.
 			rtw_hal_get_hwreg(padapter, HW_VAR_BCN_VALID, &bcn_valid);
 			poll++;

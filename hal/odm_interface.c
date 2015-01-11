@@ -312,7 +312,7 @@ ODM_StallExecution(
 void
 ODM_delay_ms(IN u4Byte	ms)
 {
-	rtw_mdelay_os(ms);
+	mdelay(ms);
 }
 
 void

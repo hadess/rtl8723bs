@@ -563,7 +563,7 @@ _func_enter_;
 
 		// polling cpwm
 		do {
-			rtw_mdelay_os(1);
+			mdelay(1);
 			poll_cnt++;
 			rtw_hal_get_hwreg(padapter, HW_VAR_CPWM, &cpwm_now);
 			if ((cpwm_orig ^ cpwm_now) & 0x80)
@@ -1027,7 +1027,7 @@ _func_enter_;
 
 		// polling cpwm
 		do {
-			rtw_mdelay_os(1);
+			mdelay(1);
 
 			rtw_hal_get_hwreg(Adapter, HW_VAR_CPWM, &cpwm_now);
 			if ((cpwm_orig ^ cpwm_now) & 0x80)

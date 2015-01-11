@@ -977,7 +977,7 @@ static u32 rtl8723bs_hal_init(PADAPTER padapter)
 		
 		adapter_to_pwrctl(padapter)->tog = (val8 + 0x80) & 0x80;
 		
-		rtw_mdelay_os(5); //wait set rpwm already
+		mdelay(5); //wait set rpwm already
 		
 		ret = HalPwrSeqCmdParsing(padapter, PWR_CUT_ALL_MSK, PWR_FAB_ALL_MSK, PWR_INTF_SDIO_MSK, rtl8723B_leave_swlps_flow);
 		if (ret == false) {
@@ -1020,7 +1020,7 @@ static u32 rtl8723bs_hal_init(PADAPTER padapter)
 		start_time = jiffies;
 		do {
 
-			rtw_mdelay_os(1);
+			mdelay(1);
 			
 			rtw_hal_get_hwreg(padapter, HW_VAR_CPWM, &cpwm_now);
 			if ((cpwm_orig ^ cpwm_now) & 0x80)
@@ -1426,7 +1426,7 @@ static u32 rtl8723bs_hal_deinit(PADAPTER padapter)
 					val8 = rtw_read8(padapter, REG_HMETFR);
 					cnt++;
 					DBG_871X("%s  polling REG_HMETFR=0x%x, cnt=%d \n", __FUNCTION__, val8, cnt);
-					rtw_mdelay_os(10);
+					mdelay(10);
 				}while(cnt<100 && (val8!=0));
 				//H2C done, enter 32k
 				if(val8 == 0)
@@ -1443,7 +1443,7 @@ static u32 rtl8723bs_hal_deinit(PADAPTER padapter)
 						val8 = rtw_read8(padapter, REG_CR);
 						cnt++;
 						DBG_871X("%s  polling 0x100=0x%x, cnt=%d \n", __FUNCTION__, val8, cnt);			
-						rtw_mdelay_os(10);
+						mdelay(10);
 					}while(cnt<100 && (val8!=0xEA));
 #ifdef DBG_CHECK_FW_PS_STATE
 				if(val8 != 0xEA)
