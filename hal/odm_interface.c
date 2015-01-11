@@ -316,12 +316,6 @@ ODM_delay_us(IN u4Byte	us)
 }
 
 void
-ODM_sleep_us(IN u4Byte	us)
-{
-	rtw_usleep_os(us);
-}
-
-void
 ODM_SetTimer(	
 	IN 	PDM_ODM_T		pDM_Odm,
 	IN	PRT_TIMER 		pTimer, 
