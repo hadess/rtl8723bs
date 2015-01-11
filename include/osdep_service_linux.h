@@ -252,8 +252,5 @@ struct rtw_netdev_priv_indicator {
 struct net_device *rtw_alloc_etherdev_with_old_priv(int sizeof_priv, void *old_priv);
 extern struct net_device * rtw_alloc_etherdev(int sizeof_priv);
 
-#define STRUCT_PACKED __attribute__ ((packed))
-
-
 #endif
 
