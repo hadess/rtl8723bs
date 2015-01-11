@@ -228,7 +228,7 @@ static s32 pre_recv_entry(union recv_frame *precvframe, struct recv_buf	*precvbu
 			return _FAIL;
 
 		precvframe_if2->u.hdr.adapter = secondary_padapter;
-		_rtw_memcpy(&precvframe_if2->u.hdr.attrib, &precvframe->u.hdr.attrib, sizeof(struct rx_pkt_attrib));
+		memcpy(&precvframe_if2->u.hdr.attrib, &precvframe->u.hdr.attrib, sizeof(struct rx_pkt_attrib));
 		pattrib = &precvframe_if2->u.hdr.attrib;
 
 		//driver need to set skb len for skb_copy().
@@ -303,7 +303,7 @@ static void rtl8723bs_c2h_packet_handler(PADAPTER padapter, u8 *pbuf, u16 length
 	if (tmpBuf == NULL)
 		return;
 
-	_rtw_memcpy(tmpBuf, pbuf, length);
+	memcpy(tmpBuf, pbuf, length);
 
 	res = rtw_c2h_packet_wk_cmd(padapter, tmpBuf, length);
 
@@ -426,7 +426,7 @@ static void rtl8723bs_recv_tasklet(void *priv)
 					precvframe->u.hdr.pkt = pkt_copy;
 					skb_reserve( pkt_copy, 8 - ((SIZE_PTR)( pkt_copy->data ) & 7 ));//force pkt_copy->data at 8-byte alignment address
 					skb_reserve( pkt_copy, shift_sz );//force ip_hdr at 8-byte alignment address according to shift_sz.
-					_rtw_memcpy(pkt_copy->data, (ptr + rx_report_sz + pattrib->shift_sz), skb_len);
+					memcpy(pkt_copy->data, (ptr + rx_report_sz + pattrib->shift_sz), skb_len);
 					precvframe->u.hdr.rx_head = pkt_copy->head;
 					precvframe->u.hdr.rx_data = precvframe->u.hdr.rx_tail = pkt_copy->data;
 					precvframe->u.hdr.rx_end = skb_end_pointer(pkt_copy);

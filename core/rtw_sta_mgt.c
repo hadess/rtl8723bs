@@ -345,7 +345,7 @@ _func_enter_;
 
 		psta->padapter = pstapriv->padapter;
 
-		_rtw_memcpy(psta->hwaddr, hwaddr, ETH_ALEN);
+		memcpy(psta->hwaddr, hwaddr, ETH_ALEN);
 
 		index = wifi_mac_hash(hwaddr);
 
@@ -373,7 +373,7 @@ _func_enter_;
 
 		for( i = 0; i < 16; i++ )
 		{
-                     _rtw_memcpy( &psta->sta_recvpriv.rxcache.tid_rxseq[ i ], &wRxSeqInitialValue, 2 );
+                     memcpy( &psta->sta_recvpriv.rxcache.tid_rxseq[ i ], &wRxSeqInitialValue, 2 );
 		}
 
 		RT_TRACE(_module_rtl871x_sta_mgt_c_,_drv_info_,("alloc number_%d stainfo  with hwaddr = %x %x %x %x %x %x  \n", 

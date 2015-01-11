@@ -112,11 +112,6 @@ void _rtw_skb_queue_purge(struct sk_buff_head *list)
 		_rtw_skb_free(skb);
 }
 
-void _rtw_memcpy(void* dst, void* src, u32 sz)
-{
-	memcpy(dst, src, sz);
-}
-
 void _rtw_init_listhead(_list *list)
 {
 
@@ -683,7 +678,7 @@ int rtw_change_ifname(_adapter *padapter, const char *ifname)
 
 	rtw_init_netdev_name(pnetdev, ifname);
 
-	_rtw_memcpy(pnetdev->dev_addr, padapter->eeprompriv.mac_addr, ETH_ALEN);
+	memcpy(pnetdev->dev_addr, padapter->eeprompriv.mac_addr, ETH_ALEN);
 
 	if(!rtnl_is_locked())
 		ret = register_netdev(pnetdev);
@@ -752,7 +747,7 @@ void rtw_buf_update(u8 **buf, u32 *buf_len, u8 *src, u32 src_len)
 	dup = rtw_malloc(src_len);
 	if (dup) {
 		dup_len = src_len;
-		_rtw_memcpy(dup, src, dup_len);
+		memcpy(dup, src, dup_len);
 	}
 
 keep_ori:

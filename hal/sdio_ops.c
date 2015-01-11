@@ -239,7 +239,7 @@ _func_enter_;
 
 		ftaddr &= ~(u16)0x3;
 		sd_read(pintfhdl, ftaddr, 8, ptmpbuf);
-		_rtw_memcpy(&val, ptmpbuf+shift, 4);
+		memcpy(&val, ptmpbuf+shift, 4);
 		val = le32_to_cpu(val);
 
 		rtw_mfree(ptmpbuf, 8);
@@ -293,7 +293,7 @@ _func_enter_;
 		if (NULL == ptmpbuf) return -1;
 		err = sd_read(pintfhdl, ftaddr, n, ptmpbuf);
 		if (!err)
-			_rtw_memcpy(pbuf, ptmpbuf+shift, cnt);
+			memcpy(pbuf, ptmpbuf+shift, cnt);
 		rtw_mfree(ptmpbuf, n);
 	}
 
@@ -390,7 +390,7 @@ _func_enter_;
 			return err;
 		}
 		val = cpu_to_le32(val);
-		_rtw_memcpy(ptmpbuf+shift, &val, 4);
+		memcpy(ptmpbuf+shift, &val, 4);
 		err = sd_write(pintfhdl, ftaddr, 8, ptmpbuf);
 
 		rtw_mfree(ptmpbuf, 8);
@@ -447,7 +447,7 @@ _func_enter_;
 			rtw_mfree(ptmpbuf, n);
 			return err;
 		}
-		_rtw_memcpy(ptmpbuf+shift, pbuf, cnt);
+		memcpy(ptmpbuf+shift, pbuf, cnt);
 		err = sd_write(pintfhdl, ftaddr, n, ptmpbuf);
 		rtw_mfree(ptmpbuf, n);
 	}
@@ -552,7 +552,7 @@ static u32 sdio_read_port(
 
 #ifdef SDIO_DYNAMIC_ALLOC_MEM
 	if ((oldcnt != cnt) && (oldmem)) {
-		_rtw_memcpy(oldmem, mem, oldcnt);
+		memcpy(oldmem, mem, oldcnt);
 		rtw_mfree(mem, cnt);
 	}
 #endif
@@ -668,7 +668,7 @@ s32 _sdio_local_read(
 
 	err = _sd_read(pintfhdl, addr, n, ptmpbuf);
 	if (!err)
-		_rtw_memcpy(pbuf, ptmpbuf, cnt);
+		memcpy(pbuf, ptmpbuf, cnt);
 
 	if (ptmpbuf)
 		rtw_mfree(ptmpbuf, n);
@@ -713,7 +713,7 @@ s32 sdio_local_read(
 
 	err = sd_read(pintfhdl, addr, n, ptmpbuf);
 	if (!err)
-		_rtw_memcpy(pbuf, ptmpbuf, cnt);
+		memcpy(pbuf, ptmpbuf, cnt);
 
 	if (ptmpbuf)
 		rtw_mfree(ptmpbuf, n);
@@ -760,7 +760,7 @@ s32 _sdio_local_write(
 	if (!ptmpbuf)
 		return (-1);
 
-	_rtw_memcpy(ptmpbuf, pbuf, cnt);
+	memcpy(ptmpbuf, pbuf, cnt);
 
 	err = _sd_write(pintfhdl, addr, cnt, ptmpbuf);
 
@@ -809,7 +809,7 @@ s32 sdio_local_write(
 	if (!ptmpbuf)
 		return (-1);
 
-	_rtw_memcpy(ptmpbuf, pbuf, cnt);
+	memcpy(ptmpbuf, pbuf, cnt);
 
 	err = sd_write(pintfhdl, addr, cnt, ptmpbuf);
 
@@ -1525,7 +1525,7 @@ void sd_int_dpc(PADAPTER padapter)
 
 		_sdio_local_read(padapter, SDIO_REG_FREE_TXPG, 4, freepage);
 		//_enter_critical_bh(&phal->SdioTxFIFOFreePageLock, &irql);
-		//_rtw_memcpy(phal->SdioTxFIFOFreePage, freepage, 4);
+		//memcpy(phal->SdioTxFIFOFreePage, freepage, 4);
 		//_exit_critical_bh(&phal->SdioTxFIFOFreePageLock, &irql);
 		//DBG_871X("SDIO_HISR_AVAL, Tx Free Page = 0x%x%x%x%x\n",
 		//	freepage[0],
@@ -1710,7 +1710,7 @@ u8 HalQueryTxBufferStatus8723BSdio(PADAPTER padapter)
 	NumOfFreePage = SdioLocalCmd53Read4Byte(padapter, SDIO_REG_FREE_TXPG);
 
 	//_enter_critical_bh(&phal->SdioTxFIFOFreePageLock, &irql);
-	_rtw_memcpy(phal->SdioTxFIFOFreePage, &NumOfFreePage, 4);
+	memcpy(phal->SdioTxFIFOFreePage, &NumOfFreePage, 4);
 	RT_TRACE(_module_hci_ops_c_, _drv_notice_,
 			("%s: Free page for HIQ(%#x),MIDQ(%#x),LOWQ(%#x),PUBQ(%#x)\n",
 			__FUNCTION__,

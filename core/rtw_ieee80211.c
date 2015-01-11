@@ -135,7 +135,7 @@ int rtw_check_network_type(unsigned char *rate, int ratelen, int channel)
 u8 *rtw_set_fixed_ie(unsigned char *pbuf, unsigned int len, unsigned char *source,
 				unsigned int *frlen)
 {
-	_rtw_memcpy((void *)pbuf, (void *)source, len);
+	memcpy((void *)pbuf, (void *)source, len);
 	*frlen = *frlen + len;
 	return (pbuf + len);
 }
@@ -156,7 +156,7 @@ _func_enter_;
 	*(pbuf + 1) = (u8)len;
 
 	if (len > 0)
-		_rtw_memcpy((void *)(pbuf + 2), (void *)source, len);
+		memcpy((void *)(pbuf + 2), (void *)source, len);
 	
 	*frlen = *frlen + (len + 2);
 	
@@ -287,7 +287,7 @@ u8 *rtw_get_ie_ex(u8 *in_ie, uint in_len, u8 eid, u8 *oui, u8 oui_len, u8 *ie, u
 			target_ie = &in_ie[cnt];
 
 			if(ie)
-				_rtw_memcpy(ie, &in_ie[cnt], in_ie[cnt+1]+2);
+				memcpy(ie, &in_ie[cnt], in_ie[cnt+1]+2);
 			
 			if(ielen)
 				*ielen = in_ie[cnt+1]+2;
@@ -336,8 +336,8 @@ int rtw_ies_remove_ie(u8 *ies, uint *ies_len, uint offset, u8 eid, u8 *oui, u8 o
 			u8 *remain_ies = target_ie + target_ielen;
 			uint remain_len = search_len - (remain_ies - start);
 			
-			_rtw_memcpy(buf, remain_ies, remain_len);
-			_rtw_memcpy(target_ie, buf, remain_len);
+			memcpy(buf, remain_ies, remain_len);
+			memcpy(target_ie, buf, remain_len);
 			*ies_len = *ies_len - target_ielen;
 			ret = _SUCCESS;
 
@@ -360,7 +360,7 @@ _func_enter_;
 	switch (mode)
 	{
 		case WIRELESS_11B:
-			_rtw_memcpy(SupportedRates, WIFI_CCKRATES, IEEE80211_CCK_RATE_LEN);
+			memcpy(SupportedRates, WIFI_CCKRATES, IEEE80211_CCK_RATE_LEN);
 			break;
 		
 		case WIRELESS_11G:
@@ -368,15 +368,15 @@ _func_enter_;
 		case WIRELESS_11_5N:
 		case WIRELESS_11A_5N://Todo: no basic rate for ofdm ?
 		case WIRELESS_11_5AC:
-			_rtw_memcpy(SupportedRates, WIFI_OFDMRATES, IEEE80211_NUM_OFDM_RATESLEN);
+			memcpy(SupportedRates, WIFI_OFDMRATES, IEEE80211_NUM_OFDM_RATESLEN);
 			break;
 		
 		case WIRELESS_11BG:
 		case WIRELESS_11G_24N:
 		case WIRELESS_11_24N:
 		case WIRELESS_11BG_24N:
-			_rtw_memcpy(SupportedRates, WIFI_CCKRATES, IEEE80211_CCK_RATE_LEN);
-			_rtw_memcpy(SupportedRates + IEEE80211_CCK_RATE_LEN, WIFI_OFDMRATES, IEEE80211_NUM_OFDM_RATESLEN);
+			memcpy(SupportedRates, WIFI_CCKRATES, IEEE80211_CCK_RATE_LEN);
+			memcpy(SupportedRates + IEEE80211_CCK_RATE_LEN, WIFI_OFDMRATES, IEEE80211_NUM_OFDM_RATESLEN);
 			break;
 	
 	}
@@ -514,7 +514,7 @@ unsigned char *rtw_get_wpa_ie(unsigned char *pie, int *wpa_ie_len, int limit)
 			}
 
 			//check version...
-			_rtw_memcpy((u8 *)&val16, (pbuf + 6), sizeof(val16));
+			memcpy((u8 *)&val16, (pbuf + 6), sizeof(val16));
 
 			val16 = le16_to_cpu(val16);
 			if (val16 != 0x0001)
@@ -780,7 +780,7 @@ _func_enter_;
 				       	!memcmp(&in_ie[cnt+6], wapi_oui2,4)))
 		{
 			if (wapi_ie) {
-				_rtw_memcpy(wapi_ie, &in_ie[cnt],in_ie[cnt+1]+2);
+				memcpy(wapi_ie, &in_ie[cnt],in_ie[cnt+1]+2);
 
 				for(i=0;i<(in_ie[cnt+1]+2);i=i+8){
 					RT_TRACE(_module_rtl871x_mlme_c_,_drv_info_,("\n %2x,%2x,%2x,%2x,%2x,%2x,%2x,%2x\n",
@@ -833,7 +833,7 @@ _func_enter_;
 				RT_TRACE(_module_rtl871x_mlme_c_,_drv_info_,("\n rtw_get_wpa_ie: sec_idx=%d in_ie[cnt+1]+2=%d\n",sec_idx,in_ie[cnt+1]+2));		
 
 				if (wpa_ie) {
-				_rtw_memcpy(wpa_ie, &in_ie[cnt],in_ie[cnt+1]+2);
+				memcpy(wpa_ie, &in_ie[cnt],in_ie[cnt+1]+2);
 
 				for(i=0;i<(in_ie[cnt+1]+2);i=i+8){
 						RT_TRACE(_module_rtl871x_mlme_c_,_drv_info_,("\n %2x,%2x,%2x,%2x,%2x,%2x,%2x,%2x\n",
@@ -852,7 +852,7 @@ _func_enter_;
 				RT_TRACE(_module_rtl871x_mlme_c_,_drv_info_,("\n get_rsn_ie: sec_idx=%d in_ie[cnt+1]+2=%d\n",sec_idx,in_ie[cnt+1]+2));		
 
 				if (rsn_ie) {
-				_rtw_memcpy(rsn_ie, &in_ie[cnt],in_ie[cnt+1]+2);
+				memcpy(rsn_ie, &in_ie[cnt],in_ie[cnt+1]+2);
 
 				for(i=0;i<(in_ie[cnt+1]+2);i=i+8){
 						RT_TRACE(_module_rtl871x_mlme_c_,_drv_info_,("\n %2x,%2x,%2x,%2x,%2x,%2x,%2x,%2x\n",
@@ -950,7 +950,7 @@ u8 *rtw_get_wps_ie(u8 *in_ie, uint in_len, u8 *wps_ie, uint *wps_ielen)
 			wpsie_ptr = &in_ie[cnt];
 
 			if(wps_ie)
-				_rtw_memcpy(wps_ie, &in_ie[cnt], in_ie[cnt+1]+2);
+				memcpy(wps_ie, &in_ie[cnt], in_ie[cnt+1]+2);
 			
 			if(wps_ielen)
 				*wps_ielen = in_ie[cnt+1]+2;
@@ -1010,7 +1010,7 @@ u8 *rtw_get_wps_attr(u8 *wps_ie, uint wps_ielen, u16 target_attr_id ,u8 *buf_att
 			target_attr_ptr = attr_ptr;
 		
 			if(buf_attr)
-				_rtw_memcpy(buf_attr, attr_ptr, attr_len);
+				memcpy(buf_attr, attr_ptr, attr_len);
 			
 			if(len_attr)
 				*len_attr = attr_len;
@@ -1050,7 +1050,7 @@ u8 *rtw_get_wps_attr_content(u8 *wps_ie, uint wps_ielen, u16 target_attr_id ,u8 
 	if(attr_ptr && attr_len)
 	{
 		if(buf_content)
-			_rtw_memcpy(buf_content, attr_ptr+4, attr_len-4);
+			memcpy(buf_content, attr_ptr+4, attr_len-4);
 
 		if(len_content)
 			*len_content = attr_len-4;
@@ -1359,11 +1359,11 @@ void rtw_macaddr_cfg(u8 *mac_addr)
 		{
 			mac[jj] = key_2char2num(rtw_initmac[kk], rtw_initmac[kk+ 1]);
 		}
-		_rtw_memcpy(mac_addr, mac, ETH_ALEN);
+		memcpy(mac_addr, mac, ETH_ALEN);
 	}
 	else
 	{	//	Use the mac address stored in the Efuse
-		_rtw_memcpy(mac, mac_addr, ETH_ALEN);
+		memcpy(mac, mac_addr, ETH_ALEN);
 	}
 	
 	if (((mac[0]==0xff) &&(mac[1]==0xff) && (mac[2]==0xff) &&
@@ -1378,7 +1378,7 @@ void rtw_macaddr_cfg(u8 *mac_addr)
 		mac[4] = 0x00;
 		mac[5] = 0x00;
 		// use default mac addresss
-		_rtw_memcpy(mac_addr, mac, ETH_ALEN);
+		memcpy(mac_addr, mac, ETH_ALEN);
 		DBG_871X("MAC Address from efuse error, assign default one !!!\n");
 	}	
 
@@ -1471,7 +1471,7 @@ int rtw_get_wfd_ie(u8 *in_ie, int in_len, u8 *wfd_ie, uint *wfd_ielen)
 		{
 			if ( wfd_ie != NULL )
 			{
-				_rtw_memcpy( wfd_ie, &in_ie[ cnt ], in_ie[ cnt + 1 ] + 2 );
+				memcpy( wfd_ie, &in_ie[ cnt ], in_ie[ cnt + 1 ] + 2 );
 			
 			}
 			else
@@ -1560,7 +1560,7 @@ int rtw_get_wfd_attr_content(u8 *wfd_ie, uint wfd_ielen, u8 target_attr_id ,u8 *
 		{
 			//	3 -> 1 byte for attribute ID field, 2 bytes for length field
 			if(attr_content)
-				_rtw_memcpy( attr_content, &wfd_ie[ cnt + 3 ], attrlen );
+				memcpy( attr_content, &wfd_ie[ cnt + 3 ], attrlen );
 			
 			if(attr_contentlen)
 				*attr_contentlen = attrlen;
@@ -1678,7 +1678,7 @@ void rtw_get_bcn_info(struct wlan_network *pnetwork)
 	unsigned int		len;
 	unsigned char		*p;
 
-	_rtw_memcpy((u8 *)&cap, rtw_get_capability_from_ie(pnetwork->network.IEs), 2);
+	memcpy((u8 *)&cap, rtw_get_capability_from_ie(pnetwork->network.IEs), 2);
 	cap = le16_to_cpu(cap);
 	if (cap & WLAN_CAPABILITY_PRIVACY) {
 		bencrypt = 1;

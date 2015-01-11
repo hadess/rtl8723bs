@@ -115,11 +115,11 @@ _func_enter_;
 
 		if(CmdLen<=3)
 		{
-			_rtw_memcpy((u8*)(&h2c_cmd)+1, pCmdBuffer, CmdLen );
+			memcpy((u8*)(&h2c_cmd)+1, pCmdBuffer, CmdLen );
 		}
 		else{
-			_rtw_memcpy((u8*)(&h2c_cmd)+1, pCmdBuffer, 3);
-			_rtw_memcpy((u8*)(&h2c_cmd_ex), pCmdBuffer+3, CmdLen-3);
+			memcpy((u8*)(&h2c_cmd)+1, pCmdBuffer, 3);
+			memcpy((u8*)(&h2c_cmd_ex), pCmdBuffer+3, CmdLen-3);
 //			*(u8*)(&h2c_cmd) |= BIT(7);
 		}
 
@@ -170,9 +170,9 @@ static void ConstructBeacon(_adapter *padapter, u8 *pframe, u32 *pLength)
 	fctrl = &(pwlanhdr->frame_ctl);
 	*(fctrl) = 0;
 
-	_rtw_memcpy(pwlanhdr->addr1, bc_addr, ETH_ALEN);
-	_rtw_memcpy(pwlanhdr->addr2, myid(&(padapter->eeprompriv)), ETH_ALEN);
-	_rtw_memcpy(pwlanhdr->addr3, get_my_bssid(cur_network), ETH_ALEN);
+	memcpy(pwlanhdr->addr1, bc_addr, ETH_ALEN);
+	memcpy(pwlanhdr->addr2, myid(&(padapter->eeprompriv)), ETH_ALEN);
+	memcpy(pwlanhdr->addr3, get_my_bssid(cur_network), ETH_ALEN);
 
 	SetSeqNum(pwlanhdr, 0/*pmlmeext->mgnt_seq*/);
 	//pmlmeext->mgnt_seq++;
@@ -186,13 +186,13 @@ static void ConstructBeacon(_adapter *padapter, u8 *pframe, u32 *pLength)
 	pktlen += 8;
 
 	// beacon interval: 2 bytes
-	_rtw_memcpy(pframe, (unsigned char *)(rtw_get_beacon_interval_from_ie(cur_network->IEs)), 2);
+	memcpy(pframe, (unsigned char *)(rtw_get_beacon_interval_from_ie(cur_network->IEs)), 2);
 
 	pframe += 2;
 	pktlen += 2;
 
 	// capability info: 2 bytes
-	_rtw_memcpy(pframe, (unsigned char *)(rtw_get_capability_from_ie(cur_network->IEs)), 2);
+	memcpy(pframe, (unsigned char *)(rtw_get_capability_from_ie(cur_network->IEs)), 2);
 
 	pframe += 2;
 	pktlen += 2;
@@ -201,7 +201,7 @@ static void ConstructBeacon(_adapter *padapter, u8 *pframe, u32 *pLength)
 	{
 		//DBG_871X("ie len=%d\n", cur_network->IELength);
 		pktlen += cur_network->IELength - sizeof(NDIS_802_11_FIXED_IEs);
-		_rtw_memcpy(pframe, cur_network->IEs+sizeof(NDIS_802_11_FIXED_IEs), pktlen);
+		memcpy(pframe, cur_network->IEs+sizeof(NDIS_802_11_FIXED_IEs), pktlen);
 
 		goto _ConstructBeacon;
 	}
@@ -276,10 +276,10 @@ static void ConstructPSPoll(_adapter *padapter, u8 *pframe, u32 *pLength)
 	SetDuration(pframe, (pmlmeinfo->aid | 0xc000));
 
 	// BSSID.
-	_rtw_memcpy(pwlanhdr->addr1, get_my_bssid(&(pmlmeinfo->network)), ETH_ALEN);
+	memcpy(pwlanhdr->addr1, get_my_bssid(&(pmlmeinfo->network)), ETH_ALEN);
 
 	// TA.
-	_rtw_memcpy(pwlanhdr->addr2, myid(&(padapter->eeprompriv)), ETH_ALEN);
+	memcpy(pwlanhdr->addr2, myid(&(padapter->eeprompriv)), ETH_ALEN);
 
 	*pLength = 16;
 }
@@ -318,21 +318,21 @@ static void ConstructNullFunctionData(
 	{
 		case Ndis802_11Infrastructure:
 			SetToDs(fctrl);
-			_rtw_memcpy(pwlanhdr->addr1, get_my_bssid(&(pmlmeinfo->network)), ETH_ALEN);
-			_rtw_memcpy(pwlanhdr->addr2, myid(&(padapter->eeprompriv)), ETH_ALEN);
-			_rtw_memcpy(pwlanhdr->addr3, StaAddr, ETH_ALEN);
+			memcpy(pwlanhdr->addr1, get_my_bssid(&(pmlmeinfo->network)), ETH_ALEN);
+			memcpy(pwlanhdr->addr2, myid(&(padapter->eeprompriv)), ETH_ALEN);
+			memcpy(pwlanhdr->addr3, StaAddr, ETH_ALEN);
 			break;
 		case Ndis802_11APMode:
 			SetFrDs(fctrl);
-			_rtw_memcpy(pwlanhdr->addr1, StaAddr, ETH_ALEN);
-			_rtw_memcpy(pwlanhdr->addr2, get_my_bssid(&(pmlmeinfo->network)), ETH_ALEN);
-			_rtw_memcpy(pwlanhdr->addr3, myid(&(padapter->eeprompriv)), ETH_ALEN);
+			memcpy(pwlanhdr->addr1, StaAddr, ETH_ALEN);
+			memcpy(pwlanhdr->addr2, get_my_bssid(&(pmlmeinfo->network)), ETH_ALEN);
+			memcpy(pwlanhdr->addr3, myid(&(padapter->eeprompriv)), ETH_ALEN);
 			break;
 		case Ndis802_11IBSS:
 		default:
-			_rtw_memcpy(pwlanhdr->addr1, StaAddr, ETH_ALEN);
-			_rtw_memcpy(pwlanhdr->addr2, myid(&(padapter->eeprompriv)), ETH_ALEN);
-			_rtw_memcpy(pwlanhdr->addr3, get_my_bssid(&(pmlmeinfo->network)), ETH_ALEN);
+			memcpy(pwlanhdr->addr1, StaAddr, ETH_ALEN);
+			memcpy(pwlanhdr->addr2, myid(&(padapter->eeprompriv)), ETH_ALEN);
+			memcpy(pwlanhdr->addr3, get_my_bssid(&(pmlmeinfo->network)), ETH_ALEN);
 			break;
 	}
 
@@ -396,9 +396,9 @@ static void ConstructARPResponse(
 	SetFrameType(fctrl, WIFI_DATA);
 	//SetFrameSubType(fctrl, 0);
 	SetToDs(fctrl);
-	_rtw_memcpy(pwlanhdr->addr1, get_my_bssid(&(pmlmeinfo->network)), ETH_ALEN);
-	_rtw_memcpy(pwlanhdr->addr2, myid(&(padapter->eeprompriv)), ETH_ALEN);
-	_rtw_memcpy(pwlanhdr->addr3, get_my_bssid(&(pmlmeinfo->network)), ETH_ALEN);
+	memcpy(pwlanhdr->addr1, get_my_bssid(&(pmlmeinfo->network)), ETH_ALEN);
+	memcpy(pwlanhdr->addr2, myid(&(padapter->eeprompriv)), ETH_ALEN);
+	memcpy(pwlanhdr->addr3, get_my_bssid(&(pmlmeinfo->network)), ETH_ALEN);
 
 	SetSeqNum(pwlanhdr, 0);
 	SetDuration(pwlanhdr, 0);
@@ -469,7 +469,7 @@ static void ConstructARPResponse(
 	pARPRspPkt =  (u8*)(pframe+ *pLength);
 	payload = pARPRspPkt; //Get Payload pointer
 	// LLC header
-	_rtw_memcpy(pARPRspPkt, ARPLLCHeader, 8);	
+	memcpy(pARPRspPkt, ARPLLCHeader, 8);	
 	*pLength += 8;
 
 	// ARP element
@@ -528,7 +528,7 @@ static void ConstructARPResponse(
 		rtw_secgetmic(&micdata,&(mic[0]));
 
 		pARPRspPkt += 28;
-		_rtw_memcpy(pARPRspPkt, &(mic[0]),8);
+		memcpy(pARPRspPkt, &(mic[0]),8);
 
 		*pLength += 8;
 	}
@@ -546,33 +546,33 @@ static void ConstructPnoInfo(
 
 	u8	*pPnoInfoPkt = pframe;
 	pPnoInfoPkt =  (u8*)(pframe+ *pLength);
-	_rtw_memcpy(pPnoInfoPkt, &pwrctl->pnlo_info->ssid_num, 4);
+	memcpy(pPnoInfoPkt, &pwrctl->pnlo_info->ssid_num, 4);
 
 	*pLength+=4;
 	pPnoInfoPkt += 4;
-	_rtw_memcpy(pPnoInfoPkt, &pwrctl->pnlo_info->fast_scan_period, 4);
+	memcpy(pPnoInfoPkt, &pwrctl->pnlo_info->fast_scan_period, 4);
 
 	*pLength+=4;
 	pPnoInfoPkt += 4;
-	_rtw_memcpy(pPnoInfoPkt, &pwrctl->pnlo_info->fast_scan_iterations, 4);
+	memcpy(pPnoInfoPkt, &pwrctl->pnlo_info->fast_scan_iterations, 4);
 
 	*pLength+=4;
 	pPnoInfoPkt += 4;
-	_rtw_memcpy(pPnoInfoPkt, &pwrctl->pnlo_info->slow_scan_period, 4);
+	memcpy(pPnoInfoPkt, &pwrctl->pnlo_info->slow_scan_period, 4);
 
 	*pLength+=4;
 	pPnoInfoPkt += 4;
-	_rtw_memcpy(pPnoInfoPkt, &pwrctl->pnlo_info->ssid_length,
+	memcpy(pPnoInfoPkt, &pwrctl->pnlo_info->ssid_length,
 			MAX_PNO_LIST_COUNT);
 
 	*pLength+=MAX_PNO_LIST_COUNT;
 	pPnoInfoPkt += MAX_PNO_LIST_COUNT;
-	_rtw_memcpy(pPnoInfoPkt, &pwrctl->pnlo_info->ssid_cipher_info,
+	memcpy(pPnoInfoPkt, &pwrctl->pnlo_info->ssid_cipher_info,
 			MAX_PNO_LIST_COUNT);
 
 	*pLength+=MAX_PNO_LIST_COUNT;
 	pPnoInfoPkt += MAX_PNO_LIST_COUNT;
-	_rtw_memcpy(pPnoInfoPkt, &pwrctl->pnlo_info->ssid_channel_info,
+	memcpy(pPnoInfoPkt, &pwrctl->pnlo_info->ssid_channel_info,
 			MAX_PNO_LIST_COUNT);
 
 	*pLength+=MAX_PNO_LIST_COUNT;
@@ -592,7 +592,7 @@ static void ConstructSSIDList(
 	pSSIDListPkt =  (u8*)(pframe+ *pLength);
 
 	for(i = 0; i < pwrctl->pnlo_info->ssid_num ; i++) {
-		_rtw_memcpy(pSSIDListPkt, &pwrctl->pno_ssid_list->node[i].SSID,
+		memcpy(pSSIDListPkt, &pwrctl->pno_ssid_list->node[i].SSID,
 			pwrctl->pnlo_info->ssid_length[i]);
 
 		*pLength += WLAN_SSID_MAXLEN;
@@ -612,47 +612,47 @@ static void ConstructScanInfo(
 
 	pScanInfoPkt =  (u8*)(pframe+ *pLength);
 
-	_rtw_memcpy(pScanInfoPkt, &pwrctl->pscan_info->channel_num, 1);
+	memcpy(pScanInfoPkt, &pwrctl->pscan_info->channel_num, 1);
 
 	*pLength+=1;
 	pScanInfoPkt += 1;
-	_rtw_memcpy(pScanInfoPkt, &pwrctl->pscan_info->orig_ch, 1);
-
-
-	*pLength+=1;
-	pScanInfoPkt += 1;
-	_rtw_memcpy(pScanInfoPkt, &pwrctl->pscan_info->orig_bw, 1);
+	memcpy(pScanInfoPkt, &pwrctl->pscan_info->orig_ch, 1);
 
 
 	*pLength+=1;
 	pScanInfoPkt += 1;
-	_rtw_memcpy(pScanInfoPkt, &pwrctl->pscan_info->orig_40_offset, 1);
+	memcpy(pScanInfoPkt, &pwrctl->pscan_info->orig_bw, 1);
+
 
 	*pLength+=1;
 	pScanInfoPkt += 1;
-	_rtw_memcpy(pScanInfoPkt, &pwrctl->pscan_info->orig_80_offset, 1);
+	memcpy(pScanInfoPkt, &pwrctl->pscan_info->orig_40_offset, 1);
 
 	*pLength+=1;
 	pScanInfoPkt += 1;
-	_rtw_memcpy(pScanInfoPkt, &pwrctl->pscan_info->periodScan, 1);
+	memcpy(pScanInfoPkt, &pwrctl->pscan_info->orig_80_offset, 1);
 
 	*pLength+=1;
 	pScanInfoPkt += 1;
-	_rtw_memcpy(pScanInfoPkt, &pwrctl->pscan_info->period_scan_time, 1);
+	memcpy(pScanInfoPkt, &pwrctl->pscan_info->periodScan, 1);
 
 	*pLength+=1;
 	pScanInfoPkt += 1;
-	_rtw_memcpy(pScanInfoPkt, &pwrctl->pscan_info->enableRFE, 1);
+	memcpy(pScanInfoPkt, &pwrctl->pscan_info->period_scan_time, 1);
 
 	*pLength+=1;
 	pScanInfoPkt += 1;
-	_rtw_memcpy(pScanInfoPkt, &pwrctl->pscan_info->rfe_type, 8);
+	memcpy(pScanInfoPkt, &pwrctl->pscan_info->enableRFE, 1);
+
+	*pLength+=1;
+	pScanInfoPkt += 1;
+	memcpy(pScanInfoPkt, &pwrctl->pscan_info->rfe_type, 8);
 
 	*pLength+=8;
 	pScanInfoPkt += 8;
 
 	for(i = 0 ; i < MAX_SCAN_LIST_COUNT ; i ++) {
-		_rtw_memcpy(pScanInfoPkt,
+		memcpy(pScanInfoPkt,
 			&pwrctl->pscan_info->ssid_channel_info[i], 4);
 		*pLength+=4;
 		pScanInfoPkt += 4;
@@ -692,9 +692,9 @@ static void ConstructGTKResponse(
 	SetFrameType(fctrl, WIFI_DATA);
 	//SetFrameSubType(fctrl, 0);
 	SetToDs(fctrl);
-	_rtw_memcpy(pwlanhdr->addr1, get_my_bssid(&(pmlmeinfo->network)), ETH_ALEN);
-	_rtw_memcpy(pwlanhdr->addr2, myid(&(padapter->eeprompriv)), ETH_ALEN);
-	_rtw_memcpy(pwlanhdr->addr3, get_my_bssid(&(pmlmeinfo->network)), ETH_ALEN);
+	memcpy(pwlanhdr->addr1, get_my_bssid(&(pmlmeinfo->network)), ETH_ALEN);
+	memcpy(pwlanhdr->addr2, myid(&(padapter->eeprompriv)), ETH_ALEN);
+	memcpy(pwlanhdr->addr3, get_my_bssid(&(pmlmeinfo->network)), ETH_ALEN);
 
 	SetSeqNum(pwlanhdr, 0);
 	SetDuration(pwlanhdr, 0);
@@ -757,14 +757,14 @@ static void ConstructGTKResponse(
 	//-------------------------------------------------------------------------
 	pGTKRspPkt =  (u8*)(pframe+ *pLength); 
 	// LLC header
-	_rtw_memcpy(pGTKRspPkt, LLCHeader, 8);	
+	memcpy(pGTKRspPkt, LLCHeader, 8);	
 	*pLength += 8;
 
 	// GTK element
 	pGTKRspPkt += 8;
 	
 	//GTK frame body after LLC, part 1
-	_rtw_memcpy(pGTKRspPkt, GTKbody_a, 11);	
+	memcpy(pGTKRspPkt, GTKbody_a, 11);	
 	*pLength += 11;
 	pGTKRspPkt += 11;
 	//GTK frame body after LLC, part 2
@@ -797,10 +797,10 @@ static void ConstructProbeReq(_adapter *padapter, u8 *pframe, u32 *pLength)
 	*(fctrl) = 0;
 
 	//broadcast probe request frame
-	_rtw_memcpy(pwlanhdr->addr1, bc_addr, ETH_ALEN);
-	_rtw_memcpy(pwlanhdr->addr3, bc_addr, ETH_ALEN);
+	memcpy(pwlanhdr->addr1, bc_addr, ETH_ALEN);
+	memcpy(pwlanhdr->addr3, bc_addr, ETH_ALEN);
 
-	_rtw_memcpy(pwlanhdr->addr2, mac, ETH_ALEN);
+	memcpy(pwlanhdr->addr2, mac, ETH_ALEN);
 
 	SetSeqNum(pwlanhdr, 0);
 	SetFrameSubType(pframe, WIFI_PROBEREQ);
@@ -851,9 +851,9 @@ static void ConstructProbeRsp(_adapter *padapter, u8 *pframe, u32 *pLength, u8 *
 
 	fctrl = &(pwlanhdr->frame_ctl);
 	*(fctrl) = 0;
-	_rtw_memcpy(pwlanhdr->addr1, StaAddr, ETH_ALEN);
-	_rtw_memcpy(pwlanhdr->addr2, mac, ETH_ALEN);
-	_rtw_memcpy(pwlanhdr->addr3, bssid, ETH_ALEN);
+	memcpy(pwlanhdr->addr1, StaAddr, ETH_ALEN);
+	memcpy(pwlanhdr->addr2, mac, ETH_ALEN);
+	memcpy(pwlanhdr->addr3, bssid, ETH_ALEN);
 
 	DBG_871X("%s FW Mac Addr:" MAC_FMT "\n", __FUNCTION__, MAC_ARG(mac));
 	DBG_871X("%s FW IP Addr" IP_FMT "\n", __FUNCTION__, IP_ARG(StaAddr));
@@ -881,24 +881,24 @@ static void ConstructProbeRsp(_adapter *padapter, u8 *pframe, u32 *pLength, u8 *
 	
 		remainder_ielen = cur_network->IELength - wps_offset - wps_ielen;
 	
-		_rtw_memcpy(pframe, cur_network->IEs, wps_offset);
+		memcpy(pframe, cur_network->IEs, wps_offset);
 		pframe += wps_offset;
 		pktlen += wps_offset;
 	
 		wps_ielen = (uint)pmlmepriv->wps_probe_resp_ie[1];//to get ie data len
 		if ((wps_offset+wps_ielen+2)<=MAX_IE_SZ) {
-			_rtw_memcpy(pframe, pmlmepriv->wps_probe_resp_ie, wps_ielen+2);
+			memcpy(pframe, pmlmepriv->wps_probe_resp_ie, wps_ielen+2);
 			pframe += wps_ielen+2;
 			pktlen += wps_ielen+2;
 		}
 	
 		if ((wps_offset+wps_ielen+2+remainder_ielen)<=MAX_IE_SZ) {
-			_rtw_memcpy(pframe, premainder_ie, remainder_ielen);
+			memcpy(pframe, premainder_ie, remainder_ielen);
 			pframe += remainder_ielen;
 			pktlen += remainder_ielen;
 		}
 	} else {
-		_rtw_memcpy(pframe, cur_network->IEs, cur_network->IELength);
+		memcpy(pframe, cur_network->IEs, cur_network->IELength);
 		pframe += cur_network->IELength;
 		pktlen += cur_network->IELength;
 	}
@@ -927,10 +927,10 @@ static void ConstructProbeRsp(_adapter *padapter, u8 *pframe, u32 *pLength, u8 *
 				remainder_ielen = MAX_IE_SZ;
 			}
 	
-			_rtw_memcpy(buf, remainder_ie, remainder_ielen);
-			_rtw_memcpy(remainder_ie+ssid_ielen_diff, buf, remainder_ielen);
+			memcpy(buf, remainder_ie, remainder_ielen);
+			memcpy(remainder_ie+ssid_ielen_diff, buf, remainder_ielen);
 			*(ssid_ie+1) = cur_network->Ssid.SsidLength;
-			_rtw_memcpy(ssid_ie+2, cur_network->Ssid.Ssid, cur_network->Ssid.SsidLength);
+			memcpy(ssid_ie+2, cur_network->Ssid.Ssid, cur_network->Ssid.SsidLength);
 			pframe += ssid_ielen_diff;
 			pktlen += ssid_ielen_diff;
 		}
@@ -1956,7 +1956,7 @@ static void rtl8723b_set_FwRsvdPagePkt(PADAPTER padapter, bool bDLFinished)
 	//3(8) SEC IV
 	rtw_get_sec_iv(padapter, cur_dot11txpn, get_my_bssid(&pmlmeinfo->network));
 	RsvdPageLoc.LocRemoteCtrlInfo = TotalPageNum;
-	_rtw_memcpy(ReservedPagePacket+BufIndex-TxDescLen, cur_dot11txpn, _AES_IV_LEN_);
+	memcpy(ReservedPagePacket+BufIndex-TxDescLen, cur_dot11txpn, _AES_IV_LEN_);
 
 	//DBG_871X("%s(): HW_VAR_SET_TX_CMD: SEC IV %p %d\n", 
 	//	__FUNCTION__, &ReservedPagePacket[BufIndex-TxDescLen], _AES_IV_LEN_);
@@ -1978,14 +1978,14 @@ static void rtl8723b_set_FwRsvdPagePkt(PADAPTER padapter, bool bDLFinished)
 	}
 	else
 	{
-		_rtw_memcpy(kek, psta->kek, RTW_KEK_LEN);
-		_rtw_memcpy(kck, psta->kck, RTW_KCK_LEN);
+		memcpy(kek, psta->kek, RTW_KEK_LEN);
+		memcpy(kck, psta->kck, RTW_KCK_LEN);
 	}
 	
 	//3(9) KEK, KCK
 	RsvdPageLoc.LocGTKInfo = TotalPageNum;
-	_rtw_memcpy(ReservedPagePacket+BufIndex-TxDescLen, kck, RTW_KCK_LEN);
-	_rtw_memcpy(ReservedPagePacket+BufIndex-TxDescLen+RTW_KCK_LEN, kek, RTW_KEK_LEN);
+	memcpy(ReservedPagePacket+BufIndex-TxDescLen, kck, RTW_KCK_LEN);
+	memcpy(ReservedPagePacket+BufIndex-TxDescLen+RTW_KCK_LEN, kek, RTW_KEK_LEN);
 	
 #if 0
 	{
@@ -2508,7 +2508,7 @@ static void ConstructBtNullFunctionData(
 
 	if (NULL == StaAddr)
 	{
-		_rtw_memcpy(bssid, myid(&padapter->eeprompriv), ETH_ALEN);
+		memcpy(bssid, myid(&padapter->eeprompriv), ETH_ALEN);
 		StaAddr = bssid;
 	}
 
@@ -2518,9 +2518,9 @@ static void ConstructBtNullFunctionData(
 		SetPwrMgt(fctrl);
 
 	SetFrDs(fctrl);
-	_rtw_memcpy(pwlanhdr->addr1, StaAddr, ETH_ALEN);
-	_rtw_memcpy(pwlanhdr->addr2, myid(&padapter->eeprompriv), ETH_ALEN);
-	_rtw_memcpy(pwlanhdr->addr3, myid(&padapter->eeprompriv), ETH_ALEN);
+	memcpy(pwlanhdr->addr1, StaAddr, ETH_ALEN);
+	memcpy(pwlanhdr->addr2, myid(&padapter->eeprompriv), ETH_ALEN);
+	memcpy(pwlanhdr->addr3, myid(&padapter->eeprompriv), ETH_ALEN);
 
 	SetDuration(pwlanhdr, 0);
 	SetSeqNum(pwlanhdr, 0);
