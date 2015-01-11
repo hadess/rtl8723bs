@@ -297,7 +297,7 @@ _func_enter_;
 
 #ifdef CONFIG_XMIT_ACK
 	pxmitpriv->ack_tx = false;
-	_rtw_mutex_init(&pxmitpriv->ack_tx_mutex);
+	mutex_init(&pxmitpriv->ack_tx_mutex);
 	rtw_sctx_init(&pxmitpriv->ack_tx_ops, 0);	
 #endif
 
@@ -406,7 +406,7 @@ void _rtw_free_xmit_priv (struct xmit_priv *pxmitpriv)
 	rtw_free_hwxmits(padapter);
 
 #ifdef CONFIG_XMIT_ACK	
-	_rtw_mutex_free(&pxmitpriv->ack_tx_mutex);	
+	mutex_destroy(&pxmitpriv->ack_tx_mutex);	
 #endif	
 
 out:	

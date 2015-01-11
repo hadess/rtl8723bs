@@ -64,7 +64,7 @@ _func_enter_;
 
 	pcmdpriv->cmd_issued_cnt = pcmdpriv->cmd_done_cnt = pcmdpriv->rsp_cnt = 0;
 
-	_rtw_mutex_init(&pcmdpriv->sctx_mutex);
+	mutex_init(&pcmdpriv->sctx_mutex);
 exit:
 	
 _func_exit_;	  
@@ -185,7 +185,7 @@ _func_enter_;
 		if (pcmdpriv->rsp_allocated_buf)
 			rtw_mfree(pcmdpriv->rsp_allocated_buf, MAX_RSPSZ + 4);
 
-		_rtw_mutex_free(&pcmdpriv->sctx_mutex);
+		mutex_destroy(&pcmdpriv->sctx_mutex);
 	}
 _func_exit_;		
 }

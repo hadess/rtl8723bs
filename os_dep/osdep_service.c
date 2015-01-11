@@ -221,17 +221,6 @@ u32 _rtw_down_sema(_sema *sema)
 		return _SUCCESS;
 }
 
-void	_rtw_mutex_init(_mutex *pmutex)
-{
-	mutex_init(pmutex);
-}
-
-void	_rtw_mutex_free(_mutex *pmutex);
-void	_rtw_mutex_free(_mutex *pmutex)
-{
-	mutex_destroy(pmutex);
-}
-
 void	_rtw_spinlock_init(_lock *plock)
 {
 	spin_lock_init(plock);

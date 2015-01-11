@@ -886,10 +886,10 @@ struct dvobj_priv *devobj_init(void)
 		return NULL;
 	}
 
-	_rtw_mutex_init(&pdvobj->hw_init_mutex);
-	_rtw_mutex_init(&pdvobj->h2c_fwcmd_mutex);
-	_rtw_mutex_init(&pdvobj->setch_mutex);
-	_rtw_mutex_init(&pdvobj->setbw_mutex);
+	mutex_init(&pdvobj->hw_init_mutex);
+	mutex_init(&pdvobj->h2c_fwcmd_mutex);
+	mutex_init(&pdvobj->setch_mutex);
+	mutex_init(&pdvobj->setbw_mutex);
 
 	_rtw_spinlock_init(&pdvobj->lock);
 
@@ -912,10 +912,10 @@ void devobj_deinit(struct dvobj_priv *pdvobj)
 
 	_rtw_spinlock_free(&pdvobj->lock);
 
-	_rtw_mutex_free(&pdvobj->hw_init_mutex);
-	_rtw_mutex_free(&pdvobj->h2c_fwcmd_mutex);
-	_rtw_mutex_free(&pdvobj->setch_mutex);
-	_rtw_mutex_free(&pdvobj->setbw_mutex);
+	mutex_destroy(&pdvobj->hw_init_mutex);
+	mutex_destroy(&pdvobj->h2c_fwcmd_mutex);
+	mutex_destroy(&pdvobj->setch_mutex);
+	mutex_destroy(&pdvobj->setbw_mutex);
 
 	_rtw_spinlock_free(&pdvobj->cam_ctl.lock);
 
