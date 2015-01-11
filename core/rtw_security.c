@@ -2446,14 +2446,6 @@ static int sha256_vector(size_t num_elem, u8 *addr[], size_t *len,
 	return 0;
 }
 
-static u8 os_strlen(const char *s)
-{
-	const char *p = s;
-	while (*p)
-		p++;
-	return p - s;
-}
-
 /**
  * hmac_sha256_vector - HMAC-SHA256 over data vector (RFC 2104)
  * @key: Key for HMAC operations
@@ -2551,7 +2543,7 @@ static void sha256_prf(u8 *key, size_t key_len, char *label,
 	addr[0] = counter_le;
 	len[0] = 2;
 	addr[1] = (u8 *) label;
-	len[1] = os_strlen(label);
+	len[1] = strlen(label);
 	addr[2] = data;
 	len[2] = data_len;
 	addr[3] = length_le;
