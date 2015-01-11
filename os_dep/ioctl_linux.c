@@ -127,7 +127,7 @@ static void indicate_wx_custom_event(_adapter *padapter, char *msg)
 
 	_rtw_memcpy(buff, msg, strlen(msg));
 		
-	_rtw_memset(&wrqu,0,sizeof(wrqu));
+	memset(&wrqu,0,sizeof(wrqu));
 	wrqu.data.length = strlen(msg);
 
 	DBG_871X("%s %s\n", __FUNCTION__, buff);	
@@ -147,13 +147,13 @@ static void request_wps_pbc_event(_adapter *padapter)
 	if(!buff)
 		return;
 		
-	_rtw_memset(buff, 0, IW_CUSTOM_MAX);
+	memset(buff, 0, IW_CUSTOM_MAX);
 		
 	p=buff;
 		
 	p+=sprintf(p, "WPS_PBC_START.request=true");
 		
-	_rtw_memset(&wrqu,0,sizeof(wrqu));
+	memset(&wrqu,0,sizeof(wrqu));
 		
 	wrqu.data.length = p-buff;
 		
@@ -187,7 +187,7 @@ void indicate_wx_scan_complete_event(_adapter *padapter)
 	union iwreq_data wrqu;
 	struct	mlme_priv *pmlmepriv = &padapter->mlmepriv;	
 
-	_rtw_memset(&wrqu, 0, sizeof(union iwreq_data));
+	memset(&wrqu, 0, sizeof(union iwreq_data));
 
 	//DBG_871X("+rtw_indicate_wx_scan_complete_event\n");
 }
@@ -201,7 +201,7 @@ void rtw_indicate_wx_assoc_event(_adapter *padapter)
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 	WLAN_BSSID_EX		*pnetwork = (WLAN_BSSID_EX*)(&(pmlmeinfo->network));
 
-	_rtw_memset(&wrqu, 0, sizeof(union iwreq_data));
+	memset(&wrqu, 0, sizeof(union iwreq_data));
 	
 	wrqu.ap_addr.sa_family = ARPHRD_ETHER;	
 	
@@ -217,10 +217,10 @@ void rtw_indicate_wx_disassoc_event(_adapter *padapter)
 {	
 	union iwreq_data wrqu;
 
-	_rtw_memset(&wrqu, 0, sizeof(union iwreq_data));
+	memset(&wrqu, 0, sizeof(union iwreq_data));
 
 	wrqu.ap_addr.sa_family = ARPHRD_ETHER;
-	_rtw_memset(wrqu.ap_addr.sa_data, 0, ETH_ALEN);
+	memset(wrqu.ap_addr.sa_data, 0, ETH_ALEN);
 }
 
 /*
@@ -440,7 +440,7 @@ static char *translate_scan(_adapter *padapter,
 		if (wpa_len > 0)
 		{
 			p=buf;
-			_rtw_memset(buf, 0, MAX_WPA_IE_LEN*2);
+			memset(buf, 0, MAX_WPA_IE_LEN*2);
 			p += sprintf(p, "wpa_ie=");
 			for (i = 0; i < wpa_len; i++) {
 				p += sprintf(p, "%02x", wpa_ie[i]);
@@ -455,12 +455,12 @@ static char *translate_scan(_adapter *padapter,
 				printk("-----------------Len %d----------------\n", wpa_len);
 			}
 	
-			_rtw_memset(&iwe, 0, sizeof(iwe));
+			memset(&iwe, 0, sizeof(iwe));
 			iwe.cmd = IWEVCUSTOM;
 			iwe.u.data.length = strlen(buf);
 			start = iwe_stream_add_point(info, start, stop, &iwe,buf);
 			
-			_rtw_memset(&iwe, 0, sizeof(iwe));
+			memset(&iwe, 0, sizeof(iwe));
 			iwe.cmd =IWEVGENIE;
 			iwe.u.data.length = wpa_len;
 			start = iwe_stream_add_point(info, start, stop, &iwe, wpa_ie);			
@@ -468,17 +468,17 @@ static char *translate_scan(_adapter *padapter,
 		if (rsn_len > 0)
 		{
 			p = buf;
-			_rtw_memset(buf, 0, MAX_WPA_IE_LEN*2);
+			memset(buf, 0, MAX_WPA_IE_LEN*2);
 			p += sprintf(p, "rsn_ie=");
 			for (i = 0; i < rsn_len; i++) {
 				p += sprintf(p, "%02x", rsn_ie[i]);
 			}
-			_rtw_memset(&iwe, 0, sizeof(iwe));
+			memset(&iwe, 0, sizeof(iwe));
 			iwe.cmd = IWEVCUSTOM;
 			iwe.u.data.length = strlen(buf);
 			start = iwe_stream_add_point(info, start, stop, &iwe,buf);
 		
-			_rtw_memset(&iwe, 0, sizeof(iwe));
+			memset(&iwe, 0, sizeof(iwe));
 			iwe.cmd =IWEVGENIE;
 			iwe.u.data.length = rsn_len;
 			start = iwe_stream_add_point(info, start, stop, &iwe, rsn_ie);		
@@ -527,8 +527,8 @@ static char *translate_scan(_adapter *padapter,
 		u16 wapi_len=0;
 		u16  i;
 
-		_rtw_memset(buf_wapi, 0, MAX_WAPI_IE_LEN);
-		_rtw_memset(wapi_ie, 0, MAX_WAPI_IE_LEN);
+		memset(buf_wapi, 0, MAX_WAPI_IE_LEN);
+		memset(wapi_ie, 0, MAX_WAPI_IE_LEN);
 
 		out_len_wapi=rtw_get_wapi_ie(pnetwork->network.IEs ,pnetwork->network.IELength,wapi_ie,&wapi_len);
 		RT_TRACE(_module_rtl871x_mlme_c_,_drv_info_,("rtw_wx_get_scan: ssid=%s\n",pnetwork->network.Ssid.Ssid));
@@ -541,18 +541,18 @@ static char *translate_scan(_adapter *padapter,
 		if (wapi_len > 0)
 		{
 			p=buf_wapi;
-			_rtw_memset(buf_wapi, 0, MAX_WAPI_IE_LEN*2);
+			memset(buf_wapi, 0, MAX_WAPI_IE_LEN*2);
 			p += sprintf(p, "wapi_ie=");
 			for (i = 0; i < wapi_len; i++) {
 				p += sprintf(p, "%02x", wapi_ie[i]);
 			}
 
-			_rtw_memset(&iwe, 0, sizeof(iwe));
+			memset(&iwe, 0, sizeof(iwe));
 			iwe.cmd = IWEVCUSTOM;
 			iwe.u.data.length = strlen(buf_wapi);
 			start = iwe_stream_add_point(info, start, stop, &iwe,buf_wapi);
 
-			_rtw_memset(&iwe, 0, sizeof(iwe));
+			memset(&iwe, 0, sizeof(iwe));
 			iwe.cmd =IWEVGENIE;
 			iwe.u.data.length = wapi_len;
 			start = iwe_stream_add_point(info, start, stop, &iwe, wapi_ie);
@@ -626,9 +626,9 @@ static char *translate_scan(_adapter *padapter,
 		int len;
 		p = buf;
 		pos = pnetwork->network.Reserved;
-		_rtw_memset(buf, 0, MAX_WPA_IE_LEN);
+		memset(buf, 0, MAX_WPA_IE_LEN);
 		p += sprintf(p, "fm=%02X%02X", pos[1], pos[0]);
-		_rtw_memset(&iwe, 0, sizeof(iwe));
+		memset(&iwe, 0, sizeof(iwe));
 		iwe.cmd = IWEVCUSTOM;
 		iwe.u.data.length = strlen(buf);
 		start = iwe_stream_add_point(info, start, stop, &iwe, buf);
@@ -758,7 +758,7 @@ _func_enter_;
 				goto exit;
 			}
 
-		 	_rtw_memset(pwep, 0, wep_total_len);
+		 	memset(pwep, 0, wep_total_len);
 
 		 	pwep->KeyLength = wep_key_len;
 			pwep->Length = wep_total_len;
@@ -1465,7 +1465,7 @@ static int rtw_wx_set_pmkid(struct net_device *dev,
 		{
 			if( !memcmp( psecuritypriv->PMKIDList[j].Bssid, strIssueBssid, ETH_ALEN))
 			{ // BSSID is matched, the same AP => Remove this PMKID information and reset it. 
-                                _rtw_memset( psecuritypriv->PMKIDList[ j ].Bssid, 0x00, ETH_ALEN );
+                                memset( psecuritypriv->PMKIDList[ j ].Bssid, 0x00, ETH_ALEN );
                                 psecuritypriv->PMKIDList[ j ].bUsed = false;
 				break;
 			}	
@@ -1474,7 +1474,7 @@ static int rtw_wx_set_pmkid(struct net_device *dev,
         else if ( pPMK->cmd == IW_PMKSA_FLUSH ) 
         {
             DBG_871X( "[rtw_wx_set_pmkid] IW_PMKSA_FLUSH!\n" );
-            _rtw_memset( &psecuritypriv->PMKIDList[ 0 ], 0x00, sizeof( RT_PMKID_LIST ) * NUM_PMKID_CACHE );
+            memset( &psecuritypriv->PMKIDList[ 0 ], 0x00, sizeof( RT_PMKID_LIST ) * NUM_PMKID_CACHE );
             psecuritypriv->PMKIDIndex = 0;
             intReturn = true;
         }
@@ -1509,7 +1509,7 @@ static int rtw_wx_get_range(struct net_device *dev,
 	RT_TRACE(_module_rtl871x_mlme_c_,_drv_info_,("rtw_wx_get_range. cmd_code=%x\n", info->cmd));
 
 	wrqu->data.length = sizeof(*range);
-	_rtw_memset(range, 0, sizeof(*range));
+	memset(range, 0, sizeof(*range));
 
 	/* Let's try to keep this struct in the same order as in
 	 * linux/include/wireless.h
@@ -1764,7 +1764,7 @@ static int rtw_wx_get_wap(struct net_device *dev,
 	
 	wrqu->ap_addr.sa_family = ARPHRD_ETHER;
 	
-	_rtw_memset(wrqu->ap_addr.sa_data, 0, ETH_ALEN);
+	memset(wrqu->ap_addr.sa_data, 0, ETH_ALEN);
 	
 	RT_TRACE(_module_rtl871x_mlme_c_,_drv_info_,("rtw_wx_get_wap\n"));
 
@@ -1779,7 +1779,7 @@ static int rtw_wx_get_wap(struct net_device *dev,
 	}
 	else
 	{
-	 	_rtw_memset(wrqu->ap_addr.sa_data, 0, ETH_ALEN);
+	 	memset(wrqu->ap_addr.sa_data, 0, ETH_ALEN);
 	}		
 
 	_func_exit_;
@@ -1923,7 +1923,7 @@ _func_enter_;
 	}
 #endif
 
-	_rtw_memset(ssid, 0, sizeof(NDIS_802_11_SSID)*RTW_SSID_SCAN_AMOUNT);
+	memset(ssid, 0, sizeof(NDIS_802_11_SSID)*RTW_SSID_SCAN_AMOUNT);
 
 	if (wrqu->data.length == sizeof(struct iw_scan_req)) 
 	{
@@ -2260,7 +2260,7 @@ static int rtw_wx_set_essid(struct net_device *dev,
 		if( wrqu->essid.length != 33 )
 			DBG_871X("ssid=%s, len=%d\n", extra, wrqu->essid.length);
 
-		_rtw_memset(&ndis_ssid, 0, sizeof(NDIS_802_11_SSID));
+		memset(&ndis_ssid, 0, sizeof(NDIS_802_11_SSID));
 		ndis_ssid.SsidLength = len;
 		_rtw_memcpy(ndis_ssid.Ssid, extra, len);		
 		src_ssid = ndis_ssid.Ssid;
@@ -2641,7 +2641,7 @@ static int rtw_wx_set_enc(struct net_device *dev,
 	struct pwrctrl_priv *pwrpriv = adapter_to_pwrctl(padapter);
 	DBG_871X("+rtw_wx_set_enc, flags=0x%x\n", erq->flags);
 
-	_rtw_memset(&wep, 0, sizeof(NDIS_802_11_WEP));
+	memset(&wep, 0, sizeof(NDIS_802_11_WEP));
 	
 	key = erq->flags & IW_ENCODE_INDEX;
 	
@@ -3023,10 +3023,10 @@ static int rtw_wx_set_enc_ext(struct net_device *dev,
 	if (param == NULL)
 		return -1;
 	
-	_rtw_memset(param, 0, param_len);
+	memset(param, 0, param_len);
 
 	param->cmd = IEEE_CMD_SET_ENCRYPTION;
-	_rtw_memset(param->sta_addr, 0xff, ETH_ALEN);
+	memset(param->sta_addr, 0xff, ETH_ALEN);
 
 
 	switch (pext->alg) {
@@ -5113,7 +5113,7 @@ static int rtw_set_encryption(struct net_device *dev, struct ieee_param *param, 
 				goto exit;
 			}
 			
-		 	_rtw_memset(pwep, 0, wep_total_len);
+		 	memset(pwep, 0, wep_total_len);
 		
 		 	pwep->KeyLength = wep_key_len;
 			pwep->Length = wep_total_len;
@@ -6556,7 +6556,7 @@ static int rtw_mp_efuse_get(struct net_device *dev,
 			err = -EFAULT;
 			goto exit;
 		}
-		_rtw_memset(extra,'\0',strlen(extra));
+		memset(extra,'\0',strlen(extra));
 		//		DBG_871X("%s: realraw={\n", __FUNCTION__);
 				sprintf(extra, "\n0x00\t");
 				for (i=0; i< mapLen; i++)
@@ -7626,8 +7626,8 @@ static int rtw_tdls_enable(struct net_device *dev,
 
 	printk( "[%s] %s %d\n", __FUNCTION__, extra, wrqu->data.length -1  );
 
-	_rtw_memset(tdls_sta, 0x00, sizeof(tdls_sta));
-	_rtw_memset(&txmgmt, 0x00, sizeof(struct tdls_txmgmt));
+	memset(tdls_sta, 0x00, sizeof(tdls_sta));
+	memset(&txmgmt, 0x00, sizeof(struct tdls_txmgmt));
 
 	if ( extra[ 0 ] == '0' )
 	{
@@ -7699,7 +7699,7 @@ static int rtw_tdls_setup(struct net_device *dev,
 		return ret;
 	}
 
-	_rtw_memset(&txmgmt, 0x00, sizeof(struct tdls_txmgmt));
+	memset(&txmgmt, 0x00, sizeof(struct tdls_txmgmt));
 	for( i=0, j=0 ; i < ETH_ALEN; i++, j+=3 ){
 		txmgmt.peer[i]=key_2char2num(*(extra+j), *(extra+j+1));
 	}
@@ -7749,7 +7749,7 @@ static int rtw_tdls_teardown(struct net_device *dev,
 		return ret;
 	}
 
-	_rtw_memset(&txmgmt, 0x00, sizeof(struct tdls_txmgmt));
+	memset(&txmgmt, 0x00, sizeof(struct tdls_txmgmt));
 	for( i=0, j=0 ; i < ETH_ALEN; i++, j+=3 ){
 		txmgmt.peer[i]=key_2char2num(*(extra+j), *(extra+j+1));
 	}
@@ -7787,7 +7787,7 @@ static int rtw_tdls_discovery(struct net_device *dev,
 
 	DBG_871X( "[%s] %s %d\n", __FUNCTION__, extra, wrqu->data.length -1  );
 
-	_rtw_memset(&txmgmt, 0x00, sizeof(struct tdls_txmgmt));
+	memset(&txmgmt, 0x00, sizeof(struct tdls_txmgmt));
 	for( i=0, j=0 ; i < ETH_ALEN; i++, j+=3 ){
 		txmgmt.peer[i]=key_2char2num(*(extra+j), *(extra+j+1));
 	}

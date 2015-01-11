@@ -988,7 +988,7 @@ hal_ReadEFuse_WiFi(
 		return;
 	}
 	// 0xff will be efuse default value instead of 0x00.
-	_rtw_memset(efuseTbl, 0xFF, EFUSE_MAX_MAP_LEN);
+	memset(efuseTbl, 0xFF, EFUSE_MAX_MAP_LEN);
 
 
 #ifdef CONFIG_DEBUG
@@ -1155,7 +1155,7 @@ hal_ReadEFuse_BT(
 		return;
 	}
 	// 0xff will be efuse default value instead of 0x00.
-	_rtw_memset(efuseTbl, 0xFF, EFUSE_BT_MAP_LEN);
+	memset(efuseTbl, 0xFF, EFUSE_BT_MAP_LEN);
 
 	EFUSE_GetEfuseDefinition(padapter, EFUSE_BT, TYPE_AVAILABLE_EFUSE_BYTES_BANK, &total, bPseudoTest);
 
@@ -1617,7 +1617,7 @@ Hal_EfuseWordEnableDataWrite(
 
 
 //	DBG_8192C("%s: efuse_addr=%#x word_en=%#x\n", __FUNCTION__, efuse_addr, word_en);
-	_rtw_memset(tmpdata, 0xFF, PGPKT_DATA_SIZE);
+	memset(tmpdata, 0xFF, PGPKT_DATA_SIZE);
 
 	if (!(word_en & BIT(0)))
 	{
@@ -1697,7 +1697,7 @@ Hal_EfusePgPacketRead(
 		return false;
 	}
 
-	_rtw_memset(data, 0xFF, PGPKT_DATA_SIZE);
+	memset(data, 0xFF, PGPKT_DATA_SIZE);
 	ret = true;
 
 	//
@@ -1792,7 +1792,7 @@ hal_EfuseConstructPGPkt(
 	u8				*pData,
 	PPGPKT_STRUCT	pTargetPkt)
 {
-	_rtw_memset(pTargetPkt->data, 0xFF, PGPKT_DATA_SIZE);
+	memset(pTargetPkt->data, 0xFF, PGPKT_DATA_SIZE);
 	pTargetPkt->offset = offset;
 	pTargetPkt->word_en = word_en;
 	efuse_WordEnableDataRead(word_en, pData, pTargetPkt->data);
@@ -2773,18 +2773,18 @@ void rtl8723b_init_default_value(PADAPTER padapter)
 #ifdef HAL_EFUSE_MEMORY
 	pHalData->EfuseHal.fakeEfuseBank = 0;
 	pHalData->EfuseHal.fakeEfuseUsedBytes = 0;
-	_rtw_memset(pHalData->EfuseHal.fakeEfuseContent, 0xFF, EFUSE_MAX_HW_SIZE);
-	_rtw_memset(pHalData->EfuseHal.fakeEfuseInitMap, 0xFF, EFUSE_MAX_MAP_LEN);
-	_rtw_memset(pHalData->EfuseHal.fakeEfuseModifiedMap, 0xFF, EFUSE_MAX_MAP_LEN);
+	memset(pHalData->EfuseHal.fakeEfuseContent, 0xFF, EFUSE_MAX_HW_SIZE);
+	memset(pHalData->EfuseHal.fakeEfuseInitMap, 0xFF, EFUSE_MAX_MAP_LEN);
+	memset(pHalData->EfuseHal.fakeEfuseModifiedMap, 0xFF, EFUSE_MAX_MAP_LEN);
 	pHalData->EfuseHal.BTEfuseUsedBytes = 0;
 	pHalData->EfuseHal.BTEfuseUsedPercentage = 0;
-	_rtw_memset(pHalData->EfuseHal.BTEfuseContent, 0xFF, EFUSE_MAX_BT_BANK*EFUSE_MAX_HW_SIZE);
-	_rtw_memset(pHalData->EfuseHal.BTEfuseInitMap, 0xFF, EFUSE_BT_MAX_MAP_LEN);
-	_rtw_memset(pHalData->EfuseHal.BTEfuseModifiedMap, 0xFF, EFUSE_BT_MAX_MAP_LEN);
+	memset(pHalData->EfuseHal.BTEfuseContent, 0xFF, EFUSE_MAX_BT_BANK*EFUSE_MAX_HW_SIZE);
+	memset(pHalData->EfuseHal.BTEfuseInitMap, 0xFF, EFUSE_BT_MAX_MAP_LEN);
+	memset(pHalData->EfuseHal.BTEfuseModifiedMap, 0xFF, EFUSE_BT_MAX_MAP_LEN);
 	pHalData->EfuseHal.fakeBTEfuseUsedBytes = 0;
-	_rtw_memset(pHalData->EfuseHal.fakeBTEfuseContent, 0xFF, EFUSE_MAX_BT_BANK*EFUSE_MAX_HW_SIZE);
-	_rtw_memset(pHalData->EfuseHal.fakeBTEfuseInitMap, 0xFF, EFUSE_BT_MAX_MAP_LEN);
-	_rtw_memset(pHalData->EfuseHal.fakeBTEfuseModifiedMap, 0xFF, EFUSE_BT_MAX_MAP_LEN);
+	memset(pHalData->EfuseHal.fakeBTEfuseContent, 0xFF, EFUSE_MAX_BT_BANK*EFUSE_MAX_HW_SIZE);
+	memset(pHalData->EfuseHal.fakeBTEfuseInitMap, 0xFF, EFUSE_BT_MAX_MAP_LEN);
+	memset(pHalData->EfuseHal.fakeBTEfuseModifiedMap, 0xFF, EFUSE_BT_MAX_MAP_LEN);
 #endif
 }
 
@@ -3352,7 +3352,7 @@ Hal_ReadPowerValueFromPROM_8723B(
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
 	u4Byte rfPath, eeAddr=EEPROM_TX_PWR_INX_8723B, group,TxCount=0;
 
-	_rtw_memset(pwrInfo24G, 0, sizeof(TxPowerInfo24G));	
+	memset(pwrInfo24G, 0, sizeof(TxPowerInfo24G));	
 
 	if(0xFF == PROMContent[eeAddr+1])  
 		AutoLoadFail = true;
@@ -4080,7 +4080,7 @@ static void rtl8723b_fill_default_txdesc(
 	PTXDESC_8723B ptxdesc;
 	s32 bmcst;
 
-	_rtw_memset(pbuf, 0, TXDESC_SIZE);
+	memset(pbuf, 0, TXDESC_SIZE);
 
 	padapter = pxmitframe->padapter;
 	pHalData = GET_HAL_DATA(padapter);
@@ -4311,7 +4311,7 @@ void rtl8723b_fill_fake_txdesc(
 	u8			bDataFrame)
 {
 	// Clear all status
-	_rtw_memset(pDesc, 0, TXDESC_SIZE);
+	memset(pDesc, 0, TXDESC_SIZE);
 
 	SET_TX_DESC_FIRST_SEG_8723B(pDesc, 1); //bFirstSeg;
 	SET_TX_DESC_LAST_SEG_8723B(pDesc, 1); //bLastSeg;
@@ -5375,7 +5375,7 @@ static void C2HCommandHandler(PADAPTER padapter)
 	u8				U1bTmp = 0;
 //	u8				QueueID = 0;
 
-	_rtw_memset(&C2hEvent, 0, sizeof(C2H_EVT_HDR));
+	memset(&C2hEvent, 0, sizeof(C2H_EVT_HDR));
 
 	C2hEvent.CmdID = rtw_read8(padapter, REG_C2HEVT_CMD_ID_8723B);
 	C2hEvent.CmdLen = rtw_read8(padapter, REG_C2HEVT_CMD_LEN_8723B);

@@ -54,7 +54,7 @@ static void update_recvframe_attrib(
 	report.rxdw5 = le32_to_cpu(prxstat->rxdw5);
 	
 	pattrib = &precvframe->u.hdr.attrib;
-	_rtw_memset(pattrib, 0, sizeof(struct rx_pkt_attrib));
+	memset(pattrib, 0, sizeof(struct rx_pkt_attrib));
 
 	// update rx report to recv_frame attribute
 	pattrib->pkt_rpt_type = prxreport->c2h_ind?C2H_PACKET:NORMAL_RX;

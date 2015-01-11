@@ -686,7 +686,7 @@ s32 c2h_evt_read_88xx(_adapter *adapter, u8 *buf)
 
 	c2h_evt = (struct c2h_evt_hdr_88xx *)buf;
 
-	_rtw_memset(c2h_evt, 0, 16);
+	memset(c2h_evt, 0, 16);
 
 	c2h_evt->id = rtw_read8(adapter, REG_C2HEVT_MSG_NORMAL);
 	c2h_evt->seq = rtw_read8(adapter, REG_C2HEVT_CMD_SEQ_88XX);

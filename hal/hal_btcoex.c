@@ -97,7 +97,7 @@ static void DBG_BT_INFO_INIT(PBTCDBGINFO pinfo, u8 *pbuf, u32 size)
 {
 	if (NULL == pinfo) return;
 
-	_rtw_memset(pinfo, 0, sizeof(BTCDBGINFO));
+	memset(pinfo, 0, sizeof(BTCDBGINFO));
 
 	if (pbuf && size) {
 		pinfo->info = pbuf;
@@ -2057,7 +2057,7 @@ u8 hal_btcoex_Initialize(PADAPTER padapter)
 	u8 ret2;
 
 
-	_rtw_memset(&GLBtCoexist, 0, sizeof(GLBtCoexist));
+	memset(&GLBtCoexist, 0, sizeof(GLBtCoexist));
 	ret1 = EXhalbtcoutsrc_InitlizeVariables((void*)padapter);
 	ret2 = (ret1==true) ? true : false;
 

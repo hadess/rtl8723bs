@@ -1030,7 +1030,7 @@ _func_enter_;
 	_rtw_spinlock_init(&padapter->security_key_mutex);
 	
 	// We don't need to memset padapter->XXX to zero, because adapter is allocated by rtw_zvmalloc().
-	//_rtw_memset((unsigned char *)&padapter->securitypriv, 0, sizeof (struct security_priv));
+	//memset((unsigned char *)&padapter->securitypriv, 0, sizeof (struct security_priv));
 
 	//_init_timer(&(padapter->securitypriv.tkip_timer), padapter->pifp, rtw_use_tkipkey_handler, padapter);
 
@@ -1048,7 +1048,7 @@ _func_enter_;
 
 	rtw_init_pwrctrl_priv(padapter);
 
-	//_rtw_memset((u8 *)&padapter->qospriv, 0, sizeof (struct qos_priv));//move to mlme_priv
+	//memset((u8 *)&padapter->qospriv, 0, sizeof (struct qos_priv));//move to mlme_priv
 
 	rtw_hal_dm_init(padapter);
 	rtw_hal_sw_led_init(padapter);

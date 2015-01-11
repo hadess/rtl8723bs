@@ -1566,9 +1566,9 @@ ssize_t proc_set_btcoex_dbg(struct file *file, const char __user *buffer, size_t
 	if (1 == num)
 	{
 		if (0 == module[0])
-			_rtw_memset(module, 0, sizeof(module));
+			memset(module, 0, sizeof(module));
 		else
-			_rtw_memset(module, 0xFF, sizeof(module));
+			memset(module, 0xFF, sizeof(module));
 	}
 	else if (2 != num)
 	{

@@ -56,7 +56,7 @@ s16 odm_InbandNoise_Monitor_NSeries(PDM_ODM_T	pDM_Odm,u8 bPauseDIG,u8 IGIValue,u
 	
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_COMMON, ODM_DBG_LOUD,("odm_DebugControlInbandNoise_Nseries() ==> \n"));
 
-	_rtw_memset(&noise_data,0,sizeof(struct noise_level));
+	memset(&noise_data,0,sizeof(struct noise_level));
 	
 	//
 	// Step 1. Disable DIG && Set initial gain.

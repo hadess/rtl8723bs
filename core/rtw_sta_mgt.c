@@ -27,7 +27,7 @@ void _rtw_init_stainfo(struct sta_info *psta)
 
 _func_enter_;
 
-	_rtw_memset((u8 *)psta, 0, sizeof (struct sta_info));
+	memset((u8 *)psta, 0, sizeof (struct sta_info));
 
 	 _rtw_spinlock_init(&psta->lock);
 	_rtw_init_listhead(&psta->list);

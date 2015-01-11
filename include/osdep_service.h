@@ -149,7 +149,6 @@ void _rtw_skb_queue_purge(struct sk_buff_head *list);
 #define rtw_skb_queue_purge(sk_buff_head) _rtw_skb_queue_purge(sk_buff_head)
 
 extern void	_rtw_memcpy(void* dec, void* sour, u32 sz);
-extern void	_rtw_memset(void *pbuf, int c, u32 sz);
 
 extern void	_rtw_init_listhead(_list *list);
 extern u32	rtw_is_list_empty(_list *phead);

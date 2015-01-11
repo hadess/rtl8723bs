@@ -2476,7 +2476,7 @@ phy_ConfigMACWithParaFile(
 	if(!(Adapter->registrypriv.load_phy_file & LOAD_MAC_PARA_FILE))
 		return rtStatus;
 
-	_rtw_memset(pHalData->para_file_buf, 0, MAX_PARA_FILE_BUF_LEN);
+	memset(pHalData->para_file_buf, 0, MAX_PARA_FILE_BUF_LEN);
 
 	if ((pHalData->mac_reg_len == 0) && (pHalData->mac_reg == NULL))
 	{
@@ -2575,7 +2575,7 @@ phy_ConfigBBWithParaFile(
 			break;
 	}
 
-	_rtw_memset(pHalData->para_file_buf, 0, MAX_PARA_FILE_BUF_LEN);
+	memset(pHalData->para_file_buf, 0, MAX_PARA_FILE_BUF_LEN);
 
 	if ((pBufLen != NULL) && (*pBufLen == 0) && (pBuf == NULL))
 	{
@@ -3028,7 +3028,7 @@ phy_ConfigBBWithPgParaFile(
 	if(!(Adapter->registrypriv.load_phy_file & LOAD_BB_PG_PARA_FILE))
 		return rtStatus;
 
-	_rtw_memset(pHalData->para_file_buf, 0, MAX_PARA_FILE_BUF_LEN);
+	memset(pHalData->para_file_buf, 0, MAX_PARA_FILE_BUF_LEN);
 
 	if ((pHalData->bb_phy_reg_pg_len == 0) && (pHalData->bb_phy_reg_pg == NULL))
 	{
@@ -3108,7 +3108,7 @@ PHY_ConfigRFWithParaFile(
 			break;			
 	}
 
-	_rtw_memset(pHalData->para_file_buf, 0, MAX_PARA_FILE_BUF_LEN);
+	memset(pHalData->para_file_buf, 0, MAX_PARA_FILE_BUF_LEN);
 
 	if ((pBufLen != NULL) && (*pBufLen == 0) && (pBuf == NULL))
 	{
@@ -3386,7 +3386,7 @@ PHY_ConfigRFWithTxPwrTrackParaFile(
 	if(!(Adapter->registrypriv.load_phy_file & LOAD_RF_TXPWR_TRACK_PARA_FILE))
 		return rtStatus;
 
-	_rtw_memset(pHalData->para_file_buf, 0, MAX_PARA_FILE_BUF_LEN);
+	memset(pHalData->para_file_buf, 0, MAX_PARA_FILE_BUF_LEN);
 
 	if ((pHalData->rf_tx_pwr_track_len == 0) && (pHalData->rf_tx_pwr_track == NULL))
 	{
@@ -3515,12 +3515,12 @@ phy_ParsePowerLimitTableFile(
 
 		if( loadingStage == 0 ) {
 			for ( forCnt = 0; forCnt < TXPWR_LMT_MAX_REGULATION_NUM; ++forCnt )
-				_rtw_memset( ( void * ) regulation[forCnt], 0, 10 );
-			_rtw_memset( ( void * ) band, 0, 10 );
-			_rtw_memset( ( void * ) bandwidth, 0, 10 );
-			_rtw_memset( ( void * ) rateSection, 0, 10 );
-			_rtw_memset( ( void * ) rfPath, 0, 10 );
-			_rtw_memset( ( void * ) colNumBuf, 0, 10 );
+				memset( ( void * ) regulation[forCnt], 0, 10 );
+			memset( ( void * ) band, 0, 10 );
+			memset( ( void * ) bandwidth, 0, 10 );
+			memset( ( void * ) rateSection, 0, 10 );
+			memset( ( void * ) rfPath, 0, 10 );
+			memset( ( void * ) colNumBuf, 0, 10 );
 
 			if ( szLine[0] != '#' || szLine[1] != '#' )
 				continue;
@@ -3660,7 +3660,7 @@ phy_ParsePowerLimitTableFile(
 				// load the power limit value
 				cnt = 0;
 				fraction = 0;
-				_rtw_memset( ( void * ) powerLimit, 0, 10 );
+				memset( ( void * ) powerLimit, 0, 10 );
 				while ( ( szLine[i] >= '0' && szLine[i] <= '9' ) || szLine[i] == '.' )
 				{
 					if ( szLine[i] == '.' ){
@@ -3755,7 +3755,7 @@ PHY_ConfigRFWithPowerLimitTableParaFile(
 	if(!(Adapter->registrypriv.load_phy_file & LOAD_RF_TXPWR_LMT_PARA_FILE))
 		return rtStatus;
 
-	_rtw_memset(pHalData->para_file_buf, 0, MAX_PARA_FILE_BUF_LEN);
+	memset(pHalData->para_file_buf, 0, MAX_PARA_FILE_BUF_LEN);
 
 	if ((pHalData->rf_tx_pwr_lmt_len == 0) && (pHalData->rf_tx_pwr_lmt == NULL))
 	{

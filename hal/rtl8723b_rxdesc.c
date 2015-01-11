@@ -166,7 +166,7 @@ void rtl8723b_query_rx_desc_status(union recv_frame *precvframe, u8 *pdesc)
 {
 	struct rx_pkt_attrib	*pattrib = &precvframe->u.hdr.attrib;
 
-	_rtw_memset(pattrib, 0, sizeof(struct rx_pkt_attrib));
+	memset(pattrib, 0, sizeof(struct rx_pkt_attrib));
 
 	//Offset 0
 	pattrib->pkt_len = (u16)GET_RX_STATUS_DESC_PKT_LEN_8723B(pdesc);//(le32_to_cpu(pdesc->rxdw0)&0x00003fff)

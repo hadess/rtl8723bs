@@ -457,7 +457,7 @@ static void ConstructARPResponse(
 	
 	if(EncryptionHeadOverhead > 0)
 	{
-		_rtw_memset(&(pframe[*pLength]), 0,EncryptionHeadOverhead);
+		memset(&(pframe[*pLength]), 0,EncryptionHeadOverhead);
 	       	*pLength += EncryptionHeadOverhead;
 		//SET_80211_HDR_WEP(pARPRspPkt, 1);  //Suggested by CCW.
 		SetPrivacy(fctrl);
@@ -745,7 +745,7 @@ static void ConstructGTKResponse(
 	
 	if(EncryptionHeadOverhead > 0)
 	{
-		_rtw_memset(&(pframe[*pLength]), 0,EncryptionHeadOverhead);
+		memset(&(pframe[*pLength]), 0,EncryptionHeadOverhead);
 	       	*pLength += EncryptionHeadOverhead;
 		//SET_80211_HDR_WEP(pGTKRspPkt, 1);  //Suggested by CCW.
 		//GTK's privacy bit is done by FW
@@ -768,7 +768,7 @@ static void ConstructGTKResponse(
 	*pLength += 11;
 	pGTKRspPkt += 11;
 	//GTK frame body after LLC, part 2
-	_rtw_memset(&(pframe[*pLength]), 0, 88);
+	memset(&(pframe[*pLength]), 0, 88);
 	*pLength += 88;
 	pGTKRspPkt += 88;
 
@@ -1008,7 +1008,7 @@ static void rtl8723b_set_FwAoacRsvdPage_cmd(PADAPTER padapter, PRSVDPAGE_LOC rsv
 #ifdef CONFIG_PNO_SUPPORT
 		if(!pwrpriv->pno_in_resume) {
 			DBG_871X("NLO_INFO=%d\n", rsvdpageloc->LocPNOInfo);
-			_rtw_memset(&u1H2CAoacRsvdPageParm, 0, sizeof(u1H2CAoacRsvdPageParm));
+			memset(&u1H2CAoacRsvdPageParm, 0, sizeof(u1H2CAoacRsvdPageParm));
 			SET_H2CCMD_AOAC_RSVDPAGE_LOC_NLO_INFO(u1H2CAoacRsvdPageParm, rsvdpageloc->LocPNOInfo);
 			FillH2CCmd8723B(padapter, H2C_AOAC_RSVDPAGE3, H2C_AOAC_RSVDPAGE_LOC_LEN, u1H2CAoacRsvdPageParm);
 			msleep(10);
@@ -1043,7 +1043,7 @@ static void rtl8723b_set_ap_wow_rsvdpage_cmd(PADAPTER padapter,
 
 	msleep(10);
 
-	_rtw_memset(&rsvdparm, 0, sizeof(rsvdparm));
+	memset(&rsvdparm, 0, sizeof(rsvdparm));
 
 	SET_H2CCMD_AP_WOWLAN_RSVDPAGE_LOC_ProbeRsp(
 			rsvdparm,
@@ -1817,7 +1817,7 @@ static void rtl8723b_set_FwRsvdPagePkt(PADAPTER padapter, bool bDLFinished)
 	}
 
 	ReservedPagePacket = pcmdframe->buf_addr;
-	_rtw_memset(&RsvdPageLoc, 0, sizeof(RSVDPAGE_LOC));
+	memset(&RsvdPageLoc, 0, sizeof(RSVDPAGE_LOC));
 
 	//3 (1) beacon
 	BufIndex = TxDescOffset;
@@ -1972,8 +1972,8 @@ static void rtl8723b_set_FwRsvdPagePkt(PADAPTER padapter, bool bDLFinished)
 	psta = rtw_get_stainfo(pstapriv, get_bssid(pmlmepriv));
 	if (psta == NULL) 
 	{
-		_rtw_memset(kek, 0, RTW_KEK_LEN);
-		_rtw_memset(kck, 0, RTW_KCK_LEN);
+		memset(kek, 0, RTW_KEK_LEN);
+		memset(kck, 0, RTW_KCK_LEN);
 		DBG_8192C("%s, KEK, KCK download rsvd page all zero \n", __func__);
 	}
 	else
@@ -2244,7 +2244,7 @@ static void rtl8723b_set_AP_FwRsvdPagePkt(PADAPTER padapter,
 	}
 
 	ReservedPagePacket = pcmdframe->buf_addr;
-	_rtw_memset(&RsvdPageLoc, 0, sizeof(RSVDPAGE_LOC));
+	memset(&RsvdPageLoc, 0, sizeof(RSVDPAGE_LOC));
 
 	//3 (1) beacon
 	BufIndex = TxDescOffset;
@@ -2585,7 +2585,7 @@ static void SetFwRsvdPagePkt_BTCoex(PADAPTER padapter)
 	}
 
 	ReservedPagePacket = pcmdframe->buf_addr;
-	_rtw_memset(&RsvdPageLoc, 0, sizeof(RSVDPAGE_LOC));
+	memset(&RsvdPageLoc, 0, sizeof(RSVDPAGE_LOC));
 
 	//3 (1) beacon
 	BufIndex = TxDescOffset;
