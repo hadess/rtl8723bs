@@ -114,7 +114,7 @@ typedef struct _ADAPTER _adapter, ADAPTER,*PADAPTER;
 
 #include "ioctl_cfg80211.h"
 
-#include <ip.h>
+#include <linux/ip.h>
 #include <linux/if_ether.h>
 #include <ethernet.h>
 #include <circ_buf.h>
