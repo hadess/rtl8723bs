@@ -252,7 +252,7 @@ void
 ODM_ParsingCFO(
 	IN		void *			pDM_VOID,
 	IN		void *			pPktinfo_VOID,
-	IN		s1Byte* 			pcfotail
+	IN		s8* 			pcfotail
 	)
 {
 	PDM_ODM_T		pDM_Odm = (PDM_ODM_T)pDM_VOID;

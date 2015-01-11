@@ -25,8 +25,8 @@ struct noise_level
 {
 	//u1Byte				value_a, value_b;
 	u1Byte				value[MAX_RF_PATH];
-	//s1Byte				sval_a, sval_b;
-	s1Byte				sval[MAX_RF_PATH];
+	//s8				sval_a, sval_b;
+	s8				sval[MAX_RF_PATH];
 	
 	//s4Byte				noise_a=0, noise_b=0,sum_a=0, sum_b=0;
 	//s4Byte				noise[ODM_RF_PATH_MAX];
@@ -40,10 +40,10 @@ struct noise_level
 
 typedef struct _ODM_NOISE_MONITOR_
 {
-	s1Byte			noise[MAX_RF_PATH];
-	s2Byte			noise_all;	
+	s8			noise[MAX_RF_PATH];
+	s16			noise_all;	
 }ODM_NOISE_MONITOR;
 
-s2Byte ODM_InbandNoise_Monitor(void * pDM_VOID,u8 bPauseDIG,u8 IGIValue,u32 max_time);
+s16 ODM_InbandNoise_Monitor(void * pDM_VOID,u8 bPauseDIG,u8 IGIValue,u32 max_time);
 
 #endif

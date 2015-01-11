@@ -45,9 +45,9 @@ typedef struct _Dynamic_Initial_Gain_Threshold_
 	u1Byte		BT30_CurIGI;
 	u1Byte		IGIBackup;
 
-	s1Byte		BackoffVal;
-	s1Byte		BackoffVal_range_max;
-	s1Byte		BackoffVal_range_min;
+	s8		BackoffVal;
+	s8		BackoffVal_range_max;
+	s8		BackoffVal_range_min;
 	u1Byte		rx_gain_range_max;
 	u1Byte		rx_gain_range_min;
 	u1Byte		Rssi_val_min;

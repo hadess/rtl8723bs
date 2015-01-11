@@ -78,7 +78,7 @@ PHY_LCCalibrate_8723B(
 void	
 PHY_APCalibrate_8723B(		
 	IN	PADAPTER	pAdapter,
-							IN 	s1Byte		delta);
+							IN 	s8		delta);
 void	
 PHY_DigitalPredistortion_8723B(		IN	PADAPTER	pAdapter);
 

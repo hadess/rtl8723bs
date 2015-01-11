@@ -60,15 +60,15 @@ typedef struct _Phy_Status_Rpt_8192cd
 	u1Byte	cck_rpt_b_ofdm_cfosho_b;
 	u1Byte 	rsvd_1;//ch_corr_msb;
 	u1Byte 	noise_power_db_msb;
-	s1Byte	path_cfotail[2];	
+	s8	path_cfotail[2];	
 	u1Byte	pcts_mask[2];	
-	s1Byte	stream_rxevm[2];	
+	s8	stream_rxevm[2];	
 	u1Byte	path_rxsnr[2];
 	u1Byte 	noise_power_db_lsb;
 	u1Byte	rsvd_2[3];
 	u1Byte 	stream_csi[2];
 	u1Byte 	stream_target_csi[2];
-	s1Byte 	sig_evm;
+	s8 	sig_evm;
 	u1Byte 	rsvd_3;	
 
 #if (ODM_ENDIAN_TYPE == ODM_ENDIAN_LITTLE)	
@@ -103,13 +103,13 @@ typedef struct _Phy_Status_Rpt_8812
 	u1Byte 	rsvd_1;	
 	u1Byte	path_cfotail[2];	
 	u1Byte	pcts_mask[2];	
-	s1Byte	stream_rxevm[2];	
+	s8	stream_rxevm[2];	
 	u1Byte	path_rxsnr[2];
 	u1Byte	rsvd_2[2];	
 	u1Byte 	stream_snr[2];	
 	u1Byte 	stream_csi[2];
 	u1Byte	rsvd_3[2];
-	s1Byte 	sig_evm;
+	s8 	sig_evm;
 	u1Byte 	rsvd_4;	
 #if (ODM_ENDIAN_TYPE == ODM_ENDIAN_LITTLE)	
 	u1Byte 	antidx_anta:3;
@@ -141,11 +141,11 @@ typedef struct _Phy_Status_Rpt_8812
 	u1Byte			cfosho[4];	// DW 1 byte 1 DW 2 byte 0
 
 	//DWORD 2
-	s1Byte			cfotail[4];	// DW 2 byte 1 DW 3 byte 0
+	s8			cfotail[4];	// DW 2 byte 1 DW 3 byte 0
 
 	//DWORD 3
-	s1Byte			rxevm[2];	// DW 3 byte 1 DW 3 byte 2
-	s1Byte			rxsnr[2];	// DW 3 byte 3 DW 4 byte 0
+	s8			rxevm[2];	// DW 3 byte 1 DW 3 byte 2
+	s8			rxsnr[2];	// DW 3 byte 3 DW 4 byte 0
 
 	//DWORD 4
 	u1Byte			PCTS_MSK_RPT[2];	
@@ -157,7 +157,7 @@ typedef struct _Phy_Status_Rpt_8812
 
 	//DWORD 6
 	u1Byte			rx_gain_d;
-	s1Byte			sigevm;
+	s8			sigevm;
 	u1Byte			resvd_0;
 	u1Byte			antidx_anta:3;
 	u1Byte			antidx_antb:3;

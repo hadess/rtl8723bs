@@ -125,7 +125,7 @@ typedef struct _ODM_Phy_Status_Info_
 	u1Byte		RxPWDBAll;	
 
 	u1Byte		SignalQuality;	 		// in 0-100 index. 
-	s1Byte		RxMIMOSignalQuality[4];	//per-path's EVM
+	s8		RxMIMOSignalQuality[4];	//per-path's EVM
 	u1Byte		RxMIMOEVMdbm[4]; 		//per-path's EVM dbm
 
 	u1Byte		RxMIMOSignalStrength[4];// in 0~100 index
@@ -133,8 +133,8 @@ typedef struct _ODM_Phy_Status_Info_
 	u2Byte		Cfo_short[4]; 			// per-path's Cfo_short
 	u2Byte		Cfo_tail[4];			// per-path's Cfo_tail
 	
-	s1Byte		RxPower;				// in dBm Translate from PWdB
-	s1Byte		RecvSignalPower;		// Real power in dBm for this packet, no beautification and aggregation. Keep this raw info to be used for the other procedures.
+	s8		RxPower;				// in dBm Translate from PWdB
+	s8		RecvSignalPower;		// Real power in dBm for this packet, no beautification and aggregation. Keep this raw info to be used for the other procedures.
 	u1Byte		BTRxRSSIPercentage;	
 	u1Byte		SignalStrength; 		// in 0-100 index.
  

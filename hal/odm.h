@@ -320,7 +320,7 @@ typedef struct _ODM_Phy_Status_Info_
 	u1Byte		RxPWDBAll;	
 
 	u1Byte		SignalQuality;	 		// in 0-100 index. 
-	s1Byte		RxMIMOSignalQuality[4];	//per-path's EVM
+	s8		RxMIMOSignalQuality[4];	//per-path's EVM
 	u1Byte		RxMIMOEVMdbm[4]; 		//per-path's EVM dbm
 
 	u1Byte		RxMIMOSignalStrength[4];// in 0~100 index
@@ -328,12 +328,12 @@ typedef struct _ODM_Phy_Status_Info_
 	u2Byte		Cfo_short[4]; 			// per-path's Cfo_short
 	u2Byte		Cfo_tail[4];			// per-path's Cfo_tail
 	
-	s1Byte		RxPower;				// in dBm Translate from PWdB
-	s1Byte		RecvSignalPower;		// Real power in dBm for this packet, no beautification and aggregation. Keep this raw info to be used for the other procedures.
+	s8		RxPower;				// in dBm Translate from PWdB
+	s8		RecvSignalPower;		// Real power in dBm for this packet, no beautification and aggregation. Keep this raw info to be used for the other procedures.
 	u1Byte		BTRxRSSIPercentage;	
 	u1Byte		SignalStrength; 		// in 0-100 index.
  
-	s1Byte		RxPwr[4];				//per-path's pwdb
+	s8		RxPwr[4];				//per-path's pwdb
 
 	u1Byte		RxSNR[4];				//per-path's SNR	
 	u1Byte		BandWidth;
@@ -356,7 +356,7 @@ typedef struct _ODM_Per_Pkt_Info_
 typedef struct _ODM_Phy_Dbg_Info_
 {
 	//ODM Write,debug info
-	s1Byte		RxSNRdB[4];
+	s8		RxSNRdB[4];
 	u4Byte		NumQryPhyStatus;
 	u4Byte		NumQryPhyStatusCCK;
 	u4Byte		NumQryPhyStatusOFDM;
@@ -908,9 +908,9 @@ typedef struct ODM_RF_Calibration_Structure
 	u1Byte 	bCCKinCH14;
 	u1Byte 	CCK_index;
 	u1Byte 	OFDM_index[MAX_RF_PATH];
-	s1Byte	PowerIndexOffset[MAX_RF_PATH];
-	s1Byte	DeltaPowerIndex[MAX_RF_PATH];
-	s1Byte	DeltaPowerIndexLast[MAX_RF_PATH];	
+	s8	PowerIndexOffset[MAX_RF_PATH];
+	s8	DeltaPowerIndex[MAX_RF_PATH];
+	s8	DeltaPowerIndexLast[MAX_RF_PATH];	
 	bool bTxPowerChanged;
 		
 	u1Byte 	ThermalValue_HP[HP_THERMAL_NUM];
@@ -920,7 +920,7 @@ typedef struct ODM_RF_Calibration_Structure
 	bool	bIQKInProgress;	
 	u1Byte	Delta_IQK;
 	u1Byte	Delta_LCK;
-	s1Byte  BBSwingDiff2G, BBSwingDiff5G; // Unit: dB
+	s8  BBSwingDiff2G, BBSwingDiff5G; // Unit: dB
     u1Byte  DeltaSwingTableIdx_2GCCKA_P[DELTA_SWINGIDX_SIZE];
     u1Byte  DeltaSwingTableIdx_2GCCKA_N[DELTA_SWINGIDX_SIZE];
     u1Byte  DeltaSwingTableIdx_2GCCKB_P[DELTA_SWINGIDX_SIZE];
@@ -1243,14 +1243,14 @@ typedef  struct DM_Out_Source_Dynamic_Mechanism_Structure
 	bool			IsBbSwingOffsetPositiveA;
 	u4Byte			BbSwingOffsetB;
 	bool			IsBbSwingOffsetPositiveB;
-	s1Byte			TH_L2H_ini;
-	s1Byte			TH_EDCCA_HL_diff;
-	s1Byte			IGI_Base;
+	s8			TH_L2H_ini;
+	s8			TH_EDCCA_HL_diff;
+	s8			IGI_Base;
 	u1Byte			IGI_target;
 	bool			ForceEDCCA;
 	u1Byte			AdapEn_RSSI;
-	s1Byte			Force_TH_H;
-	s1Byte			Force_TH_L;
+	s8			Force_TH_H;
+	s8			Force_TH_L;
 	u1Byte			IGI_LowerBound;
 	u1Byte	                antdiv_rssi;
 	u1Byte			AntType;
@@ -1272,8 +1272,8 @@ typedef  struct DM_Out_Source_Dynamic_Mechanism_Structure
 	u8Byte			NHMLastRxOkcnt;
 	u1Byte			txEdcca1;
 	u1Byte			txEdcca0;
-	s1Byte			H2L_lb;
-	s1Byte			L2H_lb;
+	s8			H2L_lb;
+	s8			L2H_lb;
 	u1Byte			Adaptivity_IGI_upper;
 	u1Byte			NHM_cnt_0;
 
@@ -1386,17 +1386,17 @@ typedef  struct DM_Out_Source_Dynamic_Mechanism_Structure
 	u1Byte			DefaultCckIndex;	
 	bool			BbSwingFlagCck;
 	
-	s1Byte			Absolute_OFDMSwingIdx[MAX_RF_PATH];   
-	s1Byte			Remnant_OFDMSwingIdx[MAX_RF_PATH];   
-	s1Byte			Remnant_CCKSwingIdx;
-	s1Byte			Modify_TxAGC_Value;       //Remnat compensate value at TxAGC 
+	s8			Absolute_OFDMSwingIdx[MAX_RF_PATH];   
+	s8			Remnant_OFDMSwingIdx[MAX_RF_PATH];   
+	s8			Remnant_CCKSwingIdx;
+	s8			Modify_TxAGC_Value;       //Remnat compensate value at TxAGC 
 	bool			Modify_TxAGC_Flag_PathA;
 	bool			Modify_TxAGC_Flag_PathB;
 	bool			Modify_TxAGC_Flag_PathC;
 	bool			Modify_TxAGC_Flag_PathD;
 	bool			Modify_TxAGC_Flag_PathA_CCK;
 	
-	s1Byte			KfreeOffset[MAX_RF_PATH];
+	s8			KfreeOffset[MAX_RF_PATH];
 	//
 	// ODM system resource.
 	//

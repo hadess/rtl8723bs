@@ -130,7 +130,7 @@ typedef struct _COEX_STA_8723B_1ANT{
 	u4Byte					highPriorityRx;
 	u4Byte					lowPriorityTx;
 	u4Byte					lowPriorityRx;
-	s1Byte					btRssi;
+	s8					btRssi;
 	bool					bBtTxRxMask;
 	u1Byte					preBtRssiState;
 	u1Byte					preWifiRssiState[4];

@@ -38,7 +38,7 @@
 #define Valid_Max			10
 #define ValidCnt				5	
 
-s2Byte odm_InbandNoise_Monitor_NSeries(PDM_ODM_T	pDM_Odm,u8 bPauseDIG,u8 IGIValue,u32 max_time)
+s16 odm_InbandNoise_Monitor_NSeries(PDM_ODM_T	pDM_Odm,u8 bPauseDIG,u8 IGIValue,u32 max_time)
 {
 	u4Byte				tmp4b;	
 	u1Byte				max_rf_path=0,rf_path;	
@@ -100,7 +100,7 @@ s2Byte odm_InbandNoise_Monitor_NSeries(PDM_ODM_T	pDM_Odm,u8 bPauseDIG,u8 IGIValu
 
 		 for(rf_path = ODM_RF_PATH_A; rf_path < max_rf_path; rf_path++) 
 		 {
-		 	noise_data.sval[rf_path] = (s1Byte)noise_data.value[rf_path];
+		 	noise_data.sval[rf_path] = (s8)noise_data.value[rf_path];
 			noise_data.sval[rf_path] /= 2;
 		 }	
 		 	
@@ -178,7 +178,7 @@ s2Byte odm_InbandNoise_Monitor_NSeries(PDM_ODM_T	pDM_Odm,u8 bPauseDIG,u8 IGIValu
 	return pDM_Odm->noise_level.noise_all;
 
 }
-s2Byte ODM_InbandNoise_Monitor(void * pDM_VOID,u8 bPauseDIG,u8 IGIValue,u32 max_time)
+s16 ODM_InbandNoise_Monitor(void * pDM_VOID,u8 bPauseDIG,u8 IGIValue,u32 max_time)
 {
 
 	PDM_ODM_T	pDM_Odm = (PDM_ODM_T)pDM_VOID;

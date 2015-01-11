@@ -2096,7 +2096,7 @@ phy_LCCalibrate_8723B(
 void	
 phy_APCalibrate_8723B(
 	IN	PADAPTER	pAdapter,
-	IN	s1Byte		delta,
+	IN	s8		delta,
 	IN	bool 	is2T
 	)
 {
@@ -2169,7 +2169,7 @@ phy_APCalibrate_8723B(
 	u4Byte			APK_normal_value[PATH_NUM] = {
 					0x92680000, 0x12680000};					
 
-	s1Byte			APK_delta_mapping[APK_BB_REG_NUM][13] = {
+	s8			APK_delta_mapping[APK_BB_REG_NUM][13] = {
 					{-4, -3, -2, -2, -1, -1, 0, 1, 2, 3, 4, 5, 6},
 					{-4, -3, -2, -2, -1, -1, 0, 1, 2, 3, 4, 5, 6},											
 					{-6, -4, -2, -2, -1, -1, 0, 1, 2, 3, 4, 5, 6},
@@ -2544,7 +2544,7 @@ PHY_LCCalibrate_8723B(
 void
 PHY_APCalibrate_8723B(
 	IN	PADAPTER	pAdapter,
-	IN	s1Byte		delta	
+	IN	s8		delta	
 	)
 {
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);

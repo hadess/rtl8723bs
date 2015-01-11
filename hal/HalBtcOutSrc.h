@@ -522,7 +522,7 @@ typedef struct _BTC_STACK_INFO{
 	u1Byte					numOfHid;
 	bool					bPanExist;
 	bool					bUnknownAclExist;
-	s1Byte					minBtRssi;
+	s8					minBtRssi;
 } BTC_STACK_INFO, *PBTC_STACK_INFO;
 
 typedef struct _BTC_BT_LINK_INFO{
@@ -707,7 +707,7 @@ EXhalbtcoutsrc_SetBtPatchVersion(
 	);
 void
 EXhalbtcoutsrc_UpdateMinBtRssi(
-	IN	s1Byte	btRssi
+	IN	s8	btRssi
 	);
 #if 0
 void

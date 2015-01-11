@@ -321,13 +321,13 @@ odm_DIG_8723(
 }
 
 
- s1Byte
+ s8
 odm_CCKRSSI_8723B(
 	IN		u1Byte	LNA_idx,
 	IN		u1Byte	VGA_idx
 	)
 {
-	s1Byte	rx_pwr_all=0x00;
+	s8	rx_pwr_all=0x00;
 	switch(LNA_idx)
 	{
 		//46  53 73 95 201301231630

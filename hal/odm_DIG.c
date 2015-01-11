@@ -229,14 +229,14 @@ odm_SearchPwdBLowerBound(
 	u4Byte			value32 =0;
 	u1Byte			cnt, IGI;
 	bool			bAdjust=true;
-	s1Byte 			TH_L2H_dmc, TH_H2L_dmc;
-	s1Byte 			TH_L2H, TH_H2L, Diff;
+	s8 			TH_L2H_dmc, TH_H2L_dmc;
+	s8 			TH_L2H, TH_H2L, Diff;
 
 	IGI = 0x50; // find H2L, L2H lower bound
 	ODM_Write_DIG(pDM_Odm, IGI);
 	
 
-	Diff = IGI_target -(s1Byte)IGI;
+	Diff = IGI_target -(s8)IGI;
 	TH_L2H_dmc = pDM_Odm->TH_L2H_ini + Diff;
 		if(TH_L2H_dmc > 10) 	
 			TH_L2H_dmc = 10;
@@ -343,8 +343,8 @@ odm_Adaptivity(
 )
 {
 	PDM_ODM_T		pDM_Odm = (PDM_ODM_T)pDM_VOID;
-	s1Byte TH_L2H_dmc, TH_H2L_dmc;
-	s1Byte Diff, IGI_target;
+	s8 TH_L2H_dmc, TH_H2L_dmc;
+	s8 Diff, IGI_target;
 	bool EDCCA_State = false;
 
 	if(!(pDM_Odm->SupportAbility & ODM_BB_ADAPTIVITY))
@@ -398,7 +398,7 @@ odm_Adaptivity(
 
 	if(EDCCA_State == 1)
 	{
-		Diff = IGI_target -(s1Byte)IGI;
+		Diff = IGI_target -(s8)IGI;
 		TH_L2H_dmc = pDM_Odm->TH_L2H_ini + Diff;
 		if(TH_L2H_dmc > 10) 	
 			TH_L2H_dmc = 10;

@@ -796,7 +796,7 @@ PHY_RFConfig8723B(
  * Overview:    This function read RF parameters from general file format, and do RF 3-wire
  *
  * Input:      	PADAPTER			Adapter
- *			ps1Byte 				pFileName
+ *			s8 * 				pFileName
  *			RF_PATH				eRFPath
  *
  * Output:      NONE
@@ -822,7 +822,7 @@ PHY_ConfigRFWithParaFile_8723B(
  * Overview:    This function read RF parameters from general file format, and do RF 3-wire
  *
  * Input:      	PADAPTER			Adapter
- *			ps1Byte 				pFileName
+ *			s8 * 				pFileName
  *			RF_PATH				eRFPath
  *
  * Output:      NONE

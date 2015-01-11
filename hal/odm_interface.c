@@ -209,7 +209,7 @@ ODM_MoveMemory(
 void ODM_Memory_Set
 	(IN 	PDM_ODM_T	pDM_Odm,
 		IN  void *	pbuf,
-		IN  s1Byte	value,
+		IN  s8	value,
 		IN  u4Byte	length)
 {
 	_rtw_memset(pbuf,value, length);

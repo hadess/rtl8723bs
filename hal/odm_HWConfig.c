@@ -45,7 +45,7 @@
 
 u1Byte
 odm_QueryRxPwrPercentage(
-	IN		s1Byte		AntPower
+	IN		s8		AntPower
 	)
 {
 	if ((AntPower <= -100) || (AntPower >= 20))
@@ -169,13 +169,13 @@ static u1Byte odm_SQ_process_patch_RT_CID_819x_Acer(
 			
 static u1Byte 
 odm_EVMdbToPercentage(
-    IN		s1Byte Value
+    IN		s8 Value
     )
 {
 	//
 	// -33dB~0dB to 0%~99%
 	//
-	s1Byte ret_val;
+	s8 ret_val;
     
 	ret_val = Value;
 	ret_val /= 2;
@@ -199,10 +199,10 @@ odm_EVMdbToPercentage(
 			
 static u1Byte 
 odm_EVMdbm_JaguarSeries(
-	IN  s1Byte Value
+	IN  s8 Value
 	)
 {
-	s1Byte ret_val = Value;
+	s8 ret_val = Value;
 	
 	// -33dB~0dB to 33dB ~ 0dB
 	if(ret_val == -128)
@@ -216,10 +216,10 @@ odm_EVMdbm_JaguarSeries(
 
 static u2Byte
 odm_Cfo(
-  IN s1Byte Value
+  IN s8 Value
 )
 {
-	s2Byte  ret_val;
+	s16  ret_val;
 
 	if (Value < 0)
 	{
@@ -246,7 +246,7 @@ odm_RxPhyStatus92CSeries_Parsing(
 {							
 	SWAT_T				*pDM_SWAT_Table = &pDM_Odm->DM_SWAT_Table;
 	u1Byte				i, Max_spatial_stream;
-	s1Byte				rx_pwr[4], rx_pwr_all=0;
+	s8				rx_pwr[4], rx_pwr_all=0;
 	u1Byte				EVM, PWDB_ALL = 0, PWDB_ALL_BT;
 	u1Byte				RSSI, total_rssi=0;
 	bool				isCCKrate=false;	
@@ -445,7 +445,7 @@ odm_RxPhyStatusJaguarSeries_Parsing(
 	)
 {							
 	u1Byte				i, Max_spatial_stream;
-	s1Byte				rx_pwr[4], rx_pwr_all=0;
+	s8				rx_pwr[4], rx_pwr_all=0;
 	u1Byte				EVM = 0, EVMdbm, PWDB_ALL = 0, PWDB_ALL_BT;
 	u1Byte				RSSI, total_rssi=0;
 	u1Byte				isCCKrate=0;	

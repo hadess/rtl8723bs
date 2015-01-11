@@ -1510,7 +1510,7 @@ halbtc8723b1ant_PsTdma(
 	bool			bTurnOnByCnt=false, bWifiBusy=false, bWiFiNoisy=false;
 	u1Byte			psTdmaTypeByCnt=0, rssiAdjustVal=0;
 	u1Byte			psTdmaByte4Val = 0x50, psTdmaByte0Val = 0x51, psTdmaByte3Val =  0x10;
-	s1Byte			nWiFiDurationAdjust = 0x0;
+	s8			nWiFiDurationAdjust = 0x0;
 	//u4Byte			fwVer=0;
 
 	//BTC_PRINT(BTC_MSG_ALGORITHM, ALGO_TRACE_FW, ("[BTCoex], %s turn %s PS TDMA, type=%d\n", 
