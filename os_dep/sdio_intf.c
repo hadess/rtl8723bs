@@ -617,10 +617,6 @@ _func_enter_;
 		}
 	}
 
-#if defined(CONFIG_HAS_EARLYSUSPEND)
-	rtw_unregister_early_suspend(pwrctl);
-#endif
-
 	rtw_ps_deny(padapter, PS_DENY_DRV_REMOVE);
 
 	rtw_pm_set_ips(padapter, IPS_NONE);
@@ -744,12 +740,6 @@ static int rtw_sdio_resume(struct device *dev)
 #ifdef CONFIG_RESUME_IN_WORKQUEUE
 			rtw_resume_in_workqueue(pwrpriv);
 #else			
-			if (rtw_is_earlysuspend_registered(pwrpriv))
-			{
-				/* jeff: bypass resume here, do in late_resume */
-				rtw_set_do_late_resume(pwrpriv, true);
-			}	
-			else
 			{
 				rtw_resume_lock_suspend();			
 				ret = rtw_resume_process(padapter);

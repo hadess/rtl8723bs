@@ -61,10 +61,6 @@
 	#include <linux/udp.h>
 #endif
 
-#ifdef CONFIG_HAS_EARLYSUSPEND
-	#include <linux/earlysuspend.h>
-#endif //CONFIG_HAS_EARLYSUSPEND
-
 	typedef struct 	semaphore _sema;
 	typedef	spinlock_t	_lock;
 	typedef struct mutex 		_mutex;
