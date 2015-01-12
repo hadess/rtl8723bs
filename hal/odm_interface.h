@@ -229,59 +229,6 @@ ODM_FreeMemory(
 	);
 
 //
-// ODM MISC-spin lock relative API.
-//
-void
-ODM_AcquireSpinLock(	
-	IN 	PDM_ODM_T			pDM_Odm,
-	IN	RT_SPINLOCK_TYPE	type
-	);
-
-void
-ODM_ReleaseSpinLock(	
-	IN 	PDM_ODM_T			pDM_Odm,
-	IN	RT_SPINLOCK_TYPE	type
-	);
-
-
-//
-// ODM MISC-workitem relative API.
-//
-void
-ODM_InitializeWorkItem(	
-	IN 	PDM_ODM_T					pDM_Odm,
-	IN	PRT_WORK_ITEM				pRtWorkItem,
-	IN	RT_WORKITEM_CALL_BACK		RtWorkItemCallback,
-	IN	void *						pContext,
-	IN	const char*					szID
-	);
-
-void
-ODM_StartWorkItem(	
-	IN	PRT_WORK_ITEM	pRtWorkItem
-	);
-
-void
-ODM_StopWorkItem(	
-	IN	PRT_WORK_ITEM	pRtWorkItem
-	);
-
-void
-ODM_FreeWorkItem(	
-	IN	PRT_WORK_ITEM	pRtWorkItem
-	);
-
-void
-ODM_ScheduleWorkItem(	
-	IN	PRT_WORK_ITEM	pRtWorkItem
-	);
-
-void
-ODM_IsWorkItemScheduled(	
-	IN	PRT_WORK_ITEM	pRtWorkItem
-	);
-
-//
 // ODM Timer relative API.
 //
 void

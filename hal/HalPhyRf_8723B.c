@@ -2265,9 +2265,7 @@ PHY_IQCalibrate_8723B(
 		return;
 
 
-	ODM_AcquireSpinLock(pDM_Odm, RT_IQK_SPINLOCK);
 	pDM_Odm->RFCalibrateInfo.bIQKInProgress = true;
-	ODM_ReleaseSpinLock(pDM_Odm, RT_IQK_SPINLOCK);
 
 	if (bRestore) {
 		u4Byte offset, data;
@@ -2485,9 +2483,7 @@ PHY_IQCalibrate_8723B(
 			ODM_SetIQCbyRFpath(pDM_Odm, 1);
 	}
 
-	ODM_AcquireSpinLock(pDM_Odm, RT_IQK_SPINLOCK);
 	pDM_Odm->RFCalibrateInfo.bIQKInProgress = false;
-	ODM_ReleaseSpinLock(pDM_Odm, RT_IQK_SPINLOCK);
 
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_CALIBRATION, ODM_DBG_LOUD,  ("IQK finished\n"));
 	ProgressingTime = jiffies_to_msecs(jiffies - StartTime);
