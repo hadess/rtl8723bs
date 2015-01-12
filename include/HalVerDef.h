@@ -105,17 +105,6 @@ typedef	struct tag_HAL_VERSION
 //----------------------------------------------------------------------------
 //HAL_VERSION VersionID
 
-// HAL_IC_TYPE_E
-#define IS_81XXC(version)				(((GET_CVID_IC_TYPE(version) == CHIP_8192C)||(GET_CVID_IC_TYPE(version) == CHIP_8188C))? true : false)
-#define IS_8723_SERIES(version)			((GET_CVID_IC_TYPE(version) == CHIP_8723A)? true : false)
-#define IS_92D(version)					((GET_CVID_IC_TYPE(version) == CHIP_8192D)? true : false)
-#define IS_8188E(version)					((GET_CVID_IC_TYPE(version) == CHIP_8188E)? true : false)
-#define IS_8192E(version)					((GET_CVID_IC_TYPE(version) == CHIP_8192E)? true : false)
-#define IS_8812_SERIES(version)			((GET_CVID_IC_TYPE(version) == CHIP_8812)? true : false)
-#define IS_8821_SERIES(version)			((GET_CVID_IC_TYPE(version) == CHIP_8821)? true : false)
-#define IS_8723B_SERIES(version)			((GET_CVID_IC_TYPE(version) == CHIP_8723B)? true : false)
-
-
 //HAL_CHIP_TYPE_E
 #define IS_TEST_CHIP(version)			((GET_CVID_CHIP_TYPE(version)==TEST_CHIP)? true: false)
 #define IS_NORMAL_CHIP(version)			((GET_CVID_CHIP_TYPE(version)==NORMAL_CHIP)? true: false)
