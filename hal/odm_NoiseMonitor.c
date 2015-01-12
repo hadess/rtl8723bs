@@ -46,7 +46,7 @@ s16 odm_InbandNoise_Monitor_NSeries(PDM_ODM_T	pDM_Odm,u8 bPauseDIG,u8 IGIValue,u
 	struct noise_level		noise_data;
 	u32 start  = 0, 	func_start=0,	func_end = 0;
 
-	func_start = ODM_GetCurrentTime(pDM_Odm);
+	func_start = jiffies;
 	pDM_Odm->noise_level.noise_all = 0;
 	
 	if((pDM_Odm->RFType == ODM_1T2R) ||(pDM_Odm->RFType == ODM_2T2R))	
@@ -74,7 +74,7 @@ s16 odm_InbandNoise_Monitor_NSeries(PDM_ODM_T	pDM_Odm,u8 bPauseDIG,u8 IGIValue,u
 	//
 	// Step 3. Get noise power level
 	//
-	start = ODM_GetCurrentTime(pDM_Odm);
+	start = jiffies;
 	while(1)
 	{
 		

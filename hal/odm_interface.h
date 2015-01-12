@@ -324,10 +324,6 @@ ODM_FillH2CCmd(
 	IN	pu1Byte	pCmdBuffer
 );
 
-u4Byte
-ODM_GetCurrentTime(	
-	IN 	PDM_ODM_T		pDM_Odm
-	);
 s4Byte
 ODM_GetProgressingTime(	
 	IN 	PDM_ODM_T		pDM_Odm,

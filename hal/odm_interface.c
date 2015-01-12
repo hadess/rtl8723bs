@@ -341,14 +341,6 @@ ODM_FillH2CCmd(
 		}
 }
 
-u4Byte
-ODM_GetCurrentTime(	
-	IN 	PDM_ODM_T		pDM_Odm
-	)
-{
-	return jiffies;
-}
-
 s4Byte
 ODM_GetProgressingTime(	
 	IN 	PDM_ODM_T		pDM_Odm,

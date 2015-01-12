@@ -2323,7 +2323,7 @@ PHY_IQCalibrate_8723B(
 		_PHY_ReloadADDARegisters8723B(pAdapter, IQK_BB_REG_92C, pDM_Odm->RFCalibrateInfo.IQK_BB_backup_recover, 9);
 		return; 	
 	}
-	StartTime = ODM_GetCurrentTime( pDM_Odm);
+	StartTime = jiffies;
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_CALIBRATION, ODM_DBG_LOUD,  ("IQK:Start!!!\n"));
 
 	//save default GNT_BT
@@ -2521,7 +2521,7 @@ PHY_LCCalibrate_8723B(
 	if(bSingleTone || bCarrierSuppression)
 		return;
 	
-	StartTime = ODM_GetCurrentTime( pDM_Odm);
+	StartTime = jiffies;
 	while(*(pDM_Odm->pbScanInProcess) && timecount < timeout)
 	{
 		mdelay(50);
