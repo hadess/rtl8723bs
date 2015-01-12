@@ -20,6 +20,7 @@
 #define _RTW_WLAN_UTIL_C_
 
 #include <drv_types.h>
+#include <hal_com_h2c.h>
 
 #if defined(CONFIG_WOWLAN) || defined(CONFIG_AP_WOWLAN)
 #include <linux/inetdevice.h>
@@ -839,7 +840,7 @@ void invalidate_cam_all(_adapter *padapter)
 	struct cam_ctl_t *cam_ctl = &dvobj->cam_ctl;
 	_irqL irqL;
 
-	rtw_hal_set_hwreg(padapter, HW_VAR_CAM_INVALID_ALL, 0);
+	rtw_hal_set_hwreg(padapter, HW_VAR_CAM_INVALID_ALL, NULL);
 
 	_enter_critical_bh(&cam_ctl->lock, &irqL);
 	cam_ctl->bitmap = 0;
@@ -1016,7 +1017,7 @@ exit:
 	return (s16)camid;
 }
 
-bool _rtw_camid_is_gk(_adapter *adapter, u8 cam_id)
+static bool _rtw_camid_is_gk(_adapter *adapter, u8 cam_id)
 {
 	struct dvobj_priv *dvobj = adapter_to_dvobj(adapter);
 	struct cam_ctl_t *cam_ctl = &dvobj->cam_ctl;
@@ -1034,7 +1035,7 @@ exit:
 	return ret;
 }
 
-bool rtw_camid_is_gk(_adapter *adapter, u8 cam_id)
+static bool rtw_camid_is_gk(_adapter *adapter, u8 cam_id)
 {
 	struct dvobj_priv *dvobj = adapter_to_dvobj(adapter);
 	struct cam_ctl_t *cam_ctl = &dvobj->cam_ctl;
@@ -1048,7 +1049,7 @@ bool rtw_camid_is_gk(_adapter *adapter, u8 cam_id)
 	return ret;
 }
 
-s16 _rtw_camid_search(_adapter *adapter, u8 *addr, s16 kid)
+static s16 _rtw_camid_search(_adapter *adapter, u8 *addr, s16 kid)
 {
 	struct dvobj_priv *dvobj = adapter_to_dvobj(adapter);
 	struct cam_ctl_t *cam_ctl = &dvobj->cam_ctl;
@@ -2174,7 +2175,8 @@ void update_beacon_info(_adapter *padapter, u8 *pframe, uint pkt_len, struct sta
 				//to update WMM paramter set while receiving beacon
 				if (!memcmp(pIE->data, WMM_PARA_OUI, 6) && pIE->Length == WLAN_WMM_LEN)	//WMM
 				{
-					(WMM_param_handler(padapter, pIE))? report_wmm_edca_update(padapter): 0;
+					if (WMM_param_handler(padapter, pIE))
+						report_wmm_edca_update(padapter);
 				}
 
 				break;
@@ -2920,7 +2922,7 @@ void update_TSF(struct mlme_ext_priv *pmlmeext, u8 *pframe, uint len)
 
 void correct_TSF(_adapter *padapter, struct mlme_ext_priv *pmlmeext)
 {
-	rtw_hal_set_hwreg(padapter, HW_VAR_CORRECT_TSF, 0);
+	rtw_hal_set_hwreg(padapter, HW_VAR_CORRECT_TSF, NULL);
 }
 
 void adaptive_early_32k(struct mlme_ext_priv *pmlmeext, u8 *pframe, uint len)
