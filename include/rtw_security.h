@@ -434,9 +434,7 @@ static const unsigned long K[64] = {
 #ifndef MIN
 #define MIN(x, y) (((x) < (y)) ? (x) : (y))
 #endif
-#ifdef CONFIG_IEEE80211W
 int omac1_aes_128(u8 *key, u8 *data, size_t data_len, u8 *mac);
-#endif //CONFIG_IEEE80211W
 void rtw_secmicsetkey(struct mic_data *pmicdata, u8 * key );
 void rtw_secmicappendbyte(struct mic_data *pmicdata, u8 b );
 void rtw_secmicappend(struct mic_data *pmicdata, u8 * src, u32 nBytes );
