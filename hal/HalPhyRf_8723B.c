@@ -2559,14 +2559,8 @@ PHY_APCalibrate_8723B(
 	if(pDM_Odm->RFCalibrateInfo.bAPKdone)
 		return;
 
-	if(IS_92C_SERIAL( pHalData->VersionID)){
-		phy_APCalibrate_8723B(pAdapter, delta, true);
-	}
-	else
-	{
-		// For 88C 1T1R
-		phy_APCalibrate_8723B(pAdapter, delta, false);
-	}
+	// For 88C 1T1R
+	phy_APCalibrate_8723B(pAdapter, delta, false);
 }
 void phy_SetRFPathSwitch_8723B(
 	IN	PADAPTER	pAdapter,

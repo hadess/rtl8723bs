@@ -3089,8 +3089,6 @@ void _DisableAnalog(PADAPTER padapter, bool bWithoutHWSM)
 	i.	APS_FSMCO 0x04[15:0] = 0x4802		// set USB suspend
 	******************************/
 	value8 = 0x23;
-	if (IS_81xxC_VENDOR_UMC_B_CUT(pHalData->VersionID))
-		value8 |= BIT3;
 
 	rtw_write8(padapter, REG_SPS0_CTRL, value8);
 
@@ -5732,7 +5730,7 @@ _func_enter_;
 
 				// Forece leave RF low power mode for 1T1R to prevent conficting setting in Fw power
 				// saving sequence. 2010.06.07. Added by tynli. Suggested by SD3 yschang.
-				if ((psmode != PS_MODE_ACTIVE) && (!IS_92C_SERIAL(pHalData->VersionID)))
+				if (psmode != PS_MODE_ACTIVE)
 				{
 					ODM_RF_Saving(&pHalData->odmpriv, true);
 				}
