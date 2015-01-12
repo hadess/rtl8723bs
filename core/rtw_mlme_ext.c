@@ -23,7 +23,7 @@
 #include <rtw_wifi_regd.h>
 
 
-struct mlme_handler mlme_sta_tbl[]={
+static struct mlme_handler mlme_sta_tbl[]={
 	{WIFI_ASSOCREQ,		"OnAssocReq",	&OnAssocReq},
 	{WIFI_ASSOCRSP,		"OnAssocRsp",	&OnAssocRsp},
 	{WIFI_REASSOCREQ,	"OnReAssocReq",	&OnAssocReq},
@@ -69,7 +69,7 @@ struct mlme_handler mlme_ap_tbl[]={
 };
 #endif
 
-struct action_handler OnAction_tbl[]={
+static struct action_handler OnAction_tbl[]={
 	{RTW_WLAN_CATEGORY_SPECTRUM_MGMT,	 "ACTION_SPECTRUM_MGMT", on_action_spct},
 	{RTW_WLAN_CATEGORY_QOS, "ACTION_QOS", &OnAction_qos},
 	{RTW_WLAN_CATEGORY_DLS, "ACTION_DLS", &OnAction_dls},
@@ -92,7 +92,7 @@ struct action_handler OnAction_tbl[]={
 };
 
 
-u8	null_addr[ETH_ALEN]= {0,0,0,0,0,0};
+static u8	null_addr[ETH_ALEN]= {0,0,0,0,0,0};
 
 /**************************************************
 OUI definitions for the vendor specific IE
@@ -2394,7 +2394,7 @@ unsigned int OnAtim(_adapter *padapter, union recv_frame *precv_frame)
 	return _SUCCESS;
 }
 
-unsigned int on_action_spct_ch_switch(_adapter *padapter, struct sta_info *psta, u8 *ies, uint ies_len)
+static unsigned int on_action_spct_ch_switch(_adapter *padapter, struct sta_info *psta, u8 *ies, uint ies_len)
 {
 	unsigned int ret = _FAIL;
 	struct mlme_ext_priv *mlmeext = &padapter->mlmeextpriv;
@@ -2641,7 +2641,7 @@ unsigned int OnAction_back(_adapter *padapter, union recv_frame *precv_frame)
 	return _SUCCESS;
 }
 
-s32 rtw_action_public_decache(union recv_frame *recv_frame, s32 token)
+static s32 rtw_action_public_decache(union recv_frame *recv_frame, s32 token)
 {
 	_adapter *adapter = recv_frame->u.hdr.adapter;
 	struct mlme_ext_priv *mlmeext = &(adapter->mlmeextpriv);
@@ -2675,7 +2675,7 @@ s32 rtw_action_public_decache(union recv_frame *recv_frame, s32 token)
 	return _SUCCESS;
 }
 
-unsigned int on_action_public_p2p(union recv_frame *precv_frame)
+static unsigned int on_action_public_p2p(union recv_frame *precv_frame)
 {
 	_adapter *padapter = precv_frame->u.hdr.adapter;
 	u8 *pframe = precv_frame->u.hdr.rx_data;
@@ -2693,7 +2693,7 @@ unsigned int on_action_public_p2p(union recv_frame *precv_frame)
 	return _SUCCESS;
 }
 
-unsigned int on_action_public_vendor(union recv_frame *precv_frame)
+static unsigned int on_action_public_vendor(union recv_frame *precv_frame)
 {
 	unsigned int ret = _FAIL;
 	u8 *pframe = precv_frame->u.hdr.rx_data;
@@ -2707,7 +2707,7 @@ unsigned int on_action_public_vendor(union recv_frame *precv_frame)
 	return ret;
 }
 
-unsigned int on_action_public_default(union recv_frame *precv_frame, u8 action)
+static unsigned int on_action_public_default(union recv_frame *precv_frame, u8 action)
 {
 	unsigned int ret = _FAIL;
 	u8 *pframe = precv_frame->u.hdr.rx_data;
@@ -2882,7 +2882,7 @@ unsigned int DoReserved(_adapter *padapter, union recv_frame *precv_frame)
 	return _SUCCESS;
 }
 
-struct xmit_frame *_alloc_mgtxmitframe(struct xmit_priv *pxmitpriv, bool once)
+static struct xmit_frame *_alloc_mgtxmitframe(struct xmit_priv *pxmitpriv, bool once)
 {
 	struct xmit_frame *pmgntframe;
 	struct xmit_buf *pxmitbuf;
@@ -3072,7 +3072,7 @@ s32 dump_mgntframe_and_wait_ack(_adapter *padapter, struct xmit_frame *pmgntfram
 #endif //!CONFIG_XMIT_ACK	 
 }
 
-int update_hidden_ssid(u8 *ies, u32 ies_len, u8 hidden_ssid_mode)
+static int update_hidden_ssid(u8 *ies, u32 ies_len, u8 hidden_ssid_mode)
 {
 	u8 *ssid_ie;
 	sint ssid_len_ori;
@@ -3520,7 +3520,7 @@ void issue_probersp(_adapter *padapter, unsigned char *da, u8 is_valid_p2p_probe
 
 }
 
-int _issue_probereq(_adapter *padapter, NDIS_802_11_SSID *pssid, u8 *da, u8 ch, bool append_wps, int wait_ack)
+static int _issue_probereq(_adapter *padapter, NDIS_802_11_SSID *pssid, u8 *da, u8 ch, bool append_wps, int wait_ack)
 {
 	int ret = _FAIL;
 	struct xmit_frame		*pmgntframe;
@@ -6726,7 +6726,7 @@ static void rtw_mlmeext_disconnect(_adapter *padapter)
 	}
 #endif	
 
-	rtw_hal_set_hwreg(padapter, HW_VAR_MLME_DISCONNECT, 0);
+	rtw_hal_set_hwreg(padapter, HW_VAR_MLME_DISCONNECT, NULL);
 	rtw_hal_set_hwreg(padapter, HW_VAR_BSSID, null_addr);
 
 	//set MSR to no link state -> infra. mode
@@ -7036,7 +7036,7 @@ void _linked_info_dump(_adapter *padapter)
 
 }
 
-u8 chk_ap_is_alive(_adapter *padapter, struct sta_info *psta)
+static u8 chk_ap_is_alive(_adapter *padapter, struct sta_info *psta)
 {
 	u8 ret = false;
 	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
@@ -7839,7 +7839,7 @@ u8 join_cmd_hdl(_adapter *padapter, u8 *pbuf)
 		Set_MSR(padapter, _HW_STATE_STATION_);	
 		
 
-		rtw_hal_set_hwreg(padapter, HW_VAR_MLME_DISCONNECT, 0);
+		rtw_hal_set_hwreg(padapter, HW_VAR_MLME_DISCONNECT, NULL);
 	}
 
 #ifdef CONFIG_ANTENNA_DIVERSITY
@@ -8038,7 +8038,7 @@ u8 disconnect_hdl(_adapter *padapter, unsigned char *pbuf)
 	return 	H2C_SUCCESS;
 }
 
-int rtw_scan_ch_decision(_adapter *padapter, struct rtw_ieee80211_channel *out,
+static int rtw_scan_ch_decision(_adapter *padapter, struct rtw_ieee80211_channel *out,
 	u32 out_num, struct rtw_ieee80211_channel *in, u32 in_num)
 {
 	int i, j;
