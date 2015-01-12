@@ -340,12 +340,3 @@ ODM_FillH2CCmd(
 				break;			   
 		}
 }
-
-s4Byte
-ODM_GetProgressingTime(	
-	IN 	PDM_ODM_T		pDM_Odm,
-	IN	u4Byte			Start_Time
-	)
-{
-	return jiffies_to_msecs(jiffies - Start_Time);
-}

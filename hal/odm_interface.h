@@ -324,11 +324,5 @@ ODM_FillH2CCmd(
 	IN	pu1Byte	pCmdBuffer
 );
 
-s4Byte
-ODM_GetProgressingTime(	
-	IN 	PDM_ODM_T		pDM_Odm,
-	IN	u4Byte			Start_Time
-	);
-
 #endif	// __ODM_INTERFACE_H__
 

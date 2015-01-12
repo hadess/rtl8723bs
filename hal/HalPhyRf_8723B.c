@@ -2490,7 +2490,7 @@ PHY_IQCalibrate_8723B(
 	ODM_ReleaseSpinLock(pDM_Odm, RT_IQK_SPINLOCK);
 
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_CALIBRATION, ODM_DBG_LOUD,  ("IQK finished\n"));
-	ProgressingTime = ODM_GetProgressingTime( pDM_Odm, StartTime);
+	ProgressingTime = jiffies_to_msecs(jiffies - StartTime);
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_CALIBRATION, ODM_DBG_LOUD,  ("IQK ProgressingTime = %d\n", ProgressingTime));
 	
 
@@ -2537,7 +2537,7 @@ PHY_LCCalibrate_8723B(
 	pDM_Odm->RFCalibrateInfo.bLCKInProgress = false;
 
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("LCK:Finish!!!interface %d\n", pDM_Odm->InterfaceIndex));
-	ProgressingTime = ODM_GetProgressingTime( pDM_Odm, StartTime);
+	ProgressingTime = jiffies_to_msecs(jiffies - StartTime);
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_CALIBRATION, ODM_DBG_LOUD,  ("LCK ProgressingTime = %d\n", ProgressingTime));
 }
 
