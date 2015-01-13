@@ -3338,10 +3338,6 @@ int recv_indicatepkt_reorder(_adapter *padapter, union recv_frame *prframe)
 			return retval;
 		}
 	}
-	else
-	{
-
-	}
 
 	_enter_critical_bh(&ppending_recvframe_queue->lock, &irql);
 
