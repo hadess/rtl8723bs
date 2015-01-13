@@ -2760,7 +2760,7 @@ _func_exit_;
 	return _SUCCESS;	
 } 
 
-void rtw_init_xmitframe(struct xmit_frame *pxframe)
+static void rtw_init_xmitframe(struct xmit_frame *pxframe)
 {
 	if (pxframe !=  NULL)//default value setting
 	{
@@ -4592,7 +4592,7 @@ int rtw_sctx_wait(struct submit_ctx *sctx, const char *msg)
 	return ret;
 }
 
-bool rtw_sctx_chk_waring_status(int status)
+static bool rtw_sctx_chk_waring_status(int status)
 {
 	switch(status) {
 	case RTW_SCTX_DONE_UNKNOWN:
