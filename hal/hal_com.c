@@ -1703,7 +1703,7 @@ void rtw_store_phy_info(_adapter *padapter, union recv_frame *prframe)
 #endif
 
 #ifdef CONFIG_RF_GAIN_OFFSET
-u32 Array_kfreemap[] = { 
+static u32 Array_kfreemap[] = { 
 0xf8,0xe,
 0xf6,0xc,
 0xf4,0xa,
