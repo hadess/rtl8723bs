@@ -168,7 +168,7 @@ PHY_GetTxPowerByRateBase(
 	return value;
 }
 
-void
+static void
 phy_SetTxPowerByRateBase(
 	IN	PADAPTER		Adapter,
 	IN	u8				Band,
@@ -267,7 +267,7 @@ phy_SetTxPowerByRateBase(
 	}
 }
 
-void
+static void
 phy_StoreTxPowerByRateBaseOld(	
 	IN	PADAPTER	pAdapter
 	)
@@ -310,7 +310,7 @@ phy_StoreTxPowerByRateBaseOld(
 	phy_SetTxPowerByRateBase( pAdapter, BAND_ON_2_4G, ODM_RF_PATH_B, HT_MCS8_MCS15, RF_2TX, base );
 }
 
-void
+static void
 phy_StoreTxPowerByRateBase(	
 	IN	PADAPTER	pAdapter
 	)
@@ -849,7 +849,7 @@ PHY_GetRateValuesOfTxPowerByRate(
 	};
 }
 
-void
+static void
 PHY_StoreTxPowerByRateNew(
 	IN	PADAPTER	pAdapter,
 	IN	u32			Band,
@@ -896,7 +896,7 @@ PHY_StoreTxPowerByRateNew(
 	}
 }
 
-void 
+static void
 PHY_StoreTxPowerByRateOld(
 	IN	PADAPTER		pAdapter,
 	IN	u32				RegAddr,
@@ -959,7 +959,7 @@ PHY_StoreTxPowerByRate(
 	
 }
 
-void 
+static void
 phy_ConvertTxPowerByRateByBase(
 	IN	u32*		pData,
 	IN	u8			Start,
@@ -995,7 +995,7 @@ phy_ConvertTxPowerByRateByBase(
 }
 
 
-void
+static void
 PHY_ConvertTxPowerByRateInDbmToRelativeValuesOld(
 	IN	PADAPTER	pAdapter
 	)
@@ -1064,7 +1064,7 @@ PHY_ConvertTxPowerByRateInDbmToRelativeValuesOld(
 	//DBG_871X("<===PHY_ConvertTxPowerByRateInDbmToRelativeValuesOld()\n" );
 }
 
-void
+static void
 phy_ConvertTxPowerByRateInDbmToRelativeValues(
 	IN	PADAPTER	pAdapter
 	)
@@ -1269,7 +1269,7 @@ PHY_SetTxPowerIndexByRateSection(
 	}
 }
 
-bool 
+static bool
 phy_GetChnlIndex(
 	IN	u8 	Channel,
 	OUT u8*	ChannelIdx
@@ -1739,7 +1739,7 @@ PHY_SetTxPowerIndexByRateArray(
 	}
 }
 
-s8
+static s8
 phy_GetWorldWideLimit(
 	s8* LimitTable
 )
@@ -1755,7 +1755,7 @@ phy_GetWorldWideLimit(
 	return min;
 }
 
-s8
+static s8
 phy_GetChannelIndexOfTxPowerLimit(
 	IN	u8			Band,
 	IN	u8			Channel
@@ -1989,7 +1989,7 @@ PHY_GetTxPowerLimit(
 	return powerLimit;
 }
 
-void
+static void
 phy_CrossReferenceHTAndVHTTxPowerLimit(
 	IN	PADAPTER			pAdapter
 	)
@@ -2458,7 +2458,7 @@ Hal_ChannelPlanToRegulation(
 #ifdef CONFIG_LOAD_PHY_PARA_FROM_FILE
 
 extern char *rtw_phy_file_path;
-char	file_path[PATH_MAX];
+static char	file_path[PATH_MAX];
 
 #define GetLineFromBuffer(buffer)	 strsep(&buffer, "\n")
 
@@ -2687,7 +2687,7 @@ phy_ConfigBBWithParaFile(
 	return rtStatus;
 }
 
-void
+static void
 phy_DecryptBBPgParaFile(
 	PADAPTER		Adapter,
 	char*			buffer
@@ -2727,7 +2727,7 @@ phy_DecryptBBPgParaFile(
 	}
 }
 
-int
+static int
 phy_ParseBBPgParaFile(
 	PADAPTER		Adapter,
 	char*			buffer
@@ -3229,7 +3229,7 @@ PHY_ConfigRFWithParaFile(
 	return rtStatus;
 }
 
-void
+static void
 initDeltaSwingIndexTables(
 	PADAPTER	Adapter, 
 	char*		Band, 
@@ -3485,7 +3485,7 @@ PHY_ConfigRFWithTxPwrTrackParaFile(
 	return rtStatus;
 }
 
-int
+static int
 phy_ParsePowerLimitTableFile(
   PADAPTER		Adapter,
   char*			buffer
