@@ -166,35 +166,35 @@ static struct ieee80211_channel rtw_5ghz_a_channels[] = {
 };
 
 
-void rtw_2g_channels_init(struct ieee80211_channel *channels)
+static void rtw_2g_channels_init(struct ieee80211_channel *channels)
 {
 	memcpy((void*)channels, (void*)rtw_2ghz_channels,
 		sizeof(struct ieee80211_channel)*RTW_2G_CHANNELS_NUM
 	);
 }
 
-void rtw_5g_channels_init(struct ieee80211_channel *channels)
+static void rtw_5g_channels_init(struct ieee80211_channel *channels)
 {
 	memcpy((void*)channels, (void*)rtw_5ghz_a_channels,
 		sizeof(struct ieee80211_channel)*RTW_5G_CHANNELS_NUM
 	);
 }
 
-void rtw_2g_rates_init(struct ieee80211_rate *rates)
+static void rtw_2g_rates_init(struct ieee80211_rate *rates)
 {
 	memcpy(rates, rtw_g_rates,
 		sizeof(struct ieee80211_rate)*RTW_G_RATES_NUM
 	);
 }
 
-void rtw_5g_rates_init(struct ieee80211_rate *rates)
+static void rtw_5g_rates_init(struct ieee80211_rate *rates)
 {
 	memcpy(rates, rtw_a_rates,
 		sizeof(struct ieee80211_rate)*RTW_A_RATES_NUM
 	);
 }
 
-struct ieee80211_supported_band *rtw_spt_band_alloc(
+static struct ieee80211_supported_band *rtw_spt_band_alloc(
 	enum ieee80211_band band
 	)
 {
@@ -248,7 +248,7 @@ exit:
 	return spt_band;
 }
 
-void rtw_spt_band_free(struct ieee80211_supported_band *spt_band)
+static void rtw_spt_band_free(struct ieee80211_supported_band *spt_band)
 {
 	u32 size = 0;
 
@@ -3684,7 +3684,7 @@ static int	cfg80211_rtw_change_station(struct wiphy *wiphy, struct net_device *n
 	return 0;
 }
 
-struct sta_info *rtw_sta_info_get_by_idx(const int idx, struct sta_priv *pstapriv)
+static struct sta_info *rtw_sta_info_get_by_idx(const int idx, struct sta_priv *pstapriv)
 
 {
 	_list	*phead, *plist;
