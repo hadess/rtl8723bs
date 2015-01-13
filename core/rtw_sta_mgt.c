@@ -330,6 +330,7 @@ _func_enter_;
 		//_exit_critical_bh(&(pfree_sta_queue->lock), &irqL);
 		_exit_critical_bh(&(pstapriv->sta_hash_lock), &irqL2);
 		psta = NULL;
+		return psta;
 	}
 	else
 	{
