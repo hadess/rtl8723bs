@@ -891,7 +891,7 @@ struct dvobj_priv *devobj_init(void)
 	mutex_init(&pdvobj->setch_mutex);
 	mutex_init(&pdvobj->setbw_mutex);
 
-	_rtw_spinlock_init(&pdvobj->lock);
+	spin_lock_init(&pdvobj->lock);
 
 	pdvobj->macid[1] = true; //macid=1 for bc/mc stainfo
 
@@ -899,7 +899,7 @@ struct dvobj_priv *devobj_init(void)
 
 	atomic_set(&pdvobj->disable_func, 0);
 
-	_rtw_spinlock_init(&pdvobj->cam_ctl.lock);
+	spin_lock_init(&pdvobj->cam_ctl.lock);
 
 	return pdvobj;
 
@@ -910,14 +910,10 @@ void devobj_deinit(struct dvobj_priv *pdvobj)
 	if(!pdvobj)
 		return;
 
-	_rtw_spinlock_free(&pdvobj->lock);
-
 	mutex_destroy(&pdvobj->hw_init_mutex);
 	mutex_destroy(&pdvobj->h2c_fwcmd_mutex);
 	mutex_destroy(&pdvobj->setch_mutex);
 	mutex_destroy(&pdvobj->setbw_mutex);
-
-	_rtw_spinlock_free(&pdvobj->cam_ctl.lock);
 
 	rtw_mfree((u8*)pdvobj, sizeof(*pdvobj));
 }	
@@ -1027,7 +1023,7 @@ _func_enter_;
 		goto exit;
 	}
 	// add for CONFIG_IEEE80211W, none 11w also can use
-	_rtw_spinlock_init(&padapter->security_key_mutex);
+	spin_lock_init(&padapter->security_key_mutex);
 	
 	// We don't need to memset padapter->XXX to zero, because adapter is allocated by rtw_zvmalloc().
 	//memset((unsigned char *)&padapter->securitypriv, 0, sizeof (struct security_priv));
@@ -1068,7 +1064,7 @@ _func_enter_;
 #endif
 
 #ifdef CONFIG_BR_EXT
-	_rtw_spinlock_init(&padapter->br_ext_lock);
+	spin_lock_init(&padapter->br_ext_lock);
 #endif	// CONFIG_BR_EXT
 
 exit:
@@ -1133,13 +1129,6 @@ u8 rtw_free_drv_sw(_adapter *padapter)
 #ifdef CONFIG_WAPI_SUPPORT
 	rtw_wapi_free(padapter);
 #endif
-
-	// add for CONFIG_IEEE80211W, none 11w also can use
-	_rtw_spinlock_free(&padapter->security_key_mutex);
-	
-#ifdef CONFIG_BR_EXT
-	_rtw_spinlock_free(&padapter->br_ext_lock);
-#endif	// CONFIG_BR_EXT
 
 #ifdef CONFIG_INTEL_WIDI
 	rtw_free_intel_widi(padapter);

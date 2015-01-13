@@ -51,8 +51,8 @@ int rtw_init_tdls_info(_adapter* padapter)
 	ptdlsinfo->tdls_enable = true;
 	rtw_reset_tdls_info(padapter);
 
-	_rtw_spinlock_init(&ptdlsinfo->cmd_lock);
-	_rtw_spinlock_init(&ptdlsinfo->hdl_lock);
+	spin_lock_init(&ptdlsinfo->cmd_lock);
+	spin_lock_init(&ptdlsinfo->hdl_lock);
 
 	return res;
 
@@ -60,9 +60,6 @@ int rtw_init_tdls_info(_adapter* padapter)
 
 void rtw_free_tdls_info(struct tdls_info *ptdlsinfo)
 {
-	_rtw_spinlock_free(&ptdlsinfo->cmd_lock);
-	_rtw_spinlock_free(&ptdlsinfo->hdl_lock);
-
 	memset(ptdlsinfo, 0, sizeof(struct tdls_info) );
 
 }

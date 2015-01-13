@@ -38,7 +38,7 @@ void init_mlme_ap_info(_adapter *padapter)
 	struct wlan_acl_pool *pacl_list = &pstapriv->acl_list;
 	
 
-	_rtw_spinlock_init(&pmlmepriv->bcn_update_lock);	
+	spin_lock_init(&pmlmepriv->bcn_update_lock);	
 
 	//for ACL 
 	_rtw_init_queue(&pacl_list->acl_node_q);
@@ -74,10 +74,6 @@ void free_mlme_ap_info(_adapter *padapter)
 	_enter_critical_bh(&(pstapriv->sta_hash_lock), &irqL);		
 	rtw_free_stainfo(padapter, psta);
 	_exit_critical_bh(&(pstapriv->sta_hash_lock), &irqL);
-	
-
-	_rtw_spinlock_free(&pmlmepriv->bcn_update_lock);
-	
 }
 
 static void update_BCNTIM(_adapter *padapter)
@@ -3041,8 +3037,7 @@ void stop_ap_mode(_adapter *padapter)
 
 	pmlmepriv->update_bcn = false;
 	pmlmeext->bstart_bss = false;
-	//_rtw_spinlock_free(&pmlmepriv->bcn_update_lock);
-	
+
 	//reset and init security priv , this can refine with rtw_reset_securitypriv
 	memset((unsigned char *)&padapter->securitypriv, 0, sizeof (struct security_priv));
 	padapter->securitypriv.ndisauthtype = Ndis802_11AuthModeOpen;

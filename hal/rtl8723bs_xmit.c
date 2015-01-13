@@ -711,7 +711,7 @@ s32 rtl8723bs_init_xmit_priv(PADAPTER padapter)
 
 	phal = GET_HAL_DATA(padapter);
 
-	_rtw_spinlock_init(&phal->SdioTxFIFOFreePageLock);
+	spin_lock_init(&phal->SdioTxFIFOFreePageLock);
 	sema_init(&xmitpriv->SdioXmitSema, 0);
 	sema_init(&xmitpriv->SdioXmitTerminateSema, 0);
 
@@ -756,7 +756,5 @@ void rtl8723bs_free_xmit_priv(PADAPTER padapter)
 		pxmitbuf->priv_data = NULL;
 		rtw_free_xmitbuf(pxmitpriv, pxmitbuf);
 	}
-
-	_rtw_spinlock_free(&phal->SdioTxFIFOFreePageLock);
 }
 

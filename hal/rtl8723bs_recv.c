@@ -25,7 +25,7 @@
 static s32 initrecvbuf(struct recv_buf *precvbuf, PADAPTER padapter)
 {
 	_rtw_init_listhead(&precvbuf->list);
-	_rtw_spinlock_init(&precvbuf->recvbuf_lock);
+	spin_lock_init(&precvbuf->recvbuf_lock);
 
 	precvbuf->adapter = padapter;
 
@@ -34,7 +34,7 @@ static s32 initrecvbuf(struct recv_buf *precvbuf, PADAPTER padapter)
 
 static void freerecvbuf(struct recv_buf *precvbuf)
 {
-	_rtw_spinlock_free(&precvbuf->recvbuf_lock);
+/*DEADCODE*/
 }
 
 static void update_recvframe_attrib(
