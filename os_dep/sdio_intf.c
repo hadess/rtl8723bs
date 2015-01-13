@@ -85,7 +85,7 @@ static void sd_sync_int_hdl(struct sdio_func *func)
 	rtw_sdio_set_irq_thd(psdpriv, NULL);
 }
 
-int sdio_alloc_irq(struct dvobj_priv *dvobj)
+static int sdio_alloc_irq(struct dvobj_priv *dvobj)
 {
 	PSDIO_DATA psdio_data;
 	struct sdio_func *func;
@@ -113,7 +113,7 @@ int sdio_alloc_irq(struct dvobj_priv *dvobj)
 	return err?_FAIL:_SUCCESS;
 }
 
-void sdio_free_irq(struct dvobj_priv *dvobj)
+static void sdio_free_irq(struct dvobj_priv *dvobj)
 {
     PSDIO_DATA psdio_data;
     struct sdio_func *func;
@@ -347,7 +347,7 @@ static void sd_intf_stop(PADAPTER padapter)
 PADAPTER g_test_adapter = NULL;
 #endif // RTW_SUPPORT_PLATFORM_SHUTDOWN
 
-_adapter *rtw_sdio_if1_init(struct dvobj_priv *dvobj, const struct sdio_device_id  *pdid)
+static _adapter *rtw_sdio_if1_init(struct dvobj_priv *dvobj, const struct sdio_device_id  *pdid)
 {
 	int status = _FAIL;
 	struct net_device *pnetdev;
@@ -445,7 +445,7 @@ _adapter *rtw_sdio_if1_init(struct dvobj_priv *dvobj, const struct sdio_device_i
 	
 free_hal_data:
 	if(status != _SUCCESS && padapter->HalData)
-		rtw_mfree(padapter->HalData, sizeof(*(padapter->HalData)));
+		rtw_mfree(padapter->HalData, sizeof(padapter->HalData));
 
 free_wdev:
 	if(status != _SUCCESS) {
@@ -693,7 +693,7 @@ exit:
 #endif
 	return ret;
 }
-int rtw_resume_process(_adapter *padapter)
+static int rtw_resume_process(_adapter *padapter)
 {
 	struct pwrctrl_priv *pwrpriv = adapter_to_pwrctl(padapter);
 	struct dvobj_priv *psdpriv = padapter->dvobj;
