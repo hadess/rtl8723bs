@@ -53,7 +53,7 @@ extern u8 str_2char2num(u8 hch, u8 lch);
 extern void macstr2num(u8 *dst, u8 *src);
 extern u8 convert_ip_addr(u8 hch, u8 mch, u8 lch);
 
-u32 rtw_rates[] = {1000000,2000000,5500000,11000000,
+static u32 rtw_rates[] = {1000000,2000000,5500000,11000000,
 	6000000,9000000,12000000,18000000,24000000,36000000,48000000,54000000};
 
 static const char * const iw_operation_mode[] = 
@@ -4079,9 +4079,9 @@ static int rtw_dbg_port(struct net_device *dev,
 			}
 			break;
 		case 0x78: //IOL test
+			#ifdef CONFIG_IOL
 			switch(minor_cmd)
 			{
-				#ifdef CONFIG_IOL
 				case 0x04: //LLT table initialization test
 				{
 					u8 page_boundary = 0xf9;
@@ -4242,8 +4242,8 @@ static int rtw_dbg_port(struct net_device *dev,
 					}
 				}
 					break;
-				#endif //CONFIG_IOL
 			}
+			#endif //CONFIG_IOL
 			break;
 		case 0x79:
 			{
