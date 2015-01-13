@@ -193,12 +193,12 @@
 	}while(0)
 
 #if defined(_seqdump)
-#define RTW_DBGDUMP 0 /* 'stream' for _dbgdump */
+#define RTW_DBGDUMP NULL /* 'stream' for _dbgdump */
 
 /* dump message to selected 'stream' */
 #define DBG_871X_SEL(sel, fmt, arg...) \
 	do {\
-		if ((int) (long) sel == RTW_DBGDUMP)\
+		if (sel == RTW_DBGDUMP)\
 			_DBG_871X_LEVEL(_drv_always_, fmt, ##arg); \
 		else {\
 			if(_seqdump(sel, fmt, ##arg)) /*rtw_warn_on(1)*/; \
@@ -208,7 +208,7 @@
 /* dump message to selected 'stream' with driver-defined prefix */
 #define DBG_871X_SEL_NL(sel, fmt, arg...) \
 	do {\
-		if ((int) (long) sel == RTW_DBGDUMP)\
+		if (sel == RTW_DBGDUMP)\
 			DBG_871X_LEVEL(_drv_always_, fmt, ##arg); \
 		else {\
 			if(_seqdump(sel, fmt, ##arg)) /*rtw_warn_on(1)*/; \
