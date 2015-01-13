@@ -49,7 +49,7 @@ void _rtw_scan_timeout_handler (void *FunctionContext)
 }
 
 
-void _dynamic_check_timer_handlder (void *FunctionContext)
+static void _dynamic_check_timer_handlder (void *FunctionContext)
 {
 	_adapter *adapter = (_adapter *)FunctionContext;
 
@@ -64,7 +64,7 @@ void _dynamic_check_timer_handlder (void *FunctionContext)
 }
 
 #ifdef CONFIG_SET_SCAN_DENY_TIMER
-void _rtw_set_scan_deny_timer_hdl(void *FunctionContext)
+static void _rtw_set_scan_deny_timer_hdl(void *FunctionContext)
 {
 	_adapter *adapter = (_adapter *)FunctionContext;	 
 	rtw_set_scan_deny_timer_hdl(adapter);
@@ -253,20 +253,20 @@ _func_exit_;
 
 }
 
-void _survey_timer_hdl (void *FunctionContext)
+static void _survey_timer_hdl (void *FunctionContext)
 {
 	_adapter *padapter = (_adapter *)FunctionContext;
 	
 	survey_timer_hdl(padapter);
 }
 
-void _link_timer_hdl (void *FunctionContext)
+static void _link_timer_hdl (void *FunctionContext)
 {
 	_adapter *padapter = (_adapter *)FunctionContext;
 	link_timer_hdl(padapter);
 }
 
-void _addba_timer_hdl(void *FunctionContext)
+static void _addba_timer_hdl(void *FunctionContext)
 {
 	struct sta_info *psta = (struct sta_info *)FunctionContext;
 	addba_timer_hdl(psta);
