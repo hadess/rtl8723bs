@@ -726,7 +726,7 @@ PHY_BBConfig8723B(
 	return rtStatus;
 }
 
-void phy_LCK_8723B(
+static void phy_LCK_8723B(
 	IN	PADAPTER	Adapter
 	)
 {
@@ -831,7 +831,7 @@ PHY_ConfigRFWithParaFile_8723B(
  *
  * Note:		Delay may be required for RF configuration
  *---------------------------------------------------------------------------*/
-void phy_PowerIndexCheck8723B(
+static void phy_PowerIndexCheck8723B(
 	IN	PADAPTER		Adapter,
 	IN	u8			channel,
 	IN OUT u8		*cckPowerLevel,
@@ -908,7 +908,7 @@ PHY_SetTxPowerIndex_8723B(
 	}
 }
 
-u8
+static u8
 phy_GetCurrentTxNum_8723B(
 	IN	PADAPTER		pAdapter
 	)
@@ -993,7 +993,7 @@ PHY_GetTxPowerLevel8723B(
 
 
 // <20130321, VincentLan> A workaround to eliminate the 2440MHz & 2480MHz spur of 8723B. (Asked by Rock.)
-void
+static void
 phy_SpurCalibration_8723B(
 	IN	PADAPTER					pAdapter,
 	IN	u1Byte						ToChannel,
@@ -1133,7 +1133,7 @@ phy_SpurCalibration_8723B(
 
 }
 
-void
+static void
 phy_SetRegBW_8723B(
 	IN	PADAPTER		Adapter,
 	CHANNEL_WIDTH 	CurrentBW
@@ -1164,7 +1164,7 @@ phy_SetRegBW_8723B(
 	}
 }
 
-u8 
+static u8
 phy_GetSecondaryChnl_8723B(
 	IN	PADAPTER	Adapter
 )
@@ -1209,7 +1209,7 @@ phy_GetSecondaryChnl_8723B(
 	return  ( (SCSettingOf40 << 4) | SCSettingOf20);
 }
 
-void
+static void
 phy_PostSetBwMode8723B(
 	IN	PADAPTER	Adapter
 )
@@ -1272,7 +1272,7 @@ phy_PostSetBwMode8723B(
 	PHY_RF6052SetBandwidth8723B(Adapter, pHalData->CurrentChannelBW);
 }
 
-void
+static void
 phy_SwChnl8723B(	
 	IN	PADAPTER					pAdapter
 	)
@@ -1293,7 +1293,7 @@ phy_SwChnl8723B(
 	//phy_SpurCalibration_8723B(pAdapter, channelToSW, 0x16);
 }
 
-void
+static void
 phy_SwChnlAndSetBwMode8723B(
 	IN  PADAPTER		Adapter
 )
@@ -1331,7 +1331,7 @@ phy_SwChnlAndSetBwMode8723B(
 	PHY_SetTxPowerLevel8723B(Adapter, pHalData->CurrentChannel);
 }
 
-void
+static void
 PHY_HandleSwChnlAndSetBW8723B(
 	IN	PADAPTER			Adapter,
 	IN	bool				bSwitchChannel,
