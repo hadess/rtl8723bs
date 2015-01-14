@@ -38,7 +38,7 @@
 //	Description:
 //		Turn on LED according to LedPin specified.
 //
-void
+static void
 SwLedOn_8723BS(
 	_adapter			*padapter,
 	PLED_SDIO		pLed
@@ -61,7 +61,7 @@ SwLedOn_8723BS(
 //	Description:
 //		Turn off LED according to LedPin specified.
 //
-void
+static void
 SwLedOff_8723BS(
 	_adapter			*padapter,
 	PLED_SDIO		pLed
