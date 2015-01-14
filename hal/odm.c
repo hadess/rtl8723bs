@@ -25,7 +25,7 @@
 #include "odm_precomp.h"
 
 
-const u2Byte dB_Invert_Table[8][12] = {
+static const u2Byte dB_Invert_Table[8][12] = {
 	{	1,		1,		1,		2,		2,		2,		2,		3,		3,		3,		4,		4},
 	{	4,		5,		6,		6,		7,		8,		9,		10,		11,		13,		14,		16},
 	{	18,		20,		22,		25,		28,		32,		35,		40,		45,		50,		56,		63},
@@ -1566,7 +1566,7 @@ ODM_RAStateCheck(
 //3 RSSI Monitor
 //3============================================================
 
-void
+static void
 odm_RSSIDumpToRegister(
 	IN	PDM_ODM_T	pDM_Odm
 	)
@@ -1888,7 +1888,7 @@ odm_TXPowerTrackingInit(
 	odm_TXPowerTrackingThermalMeterInit(pDM_Odm);
 }	
 
-u1Byte 
+static u1Byte
 getSwingIndex(
 	IN	PDM_ODM_T	pDM_Odm 
 	)
@@ -2144,7 +2144,7 @@ ConvertTo_dB(
 
 //Remove PathDiversity related function to odm_PathDiv.c
 
-void
+static void
 odm_PHY_SaveAFERegisters(
 	IN	PDM_ODM_T	pDM_Odm,
 	IN	pu4Byte		AFEReg,
@@ -2160,7 +2160,7 @@ odm_PHY_SaveAFERegisters(
 	}
 }
 
-void
+static void
 odm_PHY_ReloadAFERegisters(
 	IN	PDM_ODM_T	pDM_Odm,
 	IN	pu4Byte		AFEReg,
@@ -2451,7 +2451,7 @@ ODM_SingleDualAntennaDetection(
 
 }
 
-void
+static void
 odm_Set_RA_DM_ARFB_by_Noisy(
 	IN	PDM_ODM_T	pDM_Odm
 )
