@@ -3758,7 +3758,7 @@ static int rtw_get_ap_info(struct net_device *dev,
 
 	if(pdata->length>=34)
 	{
-		if(copy_to_user((u8*)pdata->pointer+32, (u8*)&pdata->flags, 1))
+		if(copy_to_user((u8 __force __user *)pdata->pointer+32, (u8*)&pdata->flags, 1))
 		{
 			ret= -EINVAL;
 			goto exit;
