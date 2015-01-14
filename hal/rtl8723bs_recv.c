@@ -97,7 +97,7 @@ static void update_recvframe_attrib(
  *	Before calling this function,
  *	precvframe->u.hdr.rx_data should be ready!
  */
-void update_recvframe_phyinfo(
+static void update_recvframe_phyinfo(
 	union recv_frame	*precvframe,
 	struct phy_stat *pphy_status)
 {
