@@ -422,7 +422,7 @@ odm_Adaptivity(
 	ODM_SetBBReg(pDM_Odm,rOFDM0_ECCAThreshold, bMaskByte2, (u1Byte)TH_H2L_dmc);
 }
 
-int 
+static int
 getIGIForDiff(int value_IGI)
 {
 	#define ONERCCA_LOW_TH		0x30
