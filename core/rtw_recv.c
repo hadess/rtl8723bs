@@ -3396,9 +3396,9 @@ int recv_indicatepkt_reorder(_adapter *padapter, union recv_frame *prframe)
 		_cancel_timer_ex(&preorder_ctrl->reordering_ctrl_timer);
 	}
 
-
+#if 0
 _success_exit:
-
+#endif
 	return _SUCCESS;
 
 _err_exit:
