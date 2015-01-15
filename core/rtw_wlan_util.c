@@ -3225,15 +3225,6 @@ unsigned int setup_beacon_frame(_adapter *padapter, unsigned char *beacon_frame)
 
 static _adapter *pbuddy_padapter = NULL;
 
-int rtw_handle_dualmac(_adapter *adapter, bool init)
-{
-	int status = _SUCCESS;
-/*DEADCODE
-	struct dvobj_priv *dvobj = adapter_to_dvobj(adapter);
-*/
-	return status;
-}
-
 _adapter *dvobj_get_port0_adapter(struct dvobj_priv *dvobj)
 {
 	_adapter *port0_iface = NULL;

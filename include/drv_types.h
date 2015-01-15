@@ -826,8 +826,6 @@ __inline static void RTW_ENABLE_FUNC(_adapter*padapter, int func_bit)
 			 (padapter)->bSurpriseRemoved || \
 			 RTW_IS_FUNC_DISABLED((padapter), DF_TX_BIT))
 
-int rtw_handle_dualmac(_adapter *adapter, bool init);
-
 #ifdef CONFIG_PNO_SUPPORT
 int rtw_parse_ssid_list_tlv(char** list_str, pno_ssid_t* ssid, int max, int *bytes_left);
 int rtw_dev_pno_set(struct net_device *net, pno_ssid_t* ssid, int num, 

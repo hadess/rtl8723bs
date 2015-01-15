@@ -494,8 +494,6 @@ static void rtw_sdio_if1_deinit(_adapter *if1)
 	rtw_dev_unload(if1);
 	DBG_871X("+r871xu_dev_remove, hw_init_completed=%d\n", if1->hw_init_completed);
 	
-	rtw_handle_dualmac(if1, 0);
-
 	if (if1->rtw_wdev) {
 		rtw_wdev_free(if1->rtw_wdev);
 	}
