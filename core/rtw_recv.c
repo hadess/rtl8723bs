@@ -120,12 +120,6 @@ _func_exit_;
 
 }
 
-void rtw_mfree_recv_priv_lock(struct recv_priv *precvpriv);
-void rtw_mfree_recv_priv_lock(struct recv_priv *precvpriv)
-{
-/*DEADCODE*/
-}
-
 void _rtw_free_recv_priv (struct recv_priv *precvpriv)
 {
 	_adapter	*padapter = precvpriv->adapter;
@@ -133,8 +127,6 @@ void _rtw_free_recv_priv (struct recv_priv *precvpriv)
 _func_enter_;
 
 	rtw_free_uc_swdec_pending_queue(padapter);
-
-	rtw_mfree_recv_priv_lock(precvpriv);
 
 	rtw_os_recv_resource_free(precvpriv);
 
