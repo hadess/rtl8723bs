@@ -126,7 +126,6 @@ void	beamforming_notify(PADAPTER adapter);
 BEAMFORMING_CAP beamforming_get_beamform_cap(struct beamforming_info	*pBeamInfo);
 
 u32	beamforming_get_report_frame(PADAPTER	 Adapter, union recv_frame *precv_frame);
-void	beamforming_get_ndpa_frame(PADAPTER	 Adapter, union recv_frame *precv_frame);
 
 bool	beamforming_send_ht_ndpa_packet(PADAPTER Adapter, u8 *ra, CHANNEL_WIDTH bw, u8 qidx);
 bool	beamforming_send_vht_ndpa_packet(PADAPTER Adapter, u8 *ra, u16 aid, CHANNEL_WIDTH bw, u8 qidx);

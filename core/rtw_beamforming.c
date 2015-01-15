@@ -255,20 +255,6 @@ u32	beamforming_get_report_frame(PADAPTER	 Adapter, union recv_frame *precv_fram
 	return ret;
 }
 
-void	beamforming_get_ndpa_frame(PADAPTER	 Adapter, union recv_frame *precv_frame)
-{
-/*DEADCODE
-	u8	*ta;
-	u8	idx, Sequence;
-	u8	*pframe = precv_frame->u.hdr.rx_data;
-	struct mlme_priv			*pmlmepriv = &(Adapter->mlmepriv);
-	struct beamforming_entry	*pBeamformEntry = NULL;
-
-	//DBG_871X("beamforming_get_ndpa_frame\n");
-*/
-	return;
-}
-
 bool	issue_ht_ndpa_packet(PADAPTER Adapter, u8 *ra, CHANNEL_WIDTH bw, u8 qidx)
 {
 	struct xmit_frame		*pmgntframe;
