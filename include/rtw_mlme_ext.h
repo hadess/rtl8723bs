@@ -850,7 +850,6 @@ extern void update_TSF(struct mlme_ext_priv *pmlmeext, u8 *pframe, uint len);
 extern void correct_TSF(_adapter *padapter, struct mlme_ext_priv *pmlmeext);
 extern void adaptive_early_32k(struct mlme_ext_priv *pmlmeext, u8 *pframe, uint len);
 extern u8 traffic_status_watchdog(_adapter *padapter, u8 from_timer);
-extern void dm_DynamicUsbTxAgg(_adapter *padapter, u8 from_timer);
 
 #ifdef CONFIG_CONCURRENT_MODE
  sint check_buddy_mlmeinfo_state(_adapter *padapter, u32 state);

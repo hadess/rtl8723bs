@@ -2562,17 +2562,6 @@ u8 traffic_status_watchdog(_adapter *padapter, u8 from_timer)
 	
 }
 
-//To avoid RX affect TX throughput
-void dm_DynamicUsbTxAgg(_adapter *padapter, u8 from_timer)
-{
-/*DEADCODE
-	struct dvobj_priv	*pdvobjpriv = adapter_to_dvobj(padapter);
-	struct mlme_priv		*pmlmepriv = &(padapter->mlmepriv);
-*/
-}
-
-
-
 static void dynamic_chk_wk_hdl(_adapter *padapter)
 {
 	struct mlme_priv *pmlmepriv;
@@ -2595,7 +2584,6 @@ static void dynamic_chk_wk_hdl(_adapter *padapter)
 	{
 		linked_status_chk(padapter);	
 		traffic_status_watchdog(padapter, 0);
-		dm_DynamicUsbTxAgg(padapter, 0);
 	}
 
 #ifdef CONFIG_BEAMFORMING
