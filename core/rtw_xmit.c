@@ -4382,7 +4382,9 @@ void xmit_delivery_enabled_frames(_adapter *padapter, struct sta_info *psta)
 	
 	}	
 
+#ifdef CONFIG_TDLS
 exit:
+#endif
 	//_exit_critical_bh(&psta->sleep_q.lock, &irqL);	
 	_exit_critical_bh(&pxmitpriv->lock, &irqL);
 
