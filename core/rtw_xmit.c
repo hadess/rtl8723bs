@@ -310,13 +310,6 @@ _func_exit_;
 	return res;
 }
 
-void  rtw_mfree_xmit_priv_lock (struct xmit_priv *pxmitpriv);
-void  rtw_mfree_xmit_priv_lock (struct xmit_priv *pxmitpriv)
-{
-/*DEADCODE*/
-}
-
-
 void _rtw_free_xmit_priv (struct xmit_priv *pxmitpriv)
 {
        int i;
@@ -327,8 +320,6 @@ void _rtw_free_xmit_priv (struct xmit_priv *pxmitpriv)
  _func_enter_;   
 
 	rtw_hal_free_xmit_priv(padapter);
- 
-	rtw_mfree_xmit_priv_lock(pxmitpriv);
  
  	if(pxmitpriv->pxmit_frame_buf==NULL)
 		goto out;
