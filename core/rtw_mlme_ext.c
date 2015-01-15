@@ -71,8 +71,8 @@ struct mlme_handler mlme_ap_tbl[]={
 
 static struct action_handler OnAction_tbl[]={
 	{RTW_WLAN_CATEGORY_SPECTRUM_MGMT,	 "ACTION_SPECTRUM_MGMT", on_action_spct},
-	{RTW_WLAN_CATEGORY_QOS, "ACTION_QOS", &OnAction_qos},
-	{RTW_WLAN_CATEGORY_DLS, "ACTION_DLS", &OnAction_dls},
+	{RTW_WLAN_CATEGORY_QOS, "ACTION_QOS", &DoReserved},
+	{RTW_WLAN_CATEGORY_DLS, "ACTION_DLS", &DoReserved},
 	{RTW_WLAN_CATEGORY_BACK, "ACTION_BACK", &OnAction_back},
 	{RTW_WLAN_CATEGORY_PUBLIC, "ACTION_PUBLIC", on_action_public},
 	{RTW_WLAN_CATEGORY_RADIO_MEASUREMENT, "ACTION_RADIO_MEASUREMENT", &DoReserved},
@@ -86,9 +86,9 @@ static struct action_handler OnAction_tbl[]={
 	//add for CONFIG_IEEE80211W
 	{RTW_WLAN_CATEGORY_UNPROTECTED_WNM, "ACTION_UNPROTECTED_WNM", &DoReserved},
 	{RTW_WLAN_CATEGORY_SELF_PROTECTED, "ACTION_SELF_PROTECTED", &DoReserved},
-	{RTW_WLAN_CATEGORY_WMM, "ACTION_WMM", &OnAction_wmm},
-	{RTW_WLAN_CATEGORY_VHT, "ACTION_VHT", &OnAction_vht},
-	{RTW_WLAN_CATEGORY_P2P, "ACTION_P2P", &OnAction_p2p},	
+	{RTW_WLAN_CATEGORY_WMM, "ACTION_WMM", &DoReserved},
+	{RTW_WLAN_CATEGORY_VHT, "ACTION_VHT", &DoReserved},
+	{RTW_WLAN_CATEGORY_P2P, "ACTION_P2P", &DoReserved},
 };
 
 
@@ -2495,16 +2495,6 @@ exit:
 	return ret;
 }
 
-unsigned int OnAction_qos(_adapter *padapter, union recv_frame *precv_frame)
-{
-	return _SUCCESS;
-}
-
-unsigned int OnAction_dls(_adapter *padapter, union recv_frame *precv_frame)
-{
-	return _SUCCESS;
-}
-
 unsigned int OnAction_back(_adapter *padapter, union recv_frame *precv_frame)
 {
 	u8 *addr;
@@ -2832,23 +2822,6 @@ unsigned int OnAction_sa_query(_adapter *padapter, union recv_frame *precv_frame
 	return _SUCCESS;
 }
 #endif //CONFIG_IEEE80211W
-
-unsigned int OnAction_wmm(_adapter *padapter, union recv_frame *precv_frame)
-{
-	return _SUCCESS;
-}
-
-unsigned int OnAction_vht(_adapter *padapter, union recv_frame *precv_frame)
-{
-/*DEADCODE */
-	return _SUCCESS;
-}
-
-unsigned int OnAction_p2p(_adapter *padapter, union recv_frame *precv_frame)
-{
-	return _SUCCESS;
-
-}
 
 unsigned int OnAction(_adapter *padapter, union recv_frame *precv_frame)
 {

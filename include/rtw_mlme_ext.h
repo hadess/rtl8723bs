@@ -793,18 +793,12 @@ unsigned int OnDeAuth(_adapter *padapter, union recv_frame *precv_frame);
 unsigned int OnAction(_adapter *padapter, union recv_frame *precv_frame);
 
 unsigned int on_action_spct(_adapter *padapter, union recv_frame *precv_frame);
-unsigned int OnAction_qos(_adapter *padapter, union recv_frame *precv_frame);
-unsigned int OnAction_dls(_adapter *padapter, union recv_frame *precv_frame);
 unsigned int OnAction_back(_adapter *padapter, union recv_frame *precv_frame);
 unsigned int on_action_public(_adapter *padapter, union recv_frame *precv_frame);
 unsigned int OnAction_ht(_adapter *padapter, union recv_frame *precv_frame);
 #ifdef CONFIG_IEEE80211W
 unsigned int OnAction_sa_query(_adapter *padapter, union recv_frame *precv_frame);
 #endif //CONFIG_IEEE80211W
-unsigned int OnAction_wmm(_adapter *padapter, union recv_frame *precv_frame);
-unsigned int OnAction_vht(_adapter *padapter, union recv_frame *precv_frame);
-unsigned int OnAction_p2p(_adapter *padapter, union recv_frame *precv_frame);
-
 
 void mlmeext_joinbss_event_callback(_adapter *padapter, int join_res);
 void mlmeext_sta_del_event_callback(_adapter *padapter);
