@@ -108,12 +108,6 @@ _func_exit_;
 	return res;
 }	
 
-void rtw_mfree_mlme_priv_lock (struct mlme_priv *pmlmepriv);
-void rtw_mfree_mlme_priv_lock (struct mlme_priv *pmlmepriv)
-{
-/*DEADCODE*/
-}
-
 static void rtw_free_mlme_ie_data(u8 **ppie, u32 *plen)
 {
 	if(*ppie)
@@ -158,8 +152,6 @@ _func_enter_;
 	rtw_free_mlme_priv_ie_data(pmlmepriv);
 
 	if(pmlmepriv){
-		rtw_mfree_mlme_priv_lock (pmlmepriv);
-
 		if (pmlmepriv->free_bss_buf) {
 			rtw_vmfree(pmlmepriv->free_bss_buf, MAX_BSS_CNT * sizeof(struct wlan_network));
 		}
