@@ -24,14 +24,6 @@
 
 #include "odm_precomp.h"
 
-static void
-odm8723b_DigForBtHsMode(
-	IN		PDM_ODM_T		pDM_Odm
-	)
-{
-/*DEADCODE*/
-}
-
 void 
 odm_DIG_8723(
 	IN		PDM_ODM_T		pDM_Odm
