@@ -1832,31 +1832,7 @@ void EXhalbtcoutsrc_SetBtExist(u8 bBtExist)
 #endif
 void EXhalbtcoutsrc_SetChipType(u8 chipType)
 {
-	switch(chipType)
-	{
-		default:
-		case BT_2WIRE:
-		case BT_ISSC_3WIRE:
-		case BT_ACCEL:
-		case BT_RTL8756:
-			GLBtCoexist.boardInfo.btChipType = BTC_CHIP_UNDEF;
-			break;
-		case BT_CSR_BC4:
-			GLBtCoexist.boardInfo.btChipType = BTC_CHIP_CSR_BC4;
-			break;
-		case BT_CSR_BC8:
-			GLBtCoexist.boardInfo.btChipType = BTC_CHIP_CSR_BC8;
-			break;
-		case BT_RTL8723A:
-			GLBtCoexist.boardInfo.btChipType = BTC_CHIP_RTL8723A;
-			break;
-		case BT_RTL8821:
-			GLBtCoexist.boardInfo.btChipType = BTC_CHIP_RTL8821;
-			break;
-		case BT_RTL8723B:
-			GLBtCoexist.boardInfo.btChipType = BTC_CHIP_RTL8723B;
-			break;
-	}
+	GLBtCoexist.boardInfo.btChipType = BTC_CHIP_RTL8723B;
 }
 
 void EXhalbtcoutsrc_SetAntNum(u8 type, u8 antNum)
@@ -1908,57 +1884,6 @@ void EXhalbtcoutsrc_DisplayBtCoexInfo(PBTC_COEXIST pBtCoexist)
 		EXhalbtc8723b1ant_DisplayCoexInfo(pBtCoexist);
 
 	halbtcoutsrc_NormalLowPower(pBtCoexist);
-}
-
-static void halbt_InitHwConfig92C(PADAPTER padapter)
-{
-	PHAL_DATA_TYPE pHalData;
-	u8 u1Tmp;
-
-
-	pHalData = GET_HAL_DATA(padapter);
-	if( (pHalData->bt_coexist.btChipType == BT_CSR_BC4) ||
-		(pHalData->bt_coexist.btChipType == BT_CSR_BC8))
-	{
-		if (pHalData->rf_type == RF_1T1R)
-		{
-			// Config to 1T1R
-			u1Tmp = rtw_read8(padapter, rOFDM0_TRxPathEnable);
-			u1Tmp &= ~BIT(1);
-			rtw_write8(padapter, rOFDM0_TRxPathEnable, u1Tmp);
-			RT_DISP(FBT, BT_TRACE, ("[BTCoex], BT write 0xC04 = 0x%x\n", u1Tmp));
-
-			u1Tmp = rtw_read8(padapter, rOFDM1_TRxPathEnable);
-			u1Tmp &= ~BIT(1);
-			rtw_write8(padapter, rOFDM1_TRxPathEnable, u1Tmp);
-			RT_DISP(FBT, BT_TRACE, ("[BTCoex], BT write 0xD04 = 0x%x\n", u1Tmp));
-		}
-	}
-}
-
-static void halbt_InitHwConfig92D(PADAPTER padapter)
-{
-	PHAL_DATA_TYPE pHalData;
-	u8 u1Tmp;
-
-	pHalData = GET_HAL_DATA(padapter);
-	if ((pHalData->bt_coexist.btChipType == BT_CSR_BC4) ||
-		(pHalData->bt_coexist.btChipType == BT_CSR_BC8))
-	{
-		if (pHalData->rf_type == RF_1T1R)
-		{
-			// Config to 1T1R
-			u1Tmp = rtw_read8(padapter, rOFDM0_TRxPathEnable);
-			u1Tmp &= ~BIT(1);
-			rtw_write8(padapter, rOFDM0_TRxPathEnable, u1Tmp);
-			RT_DISP(FBT, BT_TRACE, ("[BTCoex], BT write 0xC04 = 0x%x\n", u1Tmp));
-
-			u1Tmp = rtw_read8(padapter, rOFDM1_TRxPathEnable);
-			u1Tmp &= ~BIT(1);
-			rtw_write8(padapter, rOFDM1_TRxPathEnable, u1Tmp);
-			RT_DISP(FBT, BT_TRACE, ("[BTCoex], BT write 0xD04 = 0x%x\n", u1Tmp));
-		}
-	}
 }
 
 /*

@@ -629,18 +629,7 @@ typedef	enum _BT_Ant_NUM{
 } BT_Ant_NUM, *PBT_Ant_NUM;
 
 typedef	enum _BT_CoType{
-	BT_2WIRE		= 0,		
-	BT_ISSC_3WIRE	= 1,
-	BT_ACCEL		= 2,
-	BT_CSR_BC4		= 3,
-	BT_CSR_BC8		= 4,
-	BT_RTL8756		= 5,
-	BT_RTL8723A		= 6,
-	BT_RTL8821		= 7,
 	BT_RTL8723B		= 8,
-	BT_RTL8192E		= 9,
-	BT_RTL8813A		= 10,
-	BT_RTL8812A		= 11
 } BT_CoType, *PBT_CoType;
 
 typedef	enum _BT_RadioShared{
