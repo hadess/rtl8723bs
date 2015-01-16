@@ -32,11 +32,6 @@ static s32 initrecvbuf(struct recv_buf *precvbuf, PADAPTER padapter)
 	return _SUCCESS;
 }
 
-static void freerecvbuf(struct recv_buf *precvbuf)
-{
-/*DEADCODE*/
-}
-
 static void update_recvframe_attrib(
 	PADAPTER padapter,
 	union recv_frame *precvframe,
@@ -756,10 +751,8 @@ s32 rtl8723bs_init_recv_priv(PADAPTER padapter)
 			break;
 
 		res = rtw_os_recvbuf_resource_alloc(padapter, precvbuf);
-		if (res == _FAIL) {
-			freerecvbuf(precvbuf);
+		if (res == _FAIL)
 			break;
-		}
 
 #ifdef CONFIG_SDIO_RX_COPY
 		if (precvbuf->pskb == NULL) {
@@ -808,7 +801,6 @@ initbuferror:
 		{
 			rtw_list_delete(&precvbuf->list);
 			rtw_os_recvbuf_resource_free(padapter, precvbuf);
-			freerecvbuf(precvbuf);
 			precvbuf++;
 		}
 		precvpriv->precv_buf = NULL;
@@ -851,7 +843,6 @@ void rtl8723bs_free_recv_priv(PADAPTER padapter)
 		{
 			rtw_list_delete(&precvbuf->list);
 			rtw_os_recvbuf_resource_free(padapter, precvbuf);
-			freerecvbuf(precvbuf);
 			precvbuf++;
 		}
 		precvpriv->precv_buf = NULL;
