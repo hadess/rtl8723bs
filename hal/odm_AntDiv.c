@@ -1238,11 +1238,7 @@ pFAT_T			pDM_FatTable = &pDM_Odm->DM_FatTable;
 
 	RxPower_Ant0=pPhyInfo->RxPWDBAll;
 
-	if(pDM_Odm->AntDivType == CG_TRX_SMART_ANTDIV)
-	{
-		/*DEADCODE*/
-	}
-	else //AntDivType != CG_TRX_SMART_ANTDIV 
+	if(pDM_Odm->AntDivType != CG_TRX_SMART_ANTDIV)
 	{
 		if(pPktinfo->bPacketToSelf || pPktinfo->bPacketMatchBSSID)
 		{
@@ -1265,8 +1261,8 @@ pFAT_T			pDM_FatTable = &pDM_Odm->DM_FatTable;
 				else// if(pDM_FatTable->antsel_rx_keep_0==ANT2_2G)
 					pDM_FatTable->OFDM_counter_aux++;
 				odm_AntselStatistics(pDM_Odm, pDM_FatTable->antsel_rx_keep_0, pPktinfo->StationID, RxPower_Ant0);
+			}
 		}
-	}
 	}
 	//ODM_RT_TRACE(pDM_Odm,ODM_COMP_ANT_DIV, ODM_DBG_LOUD,("isCCKrate=%d, PWDB_ALL=%d\n",isCCKrate, pPhyInfo->RxPWDBAll));
 	//ODM_RT_TRACE(pDM_Odm,ODM_COMP_ANT_DIV, ODM_DBG_LOUD,("antsel_tr_mux=3'b%d%d%d\n",pDM_FatTable->antsel_rx_keep_2, pDM_FatTable->antsel_rx_keep_1, pDM_FatTable->antsel_rx_keep_0));
