@@ -1128,19 +1128,3 @@ ODM_ConfigFWWithHeaderFile(
 	return HAL_STATUS_SUCCESS;    
 } 
 
-
-u4Byte 
-ODM_GetHWImgVersion(
-	IN	PDM_ODM_T	pDM_Odm
-	)
-{
-/*DEADCODE*/
-    u4Byte  Version=0;
-
-	return Version;
-}
-
-
-
-
-
