@@ -179,8 +179,6 @@ void DoIQK_8723B(
 	PADAPTER		Adapter = pDM_Odm->Adapter;
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
 
-	ODM_ResetIQKResult(pDM_Odm);		
-
 	pDM_Odm->RFCalibrateInfo.ThermalValue_IQK= ThermalValue;
 	PHY_IQCalibrate_8723B(Adapter, false, false);
 #endif // #if 0

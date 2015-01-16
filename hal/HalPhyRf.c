@@ -386,18 +386,6 @@ ODM_TXPowerTrackingCallback_ThermalMeter(
 //3 IQ Calibration
 //3============================================================
 
-void
-ODM_ResetIQKResult(
-	IN PDM_ODM_T	pDM_Odm 
-)
-{
-/*DEADCODE
-	u1Byte		i;
-	PADAPTER	Adapter = pDM_Odm->Adapter;
-*/
-	return;
-}
-
 u1Byte ODM_GetRightChnlPlaceforIQK(u1Byte chnl)
 {
 	u1Byte	channel_all[ODM_TARGET_CHNL_NUM_2G_5G] = 

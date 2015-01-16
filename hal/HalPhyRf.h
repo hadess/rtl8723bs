@@ -71,10 +71,6 @@ ODM_TXPowerTrackingCallback_ThermalMeter(
 #define ODM_TARGET_CHNL_NUM_2G_5G	59
 
 
-void
-ODM_ResetIQKResult(
-	IN PDM_ODM_T	pDM_Odm 
-);
 u1Byte 
 ODM_GetRightChnlPlaceforIQK(
     IN u1Byte chnl

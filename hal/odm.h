@@ -1718,11 +1718,6 @@ ODM_ReleaseAllTimers(
     );
 
 void
-ODM_ResetIQKResult(
-    IN PDM_ODM_T pDM_Odm 
-    );
-
-void
 ODM_AntselStatistics_88C(
 	IN		PDM_ODM_T		pDM_Odm,
 	IN		u1Byte			MacId,
