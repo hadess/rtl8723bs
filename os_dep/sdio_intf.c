@@ -32,8 +32,8 @@ static struct mmc_host *mmc_host = NULL;
 
 static const struct sdio_device_id sdio_ids[] =
 {
-	{ SDIO_DEVICE(0x024c, 0xB723),.driver_data = RTL8723B},
-	{ SDIO_DEVICE(0x024c, 0x0623),.driver_data = RTL8723B},
+	{ SDIO_DEVICE(0x024c, 0xB723), },
+	{ SDIO_DEVICE(0x024c, 0x0623), },
 
 #if defined(RTW_ENABLE_WIFI_CONTROL_FUNC) /* temporarily add this to accept all sdio wlan id */
 	{ SDIO_DEVICE_CLASS(SDIO_CLASS_WLAN) },
