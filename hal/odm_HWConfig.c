@@ -926,25 +926,8 @@ ODM_PhyStatusQuery_92CSeries(
 							pPhyStatus,
 							pPktinfo);
 
-	if( pDM_Odm->RSSI_test == true)
-	{
-#if 0
-DEADCODE
-		// Select the packets to do RSSI checking for antenna switching.
-		if(pPktinfo->bPacketToSelf || pPktinfo->bPacketBeacon )
-		{
-				/*
-			// Select the packets to do RSSI checking for antenna switching.
-			//odm_SwAntDivRSSICheck8192C(padapter, precvframe->u.hdr.attrib.RxPWDBAll);
-				*/
-		}	
-#endif
-	}
-	else
-	{
+	if(!pDM_Odm->RSSI_test)
 		odm_Process_RSSIForDM(pDM_Odm,pPhyInfo,pPktinfo);
-	}
-	
 }
 
 
