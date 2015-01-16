@@ -462,11 +462,6 @@ odm_TXPowerTrackingThermalMeterInit(
 
 
 void
-odm_IQCalibrate(
-		IN	PDM_ODM_T	pDM_Odm 
-		);
-
-void
 odm_TXPowerTrackingInit(
 	IN	PDM_ODM_T	pDM_Odm
 	);
@@ -1867,18 +1862,6 @@ ODM_ReleaseAllTimers(
 //3============================================================
 //3 Tx Power Tracking
 //3============================================================
-
-void
-odm_IQCalibrate(
-		IN	PDM_ODM_T	pDM_Odm 
-		)
-{
-/*DEADCODE
-	PADAPTER	Adapter = pDM_Odm->Adapter;
-*/
-	return;
-}
-
 
 void
 odm_TXPowerTrackingInit(
