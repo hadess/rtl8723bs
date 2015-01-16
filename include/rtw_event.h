@@ -20,10 +20,6 @@
 #ifndef _RTW_EVENT_H_
 #define _RTW_EVENT_H_
 
-#ifdef CONFIG_H2CLBK
-#include <h2clbk.h>
-#endif
-
 /*
 Used to report a bss has been scanned
 
