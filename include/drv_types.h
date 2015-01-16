@@ -117,7 +117,6 @@ typedef struct _ADAPTER _adapter, ADAPTER,*PADAPTER;
 #include <linux/ip.h>
 #include <linux/if_ether.h>
 #include <ethernet.h>
-#include <circ_buf.h>
 
 #define SPEC_DEV_ID_NONE BIT(0)
 #define SPEC_DEV_ID_DISABLE_HT BIT(1)

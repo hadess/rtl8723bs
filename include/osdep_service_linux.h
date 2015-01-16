@@ -32,7 +32,6 @@
 	//#include <linux/smp_lock.h>
 	#include <linux/netdevice.h>
 	#include <linux/skbuff.h>
-	#include <linux/circ_buf.h>
 	#include <asm/uaccess.h>
 	#include <asm/byteorder.h>
 	#include <asm/atomic.h>
