@@ -612,7 +612,6 @@ ODM_DMWatchdog(
 	odm_EdcaTurboCheck(pDM_Odm);
 	odm_PathDiversity(pDM_Odm);
 	ODM_CfoTracking(pDM_Odm);
-	odm_DynamicTxPower(pDM_Odm);	
 	odm_AntennaDiversity(pDM_Odm);
 
 	ODM_TXPowerTrackingCheck(pDM_Odm);
