@@ -609,7 +609,6 @@ ODM_DMWatchdog(
 	
 	odm_RefreshRateAdaptiveMask(pDM_Odm);
 	odm_RefreshBasicRateMask(pDM_Odm);
-	odm_DynamicBBPowerSaving(pDM_Odm);	
 	odm_EdcaTurboCheck(pDM_Odm);
 	odm_PathDiversity(pDM_Odm);
 	ODM_CfoTracking(pDM_Odm);
@@ -622,7 +621,6 @@ ODM_DMWatchdog(
 
 	//2010.05.30 LukeLee: For CE platform, files in IC subfolders may not be included to be compiled,
 	// so compile flags must be left here to prevent from compile errors
-	odm_DynamicBBPowerSaving(pDM_Odm);
 	pDM_Odm->PhyDbgInfo.NumQryBeaconPkt = 0;
 
 	odm_dtc(pDM_Odm);

@@ -42,16 +42,6 @@ odm_DynamicBBPowerSavingInit(
 
 
 void
-odm_DynamicBBPowerSaving(
-	IN		void *					pDM_VOID
-	)
-{
-/*DEADCODE
-	PDM_ODM_T		pDM_Odm = (PDM_ODM_T)pDM_VOID;
-*/
-}
-
-void
 odm_1R_CCA(
 	IN		void *					pDM_VOID
 	)
