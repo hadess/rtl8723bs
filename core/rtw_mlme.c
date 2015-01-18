@@ -1236,9 +1236,6 @@ _func_enter_;
 	_exit_critical_bh(&pmlmepriv->lock, &irqL);
 
 	rtw_os_xmit_schedule(adapter);
-#ifdef CONFIG_DUALMAC_CONCURRENT
-	dc_resume_xmit(adapter);
-#endif
 
 #ifdef CONFIG_DRVEXT_MODULE_WSC
 	drvext_surveydone_callback(&adapter->drvextpriv);
@@ -1930,10 +1927,6 @@ _func_enter_;
 	mlmeext_joinbss_event_callback(adapter, pnetwork->join_res);
 
 	rtw_os_xmit_schedule(adapter);
-
-#ifdef CONFIG_DUALMAC_CONCURRENT
-	dc_resume_xmit(adapter);
-#endif
 
 _func_exit_;
 }

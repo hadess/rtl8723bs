@@ -333,18 +333,6 @@ static u8 halbtcoutsrc_IsWifiBusy(PADAPTER padapter)
 			return true;
 	}
 
-#if defined(CONFIG_DUALMAC_CONCURRENT)
-	pmlmepriv = &padapter->pbuddy_adapter->mlmepriv;
-
-	if (check_fwstate(pmlmepriv, WIFI_ASOC_STATE) == true)
-	{
-		if (check_fwstate(pmlmepriv, WIFI_AP_STATE) == true)
-			return true;
-		if (true == pmlmepriv->LinkDetectInfo.bBusyTraffic)
-			return true;
-	}
-#endif
-
 	return false;
 }
 
