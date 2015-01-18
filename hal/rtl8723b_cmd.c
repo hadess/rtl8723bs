@@ -2565,27 +2565,3 @@ void rtl8723b_download_BTCoex_AP_mode_rsvd_page(PADAPTER padapter)
 	val8 &= ~BIT(0); // ~ENSWBCN
 	rtw_write8(padapter, REG_CR+1, val8);
 }
-
-#ifdef CONFIG_TSF_RESET_OFFLOAD
-/*
-	ask FW to Reset sync register at Beacon early interrupt
-*/
-u8 rtl8723b_reset_tsf(_adapter *padapter, u8 reset_port )
-{
-	u8	buf[2];
-	u8	res=_SUCCESS;
-
-_func_enter_;
-	if (IFACE_PORT0==reset_port) {
-		buf[0] = 0x1; buf[1] = 0;
-
-	} else{
-		buf[0] = 0x0; buf[1] = 0x1;
-	}
-	FillH2CCmd8723B(padapter, H2C_8723B_RESET_TSF, 2, buf);
-_func_exit_;
-
-	return res;
-}
-#endif	// CONFIG_TSF_RESET_OFFLOAD
-
