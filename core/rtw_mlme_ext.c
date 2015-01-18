@@ -707,7 +707,6 @@ void mgt_dispatcher(_adapter *padapter, union recv_frame *precv_frame)
 	}
 	ptable += index;
 
-#if 1
 	if (psta != NULL)
 	{
 		if (GetRetry(pframe))
@@ -722,14 +721,6 @@ void mgt_dispatcher(_adapter *padapter, union recv_frame *precv_frame)
 		}
 		psta->RxMgmtFrameSeqNum = precv_frame->u.hdr.attrib.seq_num;
 	}
-#else
-
-	if(GetRetry(pframe))
-	{
-		//RT_TRACE(_module_rtl871x_mlme_c_,_drv_err_,("drop due to decache!\n"));
-		//return;
-	}
-#endif
 
 #ifdef CONFIG_AP_MODE
 	switch (GetFrameSubType(pframe)) 
@@ -3915,7 +3906,7 @@ void issue_assocreq(_adapter *padapter)
 
 	//supported rate & extended supported rate
 
-#if 1	// Check if the AP's supported rates are also supported by STA.
+	// Check if the AP's supported rates are also supported by STA.
 	get_rate_set(padapter, sta_bssrate, &sta_bssrate_len);
 	//DBG_871X("sta_bssrate_len=%d\n", sta_bssrate_len);
 	
@@ -3962,17 +3953,6 @@ void issue_assocreq(_adapter *padapter)
 	
 	bssrate_len = index;
 	DBG_871X("bssrate_len = %d\n", bssrate_len);
-
-#else	// Check if the AP's supported rates are also supported by STA.
-	for (bssrate_len = 0; bssrate_len < NumRates; bssrate_len++) {
-		if (pmlmeinfo->network.SupportedRates[bssrate_len] == 0) break;
-
-		if (pmlmeinfo->network.SupportedRates[bssrate_len] == 0x2C) // Avoid the proprietary data rate (22Mbps) of Handlink WSG-4000 AP
-			break;
-
-		bssrate[bssrate_len] = pmlmeinfo->network.SupportedRates[bssrate_len];
-	}
-#endif	// Check if the AP's supported rates are also supported by STA.
 
 	if (bssrate_len == 0) {
 		rtw_free_xmitbuf(pxmitpriv, pmgntframe->pxmitbuf);
@@ -6563,7 +6543,6 @@ static void rtw_mlmeext_disconnect(_adapter *padapter)
 
 	//set_opmode_cmd(padapter, infra_client_with_mlme);
 
-#if 1
 	/*
 	 * For safety, prevent from keeping macid sleep.
 	 * If we can sure all power mode enter/leave are paired,
@@ -6577,7 +6556,6 @@ static void rtw_mlmeext_disconnect(_adapter *padapter)
 		if (psta)
 			rtw_hal_macid_wakeup(padapter, psta->mac_id);
 	}
-#endif	
 
 	rtw_hal_set_hwreg(padapter, HW_VAR_MLME_DISCONNECT, NULL);
 	rtw_hal_set_hwreg(padapter, HW_VAR_BSSID, null_addr);

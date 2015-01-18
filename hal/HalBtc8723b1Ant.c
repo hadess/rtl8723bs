@@ -2905,7 +2905,6 @@ halbtc8723b1ant_InitHwConfig(
 	//pBtCoexist->fBtcWrite1ByteBitMask(pBtCoexist, 0x67, 0x20, 0x1); //BT select s0/s1 is controlled by WiFi
 
 	//Antenna config
-#if 1
 	if(bWifiOnly)
 	{
 		halbtc8723b1ant_SetAntPath(pBtCoexist, BTC_ANT_PATH_WIFI, true, false);
@@ -2913,7 +2912,6 @@ halbtc8723b1ant_InitHwConfig(
 	}
 	else
 		halbtc8723b1ant_SetAntPath(pBtCoexist, BTC_ANT_PATH_BT, true, false);
-#endif	
 
 	// PTA parameter
 	halbtc8723b1ant_CoexTableWithType(pBtCoexist, FORCE_EXEC, 0);

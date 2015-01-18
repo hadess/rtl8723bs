@@ -847,7 +847,7 @@ void invalidate_cam_all(_adapter *padapter)
 	memset(dvobj->cam_cache, 0, sizeof(struct cam_entry_cache)*TOTAL_CAM_ENTRY);
 	_exit_critical_bh(&cam_ctl->lock, &irqL);
 }
-#if 1
+
 static u32 _ReadCAM(_adapter *padapter ,u32 addr)
 {
 	u32 count = 0, cmd;
@@ -877,7 +877,6 @@ void read_cam(_adapter *padapter ,u8 entry, u8 *get_key)
 	}
 	//DBG_8192C("*********************************\n");
 }
-#endif
 
 void _write_cam(_adapter *padapter, u8 entry, u16 ctrl, u8 *mac, u8 *key)
 {

@@ -2042,7 +2042,6 @@ static int rtw_wx_get_scan(struct net_device *dev, struct iw_request_info *a,
 		goto exit;
 	}
 
-#if 1 // Wireless Extension use EAGAIN to try
 	wait_status = _FW_UNDER_SURVEY
 		| _FW_UNDER_LINKING
 	;
@@ -2051,29 +2050,6 @@ static int rtw_wx_get_scan(struct net_device *dev, struct iw_request_info *a,
 	{
 		return -EAGAIN;
 	}
-#else
-	wait_status = _FW_UNDER_SURVEY
-		|_FW_UNDER_LINKING
-	;
-
-#ifdef CONFIG_DUALMAC_CONCURRENT
-	while(dc_check_fwstate(padapter, wait_status)== true)
-	{
-		msleep(30);
-		cnt++;
-		if(cnt > wait_for_surveydone )
-			break;
-	}
-#endif // CONFIG_DUALMAC_CONCURRENT
-
- 	while(check_fwstate(pmlmepriv, wait_status) == true)
-	{	
-		msleep(30);
-		cnt++;
-		if(cnt > wait_for_surveydone )
-			break;
-	}
-#endif
 	_enter_critical_bh(&(pmlmepriv->scanned_queue.lock), &irqL);
 
 	phead = get_list_head(queue);

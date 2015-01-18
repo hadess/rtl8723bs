@@ -1648,7 +1648,6 @@ odm_RSSIMonitorCheckCE(
 
 	//if(check_fwstate(&Adapter->mlmepriv, WIFI_AP_STATE|WIFI_ADHOC_STATE|WIFI_ADHOC_MASTER_STATE) == true)
 	{
-		#if 1
 		struct sta_info *psta;
 		
 		for(i=0; i<ODM_ASSOCIATE_ENTRY_NUM; i++) {
@@ -1671,51 +1670,6 @@ odm_RSSIMonitorCheckCE(
 					}
 			}
 		}
-		#else
-		_irqL irqL;
-		_list	*plist, *phead;
-		struct sta_info *psta;
-		struct sta_priv *pstapriv = &Adapter->stapriv;
-		u8 bcast_addr[ETH_ALEN]= {0xff,0xff,0xff,0xff,0xff,0xff};
-
-		_enter_critical_bh(&pstapriv->sta_hash_lock, &irqL);
-
-		for(i=0; i< NUM_STA; i++)
-		{
-			phead = &(pstapriv->sta_hash[i]);
-			plist = get_next(phead);
-		
-			while ((rtw_end_of_queue_search(phead, plist)) == false)
-			{
-				psta = LIST_CONTAINOR(plist, struct sta_info, hash_list);
-
-				plist = get_next(plist);
-
-				if(!memcmp(psta->hwaddr, bcast_addr, ETH_ALEN) || 
-					!memcmp(psta->hwaddr, myid(&Adapter->eeprompriv), ETH_ALEN))
-					continue;
-
-				if(psta->state & WIFI_ASOC_STATE)
-				{
-					
-					if(psta->rssi_stat.UndecoratedSmoothedPWDB < tmpEntryMinPWDB)
-						tmpEntryMinPWDB = psta->rssi_stat.UndecoratedSmoothedPWDB;
-
-					if(psta->rssi_stat.UndecoratedSmoothedPWDB > tmpEntryMaxPWDB)
-						tmpEntryMaxPWDB = psta->rssi_stat.UndecoratedSmoothedPWDB;
-
-					if(psta->rssi_stat.UndecoratedSmoothedPWDB != (-1)){
-						//printk("%s==> mac_id(%d),rssi(%d)\n",__FUNCTION__,psta->mac_id,psta->rssi_stat.UndecoratedSmoothedPWDB);
-						PWDB_rssi[sta_cnt++] = (psta->mac_id | (psta->rssi_stat.UndecoratedSmoothedPWDB<<16) );
-					}
-				}
-			
-			}
-
-		}
-	
-		_exit_critical_bh(&pstapriv->sta_hash_lock, &irqL);
-		#endif
 
 		//printk("%s==> sta_cnt(%d)\n",__FUNCTION__,sta_cnt);
 

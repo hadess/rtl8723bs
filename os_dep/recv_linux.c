@@ -317,12 +317,7 @@ void rtw_os_recv_indicate_pkt(_adapter *padapter, _pkt *pkt, struct rx_pkt_attri
 				//DEBUG_ERR("RX DROP: nat25_handle_frame fail!\n");
 				//return FAIL;
 				
-#if 1
 				// bypass this frame to upper layer!!
-#else
-				rtw_skb_free(sub_skb);
-				continue;
-#endif
 			}							
 		}
 #endif	// CONFIG_BR_EXT
@@ -536,23 +531,12 @@ _func_enter_;
 	RT_TRACE(_module_recv_osdep_c_,_drv_info_,("\n skb->head=%p skb->data=%p skb->tail=%p skb->end=%p skb->len=%d\n", skb->head, skb->data, skb_tail_pointer(skb), skb_end_pointer(skb), skb->len));
 
 #ifdef CONFIG_AUTO_AP_MODE	
-#if 1 //for testing
-#if 1
 	if (0x8899 == pattrib->eth_type)
 	{
 		rtw_os_ksocket_send(padapter, precv_frame);
 
 		//goto _recv_indicatepkt_drop;
 	}
-#else
-	if (0x8899 == pattrib->eth_type)
-	{
-		rtw_auto_ap_mode_rx(padapter, precv_frame);
-		
-		goto _recv_indicatepkt_end;
-	}
-#endif
-#endif
 #endif //CONFIG_AUTO_AP_MODE
 
 	rtw_os_recv_indicate_pkt(padapter, skb, pattrib);

@@ -3056,7 +3056,6 @@ _func_exit_;
 	return pxmitframe;
 }
 
-#if 1
 struct tx_servq *rtw_get_sta_pending(_adapter *padapter, struct sta_info *psta, sint up, u8 *ac)
 {
 	struct tx_servq *ptxservq=NULL;
@@ -3100,60 +3099,6 @@ _func_exit_;
 
 	return ptxservq;			
 }
-#else
-__inline static struct tx_servq *rtw_get_sta_pending
-	(_adapter *padapter, _queue **ppstapending, struct sta_info *psta, sint up)
-{
-	struct tx_servq *ptxservq;
-	struct hw_xmit *phwxmits =  padapter->xmitpriv.hwxmits;
-	
-_func_enter_;	
-
-	{
-		switch (up) 
-		{
-			case 1:
-			case 2:
-				ptxservq = &(psta->sta_xmitpriv.bk_q);
-				*ppstapending = &padapter->xmitpriv.bk_pending;
-				(phwxmits+3)->accnt++;
-				RT_TRACE(_module_rtl871x_xmit_c_,_drv_info_,("rtw_get_sta_pending : BK \n"));
-				break;
-
-			case 4:
-			case 5:
-				ptxservq = &(psta->sta_xmitpriv.vi_q);
-				*ppstapending = &padapter->xmitpriv.vi_pending;
-				(phwxmits+1)->accnt++;
-				RT_TRACE(_module_rtl871x_xmit_c_,_drv_info_,("rtw_get_sta_pending : VI\n"));
-				break;
-
-			case 6:
-			case 7:
-				ptxservq = &(psta->sta_xmitpriv.vo_q);
-				*ppstapending = &padapter->xmitpriv.vo_pending;
-				(phwxmits+0)->accnt++;
-				RT_TRACE(_module_rtl871x_xmit_c_,_drv_info_,("rtw_get_sta_pending : VO \n"));			
-				break;
-
-			case 0:
-			case 3:
-			default:
-				ptxservq = &(psta->sta_xmitpriv.be_q);
-				*ppstapending = &padapter->xmitpriv.be_pending;
-				(phwxmits+2)->accnt++;
-				RT_TRACE(_module_rtl871x_xmit_c_,_drv_info_,("rtw_get_sta_pending : BE \n"));				
-			break;
-			
-		}
-
-	}
-
-_func_exit_;
-
-	return ptxservq;			
-}
-#endif
 
 /*
  * Will enqueue pxmitframe to the proper queue,
@@ -3359,7 +3304,6 @@ int rtw_br_client_tx(_adapter *padapter, struct sk_buff **pskb)
 		{
 //			if (priv->dev->br_port &&
 //				 !memcmp(skb->data+MACADDRLEN, priv->br_mac, MACADDRLEN)) {
-#if 1
 			if (*((unsigned short *)(skb->data+MACADDRLEN*2)) == __constant_htons(ETH_P_8021Q)) {
 				is_vlan_tag = 1;
 				vlan_hdr = *((unsigned short *)(skb->data+MACADDRLEN*2+2));
@@ -3396,7 +3340,7 @@ int rtw_br_client_tx(_adapter *padapter, struct sk_buff **pskb)
 				}
 			}
 			_exit_critical_bh(&padapter->br_ext_lock, &irqL);
-#endif // 1
+
 			if (do_nat25)
 			{
 				int nat25_db_handle(_adapter *priv, struct sk_buff *skb, int method);

@@ -123,7 +123,6 @@ u8 _InitPowerOn_8723BS(PADAPTER padapter)
 //	u8 bMacPwrCtrlOn;
 
 
-#if 1
 	// all of these MUST be configured before power on
 #ifdef CONFIG_XTAL_26M
 	// Config PLL Reference CLK,
@@ -157,7 +156,6 @@ u8 _InitPowerOn_8723BS(PADAPTER padapter)
 	value8 |= BIT(5);
 	rtw_write8(padapter, REG_MULTI_FUNC_CTRL+1, value8);
 #endif // CONFIG_EXT_CLK
-#endif // all of these MUST be configured before power on
 
 	// only cmd52 can be used before power on(card enable)
 	ret = CardEnable(padapter);
@@ -637,11 +635,9 @@ static void HalRxAggr8723BSdio(PADAPTER padapter)
 	else
 	{
 		// 20130530, Isaac@SD1 suggest 3 kinds of parameter
-#if 1
 		// TX/RX Balance
 		valueDMATimeout = 0x06;
 		valueDMAPageCount = 0x06;
-#endif
 	}
 
 #ifdef CONFIG_DONT_CARE_TP
@@ -1581,15 +1577,7 @@ Hal_EfuseParseMACAddr_8723BS(
 	else
 	{
 		//Read Permanent MAC address
-#if 1
 		memcpy(pEEPROM->mac_addr, &hwinfo[EEPROM_MAC_ADDR_8723BS], ETH_ALEN);
-#else
-		for(i=0; i<6; i+=2)
-		{
-			usValue = *(u16*)&hwinfo[EEPROM_MAC_ADDR_8723S+i];
-			*((u16*)(&pEEPROM->mac_addr[i])) = usValue;
-		}
-#endif
 	}
 //	NicIFSetMacAddress(pAdapter, pAdapter->PermanentAddress);
 
