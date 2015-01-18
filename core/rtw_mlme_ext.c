@@ -5085,23 +5085,6 @@ void site_survey(_adapter *padapter)
 		//rtw_hal_get_hwreg(padapter, HW_VAR_TXPAUSE, (u8 *)(&val8));
 		//val8 |= 0x0f;
 		//rtw_hal_set_hwreg(padapter, HW_VAR_TXPAUSE, (u8 *)(&val8));
-#if defined(CONFIG_STA_MODE_SCAN_UNDER_AP_MODE)
-		if((padapter->pbuddy_adapter->mlmeextpriv.mlmext_info.state&0x03) == WIFI_FW_AP_STATE)
-		{
-			if( pmlmeinfo->scan_cnt == RTW_SCAN_NUM_OF_CH )
-			{
-				pmlmeinfo->scan_cnt = 0;
-				survey_channel = pbuddy_mlmeext->cur_channel;
-				stay_buddy_ch = 1;
-			}
-			else 
-			{
-				if( pmlmeinfo->scan_cnt == 0 )
-					stay_buddy_ch = 2;
-				pmlmeinfo->scan_cnt++;
-			}
-		}
-#endif
 		if(pmlmeext->sitesurvey_res.channel_idx == 0)
 		{
 #ifdef DBG_FIXED_CHAN
@@ -5120,25 +5103,6 @@ void site_survey(_adapter *padapter)
 #endif
 				SelectChannel(padapter, survey_channel);
 		}
-
-#if defined(CONFIG_STA_MODE_SCAN_UNDER_AP_MODE)
-		if( stay_buddy_ch == 1 )
-		{
-			val8 = 0; //survey done
-			rtw_hal_set_hwreg(padapter, HW_VAR_MLME_SITESURVEY, (u8 *)(&val8));
-
-			if(check_buddy_mlmeinfo_state(padapter, WIFI_FW_AP_STATE) &&
-				check_buddy_fwstate(padapter, _FW_LINKED))
-			{
-				update_beacon(padapter->pbuddy_adapter, 0, NULL, true);
-			}
-		}
-		else if( stay_buddy_ch == 2 )
-		{
-			val8 = 1; //under site survey
-			rtw_hal_set_hwreg(padapter, HW_VAR_MLME_SITESURVEY, (u8 *)(&val8));
-		}
-#endif
 
 		if(ScanType == SCAN_ACTIVE) //obey the channel plan setting...
 		{
@@ -5166,14 +5130,7 @@ void site_survey(_adapter *padapter)
 			}
 		}
 
-#if defined(CONFIG_STA_MODE_SCAN_UNDER_AP_MODE)
-		if( stay_buddy_ch == 1 )
-			channel_scan_time_ms = pmlmeext->chan_scan_time * RTW_STAY_AP_CH_MILLISECOND ;
-		else		
-			channel_scan_time_ms = pmlmeext->chan_scan_time;
-#else
-			channel_scan_time_ms = pmlmeext->chan_scan_time;
-#endif
+		channel_scan_time_ms = pmlmeext->chan_scan_time;
 
 		set_survey_timer(pmlmeext, channel_scan_time_ms);
 #if defined(CONFIG_SIGNAL_DISPLAY_DBM) && defined(CONFIG_BACKGROUND_NOISE_MONITOR)
@@ -5223,10 +5180,6 @@ void site_survey(_adapter *padapter)
 #endif
 
 		{
-#if defined(CONFIG_STA_MODE_SCAN_UNDER_AP_MODE)
-			pmlmeinfo->scan_cnt = 0;
-#endif
-
 #ifdef CONFIG_ANTENNA_DIVERSITY
 			// 20100721:Interrupt scan operation here.
 			// For SW antenna diversity before link, it needs to switch to another antenna and scan again.
@@ -6961,10 +6914,7 @@ void survey_timer_hdl(_adapter *padapter)
 	{
 		if(pmlmeext->sitesurvey_res.state ==  SCAN_PROCESS)
 		{
-#if defined(CONFIG_STA_MODE_SCAN_UNDER_AP_MODE)
-			if( padapter->mlmeextpriv.mlmext_info.scan_cnt != RTW_SCAN_NUM_OF_CH )
-#endif
-				pmlmeext->sitesurvey_res.channel_idx++;
+			pmlmeext->sitesurvey_res.channel_idx++;
 		}
 
 		if(pmlmeext->scan_abort == true)
