@@ -599,10 +599,6 @@ Hal_MappingOutPipe(
 void hal_init_macaddr(_adapter *adapter)
 {
 	rtw_hal_set_hwreg(adapter, HW_VAR_MAC_ADDR, adapter->eeprompriv.mac_addr);
-#ifdef  CONFIG_CONCURRENT_MODE
-	if (adapter->pbuddy_adapter)
-		rtw_hal_set_hwreg(adapter->pbuddy_adapter, HW_VAR_MAC_ADDR, adapter->pbuddy_adapter->eeprompriv.mac_addr);
-#endif
 }
 
 void rtw_init_hal_com_default_value(PADAPTER Adapter)
@@ -773,10 +769,7 @@ _func_enter_;
 		break;
 	case HW_VAR_SEC_CFG:
 	{
-		#if defined(CONFIG_CONCURRENT_MODE) && !defined(DYNAMIC_CAMID_ALLOC)
-		// enable tx enc and rx dec engine, and no key search for MC/BC
-		rtw_write8(adapter, REG_SECCFG, SCR_NoSKMC|SCR_RxDecEnable|SCR_TxEncEnable);
-		#elif defined(DYNAMIC_CAMID_ALLOC)
+		#if defined(DYNAMIC_CAMID_ALLOC)
 		u16 reg_scr;
 
 		reg_scr = rtw_read16(adapter, REG_SECCFG);

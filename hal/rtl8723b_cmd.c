@@ -1580,19 +1580,8 @@ static void rtl8723b_set_AP_FwWoWlan_cmd(_adapter* padapter, u8 enable)
 	DBG_871X_LEVEL(_drv_always_, "+%s()+: enable=%d\n", __func__, enable);
 _func_enter_;
 	if (enable) {
-#ifdef CONFIG_CONCURRENT_MODE
-		if (rtw_buddy_adapter_up(padapter) == true &&
-			check_buddy_fwstate(padapter, WIFI_AP_STATE) == true) {
-				rtl8723b_set_FwJoinBssRpt_cmd(padapter->pbuddy_adapter, RT_MEDIA_CONNECT);
-				issue_beacon(padapter->pbuddy_adapter, 0);
-		} else {
 		rtl8723b_set_FwJoinBssRpt_cmd(padapter, RT_MEDIA_CONNECT);
 		issue_beacon(padapter, 0);
-	}
-#else
-		rtl8723b_set_FwJoinBssRpt_cmd(padapter, RT_MEDIA_CONNECT);
-		issue_beacon(padapter, 0);
-#endif
 	}
 
 	rtl8723b_set_FwAPWoWlanCtrl_Cmd(padapter, enable);

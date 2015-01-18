@@ -285,9 +285,6 @@ static void _InitQueueReservedPage(PADAPTER padapter)
 static void _InitTxBufferBoundary(PADAPTER padapter)
 {
 	struct registry_priv *pregistrypriv = &padapter->registrypriv;
-#ifdef CONFIG_CONCURRENT_MODE
-	u8 val8;
-#endif // CONFIG_CONCURRENT_MODE
 
 	//u16	txdmactrl;
 	u8	txpktbuf_bndy;
@@ -304,16 +301,6 @@ static void _InitTxBufferBoundary(PADAPTER padapter)
 	rtw_write8(padapter, REG_TXPKTBUF_WMAC_LBK_BF_HD_8723B, txpktbuf_bndy);
 	rtw_write8(padapter, REG_TRXFF_BNDY, txpktbuf_bndy);
 	rtw_write8(padapter, REG_TDECTRL+1, txpktbuf_bndy);
-
-#ifdef CONFIG_CONCURRENT_MODE
-	val8 = txpktbuf_bndy + BCNQ_PAGE_NUM_8723B + WOWLAN_PAGE_NUM_8723B;
-	rtw_write8(padapter, REG_BCNQ1_BDNY, val8);
-	rtw_write8(padapter, REG_DWBCN1_CTRL_8723B+1, val8); // BCN1_HEAD
-
-	val8 = rtw_read8(padapter, REG_DWBCN1_CTRL_8723B+2);
-	val8 |= BIT(1); // BIT1- BIT_SW_BCN_SEL_EN
-	rtw_write8(padapter, REG_DWBCN1_CTRL_8723B+2, val8);
-#endif // CONFIG_CONCURRENT_MODE
 }
 
 static void
@@ -1131,7 +1118,7 @@ static u32 rtl8723bs_hal_init(PADAPTER padapter)
 	rtw_write8(padapter, REG_SECONDARY_CCA_CTRL_8723B, 0x3);	// CCA 
 	rtw_write8(padapter, 0x976, 0);	// hpfan_todo: 2nd CCA related
 
-#if defined(CONFIG_CONCURRENT_MODE) || defined(CONFIG_TX_MCAST2UNI)
+#if defined(CONFIG_TX_MCAST2UNI)
 
 #ifdef CONFIG_CHECK_AC_LIFETIME
 	// Enable lifetime check for the four ACs
@@ -1145,7 +1132,7 @@ static u32 rtl8723bs_hal_init(PADAPTER padapter)
 	rtw_write16(padapter, REG_PKT_VO_VI_LIFE_TIME, 0x3000);	// unit: 256us. 3s
 	rtw_write16(padapter, REG_PKT_BE_BK_LIFE_TIME, 0x3000);	// unit: 256us. 3s
 #endif	// CONFIG_TX_MCAST2UNI
-#endif	// CONFIG_CONCURRENT_MODE || CONFIG_TX_MCAST2UNI
+#endif	// CONFIG_TX_MCAST2UNI
 
 
 	invalidate_cam_all(padapter);
@@ -2095,19 +2082,8 @@ _func_enter_;
 			DBG_871X_LEVEL(_drv_always_, "Set Wake GPIO to high for default.\n");
 			HalSetOutPutGPIO(padapter, WAKEUP_GPIO_IDX, 1);
 #endif //CONFIG_GPIO_WAKEUP
-#ifdef CONFIG_CONCURRENT_MODE
-			if (rtw_buddy_adapter_up(padapter) == true &&
-				check_buddy_fwstate(padapter, WIFI_AP_STATE) == true) {
-				rtl8723b_set_FwJoinBssRpt_cmd(padapter->pbuddy_adapter, RT_MEDIA_CONNECT);
-				issue_beacon(padapter->pbuddy_adapter, 0);
-			} else {
-				rtl8723b_set_FwJoinBssRpt_cmd(padapter, RT_MEDIA_CONNECT);
-				issue_beacon(padapter, 0);
-			}
-#else
 			rtl8723b_set_FwJoinBssRpt_cmd(padapter, RT_MEDIA_CONNECT);
 			issue_beacon(padapter, 0);
-#endif //CONFIG_CONCURRENT_MODE
 			break;
 		default:
 			break;

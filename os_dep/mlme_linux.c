@@ -53,11 +53,6 @@ static void _dynamic_check_timer_handlder (void *FunctionContext)
 {
 	_adapter *adapter = (_adapter *)FunctionContext;
 
-#ifdef CONFIG_CONCURRENT_MODE
-	if(adapter->pbuddy_adapter)
-		rtw_dynamic_check_timer_handlder(adapter->pbuddy_adapter);
-#endif //CONFIG_CONCURRENT_MODE
-
 	rtw_dynamic_check_timer_handlder(adapter);
 	
 	_set_timer(&adapter->mlmepriv.dynamic_chk_timer, 2000);

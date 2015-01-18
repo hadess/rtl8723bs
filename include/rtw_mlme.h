@@ -237,10 +237,6 @@ struct wifidirect_info{
 	_timer					pre_tx_scan_timer;
 	_timer					reset_ch_sitesurvey;
 	_timer					reset_ch_sitesurvey2;	//	Just for resetting the scan limit function by using p2p nego
-#ifdef CONFIG_CONCURRENT_MODE
-	//	Used to switch the channel between legacy AP and listen state.
-	_timer					ap_p2p_switch_timer;
-#endif
 	struct tx_provdisc_req_info	tx_prov_disc_info;
 	struct rx_provdisc_req_info rx_prov_disc_info;
 	struct tx_invite_req_info	invitereq_info;
@@ -304,11 +300,6 @@ struct wifidirect_info{
 	u8						channel_list_attr[100];		//	This field will contain the body of P2P Channel List attribute of group negotitation response frame.
 														//	We will use the channel_cnt and channel_list fields when constructing the group negotitation confirm frame.
 	u8						driver_interface;			//	Indicate DRIVER_WEXT or DRIVER_CFG80211
-
-#ifdef CONFIG_CONCURRENT_MODE
-	u16						ext_listen_interval;	//	The interval to be available with legacy AP (ms)
-	u16						ext_listen_period;	//	The time period to be available for P2P listen state (ms)
-#endif
 };
 
 struct tdls_ss_record{	//signal strength record
@@ -519,10 +510,6 @@ struct mlme_priv {
 							//such that it will cause p2p disabled. Use this flag to reject.
 #endif // CONFIG_INTEL_WIDI
 
-#ifdef CONFIG_CONCURRENT_MODE
-	u8	scanning_via_buddy_intf;
-#endif
-
 	u8 	NumOfBcnInfoChkFail;
 	unsigned long	timeBcnInfoChkStart;
 };
@@ -652,12 +639,6 @@ __inline static void up_scanned_network(struct mlme_priv *pmlmepriv)
 	pmlmepriv->num_of_scanned++;
 	_exit_critical_bh(&pmlmepriv->lock, &irqL);
 }
-
-#ifdef CONFIG_CONCURRENT_MODE
-sint rtw_buddy_adapter_up(_adapter *padapter);
-sint check_buddy_fwstate(_adapter *padapter, sint state);
-u8 rtw_get_buddy_bBusyTraffic(_adapter *padapter);
-#endif //CONFIG_CONCURRENT_MODE
 
 __inline static void down_scanned_network(struct mlme_priv *pmlmepriv)
 {

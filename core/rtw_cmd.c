@@ -488,12 +488,6 @@ _func_enter_;
 
 	cmd_obj->padapter = padapter;
 
-#ifdef CONFIG_CONCURRENT_MODE
-	//change pcmdpriv to primary's pcmdpriv
-	if (padapter->adapter_type != PRIMARY_ADAPTER && padapter->pbuddy_adapter)
-		pcmdpriv = &(padapter->pbuddy_adapter->cmdpriv);
-#endif	
-
 	if( _FAIL == (res=rtw_cmd_filter(pcmdpriv, cmd_obj)) ) {
 		rtw_free_cmd_obj(cmd_obj);
 		goto exit;
@@ -2001,13 +1995,6 @@ u8 rtw_dynamic_chk_wk_cmd(_adapter*padapter)
 _func_enter_;	
 
 	//only  primary padapter does this cmd
-/*
-#ifdef CONFIG_CONCURRENT_MODE
-	if (padapter->adapter_type != PRIMARY_ADAPTER && padapter->pbuddy_adapter)
-		pcmdpriv = &(padapter->pbuddy_adapter->cmdpriv);
-#endif
-*/
-
 	ph2c = (struct cmd_obj*)rtw_zmalloc(sizeof(struct cmd_obj));	
 	if(ph2c==NULL){
 		res= _FAIL;
@@ -2258,11 +2245,6 @@ static void collect_traffic_statistics(_adapter *padapter)
 {
 	struct dvobj_priv	*pdvobjpriv = adapter_to_dvobj(padapter);
 
-#ifdef CONFIG_CONCURRENT_MODE
-	if (padapter->adapter_type != PRIMARY_ADAPTER)
-		return;
-#endif
-
 	// Tx
 	pdvobjpriv->traffic_stat.tx_bytes = padapter->xmitpriv.tx_bytes;
 	pdvobjpriv->traffic_stat.tx_pkts = padapter->xmitpriv.tx_pkts;
@@ -2272,22 +2254,6 @@ static void collect_traffic_statistics(_adapter *padapter)
 	pdvobjpriv->traffic_stat.rx_bytes = padapter->recvpriv.rx_bytes;
 	pdvobjpriv->traffic_stat.rx_pkts = padapter->recvpriv.rx_pkts;
 	pdvobjpriv->traffic_stat.rx_drop = padapter->recvpriv.rx_drop;
-
-#ifdef CONFIG_CONCURRENT_MODE
-	// Add secondary adapter statistics
-	if(rtw_buddy_adapter_up(padapter))
-	{
-		// Tx
-		pdvobjpriv->traffic_stat.tx_bytes += padapter->pbuddy_adapter->xmitpriv.tx_bytes;
-		pdvobjpriv->traffic_stat.tx_pkts += padapter->pbuddy_adapter->xmitpriv.tx_pkts;
-		pdvobjpriv->traffic_stat.tx_drop += padapter->pbuddy_adapter->xmitpriv.tx_drop;
-
-		// Rx
-		pdvobjpriv->traffic_stat.rx_bytes += padapter->pbuddy_adapter->recvpriv.rx_bytes;
-		pdvobjpriv->traffic_stat.rx_pkts += padapter->pbuddy_adapter->recvpriv.rx_pkts;
-		pdvobjpriv->traffic_stat.rx_drop += padapter->pbuddy_adapter->recvpriv.rx_drop;
-	}
-#endif
 
 	// Calculate throughput in last interval
 	pdvobjpriv->traffic_stat.cur_tx_bytes = pdvobjpriv->traffic_stat.tx_bytes - pdvobjpriv->traffic_stat.last_tx_bytes;
@@ -2450,10 +2416,7 @@ u8 traffic_status_watchdog(_adapter *padapter, u8 from_timer)
 			}
 			else
 			{
-#ifdef CONFIG_CONCURRENT_MODE
-			 	if(padapter->iface_type == IFACE_PORT0) 
-#endif
-					rtw_lps_ctrl_wk_cmd(padapter, LPS_CTRL_TRAFFIC_BUSY, 1);
+				rtw_lps_ctrl_wk_cmd(padapter, LPS_CTRL_TRAFFIC_BUSY, 1);
 			}
 		}
 	
@@ -2738,12 +2701,7 @@ u8 rtw_lps_change_dtim_cmd(_adapter*padapter, u8 dtim)
 	struct drvextra_cmd_parm	*pdrvextra_cmd_parm;
 	struct cmd_priv	*pcmdpriv = &padapter->cmdpriv;
 	u8	res = _SUCCESS;
-/*
-#ifdef CONFIG_CONCURRENT_MODE
-	if (padapter->iface_type != IFACE_PORT0)
-		return res;
-#endif
-*/
+
 	{
 		ph2c = (struct cmd_obj*)rtw_zmalloc(sizeof(struct cmd_obj));	
 		if(ph2c==NULL){
@@ -2939,11 +2897,6 @@ u8 rtw_ps_cmd(_adapter*padapter)
 	u8	res = _SUCCESS;
 _func_enter_;
 
-#ifdef CONFIG_CONCURRENT_MODE
-	if (padapter->adapter_type != PRIMARY_ADAPTER)
-		goto exit;
-#endif
-	
 	ppscmd = (struct cmd_obj*)rtw_zmalloc(sizeof(struct cmd_obj));	
 	if(ppscmd==NULL){
 		res= _FAIL;
@@ -3387,12 +3340,6 @@ u8 rtw_drvextra_cmd_hdl(_adapter *padapter, unsigned char *pbuf)
 	switch(pdrvextra_cmd->ec_id)
 	{
 		case DYNAMIC_CHK_WK_CID://only  primary padapter go to this cmd, but execute dynamic_chk_wk_hdl() for two interfaces
-#ifdef CONFIG_CONCURRENT_MODE
-			if(padapter->pbuddy_adapter)
-			{
-				dynamic_chk_wk_hdl(padapter->pbuddy_adapter);
-			}	
-#endif //CONFIG_CONCURRENT_MODE
 			dynamic_chk_wk_hdl(padapter);
 			break;
 		case POWER_SAVING_CTRL_WK_CID:

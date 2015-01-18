@@ -917,11 +917,7 @@ _func_enter_;
 		return;
 	}
 
-	if ((check_fwstate(pmlmepriv, _FW_LINKED) == true)
-#ifdef CONFIG_CONCURRENT_MODE
-		|| (check_buddy_fwstate(Adapter,_FW_LINKED) == true)
-#endif
-		)
+	if ((check_fwstate(pmlmepriv, _FW_LINKED) == true))
 	{ //connect
 
 		if(pwrpriv->pwr_mode == PS_MODE_ACTIVE) {
@@ -1706,11 +1702,6 @@ void rtw_init_pwrctrl_priv(PADAPTER padapter)
 {
 	struct pwrctrl_priv *pwrctrlpriv = adapter_to_pwrctl(padapter);
 
-#if defined(CONFIG_CONCURRENT_MODE)
-	if (padapter->adapter_type != PRIMARY_ADAPTER)
-		return;
-#endif
-
 _func_enter_;
 
 	sema_init(&pwrctrlpriv->lock, 1);
@@ -1793,11 +1784,6 @@ _func_exit_;
 void rtw_free_pwrctrl_priv(PADAPTER adapter)
 {
 	struct pwrctrl_priv *pwrctrlpriv = adapter_to_pwrctl(adapter);
-
-#if defined(CONFIG_CONCURRENT_MODE)
-	if (adapter->adapter_type != PRIMARY_ADAPTER)
-		return;
-#endif	
 
 _func_enter_;
 

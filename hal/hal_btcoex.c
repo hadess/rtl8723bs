@@ -333,7 +333,7 @@ static u8 halbtcoutsrc_IsWifiBusy(PADAPTER padapter)
 			return true;
 	}
 
-#if defined(CONFIG_CONCURRENT_MODE) || defined(CONFIG_DUALMAC_CONCURRENT)
+#if defined(CONFIG_DUALMAC_CONCURRENT)
 	pmlmepriv = &padapter->pbuddy_adapter->mlmepriv;
 
 	if (check_fwstate(pmlmepriv, WIFI_ASOC_STATE) == true)
@@ -404,18 +404,6 @@ static u32 halbtcoutsrc_GetWifiLinkStatus(PBTC_COEXIST pBtCoexist)
 		portConnectedStatus |= retVal;
 		numOfConnectedPort++;
 	}
-
-#ifdef CONFIG_CONCURRENT_MODE
-	if (padapter->pbuddy_adapter)
-	{
-		retVal = _halbtcoutsrc_GetWifiLinkStatus(padapter->pbuddy_adapter);
-		if (retVal)
-		{
-			portConnectedStatus |= retVal;
-			numOfConnectedPort++;
-		}
-	}
-#endif // CONFIG_CONCURRENT_MODE
 
 	retVal = (numOfConnectedPort << 16) | portConnectedStatus;
 	
@@ -507,12 +495,6 @@ static u8 halbtcoutsrc_Get(void *pBtcContext, u8 getType, void *pOutBuf)
 
 		case BTC_GET_BL_WIFI_CONNECTED:
 			*pu8 = check_fwstate(&padapter->mlmepriv, WIFI_ASOC_STATE);
-#ifdef CONFIG_CONCURRENT_MODE
-			if ((false == *pu8) && padapter->pbuddy_adapter)
-			{
-				*pu8 = check_fwstate(&padapter->pbuddy_adapter->mlmepriv, WIFI_ASOC_STATE);
-			}
-#endif // CONFIG_CONCURRENT_MODE
 			break;
 
 		case BTC_GET_BL_WIFI_BUSY:
@@ -527,22 +509,10 @@ static u8 halbtcoutsrc_Get(void *pBtcContext, u8 getType, void *pOutBuf)
 
 		case BTC_GET_BL_WIFI_LINK:
 			*pu8 = check_fwstate(&padapter->mlmepriv, WIFI_UNDER_LINKING);
-#ifdef CONFIG_CONCURRENT_MODE
-			if ((false == *pu8) && padapter->pbuddy_adapter)
-			{
-				*pu8 = check_fwstate(&padapter->pbuddy_adapter->mlmepriv, WIFI_UNDER_LINKING);
-			}
-#endif // CONFIG_CONCURRENT_MODE
 			break;
 
 		case BTC_GET_BL_WIFI_ROAM:
 			*pu8 = check_fwstate(&padapter->mlmepriv, WIFI_UNDER_LINKING);
-#ifdef CONFIG_CONCURRENT_MODE
-			if ((false == *pu8) && padapter->pbuddy_adapter)
-			{
-				*pu8 = check_fwstate(&padapter->pbuddy_adapter->mlmepriv, WIFI_UNDER_LINKING);
-			}
-#endif // CONFIG_CONCURRENT_MODE
 			break;
 
 		case BTC_GET_BL_WIFI_4_WAY_PROGRESS:
@@ -555,12 +525,6 @@ static u8 halbtcoutsrc_Get(void *pBtcContext, u8 getType, void *pOutBuf)
 
 		case BTC_GET_BL_WIFI_AP_MODE_ENABLE:
 			*pu8 = check_fwstate(&padapter->mlmepriv, WIFI_AP_STATE);
-#ifdef CONFIG_CONCURRENT_MODE
-			if ((false == *pu8) && padapter->pbuddy_adapter)
-			{
-				*pu8 = check_fwstate(&padapter->pbuddy_adapter->mlmepriv, WIFI_AP_STATE);
-			}
-#endif // CONFIG_CONCURRENT_MODE
 			break;
 
 		case BTC_GET_BL_WIFI_ENABLE_ENCRYPTION:
