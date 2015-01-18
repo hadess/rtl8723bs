@@ -2668,13 +2668,6 @@ int rtw_suspend_wow(_adapter *padapter)
 		if(padapter->intf_free_irq)
 			padapter->intf_free_irq(adapter_to_dvobj(padapter));
 
-		#ifdef CONFIG_RUNTIME_PORT_SWITCH
-		if (rtw_port_switch_chk(padapter)) {
-			DBG_871X(" ### PORT SWITCH ### \n");
-			rtw_hal_set_hwreg(padapter, HW_VAR_PORT_SWITCH, NULL);
-		}
-		#endif
-
 		poidparam.subcode = WOWLAN_ENABLE;
 		padapter->HalFunc.SetHwRegHandler(padapter,HW_VAR_WOWLAN,(u8 *)&poidparam);
 		if (rtw_chk_roam_flags(padapter, RTW_ROAM_ON_RESUME)) {
@@ -2793,13 +2786,6 @@ int rtw_suspend_ap_wow(_adapter *padapter)
 	//sdio_free_irq(adapter_to_dvobj(padapter));
 	if(padapter->intf_free_irq)
 		padapter->intf_free_irq(adapter_to_dvobj(padapter));
-
-	#ifdef CONFIG_RUNTIME_PORT_SWITCH
-	if (rtw_port_switch_chk(padapter)) {
-		DBG_871X(" ### PORT SWITCH ### \n");
-		rtw_hal_set_hwreg(padapter, HW_VAR_PORT_SWITCH, NULL);
-	}
-	#endif
 
 	poidparam.subcode = WOWLAN_AP_ENABLE;
 	padapter->HalFunc.SetHwRegHandler(padapter,
