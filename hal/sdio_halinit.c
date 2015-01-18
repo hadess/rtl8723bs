@@ -971,10 +971,6 @@ static u32 rtl8723bs_hal_init(PADAPTER padapter)
 			rtw_hal_get_hwreg(padapter, HW_VAR_CPWM, &cpwm_now);
 			if ((cpwm_orig ^ cpwm_now) & 0x80)
 			{		
-#ifdef DBG_CHECK_FW_PS_STATE				
-				DBG_871X("%s: polling cpwm ok when leaving IPS in FWLPS state, cpwm_orig=%02x, cpwm_now=%02x, 0x100=0x%x \n"
-				, __FUNCTION__, cpwm_orig, cpwm_now, rtw_read8(padapter, REG_CR));
-#endif //DBG_CHECK_FW_PS_STATE
 				break;
 			}
 
@@ -991,13 +987,6 @@ static u32 rtl8723bs_hal_init(PADAPTER padapter)
 
 		rtw_btcoex_HAL_Initialize(padapter, false);
 
-#ifdef DBG_CHECK_FW_PS_STATE
-		if(rtw_fw_ps_state(padapter) == _FAIL)
-		{
-			DBG_871X("after hal init, fw ps state in 32k\n");
-			pdbgpriv->dbg_ips_drvopen_fail_cnt++;
-		}
-#endif //DBG_CHECK_FW_PS_STATE
 		return _SUCCESS;
 	}	
 #endif //CONFIG_SWLPS_IN_IPS
@@ -1391,11 +1380,6 @@ static u32 rtl8723bs_hal_deinit(PADAPTER padapter)
 						DBG_871X("%s  polling 0x100=0x%x, cnt=%d \n", __FUNCTION__, val8, cnt);			
 						mdelay(10);
 					}while(cnt<100 && (val8!=0xEA));
-#ifdef DBG_CHECK_FW_PS_STATE
-				if(val8 != 0xEA)
-					DBG_871X("MAC_1C0=%08x, MAC_1C4=%08x, MAC_1C8=%08x, MAC_1CC=%08x\n", rtw_read32(padapter, 0x1c0), rtw_read32(padapter, 0x1c4)
-					, rtw_read32(padapter, 0x1c8), rtw_read32(padapter, 0x1cc));
-#endif //DBG_CHECK_FW_PS_STATE
 				}
 				else
 				{
@@ -1412,13 +1396,6 @@ static u32 rtl8723bs_hal_deinit(PADAPTER padapter)
 			else
 			{
 				pdbgpriv->dbg_carddisable_cnt++;
-#ifdef DBG_CHECK_FW_PS_STATE
-				if(rtw_fw_ps_state(padapter) == _FAIL)
-				{
-					DBG_871X("card disable should leave 32k\n");
-					pdbgpriv->dbg_carddisable_error_cnt++;
-				}
-#endif //DBG_CHECK_FW_PS_STATE
 				CardDisableRTL8723BSdio(padapter);
 
 				adapter_to_pwrctl(padapter)->pre_ips_type = 1;
@@ -1429,13 +1406,6 @@ static u32 rtl8723bs_hal_deinit(PADAPTER padapter)
 #endif //CONFIG_SWLPS_IN_IPS
 		{
 			pdbgpriv->dbg_carddisable_cnt++;
-#ifdef DBG_CHECK_FW_PS_STATE
-			if(rtw_fw_ps_state(padapter) == _FAIL)
-			{
-				DBG_871X("card disable should leave 32k\n");
-				pdbgpriv->dbg_carddisable_error_cnt++;
-			}
-#endif //DBG_CHECK_FW_PS_STATE
 			CardDisableRTL8723BSdio(padapter);
 		}
 	}
@@ -1849,13 +1819,6 @@ _func_enter_;
 
 					// 1. Download WOWLAN FW
 					DBG_871X_LEVEL(_drv_always_, "Re-download WoWlan FW!\n");
-#ifdef DBG_CHECK_FW_PS_STATE
-					if(rtw_fw_ps_state(padapter) == _FAIL)
-					{
-						pdbgpriv->dbg_enwow_dload_fw_fail_cnt++;
-						DBG_871X_LEVEL(_drv_always_, "wowlan enable no leave 32k\n");
-					}
-#endif //DBG_CHECK_FW_PS_STATE
 					SetFwRelatedForWoWLAN8723b(padapter, true);
 
 					// 2. RX DMA stop
@@ -2009,13 +1972,6 @@ _func_enter_;
 	
 						// 4. Re-download Normal FW.
 						DBG_871X_LEVEL(_drv_always_, "Re-download Normal FW!\n");
-#ifdef DBG_CHECK_FW_PS_STATE
-						if(rtw_fw_ps_state(padapter) == _FAIL)
-						{
-							pdbgpriv->dbg_diswow_dload_fw_fail_cnt++;
-							DBG_871X_LEVEL(_drv_always_, "wowlan enable no leave 32k\n");
-						}
-#endif //DBG_CHECK_FW_PS_STATE
 						SetFwRelatedForWoWLAN8723b(padapter, false);
 					}
 #ifdef CONFIG_GPIO_WAKEUP
@@ -2058,12 +2014,6 @@ _func_enter_;
 			DBG_871X("%s, WOWLAN_AP_ENABLE\n", __func__);
 			// 1. Download WOWLAN FW
 			DBG_871X_LEVEL(_drv_always_, "Re-download WoWlan FW!\n");
-#ifdef DBG_CHECK_FW_PS_STATE
-			if(rtw_fw_ps_state(padapter) == _FAIL) {
-				pdbgpriv->dbg_enwow_dload_fw_fail_cnt++;
-				DBG_871X_LEVEL(_drv_always_, "wowlan enable no leave 32k\n");
-			}
-#endif //DBG_CHECK_FW_PS_STATE
 			SetFwRelatedForWoWLAN8723b(padapter, true);
 
 			// 2. RX DMA stop
@@ -2133,12 +2083,6 @@ _func_enter_;
 			rtl8723b_set_ap_wowlan_cmd(padapter, 0);
 			// 6. add some delay for H2C cmd ready
 			msleep(2);
-#ifdef DBG_CHECK_FW_PS_STATE
-			if (rtw_fw_ps_state(padapter) == _FAIL) {
-				pdbgpriv->dbg_diswow_dload_fw_fail_cnt++;
-				DBG_871X_LEVEL(_drv_always_, "wowlan enable no leave 32k\n");
-			}
-#endif //DBG_CHECK_FW_PS_STATE
 
 			DBG_871X_LEVEL(_drv_always_, "Release RXDMA\n");
 

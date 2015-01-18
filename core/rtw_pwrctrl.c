@@ -150,13 +150,6 @@ int ips_leave(_adapter * padapter)
 
 	down(&pwrpriv->lock);
 	ret = _ips_leave(padapter);
-#ifdef DBG_CHECK_FW_PS_STATE
-	if(rtw_fw_ps_state(padapter) == _FAIL)
-	{
-		DBG_871X("ips leave doesn't leave 32k\n");
-		pdbgpriv->dbg_leave_ips_fail_cnt++;
-	}
-#endif //DBG_CHECK_FW_PS_STATE
 	up(&pwrpriv->lock);
 
 	if (_SUCCESS == ret)
@@ -570,28 +563,12 @@ _func_enter_;
 			{
 				pwrpriv->cpwm = PS_STATE_S4;
 				pwrpriv->cpwm_tog = cpwm_now & PS_TOGGLE;
-#ifdef DBG_CHECK_FW_PS_STATE
-				DBG_871X("%s: polling cpwm OK! poll_cnt=%d, cpwm_orig=%02x, cpwm_now=%02x , 0x100=0x%x\n"
-				, __FUNCTION__,poll_cnt, cpwm_orig, cpwm_now, rtw_read8(padapter, REG_CR));
-				if(rtw_fw_ps_state(padapter) == _FAIL)
-				{
-					DBG_871X("leave 32k but fw state in 32k\n");
-					pdbgpriv->dbg_rpwm_toogle_cnt++;
-				}
-#endif //DBG_CHECK_FW_PS_STATE
 				break;
 			}
 
 			if (jiffies_to_msecs(jiffies - start_time) > LPS_RPWM_WAIT_MS)
 			{
 				DBG_871X("%s: polling cpwm timeout! poll_cnt=%d, cpwm_orig=%02x, cpwm_now=%02x \n", __FUNCTION__,poll_cnt, cpwm_orig, cpwm_now);
-#ifdef DBG_CHECK_FW_PS_STATE
-				if(rtw_fw_ps_state(padapter) == _FAIL)
-				{
-					DBG_871X("rpwm timeout and fw ps state in 32k\n");
-					pdbgpriv->dbg_rpwm_timeout_fail_cnt++;
-				}
-#endif //DBG_CHECK_FW_PS_STATE
 #ifdef CONFIG_LPS_RPWM_TIMER
 				_set_timer(&pwrpriv->pwr_rpwm_timer, 1);
 #endif // CONFIG_LPS_RPWM_TIMER
@@ -911,13 +888,6 @@ _func_enter_;
 	}
 
 	pwrpriv->bpower_saving = false;
-#ifdef DBG_CHECK_FW_PS_STATE
-	if(rtw_fw_ps_state(padapter) == _FAIL)
-	{
-		DBG_871X("leave lps, fw in 32k\n");
-		pdbgpriv->dbg_leave_lps_fail_cnt++;
-	}
-#endif //DBG_CHECK_FW_PS_STATE
 //	DBG_871X("-LeisurePSLeave\n");
 
 _func_exit_;
@@ -981,28 +951,12 @@ _func_enter_;
 			{
 				pwrpriv->cpwm = PS_STATE_S4;
 				pwrpriv->cpwm_tog = cpwm_now & PS_TOGGLE;
-#ifdef DBG_CHECK_FW_PS_STATE
-				DBG_871X("%s: polling cpwm OK! cpwm_orig=%02x, cpwm_now=%02x, 0x100=0x%x \n"
-				, __FUNCTION__, cpwm_orig, cpwm_now, rtw_read8(Adapter, REG_CR));
-				if(rtw_fw_ps_state(Adapter) == _FAIL)
-				{
-					DBG_871X("%s: leave 32k but fw state in 32k\n", __FUNCTION__);
-					pdbgpriv->dbg_rpwm_toogle_cnt++;
-				}
-#endif //DBG_CHECK_FW_PS_STATE
 				break;
 			}
 
 			if (jiffies_to_msecs(jiffies - start_time) > LPS_RPWM_WAIT_MS)
 			{
 				DBG_871X("%s: polling cpwm timeout! cpwm_orig=%02x, cpwm_now=%02x \n", __FUNCTION__, cpwm_orig, cpwm_now);
-#ifdef DBG_CHECK_FW_PS_STATE
-				if(rtw_fw_ps_state(Adapter) == _FAIL)
-				{
-					DBG_871X("rpwm timeout and fw ps state in 32k\n");
-					pdbgpriv->dbg_rpwm_timeout_fail_cnt++;
-				}
-#endif //DBG_CHECK_FW_PS_STATE
 				break;
 			}
 		} while (1);

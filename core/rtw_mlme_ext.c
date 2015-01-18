@@ -7744,14 +7744,6 @@ u8 sitesurvey_cmd_hdl(_adapter *padapter, u8 *pbuf)
 	struct dvobj_priv *psdpriv = padapter->dvobj;
 	struct debug_priv *pdbgpriv = &psdpriv->drv_dbg;
 
-#ifdef DBG_CHECK_FW_PS_STATE
-	if(rtw_fw_ps_state(padapter) == _FAIL)
-	{
-		DBG_871X("scan without leave 32k\n");
-		pdbgpriv->dbg_scan_pwr_state_cnt++;
-	}
-#endif //DBG_CHECK_FW_PS_STATE
-
 	if (pmlmeext->sitesurvey_res.state == SCAN_DISABLE)
 	{
 #ifdef CONFIG_CONCURRENT_MODE	
