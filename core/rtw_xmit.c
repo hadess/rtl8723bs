@@ -727,13 +727,6 @@ static s32 update_attrib_sec_info(_adapter *padapter, struct pkt_attrib *pattrib
 		RT_TRACE(_module_rtl871x_xmit_c_,_drv_info_,("update_attrib: bswenc=false\n"));
 	}
 
-#if defined(CONFIG_CONCURRENT_MODE) && !defined(DYNAMIC_CAMID_ALLOC)
-	if((pattrib->encrypt && bmcast) || (pattrib->encrypt ==_WEP40_) || (pattrib->encrypt ==_WEP104_))
-	{
-		pattrib->bswenc = true;//force using sw enc.
-	}
-#endif
-
 #ifdef CONFIG_WAPI_SUPPORT
 	if(pattrib->encrypt == _SMS4_)
 		pattrib->bswenc = false;
@@ -3076,11 +3069,6 @@ static void do_queue_select(_adapter	*padapter, struct pkt_attrib *pattrib)
 	qsel = pattrib->priority;
 	RT_TRACE(_module_rtl871x_xmit_c_,_drv_info_,("### do_queue_select priority=%d ,qsel = %d\n",pattrib->priority ,qsel));
 
-#ifdef CONFIG_CONCURRENT_MODE	
-//	if (check_fwstate(&padapter->mlmepriv, WIFI_AP_STATE) == true)
-//		qsel = 7;//
-#endif
-	
 	pattrib->qsel = qsel;
 }
 
@@ -3779,14 +3767,7 @@ void enqueue_pending_xmitbuf(
 	rtw_list_insert_tail(&pxmitbuf->list, get_list_head(pqueue));
 	_exit_critical_bh(&pqueue->lock, &irql);
 
-
-
-#if defined(CONFIG_CONCURRENT_MODE)
-	if (pri_adapter->adapter_type > PRIMARY_ADAPTER)
-		pri_adapter = pri_adapter->pbuddy_adapter;
-#endif  //CONCURRENT
 	up(&(pri_adapter->xmitpriv.xmit_sema));
-
 }
 
 void enqueue_pending_xmitbuf_to_head(

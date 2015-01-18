@@ -227,7 +227,6 @@ int proc_get_read_reg(struct seq_file *m, void *v)
 
 ssize_t proc_set_read_reg(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
 {
-	struct net_device *dev = data;
 	char tmp[16];
 	u32 addr, len;
 
@@ -560,14 +559,8 @@ int proc_get_adapter_state(struct seq_file *m, void *v)
 	struct net_device *dev = m->private;
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
 
-#ifdef CONFIG_CONCURRENT_MODE
-	DBG_871X_SEL_NL(m, "name=%s, iface_type=%d, bSurpriseRemoved=%d, bDriverStopped=%d\n",
-					dev->name, padapter->iface_type,
-					padapter->bSurpriseRemoved, padapter->bDriverStopped);
-#else
 	DBG_871X_SEL_NL(m, "name=%s, bSurpriseRemoved=%d, bDriverStopped=%d\n",
 					dev->name, padapter->bSurpriseRemoved, padapter->bDriverStopped);
-#endif
 
 	return 0;
 }
@@ -600,7 +593,6 @@ int proc_get_trx_info(struct seq_file *m, void *v)
 int proc_get_rate_ctl(struct seq_file *m, void *v)
 {
 	struct net_device *dev = m->private;
-	int i;
 	_adapter *adapter = (_adapter *)rtw_netdev_priv(dev);
 
 	if (adapter->fix_rate != 0xff) {
@@ -639,15 +631,13 @@ u8 g_fwdl_wintint_rdy_fail = 0;
 
 ssize_t proc_set_fwdl_test_case(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
 {
-	struct net_device *dev = data;
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
 	char tmp[32];
 
 	if (count < 1)
 		return -EFAULT;
 
 	if (buffer && !copy_from_user(tmp, buffer, sizeof(tmp))) {		
-		int num = sscanf(tmp, "%hhu %hhu", &g_fwdl_chksum_fail, &g_fwdl_wintint_rdy_fail);
+		sscanf(tmp, "%hhu %hhu", &g_fwdl_chksum_fail, &g_fwdl_wintint_rdy_fail);
 	}
 
 	return count;
@@ -657,15 +647,13 @@ u32 g_wait_hiq_empty = 0;
 
 ssize_t proc_set_wait_hiq_empty(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
 {
-	struct net_device *dev = data;
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
 	char tmp[32];
 
 	if (count < 1)
 		return -EFAULT;
 
 	if (buffer && !copy_from_user(tmp, buffer, sizeof(tmp))) {
-		int num = sscanf(tmp, "%u", &g_wait_hiq_empty);
+		sscanf(tmp, "%u", &g_wait_hiq_empty);
 	}
 
 	return count;
@@ -976,7 +964,6 @@ int proc_get_rx_signal(struct seq_file *m, void *v)
 {
 	struct net_device *dev = m->private;
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
-	struct mlme_priv *pmlmepriv = &(padapter->mlmepriv);
 
 	DBG_871X_SEL_NL(m, "rssi:%d\n", padapter->recvpriv.rssi);
 	//DBG_871X_SEL_NL(m, "rxpwdb:%d\n", padapter->recvpriv.rxpwdb);
@@ -1062,9 +1049,8 @@ ssize_t proc_set_ht_enable(struct file *file, const char __user *buffer, size_t 
 	if (count < 1)
 		return -EFAULT;
 
-	if (buffer && !copy_from_user(tmp, buffer, sizeof(tmp))) {		
-
-		int num = sscanf(tmp, "%d ", &mode);
+	if (buffer && !copy_from_user(tmp, buffer, sizeof(tmp))) {
+		sscanf(tmp, "%d ", &mode);
 
 		if( pregpriv && mode >= 0 && mode < 2 )
 		{
@@ -1100,9 +1086,8 @@ ssize_t proc_set_bw_mode(struct file *file, const char __user *buffer, size_t co
 	if (count < 1)
 		return -EFAULT;
 
-	if (buffer && !copy_from_user(tmp, buffer, sizeof(tmp))) {		
-
-		int num = sscanf(tmp, "%d ", &mode);
+	if (buffer && !copy_from_user(tmp, buffer, sizeof(tmp))) {
+		sscanf(tmp, "%d ", &mode);
 
 		if( pregpriv &&  mode < 2 )
 		{
@@ -1142,7 +1127,7 @@ ssize_t proc_set_ampdu_enable(struct file *file, const char __user *buffer, size
 
 	if (buffer && !copy_from_user(tmp, buffer, sizeof(tmp))) {		
 
-		int num = sscanf(tmp, "%d ", &mode);
+		sscanf(tmp, "%d ", &mode);
 
 		if( pregpriv && mode < 3 )
 		{
@@ -1187,7 +1172,7 @@ ssize_t proc_set_rx_ampdu(struct file *file, const char __user *buffer, size_t c
 
 	if (buffer && !copy_from_user(tmp, buffer, sizeof(tmp))) {		
 
-		int num = sscanf(tmp, "%d ", &mode);
+		sscanf(tmp, "%d ", &mode);
 
 		if( pregpriv && mode >= 0 && mode < 2 )
 		{
@@ -1210,8 +1195,6 @@ int proc_get_en_fwps(struct seq_file *m, void *v)
 	struct net_device *dev = m->private;
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
 	struct registry_priv	*pregpriv = &padapter->registrypriv;
-	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
-	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 
 	if(pregpriv)
 		DBG_871X_SEL_NL(m, "check_fw_ps = %d , 1:enable get FW PS state , 0: disable get FW PS state\n"
@@ -1225,8 +1208,6 @@ ssize_t proc_set_en_fwps(struct file *file, const char __user *buffer, size_t co
 	struct net_device *dev = data;
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
 	struct registry_priv	*pregpriv = &padapter->registrypriv;
-	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
-	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 	char tmp[32];
 	u32 mode;
 
@@ -1235,7 +1216,7 @@ ssize_t proc_set_en_fwps(struct file *file, const char __user *buffer, size_t co
 
 	if (buffer && !copy_from_user(tmp, buffer, sizeof(tmp))) {
 
-		int num = sscanf(tmp, "%d ", &mode);
+		sscanf(tmp, "%d ", &mode);
 
 		if( pregpriv && mode >= 0 && mode < 2 )
 		{
@@ -1287,7 +1268,7 @@ ssize_t proc_set_rx_stbc(struct file *file, const char __user *buffer, size_t co
 
 	if (buffer && !copy_from_user(tmp, buffer, sizeof(tmp))) {		
 
-		int num = sscanf(tmp, "%d ", &mode);
+		sscanf(tmp, "%d ", &mode);
 
 		if( pregpriv && (mode == 0 || mode == 1|| mode == 2|| mode == 3))
 		{
@@ -1302,7 +1283,6 @@ ssize_t proc_set_rx_stbc(struct file *file, const char __user *buffer, size_t co
 
 int proc_get_rssi_disp(struct seq_file *m, void *v)
 {
-	struct net_device *dev = m->private;
 	return 0;
 }
 

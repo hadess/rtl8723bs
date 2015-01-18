@@ -127,11 +127,7 @@ typedef struct _RT_8723B_FIRMWARE_HDR
 //For General Reserved Page Number(Beacon Queue is reserved page)
 //Beacon:2, PS-Poll:1, Null Data:1,Qos Null Data:1,BT Qos Null Data:1
 #define BCNQ_PAGE_NUM_8723B		0x08
-#ifdef CONFIG_CONCURRENT_MODE
-#define BCNQ1_PAGE_NUM_8723B		0x08 // 0x04
-#else
 #define BCNQ1_PAGE_NUM_8723B		0x00
-#endif
 
 #ifdef CONFIG_PNO_SUPPORT
 #undef BCNQ1_PAGE_NUM_8723B

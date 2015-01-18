@@ -1622,26 +1622,6 @@ static int rtw_wx_set_wap(struct net_device *dev,
 	NDIS_802_11_AUTHENTICATION_MODE	authmode;
 
 	_func_enter_;
-/*
-#ifdef CONFIG_CONCURRENT_MODE
-	if(padapter->iface_type > PRIMARY_IFACE)
-	{
-		ret = -EINVAL;
-		goto exit;
-	}
-#endif	
-*/	
-
-#ifdef CONFIG_CONCURRENT_MODE
-	if (check_buddy_fwstate(padapter, _FW_UNDER_SURVEY|_FW_UNDER_LINKING) == true)
-	{
-		DBG_871X("set bssid, but buddy_intf is under scanning or linking\n");
-
-		ret = -EINVAL;
-
-		goto exit;
-	}
-#endif
 
 #ifdef CONFIG_DUALMAC_CONCURRENT
 	if (dc_check_fwstate(padapter, _FW_UNDER_SURVEY|_FW_UNDER_LINKING)== true)
@@ -1814,15 +1794,7 @@ _func_enter_;
 	#ifdef DBG_IOCTL
 	DBG_871X("DBG_IOCTL %s:%d\n",__FUNCTION__, __LINE__);
 	#endif
-/*
-#ifdef CONFIG_CONCURRENT_MODE
-	if(padapter->iface_type > PRIMARY_IFACE)
-	{
-		ret = -1;
-		goto exit;
-	}
-#endif
-*/
+
 	rtw_ps_deny(padapter, PS_DENY_SCAN);
 	if(_FAIL == rtw_pwr_wakeup(padapter))
 	{
@@ -1849,11 +1821,7 @@ _func_enter_;
 	// When Busy Traffic, driver do not site survey. So driver return success.
 	// wpa_supplicant will not issue SIOCSIWSCAN cmd again after scan timeout.
 	// modify by thomas 2011-02-22.
-	if (pmlmepriv->LinkDetectInfo.bBusyTraffic == true
-#ifdef CONFIG_CONCURRENT_MODE
-	|| rtw_get_buddy_bBusyTraffic(padapter) == true
-#endif //CONFIG_CONCURRENT_MODE
-	)
+	if (pmlmepriv->LinkDetectInfo.bBusyTraffic == true)
 	{
 		indicate_wx_scan_complete_event(padapter);
 		goto exit;
@@ -1864,15 +1832,6 @@ _func_enter_;
 		indicate_wx_scan_complete_event(padapter);
 		goto exit;
 	} 
-
-#ifdef CONFIG_CONCURRENT_MODE
-	if (check_buddy_fwstate(padapter,
-		_FW_UNDER_SURVEY|_FW_UNDER_LINKING|WIFI_UNDER_WPS) == true)
-	{
-		indicate_wx_scan_complete_event(padapter);
-		goto exit;
-	}
-#endif
 
 #ifdef CONFIG_DUALMAC_CONCURRENT
 	if (dc_check_fwstate(padapter, _FW_UNDER_SURVEY|_FW_UNDER_LINKING)== true)
@@ -2015,10 +1974,7 @@ static int rtw_wx_get_scan(struct net_device *dev, struct iw_request_info *a,
 	u32 cnt=0;
 	u32 wait_for_surveydone;
 	sint wait_status;
-#ifdef CONFIG_CONCURRENT_MODE
-	//PADAPTER pbuddy_adapter = padapter->pbuddy_adapter;
-	//struct mlme_priv *pbuddy_mlmepriv = &(pbuddy_adapter->mlmepriv);	
-#endif
+
 	RT_TRACE(_module_rtl871x_mlme_c_,_drv_info_,("rtw_wx_get_scan\n"));
 	RT_TRACE(_module_rtl871x_ioctl_os_c,_drv_info_, (" Start of Query SIOCGIWSCAN .\n"));
 
@@ -2027,15 +1983,7 @@ static int rtw_wx_get_scan(struct net_device *dev, struct iw_request_info *a,
 	#ifdef DBG_IOCTL
 	DBG_871X("DBG_IOCTL %s:%d\n",__FUNCTION__, __LINE__);
 	#endif
-/*
-#ifdef CONFIG_CONCURRENT_MODE
-	if(padapter->iface_type > PRIMARY_IFACE)
-	{
-		ret = -EINVAL;
-		goto exit;
-	}
-#endif
-*/	
+
 	if(adapter_to_pwrctl(padapter)->brfoffbyhw && padapter->bDriverStopped)
 	{
 		ret = -EINVAL;
@@ -2124,27 +2072,6 @@ static int rtw_wx_set_essid(struct net_device *dev,
 	#ifdef DBG_IOCTL
 	DBG_871X("DBG_IOCTL %s:%d\n",__FUNCTION__, __LINE__);
 	#endif
-	
-/*
-#ifdef CONFIG_CONCURRENT_MODE
-	if(padapter->iface_type > PRIMARY_IFACE)
-	{
-		ret = -EINVAL;
-		goto exit;
-	}
-#endif
-*/
-
-#ifdef CONFIG_CONCURRENT_MODE
-	if (check_buddy_fwstate(padapter, _FW_UNDER_SURVEY|_FW_UNDER_LINKING) == true)
-	{		
-		DBG_871X("set ssid, but buddy_intf is under scanning or linking\n");
-		
-		ret = -EINVAL;
-		
-		goto exit;
-	}
-#endif
 
 #ifdef CONFIG_DUALMAC_CONCURRENT
 	if (dc_check_fwstate(padapter, _FW_UNDER_SURVEY|_FW_UNDER_LINKING)== true)
@@ -3616,11 +3543,6 @@ static int rtw_rereg_nd_name(struct net_device *dev,
 
 	if(rereg_priv->old_ifname[0] == 0) {
 		char *reg_ifname;
-#ifdef CONFIG_CONCURRENT_MODE 
-		if (padapter->isprimary)
-			reg_ifname = padapter->registrypriv.ifname;
-		else
-#endif
 		reg_ifname = padapter->registrypriv.if2name;
 
 		strncpy(rereg_priv->old_ifname, reg_ifname, IFNAMSIZ);
@@ -5821,9 +5743,6 @@ static int rtw_wowlan_ctrl(struct net_device *dev,
 	struct pwrctrl_priv *pwrctrlpriv = adapter_to_pwrctl(padapter);
 	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
 	struct net_device *pnetdev = padapter->pnetdev;
-#ifdef CONFIG_CONCURRENT_MODE
-	struct net_device *pbuddy_netdev = padapter->pbuddy_adapter->pnetdev;	
-#endif
 	struct sta_info	*psta = NULL;
 	int ret = 0;
 	unsigned long start_time = jiffies;
@@ -5853,12 +5772,6 @@ static int rtw_wowlan_ctrl(struct net_device *dev,
 		rtw_ps_deny(padapter, PS_DENY_SUSPEND);
 
 		rtw_cancel_all_timer(padapter);
-
-#ifdef CONFIG_CONCURRENT_MODE
-		if (padapter->pbuddy_adapter){
-			rtw_cancel_all_timer(padapter->pbuddy_adapter);
-		}
-#endif // CONFIG_CONCURRENT_MODE
 
 		LeaveAllPowerSaveModeDirect(padapter);
 

@@ -1055,11 +1055,6 @@ void EnableInterrupt8723BSdio(PADAPTER padapter)
 	PHAL_DATA_TYPE pHalData;
 	u32 himr;
 
-#ifdef CONFIG_CONCURRENT_MODE
-	if ((padapter->isprimary == false) && padapter->pbuddy_adapter){
-		padapter = padapter->pbuddy_adapter;
-	}
-#endif
 	pHalData = GET_HAL_DATA(padapter);
 
 	himr = cpu_to_le32(pHalData->sdio_himr);
@@ -1096,11 +1091,6 @@ void DisableInterrupt8723BSdio(PADAPTER padapter)
 {
 	u32 himr;
 
-#ifdef CONFIG_CONCURRENT_MODE
-	if ((padapter->isprimary == false) && padapter->pbuddy_adapter){
-		padapter = padapter->pbuddy_adapter;
-	}
-#endif
 	himr = cpu_to_le32(SDIO_HIMR_DISABLED);
 	sdio_local_write(padapter, SDIO_REG_HIMR, 4, (u8*)&himr);
 
@@ -1131,11 +1121,6 @@ void DisableInterruptButCpwm28723BSdio(PADAPTER padapter)
 {
 	u32 himr, tmp;
 
-#ifdef CONFIG_CONCURRENT_MODE
-	if ((padapter->isprimary == false) && padapter->pbuddy_adapter){
-		padapter = padapter->pbuddy_adapter;
-	}
-#endif
 	sdio_local_read(padapter, SDIO_REG_HIMR, 4, (u8*)&tmp);
 	DBG_871X("DisableInterruptButCpwm28723BSdio(): Read SDIO_REG_HIMR: 0x%08x\n", tmp);
 	
@@ -1160,11 +1145,6 @@ static void UpdateInterruptMask8723BSdio(PADAPTER padapter, u32 AddMSR, u32 Remo
 {
 	HAL_DATA_TYPE *pHalData;
 
-#ifdef CONFIG_CONCURRENT_MODE
-	if ((padapter->isprimary == false) && padapter->pbuddy_adapter){
-		padapter = padapter->pbuddy_adapter;
-	}
-#endif
 	pHalData = GET_HAL_DATA(padapter);
 
 	if (AddMSR)

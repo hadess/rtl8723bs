@@ -106,12 +106,6 @@
 /*
  * Auto Config Section
  */
-
-//#define CONFIG_CONCURRENT_MODE
-#ifdef CONFIG_CONCURRENT_MODE
-#endif	// CONFIG_CONCURRENT_MODE
-
-
 	#define CONFIG_IPS
 	#define CONFIG_LPS
 

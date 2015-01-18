@@ -29,12 +29,7 @@ static u8 rtw_sdio_wait_enough_TxOQT_space(PADAPTER padapter, u8 agg_num)
 	while (pHalData->SdioTxOQTFreeSpace < agg_num) 
 	{
 		if ((padapter->bSurpriseRemoved == true) 
-			|| (padapter->bDriverStopped == true)
-#ifdef CONFIG_CONCURRENT_MODE
-			||((padapter->pbuddy_adapter) 
-		&& ((padapter->pbuddy_adapter->bSurpriseRemoved) ||(padapter->pbuddy_adapter->bDriverStopped)))
-#endif		
-		){
+			|| (padapter->bDriverStopped == true)){
 			DBG_871X("%s: bSurpriseRemoved or bDriverStopped (wait TxOQT)\n", __func__);
 			return false;
 		}
@@ -75,14 +70,6 @@ static s32 rtl8723_dequeue_writeport(PADAPTER padapter)
 	u32	polling_num = 0;
 #endif
 
-
-#ifdef CONFIG_CONCURRENT_MODE
-	if (padapter->adapter_type > 0)
-		pri_padapter = padapter->pbuddy_adapter;
-
-	if (rtw_buddy_adapter_up(padapter))
-		ret = check_buddy_fwstate(padapter, _FW_UNDER_SURVEY);
-#endif
 
 	ret = ret || check_fwstate(pmlmepriv, _FW_UNDER_SURVEY);
 
@@ -141,12 +128,7 @@ query_free_page:
 	}
 
 	if ((padapter->bSurpriseRemoved == true) 
-		|| (padapter->bDriverStopped == true)
-#ifdef CONFIG_CONCURRENT_MODE
-		||((padapter->pbuddy_adapter) 
-		&& ((padapter->pbuddy_adapter->bSurpriseRemoved) ||(padapter->pbuddy_adapter->bDriverStopped)))
-#endif
-	){
+		|| (padapter->bDriverStopped == true)){
 		RT_TRACE(_module_hal_xmit_c_, _drv_notice_,
 			 ("%s: bSurpriseRemoved(wirte port)\n", __FUNCTION__));
 		goto free_xmitbuf;
@@ -209,11 +191,6 @@ s32 rtl8723bs_xmit_buf_handler(PADAPTER padapter)
 
 	queue_pending = check_pending_xmitbuf(pxmitpriv);
 
-#ifdef CONFIG_CONCURRENT_MODE
-	if(rtw_buddy_adapter_up(padapter))
-		queue_pending |= check_pending_xmitbuf(&padapter->pbuddy_adapter->xmitpriv);
-#endif
-
 	if(queue_pending == false)
 		return _SUCCESS;
 
@@ -227,10 +204,6 @@ s32 rtl8723bs_xmit_buf_handler(PADAPTER padapter)
 	do {
 		queue_empty = rtl8723_dequeue_writeport(padapter);
 //	dump secondary adapter xmitbuf
-#ifdef CONFIG_CONCURRENT_MODE
-		if(rtw_buddy_adapter_up(padapter))
-			queue_empty &= rtl8723_dequeue_writeport(padapter->pbuddy_adapter);
-#endif
 	} while ( !queue_empty);
 
 #ifdef CONFIG_LPS_LCLK
@@ -355,12 +328,7 @@ static s32 xmit_xmitframes(PADAPTER padapter, struct xmit_priv *pxmitpriv)
 #endif
 						err = -2;
 #ifdef CONFIG_SDIO_TX_ENABLE_AVAL_INT
-	#ifdef CONFIG_CONCURRENT_MODE
-						if (padapter->adapter_type > PRIMARY_ADAPTER)
-							up(&(padapter->pbuddy_adapter->xmitpriv.xmit_sema));
-						else
-	#endif
-							up(&(pxmitpriv->xmit_sema));
+						up(&(pxmitpriv->xmit_sema));
 #endif
 						break;
 					}

@@ -48,43 +48,16 @@ void rtw_btcoex_LpsNotify(PADAPTER padapter, u8 type)
 
 void rtw_btcoex_ScanNotify(PADAPTER padapter, u8 type)
 {
-#ifdef CONFIG_CONCURRENT_MODE
-	if ((false == type) && (padapter->pbuddy_adapter))
-	{
-		PADAPTER pbuddy = padapter->pbuddy_adapter;
-		if (check_fwstate(&pbuddy->mlmepriv, WIFI_SITE_MONITOR) == true)
-			return;
-	}
-#endif
-
 	hal_btcoex_ScanNotify(padapter, type);
 }
 
 void rtw_btcoex_ConnectNotify(PADAPTER padapter, u8 action)
 {
-#ifdef CONFIG_CONCURRENT_MODE
-	if ((false == action) && (padapter->pbuddy_adapter))
-	{
-		PADAPTER pbuddy = padapter->pbuddy_adapter;
-		if (check_fwstate(&pbuddy->mlmepriv, WIFI_UNDER_LINKING) == true)
-			return;
-	}
-#endif
-
 	hal_btcoex_ConnectNotify(padapter, action);
 }
 
 void rtw_btcoex_MediaStatusNotify(PADAPTER padapter, u8 mediaStatus)
 {
-#ifdef CONFIG_CONCURRENT_MODE
-	if ((RT_MEDIA_DISCONNECT == mediaStatus) && (padapter->pbuddy_adapter))
-	{
-		PADAPTER pbuddy = padapter->pbuddy_adapter;
-		if (check_fwstate(&pbuddy->mlmepriv, WIFI_ASOC_STATE) == true)
-			return;
-	}
-#endif // CONFIG_CONCURRENT_MODE
-
 	if ((RT_MEDIA_CONNECT == mediaStatus)
 		&& (check_fwstate(&padapter->mlmepriv, WIFI_AP_STATE) == true))
 	{
@@ -152,11 +125,6 @@ u8 rtw_btcoex_IsBtDisabled(PADAPTER padapter)
 
 void rtw_btcoex_Handler(PADAPTER padapter)
 {
-#if defined(CONFIG_CONCURRENT_MODE)
-	if (padapter->adapter_type != PRIMARY_ADAPTER)
-		return;
-#endif
-
 	hal_btcoex_Hanlder(padapter);
 }
 

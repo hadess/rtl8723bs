@@ -263,30 +263,6 @@ IN	PADAPTER	pAdapter
 
 	//1 1.Determine the minimum RSSI
 
-
-#ifdef CONFIG_CONCURRENT_MODE
-	//	FindMinimumRSSI()	per-adapter
-	{
-		PADAPTER pbuddy_adapter = pAdapter->pbuddy_adapter;
-		PHAL_DATA_TYPE	pbuddy_HalData = GET_HAL_DATA(pbuddy_adapter);
-		struct dm_priv *pbuddy_dmpriv = &pbuddy_HalData->dmpriv;
-
-		if((pdmpriv->EntryMinUndecoratedSmoothedPWDB != 0) &&
-                  (pbuddy_dmpriv->EntryMinUndecoratedSmoothedPWDB != 0))
-      		{
-
-			if(pdmpriv->EntryMinUndecoratedSmoothedPWDB > pbuddy_dmpriv->EntryMinUndecoratedSmoothedPWDB)
-				pdmpriv->EntryMinUndecoratedSmoothedPWDB = pbuddy_dmpriv->EntryMinUndecoratedSmoothedPWDB;
-             }
-		else
-		{
-			if(pdmpriv->EntryMinUndecoratedSmoothedPWDB == 0)
-			      pdmpriv->EntryMinUndecoratedSmoothedPWDB = pbuddy_dmpriv->EntryMinUndecoratedSmoothedPWDB;
-
-		}
-	}
-#endif
-
 	if((check_fwstate(pmlmepriv, _FW_LINKED) == false) &&
 		(pdmpriv->EntryMinUndecoratedSmoothedPWDB == 0))
 	{
@@ -318,9 +294,6 @@ rtl8723b_HalDmWatchDog(
 	u8 hw_init_completed = false;
 	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(Adapter);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
-#ifdef CONFIG_CONCURRENT_MODE
-	PADAPTER pbuddy_adapter = Adapter->pbuddy_adapter;
-#endif //CONFIG_CONCURRENT_MODE
 
 	hw_init_completed = Adapter->hw_init_completed;
 
@@ -358,14 +331,6 @@ rtl8723b_HalDmWatchDog(
 			if (check_fwstate(&Adapter->mlmepriv, WIFI_STATION_STATE))
 				bsta_state = true;
 		}
-			
-#ifdef CONFIG_CONCURRENT_MODE
-		if(pbuddy_adapter && rtw_linked_check(pbuddy_adapter)){
-			bLinked = true;
-			if(pbuddy_adapter && check_fwstate(&pbuddy_adapter->mlmepriv, WIFI_STATION_STATE))
-				bsta_state = true;
-		}
-#endif //CONFIG_CONCURRENT_MODE
 
 		ODM_CmnInfoUpdate(&pHalData->odmpriv ,ODM_CMNINFO_LINK, bLinked);
 		ODM_CmnInfoUpdate(&pHalData->odmpriv ,ODM_CMNINFO_STATION_STATE, bsta_state);
@@ -432,9 +397,6 @@ void rtl8723b_HalDmWatchDog_in_LPS(IN	PADAPTER	Adapter)
 	pDIG_T	pDM_DigTable = &pDM_Odm->DM_DigTable;
 	struct sta_priv *pstapriv = &Adapter->stapriv;
 	struct sta_info *psta = NULL;
-#ifdef CONFIG_CONCURRENT_MODE
-	PADAPTER pbuddy_adapter = Adapter->pbuddy_adapter;
-#endif //CONFIG_CONCURRENT_MODE
 
 	if (Adapter->hw_init_completed == false)
 		goto skip_lps_dm;
@@ -442,11 +404,6 @@ void rtl8723b_HalDmWatchDog_in_LPS(IN	PADAPTER	Adapter)
 
 	if(rtw_linked_check(Adapter))
 		bLinked = true;
-
-#ifdef CONFIG_CONCURRENT_MODE
-	if (pbuddy_adapter && rtw_linked_check(pbuddy_adapter))
-		bLinked = true;
-#endif //CONFIG_CONCURRENT_MODE
 
 	ODM_CmnInfoUpdate(&pHalData->odmpriv ,ODM_CMNINFO_LINK, bLinked);
 

@@ -282,13 +282,8 @@ struct registry_priv
 #include <drv_types_sdio.h>
 #define INTF_DATA SDIO_DATA
 
-#ifdef CONFIG_CONCURRENT_MODE
-#define is_primary_adapter(adapter) (adapter->adapter_type == PRIMARY_ADAPTER)
-#define get_iface_type(adapter) (adapter->iface_type)
-#else
 #define is_primary_adapter(adapter) (1)
 #define get_iface_type(adapter) (IFACE_PORT0)
-#endif
 #define GET_PRIMARY_ADAPTER(padapter) (((_adapter *)padapter)->dvobj->if1)
 #define GET_IFACE_NUMS(padapter) (((_adapter *)padapter)->dvobj->iface_nums)
 #define GET_ADAPTER(padapter, iface_id) (((_adapter *)padapter)->dvobj->padapters[iface_id])
@@ -712,7 +707,7 @@ struct _ADAPTER{
 	//for PRIMARY_ADAPTER(IFACE_ID0) can directly refer to if1 in struct dvobj_priv
 	_adapter *pbuddy_adapter;
 
-#if defined(CONFIG_CONCURRENT_MODE) || defined(CONFIG_DUALMAC_CONCURRENT)
+#if defined(CONFIG_DUALMAC_CONCURRENT)
 	u8 isprimary; //is primary adapter or not
 	//notes:
 	// if isprimary is true, the adapter_type value is 0, iface_id is IFACE_ID0 for PRIMARY_ADAPTER
@@ -720,7 +715,7 @@ struct _ADAPTER{
 	// refer to iface_id if iface_nums>2 and isprimary is false and the adapter_type value is 0xff.
 	u8 adapter_type;//used only in  two inteface case(PRIMARY_ADAPTER and SECONDARY_ADAPTER) .
 	u8 iface_type; //interface port type, it depends on HW port
-#endif //CONFIG_CONCURRENT_MODE || CONFIG_DUALMAC_CONCURRENT
+#endif //CONFIG_DUALMAC_CONCURRENT
 
 	//extend to support multi interface
        //IFACE_ID0 is equals to PRIMARY_ADAPTER
