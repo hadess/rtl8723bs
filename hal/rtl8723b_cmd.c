@@ -417,18 +417,6 @@ static void ConstructARPResponse(
 	*pLength = 24;
 #endif
 
-//YJ,del,120503
-#if 0
-	//-------------------------------------------------------------------------
-	// Qos Header: leave space for it if necessary.
-	//-------------------------------------------------------------------------
-	if(pStaQos->CurrentQosMode > QOS_DISABLE)
-	{
-		SET_80211_HDR_QOS_EN(pARPRspPkt, 1);
-		PlatformZeroMemory(&(Buffer[*pLength]), sQoSCtlLng);
-		*pLength += sQoSCtlLng;
-	}
-#endif
 	//-------------------------------------------------------------------------
 	// Security Header: leave space for it if necessary.
 	//-------------------------------------------------------------------------
@@ -705,18 +693,6 @@ static void ConstructGTKResponse(
 	*pLength = 24;
 #endif //CONFIG_WAPI_SUPPORT
 
-//YJ,del,120503
-#if 0
-	//-------------------------------------------------------------------------
-	// Qos Header: leave space for it if necessary.
-	//-------------------------------------------------------------------------
-	if(pStaQos->CurrentQosMode > QOS_DISABLE)
-	{
-		SET_80211_HDR_QOS_EN(pGTKRspPkt, 1);
-		PlatformZeroMemory(&(Buffer[*pLength]), sQoSCtlLng);
-		*pLength += sQoSCtlLng;
-	}
-#endif //0
 	//-------------------------------------------------------------------------
 	// Security Header: leave space for it if necessary.
 	//-------------------------------------------------------------------------
@@ -1504,98 +1480,6 @@ static void rtl8723b_set_FwScanOffloadInfo_cmd(PADAPTER padapter, PRSVDPAGE_LOC 
 }
 #endif //CONFIG_PNO_SUPPORT
 
-#if 0
-void dump_TX_FIFO(_adapter* padapter){
-	int i;
-	u8 val = 0 ;
-	u8 base = 0;
-	u32 addr = 0;
-
-	DBG_871X("+%s+\n", __func__);
-	val = rtw_read8(padapter, 0x106);
-	rtw_write8(padapter, 0x106, 0x69);
-	DBG_871X("0x106: 0x%02x\n", val);
-	base = rtw_read8(padapter, 0x209);
-	DBG_871X("0x209: 0x%02x\n", base);
-
-	DBG_871X("beacon:\n");
-	addr = ((base)*128)/8;
-	for (i = 0 ; i < 32 ; i+=2) {
-		rtw_write32(padapter, 0x140, addr + i);
-		printk(" %08x %08x ", rtw_read32(padapter, 0x144), rtw_read32(padapter, 0x148));
-		rtw_write32(padapter, 0x140, addr + i + 1);
-		printk(" %08x %08x \n", rtw_read32(padapter, 0x144), rtw_read32(padapter, 0x148));
-	}
-
-	DBG_871X("probe_response:\n");
-	addr = ((base + 2)*128)/8;
-	for (i = 0 ; i < 48 ; i+=2) {
-		rtw_write32(padapter, 0x140, addr + i);
-		printk(" %08x %08x ", rtw_read32(padapter, 0x144), rtw_read32(padapter, 0x148));
-		rtw_write32(padapter, 0x140, addr + i + 1);
-		printk(" %08x %08x \n", rtw_read32(padapter, 0x144), rtw_read32(padapter, 0x148));
-	}
-#if 0
-	DBG_871X("GTK Info:\n");
-	addr = ((base + 8)*128)/8;
-	for (i = 0 ; i < 4 ; i+=2) {
-		rtw_write32(padapter, 0x140, addr + i);
-		printk(" %08x %08x ", rtw_read32(padapter, 0x144), rtw_read32(padapter, 0x148));
-		rtw_write32(padapter, 0x140, addr + i + 1);
-		printk(" %08x %08x \n", rtw_read32(padapter, 0x144), rtw_read32(padapter, 0x148));
-	}
-
-	DBG_871X("GTK Rsp:\n");
-	addr = ((base + 9)*128)/8;
-	for (i = 0 ; i < 32 ; i+=2) {
-		rtw_write32(padapter, 0x140, addr + i);
-		printk(" %08x %08x ", rtw_read32(padapter, 0x144), rtw_read32(padapter, 0x148));
-		rtw_write32(padapter, 0x140, addr + i + 1);
-		printk(" %08x %08x \n", rtw_read32(padapter, 0x144), rtw_read32(padapter, 0x148));
-	}
-#endif
-#if 0
-	DBG_871X("probe request:\n");
-	addr = ((base + 6)*128)/8;
-	for (i = 0 ; i < 16 ; i+=2) {
-		rtw_write32(padapter, 0x140, addr + i);
-		printk(" %08x %08x ", rtw_read32(padapter, 0x144), rtw_read32(padapter, 0x148));
-		rtw_write32(padapter, 0x140, addr + i + 1);
-		printk(" %08x %08x \n", rtw_read32(padapter, 0x144), rtw_read32(padapter, 0x148));
-	}
-
-	DBG_871X("PNO_INFO:\n");
-	addr = ((base + 7)*128)/8;
-	for (i = 0 ; i < 16 ; i+=2) {
-		rtw_write32(padapter, 0x140, addr + i);
-		printk(" %08x %08x ", rtw_read32(padapter, 0x144), rtw_read32(padapter, 0x148));
-		rtw_write32(padapter, 0x140, addr + i + 1);
-		printk(" %08x %08x \n", rtw_read32(padapter, 0x144), rtw_read32(padapter, 0x148));
-	}
-
-	DBG_871X("SSID_INFO:\n");
-	addr = ((base + 8)*128)/8;
-	for (i = 0 ; i < 16 ; i+=2) {
-		rtw_write32(padapter, 0x140, addr + i);
-		printk(" %08x %08x ", rtw_read32(padapter, 0x144), rtw_read32(padapter, 0x148));
-		rtw_write32(padapter, 0x140, addr + i + 1);
-		printk(" %08x %08x \n", rtw_read32(padapter, 0x144), rtw_read32(padapter, 0x148));
-	}
-
-	DBG_871X("SCAN_INFO:\n");
-	addr = ((base + 9)*128)/8;
-	for (i = 0 ; i < 16 ; i+=2) {
-		rtw_write32(padapter, 0x140, addr + i);
-		printk(" %08x %08x ", rtw_read32(padapter, 0x144), rtw_read32(padapter, 0x148));
-		rtw_write32(padapter, 0x140, addr + i + 1);
-		printk(" %08x %08x \n", rtw_read32(padapter, 0x144), rtw_read32(padapter, 0x148));
-	}
-#endif
-	rtw_write8(padapter, 0x106, val);
-	DBG_871X("-%s-\n", __func__);
-}
-#endif
-
 static void rtl8723b_set_FwWoWlanRelated_cmd(_adapter* padapter, u8 enable)
 {
 	struct security_priv *psecpriv = &padapter->securitypriv;
@@ -1640,9 +1524,6 @@ _func_enter_;
 	}
 	else
 	{
-#if 0
-		dump_TX_FIFO(padapter, 11, 128);
-#endif
 		rtl8723b_set_FwRemoteWakeCtrl_Cmd(padapter, enable);
 		msleep(2);			
 		rtl8723b_set_FwWoWlanCtrl_Cmd(padapter, enable);
@@ -1730,11 +1611,7 @@ _func_enter_;
 		issue_beacon(padapter, 0);
 #endif
 	}
-#if 0
-	else
 
-		dump_TX_FIFO(padapter);
-#endif
 	rtl8723b_set_FwAPWoWlanCtrl_Cmd(padapter, enable);
 	msleep(10);
 	rtl8723b_set_Fw_AP_Offload_Cmd(padapter, enable);
@@ -1868,27 +1745,6 @@ static void rtl8723b_set_FwRsvdPagePkt(PADAPTER padapter, bool bDLFinished)
 
 	BufIndex += (CurtPktPageNum*PageSize);
 
-#if 0
-	//3 (4) probe response
-	RsvdPageLoc.LocProbeRsp = TotalPageNum;
-	ConstructProbeRsp(
-		padapter,
-		&ReservedPagePacket[BufIndex],
-		&ProbeRspLength,
-		get_my_bssid(&pmlmeinfo->network),
-		false);
-	rtl8723b_fill_fake_txdesc(padapter, &ReservedPagePacket[BufIndex-TxDescLen], ProbeRspLength, false, false, false);
-
-	//DBG_871X("%s(): HW_VAR_SET_TX_CMD: PROBE RSP %p %d\n", 
-	//	__FUNCTION__, &ReservedPagePacket[BufIndex-TxDescLen], (ProbeRspLength+TxDescLen));
-
-	CurtPktPageNum = (u8)PageNum_128(TxDescLen + ProbeRspLength);
-
-	TotalPageNum += CurtPktPageNum;
-
-	BufIndex += (CurtPktPageNum*PageSize);
-#endif
-
 	//3 (5) Qos null data
 	RsvdPageLoc.LocQosNull = TotalPageNum;
 	ConstructNullFunctionData(
@@ -1986,19 +1842,6 @@ static void rtl8723b_set_FwRsvdPagePkt(PADAPTER padapter, bool bDLFinished)
 	RsvdPageLoc.LocGTKInfo = TotalPageNum;
 	memcpy(ReservedPagePacket+BufIndex-TxDescLen, kck, RTW_KCK_LEN);
 	memcpy(ReservedPagePacket+BufIndex-TxDescLen+RTW_KCK_LEN, kek, RTW_KEK_LEN);
-	
-#if 0
-	{
-		int i;
-		printk("\ntoFW KCK: ");
-		for(i=0;i<16; i++)
-			printk(" %02x ", kck[i]);
-		printk("\ntoFW KEK: ");
-		for(i=0;i<16; i++)
-			printk(" %02x ", kek[i]);
-		printk("\n");
-	}
-#endif
 
 	//DBG_871X("%s(): HW_VAR_SET_TX_CMD: KEK KCK %p %d\n", 
 	//	__FUNCTION__, &ReservedPagePacket[BufIndex-TxDescLen], (TxDescLen + RTW_KCK_LEN + RTW_KEK_LEN));
@@ -2018,19 +1861,6 @@ static void rtl8723b_set_FwRsvdPagePkt(PADAPTER padapter, bool bDLFinished)
 		);
 
 	rtl8723b_fill_fake_txdesc(padapter, &ReservedPagePacket[BufIndex-TxDescLen], GTKLegnth, false, false, true);
-#if 0
-	{
-		int gj;
-		printk("123GTK pkt=> \n");
-		for(gj=0; gj < GTKLegnth+TxDescLen; gj++) {
-			printk(" %02x ", ReservedPagePacket[BufIndex-TxDescLen+gj]);
-			if ((gj + 1)%16==0)
-				printk("\n");
-		}
-		printk(" <=end\n");
-	}
-#endif
-
 	//DBG_871X("%s(): HW_VAR_SET_TX_CMD: GTK RSP %p %d\n", 
 	//	__FUNCTION__, &ReservedPagePacket[BufIndex-TxDescLen], (TxDescLen + GTKLegnth));
 
@@ -2473,13 +2303,6 @@ void rtl8723b_Add_RateATid(PADAPTER pAdapter, u32 bitmap, u8* arg, u8 rssi_level
 	DBG_871X("%s(): mac_id=%d raid=0x%x bw=%d mask=0x%x\n", __func__, mac_id, raid, bw, mask);
 	rtl8723b_set_FwMacIdConfig_cmd(pAdapter, mac_id, raid, bw, shortGI, mask);
 }
-
-#if 0
-void rtl8723b_fw_try_ap_cmd(PADAPTER padapter, u32 need_ack)
-{
-	rtl8723b_set_FwAPReqRPT_cmd(padapter, need_ack);
-}
-#endif
 
 static void ConstructBtNullFunctionData(
 	PADAPTER padapter,

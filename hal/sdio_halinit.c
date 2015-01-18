@@ -642,16 +642,6 @@ static void HalRxAggr8723BSdio(PADAPTER padapter)
 		valueDMATimeout = 0x06;
 		valueDMAPageCount = 0x06;
 #endif
-#if 0
-		// TX/RX Balance, but TCP ack may be late
-		valueDMATimeout = 0x16;
-		valueDMAPageCount = 0x06;
-#endif
-#if 0
-		// RX Best
-		valueDMATimeout = 0x16;
-		valueDMAPageCount = 0x08;
-#endif
 	}
 
 #ifdef CONFIG_DONT_CARE_TP
@@ -750,11 +740,6 @@ static void _InitOperationMode(PADAPTER padapter)
 			break;
 		case WIRELESS_MODE_A:
 //			RT_ASSERT(false,("Error wireless a mode\n"));
-#if 0
-			regBwOpMode = BW_OPMODE_5G |BW_OPMODE_20MHZ;
-			regRATR = RATE_ALL_OFDM_AG;
-			regRRSR = RATE_ALL_OFDM_AG;
-#endif
 			break;
 		case WIRELESS_MODE_G:
 			regBwOpMode = BW_OPMODE_20MHZ;
@@ -762,20 +747,9 @@ static void _InitOperationMode(PADAPTER padapter)
 			regRRSR = RATE_ALL_CCK | RATE_ALL_OFDM_AG;
 			break;
 		case WIRELESS_MODE_AUTO:
-#if 0
-			if (padapter->bInHctTest)
-			{
-				regBwOpMode = BW_OPMODE_20MHZ;
-				regRATR = RATE_ALL_CCK | RATE_ALL_OFDM_AG;
-				regRRSR = RATE_ALL_CCK | RATE_ALL_OFDM_AG;
-			}
-			else
-#endif
-			{
-				regBwOpMode = BW_OPMODE_20MHZ;
-				regRATR = RATE_ALL_CCK | RATE_ALL_OFDM_AG | RATE_ALL_OFDM_1SS | RATE_ALL_OFDM_2SS;
-				regRRSR = RATE_ALL_CCK | RATE_ALL_OFDM_AG;
-			}
+			regBwOpMode = BW_OPMODE_20MHZ;
+			regRATR = RATE_ALL_CCK | RATE_ALL_OFDM_AG | RATE_ALL_OFDM_1SS | RATE_ALL_OFDM_2SS;
+			regRRSR = RATE_ALL_CCK | RATE_ALL_OFDM_AG;
 			break;
 		case WIRELESS_MODE_N_24G:
 			// It support CCK rate by default.
@@ -786,11 +760,9 @@ static void _InitOperationMode(PADAPTER padapter)
 			break;
 		case WIRELESS_MODE_N_5G:
 //			RT_ASSERT(false,("Error wireless mode"));
-#if 0
 			regBwOpMode = BW_OPMODE_5G;
 			regRATR = RATE_ALL_OFDM_AG | RATE_ALL_OFDM_1SS | RATE_ALL_OFDM_2SS;
 			regRRSR = RATE_ALL_OFDM_AG;
-#endif
 			break;
 
 		default: //for MacOSX compiler warning.
@@ -1909,20 +1881,6 @@ _func_enter_;
 							// If RX_DMA is not idle, receive one pkt from DMA
 							res = sdio_local_read(padapter, SDIO_REG_RX0_REQ_LEN, 4, (u8*)&tmp);
 							len = le16_to_cpu(tmp);
-#if 0
-							//len = le16_to_cpu(*(u16*)data);
-							if (tmp == 0 && (rtw_read32(padapter, REG_RXPKT_NUM)&RXDMA_IDLE)){
-								res = sdio_local_read(padapter, SDIO_REG_HISR, 4, (u8*)&tmp1);
-								if(tmp1 & SDIO_HIMR_CPWM2_MSK)
-									sdio_local_write(padapter, SDIO_REG_HISR, 4, (u8*)&tmp1);
-								res = sdio_local_read(padapter, SDIO_REG_HISR, 4, (u8*)&tmp1);
-								DBG_871X_LEVEL(_drv_always_, "read SDIO_REG_HISR: 0x%08x and break\n", tmp1);
-								break;
-							}
-
-							res = RecvOnePkt(padapter, tmp);
-							DBG_871X_LEVEL(_drv_always_, "RecvOnePkt Result: %d\n", res);
-#else
 							DBG_871X_LEVEL(_drv_always_, "RX len:%d\n", len);
 							if (len > 0)
 									res = RecvOnePkt(padapter, len);
@@ -1930,8 +1888,7 @@ _func_enter_;
 									DBG_871X_LEVEL(_drv_always_, "read length fail %d\n", len);
 
 							DBG_871X_LEVEL(_drv_always_, "RecvOnePkt Result: %d\n", res);
-#endif
-					}
+                                                }
 					}while(trycnt--);
 					if(trycnt ==0)
 						DBG_871X_LEVEL(_drv_always_, "Stop RX DMA failed...... \n");

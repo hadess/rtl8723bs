@@ -122,23 +122,7 @@ static void update_recvframe_phyinfo(
 	pkt_info.bPacketToSelf = pkt_info.bPacketMatchBSSID && (!memcmp(get_ra(wlanhdr), myid(&padapter->eeprompriv), ETH_ALEN));
 
 	pkt_info.bPacketBeacon = pkt_info.bPacketMatchBSSID && (GetFrameSubType(wlanhdr) == WIFI_BEACON);
-/*
-	if(pkt_info.bPacketBeacon){
-		if(check_fwstate(&padapter->mlmepriv, WIFI_STATION_STATE) == true){
-			sa = padapter->mlmepriv.cur_network.network.MacAddress;
-			#if 0
-			{
-				DBG_8192C("==> rx beacon from AP[%02x:%02x:%02x:%02x:%02x:%02x]\n",
-					sa[0],sa[1],sa[2],sa[3],sa[4],sa[5]);
-			}
-			#endif
-		}
-		//to do Ad-hoc
-	}
-	else{
-		sa = get_sa(wlanhdr);
-	}
-*/
+
 	sa = get_ta(wlanhdr);
 
 	pkt_info.StationID = 0xFF;
@@ -578,32 +562,6 @@ static void rtl8723bs_recv_tasklet(void *priv)
 
 			update_recvframe_attrib(padapter, precvframe, (struct recv_stat*)ptr);
 
-#if 0
-			{
-				int i, len = 64;
-				u8 *pptr = ptr;
-
-				if((*(pptr + RXDESC_SIZE + pattrib->drvinfo_sz) != 0x80) && (*(pptr + RXDESC_SIZE + pattrib->drvinfo_sz) != 0x40))
-				{
-					DBG_871X("##############RxDESC############### \n");
-					for(i=0; i<32;i=i+16)
-						DBG_871X("%02X:%02X:%02X:%02X:%02X:%02X:%02X:%02X:%02X:%02X:%02X:%02X:%02X:%02X:%02X:%02X:\n", *(pptr+i),
-						*(pptr+i+1), *(pptr+i+2) ,*(pptr+i+3) ,*(pptr+i+4),*(pptr+i+5), *(pptr+i+6), *(pptr+i+7), *(pptr+i+8), *(pptr+i+9), *(pptr+i+10),
-						 *(pptr+i+11), *(pptr+i+12), *(pptr+i+13), *(pptr+i+14), *(pptr+i+15));
-					
-					if(pattrib->pkt_len < 100)
-						len = pattrib->pkt_len;
-					pptr = ptr + RXDESC_SIZE + pattrib->drvinfo_sz;
-					DBG_871X("##############Len=%d############### \n", pattrib->pkt_len);
-					for(i=0; i<len;i=i+16)
-						DBG_871X("%02X:%02X:%02X:%02X:%02X:%02X:%02X:%02X:%02X:%02X:%02X:%02X:%02X:%02X:%02X:%02X:\n", *(pptr+i),
-						*(pptr+i+1), *(pptr+i+2) ,*(pptr+i+3) ,*(pptr+i+4),*(pptr+i+5), *(pptr+i+6), *(pptr+i+7), *(pptr+i+8), *(pptr+i+9), *(pptr+i+10),
-						 *(pptr+i+11), *(pptr+i+12), *(pptr+i+13), *(pptr+i+14), *(pptr+i+15));
-					DBG_871X("############################# \n");
-				}
-			}
-#endif
-
 			// fix Hardware RX data error, drop whole recv_buffer
 			if ((!(pHalData->ReceiveConfig & RCR_ACRC32)) && pattrib->crc_err)
 			{
@@ -613,15 +571,6 @@ static void rtl8723bs_recv_tasklet(void *priv)
 			}
 
 			pkt_offset = RXDESC_SIZE + pattrib->drvinfo_sz + pattrib->pkt_len;
-#if 0 // reduce check to speed up
-			if ((ptr + pkt_offset) > precvbuf->ptail) {
-				RT_TRACE(_module_rtl871x_recv_c_, _drv_err_,
-						("%s: next pkt len(%p,%d) exceed ptail(%p)!\n",
-						__FUNCTION__, ptr, pkt_offset, precvbuf->ptail));
-				rtw_free_recvframe(precvframe, &precvpriv->free_recv_queue);
-				break;
-			}
-#endif
 
 			if ((pattrib->crc_err) || (pattrib->icv_err))
 			{

@@ -1597,53 +1597,6 @@ odm_RSSIMonitorCheckMP(
 {
 }
 
-//
-//sherry move from DUSC to here 20110517
-//
-static void
-FindMinimumRSSI_Dmsp(
-	IN	PADAPTER	pAdapter
-)
-{
-#if 0
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
-	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
-	s32	Rssi_val_min_back_for_mac0;
-	bool		bGetValueFromBuddyAdapter = dm_DualMacGetParameterFromBuddyAdapter(pAdapter);
-	bool		bRestoreRssi = false;
-	PADAPTER	BuddyAdapter = pAdapter->BuddyAdapter;
-
-	if(pHalData->MacPhyMode92D == DUALMAC_SINGLEPHY)
-	{
-		if(BuddyAdapter!= NULL)
-		{
-			if(pHalData->bSlaveOfDMSP)
-			{
-				//ODM_RT_TRACE(pDM_Odm,COMP_EASY_CONCURRENT,DBG_LOUD,("bSlavecase of dmsp\n"));
-				BuddyAdapter->DualMacDMSPControl.RssiValMinForAnotherMacOfDMSP = pdmpriv->MinUndecoratedPWDBForDM;
-			}
-			else
-			{
-				if(bGetValueFromBuddyAdapter)
-				{
-					//ODM_RT_TRACE(pDM_Odm,COMP_EASY_CONCURRENT,DBG_LOUD,("get new RSSI\n"));
-					bRestoreRssi = true;
-					Rssi_val_min_back_for_mac0 = pdmpriv->MinUndecoratedPWDBForDM;
-					pdmpriv->MinUndecoratedPWDBForDM = pAdapter->DualMacDMSPControl.RssiValMinForAnotherMacOfDMSP;
-				}
-			}
-		}
-		
-	}
-
-	if(bRestoreRssi)
-	{
-		bRestoreRssi = false;
-		pdmpriv->MinUndecoratedPWDBForDM = Rssi_val_min_back_for_mac0;
-	}
-#endif
-}
-
 static void
 FindMinimumRSSI(
 IN	PADAPTER	pAdapter
@@ -1712,11 +1665,6 @@ odm_RSSIMonitorCheckCE(
 
 					if(psta->rssi_stat.UndecoratedSmoothedPWDB > tmpEntryMaxPWDB)
 						tmpEntryMaxPWDB = psta->rssi_stat.UndecoratedSmoothedPWDB;
-
-					#if 0
-					DBG_871X("%s mac_id:%u, mac:"MAC_FMT", rssi:%d\n", __func__,
-						psta->mac_id, MAC_ARG(psta->hwaddr), psta->rssi_stat.UndecoratedSmoothedPWDB);
-					#endif
 
 					if(psta->rssi_stat.UndecoratedSmoothedPWDB != (-1)) {
 						PWDB_rssi[sta_cnt++] = (psta->mac_id | (psta->rssi_stat.UndecoratedSmoothedPWDB<<16) );
@@ -2590,12 +2538,6 @@ void odm_dtc(PDM_ODM_T pDM_Odm)
 	u8 sign;
 	u8 resp_txagc=0;
 
-	#if 0
-	/* As DIG is disabled, DTC is also disable */
-	if(!(pDM_Odm->SupportAbility & ODM_XXXXXX))
-		return;
-	#endif
-
 	if (DTC_BASE < pDM_Odm->RSSI_Min) {
 		/* need to decade the CTS TX power */
 		sign = 1;
@@ -2607,21 +2549,6 @@ void odm_dtc(PDM_ODM_T pDM_Odm)
 				dtc_steps++;
 		}
 	}
-#if 0
-	else if (DTC_DWN_BASE > pDM_Odm->RSSI_Min)
-	{
-		/* needs to increase the CTS TX power */
-		sign = 0;
-		dtc_steps = 1;
-		for (i=0;i<ARRAY_SIZE(dtc_table_up);i++)
-		{
-			if ((dtc_table_up[i] <= pDM_Odm->RSSI_Min) || (dtc_steps>=10))
-				break;
-			else
-				dtc_steps++;
-		}
-	}
-#endif
 	else
 	{
 		sign = 0;

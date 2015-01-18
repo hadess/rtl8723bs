@@ -170,45 +170,6 @@ free_xmitbuf:
 	//pxmitbuf->priv_data = NULL;
 	rtw_free_xmitbuf(pxmitpriv, pxmitbuf);
 
-#if 0 // improve TX/RX throughput balance
-{
-	PSDIO_DATA psdio;
-	struct sdio_func *func;
-	static u8 i = 0;
-	u32 sdio_hisr;
-	u8 j;
-
-	psdio = &adapter_to_dvobj(padapter)->intf_data;
-	func = psdio->func;
-
-	if (i == 2)
-	{
-		j = 0;
-		while (j < 10)
-		{
-			sdio_hisr = SdioLocalCmd52Read1Byte(padapter, SDIO_REG_HISR);
-			sdio_hisr &= GET_HAL_DATA(padapter)->sdio_himr;
-			if (sdio_hisr & SDIO_HISR_RX_REQUEST)
-			{
-				sdio_claim_host(func);
-				sd_int_hdl(pri_padapter);
-				sdio_release_host(func);
-			}
-			else
-			{
-				break;
-			}
-			j++;
-		}
-		i = 0;
-	}
-	else
-	{
-		i++;
-	}
-}
-#endif
-
 #ifdef CONFIG_SDIO_TX_TASKLET
 	tasklet_hi_schedule(&pxmitpriv->xmit_tasklet);
 #endif

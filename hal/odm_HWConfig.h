@@ -93,35 +93,6 @@ typedef struct _Phy_Status_Rpt_8192cd
 
 typedef struct _Phy_Status_Rpt_8812
 {
-#if 0
-	PHY_RX_AGC_INFO_T path_agc[2];
-	u1Byte 	ch_num[2];									
-	u1Byte	cck_sig_qual_ofdm_pwdb_all;
-	u1Byte	cck_agc_rpt_ofdm_cfosho_a;
-	u1Byte	cck_bb_pwr_ofdm_cfosho_b;
-	u1Byte    cck_rx_path;	//CCK_RX_PATH [3:0] (with regA07[3:0] definition)	
-	u1Byte 	rsvd_1;	
-	u1Byte	path_cfotail[2];	
-	u1Byte	pcts_mask[2];	
-	s8	stream_rxevm[2];	
-	u1Byte	path_rxsnr[2];
-	u1Byte	rsvd_2[2];	
-	u1Byte 	stream_snr[2];	
-	u1Byte 	stream_csi[2];
-	u1Byte	rsvd_3[2];
-	s8 	sig_evm;
-	u1Byte 	rsvd_4;	
-#if (ODM_ENDIAN_TYPE == ODM_ENDIAN_LITTLE)	
-	u1Byte 	antidx_anta:3;
-	u1Byte 	antidx_antb:3;
-	u1Byte 	rsvd_5:2;
-#else	// _BIG_ENDIAN_	
-	u1Byte 	rsvd_5:2;
-	u1Byte 	antidx_antb:3;
-	u1Byte 	antidx_anta:3;	
-#endif
-#endif
-
 	//2012.05.24 LukeLee: This structure should take big/little endian in consideration later.....
 	
 	//DWORD 0
