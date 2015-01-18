@@ -395,12 +395,6 @@ struct FW_Sta_Info
  * 4. Back to channel 1 for 300 milliseconds
  * 5. ... and so on, till survey done.
  */
-#if defined(CONFIG_STA_MODE_SCAN_UNDER_AP_MODE)
-#define RTW_SCAN_NUM_OF_CH			3
-#define RTW_STAY_AP_CH_MILLISECOND		4	// this value is a multiplier,for example, when this value is 3, 
-							// it would stay AP's op ch for  3 * SURVEY_TO millisecond.
-#endif 
-
 struct mlme_ext_info
 {
 	u32	state;
@@ -446,10 +440,6 @@ struct mlme_ext_info
 	struct HT_info_element		HT_info;
 	WLAN_BSSID_EX			network;//join network or bss_network, if in ap mode, it is the same to cur_network.network
 	struct FW_Sta_Info		FW_sta_info[NUM_STA];
-
-#if defined(CONFIG_STA_MODE_SCAN_UNDER_AP_MODE)
-	u8 scan_cnt;
-#endif //CONFIG_STA_MODE_SCAN_UNDER_AP_MODE
 };
 
 // The channel information about this channel including joining, scanning, and power constraints.
