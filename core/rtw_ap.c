@@ -1162,16 +1162,12 @@ void start_bss_network(_adapter *padapter, u8 *pbuf)
 		}
 					
 	}
-#ifdef CONFIG_DUALMAC_CONCURRENT
-	dc_set_ap_channel_bandwidth(padapter, cur_channel, cur_ch_offset, cur_bwmode);
-#else //!CONFIG_DUALMAC_CONCURRENT	
+
 	set_channel_bwmode(padapter, cur_channel, cur_ch_offset, cur_bwmode);
 	DBG_871X("CH=%d, BW=%d, offset=%d\n", cur_channel, cur_bwmode, cur_ch_offset);
 	pmlmeext->cur_channel = cur_channel;	
 	pmlmeext->cur_bwmode = cur_bwmode;
 	pmlmeext->cur_ch_offset = cur_ch_offset;
-#endif //!CONFIG_DUALMAC_CONCURRENT
-
 	pmlmeext->cur_wireless_mode = pmlmepriv->cur_network.network_type;
 
 	//let pnetwork_mlmeext == pnetwork_mlme.

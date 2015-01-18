@@ -369,17 +369,6 @@ static _adapter *rtw_sdio_if1_init(struct dvobj_priv *dvobj, const struct sdio_d
 	dvobj->padapters[dvobj->iface_nums++] = padapter;
 	padapter->iface_id = IFACE_ID0;
 
-#if defined(CONFIG_DUALMAC_CONCURRENT)
-	//set adapter_type/iface type for primary padapter
-	padapter->isprimary = true;
-	padapter->adapter_type = PRIMARY_ADAPTER;	
-	#ifndef CONFIG_HWPORT_SWAP
-	padapter->iface_type = IFACE_PORT0;
-	#else
-	padapter->iface_type = IFACE_PORT1;
-	#endif
-#endif
-
 	//3 1. init network device data
 	pnetdev = rtw_init_netdev(padapter);
 	if (!pnetdev)
