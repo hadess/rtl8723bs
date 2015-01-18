@@ -78,7 +78,6 @@
 /*
  * Hardware Related Config
  */
-//#define CONFIG_ANTENNA_DIVERSITY
 //#define SUPPORT_HW_RFOFF_DETECTED
 
 //#define CONFIG_SW_LED
@@ -139,12 +138,6 @@
 	#endif
 
 
-#ifdef CONFIG_ANTENNA_DIVERSITY
-#define CONFIG_SW_ANTENNA_DIVERSITY
-//#define CONFIG_HW_ANTENNA_DIVERSITY
-#endif
-
-
 #define CONFIG_RF_GAIN_OFFSET
 
 
@@ -169,8 +162,6 @@
 #define RATE_ADAPTIVE_SUPPORT 			0
 #define POWER_TRAINING_ACTIVE			0
 
-
-//#define CONFIG_HW_ANTENNA_DIVERSITY
 
 /*
  * Platform dependent

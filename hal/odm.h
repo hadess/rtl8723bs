@@ -169,7 +169,6 @@ typedef struct _RX_High_Power_
 #define ASSOCIATE_ENTRY_NUM					32 // Max size of AsocEntry[].
 #define	ODM_ASSOCIATE_ENTRY_NUM				ASSOCIATE_ENTRY_NUM
 
-//#ifdef CONFIG_ANTENNA_DIVERSITY
 // This indicates two different the steps. 
 // In SWAW_STEP_PEAK, driver needs to switch antenna and listen to the signal on the air.
 // In SWAW_STEP_DETERMINE, driver just compares the signal captured in SWAW_STEP_PEAK
@@ -231,40 +230,7 @@ typedef struct _SW_Antenna_Switch_
 	RT_TIMER 	SwAntennaSwitchTimer_8723B;
 	u4Byte		PktCnt_SWAntDivByCtrlFrame;
 	bool		bSWAntDivByCtrlFrame;
-
-/* CE Platform use
-#ifdef CONFIG_SW_ANTENNA_DIVERSITY
-	_timer SwAntennaSwitchTimer; 
-	u8Byte lastTxOkCnt;
-	u8Byte lastRxOkCnt;
-	u8Byte TXByteCnt_A;
-	u8Byte TXByteCnt_B;
-	u8Byte RXByteCnt_A;
-	u8Byte RXByteCnt_B;
-	u1Byte DoubleComfirm;
-	u1Byte TrafficLoad;
-	//SW Antenna Switch
-
-
-#endif
-*/
-#ifdef CONFIG_HW_ANTENNA_DIVERSITY
-	//Hybrid Antenna Diversity
-	u4Byte		CCK_Ant1_Cnt[ASSOCIATE_ENTRY_NUM+1];
-	u4Byte		CCK_Ant2_Cnt[ASSOCIATE_ENTRY_NUM+1];
-	u4Byte		OFDM_Ant1_Cnt[ASSOCIATE_ENTRY_NUM+1];
-	u4Byte		OFDM_Ant2_Cnt[ASSOCIATE_ENTRY_NUM+1];
-	u4Byte		RSSI_Ant1_Sum[ASSOCIATE_ENTRY_NUM+1];
-	u4Byte		RSSI_Ant2_Sum[ASSOCIATE_ENTRY_NUM+1];
-	u1Byte		TxAnt[ASSOCIATE_ENTRY_NUM+1];
-	u1Byte		TargetSTA;
-	u1Byte		antsel;
-	u1Byte		RxIdleAnt;
-
-#endif
-	
 }SWAT_T, *pSWAT_T;
-//#endif
 
 //Remove Edca by YuChen
 
@@ -1286,11 +1252,9 @@ typedef  struct DM_Out_Source_Dynamic_Mechanism_Structure
 	RA_T						DM_RA_Table;  
 	false_ALARM_STATISTICS		FalseAlmCnt;
 	false_ALARM_STATISTICS		FlaseAlmCntBuddyAdapter;
-	//#ifdef CONFIG_ANTENNA_DIVERSITY
 	SWAT_T						DM_SWAT_Table;
 	bool						RSSI_test;
 	CFO_TRACKING    				DM_CfoTrack;
-	//#endif 
 
 	EDCA_T		DM_EDCA_Table;
 	u4Byte		WMMEDCA_BE;

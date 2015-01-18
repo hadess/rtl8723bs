@@ -3626,41 +3626,6 @@ Hal_EfuseParseAntennaDiversity_8723B(
 	IN	bool			AutoLoadFail
 	)
 {
-#ifdef CONFIG_ANTENNA_DIVERSITY
-	PHAL_DATA_TYPE		pHalData = GET_HAL_DATA(pAdapter);
-	struct registry_priv	*registry_par = &pAdapter->registrypriv;
-
-	if (pHalData->EEPROMBluetoothAntNum == Ant_x1){
-		pHalData->AntDivCfg = 0;
-	}
-	else{
-		if(registry_par->antdiv_cfg == 2)// 0:OFF , 1:ON, 2:By EFUSE
-			pHalData->AntDivCfg = 0;  
-		else
-			pHalData->AntDivCfg = registry_par->antdiv_cfg;
-	}
-
-	//if (REGISTRY(pAdapter,bEfusePriorityAuto) == true)
-	if(registry_par->antdiv_type == 0)// If TRxAntDivType is AUTO in advanced setting, use EFUSE value instead.
-	{
-		pHalData->TRxAntDivType = hwinfo[EEPROM_RFE_OPTION_8723B];
-		if (pHalData->TRxAntDivType == 0xFF)
-			pHalData->TRxAntDivType = S0S1_SW_ANTDIV;//GetRegAntDivType(pAdapter);
-		else if (pHalData->TRxAntDivType == 0x10)
-			pHalData->TRxAntDivType = S0S1_SW_ANTDIV; //intrnal switch S0S1
-		else if (pHalData->TRxAntDivType == 0x11)		
-			pHalData->TRxAntDivType = S0S1_SW_ANTDIV; //intrnal switch S0S1
-		else
-			DBG_8192C("%s: efuse[0x%x]=0x%02x is unknown type\n",
-				__FUNCTION__, EEPROM_RFE_OPTION_8723B, pHalData->TRxAntDivType);
-	}
-	else{
-		pHalData->TRxAntDivType = registry_par->antdiv_type ;//GetRegAntDivType(pAdapter);
-	}
-
-	DBG_8192C("%s: AntDivCfg=%d, AntDivType=%d\n",
-		__FUNCTION__, pHalData->AntDivCfg, pHalData->TRxAntDivType);
-#endif
 }
 
 void
@@ -4168,10 +4133,6 @@ void rtl8723b_update_txdesc(struct xmit_frame *pxmitframe, u8 *pbuf)
 	pdesc->txdw7 = cpu_to_le32(pdesc->txdw7);
 	pdesc->txdw8 = cpu_to_le32(pdesc->txdw8);
 	pdesc->txdw9 = cpu_to_le32(pdesc->txdw9);
-
-#ifdef CONFIG_ANTENNA_DIVERSITY
-	ODM_SetTxAntByTxInfo(&GET_HAL_DATA(padapter)->odmpriv, pbuf, pxmitframe->attrib.mac_id);
-#endif // CONFIG_ANTENNA_DIVERSITY
 
 	rtl8723b_cal_txdesc_chksum(pdesc);
 }
@@ -5170,24 +5131,6 @@ _func_enter_;
 			}
 			break;
 
-#ifdef CONFIG_SW_ANTENNA_DIVERSITY
-		case HW_VAR_ANTENNA_DIVERSITY_LINK:
-			//SwAntDivRestAfterLink8192C(padapter);
-			ODM_SwAntDivRestAfterLink(&pHalData->odmpriv);
-			break;
-
-		case HW_VAR_ANTENNA_DIVERSITY_SELECT:
-			{
-				u8 Optimum_antenna = *val;
-
-				//DBG_8192C("==> HW_VAR_ANTENNA_DIVERSITY_SELECT , Ant_(%s)\n",(Optimum_antenna==2)?"A":"B");
-
-				//PHY_SetBBReg(padapter, rFPGA0_XA_RFInterfaceOE, 0x300, Optimum_antenna);
-				ODM_SetAntenna(&pHalData->odmpriv, Optimum_antenna);
-			}
-			break;
-#endif
-
 		case HW_VAR_EFUSE_USAGE:
 			pHalData->EfuseUsedPercentage = *val;
 			break;
@@ -5415,12 +5358,6 @@ void GetHwReg8723B(PADAPTER padapter, u8 variable, u8 *val)
 				}
 			}
 			break;
-
-#ifdef CONFIG_ANTENNA_DIVERSITY
-		case HW_VAR_CURRENT_ANTENNA:
-			*val = pHalData->CurAntenna;
-			break;
-#endif
 
 		case HW_VAR_EFUSE_USAGE:
 			*val = pHalData->EfuseUsedPercentage;

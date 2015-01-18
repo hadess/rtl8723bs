@@ -5093,20 +5093,6 @@ void site_survey(_adapter *padapter)
 		//	channel number is 0 or this channel is not valid.
 
 		{
-#ifdef CONFIG_ANTENNA_DIVERSITY
-			// 20100721:Interrupt scan operation here.
-			// For SW antenna diversity before link, it needs to switch to another antenna and scan again.
-			// It compares the scan result and select beter one to do connection.
-			if(rtw_hal_antdiv_before_linked(padapter))
-			{				
-				pmlmeext->sitesurvey_res.bss_cnt = 0;
-				pmlmeext->sitesurvey_res.channel_idx = -1;
-				pmlmeext->chan_scan_time = SURVEY_TO /2;			
-				set_survey_timer(pmlmeext, pmlmeext->chan_scan_time);
-				return;
-			}
-#endif
-
 			pmlmeext->sitesurvey_res.state = SCAN_COMPLETE;
 
 			//switch back to the original channel
@@ -5206,10 +5192,6 @@ u8 collect_bss_info(_adapter *padapter, union recv_frame *precv_frame, WLAN_BSSI
 	bssid->Rssi = precv_frame->u.hdr.attrib.phy_info.RecvSignalPower; // in dBM.raw data	
 	bssid->PhyInfo.SignalQuality = precv_frame->u.hdr.attrib.phy_info.SignalQuality;//in percentage 
 	bssid->PhyInfo.SignalStrength = precv_frame->u.hdr.attrib.phy_info.SignalStrength;//in percentage
-#ifdef CONFIG_ANTENNA_DIVERSITY
-	//rtw_hal_get_hwreg(padapter, HW_VAR_CURRENT_ANTENNA, (u8 *)(&bssid->PhyInfo.Optimum_antenna));
-	rtw_hal_get_def_var(padapter, HAL_DEF_CURRENT_ANTENNA,  &bssid->PhyInfo.Optimum_antenna);
-#endif
 
 	// checking SSID
 	if ((p = rtw_get_ie(bssid->IEs + ie_offset, _SSID_IE_, &len, bssid->IELength - ie_offset)) == NULL)
@@ -7145,9 +7127,6 @@ u8 join_cmd_hdl(_adapter *padapter, u8 *pbuf)
 	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 	WLAN_BSSID_EX		*pnetwork = (WLAN_BSSID_EX*)(&(pmlmeinfo->network));
-#ifdef CONFIG_ANTENNA_DIVERSITY
-	struct joinbss_parm	*pparm = (struct joinbss_parm *)pbuf;
-#endif //CONFIG_ANTENNA_DIVERSITY
 	u32 i;
 	u8	cbw40_enable=0;
 	//u32	initialgain;
@@ -7175,10 +7154,6 @@ u8 join_cmd_hdl(_adapter *padapter, u8 *pbuf)
 
 		rtw_hal_set_hwreg(padapter, HW_VAR_MLME_DISCONNECT, NULL);
 	}
-
-#ifdef CONFIG_ANTENNA_DIVERSITY
-	rtw_antenna_select_cmd(padapter, pparm->network.PhyInfo.Optimum_antenna, false);
-#endif
 
 #ifdef CONFIG_WAPI_SUPPORT
 	rtw_wapi_clear_all_cam_entry(padapter);
