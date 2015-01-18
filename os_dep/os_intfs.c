@@ -1639,11 +1639,7 @@ _adapter *rtw_drv_if2_init(_adapter *primary_padapter,
 	padapter->adapter_type = SECONDARY_ADAPTER;
 	padapter->pbuddy_adapter = primary_padapter;
 	padapter->iface_id = IFACE_ID1;
-#ifndef CONFIG_HWPORT_SWAP			//Port0 -> Pri , Port1 -> Sec
 	padapter->iface_type = IFACE_PORT1;
-#else
-	padapter->iface_type = IFACE_PORT0;
-#endif  //CONFIG_HWPORT_SWAP
 	//
 	padapter->pnetdev = pnetdev;
 
