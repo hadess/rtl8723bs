@@ -2371,11 +2371,6 @@ halbtc8723b1ant_ActionWifiConnectedBtAclBusy(
 		else
 		{
 			halbtc8723b1ant_TdmaDurationAdjustForAcl(pBtCoexist, wifiStatus);
-#if 0
-			if (pCoexSta->bCCKLock)
-				halbtc8723b1ant_CoexTableWithType(pBtCoexist, NORMAL_EXEC, 3);
-			else
-#endif				
 			halbtc8723b1ant_CoexTableWithType(pBtCoexist, NORMAL_EXEC, 4);
 			pCoexDm->bAutoTdmaAdjust = true;
 		}
@@ -2895,15 +2890,7 @@ halbtc8723b1ant_InitHwConfig(
 	u1Byte				H2C_Parameter[2] ={0};
 
 	BTC_PRINT(BTC_MSG_INTERFACE, INTF_INIT, ("[BTCoex], 1Ant Init HW Config!!\n"));
-#if 0//move to BTC_MEDIA_CONNECT
-	if(bBackUp)
-	{
-		pCoexDm->backupArfrCnt1 = pBtCoexist->fBtcRead4Byte(pBtCoexist, 0x430);
-		pCoexDm->backupArfrCnt2 = pBtCoexist->fBtcRead4Byte(pBtCoexist, 0x434);
-		pCoexDm->backupRetryLimit = pBtCoexist->fBtcRead2Byte(pBtCoexist, 0x42a);
-		pCoexDm->backupAmpduMaxTime = pBtCoexist->fBtcRead1Byte(pBtCoexist, 0x456);
-	}
-#endif
+
 	pBtCoexist->fBtcWrite1ByteBitMask(pBtCoexist, 0x550, 0x8, 0x1);  //enable TBTT nterrupt
 
 	// 0x790[5:0]=0x5	
@@ -2927,19 +2914,6 @@ halbtc8723b1ant_InitHwConfig(
 	else
 		halbtc8723b1ant_SetAntPath(pBtCoexist, BTC_ANT_PATH_BT, true, false);
 #endif	
-
-
-#if 0
-	if(bWifiOnly)
-	{
-		halbtc8723b1ant_SetAntPathDCut(pBtCoexist, false, false, false, BTC_ANT_PATH_WIFI, BTC_WIFI_STAT_INIT);
-		halbtc8723b1ant_PsTdma(pBtCoexist, FORCE_EXEC, false, 9);
-	}
-	else
-		halbtc8723b1ant_SetAntPathDCut(pBtCoexist, false, false, false, BTC_ANT_PATH_BT, BTC_WIFI_STAT_INIT);		
-#endif
-
-
 
 	// PTA parameter
 	halbtc8723b1ant_CoexTableWithType(pBtCoexist, FORCE_EXEC, 0);

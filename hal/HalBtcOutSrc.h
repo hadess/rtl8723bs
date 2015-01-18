@@ -664,11 +664,6 @@ EXhalbtcoutsrc_RfStatusNotify(
 	IN	u1Byte 				type
 	);
 void
-EXhalbtcoutsrc_StackOperationNotify(
-	IN	PBTC_COEXIST		pBtCoexist,
-	IN	u1Byte			type
-	);
-void
 EXhalbtcoutsrc_HaltNotify(
 	IN	PBTC_COEXIST		pBtCoexist
 	);
@@ -693,10 +688,6 @@ EXhalbtcoutsrc_DbgControl(
 	IN	pu1Byte				pData
 	);
 void
-EXhalbtcoutsrc_StackUpdateProfileInfo(
-	void
-	);
-void
 EXhalbtcoutsrc_SetHciVersion(
 	IN	u2Byte	hciVersion
 	);
@@ -709,12 +700,6 @@ void
 EXhalbtcoutsrc_UpdateMinBtRssi(
 	IN	s8	btRssi
 	);
-#if 0
-void
-EXhalbtcoutsrc_SetBtExist(
-	IN	bool		bBtExist
-	);
-#endif
 void
 EXhalbtcoutsrc_SetChipType(
 	IN	u1Byte		chipType

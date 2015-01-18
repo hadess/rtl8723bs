@@ -175,13 +175,6 @@ void DoIQK_8723B(
 	u1Byte		Threshold
 	)
 {
-#if 0 // mark by Lucas@SD4 20140128, suggested by Allen@SD3
-	PADAPTER		Adapter = pDM_Odm->Adapter;
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
-
-	pDM_Odm->RFCalibrateInfo.ThermalValue_IQK= ThermalValue;
-	PHY_IQCalibrate_8723B(Adapter, false, false);
-#endif // #if 0
 }
 
 /*-----------------------------------------------------------------------------
@@ -590,19 +583,8 @@ phy_PathA_IQK_8723B(
 	else							//if Tx not OK, ignore Rx
 		return result;	
 
-#if 0
-	if(!(regEAC & BIT27) && 	//if Tx is OK, check whether Rx is OK
-		(((regEA4 & 0x03FF0000)>>16) != 0x132) &&
-		(((regEAC & 0x03FF0000)>>16) != 0x36))
-		result |= 0x02;
-	else
-		RT_DISP(FINIT, INIT_IQK, ("Path A Rx IQK fail!!\n"));
-#endif	
-
 	return result;
-
-
-	}
+}
 
 static u1Byte			//bit0 = 1 => Tx OK, bit1 = 1 => Rx OK
 phy_PathA_RxIQK8723B(
@@ -803,15 +785,6 @@ phy_PathA_RxIQK8723B(
 	ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0x000000);	
 	ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, 0xdf, bRFRegOffsetMask, 0x780 );
 
-#if 0	
-	if(!(regEAC & BIT28) && 	
-		(((regE94 & 0x03FF0000)>>16) != 0x142) &&
-		(((regE9C & 0x03FF0000)>>16) != 0x42) )
-		result |= 0x01;
-	else							//if Tx not OK, ignore Rx
-		return result;
-#endif	
-
 	//Allen 20131125
 		tmp=(regEAC & 0x03FF0000)>>16;
 		if ((tmp & 0x200)> 0)
@@ -939,19 +912,8 @@ phy_PathB_IQK_8723B(
 	else
 		return result;	
 
-#if 0
-	if(!(regEAC & BIT30) &&
-		(((regEC4 & 0x03FF0000)>>16) != 0x132) &&
-		(((regECC & 0x03FF0000)>>16) != 0x36))
-		result |= 0x02;
-	else
-		ODM_RT_TRACE(pDM_Odm,ODM_COMP_CALIBRATION, ODM_DBG_LOUD,  ("Path B Rx IQK fail!!\n"));
-	
-#endif
 	return result;
 }
-
-
 
 static u1Byte			//bit0 = 1 => Tx OK, bit1 = 1 => Rx OK
 phy_PathB_RxIQK8723B(
@@ -1155,16 +1117,6 @@ phy_PathB_RxIQK8723B(
 //	ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, 0xffffff00, 0x00000000);
 //	ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_B, 0xdf, bRFRegOffsetMask, 0x180 );
 
-
-
-#if 0	
-	if(!(regEAC & BIT31) && 	
-		(((regEB4 & 0x03FF0000)>>16) != 0x142) &&
-		(((regEBC & 0x03FF0000)>>16) != 0x42) )
-		result |= 0x01;
-	else							//if Tx not OK, ignore Rx
-		return result;
-#endif	
 
 
 	//Allen 20131125
@@ -1753,13 +1705,6 @@ phy_IQCalibrate_8723B(
 
 	const u4Byte	retryCount = 2;
 
-#if 0
-if( pAdapter->registrypriv.mp_mode == 1 && pAdapter->mppriv.mode == 3 )
-{
-		DBG_871X("%s() :return !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n",__func__);
-		return;
-}
-#endif
 	// Note: IQ calibration must be performed after loading 
 	//		PHY_REG.txt , and radio_a, radio_b.txt	
 	
@@ -1782,17 +1727,6 @@ if( pAdapter->registrypriv.mp_mode == 1 && pAdapter->mppriv.mode == 3 )
 	_PHY_PathADDAOn8723B(pAdapter, ADDA_REG, true, is2T);
 
 //no serial mode
-#if 0	
-	if(t==0)
-	{
-		pDM_Odm->RFCalibrateInfo.bRfPiEnable = (u1Byte)ODM_GetBBReg(pDM_Odm, rFPGA0_XA_HSSIParameter1, BIT(8));
-	}
-	
-	if(!pDM_Odm->RFCalibrateInfo.bRfPiEnable){
-		// Switch BB to PI mode to do IQ Calibration.
-		_PHY_PIModeSwitch8723B(pAdapter, true);
-	}
-#endif
 
 	//save RF path for 8723B
 //	Path_SEL_BB = ODM_GetBBReg(pDM_Odm, 0x948, bMaskDWord);
@@ -1814,28 +1748,6 @@ if( pAdapter->registrypriv.mp_mode == 1 && pAdapter->mppriv.mode == 3 )
 //	ODM_SetBBReg(pDM_Odm, rFPGA0_XA_RFInterfaceOE, BIT10, 0x00);
 //	ODM_SetBBReg(pDM_Odm, rFPGA0_XB_RFInterfaceOE, BIT10, 0x00);	
 	
-
-//for 8723B
-#if 0
-	if(is2T)
-	{
-
-		ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_B, RF_AC, bMaskDWord, 0x10000);
-	}
-#endif
-
-	
-//no APK
-#if 0
-	//Page B init
-	//AP or IQK
-	ODM_SetBBReg(pDM_Odm, rConfig_AntA, bMaskDWord, 0x0f600000);
-	
-	if(is2T)
-	{
-		ODM_SetBBReg(pDM_Odm, rConfig_AntB, bMaskDWord, 0x0f600000);
-	}
-#endif
 
 //RX IQ calibration setting for 8723B D cut large current issue when leaving IPS
 
@@ -1871,15 +1783,6 @@ if( pAdapter->registrypriv.mp_mode == 1 && pAdapter->mppriv.mode == 3 )
 				result[t][1] = (ODM_GetBBReg(pDM_Odm, rTx_Power_After_IQK_A, bMaskDWord)&0x3FF0000)>>16;
 			break;
 		}
-#if 0		
-		else if (i == (retryCount-1) && PathAOK == 0x01)	//Tx IQK OK
-		{
-			RT_DISP(FINIT, INIT_IQK, ("Path A IQK Only	Tx Success!!\n"));
-			
-			result[t][0] = (ODM_GetBBReg(pDM_Odm, rTx_Power_Before_IQK_A, bMaskDWord)&0x3FF0000)>>16;
-			result[t][1] = (ODM_GetBBReg(pDM_Odm, rTx_Power_After_IQK_A, bMaskDWord)&0x3FF0000)>>16;			
-		}
-#endif		
 	}
 #endif
 
@@ -1927,15 +1830,6 @@ if( pAdapter->registrypriv.mp_mode == 1 && pAdapter->mppriv.mode == 3 )
 				result[t][5] = (ODM_GetBBReg(pDM_Odm, rTx_Power_After_IQK_A, bMaskDWord)&0x3FF0000)>>16;
 			break;
 		}
-#if 0		
-		else if (i == (retryCount-1) && PathAOK == 0x01)	//Tx IQK OK
-		{
-			RT_DISP(FINIT, INIT_IQK, ("Path B IQK Only	Tx Success!!\n"));
-			
-			result[t][0] = (ODM_GetBBReg(pDM_Odm, rTx_Power_Before_IQK_B, bMaskDWord)&0x3FF0000)>>16;
-			result[t][1] = (ODM_GetBBReg(pDM_Odm, rTx_Power_After_IQK_B, bMaskDWord)&0x3FF0000)>>16;			
-		}
-#endif		
 	}
 #endif
 
@@ -2018,13 +1912,7 @@ phy_LCCalibrate_8723B(
 	u1Byte	tmpReg;
 	u4Byte	RF_Amode=0, RF_Bmode=0, LC_Cal;
 	PADAPTER pAdapter = pDM_Odm->Adapter;
-#if 0
-	if( pAdapter->registrypriv.mp_mode == 1 && pAdapter->mppriv.mode == 3 )
-	{
-		DBG_871X("%s() :return !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n",__func__);
-		return;
-	}
-#endif
+
 	//Check continuous TX and Packet TX
 	tmpReg = ODM_Read1Byte(pDM_Odm, 0xd03);
 

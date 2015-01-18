@@ -910,11 +910,7 @@ ODM_SW_AntDiv_Callback(void *FunctionContext)
 	if(padapter->net_closed == true)
 	    return;
 
-#if 0 // Can't do I/O in timer callback
-	odm_S0S1_SwAntDiv(pDM_Odm, SWAW_STEP_DETERMINE);
-#else
 	rtw_run_in_thread_cmd(padapter, ODM_SW_AntDiv_WorkitemCallback, padapter);
-#endif
 }
 
 void

@@ -184,13 +184,6 @@ inline u32 rtw_systime_to_ms(u32 systime)
 	return systime * 1000 / HZ;
 }
 
-#if 0 /* avoid broken jiffies calcs */
-inline u32 rtw_ms_to_systime(u32 ms)
-{
-	return ms * HZ / 1000;
-}
-#endif
-
 inline s32 rtw_get_time_interval_ms(u32 start, u32 end)
 {
 	return rtw_systime_to_ms(end-start);

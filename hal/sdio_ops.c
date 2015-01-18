@@ -905,162 +905,6 @@ static void SdioLocalCmd52Write4Byte(PADAPTER padapter, u32 addr, u32 v)
 	sd_cmd52_write(pintfhdl, addr, 4, (u8*)&v);
 }
 
-#if 0
-void
-DumpLoggedInterruptHistory8723Sdio(
-	PADAPTER		padapter
-)
-{
-	HAL_DATA_TYPE	*pHalData=GET_HAL_DATA(padapter);
-	u4Byte				DebugLevel = DBG_LOUD;
-
-	if (DBG_Var.DbgPrintIsr == 0)
-		return;
-
-	DBG_ChkDrvResource(padapter);
-
-
-	if(pHalData->InterruptLog.nISR_RX_REQUEST)
-		RT_TRACE(COMP_SEND|COMP_RECV, DebugLevel, ("# RX_REQUEST[%ld]\t\n", pHalData->InterruptLog.nISR_RX_REQUEST));
-
-	if(pHalData->InterruptLog.nISR_AVAL)
-		RT_TRACE(COMP_SEND|COMP_RECV, DebugLevel, ("# AVAL[%ld]\t\n", pHalData->InterruptLog.nISR_AVAL));
-
-	if(pHalData->InterruptLog.nISR_TXERR)
-		RT_TRACE(COMP_SEND|COMP_RECV, DebugLevel, ("# TXERR[%ld]\t\n", pHalData->InterruptLog.nISR_TXERR));
-
-	if(pHalData->InterruptLog.nISR_RXERR)
-		RT_TRACE(COMP_SEND|COMP_RECV, DebugLevel, ("# RXERR[%ld]\t\n", pHalData->InterruptLog.nISR_RXERR));
-
-	if(pHalData->InterruptLog.nISR_TXFOVW)
-		RT_TRACE(COMP_SEND|COMP_RECV, DebugLevel, ("# TXFOVW[%ld]\t\n", pHalData->InterruptLog.nISR_TXFOVW));
-
-	if(pHalData->InterruptLog.nISR_RXFOVW)
-		RT_TRACE(COMP_SEND|COMP_RECV, DebugLevel, ("# RXFOVW[%ld]\t\n", pHalData->InterruptLog.nISR_RXFOVW));
-
-	if(pHalData->InterruptLog.nISR_TXBCNOK)
-		RT_TRACE(COMP_SEND|COMP_RECV, DebugLevel, ("# TXBCNOK[%ld]\t\n", pHalData->InterruptLog.nISR_TXBCNOK));
-
-	if(pHalData->InterruptLog.nISR_TXBCNERR)
-		RT_TRACE(COMP_SEND|COMP_RECV, DebugLevel, ("# TXBCNERR[%ld]\t\n", pHalData->InterruptLog.nISR_TXBCNERR));
-
-	if(pHalData->InterruptLog.nISR_BCNERLY_INT)
-		RT_TRACE(COMP_SEND|COMP_RECV, DebugLevel, ("# BCNERLY_INT[%ld]\t\n", pHalData->InterruptLog.nISR_BCNERLY_INT));
-
-	if(pHalData->InterruptLog.nISR_C2HCMD)
-		RT_TRACE(COMP_SEND|COMP_RECV, DebugLevel, ("# C2HCMD[%ld]\t\n", pHalData->InterruptLog.nISR_C2HCMD));
-
-	if(pHalData->InterruptLog.nISR_CPWM1)
-		RT_TRACE(COMP_SEND|COMP_RECV, DebugLevel, ("# CPWM1L[%ld]\t\n", pHalData->InterruptLog.nISR_CPWM1));
-
-	if(pHalData->InterruptLog.nISR_CPWM2)
-		RT_TRACE(COMP_SEND|COMP_RECV, DebugLevel, ("# CPWM2[%ld]\t\n", pHalData->InterruptLog.nISR_CPWM2));
-
-	if(pHalData->InterruptLog.nISR_HSISR_IND)
-		RT_TRACE(COMP_SEND|COMP_RECV, DebugLevel, ("# HSISR_IND[%ld]\t\n", pHalData->InterruptLog.nISR_HSISR_IND));
-
-	if(pHalData->InterruptLog.nISR_GTINT3_IND)
-		RT_TRACE(COMP_SEND|COMP_RECV, DebugLevel, ("# GTINT3_IND[%ld]\t\n", pHalData->InterruptLog.nISR_GTINT3_IND));
-
-	if(pHalData->InterruptLog.nISR_GTINT4_IND)
-		RT_TRACE(COMP_SEND|COMP_RECV, DebugLevel, ("# GTINT4_IND[%ld]\t\n", pHalData->InterruptLog.nISR_GTINT4_IND));
-
-	if(pHalData->InterruptLog.nISR_PSTIMEOUT)
-		RT_TRACE(COMP_SEND|COMP_RECV, DebugLevel, ("# PSTIMEOUT[%ld]\t\n", pHalData->InterruptLog.nISR_PSTIMEOUT));
-
-	if(pHalData->InterruptLog.nISR_OCPINT)
-		RT_TRACE(COMP_SEND|COMP_RECV, DebugLevel, ("# OCPINT[%ld]\t\n", pHalData->InterruptLog.nISR_OCPINT));
-
-	if(pHalData->InterruptLog.nISR_ATIMEND)
-		RT_TRACE(COMP_SEND|COMP_RECV, DebugLevel, ("# ATIMEND[%ld]\t\n", pHalData->InterruptLog.nISR_ATIMEND));
-
-	if(pHalData->InterruptLog.nISR_ATIMEND_E)
-		RT_TRACE(COMP_SEND|COMP_RECV, DebugLevel, ("# ATIMEND_E[%ld]\t\n", pHalData->InterruptLog.nISR_ATIMEND_E));
-
-	if(pHalData->InterruptLog.nISR_CTWEND)
-		RT_TRACE(COMP_SEND|COMP_RECV, DebugLevel, ("# CTWEND[%ld]\t\n", pHalData->InterruptLog.nISR_CTWEND));
-}
-
-void
-LogInterruptHistory8723Sdio(
-	PADAPTER			padapter,
-	PRT_ISR_CONTENT	pIsrContent
-)
-{
-	HAL_DATA_TYPE	*pHalData=GET_HAL_DATA(padapter);
-
-	if((pHalData->IntrMask[0] & SDIO_HIMR_RX_REQUEST_MSK) &&
-		(pIsrContent->IntArray[0] & SDIO_HISR_RX_REQUEST))
-		pHalData->InterruptLog.nISR_RX_REQUEST ++;
-	if((pHalData->IntrMask[0] & SDIO_HIMR_AVAL_MSK) &&
-		(pIsrContent->IntArray[0] & SDIO_HISR_AVAL))
-		pHalData->InterruptLog.nISR_AVAL++;
-	if((pHalData->IntrMask[0] & SDIO_HIMR_TXERR_MSK) &&
-		(pIsrContent->IntArray[0] & SDIO_HISR_TXERR))
-		pHalData->InterruptLog.nISR_TXERR++;
-	if((pHalData->IntrMask[0] & SDIO_HIMR_RXERR_MSK) &&
-		(pIsrContent->IntArray[0] & SDIO_HISR_RXERR))
-		pHalData->InterruptLog.nISR_RXERR++;
-	if((pHalData->IntrMask[0] & SDIO_HIMR_TXFOVW_MSK) &&
-		(pIsrContent->IntArray[0] & SDIO_HISR_TXFOVW))
-		pHalData->InterruptLog.nISR_TXFOVW++;
-	if((pHalData->IntrMask[0] & SDIO_HIMR_RXFOVW_MSK) &&
-		(pIsrContent->IntArray[0] & SDIO_HISR_RXFOVW))
-		pHalData->InterruptLog.nISR_RXFOVW++;
-	if((pHalData->IntrMask[0] & SDIO_HIMR_TXBCNOK_MSK) &&
-		(pIsrContent->IntArray[0] & SDIO_HISR_TXBCNOK))
-		pHalData->InterruptLog.nISR_TXBCNOK++;
-	if((pHalData->IntrMask[0] & SDIO_HIMR_TXBCNERR_MSK) &&
-		(pIsrContent->IntArray[0] & SDIO_HISR_TXBCNERR))
-		pHalData->InterruptLog.nISR_TXBCNERR++;
-	if((pHalData->IntrMask[0] & SDIO_HIMR_BCNERLY_INT_MSK) &&
-		(pIsrContent->IntArray[0] & SDIO_HISR_BCNERLY_INT))
-		pHalData->InterruptLog.nISR_BCNERLY_INT ++;
-	if((pHalData->IntrMask[0] & SDIO_HIMR_C2HCMD_MSK) &&
-		(pIsrContent->IntArray[0] & SDIO_HISR_C2HCMD))
-		pHalData->InterruptLog.nISR_C2HCMD++;
-	if((pHalData->IntrMask[0] & SDIO_HIMR_CPWM1_MSK) &&
-		(pIsrContent->IntArray[0] & SDIO_HISR_CPWM1))
-		pHalData->InterruptLog.nISR_CPWM1++;
-	if((pHalData->IntrMask[0] & SDIO_HIMR_CPWM2_MSK) &&
-		(pIsrContent->IntArray[0] & SDIO_HISR_CPWM2))
-		pHalData->InterruptLog.nISR_CPWM2++;
-	if((pHalData->IntrMask[0] & SDIO_HIMR_HSISR_IND_MSK) &&
-		(pIsrContent->IntArray[0] & SDIO_HISR_HSISR_IND))
-		pHalData->InterruptLog.nISR_HSISR_IND++;
-	if((pHalData->IntrMask[0] & SDIO_HIMR_GTINT3_IND_MSK) &&
-		(pIsrContent->IntArray[0] & SDIO_HISR_GTINT3_IND))
-		pHalData->InterruptLog.nISR_GTINT3_IND++;
-	if((pHalData->IntrMask[0] & SDIO_HIMR_GTINT4_IND_MSK) &&
-		(pIsrContent->IntArray[0] & SDIO_HISR_GTINT4_IND))
-		pHalData->InterruptLog.nISR_GTINT4_IND++;
-	if((pHalData->IntrMask[0] & SDIO_HIMR_PSTIMEOUT_MSK) &&
-		(pIsrContent->IntArray[0] & SDIO_HISR_PSTIMEOUT))
-		pHalData->InterruptLog.nISR_PSTIMEOUT++;
-	if((pHalData->IntrMask[0] & SDIO_HIMR_OCPINT_MSK) &&
-		(pIsrContent->IntArray[0] & SDIO_HISR_OCPINT))
-		pHalData->InterruptLog.nISR_OCPINT++;
-	if((pHalData->IntrMask[0] & SDIO_HIMR_ATIMEND_MSK) &&
-		(pIsrContent->IntArray[0] & SDIO_HISR_ATIMEND))
-		pHalData->InterruptLog.nISR_ATIMEND++;
-	if((pHalData->IntrMask[0] & SDIO_HIMR_ATIMEND_E_MSK) &&
-		(pIsrContent->IntArray[0] & SDIO_HISR_ATIMEND_E))
-		pHalData->InterruptLog.nISR_ATIMEND_E++;
-	if((pHalData->IntrMask[0] & SDIO_HIMR_CTWEND_MSK) &&
-		(pIsrContent->IntArray[0] & SDIO_HISR_CTWEND))
-		pHalData->InterruptLog.nISR_CTWEND++;
-
-}
-
-void
-DumpHardwareProfile8723Sdio(
-	IN	PADAPTER		padapter
-)
-{
-	DumpLoggedInterruptHistory8723Sdio(padapter);
-}
-#endif
-
 static s32 ReadInterrupt8723BSdio(PADAPTER padapter, u32 *phisr)
 {
 	u32 hisr, himr;
@@ -1365,13 +1209,9 @@ static struct recv_buf* sd_recv_rxfifo(PADAPTER padapter, u32 size)
 	struct recv_buf	*precvbuf;
 
 
-#if 0
-	readsize = size;
-#else
 	// Patch for some SDIO Host 4 bytes issue
 	// ex. RK3188
 	readsize = RND4(size);
-#endif
 
 	//3 1. alloc recvbuf
 	precvpriv = &padapter->recvpriv;
@@ -1434,13 +1274,9 @@ static struct recv_buf* sd_recv_rxfifo(PADAPTER padapter, u32 size)
 
 
 	sdioblksize = adapter_to_dvobj(padapter)->intf_data.block_transfer_len;
-#if 0
-	readsize = size;
-#else
 	// Patch for some SDIO Host 4 bytes issue
 	// ex. RK3188
 	readsize = RND4(size);
-#endif
 
 	//3 1. alloc skb
 	// align to block size

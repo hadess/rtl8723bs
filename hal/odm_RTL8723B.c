@@ -63,27 +63,6 @@ odm_DIG_8723(
 	FirstConnect = (pDM_Odm->bLinked) && (pDM_DigTable->bMediaConnect_0 == false);
 	FirstDisConnect = (!pDM_Odm->bLinked) && (pDM_DigTable->bMediaConnect_0 == true);
 
-	
-#if 0 	
-	if(pDM_Odm->SupportICType & (ODM_RTL8192C) &&(pDM_Odm->BoardType & (ODM_BOARD_EXT_LNA | ODM_BOARD_EXT_PA)))
-	{
-		dm_dig_max = DM_DIG_MAX_NIC_HP;
-		dm_dig_min = DM_DIG_MIN_NIC_HP;
-		DIG_MaxOfMin = DM_DIG_MAX_AP_HP;
-	}
-	else
-	{
-		if(pDM_Odm->SupportICType >= ODM_RTL8188E)
-			dm_dig_max = 0x5A;
-		else
-			dm_dig_max = DM_DIG_MAX_NIC;
-		
-		dm_dig_min = DM_DIG_MIN_NIC;
-		DIG_MaxOfMin = DM_DIG_MAX_AP;
-	}
-#endif   // masked by neilchen to simpily 8723B case
-
-
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG(): RSSI=0x%x\n",pDM_Odm->RSSI_Min));
 
 	dm_dig_max = 0x5A;
@@ -146,61 +125,7 @@ odm_DIG_8723(
 		pDM_DigTable->rx_gain_range_min = DM_DIG_MIN_NIC_8723;
 		DIG_Dynamic_MIN = dm_dig_min;
 		ODM_RT_TRACE(pDM_Odm,ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG() : No Link\n"));
-	}
-	
-#if 0
-	if(pFalseAlmCnt->Cnt_all > 10000)
-	{
-		ODM_RT_TRACE(pDM_Odm,ODM_COMP_DIG, ODM_DBG_LOUD, ("dm_DIG(): Abnornally false alarm case. \n"));
-
-		if(pDM_DigTable->LargeFAHit != 3)
-		        pDM_DigTable->LargeFAHit++;
-		if(pDM_DigTable->ForbiddenIGI < CurrentIGI)//if(pDM_DigTable->ForbiddenIGI < pDM_DigTable->CurIGValue)
-		{
-			pDM_DigTable->ForbiddenIGI = CurrentIGI;//pDM_DigTable->ForbiddenIGI = pDM_DigTable->CurIGValue;
-			pDM_DigTable->LargeFAHit = 1;
-		}
-
-		if(pDM_DigTable->LargeFAHit >= 3)
-		{
-			if((pDM_DigTable->ForbiddenIGI+1) >pDM_DigTable->rx_gain_range_max)
-				pDM_DigTable->rx_gain_range_min = pDM_DigTable->rx_gain_range_max;
-			else
-				pDM_DigTable->rx_gain_range_min = (pDM_DigTable->ForbiddenIGI + 1);
-			pDM_DigTable->Recover_cnt = 3600; //3600=2hr
-		}
-
-	}
-	else
-	{
-		//Recovery mechanism for IGI lower bound
-		if(pDM_DigTable->Recover_cnt != 0)
-			pDM_DigTable->Recover_cnt --;
-		else
-		{
-			if(pDM_DigTable->LargeFAHit < 3)
-			{
-				if((pDM_DigTable->ForbiddenIGI -1) < DIG_Dynamic_MIN) //DM_DIG_MIN)
-				{
-					pDM_DigTable->ForbiddenIGI = DIG_Dynamic_MIN; //DM_DIG_MIN;
-					pDM_DigTable->rx_gain_range_min = DIG_Dynamic_MIN; //DM_DIG_MIN;
-					ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG(): Normal Case: At Lower Bound\n"));
-				}
-				else
-				{
-					pDM_DigTable->ForbiddenIGI --;
-					pDM_DigTable->rx_gain_range_min = (pDM_DigTable->ForbiddenIGI + 1);
-					ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG(): Normal Case: Approach Lower Bound\n"));
-				}
-			}
-			else
-			{
-				pDM_DigTable->LargeFAHit = 0;
-			}
-		}
-	}
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG(): pDM_DigTable->LargeFAHit=%d\n",pDM_DigTable->LargeFAHit));
-#endif
+	}	
 
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG():pDM_DigTable->Recover_cnt=%d\n",pDM_DigTable->Recover_cnt));
 
