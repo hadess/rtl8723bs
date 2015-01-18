@@ -508,20 +508,6 @@ void rtw_hal_bcn_related_reg_setting(_adapter *padapter)
 }
 
 
-#ifdef CONFIG_ANTENNA_DIVERSITY
-u8	rtw_hal_antdiv_before_linked(_adapter *padapter)
-{	
-	if(padapter->HalFunc.AntDivBeforeLinkHandler)
-		return padapter->HalFunc.AntDivBeforeLinkHandler(padapter);
-	return false;		
-}
-void	rtw_hal_antdiv_rssi_compared(_adapter *padapter, WLAN_BSSID_EX *dst, WLAN_BSSID_EX *src)
-{
-	if(padapter->HalFunc.AntDivCompareHandler)
-		padapter->HalFunc.AntDivCompareHandler(padapter, dst, src);
-}
-#endif
-
 #ifdef CONFIG_HOSTAPD_MLME
 s32	rtw_hal_hostap_mgnt_xmit_entry(_adapter *padapter, _pkt *pkt)
 {

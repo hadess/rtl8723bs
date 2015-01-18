@@ -178,11 +178,6 @@ static void Update_ODM_ComInfo_8723b(PADAPTER	Adapter)
 #endif
 		;
 
-#ifdef CONFIG_ANTENNA_DIVERSITY
-	if(pHalData->AntDivCfg)
-		pdmpriv->InitODMFlag |= ODM_BB_ANT_DIV;
-#endif
-
 	//
 	// Pointer reference
 	//
