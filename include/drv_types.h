@@ -231,10 +231,6 @@ struct registry_priv
 	u8 fw_iol; //enable iol without other concern
 #endif
 
-#ifdef CONFIG_80211D
-	u8 enable80211d;
-#endif
-
 	u8 ifname[16];
 	u8 if2name[16];
 

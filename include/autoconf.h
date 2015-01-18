@@ -72,9 +72,6 @@
 	#define SCAN_DIVISION_NUM 4
 #endif 	
 
-//#define CONFIG_80211D
-
-
 /*
  * Hardware Related Config
  */
