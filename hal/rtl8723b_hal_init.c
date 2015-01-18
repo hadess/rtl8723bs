@@ -4797,14 +4797,6 @@ static void hw_var_set_mlme_sitesurvey(PADAPTER padapter, u8 variable, u8* val)
 	{
 		rcr_clear_bit = RCR_CBSSID_BCN;
 	}
-#ifdef CONFIG_TDLS
-	// TDLS will clear RCR_CBSSID_DATA bit for connection.
-	else if (padapter->tdlsinfo.link_established == true)
-	{
-		rcr_clear_bit = RCR_CBSSID_BCN;
-	}
-#endif // CONFIG_TDLS
-
 	value_rcr = rtw_read32(padapter, REG_RCR);
 
 	if (*((u8*)val))
@@ -5571,30 +5563,6 @@ _func_enter_;
 			rtl8723b_set_FwJoinBssRpt_cmd(padapter, *val);
 			break;
 
-#ifdef CONFIG_TDLS
-		case HW_VAR_TDLS_WRCR:
-			rtw_write32(padapter, REG_RCR, rtw_read32(padapter, REG_RCR)&(~RCR_CBSSID_DATA ));
-			break;
-		case HW_VAR_TDLS_INIT_CH_SEN:
-			{
-				rtw_write32(padapter, REG_RCR, rtw_read32(padapter, REG_RCR)&(~ RCR_CBSSID_DATA )&(~RCR_CBSSID_BCN ));
-				rtw_write16(padapter, REG_RXFLTMAP2,0xffff);
-
-				//disable update TSF
-				rtw_write8(padapter, REG_BCN_CTRL, rtw_read8(padapter, REG_BCN_CTRL)|DIS_TSF_UDT);
-			}
-			break;
-		case HW_VAR_TDLS_DONE_CH_SEN:
-			{
-				//enable update TSF
-				rtw_write8(padapter, REG_BCN_CTRL, rtw_read8(padapter, REG_BCN_CTRL)&(~ DIS_TSF_UDT));
-				rtw_write32(padapter, REG_RCR, rtw_read32(padapter, REG_RCR)|(RCR_CBSSID_BCN ));
-			}
-			break;
-		case HW_VAR_TDLS_RS_RCR:
-			rtw_write32(padapter, REG_RCR, rtw_read32(padapter, REG_RCR)|(RCR_CBSSID_DATA));
-			break;
-#endif //CONFIG_TDLS
 		case HW_VAR_INITIAL_GAIN:
 			{
 				DIG_T *pDigTable = &pHalData->odmpriv.DM_DigTable;
