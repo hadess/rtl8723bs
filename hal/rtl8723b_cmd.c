@@ -76,17 +76,6 @@ _func_enter_;
 
 	padapter = GET_PRIMARY_ADAPTER(padapter);
 	pHalData = GET_HAL_DATA(padapter);
-#ifdef DBG_CHECK_FW_PS_STATE
-#ifdef DBG_CHECK_FW_PS_STATE_H2C
-	if(rtw_fw_ps_state(padapter) == _FAIL)
-	{
-		DBG_871X("%s: h2c doesn't leave 32k ElementID=%02x \n", __FUNCTION__, ElementID);
-		pdbgpriv->dbg_h2c_leave32k_fail_cnt++;
-	}
-
-	//DBG_871X("H2C ElementID=%02x , pHalData->LastHMEBoxNum=%02x\n", ElementID, pHalData->LastHMEBoxNum);
-#endif //DBG_CHECK_FW_PS_STATE_H2C
-#endif //DBG_CHECK_FW_PS_STATE
 	_enter_critical_mutex(&(adapter_to_dvobj(padapter)->h2c_fwcmd_mutex), NULL);
 
 	if (!pCmdBuffer) {
@@ -104,10 +93,6 @@ _func_enter_;
 
 		if(!_is_fw_read_cmd_down(padapter, h2c_box_num)){
 			DBG_8192C(" fw read cmd failed...\n");
-#ifdef DBG_CHECK_FW_PS_STATE
-			DBG_871X("MAC_1C0=%08x, MAC_1C4=%08x, MAC_1C8=%08x, MAC_1CC=%08x\n", rtw_read32(padapter, 0x1c0), rtw_read32(padapter, 0x1c4)
-				, rtw_read32(padapter, 0x1c8), rtw_read32(padapter, 0x1cc));
-#endif //DBG_CHECK_FW_PS_STATE
 			//DBG_8192C(" 0x1c0: 0x%8x\n", rtw_read32(padapter, 0x1c0));
 			//DBG_8192C(" 0x1c4: 0x%8x\n", rtw_read32(padapter, 0x1c4));
 			goto exit;
