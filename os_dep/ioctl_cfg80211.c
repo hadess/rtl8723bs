@@ -1807,32 +1807,6 @@ static int rtw_cfg80211_set_probe_req_wpsp2pie(_adapter *padapter, char *buf, in
 
 		//buf += p2p_ielen;
 		//len -= p2p_ielen;
-
-		#ifdef CONFIG_WFD
-		if(rtw_get_wfd_ie(buf, len, NULL, &wfd_ielen)) 
-		{
-			#ifdef CONFIG_DEBUG_CFG80211
-			DBG_8192C("probe_req_wfd_ielen=%d\n", wfd_ielen);
-			#endif
-			
-			if(pmlmepriv->wfd_probe_req_ie)
-			{
-				u32 free_len = pmlmepriv->wfd_probe_req_ie_len;
-				pmlmepriv->wfd_probe_req_ie_len = 0;
-				rtw_mfree(pmlmepriv->wfd_probe_req_ie, free_len);
-				pmlmepriv->wfd_probe_req_ie = NULL;
-			}	
-
-			pmlmepriv->wfd_probe_req_ie = rtw_malloc(wfd_ielen);
-			if ( pmlmepriv->wfd_probe_req_ie == NULL) {
-				DBG_8192C("%s()-%d: rtw_malloc() ERROR!\n", __FUNCTION__, __LINE__);
-				return -EINVAL;
-			
-			}
-			rtw_get_wfd_ie(buf, len, pmlmepriv->wfd_probe_req_ie, &pmlmepriv->wfd_probe_req_ie_len);			
-		}
-		#endif //CONFIG_WFD
-		
 	}
 
 	return ret;
@@ -2374,36 +2348,6 @@ static int rtw_cfg80211_set_wpa_ie(_adapter *padapter, u8 *pie, size_t ielen)
 			_clr_fwstate_(&padapter->mlmepriv, WIFI_UNDER_WPS);
 		}
 	}
-
-	#ifdef CONFIG_WFD
-	{//check wfd_ie for assoc req; 
-		uint wfd_ielen=0;
-		u8 *wfd_ie;
-		struct mlme_priv *pmlmepriv = &(padapter->mlmepriv);
-
-		if(rtw_get_wfd_ie(buf, ielen, NULL, &wfd_ielen))
-		{
-			#ifdef CONFIG_DEBUG_CFG80211
-			DBG_8192C("%s wfd_assoc_req_ielen=%d\n", __FUNCTION__, wfd_ielen);
-			#endif
-
-			if(pmlmepriv->wfd_assoc_req_ie)
-			{
-				u32 free_len = pmlmepriv->wfd_assoc_req_ie_len;
-				pmlmepriv->wfd_assoc_req_ie_len = 0;
-				rtw_mfree(pmlmepriv->wfd_assoc_req_ie, free_len);
-				pmlmepriv->wfd_assoc_req_ie = NULL;
-			}
-
-			pmlmepriv->wfd_assoc_req_ie = rtw_malloc(wfd_ielen);
-			if ( pmlmepriv->wfd_assoc_req_ie == NULL) {
-				DBG_8192C("%s()-%d: rtw_malloc() ERROR!\n", __FUNCTION__, __LINE__);
-				goto exit;
-			}
-			rtw_get_wfd_ie(buf, ielen, pmlmepriv->wfd_assoc_req_ie, &pmlmepriv->wfd_assoc_req_ie_len);			
-		}
-	}
-	#endif //CONFIG_WFD
 
 	//TKIP and AES disallow multicast packets until installing group key
 	if(padapter->securitypriv.dot11PrivacyAlgrthm == _TKIP_
@@ -3123,19 +3067,6 @@ dump:
 		pframe = (u8 *)(pmgntframe->buf_addr) + TXDESC_OFFSET;
 
 		memcpy(pframe, (void*)buf, len);
-		#ifdef CONFIG_WFD
-		if (type >= 0)
-		{
-			struct wifi_display_info		*pwfd_info;
-			
-			pwfd_info = padapter->wdinfo.wfd_info;
-			
-			if ( true == pwfd_info->wfd_enable )
-			{
-				rtw_append_wfd_ie( padapter, pframe, &len );
-			}
-		}
-		#endif // CONFIG_WFD
 		pattrib->pktlen = len;	
 	
 		pwlanhdr = (struct rtw_ieee80211_hdr *)pframe;
@@ -3826,19 +3757,6 @@ static int _cfg80211_rtw_mgmt_tx(_adapter *padapter, u8 tx_ch, const u8 *buf, si
 	pattrib->seqnum = pmlmeext->mgnt_seq;
 	pmlmeext->mgnt_seq++;
 
-#ifdef CONFIG_WFD
-	{
-		struct wifi_display_info	*pwfd_info;
-			
-		pwfd_info = padapter->wdinfo.wfd_info;
-			
-		if ( true == pwfd_info->wfd_enable )
-		{
-			rtw_append_wfd_ie( padapter, pframe, &pattrib->pktlen );
-		}
-	}
-#endif // CONFIG_WFD
-	
 	pattrib->last_txcmdsz = pattrib->pktlen;
 
 	if (dump_mgntframe_and_wait_ack(padapter, pmgntframe) != _SUCCESS) 
@@ -4095,33 +4013,7 @@ static int rtw_cfg80211_set_beacon_wpsp2pie(struct net_device *ndev, char *buf, 
 		//buf += p2p_ielen;
 		//len -= p2p_ielen;
 
-		#ifdef CONFIG_WFD
-		if(rtw_get_wfd_ie(buf, len, NULL, &wfd_ielen)) 
-		{
-			#ifdef CONFIG_DEBUG_CFG80211
-			DBG_8192C("bcn_wfd_ielen=%d\n", wfd_ielen);
-			#endif
-			
-			if(pmlmepriv->wfd_beacon_ie)
-			{
-				u32 free_len = pmlmepriv->wfd_beacon_ie_len;
-				pmlmepriv->wfd_beacon_ie_len = 0;
-				rtw_mfree(pmlmepriv->wfd_beacon_ie, free_len);
-				pmlmepriv->wfd_beacon_ie = NULL;
-			}	
-
-			pmlmepriv->wfd_beacon_ie = rtw_malloc(wfd_ielen);
-			if ( pmlmepriv->wfd_beacon_ie == NULL) {
-				DBG_8192C("%s()-%d: rtw_malloc() ERROR!\n", __FUNCTION__, __LINE__);
-				return -EINVAL;
-			
-			}
-			rtw_get_wfd_ie(buf, len, pmlmepriv->wfd_beacon_ie, &pmlmepriv->wfd_beacon_ie_len);			
-		}
-		#endif //CONFIG_WFD
-		
-		pmlmeext->bstart_bss = true;
-		
+		pmlmeext->bstart_bss = true;		
 	}
 
 	return ret;
@@ -4216,32 +4108,6 @@ static int rtw_cfg80211_set_probe_resp_wpsp2pie(struct net_device *net, char *bu
 
 		//buf += p2p_ielen;
 		//len -= p2p_ielen;
-
-		#ifdef CONFIG_WFD
-		if(rtw_get_wfd_ie(buf, len, NULL, &wfd_ielen)) 
-		{
-			#ifdef CONFIG_DEBUG_CFG80211
-			DBG_8192C("probe_resp_wfd_ielen=%d\n", wfd_ielen);
-			#endif
-			
-			if(pmlmepriv->wfd_probe_resp_ie)
-			{
-				u32 free_len = pmlmepriv->wfd_probe_resp_ie_len;
-				pmlmepriv->wfd_probe_resp_ie_len = 0;
-				rtw_mfree(pmlmepriv->wfd_probe_resp_ie, free_len);
-				pmlmepriv->wfd_probe_resp_ie = NULL;
-			}	
-
-			pmlmepriv->wfd_probe_resp_ie = rtw_malloc(wfd_ielen);
-			if ( pmlmepriv->wfd_probe_resp_ie == NULL) {
-				DBG_8192C("%s()-%d: rtw_malloc() ERROR!\n", __FUNCTION__, __LINE__);
-				return -EINVAL;
-			
-			}
-			rtw_get_wfd_ie(buf, len, pmlmepriv->wfd_probe_resp_ie, &pmlmepriv->wfd_probe_resp_ie_len);			
-		}
-		#endif //CONFIG_WFD
-		
 	}
 
 	return ret;

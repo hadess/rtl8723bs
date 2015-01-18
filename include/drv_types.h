@@ -638,11 +638,6 @@ struct _ADAPTER{
 	RT_WAPI_T	wapiInfo;
 #endif
 
-
-#ifdef CONFIG_WFD
-	struct wifi_display_info wfd_info;
-#endif //CONFIG_WFD
-
 	void *			HalData;
 	u32 hal_data_sz;
 	struct hal_ops	HalFunc;

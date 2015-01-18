@@ -6176,35 +6176,6 @@ static int rtw_tdls_get(struct net_device *dev,
 				union iwreq_data *wrqu, char *extra)
 {
 	int ret = 0;
-
-#ifdef CONFIG_WFD
-
-	DBG_871X( "[%s] extra = %s\n", __FUNCTION__, (char*) wrqu->data.pointer );
-
-	if ( !memcmp( wrqu->data.pointer, "ip", 2 ) )
-	{
-		rtw_tdls_getip( dev, info, wrqu, extra );
-	}
-	if ( !memcmp( wrqu->data.pointer, "port", 4 ) )
-	{
-		rtw_tdls_getport( dev, info, wrqu, extra );
-	}
-	//WFDTDLS, for sigma test
-	if ( !memcmp( wrqu->data.pointer, "dis", 3 ) )
-	{
-		rtw_tdls_dis_result( dev, info, wrqu, extra );
-	}
-	if ( !memcmp( wrqu->data.pointer, "status", 6 ) )
-	{
-		rtw_wfd_tdls_status( dev, info, wrqu, extra );
-	}
-	if ( !memcmp( wrqu->data.pointer, "tdls_sta=", 9 ) )
-	{
-		rtw_tdls_getsta( dev, info, wrqu, extra );
-	}
-
-#endif //CONFIG_WFD
-
 	return ret;
 }
 
