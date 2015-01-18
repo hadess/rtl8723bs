@@ -4016,22 +4016,6 @@ void issue_assocreq(_adapter *padapter)
 	rtw_build_assoc_req_wapi_ie(padapter, pframe, pattrib);
 #endif
 
-#ifdef CONFIG_WFD
-	if ( true == pwdinfo->wfd_info->wfd_enable )
-	{
-		wfdielen = build_assoc_req_wfd_ie(pwdinfo, pframe);
-		pframe += wfdielen;
-		pattrib->pktlen += wfdielen;
-	}
-	else if (pmlmepriv->wfd_assoc_req_ie != NULL && pmlmepriv->wfd_assoc_req_ie_len>0)		
-	{
-		//WFD IE
-		memcpy(pframe, pmlmepriv->wfd_assoc_req_ie, pmlmepriv->wfd_assoc_req_ie_len);
-		pattrib->pktlen += pmlmepriv->wfd_assoc_req_ie_len;
-		pframe += pmlmepriv->wfd_assoc_req_ie_len;		
-	}
-#endif //CONFIG_WFD	
-
 	pattrib->last_txcmdsz = pattrib->pktlen;
 	dump_mgntframe(padapter, pmgntframe);
 
