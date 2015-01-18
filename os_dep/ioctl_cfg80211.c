@@ -3994,122 +3994,6 @@ exit:
 	return;
 }
 
-#if defined(CONFIG_TDLS)
-static int cfg80211_rtw_tdls_mgmt(struct wiphy *wiphy,
-	struct net_device *ndev,
-	u8 *peer,
-	u8 action_code,
-	u8 dialog_token,
-	u16 status_code,
-	const u8 *buf,
-	size_t len)
-{
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(ndev);
-	int ret = 0;
-	struct tdls_txmgmt txmgmt;
-
-	//TDLS: discard wpa_supplicant's frame mgmt
-	DBG_871X("%s %d\n", __FUNCTION__, __LINE__);
-	return 0;
-
-	memset(&txmgmt, 0x00, sizeof(struct tdls_txmgmt));
-	memcpy(txmgmt.peer, peer, ETH_ALEN);
-	txmgmt.action_code = action_code;
-	txmgmt.dialog_token= dialog_token;
-	txmgmt.status_code = status_code;
-	txmgmt.len = len;
-	txmgmt.buf = (u8 *)rtw_malloc(txmgmt.len);
-	if (txmgmt.buf == NULL)
-	{
-		ret = -ENOMEM;
-		goto bad;
-	}
-	memcpy(txmgmt.buf, (void*)buf, txmgmt.len);
-	txmgmt.external_support = true;
-
-	switch(txmgmt.action_code) {
-		case TDLS_SETUP_REQUEST:
-			issue_tdls_setup_req(padapter, &txmgmt, true);
-			break;
-		case TDLS_SETUP_RESPONSE:
-			issue_tdls_setup_rsp(padapter, &txmgmt);
-			break;
-		case TDLS_SETUP_CONFIRM:
-			issue_tdls_setup_cfm(padapter, &txmgmt);
-			break;
-		case TDLS_TEARDOWN:
-			break;
-		case TDLS_DISCOVERY_REQUEST:
-			issue_tdls_dis_req(padapter, &txmgmt);
-		break;
-	}
-
-bad:
-	if (txmgmt.buf)
-	{
-		rtw_mfree(txmgmt.buf, txmgmt.len);
-	}
-
-	return ret;
-}
-
-static int cfg80211_rtw_tdls_oper(struct wiphy *wiphy,
-	struct net_device *ndev,
-	u8 *peer,
-	enum nl80211_tdls_operation oper)
-{
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(ndev);
-	struct tdls_txmgmt	txmgmt;
-	struct sta_info *ptdls_sta = NULL;
-
-	DBG_871X(FUNC_NDEV_FMT", nl80211_tdls_operation:%d\n", FUNC_NDEV_ARG(ndev), oper);
-
-#ifdef CONFIG_LPS
-	rtw_lps_ctrl_wk_cmd(padapter, LPS_CTRL_LEAVE, 1);
-#endif //CONFIG_LPS
-
-	memset(&txmgmt, 0x00, sizeof(struct tdls_txmgmt));
-	if(peer)
-		memcpy(txmgmt.peer, peer, ETH_ALEN);
-
-	switch(oper) {
-		case NL80211_TDLS_DISCOVERY_REQ:
-			issue_tdls_dis_req(padapter, &txmgmt);
-			break;
-		case NL80211_TDLS_SETUP:
-#ifdef CONFIG_WFD
-			if ( _AES_ != padapter->securitypriv.dot11PrivacyAlgrthm )
-			{
-				if ( padapter->wdinfo.wfd_tdls_weaksec == true)
-					issue_tdls_setup_req(padapter, &txmgmt, true);
-				else
-					DBG_871X( "[%s] Current link is not AES, SKIP sending the tdls setup request!!\n", __FUNCTION__ );
-			}
-			else
-#endif // CONFIG_WFD
-			{
-				issue_tdls_setup_req(padapter, &txmgmt, true);
-			}
-			break;
-		case NL80211_TDLS_TEARDOWN:
-			ptdls_sta = rtw_get_stainfo( &(padapter->stapriv), txmgmt.peer);
-			if(ptdls_sta != NULL)
-			{
-				txmgmt.status_code = _RSON_TDLS_TEAR_UN_RSN_;
-				issue_tdls_teardown(padapter, &txmgmt, false);
-			}
-			else
-				DBG_871X( "TDLS peer not found\n");
-			break;
-		case NL80211_TDLS_ENABLE_LINK:
-			break;
-		case NL80211_TDLS_DISABLE_LINK:
-			break;
-	}
-	return 0;
-}
-#endif /* CONFIG_TDLS */
-
 #if defined(CONFIG_PNO_SUPPORT)
 static int cfg80211_rtw_sched_scan_start(struct wiphy *wiphy,
 		struct net_device *dev,
@@ -4591,11 +4475,6 @@ static void rtw_cfg80211_preinit_wiphy(_adapter *padapter, struct wiphy *wiphy)
 	wiphy->wowlan = &wowlan_stub;
 #endif
 
-#if defined(CONFIG_TDLS)
-	wiphy->flags |= WIPHY_FLAG_SUPPORTS_TDLS;
-	//wiphy->flags |= WIPHY_FLAG_TDLS_EXTERNAL_SETUP;
-#endif /* CONFIG_TDLS */
-
 	if(padapter->registrypriv.power_mgnt != PS_MODE_ACTIVE)
 		wiphy->flags |= WIPHY_FLAG_PS_ON_BY_DEFAULT;
 	else 
@@ -4643,11 +4522,6 @@ static struct cfg80211_ops rtw_cfg80211_ops = {
 
 	.mgmt_tx = cfg80211_rtw_mgmt_tx,
 	.mgmt_frame_register = cfg80211_rtw_mgmt_frame_register,
-
-#if defined(CONFIG_TDLS)
-	.tdls_mgmt = cfg80211_rtw_tdls_mgmt,
-	.tdls_oper = cfg80211_rtw_tdls_oper,
-#endif /* CONFIG_TDLS */
 
 #if defined(CONFIG_PNO_SUPPORT)
 	.sched_scan_start = cfg80211_rtw_sched_scan_start,

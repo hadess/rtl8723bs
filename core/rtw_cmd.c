@@ -1648,23 +1648,13 @@ _func_enter_;
 	memcpy(psetstakey_para->addr, sta->hwaddr,ETH_ALEN);
 		
 	if(check_fwstate(pmlmepriv, WIFI_STATION_STATE)){
-#ifdef CONFIG_TDLS		
-		if(sta->tdls_sta_state&TDLS_LINKED_STATE)
-			psetstakey_para->algorithm=(u8)sta->dot118021XPrivacy;
-		else
-#endif //CONFIG_TDLS
-			psetstakey_para->algorithm =(unsigned char) psecuritypriv->dot11PrivacyAlgrthm;
+		psetstakey_para->algorithm =(unsigned char) psecuritypriv->dot11PrivacyAlgrthm;
 	}else{
 		GET_ENCRY_ALGO(psecuritypriv, sta, psetstakey_para->algorithm, false);
 	}
 
 	if (unicast_key == true) {
-#ifdef CONFIG_TDLS
-		if((sta->tdls_sta_state&TDLS_LINKED_STATE)==TDLS_LINKED_STATE)
-			memcpy(&psetstakey_para->key, sta->tpk.tk, 16);
-		else
-#endif //CONFIG_TDLS
-			memcpy(&psetstakey_para->key, &sta->dot118021x_UncstKey, 16);
+		memcpy(&psetstakey_para->key, &sta->dot118021x_UncstKey, 16);
 	}
 	else {
 		memcpy(&psetstakey_para->key, &psecuritypriv->dot118021XGrpKey[psecuritypriv->dot118021XGrpKeyid].skey, 16);
@@ -2263,32 +2253,6 @@ u8 rtw_tdls_cmd(_adapter *padapter, u8 *addr, u8 option)
 
 _func_enter_;
 
-#ifdef CONFIG_TDLS
-
-	RT_TRACE(_module_rtl871x_cmd_c_, _drv_notice_, ("+rtw_set_tdls_cmd\n"));
-
-	pcmdobj = (struct	cmd_obj*)rtw_zmalloc(sizeof(struct	cmd_obj));
-	if(pcmdobj == NULL){
-		res=_FAIL;
-		goto exit;
-	}
-
-	TDLSoption= (struct TDLSoption_param *)rtw_zmalloc(sizeof(struct TDLSoption_param));
-	if(TDLSoption == NULL) {
-		rtw_mfree((u8 *)pcmdobj, sizeof(struct cmd_obj));
-		res= _FAIL;
-		goto exit;
-	}
-
-	spin_lock(&(padapter->tdlsinfo.cmd_lock));
-	memcpy(TDLSoption->addr, addr, 6);	
-	TDLSoption->option = option;
-	spin_unlock(&(padapter->tdlsinfo.cmd_lock));
-	init_h2fwcmd_w_parm_no_rsp(pcmdobj, TDLSoption, GEN_CMD_CODE(_TDLS));
-	res = rtw_enqueue_cmd(pcmdpriv, pcmdobj);
-
-#endif	//CONFIG_TDLS
-	
 exit:
 
 
@@ -2352,11 +2316,6 @@ u8 traffic_status_watchdog(_adapter *padapter, u8 from_timer)
 	u8	bHigherBusyTraffic = false, bHigherBusyRxTraffic = false, bHigherBusyTxTraffic = false;
 
 	struct mlme_priv		*pmlmepriv = &(padapter->mlmepriv);
-#ifdef CONFIG_TDLS
-	struct tdls_info *ptdlsinfo = &(padapter->tdlsinfo);
-	struct tdls_txmgmt txmgmt;
-	u8 baddr[ETH_ALEN] = { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff };
-#endif //CONFIG_TDLS
 
 	RT_LINK_DETECT_T * link_detect = &pmlmepriv->LinkDetectInfo;
 
@@ -2413,17 +2372,6 @@ u8 traffic_status_watchdog(_adapter *padapter, u8 from_timer)
 	}
 #endif
 		
-#ifdef CONFIG_TDLS
-#ifdef CONFIG_TDLS_AUTOSETUP
-		if( ( ptdlsinfo->watchdog_count % TDLS_WATCHDOG_PERIOD ) == 0 )	//10 * 2sec, periodically sending
-		{
-			memcpy(txmgmt.peer, baddr, ETH_ALEN);
-			issue_tdls_dis_req( padapter, &txmgmt );
-		}
-		ptdlsinfo->watchdog_count++;
-#endif //CONFIG_TDLS_AUTOSETUP
-#endif //CONFIG_TDLS
-
 #ifdef CONFIG_LPS
 		// check traffic for  powersaving.
 		if( ((pmlmepriv->LinkDetectInfo.NumRxUnicastOkInPeriod + pmlmepriv->LinkDetectInfo.NumTxOkInPeriod) > 8 ) ||

@@ -92,10 +92,6 @@ typedef struct _ADAPTER _adapter, ADAPTER,*PADAPTER;
 #include <rtw_version.h>
 #include <rtw_odm.h>
 
-#ifdef CONFIG_TDLS
-#include <rtw_tdls.h>
-#endif // CONFIG_TDLS
-
 #ifdef CONFIG_WAPI_SUPPORT
 #include <rtw_wapi.h>
 #endif // CONFIG_WAPI_SUPPORT
@@ -636,10 +632,6 @@ struct _ADAPTER{
 #endif
 
 	u32	setband;
-
-#ifdef CONFIG_TDLS
-	struct tdls_info	tdlsinfo;
-#endif //CONFIG_TDLS
 
 #ifdef CONFIG_WAPI_SUPPORT
 	u8	WapiSupport;
