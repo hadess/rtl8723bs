@@ -494,15 +494,8 @@ struct cfg80211_bss *rtw_cfg80211_inform_bss(_adapter *padapter, struct wlan_net
 
 	*((u64*)pbuf) = cpu_to_le64(notify_timestamp);
 
-#if 1	
 	bss = cfg80211_inform_bss_frame(wiphy, notify_channel, (struct ieee80211_mgmt *)buf,
 		len, notify_signal, GFP_ATOMIC);
-#else			 
-			
-	bss = cfg80211_inform_bss(wiphy, notify_channel, (const u8 *)pnetwork->network.MacAddress,
-                notify_timestamp, notify_capability, notify_interval, notify_ie,
-                notify_ielen, notify_signal, GFP_ATOMIC/*GFP_KERNEL*/);
-#endif
 
 	if (unlikely(!bss)) {
 		DBG_8192C(FUNC_ADPT_FMT" bss NULL\n", FUNC_ADPT_ARG(padapter));
@@ -1941,14 +1934,12 @@ static int cfg80211_rtw_scan(struct wiphy *wiphy
 
 	if (pmlmepriv->LinkDetectInfo.bBusyTraffic == true)
 	{
-#if 1 // Miracast can't do AP scan
 		static unsigned long lastscantime = 0;
 		unsigned long passtime;
 
 		passtime = jiffies_to_msecs(jiffies - lastscantime);
 		lastscantime = jiffies;
 		if (passtime > 12000)
-#endif
 		{
 			DBG_871X("%s: bBusyTraffic == true\n", __FUNCTION__);
 			need_indicate_scan_done = true;
@@ -1965,15 +1956,12 @@ static int cfg80211_rtw_scan(struct wiphy *wiphy
 #ifdef CONFIG_CONCURRENT_MODE
 	if(pbuddy_mlmepriv && (pbuddy_mlmepriv->LinkDetectInfo.bBusyTraffic == true))	
 	{
-#if 1 // Miracast can't do AP scan
 		static unsigned long buddylastscantime = 0;
 		unsigned long passtime;
 
 		passtime = jiffies_to_msecs(jiffies - buddylastscantime);
 		buddylastscantime = jiffies;
-		if ((passtime > 12000)
-		)
-#endif
+		if (passtime > 12000)
 		{
 			DBG_871X("%s: bBusyTraffic == true at buddy_intf\n", __FUNCTION__);
 			need_indicate_scan_done = true;

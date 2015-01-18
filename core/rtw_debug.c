@@ -1473,10 +1473,8 @@ int proc_get_best_channel(struct seq_file *m, void *v)
 				best_channel_5G = pmlmeext->channel_set[i].ChannelNum;
 			}
 		}
-#if 1 // debug
 		DBG_871X_SEL_NL(m, "The rx cnt of channel %3d = %d\n", 
 					pmlmeext->channel_set[i].ChannelNum, pmlmeext->channel_set[i].rx_count);
-#endif
 	}
 	
 	DBG_871X_SEL_NL(m, "best_channel_5G = %d\n", best_channel_5G);

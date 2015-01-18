@@ -1768,8 +1768,6 @@ phy_IQCalibrate_8723B(
 
 
 //path A TX IQK
-#if 1
-
 	for(i = 0 ; i < retryCount ; i++){
 		PathAOK = phy_PathA_IQK_8723B(pAdapter, is2T, RF_Path);
 //		if(PathAOK == 0x03){
@@ -1784,11 +1782,8 @@ phy_IQCalibrate_8723B(
 			break;
 		}
 	}
-#endif
 
 //path A RXIQK
-#if 1
-
 	for(i = 0 ; i < retryCount ; i++){
 		PathAOK = phy_PathA_RxIQK8723B(pAdapter, is2T, RF_Path);
 		if(PathAOK == 0x03){
@@ -1808,15 +1803,11 @@ phy_IQCalibrate_8723B(
 	if(0x00 == PathAOK){		
 		ODM_RT_TRACE(pDM_Odm,ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("Path A IQK failed!!\n"));		
 	}
-#endif
 
 //path B IQK
-#if 1
-
 	if(is2T){
 
 //path B TX IQK
-#if 1
 		for(i = 0 ; i < retryCount ; i++){
 			PathBOK = phy_PathB_IQK_8723B(pAdapter);
 //		if(PathBOK == 0x03){
@@ -1831,11 +1822,8 @@ phy_IQCalibrate_8723B(
 			break;
 		}
 	}
-#endif
 
 //path B RX IQK
-#if 1
-
 for(i = 0 ; i < retryCount ; i++){
 		PathBOK = phy_PathB_RxIQK8723B(pAdapter, is2T);
 		if(PathBOK == 0x03){
@@ -1852,14 +1840,11 @@ for(i = 0 ; i < retryCount ; i++){
 		}
 	}
 
-#endif
-
 ////////Allen end ///////// 
 		if(0x00 == PathBOK){		
 			ODM_RT_TRACE(pDM_Odm,ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("Path B IQK failed!!\n"));		
 		}
 	}
-#endif	//pathB IQK
 
 	//Back to BB mode, load original value
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("IQK:Back to BB mode, load original value!\n"));

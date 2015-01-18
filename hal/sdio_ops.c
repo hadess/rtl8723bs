@@ -364,7 +364,6 @@ _func_enter_;
 
 	// 4 bytes alignment
 	shift = ftaddr & 0x3;
-#if 1
 	if (shift == 0)
 	{
 		sd_write32(pintfhdl, ftaddr, val, &err);
@@ -374,28 +373,6 @@ _func_enter_;
 		val = cpu_to_le32(val);
 		err = sd_cmd52_write(pintfhdl, ftaddr, 4, (u8*)&val);
 	}
-#else
-	if (shift == 0) {
-		sd_write32(pintfhdl, ftaddr, val, &err);
-	} else {
-		u8 *ptmpbuf;
-
-		ptmpbuf = (u8*)rtw_malloc(8);
-		if (NULL == ptmpbuf) return (-1);
-
-		ftaddr &= ~(u16)0x3;
-		err = sd_read(pintfhdl, ftaddr, 8, ptmpbuf);
-		if (err) {
-			rtw_mfree(ptmpbuf, 8);
-			return err;
-		}
-		val = cpu_to_le32(val);
-		memcpy(ptmpbuf+shift, &val, 4);
-		err = sd_write(pintfhdl, ftaddr, 8, ptmpbuf);
-
-		rtw_mfree(ptmpbuf, 8);
-	}
-#endif
 
 _func_exit_;
 

@@ -421,7 +421,6 @@ static void ConstructARPResponse(
 	// Security Header: leave space for it if necessary.
 	//-------------------------------------------------------------------------
 
-#if 1
 	switch (psecuritypriv->dot11PrivacyAlgrthm)
 	{
 		case _WEP40_:
@@ -450,7 +449,7 @@ static void ConstructARPResponse(
 		//SET_80211_HDR_WEP(pARPRspPkt, 1);  //Suggested by CCW.
 		SetPrivacy(fctrl);
 	}	
-#endif
+
 	//-------------------------------------------------------------------------
 	// Frame Body.
 	//-------------------------------------------------------------------------
@@ -697,7 +696,6 @@ static void ConstructGTKResponse(
 	// Security Header: leave space for it if necessary.
 	//-------------------------------------------------------------------------
 
-#if 1
 	switch (psecuritypriv->dot11PrivacyAlgrthm)
 	{
 		case _WEP40_:
@@ -727,7 +725,7 @@ static void ConstructGTKResponse(
 		//GTK's privacy bit is done by FW
 		//SetPrivacy(fctrl);
 	}	
-#endif //1
+
 	//-------------------------------------------------------------------------
 	// Frame Body.
 	//-------------------------------------------------------------------------
