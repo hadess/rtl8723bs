@@ -215,11 +215,6 @@ static inline void rtw_merge_string(char *dst, int dst_len, char *src1, char *sr
 
 #define rtw_signal_process(pid, sig) kill_pid(find_vpid((pid)),(sig), 1)
 
-// Suspend lock prevent system from going suspend
-#ifdef CONFIG_WAKELOCK
-#include <linux/wakelock.h>
-#endif
-
 #define rtw_netdev_priv(netdev) ( ((struct rtw_netdev_priv_indicator *)netdev_priv(netdev))->priv )
 
 #define NDEV_FMT "%s"
