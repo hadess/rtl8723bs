@@ -1002,10 +1002,6 @@ u8 rtw_lps_ctrl_wk_cmd(_adapter*padapter, u8 lps_ctrl_type, u8 enqueue);
 u8 rtw_dm_in_lps_wk_cmd(_adapter*padapter);
 u8 rtw_lps_change_dtim_cmd(_adapter*padapter, u8 dtim);
 
-#if (RATE_ADAPTIVE_SUPPORT==1)
-u8 rtw_rpt_timer_cfg_cmd(_adapter*padapter, u16 minRptTime);
-#endif
-
 u8 rtw_dm_ra_mask_wk_cmd(_adapter*padapter, u8 *psta);
 
 extern u8 rtw_ps_cmd(_adapter*padapter);

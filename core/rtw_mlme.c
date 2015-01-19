@@ -1918,12 +1918,6 @@ void rtw_sta_media_status_rpt(_adapter *adapter,struct sta_info *psta, u32 mstat
 
 	if(psta==NULL)	return;
 
-	#if (RATE_ADAPTIVE_SUPPORT==1)	//for 88E RA	
-	{
-		u8 macid = rtw_search_max_mac_id(adapter);				
-		rtw_hal_set_hwreg(adapter,HW_VAR_TX_RPT_MAX_MACID, (u8*)&macid);
-	}
-	#endif
 	media_status_rpt = (u16)((psta->mac_id<<8)|mstatus); //  MACID|OPMODE:1 connect				
 	rtw_hal_set_hwreg(adapter,HW_VAR_H2C_MEDIA_STATUS_RPT,(u8 *)&media_status_rpt);			
 }

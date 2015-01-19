@@ -1214,10 +1214,6 @@ typedef  struct DM_Out_Source_Dynamic_Mechanism_Structure
 	// 2012/01/12 MH For MP, we need to reduce one array pointer for default port.??
 	PSTA_INFO_T		pODM_StaInfo[ODM_ASSOCIATE_ENTRY_NUM];
 
-#if (RATE_ADAPTIVE_SUPPORT == 1)
-	u2Byte 			CurrminRptTime;
-	ODM_RA_INFO_T   RAInfo[ODM_ASSOCIATE_ENTRY_NUM]; //See HalMacID support
-#endif
 	//
 	// 2012/02/14 MH Add to share 88E ra with other SW team.
 	// We need to colelct all support abilit to a proper area.
