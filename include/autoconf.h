@@ -74,13 +74,6 @@
 #endif
 
 /*
- * Outsource  Related Config
- */
-
-#define POWER_TRAINING_ACTIVE			0
-
-
-/*
  * Platform dependent
  */
 #define WAKEUP_GPIO_IDX	12	//WIFI Chip Side
