@@ -736,35 +736,6 @@ void nat25_db_expire(_adapter *priv)
 	_exit_critical_bh(&priv->br_ext_lock, &irqL);
 }
 
-
-#ifdef SUPPORT_TX_MCAST2UNI
-static int checkIPMcAndReplace(_adapter *priv, struct sk_buff *skb, unsigned int *dst_ip)
-{
-	struct stat_info	*pstat;
-	struct list_head	*phead, *plist;
-	int i;
-
-	phead = &priv->asoc_list;
-	plist = phead->next;
-
-	while (plist != phead) {
-		pstat = list_entry(plist, struct stat_info, asoc_list);
-		plist = plist->next;
-
-		if (pstat->ipmc_num == 0)
-			continue;
-
-		for (i=0; i<MAX_IP_MC_ENTRY; i++) {
-			if (pstat->ipmc[i].used && !memcmp(&pstat->ipmc[i].mcmac[3], ((unsigned char *)dst_ip)+1, 3)) {
-				memcpy(skb->data, pstat->ipmc[i].mcmac, ETH_ALEN);
-				return 1;
-			}
-		}
-	}
-	return 0;
-}
-#endif
-
 int nat25_db_handle(_adapter *priv, struct sk_buff *skb, int method)
 {
 	unsigned short protocol;
@@ -814,13 +785,6 @@ int nat25_db_handle(_adapter *priv, struct sk_buff *skb, int method)
 			case NAT25_LOOKUP:
 				{
 					DEBUG_INFO("NAT25: Lookup IP, SA=%08x, DA=%08x\n", iph->saddr, iph->daddr);
-#ifdef SUPPORT_TX_MCAST2UNI
-					if (priv->pshare->rf_ft_var.mc2u_disable ||
-							((((OPMODE & (WIFI_STATION_STATE|WIFI_ASOC_STATE))
-							== (WIFI_STATION_STATE|WIFI_ASOC_STATE)) &&
-							!checkIPMcAndReplace(priv, skb, &iph->daddr)) ||
-							(OPMODE & WIFI_ADHOC_STATE)))
-#endif
 					{
 						__nat25_generate_ipv4_network_addr(networkAddr, &iph->daddr);
 
