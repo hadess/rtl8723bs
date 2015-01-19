@@ -2210,10 +2210,6 @@ _func_enter_;
 		return NULL;
 	}
 
-#ifndef CONFIG_SDIO_RX_COPY
-	recvframe_expand_pkt(adapter, prframe);
-#endif
-
 	curfragnum++;
 
 	plist= get_list_head(defrag_q);
