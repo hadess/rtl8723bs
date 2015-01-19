@@ -679,15 +679,9 @@ static int rtw_sdio_resume(struct device *dev)
 		}
 		else
 		{
-#ifdef CONFIG_RESUME_IN_WORKQUEUE
-			rtw_resume_in_workqueue(pwrpriv);
-#else			
-			{
-				rtw_resume_lock_suspend();			
-				ret = rtw_resume_process(padapter);
-				rtw_resume_unlock_suspend();
-			}
-#endif
+			rtw_resume_lock_suspend();
+			ret = rtw_resume_process(padapter);
+			rtw_resume_unlock_suspend();
 		}
 	}
 	pmlmeext->last_scan_time = jiffies;
