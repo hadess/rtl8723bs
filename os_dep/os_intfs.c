@@ -218,12 +218,6 @@ module_param(rtw_max_roaming_times, uint, 0644);
 MODULE_PARM_DESC(rtw_max_roaming_times,"The max roaming times to try");
 #endif //CONFIG_LAYER2_ROAMING
 
-#ifdef CONFIG_IOL
-static int rtw_fw_iol=1;// 0:Disable, 1:enable, 2:by usb speed
-module_param(rtw_fw_iol, int, 0644);
-MODULE_PARM_DESC(rtw_fw_iol,"FW IOL");
-#endif //CONFIG_IOL
-
 #ifdef CONFIG_FILE_FWIMG
 static char *rtw_fw_file_path = "/system/etc/firmware/rtlwifi/FW_NIC.BIN";
 module_param(rtw_fw_file_path, charp, 0644);
@@ -392,10 +386,6 @@ _func_enter_;
 #ifdef CONFIG_INTEL_WIDI
 	registry_par->max_roaming_times = (u8)rtw_max_roaming_times + 2;
 #endif // CONFIG_INTEL_WIDI
-#endif
-
-#ifdef CONFIG_IOL
-	registry_par->fw_iol = rtw_fw_iol;
 #endif
 
 	snprintf(registry_par->ifname, 16, "%s", ifname);
@@ -2136,15 +2126,6 @@ int rtw_suspend_common(_adapter *padapter)
 	
 	while (pwrpriv->bips_processing == true)
 		msleep(1);		
-
-#ifdef CONFIG_IOL_READ_EFUSE_MAP
-	if(!padapter->bup){
-		u8 bMacPwrCtrlOn = false;
-		rtw_hal_get_hwreg(padapter, HW_VAR_APFM_ON_MAC, &bMacPwrCtrlOn);
-		if(bMacPwrCtrlOn)
-			rtw_hal_power_off(padapter);
-	}
-#endif
 
 	if((!padapter->bup) || (padapter->bDriverStopped)||(padapter->bSurpriseRemoved))
 	{

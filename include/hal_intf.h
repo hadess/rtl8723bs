@@ -272,10 +272,6 @@ struct hal_ops {
 	u8	(*Efuse_WordEnableDataWrite)(_adapter *padapter, u16 efuse_addr, u8 word_en, u8 *data, bool bPseudoTest);
 	bool	(*Efuse_PgPacketWrite_BT)(_adapter *padapter, u8 offset, u8 word_en, u8 *data, bool bPseudoTest);
 
-#ifdef CONFIG_IOL
-	int (*IOL_exec_cmds_sync)(_adapter *padapter, struct xmit_frame *xmit_frame, u32 max_wating_ms, u32 bndy_cnt);
-#endif
-
 #ifdef CONFIG_XMIT_THREAD_MODE
 	s32 (*xmit_thread_handler)(_adapter *padapter);
 #endif
@@ -423,10 +419,6 @@ void	rtw_hal_dm_watchdog_in_lps(_adapter *padapter);
 
 void	rtw_hal_set_tx_power_level(_adapter *padapter, u8 channel);
 void	rtw_hal_get_tx_power_level(_adapter *padapter, s32 *powerlevel);
-
-#ifdef CONFIG_IOL
-int rtw_hal_iol_cmd(ADAPTER *adapter, struct xmit_frame *xmit_frame, u32 max_wating_ms, u32 bndy_cnt);
-#endif
 
 #ifdef CONFIG_XMIT_THREAD_MODE
 s32 rtw_hal_xmit_thread_handler(_adapter *padapter);
