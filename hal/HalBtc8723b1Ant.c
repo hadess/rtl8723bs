@@ -3321,9 +3321,7 @@ EXhalbtc8723b1ant_DisplayCoexInfo(
 	CL_SPRINTF(cliBuf, BT_TMP_BUF_SIZE, "\r\n %-35s = %d/ %d", "0x774(low-pri rx/tx)", \
 		pCoexSta->lowPriorityRx, pCoexSta->lowPriorityTx);
 	CL_PRINTF(cliBuf);
-#if(BT_AUTO_REPORT_ONLY_8723B_1ANT == 1)
-	//halbtc8723b1ant_MonitorBtCtr(pBtCoexist);
-#endif
+
 	pBtCoexist->fBtcDispDbgMsg(pBtCoexist, BTC_DBG_DISP_COEX_STATISTICS);
 }
 
@@ -3797,16 +3795,6 @@ EXhalbtc8723b1ant_BtInfoNotify(
 		{
 			// BT already NOT ignore Wlan active, do nothing here.
 		}
-#if(BT_AUTO_REPORT_ONLY_8723B_1ANT == 0)
-		if( (pCoexSta->btInfoExt & BIT4) )
-		{
-			// BT auto report already enabled, do nothing
-		}
-		else
-		{
-			halbtc8723b1ant_BtAutoReport(pBtCoexist, FORCE_EXEC, true);
-		}
-#endif
 	}
 		
 	// check BIT2 first ==> check if bt is under inquiry or page scan
@@ -4007,10 +3995,6 @@ EXhalbtc8723b1ant_Periodical(
 		BTC_PRINT(BTC_MSG_INTERFACE, INTF_INIT, ("[BTCoex], ****************************************************************\n"));
 	}
 
-#if(BT_AUTO_REPORT_ONLY_8723B_1ANT == 0)
-	halbtc8723b1ant_QueryBtInfo(pBtCoexist);
-	halbtc8723b1ant_MonitorBtEnableDisable(pBtCoexist);
-#else
 	halbtc8723b1ant_MonitorBtCtr(pBtCoexist);
 	halbtc8723b1ant_MonitorWiFiCtr(pBtCoexist);
 
@@ -4022,5 +4006,4 @@ EXhalbtc8723b1ant_Periodical(
 	}
 
 	pCoexSta->specialPktPeriodCnt++;
-#endif
 }
