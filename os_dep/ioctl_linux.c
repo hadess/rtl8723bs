@@ -30,10 +30,6 @@ extern int rtw_ht_enable;
 #define MAX_CUSTOM_LEN 64
 #define RATE_COUNT 4
 
-#ifdef CONFIG_GLOBAL_UI_PID
-extern int ui_pid[3];
-#endif
-
 // combo scan
 #define WEXT_CSCAN_AMOUNT 9
 #define WEXT_CSCAN_BUF_LEN		360
@@ -3282,9 +3278,6 @@ static int rtw_set_pid(struct net_device *dev,
 	selector = *pdata;
 	if(selector < 3 && selector >=0) {
 		padapter->pid[selector] = *(pdata+1);
-		#ifdef CONFIG_GLOBAL_UI_PID
-		ui_pid[selector] = *(pdata+1);
-		#endif
 		DBG_871X("%s set pid[%d]=%d\n", __FUNCTION__, selector ,padapter->pid[selector]);
 	}
 	else
