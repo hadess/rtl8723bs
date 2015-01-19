@@ -51,11 +51,6 @@
 //#define CONFIG_80211D
 
 /*
- * Interface Related Config
- */
-#define CONFIG_TX_AGGREGATION
-
-/*
  * Others
  */
 #define RTW_NOTCH_FILTER 0 /* 0:Disable, 1:Enable, */
