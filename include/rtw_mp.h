@@ -327,19 +327,11 @@ struct bb_reg_param {
 
 typedef struct _MP_FIRMWARE {
 	FIRMWARE_SOURCE eFWSource;
-#ifdef CONFIG_EMBEDDED_FWIMG
 	u8* 		szFwBuffer;
-#else
-	u8			szFwBuffer[0x8000];
-#endif
 	u32 		ulFwLength;
 
-#ifdef CONFIG_EMBEDDED_FWIMG
 	u8* 		szBTFwBuffer;
-	u8			myBTFwBuffer[0x8000];
-#else
-	u8			szBTFwBuffer[0x8000];
-#endif
+	u8		myBTFwBuffer[0x8000];
 	u32 		ulBTFwLength;
 } RT_MP_FIRMWARE, *PRT_MP_FIRMWARE;
 

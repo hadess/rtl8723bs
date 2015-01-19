@@ -61,19 +61,11 @@
 
 typedef struct _RT_FIRMWARE {
 	FIRMWARE_SOURCE	eFWSource;
-#ifdef CONFIG_EMBEDDED_FWIMG
 	u8*			szFwBuffer;
-#else
-	u8			szFwBuffer[FW_8723B_SIZE];
-#endif
 	u32			ulFwLength;
 
-#ifdef CONFIG_EMBEDDED_FWIMG
 	u8*			szBTFwBuffer;
 	u8			myBTFwBuffer[FW_8723B_SIZE];
-#else
-	u8			szBTFwBuffer[FW_8723B_SIZE];
-#endif
 	u32			ulBTFwLength;
 } RT_FIRMWARE_8723B, *PRT_FIRMWARE_8723B;
 

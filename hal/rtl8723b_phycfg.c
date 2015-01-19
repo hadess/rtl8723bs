@@ -437,10 +437,8 @@ s32 PHY_MACConfig8723B(PADAPTER Adapter)
 	if (rtStatus == _FAIL)
 #endif
 	{
-#ifdef CONFIG_EMBEDDED_FWIMG
 		ODM_ConfigMACWithHeaderFile(&pHalData->odmpriv);
 		rtStatus = _SUCCESS;
-#endif//CONFIG_EMBEDDED_FWIMG
 	}
 
 	return rtStatus;
@@ -520,10 +518,8 @@ phy_BB8723b_Config_ParaFile(
 		if (PHY_ConfigRFWithPowerLimitTableParaFile( Adapter, pszRFTxPwrLmtFile )== _FAIL)
 #endif
 		{
-#ifdef CONFIG_EMBEDDED_FWIMG
 			if (HAL_STATUS_SUCCESS != ODM_ConfigRFWithHeaderFile(&pHalData->odmpriv, CONFIG_RF_TXPWR_LMT, (ODM_RF_RADIO_PATH_E)0))
 				rtStatus = _FAIL;
-#endif
 		}
 
 		if(rtStatus != _SUCCESS){
@@ -539,10 +535,8 @@ phy_BB8723b_Config_ParaFile(
 	if (phy_ConfigBBWithParaFile(Adapter, pszBBRegFile, CONFIG_BB_PHY_REG) == _FAIL)
 #endif
 	{
-#ifdef CONFIG_EMBEDDED_FWIMG
 		if (HAL_STATUS_SUCCESS != ODM_ConfigBBWithHeaderFile(&pHalData->odmpriv, CONFIG_BB_PHY_REG))
 			rtStatus = _FAIL;
-#endif
 	}
 
 	if(rtStatus != _SUCCESS){
@@ -559,10 +553,8 @@ phy_BB8723b_Config_ParaFile(
 		if (phy_ConfigBBWithPgParaFile(Adapter, pszBBRegPgFile) == _FAIL)
 #endif
 		{
-#ifdef CONFIG_EMBEDDED_FWIMG
 			if (HAL_STATUS_SUCCESS != ODM_ConfigBBWithHeaderFile(&pHalData->odmpriv, CONFIG_BB_PHY_REG_PG))
 				rtStatus = _FAIL;
-#endif
 		}
 
 		if ( pHalData->odmpriv.PhyRegPgValueType == PHY_REG_PG_EXACT_VALUE )
@@ -584,10 +576,8 @@ phy_BB8723b_Config_ParaFile(
 	if (phy_ConfigBBWithParaFile(Adapter, pszAGCTableFile, CONFIG_BB_AGC_TAB) == _FAIL)
 #endif
 	{
-#ifdef CONFIG_EMBEDDED_FWIMG
 		if (HAL_STATUS_SUCCESS != ODM_ConfigBBWithHeaderFile(&pHalData->odmpriv, CONFIG_BB_AGC_TAB))
 			rtStatus = _FAIL;
-#endif
 	}
 
 	if(rtStatus != _SUCCESS){
