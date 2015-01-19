@@ -3493,7 +3493,6 @@ void xmit_delivery_enabled_frames(_adapter *padapter, struct sta_info *psta)
 
 #endif
 
-#ifdef CONFIG_XMIT_THREAD_MODE
 void enqueue_pending_xmitbuf(
 	struct xmit_priv *pxmitpriv,
 	struct xmit_buf *pxmitbuf)
@@ -3639,7 +3638,6 @@ int rtw_xmit_thread(void * context)
 
 	thread_exit();
 }
-#endif
 
 void rtw_sctx_init(struct submit_ctx *sctx, int timeout_ms)
 {

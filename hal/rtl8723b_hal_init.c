@@ -2500,9 +2500,7 @@ void rtl8723b_set_hal_ops(struct hal_ops *pHalFunc)
 	pHalFunc->GetHalODMVarHandler = &rtl8723b_GetHalODMVar;
 	pHalFunc->SetHalODMVarHandler = &rtl8723b_SetHalODMVar;
 
-#ifdef CONFIG_XMIT_THREAD_MODE
 	pHalFunc->xmit_thread_handler = &hal_xmit_handler;
-#endif
 	pHalFunc->hal_notch_filter = &hal_notch_filter_8723b;
 
 	pHalFunc->c2h_handler = c2h_handler_8723b;
