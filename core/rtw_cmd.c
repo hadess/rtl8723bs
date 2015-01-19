@@ -2353,28 +2353,11 @@ u8 traffic_status_watchdog(_adapter *padapter, u8 from_timer)
 				bEnterPS= true;
 		}
 
-#ifdef CONFIG_DYNAMIC_DTIM
-		if(pmlmepriv->LinkDetectInfo.LowPowerTransitionCount == 8)
-			bEnterPS= false;
-
-		DBG_871X("LowPowerTransitionCount=%d\n", pmlmepriv->LinkDetectInfo.LowPowerTransitionCount);
-#endif //CONFIG_DYNAMIC_DTIM
-
 		// LeisurePS only work in infra mode.
 		if(bEnterPS)
 		{
 			if(!from_timer)
 			{
-#ifdef CONFIG_DYNAMIC_DTIM
-				if(pmlmepriv->LinkDetectInfo.LowPowerTransitionCount < 8)
-				{					
-					adapter_to_pwrctl(padapter)->dtim = 1;
-				}	
-				else
-				{					
-					adapter_to_pwrctl(padapter)->dtim = 3;
-				}
-#endif //CONFIG_DYNAMIC_DTIM
 				LPS_Enter(padapter, "TRAFFIC_IDLE");
 			}	
 			else
@@ -2383,19 +2366,9 @@ u8 traffic_status_watchdog(_adapter *padapter, u8 from_timer)
 				//rtw_lps_ctrl_wk_cmd(adapter, LPS_CTRL_ENTER, 1);
 				//rtw_hal_dm_watchdog_in_lps(padapter);
 			}				
-#ifdef CONFIG_DYNAMIC_DTIM
-			if (adapter_to_pwrctl(padapter)->bFwCurrentInPSMode ==true )
-				pmlmepriv->LinkDetectInfo.LowPowerTransitionCount++;
-#endif //CONFIG_DYNAMIC_DTIM
 		}
 		else
 		{
-#ifdef CONFIG_DYNAMIC_DTIM
-			if(pmlmepriv->LinkDetectInfo.LowPowerTransitionCount != 8)
-				pmlmepriv->LinkDetectInfo.LowPowerTransitionCount = 0;
-			else
-				pmlmepriv->LinkDetectInfo.LowPowerTransitionCount++;
-#endif //CONFIG_DYNAMIC_DTIM			
 			if(!from_timer)
 			{
 				LPS_Leave(padapter, "TRAFFIC_BUSY");
