@@ -3199,7 +3199,6 @@ inline bool xmitframe_hiq_filter(struct xmit_frame *xmitframe)
 			#endif
 			|| attrib->dhcp_pkt
 		) {
-			if (0)
 			DBG_871X(FUNC_ADPT_FMT" ether_type:0x%04x%s\n", FUNC_ADPT_ARG(xmitframe->padapter)
 				, attrib->ether_type, attrib->dhcp_pkt?" DHCP":"");
 			allow = true;

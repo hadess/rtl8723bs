@@ -446,10 +446,7 @@ struct cfg80211_bss *rtw_cfg80211_inform_bss(_adapter *padapter, struct wlan_net
 	
 	notify_channel = ieee80211_get_channel(wiphy, freq);
 
-	if (0)
-		notify_timestamp = le64_to_cpu(*(u64*)rtw_get_timestampe_from_ie(pnetwork->network.IEs));
-	else
-		notify_timestamp = rtw_get_systime_us();
+	notify_timestamp = rtw_get_systime_us();
 
 	notify_interval = le16_to_cpu(*(u16*)rtw_get_beacon_interval_from_ie(pnetwork->network.IEs));
 	notify_capability = le16_to_cpu(*(u16*)rtw_get_capability_from_ie(pnetwork->network.IEs));		

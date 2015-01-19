@@ -1009,14 +1009,12 @@ static s16 _rtw_camid_search(_adapter *adapter, u8 *addr, s16 kid)
 		break;
 	}
 
-	if (0) {
-		if (addr)
-			DBG_871X(FUNC_ADPT_FMT" addr:"MAC_FMT" kid:%d, return cam_id:%d\n"
-				, FUNC_ADPT_ARG(adapter), MAC_ARG(addr), kid, cam_id);
-		else
-			DBG_871X(FUNC_ADPT_FMT" addr:%p kid:%d, return cam_id:%d\n"
-				, FUNC_ADPT_ARG(adapter), addr, kid, cam_id);
-	}
+	if (addr)
+		DBG_871X(FUNC_ADPT_FMT" addr:"MAC_FMT" kid:%d, return cam_id:%d\n"
+			 , FUNC_ADPT_ARG(adapter), MAC_ARG(addr), kid, cam_id);
+	else
+		DBG_871X(FUNC_ADPT_FMT" addr:%p kid:%d, return cam_id:%d\n"
+			 , FUNC_ADPT_ARG(adapter), addr, kid, cam_id);
 
 	return cam_id;
 }

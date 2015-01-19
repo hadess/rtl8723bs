@@ -2487,7 +2487,7 @@ inline void rtw_clear_scan_deny(_adapter *adapter)
 {
 	struct mlme_priv *mlmepriv = &adapter->mlmepriv;
 	atomic_set(&mlmepriv->set_scan_deny, 0);
-	if (0)
+
 	DBG_871X(FUNC_ADPT_FMT"\n", FUNC_ADPT_ARG(adapter));
 }
 
@@ -2500,7 +2500,6 @@ void rtw_set_scan_deny(_adapter *adapter, u32 ms)
 {
 	struct mlme_priv *mlmepriv = &adapter->mlmepriv;
 
-	if (0)
 	DBG_871X(FUNC_ADPT_FMT"\n", FUNC_ADPT_ARG(adapter));
 	atomic_set(&mlmepriv->set_scan_deny, 1);
 	_set_timer(&mlmepriv->set_scan_deny_timer, ms);	
@@ -2592,7 +2591,6 @@ _func_enter_;
 		
 		mlme->pscanned = get_next(mlme->pscanned);
 
-		if (0)
 		DBG_871X("%s("MAC_FMT", ch%u) rssi:%d\n"
 			, pnetwork->network.Ssid.Ssid
 			, MAC_ARG(pnetwork->network.MacAddress)
@@ -2741,7 +2739,6 @@ _func_enter_;
 		
 		pmlmepriv->pscanned = get_next(pmlmepriv->pscanned);
 
-		if (0)
 		DBG_871X("%s("MAC_FMT", ch%u) rssi:%d\n"
 			, pnetwork->network.Ssid.Ssid
 			, MAC_ARG(pnetwork->network.MacAddress)

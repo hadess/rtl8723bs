@@ -4908,19 +4908,17 @@ void site_survey(_adapter *padapter)
 		}
 	}
 	
-	if (0){
- 		DBG_871X(FUNC_ADPT_FMT" ch:%u (cnt:%u) at %dms, %c%c%c\n"
-                , FUNC_ADPT_ARG(padapter)
-                , survey_channel
-                , pmlmeext->sitesurvey_res.channel_idx
-                , jiffies_to_msecs(jiffies - padapter->mlmepriv.scan_start_time)
-                , ScanType?'A':'P', pmlmeext->sitesurvey_res.scan_mode?'A':'P'
-                , pmlmeext->sitesurvey_res.ssid[0].SsidLength?'S':' '
-                );
-		#ifdef DBG_FIXED_CHAN
-		DBG_871X(FUNC_ADPT_FMT" fixed_chan:%u\n", pmlmeext->fixed_chan);
-		#endif
-	}
+	DBG_871X(FUNC_ADPT_FMT" ch:%u (cnt:%u) at %dms, %c%c%c\n"
+		 , FUNC_ADPT_ARG(padapter)
+		 , survey_channel
+		 , pmlmeext->sitesurvey_res.channel_idx
+		 , jiffies_to_msecs(jiffies - padapter->mlmepriv.scan_start_time)
+		 , ScanType?'A':'P', pmlmeext->sitesurvey_res.scan_mode?'A':'P'
+		 , pmlmeext->sitesurvey_res.ssid[0].SsidLength?'S':' '
+		 );
+#ifdef DBG_FIXED_CHAN
+	DBG_871X(FUNC_ADPT_FMT" fixed_chan:%u\n", pmlmeext->fixed_chan);
+#endif
 
 	if(survey_channel != 0)
 	{
@@ -7224,7 +7222,6 @@ static int rtw_scan_ch_decision(_adapter *padapter, struct rtw_ieee80211_channel
 	j = 0;
 	for (i=0;i<in_num;i++) {
 
-		if (0)
 		DBG_871X(FUNC_ADPT_FMT" "CHAN_FMT"\n", FUNC_ADPT_ARG(padapter), CHAN_ARG(&in[i]));
 
 		if(in[i].hw_value && !(in[i].flags & RTW_IEEE80211_CHAN_DISABLED)
@@ -7253,7 +7250,6 @@ static int rtw_scan_ch_decision(_adapter *padapter, struct rtw_ieee80211_channel
 	if(j == 0) {
 		for (i=0;i<pmlmeext->max_chan_nums;i++) {
 
-			if (0)
 			DBG_871X(FUNC_ADPT_FMT" ch:%u\n", FUNC_ADPT_ARG(padapter), pmlmeext->channel_set[i].ChannelNum);
 
 			if (rtw_mlme_band_check(padapter, pmlmeext->channel_set[i].ChannelNum) == true) {
