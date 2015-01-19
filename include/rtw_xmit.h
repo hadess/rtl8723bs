@@ -204,9 +204,6 @@ struct pkt_attrib
 	u8	ldpc;
 	u8	stbc;
 	struct sta_info * psta;
-#ifdef CONFIG_TCP_CSUM_OFFLOAD_TX
-	u8	hw_tcp_csum;
-#endif
 
 	u8 rtsen;
 	u8 cts2self;
