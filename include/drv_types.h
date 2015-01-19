@@ -66,10 +66,6 @@ typedef struct _ADAPTER _adapter, ADAPTER,*PADAPTER;
 #include <xmit_osdep.h>
 #include <rtw_recv.h>
 
-#ifdef CONFIG_BEAMFORMING
-#include <rtw_beamforming.h>
-#endif
-
 #include <recv_osdep.h>
 #include <rtw_efuse.h>
 #include <hal_intf.h>

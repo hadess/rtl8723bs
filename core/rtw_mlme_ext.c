@@ -2511,10 +2511,6 @@ unsigned int OnAction_ht(_adapter *padapter, union recv_frame *precv_frame)
 	action = frame_body[1];
 	switch (action) {
 	case RTW_WLAN_ACTION_HT_COMPRESS_BEAMFORMING:
-#ifdef CONFIG_BEAMFORMING
-		//DBG_871X("RTW_WLAN_ACTION_HT_COMPRESS_BEAMFORMING\n");
-		beamforming_get_report_frame(padapter, precv_frame);
-#endif //CONFIG_BEAMFORMING
 		break;
 	default:
 		break;
@@ -6011,11 +6007,6 @@ void mlmeext_joinbss_event_callback(_adapter *padapter, int join_res)
 #ifdef CONFIG_LPS
 	if(get_iface_type(padapter) == IFACE_PORT0)
 		rtw_lps_ctrl_wk_cmd(padapter, LPS_CTRL_CONNECT, 0);
-#endif
-
-#ifdef CONFIG_BEAMFORMING
-	if (psta)
-		beamforming_wk_cmd(padapter, BEAMFORMING_CTRL_ENTER, (u8 *)psta, sizeof(struct sta_info), 0);
 #endif
 
 exit_mlmeext_joinbss_event_callback:

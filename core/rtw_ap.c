@@ -867,25 +867,6 @@ void update_sta_info_apmode(_adapter *padapter, struct sta_info *psta)
 			SET_FLAG(cur_stbc_cap, (STBC_HT_ENABLE_TX | STBC_HT_CAP_TX) );
 			DBG_871X("Enable HT Tx STBC for STA(%d)\n",psta->aid);
 		}
-
-#ifdef CONFIG_BEAMFORMING
-		// Config Tx beamforming setting
-		if (TEST_FLAG(phtpriv_ap->beamform_cap, BEAMFORMING_HT_BEAMFORMEE_ENABLE) && 
-			GET_HT_CAP_TXBF_EXPLICIT_COMP_STEERING_CAP((u8 *)(&phtpriv_sta->ht_cap)))
-		{
-			SET_FLAG(cur_beamform_cap, BEAMFORMING_HT_BEAMFORMER_ENABLE);
-		}
-
-		if (TEST_FLAG(phtpriv_ap->beamform_cap, BEAMFORMING_HT_BEAMFORMER_ENABLE) &&
-			GET_HT_CAP_TXBF_EXPLICIT_COMP_FEEDBACK_CAP((u8 *)(&phtpriv_sta->ht_cap)))
-		{
-			SET_FLAG(cur_beamform_cap, BEAMFORMING_HT_BEAMFORMEE_ENABLE);
-		}
-
-		if (cur_beamform_cap) {
-			DBG_871X("Client STA(%d) HT Beamforming Cap = 0x%02X\n", psta->aid, cur_beamform_cap);
-		}
-#endif //CONFIG_BEAMFORMING
 	}
 	else
 	{
@@ -1470,32 +1451,6 @@ int rtw_check_beacon_data(_adapter *padapter, u8 *pbuf,  int len)
 			pht_cap->supp_mcs_set[0] = 0xff;
 			pht_cap->supp_mcs_set[1] = 0x0;
 		}
-
-#ifdef CONFIG_BEAMFORMING
-		// Use registry value to enable HT Beamforming.
-		// ToDo: use configure file to set these capability.
-		pht_cap->tx_BF_cap_info = 0;
-
-		// HT Beamformer
-		if(TEST_FLAG(pmlmepriv->htpriv.beamform_cap, BEAMFORMING_HT_BEAMFORMER_ENABLE))
-		{
-			// Transmit NDP Capable
-			SET_HT_CAP_TXBF_TRANSMIT_NDP_CAP(pht_cap, 1);
-			// Explicit Compressed Steering Capable
-			SET_HT_CAP_TXBF_EXPLICIT_COMP_STEERING_CAP(pht_cap, 1);
-			// Compressed Steering Number Antennas
-			SET_HT_CAP_TXBF_COMP_STEERING_NUM_ANTENNAS(pht_cap, 1);
-		}
-
-		// HT Beamformee
-		if(TEST_FLAG(pmlmepriv->htpriv.beamform_cap, BEAMFORMING_HT_BEAMFORMEE_ENABLE))
-		{
-			// Receive NDP Capable
-			SET_HT_CAP_TXBF_RECEIVE_NDP_CAP(pht_cap, 1);
-			// Explicit Compressed Beamforming Feedback Capable
-			SET_HT_CAP_TXBF_EXPLICIT_COMP_FEEDBACK_CAP(pht_cap, 2);
-		}
-#endif //CONFIG_BEAMFORMING
 
 		memcpy(&pmlmepriv->htpriv.ht_cap, p+2, ie_len);
 		
@@ -2480,10 +2435,6 @@ u8 ap_free_sta(_adapter *padapter, struct sta_info *psta, bool active, u16 reaso
 
 		issue_deauth(padapter, psta->hwaddr, reason);
 	}
-
-#ifdef CONFIG_BEAMFORMING
-	beamforming_wk_cmd(padapter, BEAMFORMING_CTRL_LEAVE, psta->hwaddr, ETH_ALEN, 1);
-#endif
 
 	psta->htpriv.agg_enable_bitmap = 0x0;//reset
 	psta->htpriv.candidate_tid_bitmap = 0x0;//reset
