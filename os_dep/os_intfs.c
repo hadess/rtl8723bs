@@ -171,11 +171,6 @@ MODULE_PARM_DESC(if2name, "The default name to allocate for second interface");
 
 char* rtw_initmac = NULL;  // temp mac address if users want to use instead of the mac address in Efuse
 
-#ifdef CONFIG_MULTI_VIR_IFACES
-static int rtw_ext_iface_num  = 1;//primary/secondary iface is excluded
-module_param(rtw_ext_iface_num, int, 0644);
-#endif //CONFIG_MULTI_VIR_IFACES
-
 module_param(rtw_initmac, charp, 0644);
 module_param(rtw_channel_plan, int, 0644);
 module_param(rtw_chip_version, int, 0644);
@@ -405,10 +400,6 @@ _func_enter_;
 	snprintf(registry_par->if2name, 16, "%s", if2name);
 
 	registry_par->notch_filter = (u8)rtw_notch_filter;
-
-#ifdef CONFIG_MULTI_VIR_IFACES
-	registry_par->ext_iface_num = (u8)rtw_ext_iface_num;
-#endif //CONFIG_MULTI_VIR_IFACES
 
 	registry_par->RegEnableTxPowerLimit = (u8)rtw_tx_pwr_lmt_enable;
 	registry_par->RegEnableTxPowerByRate = (u8)rtw_tx_pwr_by_rate;
