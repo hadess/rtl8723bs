@@ -539,14 +539,12 @@ _func_enter_;
 			continue;
 		}
 
-#ifdef CONFIG_LPS_LCLK
 		if (rtw_register_cmd_alive(padapter) != _SUCCESS)
 		{
 			RT_TRACE(_module_hal_xmit_c_, _drv_notice_,
 					 ("%s: wait to leave LPS_LCLK\n", __FUNCTION__));
 			continue;
 		}
-#endif
 
 _next:
 		if ((padapter->bDriverStopped == true)||(padapter->bSurpriseRemoved== true))
@@ -557,9 +555,7 @@ _next:
 		}
 
 		if(!(pcmd = rtw_dequeue_cmd(pcmdpriv))) {
-#ifdef CONFIG_LPS_LCLK
 			rtw_unregister_cmd_alive(padapter);
-#endif
 			continue;
 		}
 
@@ -661,9 +657,7 @@ post_process:
 	do{
 		pcmd = rtw_dequeue_cmd(pcmdpriv);
 		if(pcmd==NULL){
-#ifdef CONFIG_LPS_LCLK
 			rtw_unregister_cmd_alive(padapter);
-#endif
 			break;
 		}
 
@@ -740,11 +734,9 @@ u8 rtw_sitesurvey_cmd(_adapter  *padapter, NDIS_802_11_SSID *ssid, int ssid_num,
 
 _func_enter_;
 
-#ifdef CONFIG_LPS
 	if(check_fwstate(pmlmepriv, _FW_LINKED) == true){
 		rtw_lps_ctrl_wk_cmd(padapter, LPS_CTRL_SCAN, 1);
 	}
-#endif
 
 	ph2c = (struct cmd_obj*)rtw_zmalloc(sizeof(struct cmd_obj));
 	if (ph2c == NULL)
@@ -2163,7 +2155,6 @@ u8 traffic_status_watchdog(_adapter *padapter, u8 from_timer)
 	}
 #endif
 		
-#ifdef CONFIG_LPS
 		// check traffic for  powersaving.
 		if( ((pmlmepriv->LinkDetectInfo.NumRxUnicastOkInPeriod + pmlmepriv->LinkDetectInfo.NumTxOkInPeriod) > 8 ) ||
 			(pmlmepriv->LinkDetectInfo.NumRxUnicastOkInPeriod > 2) )
@@ -2223,13 +2214,10 @@ u8 traffic_status_watchdog(_adapter *padapter, u8 from_timer)
 			{
 				rtw_lps_ctrl_wk_cmd(padapter, LPS_CTRL_TRAFFIC_BUSY, 1);
 			}
-		}
-	
-#endif // CONFIG_LPS
+		}	
 	}
 	else
 	{
-#ifdef CONFIG_LPS
 		struct dvobj_priv *dvobj = adapter_to_dvobj(padapter);
 		int n_assoc_iface = 0;
 		int i;
@@ -2241,7 +2229,6 @@ u8 traffic_status_watchdog(_adapter *padapter, u8 from_timer)
 
 		if(!from_timer && n_assoc_iface == 0)
 			LPS_Leave(padapter, "NON_LINKED");
-#endif
 	}
 
 	pmlmepriv->LinkDetectInfo.NumRxOkInPeriod = 0;
@@ -2296,8 +2283,6 @@ static void dynamic_chk_wk_hdl(_adapter *padapter)
 	if(is_primary_adapter(padapter))
 		rtw_ps_processor(padapter);
 }
-
-#ifdef CONFIG_LPS
 
 void lps_ctrl_wk_hdl(_adapter *padapter, u8 lps_ctrl_type);
 void lps_ctrl_wk_hdl(_adapter *padapter, u8 lps_ctrl_type)
@@ -2465,9 +2450,7 @@ static void rtw_lps_change_dtim_hdl(_adapter *padapter, u8 dtim)
 	if (rtw_btcoex_IsBtControlLps(padapter) == true)
 		return;
 
-#ifdef CONFIG_LPS_LCLK
 	down(&pwrpriv->lock);
-#endif
 
 	if(pwrpriv->dtim!=dtim)
 	{
@@ -2486,13 +2469,8 @@ static void rtw_lps_change_dtim_hdl(_adapter *padapter, u8 dtim)
 		rtw_hal_set_hwreg(padapter, HW_VAR_H2C_FW_PWRMODE, (u8 *)(&ps_mode));
 	}
 	
-#ifdef CONFIG_LPS_LCLK
 	up(&pwrpriv->lock);
-#endif
-
 }
-
-#endif
 
 u8 rtw_lps_change_dtim_cmd(_adapter*padapter, u8 dtim)
 {
@@ -2984,7 +2962,6 @@ u8 rtw_drvextra_cmd_hdl(_adapter *padapter, unsigned char *pbuf)
 		case POWER_SAVING_CTRL_WK_CID:
 			power_saving_wk_hdl(padapter);	
 			break;
-#ifdef CONFIG_LPS
 		case LPS_CTRL_WK_CID:
 			lps_ctrl_wk_hdl(padapter, (u8)pdrvextra_cmd->type);
 			break;
@@ -2994,7 +2971,6 @@ u8 rtw_drvextra_cmd_hdl(_adapter *padapter, unsigned char *pbuf)
 		case LPS_CHANGE_DTIM_CID:
 			rtw_lps_change_dtim_hdl(padapter, (u8)pdrvextra_cmd->type);
 			break;
-#endif
 #ifdef CONFIG_AP_MODE
 		case CHECK_HIQ_WK_CID:
 			rtw_chk_hi_queue_hdl(padapter);

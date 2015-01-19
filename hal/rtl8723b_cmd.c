@@ -1177,7 +1177,6 @@ _func_enter_;
 	SET_8723B_H2CCMD_PWRMODE_PARM_ALL_QUEUE_UAPSD(u1H2CPwrModeParm, padapter->registrypriv.uapsd_enable);
 	SET_8723B_H2CCMD_PWRMODE_PARM_PWR_STATE(u1H2CPwrModeParm, PowerState);
 	SET_8723B_H2CCMD_PWRMODE_PARM_BYTE5(u1H2CPwrModeParm, byte5);
-#ifdef CONFIG_LPS_LCLK
 	if(psmode != PS_MODE_ACTIVE)
 	{
 		if(pmlmeext ->adaptive_tsf_done == false && pmlmeext->bcn_cnt>0)
@@ -1241,7 +1240,6 @@ _func_enter_;
 */
 
 	}
-#endif
 
 	rtw_btcoex_RecordPwrMode(padapter, u1H2CPwrModeParm, H2C_PWRMODE_LEN);
 

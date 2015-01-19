@@ -238,10 +238,8 @@ rtl8723b_HalDmWatchDog(
 	if (hw_init_completed == false)
 		goto skip_dm;
 
-#ifdef CONFIG_LPS
 	bFwCurrentInPSMode = adapter_to_pwrctl(Adapter)->bFwCurrentInPSMode;
 	rtw_hal_get_hwreg(Adapter, HW_VAR_FWLPS_RF_ON, (u8 *)(&bFwPSAwake));
-#endif
 
 	if( (hw_init_completed == true)
 		&& ((!bFwCurrentInPSMode) && bFwPSAwake))

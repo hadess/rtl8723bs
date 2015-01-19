@@ -1354,10 +1354,8 @@ void linked_info_dump(_adapter *padapter,u8 benable)
 	DBG_871X("%s %s \n",__FUNCTION__,(benable)?"enable":"disable");
 										
 	if(benable){
-		#ifdef CONFIG_LPS
 		pwrctrlpriv->org_power_mgnt = pwrctrlpriv->power_mgnt;//keep org value
 		rtw_pm_set_lps(padapter,PS_MODE_ACTIVE);
-		#endif	
 								
 		pwrctrlpriv->ips_org_mode = pwrctrlpriv->ips_mode;//keep org value
 		rtw_pm_set_ips(padapter,IPS_NONE);
@@ -1365,9 +1363,7 @@ void linked_info_dump(_adapter *padapter,u8 benable)
 	else{
 		rtw_pm_set_ips(padapter, pwrctrlpriv->ips_org_mode);
 
-		#ifdef CONFIG_LPS	
 		rtw_pm_set_lps(padapter, pwrctrlpriv->ips_org_mode);
-		#endif // CONFIG_LPS
 	}
 	padapter->bLinkInfoDump = benable ;	
 }

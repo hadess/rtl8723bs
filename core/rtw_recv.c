@@ -921,10 +921,7 @@ void count_rx_stats(_adapter *padapter, union recv_frame *prframe, struct sta_in
 		pstats->rx_bytes += sz;
 	}
 
-#ifdef CONFIG_CHECK_LEAVE_LPS
 	traffic_check_for_leave_lps(padapter, false, 0);
-#endif //CONFIG_LPS
-
 }
 
 sint sta2sta_data_frame(

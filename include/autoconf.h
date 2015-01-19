@@ -64,27 +64,7 @@
 /*
  * Auto Config Section
  */
-	#define CONFIG_LPS
-
-	#define CONFIG_LPS_LCLK
-
-	#ifdef CONFIG_LPS
-		#define CONFIG_CHECK_LEAVE_LPS
-	#endif
-
-	#ifdef CONFIG_LPS_LCLK
-	#define CONFIG_DETECT_CPWM_BY_POLLING
-	#define CONFIG_LPS_RPWM_TIMER
-	#if defined(CONFIG_LPS_RPWM_TIMER) || defined(CONFIG_DETECT_CPWM_BY_POLLING)
-	#define LPS_RPWM_WAIT_MS 300
-	#endif
-	#define CONFIG_LPS_LCLK_WD_TIMER // Watch Dog timer in LPS LCLK
-	#endif
-
-	#ifndef CONFIG_LPS
-		#define CONFIG_LPS	// download reserved page to FW
-	#endif
-
+#define LPS_RPWM_WAIT_MS 300
 #ifndef DISABLE_BB_RF
 #define DISABLE_BB_RF	0
 #endif

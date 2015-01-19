@@ -6131,13 +6131,11 @@ static void rtw_mlmeext_disconnect(_adapter *padapter)
 	{
 		if (rtw_port_switch_chk(padapter) == true) {
 			rtw_hal_set_hwreg(padapter, HW_VAR_PORT_SWITCH, NULL);
-			#ifdef CONFIG_LPS
 			{
 				_adapter *port0_iface = dvobj_get_port0_adapter(adapter_to_dvobj(padapter));
 				if (port0_iface)
 					rtw_lps_ctrl_wk_cmd(port0_iface, LPS_CTRL_CONNECT, 0);
 			}
-			#endif
 		}
 	}
 
@@ -6238,10 +6236,8 @@ void mlmeext_joinbss_event_callback(_adapter *padapter, int join_res)
 		//set_link_timer(pmlmeext, DISCONNECT_TO);
 	}
 
-#ifdef CONFIG_LPS
 	if(get_iface_type(padapter) == IFACE_PORT0)
 		rtw_lps_ctrl_wk_cmd(padapter, LPS_CTRL_CONNECT, 0);
-#endif
 
 exit_mlmeext_joinbss_event_callback:
 
@@ -6448,8 +6444,6 @@ void linked_status_chk(_adapter *padapter)
 
 		#if defined(DBG_ROAMING_TEST)
 		rx_chk_limit = 1;
-		#elif defined(CONFIG_ACTIVE_KEEP_ALIVE_CHECK) && !defined(CONFIG_LPS_LCLK_WD_TIMER)
-		rx_chk_limit = 4;
 		#else
 		rx_chk_limit = 8;
 		#endif
@@ -6473,33 +6467,6 @@ void linked_status_chk(_adapter *padapter)
 			if (pxmitpriv->last_tx_pkts == pxmitpriv->tx_pkts)
 				tx_chk = _FAIL;
 
-			#if defined(CONFIG_ACTIVE_KEEP_ALIVE_CHECK) && !defined(CONFIG_LPS_LCLK_WD_TIMER)
-			if (pmlmeext->active_keep_alive_check && (rx_chk == _FAIL || tx_chk == _FAIL)) {
-				u8 backup_oper_channel=0;
-
-				/* switch to correct channel of current network  before issue keep-alive frames */
-				if (rtw_get_oper_ch(padapter) != pmlmeext->cur_channel) {
-					backup_oper_channel = rtw_get_oper_ch(padapter);
-					SelectChannel(padapter, pmlmeext->cur_channel);
-				}
-
-				if (rx_chk != _SUCCESS)
-					issue_probereq_ex(padapter, &pmlmeinfo->network.Ssid, psta->hwaddr, 0, 0, 3, 1);
-
-				if ((tx_chk != _SUCCESS && pmlmeinfo->link_count++ == link_count_limit) || rx_chk != _SUCCESS) {
-					tx_chk = issue_nulldata(padapter, psta->hwaddr, 0, 3, 1);
-					/* if tx acked and p2p disabled, set rx_chk _SUCCESS to reset retry count */
-					if (tx_chk == _SUCCESS && !is_p2p_enable)
-						rx_chk = _SUCCESS;
-				}
-
-				/* back to the original operation channel */
-				if(backup_oper_channel>0)
-					SelectChannel(padapter, backup_oper_channel);
-
-			}
-			else
-			#endif /* CONFIG_ACTIVE_KEEP_ALIVE_CHECK */
 			{
 				if (rx_chk != _SUCCESS) {
 					if (pmlmeext->retry == 0) {
@@ -6892,11 +6859,9 @@ u8 setopmode_hdl(_adapter *padapter, u8 *pbuf)
 		if(psetop->mode == Ndis802_11APMode)
 			adapter_to_pwrctl(padapter)->fw_psmode_iface_id = 0xff; //ap mode won't dowload rsvd pages
 		else if (psetop->mode == Ndis802_11Infrastructure) {
-			#ifdef CONFIG_LPS
 			_adapter *port0_iface = dvobj_get_port0_adapter(adapter_to_dvobj(padapter));
 			if (port0_iface)
 				rtw_lps_ctrl_wk_cmd(port0_iface, LPS_CTRL_CONNECT, 0);
-			#endif	
 		}
 	}	
 

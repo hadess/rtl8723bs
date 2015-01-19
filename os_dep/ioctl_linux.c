@@ -5536,9 +5536,7 @@ static int rtw_ap_wowlan_ctrl(struct net_device *dev,
 		rtw_stop_drv_threads(padapter);
 		padapter->bDriverStopped = false;	//for 32k command
 
-#ifdef CONFIG_LPS
 		LeaveAllPowerSaveModeDirect(padapter);
-#endif
 		rtw_hal_disable_interrupt(padapter); // It need wait for leaving 32K.
 
 		// 2.1 clean interupt
@@ -5549,9 +5547,7 @@ static int rtw_ap_wowlan_ctrl(struct net_device *dev,
 
 		rtw_hal_set_hwreg(padapter, HW_VAR_AP_WOWLAN,(u8 *)&poidparam);
 	} else if (!memcmp( extra, "disable", 6 )) {
-#ifdef CONFIG_LPS
 		LeaveAllPowerSaveModeDirect(padapter);
-#endif //CONFIG_LPS
 		pwrctrlpriv->bFwCurrentInPSMode = false;
 
 		rtw_hal_disable_interrupt(padapter);
