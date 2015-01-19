@@ -1217,10 +1217,6 @@ _func_enter_;
 
 	rtw_os_xmit_schedule(adapter);
 
-#ifdef CONFIG_DRVEXT_MODULE_WSC
-	drvext_surveydone_callback(&adapter->drvextpriv);
-#endif
-
 	rtw_cfg80211_surveydone_event_callback(adapter);
 
 	rtw_indicate_scan_done(adapter, false);
@@ -2264,12 +2260,6 @@ _func_enter_;
  	}
 
 	_exit_critical_bh(&pmlmepriv->lock, &irqL);
-	
-
-#ifdef CONFIG_DRVEXT_MODULE_WSC	
-	drvext_assoc_fail_indicate(&adapter->drvextpriv);	
-#endif	
-
 	
 _func_exit_;
 
