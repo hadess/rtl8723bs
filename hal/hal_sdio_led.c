@@ -1076,11 +1076,7 @@ void BlinkTimerCallback(void *data)
 		return;
 	}
 
-	#ifdef CONFIG_LED_HANDLED_BY_CMD_THREAD
-	rtw_led_blink_cmd(padapter, pLed);
-	#else
 	_set_workitem(&(pLed->BlinkWorkItem));
-	#endif
 }
 
 //
