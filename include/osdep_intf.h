@@ -92,10 +92,6 @@ void rtw_ips_pwr_down(_adapter *padapter);
 int rtw_drv_register_netdev(_adapter *padapter);
 void rtw_ndev_destructor(_nic_hdl ndev);
 
-#ifdef CONFIG_ARP_KEEP_ALIVE
-int	rtw_gw_addr_query(_adapter *padapter);
-#endif
-
 int rtw_suspend_common(_adapter *padapter);
 int rtw_resume_common(_adapter *padapter);
 

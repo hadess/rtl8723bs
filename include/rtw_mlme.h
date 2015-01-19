@@ -373,11 +373,6 @@ struct mlme_priv {
 
 	struct wlan_network	cur_network;
 	struct wlan_network *cur_network_scanned;
-#ifdef CONFIG_ARP_KEEP_ALIVE
-	// for arp offload keep alive
-	u8	gw_mac_addr[6];
-	u8	gw_ip[4];
-#endif
 
 	//uint wireless_mode; no used, remove it
 
