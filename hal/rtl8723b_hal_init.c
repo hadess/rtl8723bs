@@ -4310,19 +4310,10 @@ static void hw_var_set_mlme_sitesurvey(PADAPTER padapter, u8 variable, u8* val)
 
 	reg_bcn_ctl = REG_BCN_CTRL;
 
-#ifdef CONFIG_FIND_BEST_CHANNEL
-	rcr_clear_bit = (RCR_CBSSID_BCN | RCR_CBSSID_DATA);
-
-	// Recieve all data frames
-	value_rxfltmap2 = 0xFFFF;
-#else // CONFIG_FIND_BEST_CHANNEL
-
 	rcr_clear_bit = RCR_CBSSID_BCN;
 
 	// config RCR to receive different BSSID & not to receive data frame
 	value_rxfltmap2 = 0;
-
-#endif // CONFIG_FIND_BEST_CHANNEL
 
 	if ((check_fwstate(pmlmepriv, WIFI_AP_STATE) == true))
 	{
