@@ -618,8 +618,6 @@ ODM_DMWatchdog(
 	//2010.05.30 LukeLee: For CE platform, files in IC subfolders may not be included to be compiled,
 	// so compile flags must be left here to prevent from compile errors
 	pDM_Odm->PhyDbgInfo.NumQryBeaconPkt = 0;
-
-	odm_dtc(pDM_Odm);
 }
 
 
@@ -2381,67 +2379,4 @@ ODM_UpdateInitRate(
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD,("Get C2H Command! Rate=0x%x\n", Rate));
 	
 	pDM_Odm->TxRate = Rate;
-}
-
-/* Justin: According to the current RRSI to adjust Response Frame TX power, 2012/11/05 */
-void odm_dtc(PDM_ODM_T pDM_Odm)
-{
-#ifdef CONFIG_DM_RESP_TXAGC
-	#define DTC_BASE            35	/* RSSI higher than this value, start to decade TX power */
-	#define DTC_DWN_BASE       (DTC_BASE-5)	/* RSSI lower than this value, start to increase TX power */
-
-	/* RSSI vs TX power step mapping: decade TX power */
-	static const u8 dtc_table_down[]={
-		DTC_BASE,
-		(DTC_BASE+5),
-		(DTC_BASE+10),
-		(DTC_BASE+15),
-		(DTC_BASE+20),
-		(DTC_BASE+25)
-	};
-
-	/* RSSI vs TX power step mapping: increase TX power */
-	static const u8 dtc_table_up[]={
-		DTC_DWN_BASE,
-		(DTC_DWN_BASE-5),
-		(DTC_DWN_BASE-10),
-		(DTC_DWN_BASE-15),
-		(DTC_DWN_BASE-15),
-		(DTC_DWN_BASE-20),
-		(DTC_DWN_BASE-20),
-		(DTC_DWN_BASE-25),
-		(DTC_DWN_BASE-25),
-		(DTC_DWN_BASE-30),
-		(DTC_DWN_BASE-35)
-	};
-
-	u8 i;
-	u8 dtc_steps=0;
-	u8 sign;
-	u8 resp_txagc=0;
-
-	if (DTC_BASE < pDM_Odm->RSSI_Min) {
-		/* need to decade the CTS TX power */
-		sign = 1;
-		for (i=0;i<ARRAY_SIZE(dtc_table_down);i++)
-		{
-			if ((dtc_table_down[i] >= pDM_Odm->RSSI_Min) || (dtc_steps >= 6))
-				break;
-			else
-				dtc_steps++;
-		}
-	}
-	else
-	{
-		sign = 0;
-		dtc_steps = 0;
-	}
-
-	resp_txagc = dtc_steps | (sign << 4);
-	resp_txagc = resp_txagc | (resp_txagc << 5);
-	ODM_Write1Byte(pDM_Odm, 0x06d9, resp_txagc);
-
-	DBG_871X("%s RSSI_Min:%u, set RESP_TXAGC to %s %u\n", 
-		__func__, pDM_Odm->RSSI_Min, sign?"minus":"plus", dtc_steps);
-#endif /* CONFIG_RESP_TXAGC_ADJUST */
 }
