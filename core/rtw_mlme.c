@@ -1371,18 +1371,7 @@ _func_enter_;
 
 		rtw_led_control(padapter, LED_CTL_LINK);
 
-	
-#ifdef CONFIG_DRVEXT_MODULE
-		if(padapter->drvextpriv.enable_wpa)
-		{
-			indicate_l2_connect(padapter);
-		}
-		else
-#endif
-		{
-			rtw_os_indicate_connect(padapter);
-		}
-
+		rtw_os_indicate_connect(padapter);
 	}
 
 	rtw_set_to_roam(padapter, 0);
@@ -3011,10 +3000,6 @@ _func_enter_;
 		}*/
 		ielength+=psecuritypriv->supplicant_ie[1]+2;
 		rtw_report_sec_ie(adapter, authmode, psecuritypriv->supplicant_ie);
-	
-#ifdef CONFIG_DRVEXT_MODULE
-		drvext_report_sec_ie(&adapter->drvextpriv, authmode, sec_ie);	
-#endif
 	}
 
 	iEntry = SecIsInPMKIDList(adapter, pmlmepriv->assoc_bssid);

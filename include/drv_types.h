@@ -88,10 +88,6 @@ typedef struct _ADAPTER _adapter, ADAPTER,*PADAPTER;
 #include <rtw_wapi.h>
 #endif // CONFIG_WAPI_SUPPORT
 
-#ifdef CONFIG_DRVEXT_MODULE
-#include <drvext_api.h>
-#endif // CONFIG_DRVEXT_MODULE
-
 #include "ioctl_cfg80211.h"
 
 #include <linux/ip.h>
@@ -578,10 +574,6 @@ struct _ADAPTER{
 	struct	registry_priv	registrypriv;
 	struct 	eeprom_priv eeprompriv;
 	struct	led_priv	ledpriv;
-
-#ifdef CONFIG_DRVEXT_MODULE
-	struct	drvext_priv	drvextpriv;
-#endif
 
 #ifdef CONFIG_AP_MODE
 	struct	hostapd_priv	*phostapdpriv;
