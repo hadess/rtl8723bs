@@ -1452,10 +1452,6 @@ int nat25_db_handle(_adapter *priv, struct sk_buff *skb, int method)
 
 				__nat25_generate_ipv6_network_addr(networkAddr, (unsigned int *)&iph->daddr);
 				if (!__nat25_db_network_lookup_and_replace(priv, skb, networkAddr)) {
-#ifdef SUPPORT_RX_UNI2MCAST							
-					if (iph->daddr.s6_addr[0] == 0xff)
-						convert_ipv6_mac_to_mc(skb);	
-#endif											
 				}
 				return 0;
 
