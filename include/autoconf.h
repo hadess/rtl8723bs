@@ -64,7 +64,6 @@
 /*
  * Auto Config Section
  */
-	#define CONFIG_IPS
 	#define CONFIG_LPS
 
 	#define CONFIG_LPS_LCLK
@@ -80,11 +79,6 @@
 	#define LPS_RPWM_WAIT_MS 300
 	#endif
 	#define CONFIG_LPS_LCLK_WD_TIMER // Watch Dog timer in LPS LCLK
-	#endif
-
-	#ifdef CONFIG_IPS
-	#define CONFIG_IPS_CHECK_IN_WD // Do IPS Check in WatchDog.
-	#define CONFIG_FWLPS_IN_IPS // issue H2C command to let FW do LPS when entering IPS
 	#endif
 
 	#ifndef CONFIG_LPS

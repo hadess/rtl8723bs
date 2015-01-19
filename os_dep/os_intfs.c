@@ -1183,10 +1183,6 @@ int _netdev_open(struct net_device *pnetdev)
 
 	_set_timer(&padapter->mlmepriv.dynamic_chk_timer, 2000);
 
-#ifndef CONFIG_IPS_CHECK_IN_WD
-	rtw_set_pwr_state_check_timer(pwrctrlpriv);
-#endif 
-
 	//netif_carrier_on(pnetdev);//call this func when rtw_joinbss_event_callback return success
 	if(!rtw_netif_queue_stopped(pnetdev))
 		rtw_netif_start_queue(pnetdev);
@@ -1233,7 +1229,6 @@ int netdev_open(struct net_device *pnetdev)
 	return ret;
 }
 
-#ifdef CONFIG_IPS
 static int  ips_netdrv_open(_adapter *padapter)
 {
 	int status = _SUCCESS;
@@ -1260,9 +1255,6 @@ static int  ips_netdrv_open(_adapter *padapter)
 		padapter->intf_start(padapter);
 	}
 
-#ifndef CONFIG_IPS_CHECK_IN_WD
-	rtw_set_pwr_state_check_timer(adapter_to_pwrctl(padapter));
-#endif		
   	_set_timer(&padapter->mlmepriv.dynamic_chk_timer,2000);
 
 	 return _SUCCESS;
@@ -1303,7 +1295,7 @@ void rtw_ips_pwr_down(_adapter *padapter)
 	padapter->bCardDisableWOHSM = false;
 	DBG_871X("<=== rtw_ips_pwr_down..................... in %dms\n", jiffies_to_msecs(jiffies - start_time));
 }
-#endif
+
 void rtw_ips_dev_unload(_adapter *padapter)
 {
 	struct net_device *pnetdev= (struct net_device*)padapter->pnetdev;
@@ -1332,10 +1324,8 @@ static int pm_netdev_open(struct net_device *pnetdev,u8 bnormal)
 		status = _netdev_open(pnetdev);
 		_exit_critical_mutex(&(adapter_to_dvobj(padapter)->hw_init_mutex), NULL);
 	}	
-#ifdef CONFIG_IPS
 	else
 		status =  (_SUCCESS == ips_netdrv_open(padapter))?(0):(-1);
-#endif
 
 	return status;
 }
@@ -1952,9 +1942,6 @@ _func_enter_;
 	if (pwrpriv->wowlan_mode == true) {
 		pwrpriv->bips_processing = false;
 		_set_timer(&padapter->mlmepriv.dynamic_chk_timer, 2000);
-#ifndef CONFIG_IPS_CHECK_IN_WD
-		rtw_set_pwr_state_check_timer(pwrpriv);
-#endif
 	} else {
 		DBG_871X_LEVEL(_drv_always_, "do not reset timer\n");
 	}
@@ -2046,9 +2033,7 @@ _func_enter_;
 
 	pwrpriv->bips_processing = false;
 	_set_timer(&padapter->mlmepriv.dynamic_chk_timer, 2000);
-#ifndef CONFIG_IPS_CHECK_IN_WD
-	rtw_set_pwr_state_check_timer(pwrpriv);
-#endif
+
 	//clean driver side wake up reason.
 	pwrpriv->wowlan_wake_reason = 0;
 exit:

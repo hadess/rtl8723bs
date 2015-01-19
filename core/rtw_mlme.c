@@ -1468,7 +1468,6 @@ inline void rtw_indicate_scan_done( _adapter *padapter, bool aborted)
 
 	rtw_os_indicate_scan_done(padapter, aborted);
 
-#ifdef CONFIG_IPS
 	if (is_primary_adapter(padapter)
 		&& (false == adapter_to_pwrctl(padapter)->bInSuspend)
 		&& (check_fwstate(&padapter->mlmepriv, WIFI_ASOC_STATE|WIFI_UNDER_LINKING) == false))
@@ -1477,13 +1476,8 @@ inline void rtw_indicate_scan_done( _adapter *padapter, bool aborted)
 
 		pwrpriv = adapter_to_pwrctl(padapter);
 		rtw_set_ips_deny(padapter, 0);
-#ifdef CONFIG_IPS_CHECK_IN_WD
 		_set_timer(&padapter->mlmepriv.dynamic_chk_timer, 1);
-#else // !CONFIG_IPS_CHECK_IN_WD
-		_rtw_set_pwr_state_check_timer(pwrpriv, 1);
-#endif // !CONFIG_IPS_CHECK_IN_WD
 	}
-#endif // CONFIG_IPS
 }
 
 void rtw_scan_abort(_adapter *adapter)

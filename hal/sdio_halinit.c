@@ -781,7 +781,6 @@ static u32 rtl8723bs_hal_init(PADAPTER padapter)
 	pwrctrlpriv = adapter_to_pwrctl(padapter);
 	pregistrypriv = &padapter->registrypriv;
 
-#ifdef CONFIG_FWLPS_IN_IPS
 	if (adapter_to_pwrctl(padapter)->bips_processing == true
 		&& adapter_to_pwrctl(padapter)->pre_ips_type == 0)
 	{
@@ -831,7 +830,6 @@ static u32 rtl8723bs_hal_init(PADAPTER padapter)
 
 		return _SUCCESS;
 	}	
-#endif //CONFIG_FWLPS_IN_IPS
 
 #ifdef CONFIG_WOWLAN
 	if(rtw_read8(padapter, REG_MCUFWDL)&BIT7) {
@@ -1158,7 +1156,6 @@ static u32 rtl8723bs_hal_deinit(PADAPTER padapter)
 
 	if (padapter->hw_init_completed == true)
 	{
-#ifdef CONFIG_FWLPS_IN_IPS
 		if (adapter_to_pwrctl(padapter)->bips_processing == true)
 		{
 			if(padapter->netif_up == true)
@@ -1216,7 +1213,6 @@ static u32 rtl8723bs_hal_deinit(PADAPTER padapter)
 			
 		}
 		else
-#endif //CONFIG_FWLPS_IN_IPS
 		{
 			pdbgpriv->dbg_carddisable_cnt++;
 			CardDisableRTL8723BSdio(padapter);
