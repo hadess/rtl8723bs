@@ -864,14 +864,14 @@ _func_enter_;
 		if(pwrpriv->rf_pwrstate== rf_off)
 		{
 			{
-#if defined(CONFIG_FWLPS_IN_IPS) || defined(CONFIG_SWLPS_IN_IPS)
+#if defined(CONFIG_FWLPS_IN_IPS)
 				#ifdef CONFIG_IPS
 				if(false == ips_leave(pri_padapter))
 				{
 					DBG_871X("======> ips_leave fail.............\n");			
 				}
 				#endif
-#endif //CONFIG_SWLPS_IN_IPS
+#endif //CONFIG_FWLPS_IN_IPS
 			}
 		}
 	}
@@ -933,14 +933,14 @@ _func_enter_;
 		if(adapter_to_pwrctl(Adapter)->rf_pwrstate== rf_off)
 		{
 			{
-#if defined(CONFIG_FWLPS_IN_IPS) || defined(CONFIG_SWLPS_IN_IPS)
+#if defined(CONFIG_FWLPS_IN_IPS)
 				#ifdef CONFIG_IPS
 				if(false == ips_leave(Adapter))
 				{
 					DBG_871X("======> ips_leave fail.............\n");			
 				}
 				#endif
-#endif //CONFIG_SWLPS_IN_IPS
+#endif //CONFIG_FWLPS_IN_IPS
 			}				
 		}	
 	}

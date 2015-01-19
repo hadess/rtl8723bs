@@ -90,7 +90,6 @@
 
 	#ifdef CONFIG_IPS
 	#define CONFIG_IPS_CHECK_IN_WD // Do IPS Check in WatchDog.
-	//#define CONFIG_SWLPS_IN_IPS // Do SW LPS flow when entering and leaving IPS
 	#define CONFIG_FWLPS_IN_IPS // issue H2C command to let FW do LPS when entering IPS
 	#endif
 
