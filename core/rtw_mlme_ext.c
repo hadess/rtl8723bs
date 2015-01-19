@@ -939,7 +939,6 @@ unsigned int OnBeacon(_adapter *padapter, union recv_frame *precv_frame)
 	u8 *p = NULL;
 	u32 ielen = 0;
 
-#ifdef CONFIG_ATTEMPT_TO_FIX_AP_BEACON_ERROR
 	p = rtw_get_ie(pframe + sizeof(struct rtw_ieee80211_hdr_3addr) + _BEACON_IE_OFFSET_, _EXT_SUPPORTEDRATES_IE_, &ielen, precv_frame->u.hdr.len -sizeof(struct rtw_ieee80211_hdr_3addr) - _BEACON_IE_OFFSET_);
 	if ((p != NULL) && (ielen > 0))
 	{
@@ -950,7 +949,6 @@ unsigned int OnBeacon(_adapter *padapter, union recv_frame *precv_frame)
 		       	*(p + 1) = ielen - 1;
 		}
 	}
-#endif
 
 	if (pmlmeext->sitesurvey_res.state == SCAN_PROCESS)
 	{

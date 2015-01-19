@@ -88,8 +88,6 @@
 /*
  * Platform dependent
  */
-#define CONFIG_ATTEMPT_TO_FIX_AP_BEACON_ERROR
-
 #define WAKEUP_GPIO_IDX	12	//WIFI Chip Side
 #ifdef CONFIG_WOWLAN
 #define CONFIG_GTK_OL
