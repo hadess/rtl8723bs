@@ -21,13 +21,7 @@
 #define _RTW_XMIT_H_
 
 
-#ifdef CONFIG_TX_AGGREGATION
 #define MAX_XMITBUF_SZ	(20480)	// 20k
-//#define SDIO_TX_AGG_MAX	5
-#else
-#define MAX_XMITBUF_SZ (1664)
-#define SDIO_TX_AGG_MAX	1
-#endif
 
 #define NR_XMITBUFF	(16)
 

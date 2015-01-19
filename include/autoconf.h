@@ -49,11 +49,6 @@
 #define CONFIG_LAYER2_ROAMING_RESUME
 
 /*
- * Interface Related Config
- */
-#define CONFIG_TX_AGGREGATION
-
-/*
  * Others
  */
 #define RTW_NOTCH_FILTER 0 /* 0:Disable, 1:Enable, */
