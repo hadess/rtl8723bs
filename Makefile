@@ -67,7 +67,7 @@ _HAL_INTFS_FILES :=	hal/hal_intf.o \
 			hal/hal_btcoex.o \
 			hal/hal_sdio.o \
 			hal/hal_sdio_led.o
-			
+
 _OUTSRC_FILES := hal/odm_debug.o	\
 		hal/odm_AntDiv.o\
 		hal/odm_interface.o\
@@ -81,7 +81,7 @@ _OUTSRC_FILES := hal/odm_debug.o	\
 		hal/odm_DynamicTxPower.o\
 		hal/odm_CfoTracking.o\
 		hal/odm_NoiseMonitor.o
-		
+
 EXTRA_CFLAGS += -I$(src)/hal/OUTSRC-BTCoexist
 _OUTSRC_FILES += \
 				hal/HalBtc8723b1Ant.o \
@@ -99,7 +99,6 @@ _HAL_INTFS_FILES +=	hal/rtl8723b_hal_init.o \
 			hal/rtl8723b_dm.o \
 			hal/rtl8723b_rxdesc.o \
 			hal/rtl8723b_cmd.o \
-			
 
 _HAL_INTFS_FILES +=	\
 			hal/sdio_halinit.o \
@@ -227,7 +226,7 @@ $(MODULE_NAME)-$(CONFIG_INTEL_WIDI) += core/rtw_intel_widi.o
 
 $(MODULE_NAME)-$(CONFIG_WAPI_SUPPORT) += core/rtw_wapi.o	\
 					core/rtw_wapi_sms4.o
-					
+
 $(MODULE_NAME)-y += $(_OS_INTFS_FILES)
 $(MODULE_NAME)-y += $(_HAL_INTFS_FILES)
 $(MODULE_NAME)-y += $(_OUTSRC_FILES)
