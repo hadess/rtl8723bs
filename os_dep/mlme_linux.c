@@ -58,14 +58,11 @@ static void _dynamic_check_timer_handlder (void *FunctionContext)
 	_set_timer(&adapter->mlmepriv.dynamic_chk_timer, 2000);
 }
 
-#ifdef CONFIG_SET_SCAN_DENY_TIMER
 static void _rtw_set_scan_deny_timer_hdl(void *FunctionContext)
 {
 	_adapter *adapter = (_adapter *)FunctionContext;	 
 	rtw_set_scan_deny_timer_hdl(adapter);
 }
-#endif
-
 
 void rtw_init_mlme_timer(_adapter *padapter)
 {
@@ -77,9 +74,7 @@ void rtw_init_mlme_timer(_adapter *padapter)
 
 	_init_timer(&(pmlmepriv->dynamic_chk_timer), padapter->pnetdev, _dynamic_check_timer_handlder, padapter);
 
-	#ifdef CONFIG_SET_SCAN_DENY_TIMER
 	_init_timer(&(pmlmepriv->set_scan_deny_timer), padapter->pnetdev, _rtw_set_scan_deny_timer_hdl, padapter);
-	#endif
 }
 
 extern void rtw_indicate_wx_assoc_event(_adapter *padapter);

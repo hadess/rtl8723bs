@@ -985,11 +985,9 @@ void rtw_cancel_all_timer(_adapter *padapter)
 
 	_cancel_timer_ex(&(adapter_to_pwrctl(padapter)->pwr_state_check_timer));
 
-#ifdef CONFIG_SET_SCAN_DENY_TIMER
 	_cancel_timer_ex(&padapter->mlmepriv.set_scan_deny_timer);
 	rtw_clear_scan_deny(padapter);
 	RT_TRACE(_module_os_intfs_c_,_drv_info_,("rtw_cancel_all_timer:cancel set_scan_deny_timer! \n"));
-#endif
 
 	_cancel_timer_ex(&padapter->recvpriv.signal_stat_timer);
 

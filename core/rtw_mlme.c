@@ -2391,7 +2391,6 @@ void rtw_dynamic_check_timer_handlder(_adapter *adapter)
 }
 
 
-#ifdef CONFIG_SET_SCAN_DENY_TIMER
 inline bool rtw_is_scan_deny(_adapter *adapter)
 {
 	struct mlme_priv *mlmepriv = &adapter->mlmepriv;
@@ -2419,7 +2418,6 @@ void rtw_set_scan_deny(_adapter *adapter, u32 ms)
 	atomic_set(&mlmepriv->set_scan_deny, 1);
 	_set_timer(&mlmepriv->set_scan_deny_timer, ms);	
 }
-#endif
 
 #ifdef CONFIG_LAYER2_ROAMING
 /*
