@@ -434,7 +434,6 @@ static s32 rtl8723bs_xmit_handler(PADAPTER padapter)
 
 	pxmitpriv = &padapter->xmitpriv;
 
-wait:
 	if (down_interruptible(&pxmitpriv->SdioXmitSema)) {
 		DBG_871X_LEVEL(_drv_emerg_, "%s: down sema fail!\n", __FUNCTION__);
 		return _FAIL;

@@ -1951,7 +1951,6 @@ check_need_indicate_scan_done:
 		rtw_cfg80211_indicate_scan_done(padapter, false);
 	}
 
-cancel_ps_deny:
 	rtw_ps_deny_cancel(padapter, PS_DENY_SCAN);
 
 exit:
@@ -2957,7 +2956,6 @@ static int rtw_cfg80211_monitor_if_xmit_entry(struct sk_buff *skb, struct net_de
 		else
 			DBG_871X("RTW_Tx:category(%u), action(%u)\n", category, action);
 
-dump:
 		//starting alloc mgmt frame to dump it
 		if ((pmgntframe = alloc_mgtxmitframe(pxmitpriv)) == NULL)
 		{			
@@ -3480,7 +3478,6 @@ void rtw_cfg80211_rx_action_p2p(_adapter *padapter, u8 *pmgmt_frame, uint frame_
 	rtw_action_frame_parse(pmgmt_frame, frame_len, &category, &action);
 	DBG_871X("RTW_Rx:category(%u), action(%u)\n", category, action);
 
-indicate:
 	if (channel <= RTW_CH_MAX_2G_CHANNEL)
 		freq = rtw_ieee80211_channel_to_frequency(channel, IEEE80211_BAND_2GHZ);
 	else
@@ -3503,7 +3500,6 @@ void rtw_cfg80211_rx_p2p_action_public(_adapter *padapter, u8 *pmgmt_frame, uint
 	rtw_action_frame_parse(pmgmt_frame, frame_len, &category, &action);
 	DBG_871X("RTW_Rx:category(%u), action(%u)\n", category, action);
 
-indicate:
 	if (channel <= RTW_CH_MAX_2G_CHANNEL)
 		freq = rtw_ieee80211_channel_to_frequency(channel, IEEE80211_BAND_2GHZ);
 	else
@@ -3678,8 +3674,6 @@ static int cfg80211_rtw_mgmt_tx(struct wiphy *wiphy,
 		DBG_871X("RTW_Tx:%s\n", action_public_str(action));
 	else
 		DBG_871X("RTW_Tx:category(%u), action(%u)\n", category, action);
-
-dump:
 
 	rtw_ps_deny(padapter, PS_DENY_MGNT_TX);
 	if(_FAIL == rtw_pwr_wakeup(padapter)) {
