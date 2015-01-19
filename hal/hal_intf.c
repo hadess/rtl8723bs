@@ -503,15 +503,6 @@ void rtw_hal_bcn_related_reg_setting(_adapter *padapter)
 }
 
 
-#ifdef CONFIG_HOSTAPD_MLME
-s32	rtw_hal_hostap_mgnt_xmit_entry(_adapter *padapter, _pkt *pkt)
-{
-	if(padapter->HalFunc.hostap_mgnt_xmit_entry)
-		return padapter->HalFunc.hostap_mgnt_xmit_entry(padapter, pkt);
-	return _FAIL;
-}
-#endif //CONFIG_HOSTAPD_MLME
-
 #ifdef CONFIG_IOL
 int rtw_hal_iol_cmd(ADAPTER *adapter, struct xmit_frame *xmit_frame, u32 max_wating_ms, u32 bndy_cnt)
 {

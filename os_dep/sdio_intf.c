@@ -462,9 +462,6 @@ static void rtw_sdio_if1_deinit(_adapter *if1)
 
 #ifdef CONFIG_AP_MODE
 	free_mlme_ap_info(if1);
-	#ifdef CONFIG_HOSTAPD_MLME
-	hostapd_mode_unload(if1);
-	#endif
 #endif
 
 #ifdef CONFIG_GPIO_WAKEUP
@@ -528,10 +525,6 @@ static int rtw_drv_init(
 	if((status = rtw_drv_register_netdev(if1)) != _SUCCESS) {
 		goto free_if2;
 	}
-
-#ifdef CONFIG_HOSTAPD_MLME
-	hostapd_mode_init(if1);
-#endif
 
 	if (sdio_alloc_irq(dvobj) != _SUCCESS)
 		goto free_if2;
