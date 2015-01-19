@@ -901,7 +901,6 @@ static s32 update_attrib(_adapter *padapter, _pkt *pkt, struct pkt_attrib *pattr
 		rtw_set_scan_deny(padapter, 3000);
 	}
 
-#ifdef CONFIG_LPS
 	// If EAPOL , ARP , OR DHCP packet, driver must be in active mode.
 #ifdef CONFIG_WAPI_SUPPORT
 	if ( (pattrib->ether_type == 0x88B4) || (pattrib->ether_type == 0x0806) || (pattrib->ether_type == 0x888e) || (pattrib->dhcp_pkt == 1) )
@@ -916,7 +915,6 @@ static s32 update_attrib(_adapter *padapter, _pkt *pkt, struct pkt_attrib *pattr
 		DBG_COUNTER(padapter->tx_logs.core_tx_upd_attrib_active);
 		rtw_lps_ctrl_wk_cmd(padapter, LPS_CTRL_SPECIAL_PACKET, 1);
 	}
-#endif //CONFIG_LPS
 
 	bmcast = IS_MCAST(pattrib->ra);
 	
@@ -1799,12 +1797,7 @@ void rtw_count_tx_stats(PADAPTER padapter, struct xmit_frame *pxmitframe, int sz
 			pstats->tx_pkts += pkt_num;
 
 			pstats->tx_bytes += sz;
-		}
-		
-#ifdef CONFIG_CHECK_LEAVE_LPS
-		//traffic_check_for_leave_lps(padapter, true);
-#endif //CONFIG_LPS
-		
+		}		
 	}
 }
 

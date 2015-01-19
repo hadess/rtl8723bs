@@ -121,9 +121,7 @@ query_free_page:
 		goto free_xmitbuf;
 	}
 
-#ifdef CONFIG_CHECK_LEAVE_LPS
 	traffic_check_for_leave_lps(padapter, true, pxmitbuf->agg_num);
-#endif 
 
 	rtw_write_port(padapter, deviceId, pxmitbuf->len, (u8 *)pxmitbuf);
 
@@ -176,21 +174,17 @@ s32 rtl8723bs_xmit_buf_handler(PADAPTER padapter)
 	if(queue_pending == false)
 		return _SUCCESS;
 
-#ifdef CONFIG_LPS_LCLK
 	ret = rtw_register_tx_alive(padapter);
 	if (ret != _SUCCESS) {
 		return _SUCCESS;
 	}
-#endif
 
 	do {
 		queue_empty = rtl8723_dequeue_writeport(padapter);
 //	dump secondary adapter xmitbuf
 	} while ( !queue_empty);
 
-#ifdef CONFIG_LPS_LCLK
 	rtw_unregister_tx_alive(padapter);
-#endif
 
 	return _SUCCESS;
 }

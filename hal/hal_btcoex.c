@@ -216,7 +216,6 @@ static void halbtcoutsrc_NormalLps(PBTC_COEXIST pBtCoexist)
  */
 static void halbtcoutsrc_LeaveLowPower(PBTC_COEXIST pBtCoexist)
 {
-#ifdef CONFIG_LPS_LCLK
 	PADAPTER padapter;
 	PHAL_DATA_TYPE pHalData;
 	struct pwrctrl_priv *pwrctrl;
@@ -248,7 +247,6 @@ static void halbtcoutsrc_LeaveLowPower(PBTC_COEXIST pBtCoexist)
 
 		msleep(1);
 	} while (1);
-#endif // CONFIG_LPS_LCLK
 }
 
 /*
@@ -257,13 +255,11 @@ static void halbtcoutsrc_LeaveLowPower(PBTC_COEXIST pBtCoexist)
  */
 static void halbtcoutsrc_NormalLowPower(PBTC_COEXIST pBtCoexist)
 {
-#ifdef CONFIG_LPS_LCLK
 	PADAPTER padapter;
 
 
 	padapter = pBtCoexist->Adapter;
 	rtw_unregister_task_alive(padapter, BTCOEX_ALIVE);
-#endif // CONFIG_LPS_LCLK
 }
 
 static void halbtcoutsrc_DisableLowPower(PBTC_COEXIST pBtCoexist, u8 bLowPwrDisable)

@@ -1545,10 +1545,6 @@ int rtw_suspend_wow(_adapter *padapter)
 		rtw_stop_drv_threads(padapter);
 		padapter->bDriverStopped = false;	//for 32k command
 
-		//#ifdef CONFIG_LPS
-		//rtw_set_ps_mode(padapter, PS_MODE_ACTIVE, 0, 0, "WOWLAN");
-		//#endif
-
 		// 2. disable interrupt
 		if (padapter->intf_stop) {
 			padapter->intf_stop(padapter);
@@ -1596,10 +1592,8 @@ int rtw_suspend_wow(_adapter *padapter)
 
 		if(pwrpriv->wowlan_pno_enable)
 			DBG_871X_LEVEL(_drv_always_, "%s: pno: %d\n", __func__, pwrpriv->wowlan_pno_enable);
-		#ifdef CONFIG_LPS
 		else
 			rtw_set_ps_mode(padapter, PS_MODE_DTIM, 0, 0, "WOWLAN");
-		#endif //#ifdef CONFIG_LPS
 
 	}
 	else
@@ -1637,10 +1631,6 @@ int rtw_suspend_ap_wow(_adapter *padapter)
 	rtw_stop_drv_threads(padapter);
 	padapter->bDriverStopped = false;	//for 32k command
 
-	//#ifdef CONFIG_LPS
-	//rtw_set_ps_mode(padapter, PS_MODE_ACTIVE, 0, 0, "WOWLAN");
-	//#endif
-
 	// 2. disable interrupt
 	rtw_hal_disable_interrupt(padapter); // It need wait for leaving 32K.
 
@@ -1665,10 +1655,7 @@ int rtw_suspend_ap_wow(_adapter *padapter)
 		set_channel_bwmode(padapter, ch, offset, bw);
 	}
 
-#ifdef CONFIG_LPS
 	rtw_set_ps_mode(padapter, PS_MODE_MIN, 0, 0, "AP-WOWLAN");
-#endif
-
 
 	DBG_871X("<== "FUNC_ADPT_FMT" exit....\n", FUNC_ADPT_ARG(padapter));
 	return ret;
@@ -1829,9 +1816,7 @@ _func_enter_;
 #endif
 
 	if (pwrpriv->wowlan_mode == true){
-#ifdef CONFIG_LPS
 		rtw_set_ps_mode(padapter, PS_MODE_ACTIVE, 0, 0, "WOWLAN");
-#endif //CONFIG_LPS
 
 		pwrpriv->bFwCurrentInPSMode = false;
 
@@ -1964,10 +1949,7 @@ _func_enter_;
 		goto exit;
 	}
 
-
-#ifdef CONFIG_LPS
 	rtw_set_ps_mode(padapter, PS_MODE_ACTIVE, 0, 0, "AP-WOWLAN");
-#endif //CONFIG_LPS
 
 	pwrpriv->bFwCurrentInPSMode = false;
 

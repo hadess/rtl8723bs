@@ -1455,9 +1455,7 @@ _func_enter_;
 		rtw_clear_scan_deny(padapter);
 	}
 
-#ifdef CONFIG_LPS
 	rtw_lps_ctrl_wk_cmd(padapter, LPS_CTRL_DISCONNECT, 1);
-#endif
 
 _func_exit_;	
 }
@@ -2180,18 +2178,14 @@ _func_exit_;
 
 void rtw_cpwm_event_callback(PADAPTER padapter, u8 *pbuf)
 {
-#ifdef CONFIG_LPS_LCLK
 	struct reportpwrstate_parm *preportpwrstate;
-#endif
 
 _func_enter_;
 
 	RT_TRACE(_module_rtl871x_mlme_c_,_drv_err_,("+rtw_cpwm_event_callback !!!\n"));
-#ifdef CONFIG_LPS_LCLK
 	preportpwrstate = (struct reportpwrstate_parm*)pbuf;
 	preportpwrstate->state |= (u8)(adapter_to_pwrctl(padapter)->cpwm_tog + 0x80);
 	cpwm_int_hdl(padapter, preportpwrstate);
-#endif
 
 _func_exit_;
 
@@ -2373,7 +2367,6 @@ void rtw_dynamic_check_timer_handlder(_adapter *adapter)
 	if(is_primary_adapter(adapter))
 		DBG_871X("IsBtDisabled=%d, IsBtControlLps=%d\n", rtw_btcoex_IsBtDisabled(adapter), rtw_btcoex_IsBtControlLps(adapter));
 
-#ifdef CONFIG_LPS_LCLK_WD_TIMER
 	if ((adapter_to_pwrctl(adapter)->bFwCurrentInPSMode ==true )
 		&& (rtw_btcoex_IsBtControlLps(adapter) == false)
 		) 
@@ -2395,7 +2388,6 @@ void rtw_dynamic_check_timer_handlder(_adapter *adapter)
 			
 	}
 	else
-#endif //CONFIG_LPS_LCLK_WD_TIMER	
 	{
 		if(is_primary_adapter(adapter))
 		{	

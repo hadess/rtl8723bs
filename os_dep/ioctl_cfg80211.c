@@ -2653,10 +2653,8 @@ static int cfg80211_rtw_set_power_mgmt(struct wiphy *wiphy,
 
 	rtw_wdev_priv->power_mgmt = enabled;
 
-	#ifdef CONFIG_LPS
 	if (!enabled)
 		LPS_Leave(padapter, "CFG80211_PWRMGMT");
-	#endif
 
 	return 0;
 }
