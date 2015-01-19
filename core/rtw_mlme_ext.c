@@ -2774,11 +2774,7 @@ void issue_beacon(_adapter *padapter, int timeout_ms)
 
 	//DBG_871X("%s\n", __FUNCTION__);
 
-#ifdef CONFIG_BCN_ICF
-	if ((pmgntframe = rtw_alloc_bcnxmitframe(pxmitpriv)) == NULL)
-#else
 	if ((pmgntframe = alloc_mgtxmitframe(pxmitpriv)) == NULL)
-#endif
 	{
 		DBG_871X("%s, alloc mgnt frame fail\n", __FUNCTION__);
 		return;
