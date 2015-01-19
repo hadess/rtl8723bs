@@ -6977,42 +6977,6 @@ static int rtw_scan_ch_decision(_adapter *padapter, struct rtw_ieee80211_channel
 		}
 	}
 
-#ifdef CONFIG_SCAN_SPARSE //partial scan, ASUS RK3188 use the feature
-	/* assume j>6 is normal scan */
-	if ((j > 6) && (padapter->registrypriv.wifi_spec != 1))
-	{
-		static u8 token = 0;
-		u32 interval;
-
-		if (pmlmeext->last_scan_time == 0)
-			pmlmeext->last_scan_time = jiffies;
-
-		interval = jiffies_to_msecs(jiffies - pmlmeext->last_scan_time);
-		if (interval > ALLOW_SCAN_INTERVAL)
-		{
-			// modify scan plan
-			int k = 0;
-			memset(in, 0, sizeof(struct rtw_ieee80211_channel)*in_num);
-			memcpy(in, out, sizeof(struct rtw_ieee80211_channel)*j);
-			memset(out, 0, sizeof(struct rtw_ieee80211_channel)*j);
-
-			for (i=0;i<j;i++) {
-				if (in[i].hw_value && (i%SCAN_DIVISION_NUM) == token) {
-					memcpy(&out[k], &in[i], sizeof(struct rtw_ieee80211_channel));
-					k++;
-				}
-				if(k>=out_num)
-					break;
-			}
-
-			j = k;
-			token  = (token+1)%SCAN_DIVISION_NUM;
-		}
-
-		pmlmeext->last_scan_time = jiffies;
-	}
-#endif //CONFIG_SCAN_SPARSE
-
 	return j;
 }
 
