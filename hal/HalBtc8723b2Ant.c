@@ -424,7 +424,6 @@ halbtc8723b2ant_UpdateBtLinkInfo(
 	PBTC_BT_LINK_INFO	pBtLinkInfo=&pBtCoexist->btLinkInfo;
 	bool				bBtHsOn=false;
 
-#if(BT_AUTO_REPORT_ONLY_8723B_2ANT == 1)	// profile from bt patch
 	pBtCoexist->fBtcGet(pBtCoexist, BTC_GET_BL_HS_OPERATION, &bBtHsOn);
 
 	pBtLinkInfo->bBtLinkExist = pCoexSta->bBtLinkExist;
@@ -439,20 +438,6 @@ halbtc8723b2ant_UpdateBtLinkInfo(
 		pBtLinkInfo->bPanExist = true;
 		pBtLinkInfo->bBtLinkExist = true;
 	}
-#else	// profile from bt stack
-	pBtLinkInfo->bBtLinkExist = pStackInfo->bBtLinkExist;
-	pBtLinkInfo->bScoExist = pStackInfo->bScoExist;
-	pBtLinkInfo->bA2dpExist = pStackInfo->bA2dpExist;
-	pBtLinkInfo->bPanExist = pStackInfo->bPanExist;
-	pBtLinkInfo->bHidExist = pStackInfo->bHidExist;
-
-	//for win-8 stack HID report error
-	if(!pStackInfo->bHidExist)
-		pStackInfo->bHidExist = pCoexSta->bHidExist;  //sync  BTInfo with BT firmware and stack
-	// when stack HID report error, here we use the info from bt fw.
-	if(!pStackInfo->bBtLinkExist)
-		pStackInfo->bBtLinkExist = pCoexSta->bBtLinkExist;	
-#endif
 	// check if Sco only
 	if( pBtLinkInfo->bScoExist &&
 		!pBtLinkInfo->bA2dpExist &&
@@ -3888,9 +3873,8 @@ EXhalbtc8723b2ant_DisplayCoexInfo(
 	CL_SPRINTF(cliBuf, BT_TMP_BUF_SIZE, "\r\n %-35s = %d/ %d", "0x774(low-pri rx/tx)", \
 		pCoexSta->lowPriorityRx, pCoexSta->lowPriorityTx);
 	CL_PRINTF(cliBuf);
-#if(BT_AUTO_REPORT_ONLY_8723B_2ANT == 1)
+
 	halbtc8723b2ant_MonitorBtCtr(pBtCoexist);
-#endif
 	pBtCoexist->fBtcDispDbgMsg(pBtCoexist, BTC_DBG_DISP_COEX_STATISTICS);
 }
 
@@ -4120,16 +4104,6 @@ EXhalbtc8723b2ant_BtInfoNotify(
 		{
 			// BT already NOT ignore Wlan active, do nothing here.
 		}
-#if(BT_AUTO_REPORT_ONLY_8723B_2ANT == 0)
-		if( (pCoexSta->btInfoExt & BIT4) )
-		{
-			// BT auto report already enabled, do nothing
-		}
-		else
-		{
-			halbtc8723b2ant_BtAutoReport(pBtCoexist, FORCE_EXEC, true);
-		}
-#endif
 	}
 
 	// check BIT2 first ==> check if bt is under inquiry or page scan
@@ -4280,15 +4254,9 @@ EXhalbtc8723b2ant_Periodical(
 		BTC_PRINT(BTC_MSG_INTERFACE, INTF_INIT, ("[BTCoex], ****************************************************************\n"));
 	}
 
-#if(BT_AUTO_REPORT_ONLY_8723B_2ANT == 0)
-	halbtc8723b2ant_QueryBtInfo(pBtCoexist);
-	halbtc8723b2ant_MonitorBtCtr(pBtCoexist);
-	halbtc8723b2ant_MonitorBtEnableDisable(pBtCoexist);
-#else
 	if( halbtc8723b2ant_IsWifiStatusChanged(pBtCoexist) ||
 		pCoexDm->bAutoTdmaAdjust)
 	{
 		halbtc8723b2ant_RunCoexistMechanism(pBtCoexist);
 	}
-#endif
 }
