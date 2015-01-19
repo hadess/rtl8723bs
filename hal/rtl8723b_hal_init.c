@@ -3909,16 +3909,7 @@ static void rtl8723b_fill_default_txdesc(
 			ptxdesc->data_rt_lmt = 12;
 		}
 
-#ifdef CONFIG_INTEL_PROXIM
-		if((padapter->proximity.proxim_on==true)&&(pattrib->intel_proxim==true)){
-			DBG_871X("\n %s pattrib->rate=%d\n",__FUNCTION__,pattrib->rate);
-			ptxdesc->datarate = pattrib->rate;
-		}
-		else
-#endif
-		{
-			ptxdesc->datarate = MRateToHwRate(pmlmeext->tx_rate);
-		}
+		ptxdesc->datarate = MRateToHwRate(pmlmeext->tx_rate);
 
 #ifdef CONFIG_XMIT_ACK
 		// CCX-TXRPT ack for xmit mgmt frames.
