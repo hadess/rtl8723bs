@@ -2027,10 +2027,6 @@ _func_enter_;
 		rtw_signal_process(padapter->pid[1], SIGUSR2);
 	}	
 
-	#ifdef CONFIG_RESUME_IN_WORKQUEUE
-	//rtw_unlock_suspend();
-	#endif //CONFIG_RESUME_IN_WORKQUEUE
-
 	if (pwrpriv->wowlan_wake_reason == AP_WakeUp)
 		rtw_lock_ext_suspend_timeout(8000);
 
@@ -2122,9 +2118,6 @@ _func_enter_;
 		DBG_871X(FUNC_ADPT_FMT" fwstate:0x%08x - ???\n", FUNC_ADPT_ARG(padapter), get_fwstate(pmlmepriv));
 	}
 
-#ifdef CONFIG_RESUME_IN_WORKQUEUE
-	//rtw_unlock_suspend();
-#endif //CONFIG_RESUME_IN_WORKQUEUE
 	DBG_871X("<== "FUNC_ADPT_FMT" exit....\n", FUNC_ADPT_ARG(padapter));
 
 exit:	
