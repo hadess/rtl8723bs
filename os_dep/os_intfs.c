@@ -1527,15 +1527,6 @@ static int netdev_close(struct net_device *pnetdev)
 
 }
 
-static int pm_netdev_close(struct net_device *pnetdev,u8 bnormal)
-{
-	int status = 0;
-
-	status = netdev_close(pnetdev);
-
-	return status;
-}
-
 void rtw_ndev_destructor(struct net_device *ndev)
 {
 	DBG_871X(FUNC_NDEV_FMT"\n", FUNC_NDEV_ARG(ndev));

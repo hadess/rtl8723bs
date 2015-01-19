@@ -103,11 +103,6 @@ static const struct ieee80211_regdomain rtw_regdom_14 = {
 		      }
 };
 
-static bool _rtw_is_radar_freq(u16 center_freq)
-{
-	return (center_freq >= 5260 && center_freq <= 5700);
-}
-
 static int rtw_ieee80211_channel_to_frequency(int chan, int band)
 {
 	/* see 802.11 17.3.8.3.2 and Annex J
@@ -241,17 +236,6 @@ static void _rtw_regd_init_wiphy(struct rtw_regulatory *reg,
 	/* Hard code flags */
 	_rtw_reg_apply_flags(wiphy);
 	_rtw_reg_apply_world_flags(wiphy, NL80211_REGDOM_SET_BY_DRIVER, reg);
-}
-
-static struct country_code_to_enum_rd *_rtw_regd_find_country(u16 countrycode)
-{
-	int i;
-
-	for (i = 0; i < ARRAY_SIZE(allCountries); i++) {
-		if (allCountries[i].countrycode == countrycode)
-			return &allCountries[i];
-	}
-	return NULL;
 }
 
 int rtw_regd_init(_adapter * padapter,

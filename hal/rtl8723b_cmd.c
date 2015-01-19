@@ -786,6 +786,7 @@ static void ConstructProbeReq(_adapter *padapter, u8 *pframe, u32 *pLength)
 #endif //CONFIG_PNO_SUPPORT
 #endif //CONFIG_WOWLAN
 
+#ifdef CONFIG_AP_WOWLAN
 static void ConstructProbeRsp(_adapter *padapter, u8 *pframe, u32 *pLength, u8 *StaAddr, bool bHideSSID)
 {
 	struct rtw_ieee80211_hdr	*pwlanhdr;
@@ -898,6 +899,7 @@ static void ConstructProbeRsp(_adapter *padapter, u8 *pframe, u32 *pLength, u8 *
 	*pLength = pktlen;
 
 }
+#endif // CONFIG_AP_WOWLAN
 
 // To check if reserved page content is destroyed by beacon beacuse beacon is too large.
 // 2010.06.23. Added by tynli.
@@ -1031,6 +1033,7 @@ void rtl8723b_set_FwMediaStatusRpt_cmd(PADAPTER	padapter, u8 mstatus, u8 macid)
 	FillH2CCmd8723B(padapter, H2C_8723B_MEDIA_STATUS_RPT, H2C_MEDIA_STATUS_RPT_LEN, u1H2CMediaStatusRptParm);
 }
 
+#ifdef CONFIG_WOWLAN
 static void rtl8723b_set_FwKeepAlive_cmd(PADAPTER padapter, u8 benable, u8 pkt_type)
 {
 	u8 u1H2CKeepAliveParm[H2C_KEEP_ALIVE_CTRL_LEN]={0};
@@ -1062,6 +1065,7 @@ static void rtl8723b_set_FwDisconDecision_cmd(PADAPTER padapter, u8 benable)
 
 	FillH2CCmd8723B(padapter, H2C_8723B_DISCON_DECISION, H2C_DISCON_DECISION_LEN, u1H2CDisconDecisionParm);
 }
+#endif // CONFIG_WOWLAN
 
 void rtl8723b_set_FwMacIdConfig_cmd(_adapter* padapter, u8 mac_id, u8 raid, u8 bw, u8 sgi, u32 mask)
 {
@@ -1105,20 +1109,6 @@ _func_enter_;
 	FillH2CCmd8723B(padapter, H2C_8723B_RSSI_SETTING, H2C_RSSI_SETTING_LEN, u1H2CRssiSettingParm);
 
 _func_exit_;
-}
-
-static void rtl8723b_set_FwAPReqRPT_cmd(PADAPTER padapter, u32 need_ack)
-{
-	u8 u1H2CApReqRptParm[H2C_AP_REQ_TXRPT_LEN]={0};
-	u8 macid1 = 1, macid2 = 0;
-
-	DBG_871X("%s(): need_ack = %d\n", __func__, need_ack);
-
-	SET_8723B_H2CCMD_APREQRPT_PARM_MACID1(u1H2CApReqRptParm, macid1);
-	SET_8723B_H2CCMD_APREQRPT_PARM_MACID2(u1H2CApReqRptParm, macid2);
-
-	RT_PRINT_DATA(_module_hal_init_c_, _drv_always_, "u1H2CApReqRptParm:", u1H2CApReqRptParm, H2C_AP_REQ_TXRPT_LEN);
-	FillH2CCmd8723B(padapter, H2C_8723B_AP_REQ_TXRPT, H2C_AP_REQ_TXRPT_LEN, u1H2CApReqRptParm);
 }
 
 void rtl8723b_set_FwPwrMode_cmd(PADAPTER padapter, u8 psmode)
@@ -1598,12 +1588,6 @@ void rtl8723b_set_ap_wowlan_cmd(_adapter* padapter, u8 enable)
 	rtl8723b_set_AP_FwWoWlan_cmd(padapter, enable);
 }
 #endif //CONFIG_AP_WOWLAN
-
-static s32 rtl8723b_set_FwLowPwrLps_cmd(PADAPTER padapter, u8 enable)
-{
-	//TODO
-	return false;	
-}
 
 //
 // Description: Fill the reserved packets that FW will use to RSVD page.

@@ -245,65 +245,6 @@ halbtc8723b2ant_WifiRssiState(
 }
 
 static void
-halbtc8723b2ant_MonitorBtEnableDisable(
-	IN 	PBTC_COEXIST		pBtCoexist
-	)
-{
-	static bool	bPreBtDisabled=false;
-	static u4Byte	btDisableCnt=0;
-	bool			bBtActive=true, bBtDisabled=false;
-
-	// This function check if bt is disabled
-
-	if(	pCoexSta->highPriorityTx == 0 &&
-		pCoexSta->highPriorityRx == 0 &&
-		pCoexSta->lowPriorityTx == 0 &&
-		pCoexSta->lowPriorityRx == 0)
-	{
-		bBtActive = false;
-	}
-	if(	pCoexSta->highPriorityTx == 0xffff &&
-		pCoexSta->highPriorityRx == 0xffff &&
-		pCoexSta->lowPriorityTx == 0xffff &&
-		pCoexSta->lowPriorityRx == 0xffff)
-	{
-		bBtActive = false;
-	}
-	if(bBtActive)
-	{
-		btDisableCnt = 0;
-		bBtDisabled = false;
-		pBtCoexist->fBtcSet(pBtCoexist, BTC_SET_BL_BT_DISABLE, &bBtDisabled);
-		BTC_PRINT(BTC_MSG_ALGORITHM, ALGO_BT_MONITOR, ("[BTCoex], BT is enabled !!\n"));
-	}
-	else
-	{
-		btDisableCnt++;
-		BTC_PRINT(BTC_MSG_ALGORITHM, ALGO_BT_MONITOR, ("[BTCoex], bt all counters=0, %d times!!\n", 
-				btDisableCnt));
-		if(btDisableCnt >= 2)
-		{
-			bBtDisabled = true;
-			pBtCoexist->fBtcSet(pBtCoexist, BTC_SET_BL_BT_DISABLE, &bBtDisabled);
-			BTC_PRINT(BTC_MSG_ALGORITHM, ALGO_BT_MONITOR, ("[BTCoex], BT is disabled !!\n"));
-		}
-	}
-	if(bPreBtDisabled != bBtDisabled)
-	{
-		BTC_PRINT(BTC_MSG_ALGORITHM, ALGO_BT_MONITOR, ("[BTCoex], BT is from %s to %s!!\n", 
-			(bPreBtDisabled ? "disabled":"enabled"), 
-			(bBtDisabled ? "disabled":"enabled")));
-		bPreBtDisabled = bBtDisabled;
-		if(!bBtDisabled)
-		{
-		}
-		else
-		{
-		}
-	}
-}
-
-static void
 halbtc8723b2ant_LimitedRx(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	bool				bForceExec,
@@ -744,51 +685,6 @@ halbtc8723b2ant_DecBtPwr(
 }
 
 static void
-halbtc8723b2ant_SetBtAutoReport(
-	IN	PBTC_COEXIST		pBtCoexist,
-	IN	bool			bEnableAutoReport
-	)
-{
-	u1Byte			H2C_Parameter[1] ={0};
-	
-	H2C_Parameter[0] = 0;
-
-	if(bEnableAutoReport)
-	{
-		H2C_Parameter[0] |= BIT0;
-	}
-
-	BTC_PRINT(BTC_MSG_ALGORITHM, ALGO_TRACE_FW_EXEC, ("[BTCoex], BT FW auto report : %s, FW write 0x68=0x%x\n", 
-		(bEnableAutoReport? "Enabled!!":"Disabled!!"), H2C_Parameter[0]));
-
-	pBtCoexist->fBtcFillH2c(pBtCoexist, 0x68, 1, H2C_Parameter);	
-}
-
-static void
-halbtc8723b2ant_BtAutoReport(
-	IN	PBTC_COEXIST		pBtCoexist,
-	IN	bool			bForceExec,
-	IN	bool			bEnableAutoReport
-	)
-{
-	BTC_PRINT(BTC_MSG_ALGORITHM, ALGO_TRACE_FW, ("[BTCoex], %s BT Auto report = %s\n",  
-		(bForceExec? "force to":""), ((bEnableAutoReport)? "Enabled":"Disabled")));
-	pCoexDm->bCurBtAutoReport = bEnableAutoReport;
-
-	if(!bForceExec)
-	{
-		BTC_PRINT(BTC_MSG_ALGORITHM, ALGO_TRACE_FW_DETAIL, ("[BTCoex], bPreBtAutoReport=%d, bCurBtAutoReport=%d\n", 
-			pCoexDm->bPreBtAutoReport, pCoexDm->bCurBtAutoReport));
-
-		if(pCoexDm->bPreBtAutoReport == pCoexDm->bCurBtAutoReport) 
-			return;
-	}
-	halbtc8723b2ant_SetBtAutoReport(pBtCoexist, pCoexDm->bCurBtAutoReport);
-
-	pCoexDm->bPreBtAutoReport = pCoexDm->bCurBtAutoReport;
-}
-
-static void
 halbtc8723b2ant_FwDacSwingLvl(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	bool			bForceExec,
@@ -969,48 +865,6 @@ halbtc8723b2ant_DacSwing(
 
 	pCoexDm->bPreDacSwingOn = pCoexDm->bCurDacSwingOn;
 	pCoexDm->preDacSwingLvl = pCoexDm->curDacSwingLvl;
-}
-
-static void
-halbtc8723b2ant_SetAdcBackOff(
-	IN	PBTC_COEXIST		pBtCoexist,
-	IN	bool			bAdcBackOff
-	)
-{
-	if(bAdcBackOff)
-	{
-		BTC_PRINT(BTC_MSG_ALGORITHM, ALGO_TRACE_SW_EXEC, ("[BTCoex], BB BackOff Level On!\n"));
-		pBtCoexist->fBtcWrite1ByteBitMask(pBtCoexist, 0xc05, 0x30, 0x3);
-	}
-	else
-	{
-		BTC_PRINT(BTC_MSG_ALGORITHM, ALGO_TRACE_SW_EXEC, ("[BTCoex], BB BackOff Level Off!\n"));
-		pBtCoexist->fBtcWrite1ByteBitMask(pBtCoexist, 0xc05, 0x30, 0x1);
-	}
-}
-
-static void
-halbtc8723b2ant_AdcBackOff(
-	IN	PBTC_COEXIST		pBtCoexist,
-	IN	bool			bForceExec,
-	IN	bool			bAdcBackOff
-	)
-{
-	BTC_PRINT(BTC_MSG_ALGORITHM, ALGO_TRACE_SW, ("[BTCoex], %s turn AdcBackOff = %s\n",  
-		(bForceExec? "force to":""), ((bAdcBackOff)? "ON":"OFF")));
-	pCoexDm->bCurAdcBackOff = bAdcBackOff;
-
-	if(!bForceExec)
-	{
-		BTC_PRINT(BTC_MSG_ALGORITHM, ALGO_TRACE_SW_DETAIL, ("[BTCoex], bPreAdcBackOff=%d, bCurAdcBackOff=%d\n", 
-			pCoexDm->bPreAdcBackOff, pCoexDm->bCurAdcBackOff));
-
-		if(pCoexDm->bPreAdcBackOff == pCoexDm->bCurAdcBackOff) 
-			return;
-	}
-	halbtc8723b2ant_SetAdcBackOff(pBtCoexist, pCoexDm->bCurAdcBackOff);
-
-	pCoexDm->bPreAdcBackOff = pCoexDm->bCurAdcBackOff;
 }
 
 static void
@@ -1331,7 +1185,6 @@ halbtc8723b2ant_SwMechanism2(
 	) 
 {
 	halbtc8723b2ant_AgcTable(pBtCoexist, NORMAL_EXEC, bAGCTableShift);
-	//halbtc8723b2ant_AdcBackOff(pBtCoexist, NORMAL_EXEC, bADCBackOff);
 	halbtc8723b2ant_DacSwing(pBtCoexist, NORMAL_EXEC, bSWDACSwing, dacSwingLvl);
 }
 

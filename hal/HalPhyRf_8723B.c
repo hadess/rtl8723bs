@@ -1511,41 +1511,6 @@ _PHY_MACSettingCalibration8723B(
 
 }
 
-static void
-_PHY_PathAStandBy8723B(
-	IN PADAPTER pAdapter
-	)
-{
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
-	PDM_ODM_T		pDM_Odm = &pHalData->odmpriv;
-
-	ODM_RT_TRACE(pDM_Odm,ODM_COMP_CALIBRATION, ODM_DBG_LOUD,  ("Path-A standby mode!\n"));
-
-	ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0x0);
-//Allen
-	ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_AC, bMaskDWord, 0x10000);
-	//ODM_SetBBReg(pDM_Odm, 0x840, bMaskDWord, 0x00010000);
-//
-	ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0x808000);
-}
-
-static void
-_PHY_PIModeSwitch8723B(
-	IN	PADAPTER	pAdapter,
-	IN	bool 	PIMode
-	)
-{
-	u4Byte	mode;
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
-	PDM_ODM_T		pDM_Odm = &pHalData->odmpriv;
-
-	ODM_RT_TRACE(pDM_Odm,ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("BB Switch to %s mode!\n", (PIMode ? "PI" : "SI")));
-
-	mode = PIMode ? 0x01000100 : 0x01000000;
-	ODM_SetBBReg(pDM_Odm, rFPGA0_XA_HSSIParameter1, bMaskDWord, mode);
-	ODM_SetBBReg(pDM_Odm, rFPGA0_XB_HSSIParameter1, bMaskDWord, mode);
-}
-
 static bool 						
 phy_SimularityCompare_8723B(
 	IN	PADAPTER	pAdapter,
@@ -1852,11 +1817,6 @@ for(i = 0 ; i < retryCount ; i++){
 
 	if(t!=0)
 	{
-		if(!pDM_Odm->RFCalibrateInfo.bRfPiEnable){
-			// Switch back BB to SI mode after finish IQ Calibration.
-//			_PHY_PIModeSwitch8723B(pAdapter, false);
-		}
-
 		// Reload ADDA power saving parameters
 		_PHY_ReloadADDARegisters8723B(pAdapter, ADDA_REG, pDM_Odm->RFCalibrateInfo.ADDA_backup, IQK_ADDA_REG_NUM);
 

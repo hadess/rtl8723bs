@@ -156,26 +156,6 @@ _PageWrite(
 	return _BlockWrite(padapter,buffer,size);
 }
 
-static void
-_FillDummy(
-	u8*		pFwBuf,
-	u32*	pFwLen
-	)
-{
-	u32	FwLen = *pFwLen;
-	u8	remain = (u8)(FwLen%4);
-	remain = (remain==0)?0:(4-remain);
-
-	while(remain>0)
-	{
-		pFwBuf[FwLen] = 0;
-		FwLen++;
-		remain--;
-	}
-
-	*pFwLen = FwLen;
-}
-
 static int
 _WriteFW(
 	IN		PADAPTER		padapter,
@@ -2413,67 +2393,6 @@ static void hal_notch_filter_8723b(_adapter *adapter, bool enable)
 	}
 }
 
-static u8 rtl8723b_MRateIdxToARFRId(PADAPTER padapter, u8 rate_idx)
-{
-	u8 ret = 0;
-	RT_RF_TYPE_DEF_E rftype = (RT_RF_TYPE_DEF_E)GET_RF_TYPE(padapter);
-	switch(rate_idx){
-
-	case RATR_INX_WIRELESS_NGB:
-		if(rftype == RF_1T1R)
-			ret = 1;
-		else 
-			ret = 0;
-		break;
-
-	case RATR_INX_WIRELESS_N:
-	case RATR_INX_WIRELESS_NG:
-		if(rftype == RF_1T1R)
-			ret = 5;
-		else
-			ret = 4;
-		break;
-
-	case RATR_INX_WIRELESS_NB:
-		if(rftype == RF_1T1R)
-			ret = 3;
-		else 
-			ret = 2;
-		break;
-
-	case RATR_INX_WIRELESS_GB:
-		ret = 6;
-		break;
-
-	case RATR_INX_WIRELESS_G:
-		ret = 7;
-		break;	
-
-	case RATR_INX_WIRELESS_B:
-		ret = 8;
-		break;
-
-	case RATR_INX_WIRELESS_MC:
-		if(padapter->mlmeextpriv.cur_wireless_mode & WIRELESS_11BG_24N)
-			ret = 6;
-		else
-			ret = 7;
-		break;
-	case RATR_INX_WIRELESS_AC_N:
-		if(rftype == RF_1T1R)// || padapter->MgntInfo.VHTHighestOperaRate <= MGN_VHT1SS_MCS9)
-			ret = 10;
-		else
-			ret = 9;
-		break;
-
-	default:
-		ret = 0;
-		break;
-	}	
-
-	return ret;
-}
-
 static void UpdateHalRAMask8723B(PADAPTER padapter, u32 mac_id, u8 rssi_level)
 {
 	u32	mask,rate_bitmap;
@@ -3170,54 +3089,6 @@ Hal_EfuseParseIDCode(
 	}
 
 	RT_TRACE(_module_hal_init_c_, _drv_notice_, ("EEPROM ID=0x%04x\n", EEPROMId));
-}
-
-static void
-Hal_EEValueCheck(
-	IN		u8		EEType,
-	IN		void *		pInValue,
-	OUT		void *		pOutValue
-	)
-{
-	switch(EEType)
-	{
-		case EETYPE_TX_PWR:
-			{
-				u8	*pIn, *pOut;
-				pIn = (u8*)pInValue;
-				pOut = (u8*)pOutValue;
-				if(*pIn <= 63)
-				{
-					*pOut = *pIn;
-				}
-				else
-				{
-					RT_TRACE(_module_hci_hal_init_c_, _drv_err_, ("EETYPE_TX_PWR, value=%d is invalid, set to default=0x%x\n",
-						*pIn, EEPROM_Default_TxPowerLevel));
-					*pOut = EEPROM_Default_TxPowerLevel;
-				}
-			}
-			break;
-		default:
-			break;
-	}
-}
-
-static u8
-Hal_GetChnlGroup(
-	IN	u8 chnl
-	)
-{
-	u8	group=0;
-
-	if (chnl < 3)			// Cjanel 1-3
-		group = 0;
-	else if (chnl < 9)		// Channel 4-9
-		group = 1;
-	else					// Channel 10-14
-		group = 2;
-
-	return group;
 }
 
 static void

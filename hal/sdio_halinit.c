@@ -580,16 +580,6 @@ static void _InitEDCA(PADAPTER padapter)
 	rtw_write32(padapter, REG_EDCA_VO_PARAM, 0x002FA226);
 }
 
-static void _InitRateFallback(PADAPTER padapter)
-{
-	// Set Data Auto Rate Fallback Retry Count register.
-	rtw_write32(padapter, REG_DARFRC, 0x00000000);
-	rtw_write32(padapter, REG_DARFRC+4, 0x10080404);
-	rtw_write32(padapter, REG_RARFRC, 0x04030201);
-	rtw_write32(padapter, REG_RARFRC+4, 0x08070605);
-
-}
-
 static void _InitRetryFunction(PADAPTER padapter)
 {
 	u8	value8;
@@ -671,33 +661,6 @@ static void _initSdioAggregationSetting(PADAPTER padapter)
 	pHalData->UsbRxHighSpeedMode = false;
 }
 
-static void _RXAggrSwitch(PADAPTER padapter, u8 enable)
-{
-	PHAL_DATA_TYPE pHalData;
-	u8 valueDMA;
-	u8 valueRxAggCtrl;
-
-
-	pHalData = GET_HAL_DATA(padapter);
-
-	valueDMA = rtw_read8(padapter, REG_TRXDMA_CTRL);
-	valueRxAggCtrl = rtw_read8(padapter, REG_RXDMA_MODE_CTRL_8723B);
-
-	if (true == enable)
-	{
-		valueDMA |= RXDMA_AGG_EN;
-		valueRxAggCtrl |= RXDMA_AGG_MODE_EN;
-	}
-	else
-	{
-		valueDMA &= ~RXDMA_AGG_EN;
-		valueRxAggCtrl &= ~RXDMA_AGG_MODE_EN;
-	}
-
-	rtw_write8(padapter, REG_TRXDMA_CTRL, valueDMA);
-	rtw_write8(padapter, REG_RXDMA_MODE_CTRL_8723B, valueRxAggCtrl);
-}
-
 static void _InitOperationMode(PADAPTER padapter)
 {
 	PHAL_DATA_TYPE pHalData;
@@ -775,13 +738,6 @@ static void _InitInterrupt(PADAPTER padapter)
 	InitSysInterrupt8723BSdio(padapter);
 }
 
-static void _InitRDGSetting(PADAPTER padapter)
-{
-	rtw_write8(padapter, REG_RD_CTRL, 0xFF);
-	rtw_write16(padapter, REG_RD_NAV_NXT, 0x200);
-	rtw_write8(padapter, REG_RD_RESP_PKT_TH, 0x05);
-}
-
 static void _InitRFType(PADAPTER padapter)
 {
 	struct registry_priv *pregpriv = &padapter->registrypriv;
@@ -798,54 +754,9 @@ static void _InitRFType(PADAPTER padapter)
 	DBG_8192C("Set RF Chip ID to RF_6052 and RF type to 1T1R.\n");
 }
 
-// Set CCK and OFDM Block "ON"
-static void _BBTurnOnBlock(PADAPTER padapter)
-{
-#if (DISABLE_BB_RF)
-	return;
-#endif
-
-	PHY_SetBBReg(padapter, rFPGA0_RFMOD, bCCKEn, 0x1);
-	PHY_SetBBReg(padapter, rFPGA0_RFMOD, bOFDMEn, 0x1);
-}
-
 static void _RfPowerSave(PADAPTER padapter)
 {
 //YJ,TODO
-}
-
-static void _InitAntenna_Selection(PADAPTER padapter)
-{
-	rtw_write8(padapter, REG_LEDCFG2, 0x82);
-}
-
-static void _InitPABias(PADAPTER padapter)
-{
-	HAL_DATA_TYPE		*pHalData = GET_HAL_DATA(padapter);
-	u8			pa_setting;
-
-	//FIXED PA current issue
-	//efuse_one_byte_read(padapter, 0x1FA, &pa_setting);
-	pa_setting = EFUSE_Read1Byte(padapter, 0x1FA);
-
-	//RT_TRACE(COMP_INIT, DBG_LOUD, ("_InitPABias 0x1FA 0x%x \n",pa_setting));
-
-	if(!(pa_setting & BIT0))
-	{
-		PHY_SetRFReg(padapter, RF_PATH_A, 0x15, 0x0FFFFF, 0x0F406);
-		PHY_SetRFReg(padapter, RF_PATH_A, 0x15, 0x0FFFFF, 0x4F406);
-		PHY_SetRFReg(padapter, RF_PATH_A, 0x15, 0x0FFFFF, 0x8F406);
-		PHY_SetRFReg(padapter, RF_PATH_A, 0x15, 0x0FFFFF, 0xCF406);
-		//RT_TRACE(COMP_INIT, DBG_LOUD, ("PA BIAS path A\n"));
-	}
-
-	if(!(pa_setting & BIT4))
-	{
-		pa_setting = rtw_read8(padapter, 0x16);
-		pa_setting &= 0x0F;
-		rtw_write8(padapter, 0x16, pa_setting | 0x80);
-		rtw_write8(padapter, 0x16, pa_setting | 0x90);
-	}
 }
 
 //
@@ -1105,7 +1016,6 @@ static u32 rtl8723bs_hal_init(PADAPTER padapter)
 	_InitWMACSetting(padapter);
 	_InitAdaptiveCtrl(padapter);
 	_InitEDCA(padapter);
-	//_InitRateFallback(padapter);
 	_InitRetryFunction(padapter);
 	_initSdioAggregationSetting(padapter);
 	_InitOperationMode(padapter);
@@ -1768,19 +1678,6 @@ _func_enter_;
 			break;
 		case HW_VAR_RXDMA_AGG_PG_TH:
 			val8 = *val;
-
-			// TH=1 => invalidate RX DMA aggregation
-			// TH=0 => validate RX DMA aggregation, use init value.
-			if (val8 == 0)
-			{
-				// enable RXDMA aggregation
-				//_RXAggrSwitch(padapter, true);
-			}
-			else
-			{
-				// disable RXDMA aggregation
-				//_RXAggrSwitch(padapter, false);
-			}
 			break;
 
 #ifdef CONFIG_WOWLAN

@@ -37,13 +37,6 @@
 
 
 static void
-dm_CheckProtection(
-	IN	PADAPTER	Adapter
-	)
-{
-}
-
-static void
 dm_CheckStatistics(
 	IN	PADAPTER	Adapter
 	)
@@ -79,24 +72,6 @@ static void dm_CheckPbcGPIO(_adapter *padapter)
 }
 #endif //#ifdef CONFIG_SUPPORT_HW_WPS_PBC
 
-
-//
-// Initialize GPIO setting registers
-//
-static void
-dm_InitGPIOSetting(
-	IN	PADAPTER	Adapter
-	)
-{
-	PHAL_DATA_TYPE		pHalData = GET_HAL_DATA(Adapter);
-
-	u8	tmp1byte;
-
-	tmp1byte = rtw_read8(Adapter, REG_GPIO_MUXCFG);
-	tmp1byte &= (GPIOSEL_GPIO | ~GPIOSEL_ENBT);
-
-	rtw_write8(Adapter, REG_GPIO_MUXCFG, tmp1byte);
-}
 //============================================================
 // functions
 //============================================================
@@ -247,38 +222,6 @@ rtl8723b_InitHalDm(
 
 }
 
-static void
-FindMinimumRSSI_8723b(
-IN	PADAPTER	pAdapter
-	)
-{
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
-	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
-	struct mlme_priv	*pmlmepriv = &pAdapter->mlmepriv;
-
-	//1 1.Determine the minimum RSSI
-
-	if((check_fwstate(pmlmepriv, _FW_LINKED) == false) &&
-		(pdmpriv->EntryMinUndecoratedSmoothedPWDB == 0))
-	{
-		pdmpriv->MinUndecoratedPWDBForDM = 0;
-		//ODM_RT_TRACE(pDM_Odm,COMP_BB_POWERSAVING, DBG_LOUD, ("Not connected to any \n"));
-	}
-	if(check_fwstate(pmlmepriv, _FW_LINKED) == true)	// Default port
-	{
-		pdmpriv->MinUndecoratedPWDBForDM = pdmpriv->EntryMinUndecoratedSmoothedPWDB;
-	}
-	else // associated entry pwdb
-	{
-		pdmpriv->MinUndecoratedPWDBForDM = pdmpriv->EntryMinUndecoratedSmoothedPWDB;
-		//ODM_RT_TRACE(pDM_Odm,COMP_BB_POWERSAVING, DBG_LOUD, ("AP Ext Port or disconnet PWDB = 0x%x \n", pHalData->MinUndecoratedPWDBForDM));
-	}
-
-	//odm_FindMinimumRSSI_Dmsp(pAdapter);
-	//DBG_8192C("%s=>MinUndecoratedPWDBForDM(%d)\n",__FUNCTION__,pdmpriv->MinUndecoratedPWDBForDM);
-	//ODM_RT_TRACE(pDM_Odm,COMP_DIG, DBG_LOUD, ("MinUndecoratedPWDBForDM =%d\n",pHalData->MinUndecoratedPWDBForDM));
-}
-
 void
 rtl8723b_HalDmWatchDog(
 	IN	PADAPTER	Adapter
@@ -308,10 +251,6 @@ rtl8723b_HalDmWatchDog(
 		//
 		dm_CheckStatistics(Adapter);
 		rtw_hal_check_rxfifo_full(Adapter);
-		//
-		// Dynamically switch RTS/CTS protection.
-		//
-		//dm_CheckProtection(Adapter);
 	}
 
 	//ODM
@@ -330,7 +269,6 @@ rtl8723b_HalDmWatchDog(
 		ODM_CmnInfoUpdate(&pHalData->odmpriv ,ODM_CMNINFO_LINK, bLinked);
 		ODM_CmnInfoUpdate(&pHalData->odmpriv ,ODM_CMNINFO_STATION_STATE, bsta_state);
 
-		//FindMinimumRSSI_8723b(Adapter);
 		//ODM_CmnInfoUpdate(&pHalData->odmpriv ,ODM_CMNINFO_RSSI_MIN, pdmpriv->MinUndecoratedPWDBForDM);
 
 		bBtDisabled = rtw_btcoex_IsBtDisabled(Adapter);

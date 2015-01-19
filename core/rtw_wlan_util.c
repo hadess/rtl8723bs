@@ -450,11 +450,6 @@ void Switch_DM_Func(_adapter *padapter, u32 mode, u8 enable)
 		rtw_hal_set_hwreg(padapter, HW_VAR_DM_FUNC_CLR, (u8 *)(&mode));
 }
 
-static void Set_NETYPE1_MSR(_adapter *padapter, u8 type)
-{
-	rtw_hal_set_hwreg(padapter, HW_VAR_MEDIA_STATUS1, (u8 *)(&type));
-}
-
 static void Set_NETYPE0_MSR(_adapter *padapter, u8 type)
 {
 	rtw_hal_set_hwreg(padapter, HW_VAR_MEDIA_STATUS, (u8 *)(&type));
@@ -994,20 +989,6 @@ static bool _rtw_camid_is_gk(_adapter *adapter, u8 cam_id)
 	ret = (dvobj->cam_cache[cam_id].ctrl&BIT6)?true:false;
 
 exit:
-	return ret;
-}
-
-static bool rtw_camid_is_gk(_adapter *adapter, u8 cam_id)
-{
-	struct dvobj_priv *dvobj = adapter_to_dvobj(adapter);
-	struct cam_ctl_t *cam_ctl = &dvobj->cam_ctl;
-	_irqL irqL;
-	bool ret;
-
-	_enter_critical_bh(&cam_ctl->lock, &irqL);
-	ret = _rtw_camid_is_gk(adapter, cam_id);
-	_exit_critical_bh(&cam_ctl->lock, &irqL);
-
 	return ret;
 }
 

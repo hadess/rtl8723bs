@@ -72,18 +72,6 @@ static int hex2num_i(char c)
 	return -1;
 }
 
-static int hex2byte_i(const char *hex)
-{
-	int a, b;
-	a = hex2num_i(*hex++);
-	if (a < 0)
-		return -1;
-	b = hex2num_i(*hex++);
-	if (b < 0)
-		return -1;
-	return (a << 4) | b;
-}
-
 /**
  * hwaddr_aton - Convert ASCII string to MAC address
  * @txt: MAC address as a string (e.g., "00:11:22:33:44:55")
@@ -109,63 +97,6 @@ static int hwaddr_aton_i(const char *txt, u8 *addr)
 	}
 
 	return 0;
-}
-
-static void indicate_wx_custom_event(_adapter *padapter, char *msg)
-{
-	u8 *buff, *p;
-	union iwreq_data wrqu;
-
-	if (strlen(msg) > IW_CUSTOM_MAX) {
-		DBG_871X("%s strlen(msg):%zu > IW_CUSTOM_MAX:%u\n", __FUNCTION__ , strlen(msg), IW_CUSTOM_MAX);
-		return;
-	}
-
-	buff = rtw_zmalloc(IW_CUSTOM_MAX+1);
-	if(!buff)
-		return;
-
-	memcpy(buff, msg, strlen(msg));
-		
-	memset(&wrqu,0,sizeof(wrqu));
-	wrqu.data.length = strlen(msg);
-
-	DBG_871X("%s %s\n", __FUNCTION__, buff);	
-
-	rtw_mfree(buff, IW_CUSTOM_MAX+1);
-
-}
-
-
-static void request_wps_pbc_event(_adapter *padapter)
-{
-	u8 *buff, *p;
-	union iwreq_data wrqu;
-
-
-	buff = rtw_malloc(IW_CUSTOM_MAX);
-	if(!buff)
-		return;
-		
-	memset(buff, 0, IW_CUSTOM_MAX);
-		
-	p=buff;
-		
-	p+=sprintf(p, "WPS_PBC_START.request=true");
-		
-	memset(&wrqu,0,sizeof(wrqu));
-		
-	wrqu.data.length = p-buff;
-		
-	wrqu.data.length = (wrqu.data.length<IW_CUSTOM_MAX) ? wrqu.data.length:IW_CUSTOM_MAX;
-
-	DBG_871X("%s\n", __FUNCTION__);
-		
-	if(buff)
-	{
-		rtw_mfree(buff, IW_CUSTOM_MAX);
-	}
-
 }
 
 #ifdef CONFIG_SUPPORT_HW_WPS_PBC
@@ -3475,36 +3406,6 @@ static int rtw_p2p_get2(struct net_device *dev,
 
 }
 
-static int rtw_cta_test_start(struct net_device *dev,
-							   struct iw_request_info *info,
-							   union iwreq_data *wrqu, char *extra)
-{
-	int ret = 0;
-	_adapter	*padapter = (_adapter *)rtw_netdev_priv(dev);
-	DBG_871X("%s %s\n", __func__, extra);
-	if (!strcmp(extra, "1"))
-		padapter->in_cta_test = 1;
-	else
-		padapter->in_cta_test = 0;
-
-	if(padapter->in_cta_test)
-	{
-		u32 v = rtw_read32(padapter, REG_RCR);
-		v &= ~(RCR_CBSSID_DATA | RCR_CBSSID_BCN );//| RCR_ADF
-		rtw_write32(padapter, REG_RCR, v);
-		DBG_871X("enable RCR_ADF\n");
-	}
-	else
-	{
-		u32 v = rtw_read32(padapter, REG_RCR);
-		v |= RCR_CBSSID_DATA | RCR_CBSSID_BCN ;//| RCR_ADF
-		rtw_write32(padapter, REG_RCR, v);
-		DBG_871X("disable RCR_ADF\n");
-	}
-	return ret;
-}
-
-
 extern int rtw_change_ifname(_adapter *padapter, const char *ifname);
 static int rtw_rereg_nd_name(struct net_device *dev,
                                struct iw_request_info *info,
@@ -5910,145 +5811,7 @@ static int rtw_mp_efuse_set(struct net_device *dev,
 	int err = 0;
 	return err;
 }
-
-static int rtw_wfd_tdls_enable(struct net_device *dev,
-				struct iw_request_info *info,
-				union iwreq_data *wrqu, char *extra)
-{
-	int ret = 0;
-	return ret;
-}
-
-static int rtw_tdls_weaksec(struct net_device *dev,
-				struct iw_request_info *info,
-				union iwreq_data *wrqu, char *extra)
-{
-	int ret = 0;
-	return ret;
-}
-
-
-static int rtw_tdls_enable(struct net_device *dev,
-				struct iw_request_info *info,
-				union iwreq_data *wrqu, char *extra)
-{
-	int ret = 0;
-	return ret;
-}
-
-static int rtw_tdls_setup(struct net_device *dev,
-				struct iw_request_info *info,
-				union iwreq_data *wrqu, char *extra)
-{
-	int ret = 0;
-	return ret;
-}
-
-static int rtw_tdls_teardown(struct net_device *dev,
-				struct iw_request_info *info,
-				union iwreq_data *wrqu, char *extra)
-{
-	int ret = 0;
-	return ret;
-}
-
-static int rtw_tdls_discovery(struct net_device *dev,
-				struct iw_request_info *info,
-				union iwreq_data *wrqu, char *extra)
-{
-	int ret = 0;
-        return ret;
-}
-
-static int rtw_tdls_ch_switch(struct net_device *dev,
-				struct iw_request_info *info,
-				union iwreq_data *wrqu, char *extra)
-{
-	int ret = 0;
-	return ret;
-}
 	
-static int rtw_tdls_pson(struct net_device *dev,
-				struct iw_request_info *info,
-				union iwreq_data *wrqu, char *extra)
-{
-	int ret = 0;
-	return ret;
-}
-	
-static int rtw_tdls_psoff(struct net_device *dev,
-				struct iw_request_info *info,
-				union iwreq_data *wrqu, char *extra)
-{
-	int ret = 0;
-	return ret;
-}
-
-static int rtw_tdls_setip(struct net_device *dev,
-				struct iw_request_info *info,
-				union iwreq_data *wrqu, char *extra)
-{
-	int ret = 0;
-	return ret;
-}
-
-static int rtw_tdls_getip(struct net_device *dev,
-				struct iw_request_info *info,
-				union iwreq_data *wrqu, char *extra)
-{
-	int ret = 0;
-	return ret;
-}
-
-static int rtw_tdls_getport(struct net_device *dev,
-                               struct iw_request_info *info,
-                               union iwreq_data *wrqu, char *extra)
-{
-	
-	int ret = 0;	
-	return ret;
-		
-}
-
-//WFDTDLS, for sigma test
-static int rtw_tdls_dis_result(struct net_device *dev,
-                               struct iw_request_info *info,
-                               union iwreq_data *wrqu, char *extra)
-{
-	
-	int ret = 0;	
-	return ret;
-		
-}
-
-//WFDTDLS, for sigma test
-static int rtw_wfd_tdls_status(struct net_device *dev,
-                               struct iw_request_info *info,
-                               union iwreq_data *wrqu, char *extra)
-{
-	
-	int ret = 0;	
-	return ret;		
-}
-
-static int rtw_tdls_getsta(struct net_device *dev,
-                               struct iw_request_info *info,
-                               union iwreq_data *wrqu, char *extra)
-{
-	
-	int ret = 0;
-	return ret;
-		
-}
-
-static int rtw_tdls_ch_switch_off(struct net_device *dev,
-				struct iw_request_info *info,
-				union iwreq_data *wrqu, char *extra)
-{
-	int ret = 0;
-	return ret;
-}
-
 static int rtw_tdls(struct net_device *dev,
 				struct iw_request_info *info,
 				union iwreq_data *wrqu, char *extra)
