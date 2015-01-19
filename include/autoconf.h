@@ -52,14 +52,7 @@
 #define CONFIG_LAYER2_ROAMING
 #define CONFIG_LAYER2_ROAMING_RESUME
 
-//#define CONFIG_SCAN_SPARSE 	//partial scan, ASUS RK3188 use the feature
-#ifdef CONFIG_SCAN_SPARSE 
-	#define ALLOW_SCAN_INTERVAL	12000 // unit is ms
-	#define SCAN_DIVISION_NUM 4
-#endif 	
-
 //#define CONFIG_80211D
-
 
 /*
  * Hardware Related Config
