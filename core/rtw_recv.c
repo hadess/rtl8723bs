@@ -22,10 +22,7 @@
 #include <drv_types.h>
 #include <linux/jiffies.h>
 
-#ifdef CONFIG_NEW_SIGNAL_STAT_PROCESS
 void rtw_signal_stat_timer_hdl(RTW_TIMER_HDL_ARGS);
-#endif //CONFIG_NEW_SIGNAL_STAT_PROCESS
-
 
 void _rtw_init_sta_recv_priv(struct sta_recv_priv *psta_recvpriv)
 {
@@ -103,14 +100,12 @@ _func_enter_;
 
 	res = rtw_hal_init_recv_priv(padapter);
 
-#ifdef CONFIG_NEW_SIGNAL_STAT_PROCESS
 	rtw_init_timer(&precvpriv->signal_stat_timer, padapter, rtw_signal_stat_timer_hdl);
 
 	precvpriv->signal_stat_sampling_interval = 2000; //ms
 	//precvpriv->signal_stat_converging_constant = 5000; //ms
 
 	rtw_set_signal_stat_timer(precvpriv);
-#endif //CONFIG_NEW_SIGNAL_STAT_PROCESS
 
 exit:
 
@@ -3019,7 +3014,6 @@ _func_exit_;
 	return ret;
 }
 
-#ifdef CONFIG_NEW_SIGNAL_STAT_PROCESS
 void rtw_signal_stat_timer_hdl(RTW_TIMER_HDL_ARGS){
 	_adapter *adapter = (_adapter *)FunctionContext;
 	struct recv_priv *recvpriv = &adapter->recvpriv;
@@ -3105,7 +3099,3 @@ set_timer:
 	rtw_set_signal_stat_timer(recvpriv);
 	
 }
-#endif //CONFIG_NEW_SIGNAL_STAT_PROCESS
-
-
-

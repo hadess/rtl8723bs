@@ -60,7 +60,6 @@
  */
 #define CONFIG_SKB_COPY	//for amsdu
 #define CONFIG_LONG_DELAY_ISSUE
-#define CONFIG_NEW_SIGNAL_STAT_PROCESS
 #define RTW_NOTCH_FILTER 0 /* 0:Disable, 1:Enable, */
 #define CONFIG_DEAUTH_BEFORE_CONNECT
 
