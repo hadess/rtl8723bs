@@ -503,14 +503,12 @@ void rtw_hal_bcn_related_reg_setting(_adapter *padapter)
 }
 
 
-#ifdef CONFIG_XMIT_THREAD_MODE
 s32 rtw_hal_xmit_thread_handler(_adapter *padapter)
 {
 	if(padapter->HalFunc.xmit_thread_handler)
 		return padapter->HalFunc.xmit_thread_handler(padapter);
 	return _FAIL;
 }
-#endif
 
 void rtw_hal_notch_filter(_adapter *adapter, bool enable)
 {

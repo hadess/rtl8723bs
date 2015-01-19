@@ -56,7 +56,6 @@
  * Interface Related Config
  */
 #define CONFIG_TX_AGGREGATION
-#define CONFIG_XMIT_THREAD_MODE
 
 /*
  * Others
