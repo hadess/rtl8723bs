@@ -53,11 +53,6 @@
 #define CONFIG_LAYER2_ROAMING_RESUME
 
 /*
- * Hardware Related Config
- */
-//#define SUPPORT_HW_RFOFF_DETECTED
-
-/*
  * Interface Related Config
  */
 #define CONFIG_TX_AGGREGATION

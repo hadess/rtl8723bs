@@ -167,11 +167,6 @@ extern void autosuspend_enter(_adapter* padapter);
 extern int autoresume_enter(_adapter* padapter);
 #endif
 
-#ifdef SUPPORT_HW_RFOFF_DETECTED
-int rtw_hw_suspend(_adapter *padapter );
-int rtw_hw_resume(_adapter *padapter);
-#endif
-
 static bool rtw_pwr_unassociated_idle(_adapter *adapter)
 {
 	_adapter *buddy = adapter->pbuddy_adapter;
@@ -242,9 +237,6 @@ void rtw_ps_processor(_adapter*padapter)
 	struct mlme_priv *pmlmepriv = &(padapter->mlmepriv);
 	struct dvobj_priv *psdpriv = padapter->dvobj;
 	struct debug_priv *pdbgpriv = &psdpriv->drv_dbg;
-#ifdef SUPPORT_HW_RFOFF_DETECTED
-	rt_rf_power_state rfpwrstate;
-#endif //SUPPORT_HW_RFOFF_DETECTED
 	u32 ps_deny = 0;
 
 	down(&adapter_to_pwrctl(padapter)->lock);
@@ -264,64 +256,6 @@ void rtw_ps_processor(_adapter*padapter)
 	}	
 
 	pwrpriv->ps_processing = true;
-
-#ifdef SUPPORT_HW_RFOFF_DETECTED
-	if(pwrpriv->bips_processing == true)
-		goto exit;
-	
-	//DBG_871X("==> fw report state(0x%x)\n",rtw_read8(padapter,0x1ca));	
-	if(pwrpriv->bHWPwrPindetect) 
-	{
-	#ifdef CONFIG_AUTOSUSPEND
-		if(padapter->registrypriv.usbss_enable)
-		{
-			if(pwrpriv->rf_pwrstate == rf_on)
-			{
-				if(padapter->net_closed == true)
-					pwrpriv->ps_flag = true;
-
-				rfpwrstate = RfOnOffDetect(padapter);
-				DBG_871X("@@@@- #1  %s==> rfstate:%s \n",__FUNCTION__,(rfpwrstate==rf_on)?"rf_on":"rf_off");
-				if(rfpwrstate!= pwrpriv->rf_pwrstate)
-				{
-					if(rfpwrstate == rf_off)
-					{
-						pwrpriv->change_rfpwrstate = rf_off;
-						
-						pwrpriv->bkeepfwalive = true;	
-						pwrpriv->brfoffbyhw = true;						
-						
-						autosuspend_enter(padapter);							
-					}
-				}
-			}			
-		}
-		else
-	#endif //CONFIG_AUTOSUSPEND
-		{
-			rfpwrstate = RfOnOffDetect(padapter);
-			DBG_871X("@@@@- #2  %s==> rfstate:%s \n",__FUNCTION__,(rfpwrstate==rf_on)?"rf_on":"rf_off");
-
-			if(rfpwrstate!= pwrpriv->rf_pwrstate)
-			{
-				if(rfpwrstate == rf_off)
-				{	
-					pwrpriv->change_rfpwrstate = rf_off;														
-					pwrpriv->brfoffbyhw = true;
-					padapter->bCardDisableWOHSM = true;
-					rtw_hw_suspend(padapter );	
-				}
-				else
-				{
-					pwrpriv->change_rfpwrstate = rf_on;
-					rtw_hw_resume(padapter );			
-				}
-				DBG_871X("current rf_pwrstate(%s)\n",(pwrpriv->rf_pwrstate == rf_off)?"rf_off":"rf_on");
-			}
-		}
-		pwrpriv->pwr_state_check_cnts ++;	
-	}
-#endif //SUPPORT_HW_RFOFF_DETECTED
 
 	if (pwrpriv->ips_mode_req == IPS_NONE)
 		goto exit;
@@ -1719,12 +1653,6 @@ _func_enter_;
 	pwrctrlpriv->bInternalAutoSuspend = false;
 	pwrctrlpriv->bInSuspend = false;
 	pwrctrlpriv->bkeepfwalive = false;
-
-#ifdef CONFIG_AUTOSUSPEND
-#ifdef SUPPORT_HW_RFOFF_DETECTED
-	pwrctrlpriv->pwr_state_check_interval = (pwrctrlpriv->bHWPwrPindetect) ?1000:2000;		
-#endif
-#endif
 
 	pwrctrlpriv->LpsIdleCount = 0;
 	//pwrctrlpriv->FWCtrlPSMode =padapter->registrypriv.power_mgnt;// PS_MODE_MIN;
