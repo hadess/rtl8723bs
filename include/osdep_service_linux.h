@@ -55,11 +55,6 @@
         #include <net/ieee80211_radiotap.h>
 	#include <net/cfg80211.h>	
 
-#ifdef CONFIG_TCP_CSUM_OFFLOAD_TX
-	#include <linux/in.h>
-	#include <linux/udp.h>
-#endif
-
 	typedef struct 	semaphore _sema;
 	typedef	spinlock_t	_lock;
 	typedef struct mutex 		_mutex;
