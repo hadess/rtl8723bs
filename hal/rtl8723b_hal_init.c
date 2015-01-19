@@ -3952,14 +3952,6 @@ static void rtl8723b_fill_default_txdesc(
 	ptxdesc->pktlen = pattrib->last_txcmdsz;
 	ptxdesc->offset = TXDESC_SIZE + OFFSET_SZ;
 
-#ifdef CONFIG_TX_EARLY_MODE
-	if (pxmitframe->frame_tag == DATA_FRAMETAG)
-	{
-		ptxdesc->offset += EARLY_MODE_INFO_SIZE;
-		ptxdesc->pkt_offset = 0x01;
-	}
-#endif // CONFIG_TX_EARLY_MODE
-
 	if (bmcst) ptxdesc->bmc = 1;
 
 	// 2009.11.05. tynli_test. Suggested by SD4 Filen for FW LPS.

@@ -99,11 +99,6 @@ do{\
 // For Buffer Descriptor ring architecture
 #define TXDESC_SIZE 40
 
-#ifdef CONFIG_TX_EARLY_MODE
-#define EARLY_MODE_INFO_SIZE	8
-#endif
-
-
 #define TXDESC_OFFSET TXDESC_SIZE
 
 enum TXDESC_SC{
@@ -467,12 +462,6 @@ struct	xmit_priv	{
 	struct xmit_buf	pcmd_xmitbuf[CMDBUF_MAX];
 
 	u16	nqos_ssn;
-	#ifdef CONFIG_TX_EARLY_MODE
-
-	#define MAX_AGG_PKT_NUM 20
-
-	struct agg_pkt_info agg_pkt[MAX_AGG_PKT_NUM];
-	#endif
 
 #ifdef CONFIG_XMIT_ACK
 	int	ack_tx;

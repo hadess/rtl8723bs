@@ -1058,11 +1058,7 @@ _func_enter_;
 #ifdef CONFIG_USB_TX_AGGREGATION
 	hw_hdr_offset = TXDESC_SIZE + (pxmitframe->pkt_offset * PACKET_OFFSET_SZ);;	
 #else
-	#ifdef CONFIG_TX_EARLY_MODE
-	hw_hdr_offset = TXDESC_OFFSET+ EARLY_MODE_INFO_SIZE;
-	#else
 	hw_hdr_offset = TXDESC_OFFSET;
-	#endif
 #endif	
 	
 	if(pattrib->encrypt ==_TKIP_)//if(psecuritypriv->dot11PrivacyAlgrthm==_TKIP_PRIVACY_) 
@@ -1553,11 +1549,7 @@ _func_enter_;
 #ifdef CONFIG_USB_TX_AGGREGATION
 	hw_hdr_offset =  TXDESC_SIZE + (pxmitframe->pkt_offset * PACKET_OFFSET_SZ);
 #else
-	#ifdef CONFIG_TX_EARLY_MODE //for SDIO && Tx Agg
-	hw_hdr_offset = TXDESC_OFFSET + EARLY_MODE_INFO_SIZE;
-	#else
 	hw_hdr_offset = TXDESC_OFFSET;
-	#endif
 #endif
 
 	mem_start = pbuf_start +	hw_hdr_offset;
