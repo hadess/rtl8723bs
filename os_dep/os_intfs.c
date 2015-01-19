@@ -935,10 +935,6 @@ _func_enter_;
 	rtw_wapi_init(padapter);
 #endif
 
-#ifdef CONFIG_BR_EXT
-	spin_lock_init(&padapter->br_ext_lock);
-#endif	// CONFIG_BR_EXT
-
 exit:
 
 	RT_TRACE(_module_os_intfs_c_,_drv_info_,("-rtw_init_drv_sw\n"));
@@ -1049,39 +1045,6 @@ u8 rtw_free_drv_sw(_adapter *padapter)
 	return _SUCCESS;
 
 }
-
-#ifdef CONFIG_BR_EXT
-void netdev_br_init(struct net_device *netdev)
-{
-	_adapter *adapter = (_adapter *)rtw_netdev_priv(netdev);
-
-	rcu_read_lock();
-
-	//if(check_fwstate(pmlmepriv, WIFI_STATION_STATE|WIFI_ADHOC_STATE) == true)
-	{
-		//struct net_bridge	*br = netdev->br_port->br;//->dev->dev_addr;
-		if (rcu_dereference(adapter->pnetdev->rx_handler_data))
-		{
-			struct net_device *br_netdev;
-			struct net *devnet = NULL;
-
-			devnet = dev_net(netdev);
-
-			br_netdev = dev_get_by_name(devnet, CONFIG_BR_EXT_BRNAME);
-
-			if (br_netdev) {
-				memcpy(adapter->br_mac, br_netdev->dev_addr, ETH_ALEN);
-				dev_put(br_netdev);
-			} else
-				printk("%s()-%d: dev_get_by_name(%s) failed!", __FUNCTION__, __LINE__, CONFIG_BR_EXT_BRNAME);
-		}
-
-		adapter->ethBrExtInfo.addPPPoETag = 1;
-	}
-
-	rcu_read_unlock();
-}
-#endif //CONFIG_BR_EXT
 
 static int _rtw_drv_register_netdev(_adapter *padapter, char *name)
 {
@@ -1215,10 +1178,6 @@ int _netdev_open(struct net_device *pnetdev)
 		rtw_netif_start_queue(pnetdev);
 	else
 		rtw_netif_wake_queue(pnetdev);
-
-#ifdef CONFIG_BR_EXT
-	netdev_br_init(pnetdev);
-#endif	// CONFIG_BR_EXT
 
 netdev_open_normal_process:
 
@@ -1414,14 +1373,6 @@ static int netdev_close(struct net_device *pnetdev)
 		// Close LED
 		rtw_led_control(padapter, LED_CTL_POWER_OFF);
 	}
-
-#ifdef CONFIG_BR_EXT
-	//if (OPMODE & (WIFI_STATION_STATE | WIFI_ADHOC_STATE))
-	{
-		//void nat25_db_cleanup(_adapter *priv);
-		nat25_db_cleanup(padapter);
-	}
-#endif	// CONFIG_BR_EXT
 
 	rtw_scan_abort(padapter);
 	adapter_wdev_data(padapter)->bandroid_scan = false;

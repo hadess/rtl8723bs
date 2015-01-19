@@ -3072,11 +3072,6 @@ _func_enter_;
 
 		goto exit;
 	}
-#ifdef CONFIG_BR_EXT
-	else //clear bridge database
-		nat25_db_cleanup(padapter);
-#endif //CONFIG_BR_EXT
-
 	// free cmd
 	rtw_free_cmd_obj(pcmd);
 	
