@@ -799,39 +799,7 @@ static u32 rtl8723bs_hal_init(PADAPTER padapter)
 	pwrctrlpriv = adapter_to_pwrctl(padapter);
 	pregistrypriv = &padapter->registrypriv;
 
-#ifdef CONFIG_SWLPS_IN_IPS
-	if (adapter_to_pwrctl(padapter)->bips_processing == true)
-	{
-		u8 val8, bMacPwrCtrlOn = true;
-
-		DBG_871X("%s: run LPS flow in IPS\n", __FUNCTION__);
-
-		//ser rpwm
-		val8 = rtw_read8(padapter, SDIO_LOCAL_BASE|SDIO_REG_HRPWM1);
-		val8 &= 0x80;
-		val8 += 0x80;	
-		val8 |= BIT(6);		
-		rtw_write8(padapter, SDIO_LOCAL_BASE|SDIO_REG_HRPWM1, val8);
-		
-		adapter_to_pwrctl(padapter)->tog = (val8 + 0x80) & 0x80;
-		
-		mdelay(5); //wait set rpwm already
-		
-		ret = HalPwrSeqCmdParsing(padapter, PWR_CUT_ALL_MSK, PWR_FAB_ALL_MSK, PWR_INTF_SDIO_MSK, rtl8723B_leave_swlps_flow);
-		if (ret == false) {
-			DBG_8192C("%s: run LPS flow in IPS fail!\n", __FUNCTION__);
-			return _FAIL;
-		}
-
-		rtw_hal_set_hwreg(padapter, HW_VAR_APFM_ON_MAC, &bMacPwrCtrlOn);
-
-		pHalData->LastHMEBoxNum = 0;
-
-		rtw_btcoex_HAL_Initialize(padapter, false);
-
-		return _SUCCESS;
-	}
-#elif defined(CONFIG_FWLPS_IN_IPS)
+#ifdef CONFIG_FWLPS_IN_IPS
 	if (adapter_to_pwrctl(padapter)->bips_processing == true
 		&& adapter_to_pwrctl(padapter)->pre_ips_type == 0)
 	{
@@ -881,7 +849,7 @@ static u32 rtl8723bs_hal_init(PADAPTER padapter)
 
 		return _SUCCESS;
 	}	
-#endif //CONFIG_SWLPS_IN_IPS
+#endif //CONFIG_FWLPS_IN_IPS
 
 #ifdef CONFIG_WOWLAN
 	if(rtw_read8(padapter, REG_MCUFWDL)&BIT7) {
@@ -1213,30 +1181,7 @@ static u32 rtl8723bs_hal_deinit(PADAPTER padapter)
 
 	if (padapter->hw_init_completed == true)
 	{
-#ifdef CONFIG_SWLPS_IN_IPS				
-		if (adapter_to_pwrctl(padapter)->bips_processing == true)
-		{
-			u8	bMacPwrCtrlOn;
-			u8 ret =  true;
-
-			DBG_871X("%s: run LPS flow in IPS\n", __FUNCTION__);
-
-			rtw_write32(padapter, 0x130, 0x0);
-			rtw_write32(padapter, 0x138, 0x100);
-			rtw_write8(padapter, 0x13d, 0x1);
-
-
-			bMacPwrCtrlOn = false;	// Disable CMD53 R/W	
-			rtw_hal_set_hwreg(padapter, HW_VAR_APFM_ON_MAC, &bMacPwrCtrlOn);
-			
-			ret = HalPwrSeqCmdParsing(padapter, PWR_CUT_ALL_MSK, PWR_FAB_ALL_MSK, PWR_INTF_SDIO_MSK, rtl8723B_enter_swlps_flow);
-			if (ret == false) {
-				DBG_8192C("%s: run LPS flow in IPS fail!\n", __FUNCTION__);
-				return _FAIL;
-			}
-		}
-		else
-#elif defined(CONFIG_FWLPS_IN_IPS)
+#ifdef CONFIG_FWLPS_IN_IPS
 		if (adapter_to_pwrctl(padapter)->bips_processing == true)
 		{
 			if(padapter->netif_up == true)
@@ -1294,7 +1239,7 @@ static u32 rtl8723bs_hal_deinit(PADAPTER padapter)
 			
 		}
 		else
-#endif //CONFIG_SWLPS_IN_IPS
+#endif //CONFIG_FWLPS_IN_IPS
 		{
 			pdbgpriv->dbg_carddisable_cnt++;
 			CardDisableRTL8723BSdio(padapter);
