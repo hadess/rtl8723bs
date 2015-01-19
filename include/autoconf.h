@@ -28,7 +28,6 @@
 #define RTL871X_MODULE_NAME "8723BS"
 #define DRV_NAME "rtl8723bs"
 
-#define CONFIG_EMBEDDED_FWIMG
 //#define CONFIG_FILE_FWIMG
 
 /*
