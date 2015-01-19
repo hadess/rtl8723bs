@@ -124,24 +124,6 @@ u8 _InitPowerOn_8723BS(PADAPTER padapter)
 
 
 	// all of these MUST be configured before power on
-#ifdef CONFIG_XTAL_26M
-	// Config PLL Reference CLK,
-	// Change crystal to 26M, APLL_FREF_SEL = 4b'0101
-	// APLL_FREF_SEL[0]=1b'1
-	value8 = rtw_read8(padapter, REG_AFE_PLL_CTRL);
-	value8 |= BIT(2);
-	rtw_write8(padapter, REG_AFE_PLL_CTRL, value8);
-	// APLL_FREF_SEL[2:1]=2b'10
-	value8 = rtw_read8(padapter, REG_AFE_CTRL_4_8723B+1);
-	value8 &= ~(BIT(1)|BIT(0));
-	value8 |= BIT(1);
-	rtw_write16(padapter, REG_AFE_CTRL_4_8723B+1, value8);
-	// APLL_FREF_SEL[3]=1b'0
-	value8 = rtw_read8(padapter, REG_AFE_CTRL_4_8723B);
-	value8 &= ~BIT(7);
-	rtw_write16(padapter, REG_AFE_CTRL_4_8723B, value8);
-#endif // CONFIG_XTAL_26M
-
 #ifdef CONFIG_EXT_CLK
 	// Use external crystal(XTAL)
 	value8 = rtw_read8(padapter, REG_PAD_CTRL1_8723B+2);
