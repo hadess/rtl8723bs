@@ -3063,9 +3063,6 @@ static int recv_func_posthandle(_adapter *padapter, union recv_frame *prframe)
 		goto _recv_data_drop;
 	}
 
-_exit_recv_func:
-	return ret;
-
 _recv_data_drop:
 	precvpriv->rx_drop++;
 	return ret;

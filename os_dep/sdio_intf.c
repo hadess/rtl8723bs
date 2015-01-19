@@ -221,7 +221,6 @@ _func_enter_;
 release:
 	sdio_release_host(func);
 
-exit:
 _func_exit_;
 
 	if (err) return _FAIL;
@@ -436,7 +435,6 @@ free_hal_data:
 	if(status != _SUCCESS && padapter->HalData)
 		rtw_mfree(padapter->HalData, sizeof(padapter->HalData));
 
-free_wdev:
 	if(status != _SUCCESS) {
 		rtw_wdev_unregister(padapter->rtw_wdev);
 		rtw_wdev_free(padapter->rtw_wdev);
@@ -556,7 +554,6 @@ static int rtw_drv_init(
 free_if2:
 	if(status != _SUCCESS && if2) {
 	}
-free_if1:
 	if (status != _SUCCESS && if1) {
 		rtw_sdio_if1_deinit(if1);
 	}

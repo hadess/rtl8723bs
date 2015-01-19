@@ -2087,8 +2087,6 @@ _func_enter_;
 		DBG_871X("%s fail, no xmitbuf available !!!\n", __func__);
 	}
 
-exit:
-
 _func_exit_;
 
 	return pxmitbuf;

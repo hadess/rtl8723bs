@@ -242,10 +242,7 @@ _func_enter_;
 		rtw_mfree(buff, IW_CUSTOM_MAX);
 	}
 
-exit:
-
 _func_exit_;
-
 }
 
 static void _survey_timer_hdl (void *FunctionContext)
