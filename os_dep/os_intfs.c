@@ -394,9 +394,6 @@ _func_enter_;
 	registry_par->antdiv_cfg = (u8)rtw_antdiv_cfg;
 	registry_par->antdiv_type = (u8)rtw_antdiv_type;
 
-#ifdef CONFIG_AUTOSUSPEND
-	registry_par->usbss_enable = (u8)rtw_enusbss;//0:disable,1:enable
-#endif
 	registry_par->hw_wps_pbc = (u8)rtw_hw_wps_pbc;
 
 #ifdef CONFIG_LAYER2_ROAMING
@@ -1927,9 +1924,6 @@ static int rtw_suspend_free_assoc_resource(_adapter *padapter)
 	rtw_free_assoc_resources(padapter, 1);
 
 	//s2-4.
-#ifdef CONFIG_AUTOSUSPEND
-	if(is_primary_adapter(padapter) && (!adapter_to_pwrctl(padapter)->bInternalAutoSuspend ))
-#endif
 	rtw_free_network_queue(padapter, true);
 
 	if(check_fwstate(pmlmepriv, _FW_UNDER_SURVEY))

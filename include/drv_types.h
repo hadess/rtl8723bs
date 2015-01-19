@@ -687,9 +687,6 @@ struct _ADAPTER{
 	//	Added by Albert 2012/10/26
 	//	The driver will show up the desired channel number when this flag is 1.
 	u8 bNotifyChannelChange;
-#ifdef CONFIG_AUTOSUSPEND
-	u8	bDisableAutosuspend;
-#endif
 
 	//pbuddy_adapter is used only in  two inteface case, (iface_nums=2 in struct dvobj_priv)
 	//PRIMARY_ADAPTER's buddy is SECONDARY_ADAPTER
