@@ -1035,10 +1035,8 @@ static u32 rtl8723bs_hal_init(PADAPTER padapter)
 
 	rtw_hal_set_hwreg(padapter, HW_VAR_NAV_UPPER, (u8*)&NavUpper);
 
-#ifdef CONFIG_XMIT_ACK
 	//ack for xmit mgmt frames.
 	rtw_write32(padapter, REG_FWHW_TXQ_CTRL, rtw_read32(padapter, REG_FWHW_TXQ_CTRL)|BIT(12));
-#endif //CONFIG_XMIT_ACK	
 
 //	pHalData->PreRpwmVal = SdioLocalCmd52Read1Byte(padapter, SDIO_REG_HRPWM1) & 0x80;
 

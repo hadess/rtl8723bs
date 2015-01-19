@@ -295,11 +295,9 @@ _func_enter_;
 		pxmitpriv->wmm_para_seq[i] = i;
 	}
 
-#ifdef CONFIG_XMIT_ACK
 	pxmitpriv->ack_tx = false;
 	mutex_init(&pxmitpriv->ack_tx_mutex);
 	rtw_sctx_init(&pxmitpriv->ack_tx_ops, 0);	
-#endif
 
 	rtw_hal_init_xmit_priv(padapter);
 
@@ -378,9 +376,7 @@ void _rtw_free_xmit_priv (struct xmit_priv *pxmitpriv)
 
 	rtw_free_hwxmits(padapter);
 
-#ifdef CONFIG_XMIT_ACK	
 	mutex_destroy(&pxmitpriv->ack_tx_mutex);	
-#endif	
 
 out:	
 
@@ -2298,11 +2294,7 @@ static void rtw_init_xmitframe(struct xmit_frame *pxframe)
 
 		pxframe->pg_num = 1;
 		pxframe->agg_num = 1;
-
-#ifdef CONFIG_XMIT_ACK
 		pxframe->ack_report = 0;
-#endif
-
 	}
 }
 
@@ -3752,8 +3744,6 @@ void rtw_sctx_done(struct submit_ctx **sctx)
 	rtw_sctx_done_err(sctx, RTW_SCTX_DONE_SUCCESS);
 }
 
-#ifdef CONFIG_XMIT_ACK
-
 #ifdef CONFIG_XMIT_ACK_POLLING
 s32 c2h_evt_hdl(_adapter *adapter, u8 *c2h_evt, c2h_id_filter filter);
 
@@ -3830,5 +3820,3 @@ void rtw_ack_tx_done(struct xmit_priv *pxmitpriv, int status)
 		DBG_871X("%s ack_tx not set\n", __func__);
 	}
 }
-#endif //CONFIG_XMIT_ACK
-
