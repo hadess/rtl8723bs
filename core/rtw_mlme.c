@@ -1078,12 +1078,6 @@ void rtw_surveydone_event_callback(_adapter	*adapter, u8 *pbuf)
 	_irqL  irqL;
 	u8 timer_cancelled = false;
 	struct	mlme_priv	*pmlmepriv = &(adapter->mlmepriv);
-	
-#ifdef CONFIG_MLME_EXT	
-
-	mlmeext_surveydone_event_callback(adapter);
-
-#endif
 
 _func_enter_;			
 
