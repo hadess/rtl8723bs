@@ -3565,9 +3565,8 @@ static int _cfg80211_rtw_mgmt_tx(_adapter *padapter, u8 tx_ch, const u8 *buf, si
 	else 
 	{
 
-#ifdef CONFIG_XMIT_ACK
 		msleep(50);
-#endif	
+
 		#ifdef CONFIG_DEBUG_CFG80211
 		DBG_8192C("%s, ack=%d, ok!\n", __func__, ack);
 		#endif

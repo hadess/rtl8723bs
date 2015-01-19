@@ -3907,7 +3907,6 @@ static void rtl8723b_fill_default_txdesc(
 
 		ptxdesc->datarate = MRateToHwRate(pmlmeext->tx_rate);
 
-#ifdef CONFIG_XMIT_ACK
 		// CCX-TXRPT ack for xmit mgmt frames.
 		if (pxmitframe->ack_report) {
 			#ifdef DBG_CCX
@@ -3916,7 +3915,6 @@ static void rtl8723b_fill_default_txdesc(
 			ptxdesc->spe_rpt = 1;
 			ptxdesc->sw_define = (u8)(GET_PRIMARY_ADAPTER(padapter)->xmitpriv.seq_no);
 		}
-#endif // CONFIG_XMIT_ACK
 	}
 	else if (pxmitframe->frame_tag == TXAGG_FRAMETAG)
 	{
@@ -4415,7 +4413,6 @@ void CCX_FwC2HTxRpt_8723b(PADAPTER padapter, u8 *pdata, u8 len)
 
 	seq_no = *(pdata+6);
 
-#ifdef CONFIG_XMIT_ACK
 	if (GET_8723B_C2H_TX_RPT_RETRY_OVER(pdata) | GET_8723B_C2H_TX_RPT_LIFE_TIME_OVER(pdata)) {
 		rtw_ack_tx_done(&padapter->xmitpriv, RTW_SCTX_DONE_CCX_PKT_FAIL);
 	}
@@ -4428,7 +4425,6 @@ void CCX_FwC2HTxRpt_8723b(PADAPTER padapter, u8 *pdata, u8 len)
 	else {
 		rtw_ack_tx_done(&padapter->xmitpriv, RTW_SCTX_DONE_SUCCESS);
 	}
-#endif
 }
 
 s32 c2h_id_filter_ccx_8723b(u8 *buf)
