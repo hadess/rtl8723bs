@@ -328,10 +328,6 @@ struct pwrctrl_priv
 	struct workqueue_struct *rtw_workqueue;
 	_workitem resume_work;
 	#endif
-
-	#ifdef CONFIG_INTEL_PROXIM
-	u8	stored_power_mgnt;
-	#endif
 };
 
 #define rtw_get_ips_mode_req(pwrctl) \
