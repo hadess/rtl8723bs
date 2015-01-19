@@ -1467,10 +1467,6 @@ _func_enter_;
 	rtw_lps_ctrl_wk_cmd(padapter, LPS_CTRL_DISCONNECT, 1);
 #endif
 
-#ifdef CONFIG_BEAMFORMING
-	beamforming_wk_cmd(padapter, BEAMFORMING_CTRL_LEAVE, cur_network->MacAddress, ETH_ALEN, 1);
-#endif
-
 _func_exit_;	
 }
 
@@ -1986,10 +1982,6 @@ _func_enter_;
 				rtw_mfree(passoc_req, assoc_req_len);
 			}			
 #endif //!CONFIG_AUTO_AP_MODE
-
-#ifdef CONFIG_BEAMFORMING
-			beamforming_wk_cmd(adapter, BEAMFORMING_CTRL_ENTER, (u8 *)psta, sizeof(struct sta_info), 0);
-#endif
 		}		
 		goto exit;
 	}	
@@ -3474,30 +3466,6 @@ unsigned int rtw_restructure_ht_ie(_adapter *padapter, u8 *in_ie, u8 *out_ie, ui
 		ht_capie.ampdu_params_info |= (IEEE80211_HT_CAP_AMPDU_DENSITY&(0x07<<2));
 	else
 		ht_capie.ampdu_params_info |= (IEEE80211_HT_CAP_AMPDU_DENSITY&0x00);
-
-#ifdef CONFIG_BEAMFORMING
-	ht_capie.tx_BF_cap_info = 0;
-
-	// HT Beamformer
-	if(TEST_FLAG(phtpriv->beamform_cap, BEAMFORMING_HT_BEAMFORMER_ENABLE))
-	{
-		// Transmit NDP Capable
-		SET_HT_CAP_TXBF_TRANSMIT_NDP_CAP(&ht_capie, 1);
-		// Explicit Compressed Steering Capable
-		SET_HT_CAP_TXBF_EXPLICIT_COMP_STEERING_CAP(&ht_capie, 1);
-		// Compressed Steering Number Antennas
-		SET_HT_CAP_TXBF_COMP_STEERING_NUM_ANTENNAS(&ht_capie, 1);
-	}
-
-	// HT Beamformee
-	if(TEST_FLAG(phtpriv->beamform_cap, BEAMFORMING_HT_BEAMFORMEE_ENABLE))
-	{
-		// Receive NDP Capable
-		SET_HT_CAP_TXBF_RECEIVE_NDP_CAP(&ht_capie, 1);
-		// Explicit Compressed Beamforming Feedback Capable
-		SET_HT_CAP_TXBF_EXPLICIT_COMP_FEEDBACK_CAP(&ht_capie, 2);
-	}
-#endif
 
 	pframe = rtw_set_ie(out_ie+out_len, _HT_CAPABILITY_IE_, 
 						sizeof(struct rtw_ieee80211_ht_cap), (unsigned char*)&ht_capie, pout_len);

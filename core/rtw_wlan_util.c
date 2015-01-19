@@ -1555,25 +1555,6 @@ void HT_caps_handler(_adapter *padapter, PNDIS_802_11_VARIABLE_IEs pIE)
 			DBG_871X("Enable HT Tx STBC !\n");
 		}
 		phtpriv->stbc_cap = cur_stbc_cap;
-
-#ifdef CONFIG_BEAMFORMING
-		// Config Tx beamforming setting
-		if (TEST_FLAG(phtpriv->beamform_cap, BEAMFORMING_HT_BEAMFORMER_ENABLE) && 
-			GET_HT_CAP_TXBF_EXPLICIT_COMP_STEERING_CAP(pIE->data))
-		{
-			SET_FLAG(cur_beamform_cap, BEAMFORMING_HT_BEAMFORMER_ENABLE);
-		}
-
-		if (TEST_FLAG(phtpriv->beamform_cap, BEAMFORMING_HT_BEAMFORMEE_ENABLE) &&
-			GET_HT_CAP_TXBF_EXPLICIT_COMP_FEEDBACK_CAP(pIE->data))
-		{
-			SET_FLAG(cur_beamform_cap, BEAMFORMING_HT_BEAMFORMEE_ENABLE);
-		}
-		phtpriv->beamform_cap = cur_beamform_cap;
-		if (cur_beamform_cap) {
-			DBG_871X("AP HT Beamforming Cap = 0x%02X\n", cur_beamform_cap);
-		}
-#endif //CONFIG_BEAMFORMING
 	} else {
 		// Config LDPC Coding Capability
 		if (TEST_FLAG(phtpriv->ldpc_cap, LDPC_HT_ENABLE_TX) && GET_HT_CAPABILITY_ELE_LDPC_CAP(pIE->data))
@@ -1590,25 +1571,6 @@ void HT_caps_handler(_adapter *padapter, PNDIS_802_11_VARIABLE_IEs pIE)
 			DBG_871X("Enable HT Tx STBC!\n");
 		}
 		phtpriv->stbc_cap = cur_stbc_cap;
-
-#ifdef CONFIG_BEAMFORMING
-		// Config Tx beamforming setting
-		if (TEST_FLAG(phtpriv->beamform_cap, BEAMFORMING_HT_BEAMFORMEE_ENABLE) && 
-			GET_HT_CAP_TXBF_EXPLICIT_COMP_STEERING_CAP(pIE->data))
-		{
-			SET_FLAG(cur_beamform_cap, BEAMFORMING_HT_BEAMFORMER_ENABLE);
-		}
-
-		if (TEST_FLAG(phtpriv->beamform_cap, BEAMFORMING_HT_BEAMFORMER_ENABLE) &&
-			GET_HT_CAP_TXBF_EXPLICIT_COMP_FEEDBACK_CAP(pIE->data))
-		{
-			SET_FLAG(cur_beamform_cap, BEAMFORMING_HT_BEAMFORMEE_ENABLE);
-		}
-		phtpriv->beamform_cap = cur_beamform_cap;
-		if (cur_beamform_cap) {
-			DBG_871X("Client HT Beamforming Cap = 0x%02X\n", cur_beamform_cap);
-		}
-#endif //CONFIG_BEAMFORMING
 	}
 }
 
