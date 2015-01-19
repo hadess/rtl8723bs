@@ -121,10 +121,8 @@ struct eeprom_priv
 	u8		efuse_eeprom_data[EEPROM_MAX_SIZE]; //92C:256bytes, 88E:512bytes, we use union set (512bytes)
 	u8		adjuseVoltageVal;
 
-#ifdef CONFIG_RF_GAIN_OFFSET
 	u8		EEPROMRFGainOffset;
 	u8		EEPROMRFGainVal;
-#endif //CONFIG_RF_GAIN_OFFSET
 
 	u8		sdio_setting;	
 	u32		ocr;

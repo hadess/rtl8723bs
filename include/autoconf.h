@@ -127,9 +127,6 @@
 		#define CONFIG_LPS	// download reserved page to FW
 	#endif
 
-#define CONFIG_RF_GAIN_OFFSET
-
-
 #ifndef DISABLE_BB_RF
 #define DISABLE_BB_RF	0
 #endif

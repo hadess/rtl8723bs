@@ -1457,7 +1457,6 @@ void rtw_store_phy_info(_adapter *padapter, union recv_frame *prframe)
 }
 #endif
 
-#ifdef CONFIG_RF_GAIN_OFFSET
 static u32 Array_kfreemap[] = { 
 0xf8,0xe,
 0xf6,0xc,
@@ -1516,6 +1515,3 @@ void rtw_bb_rf_gain_offset(_adapter *padapter)
 		DBG_871X("Using the default RF gain.\n");
 	}
 }
-#endif //CONFIG_RF_GAIN_OFFSET
-
-

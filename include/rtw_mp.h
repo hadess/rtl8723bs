@@ -477,12 +477,8 @@ typedef enum	_MPT_TXPWR_DEF{
 	MPT_VHT_OFDM
 }MPT_TXPWR_DEF;
 
-#ifdef CONFIG_RF_GAIN_OFFSET
-
 #define 	REG_RF_BB_GAIN_OFFSET	0x7f
 #define 	RF_GAIN_OFFSET_MASK 	0xfffff
-
-#endif //CONFIG_RF_GAIN_OFFSET
 
 //=======================================================================
 //extern struct mp_xmit_frame *alloc_mp_xmitframe(struct mp_priv *pmp_priv);

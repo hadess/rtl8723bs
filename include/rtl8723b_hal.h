@@ -303,9 +303,7 @@ s32 c2h_handler_8723b(PADAPTER padapter, u8 *pC2hEvent);
 u8 MRateToHwRate8723B(u8  rate);
 u8 HwRateToMRate8723B(u8	 rate);
 
-#ifdef CONFIG_RF_GAIN_OFFSET
 void Hal_ReadRFGainOffset(PADAPTER pAdapter,u8* hwinfo,bool AutoLoadFail);
-#endif //CONFIG_RF_GAIN_OFFSET
 
 #endif
 
