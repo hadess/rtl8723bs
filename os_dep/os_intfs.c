@@ -928,7 +928,6 @@ _func_enter_;
 		ret8=_FAIL;
 		goto exit;
 	}
-	// add for CONFIG_IEEE80211W, none 11w also can use
 	spin_lock_init(&padapter->security_key_mutex);
 	
 	// We don't need to memset padapter->XXX to zero, because adapter is allocated by rtw_zvmalloc().

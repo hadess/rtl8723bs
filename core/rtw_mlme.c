@@ -1570,9 +1570,6 @@ static struct sta_info *rtw_joinbss_update_stainfo(_adapter *padapter, struct wl
 						
 			memset((u8 *)&psta->dot11txpn, 0, sizeof (union pn48));
 			psta->dot11txpn.val = psta->dot11txpn.val + 1;
-#ifdef CONFIG_IEEE80211W
-			memset((u8 *)&psta->dot11wtxpn, 0, sizeof (union pn48));
-#endif //CONFIG_IEEE80211W
 			memset((u8 *)&psta->dot11rxpn, 0, sizeof (union pn48));	
 		}
 
@@ -3061,14 +3058,6 @@ _func_enter_;
 	{		
 		//copy RSN or SSN		
 		memcpy(&out_ie[ielength], &psecuritypriv->supplicant_ie[0], psecuritypriv->supplicant_ie[1]+2);
-		/* debug for CONFIG_IEEE80211W
-		{
-			int jj;
-			printk("supplicant_ie_length=%d &&&&&&&&&&&&&&&&&&&\n", psecuritypriv->supplicant_ie[1]+2);
-			for(jj=0; jj < psecuritypriv->supplicant_ie[1]+2; jj++)
-				printk(" %02x ", psecuritypriv->supplicant_ie[jj]);
-			printk("\n");
-		}*/
 		ielength+=psecuritypriv->supplicant_ie[1]+2;
 		rtw_report_sec_ie(adapter, authmode, psecuritypriv->supplicant_ie);
 	

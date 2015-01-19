@@ -29,9 +29,6 @@
 #define _WEP104_			0x5
 #define _WEP_WPA_MIXED_	0x07  // WEP + WPA
 #define _SMS4_				0x06
-#ifdef CONFIG_IEEE80211W
-#define _BIP_				0x8 
-#endif //CONFIG_IEEE80211W
 #define is_wep_enc(alg) (((alg) == _WEP40_) || ((alg) == _WEP104_))
 
 const char *security_type_str(u8 value);
@@ -134,12 +131,6 @@ struct security_priv
 	union Keytype	dot118021XGrprxmickey[4];
 	union pn48		dot11Grptxpn;			// PN48 used for Grp Key xmit.
 	union pn48		dot11Grprxpn;			// PN48 used for Grp Key recv.
-#ifdef CONFIG_IEEE80211W
-	u32	dot11wBIPKeyid;						// key id used for BIP Key ( tx key index)
-	union Keytype	dot11wBIPKey[6];		// BIP Key, for index4 and index5
-	union pn48		dot11wBIPtxpn;			// PN48 used for Grp Key xmit.
-	union pn48		dot11wBIPrxpn;			// PN48 used for Grp Key recv.
-#endif //CONFIG_IEEE80211W
 #ifdef CONFIG_AP_MODE
 	//extend security capabilities for AP_MODE 
 	unsigned int dot8021xalg;//0:disable, 1:psk, 2:802.1x
@@ -158,9 +149,6 @@ struct security_priv
 #ifdef CONFIG_GTK_OL
 	u8	binstallKCK_KEK;
 #endif //CONFIG_GTK_OL
-#ifdef CONFIG_IEEE80211W
-	u8	binstallBIPkey;
-#endif //CONFIG_IEEE80211W
 	u8	busetkipkey;
 	//_timer tkip_timer;
 	u8	bcheck_grpkey;
@@ -455,9 +443,6 @@ void rtw_wep_encrypt(_adapter *padapter, u8  *pxmitframe);
 u32 rtw_aes_decrypt(_adapter *padapter, u8  *precvframe);
 u32 rtw_tkip_decrypt(_adapter *padapter, u8  *precvframe);
 void rtw_wep_decrypt(_adapter *padapter, u8  *precvframe);
-#ifdef CONFIG_IEEE80211W
-u32	rtw_BIP_verify(_adapter *padapter, u8 *precvframe);
-#endif //CONFIG_IEEE80211W
 
 void rtw_use_tkipkey_handler(RTW_TIMER_HDL_ARGS);
 

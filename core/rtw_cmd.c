@@ -1868,7 +1868,7 @@ _func_exit_;
 
 	return res;
 }
-//add for CONFIG_IEEE80211W, none 11w can use it
+
 u8 rtw_reset_securitypriv_cmd(_adapter*padapter)
 {
 	struct cmd_obj*		ph2c;
@@ -2707,7 +2707,6 @@ static void power_saving_wk_hdl(_adapter *padapter)
 	 rtw_ps_processor(padapter);
 }
 
-//add for CONFIG_IEEE80211W, none 11w can use it
 static void reset_securitypriv_hdl(_adapter *padapter)
 {
 	 rtw_reset_securitypriv(padapter);
@@ -3133,7 +3132,6 @@ u8 rtw_drvextra_cmd_hdl(_adapter *padapter, unsigned char *pbuf)
 			intel_widi_wk_hdl(padapter, pdrvextra_cmd->type, pdrvextra_cmd->pbuf);
 			break;
 #endif //CONFIG_INTEL_WIDI
-		//add for CONFIG_IEEE80211W, none 11w can use it
 		case RESET_SECURITYPRIV:
 			reset_securitypriv_hdl(padapter);
 			break;

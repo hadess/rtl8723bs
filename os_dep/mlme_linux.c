@@ -121,7 +121,6 @@ void rtw_reset_securitypriv( _adapter *adapter )
 	u8	backupPMKIDIndex = 0;
 	u8	backupTKIPCountermeasure = 0x00;
 	u32	backupTKIPcountermeasure_time = 0;
-	// add for CONFIG_IEEE80211W, none 11w also can use
 	_irqL irqL;
 	struct mlme_ext_priv	*pmlmeext = &adapter->mlmeextpriv;
 	
@@ -141,10 +140,6 @@ void rtw_reset_securitypriv( _adapter *adapter )
 		backupPMKIDIndex = adapter->securitypriv.PMKIDIndex;
 		backupTKIPCountermeasure = adapter->securitypriv.btkip_countermeasure;
 		backupTKIPcountermeasure_time = adapter->securitypriv.btkip_countermeasure_time;		
-#ifdef CONFIG_IEEE80211W
-		//reset RX BIP packet number
-		pmlmeext->mgnt_80211w_IPN_rx = 0;
-#endif //CONFIG_IEEE80211W
 		memset((unsigned char *)&adapter->securitypriv, 0, sizeof (struct security_priv));
 		//_init_timer(&(adapter->securitypriv.tkip_timer),adapter->pnetdev, rtw_use_tkipkey_handler, adapter);
 
@@ -176,7 +171,6 @@ void rtw_reset_securitypriv( _adapter *adapter )
 		psec_priv->ndisencryptstatus = Ndis802_11WEPDisabled;
 		//}
 	}
-	// add for CONFIG_IEEE80211W, none 11w also can use
 	_exit_critical_bh(&adapter->security_key_mutex, &irqL);
 }
 
@@ -192,7 +186,6 @@ _func_enter_;
 
 	rtw_indicate_wx_disassoc_event(adapter);
 
-	 //modify for CONFIG_IEEE80211W, none 11w also can use the same command
 	 rtw_reset_securitypriv_cmd(adapter);
 
 _func_exit_;
@@ -264,14 +257,6 @@ static void _addba_timer_hdl(void *FunctionContext)
 	addba_timer_hdl(psta);
 }
 
-#ifdef CONFIG_IEEE80211W
-void _sa_query_timer_hdl (void *FunctionContext)
-{
-	_adapter *padapter = (_adapter *)FunctionContext;
-	sa_query_timer_hdl(padapter);
-}
-#endif //CONFIG_IEEE80211W
-
 void init_addba_retry_timer(_adapter *padapter, struct sta_info *psta)
 {
 
@@ -298,9 +283,6 @@ void init_mlme_ext_timer(_adapter *padapter)
 
 	_init_timer(&pmlmeext->survey_timer, padapter->pnetdev, _survey_timer_hdl, padapter);
 	_init_timer(&pmlmeext->link_timer, padapter->pnetdev, _link_timer_hdl, padapter);
-#ifdef CONFIG_IEEE80211W
-	_init_timer(&pmlmeext->sa_query_timer, padapter->pnetdev, _sa_query_timer_hdl, padapter);
-#endif //CONFIG_IEEE80211W
 	//_init_timer(&pmlmeext->ADDBA_timer, padapter->pnetdev, _addba_timer_hdl, padapter);
 
 	//_init_timer(&pmlmeext->reauth_timer, padapter->pnetdev, _reauth_timer_hdl, padapter);

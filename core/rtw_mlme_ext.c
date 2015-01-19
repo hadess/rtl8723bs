@@ -78,12 +78,7 @@ static struct action_handler OnAction_tbl[]={
 	{RTW_WLAN_CATEGORY_RADIO_MEASUREMENT, "ACTION_RADIO_MEASUREMENT", &DoReserved},
 	{RTW_WLAN_CATEGORY_FT, "ACTION_FT",	&DoReserved},
 	{RTW_WLAN_CATEGORY_HT,	"ACTION_HT",	&OnAction_ht},
-#ifdef CONFIG_IEEE80211W
-	{RTW_WLAN_CATEGORY_SA_QUERY, "ACTION_SA_QUERY", &OnAction_sa_query},
-#else
 	{RTW_WLAN_CATEGORY_SA_QUERY, "ACTION_SA_QUERY", &DoReserved},
-#endif //CONFIG_IEEE80211W
-	//add for CONFIG_IEEE80211W
 	{RTW_WLAN_CATEGORY_UNPROTECTED_WNM, "ACTION_UNPROTECTED_WNM", &DoReserved},
 	{RTW_WLAN_CATEGORY_SELF_PROTECTED, "ACTION_SELF_PROTECTED", &DoReserved},
 	{RTW_WLAN_CATEGORY_WMM, "ACTION_WMM", &DoReserved},
@@ -354,11 +349,6 @@ static void init_mlme_ext_priv_value(_adapter* padapter)
 
 	atomic_set(&pmlmeext->event_seq, 0);
 	pmlmeext->mgnt_seq = 0;//reset to zero when disconnect at client mode
-#ifdef CONFIG_IEEE80211W
-	pmlmeext->sa_query_seq = 0;
-	pmlmeext->mgnt_80211w_IPN=0;
-	pmlmeext->mgnt_80211w_IPN_rx=0;
-#endif //CONFIG_IEEE80211W
 	pmlmeext->cur_channel = padapter->registrypriv.channel;
 	pmlmeext->cur_bwmode = CHANNEL_WIDTH_20;
 	pmlmeext->cur_ch_offset = HAL_PRIME_CHNL_OFFSET_DONT_CARE;
@@ -2508,45 +2498,6 @@ exit:
 	return _SUCCESS;
 }
 
-#ifdef CONFIG_IEEE80211W
-unsigned int OnAction_sa_query(_adapter *padapter, union recv_frame *precv_frame)
-{
-	u8 *pframe = precv_frame->u.hdr.rx_data;
-	struct rx_pkt_attrib *pattrib = &precv_frame->u.hdr.attrib;
-	struct mlme_ext_priv	*pmlmeext = &(padapter->mlmeextpriv);
-	unsigned short tid;
-	//Baron
-	
-	DBG_871X("OnAction_sa_query\n");
-	
-	switch (pframe[WLAN_HDR_A3_LEN+1])
-	{
-		case 0: //SA Query req
-			memcpy(&tid, &pframe[WLAN_HDR_A3_LEN+2], sizeof(unsigned short));
-			DBG_871X("OnAction_sa_query request,action=%d, tid=%04x\n", pframe[WLAN_HDR_A3_LEN+1], tid);
-			issue_action_SA_Query(padapter, GetAddr2Ptr(pframe), 1, tid);
-			break;
-
-		case 1: //SA Query rsp
-			_cancel_timer_ex(&pmlmeext->sa_query_timer);
-			DBG_871X("OnAction_sa_query response,action=%d, tid=%04x, cancel timer\n", pframe[WLAN_HDR_A3_LEN+1], pframe[WLAN_HDR_A3_LEN+2]);
-			break;
-		default:
-			break;
-	}
-	if(0)
-	{
-		int pp;
-		printk("pattrib->pktlen = %d =>", pattrib->pkt_len);
-		for(pp=0;pp< pattrib->pkt_len; pp++)
-			printk(" %02x ", pframe[pp]);
-		printk("\n");
-	}	
-	
-	return _SUCCESS;
-}
-#endif //CONFIG_IEEE80211W
-
 unsigned int OnAction(_adapter *padapter, union recv_frame *precv_frame)
 {
 	int i;
@@ -4343,84 +4294,6 @@ void issue_action_spct_ch_switch(_adapter *padapter, u8 *ra, u8 new_ch, u8 ch_of
 	dump_mgntframe(padapter, pmgntframe);
 
 }
-
-#ifdef CONFIG_IEEE80211W
-void issue_action_SA_Query(_adapter *padapter, unsigned char *raddr, unsigned char action, unsigned short tid)
-{
-	u8	category = RTW_WLAN_CATEGORY_SA_QUERY;
-	u16	reason_code;
-	struct xmit_frame		*pmgntframe;
-	struct pkt_attrib		*pattrib;
-	u8					*pframe;
-	struct rtw_ieee80211_hdr	*pwlanhdr;
-	u16					*fctrl;
-	struct xmit_priv		*pxmitpriv = &(padapter->xmitpriv);
-	struct mlme_ext_priv	*pmlmeext = &(padapter->mlmeextpriv);
-	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
-	struct sta_info		*psta;
-	struct sta_priv		*pstapriv = &padapter->stapriv;
-	struct registry_priv	 	*pregpriv = &padapter->registrypriv;
-
-
-	DBG_871X("%s\n", __FUNCTION__);
-
-	if ((pmgntframe = alloc_mgtxmitframe(pxmitpriv)) == NULL)
-	{
-		DBG_871X("%s: alloc_mgtxmitframe fail\n", __FUNCTION__);
-		return;
-	}
-
-	//update attribute
-	pattrib = &pmgntframe->attrib;
-	update_mgntframe_attrib(padapter, pattrib);
-
-	memset(pmgntframe->buf_addr, 0, WLANHDR_OFFSET + TXDESC_OFFSET);
-
-	pframe = (u8 *)(pmgntframe->buf_addr) + TXDESC_OFFSET;
-	pwlanhdr = (struct rtw_ieee80211_hdr *)pframe;
-
-	fctrl = &(pwlanhdr->frame_ctl);
-	*(fctrl) = 0;
-
-	if(raddr)
-		memcpy(pwlanhdr->addr1, raddr, ETH_ALEN);
-	else
-		memcpy(pwlanhdr->addr1, get_my_bssid(&(pmlmeinfo->network)), ETH_ALEN);
-	memcpy(pwlanhdr->addr2, myid(&(padapter->eeprompriv)), ETH_ALEN);
-	memcpy(pwlanhdr->addr3, get_my_bssid(&(pmlmeinfo->network)), ETH_ALEN);
-
-	SetSeqNum(pwlanhdr, pmlmeext->mgnt_seq);
-	pmlmeext->mgnt_seq++;
-	SetFrameSubType(pframe, WIFI_ACTION);
-
-	pframe += sizeof(struct rtw_ieee80211_hdr_3addr);
-	pattrib->pktlen = sizeof(struct rtw_ieee80211_hdr_3addr);
-
-	pframe = rtw_set_fixed_ie(pframe, 1, &category, &pattrib->pktlen);
-	pframe = rtw_set_fixed_ie(pframe, 1, &action, &pattrib->pktlen);
-
-	switch (action)
-	{
-		case 0: //SA Query req
-			pframe = rtw_set_fixed_ie(pframe, 2, (unsigned char *)&pmlmeext->sa_query_seq, &pattrib->pktlen);
-			pmlmeext->sa_query_seq++;
-			//send sa query request to AP, AP should reply sa query response in 1 second
-			set_sa_query_timer(pmlmeext, 1000);
-			break;
-
-		case 1: //SA Query rsp
-			tid = cpu_to_le16(tid);
-			pframe = rtw_set_fixed_ie(pframe, 2, (unsigned char *)&tid, &pattrib->pktlen);
-			break;
-		default:
-			break;
-	}
-
-	pattrib->last_txcmdsz = pattrib->pktlen;
-
-	dump_mgntframe(padapter, pmgntframe);
-}
-#endif //CONFIG_IEEE80211W
 
 void issue_action_BA(_adapter *padapter, unsigned char *raddr, unsigned char action, unsigned short status)
 {
@@ -6460,27 +6333,6 @@ void addba_timer_hdl(struct sta_info *psta)
 		
 	}
 }
-
-#ifdef CONFIG_IEEE80211W
-void sa_query_timer_hdl(_adapter *padapter)
-{
-	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
-	struct mlme_priv * pmlmepriv = &padapter->mlmepriv;
-	_irqL irqL;
-	//disconnect
-	_enter_critical_bh(&pmlmepriv->lock, &irqL);
-
-	if (check_fwstate(pmlmepriv, _FW_LINKED) == true)
-	{
-		rtw_disassoc_cmd(padapter, 0, true);
-		rtw_indicate_disconnect(padapter);
-		rtw_free_assoc_resources(padapter, 1);	
-	}
-
-	_exit_critical_bh(&pmlmepriv->lock, &irqL);
-	DBG_871X("SA query timeout disconnect\n");
-}
-#endif //CONFIG_IEEE80211W
 
 u8 NULL_hdl(_adapter *padapter, u8 *pbuf)
 {

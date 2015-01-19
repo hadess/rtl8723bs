@@ -848,11 +848,6 @@ struct ieee80211_softmac_stats{
 #define WEP_KEYS 4
 #define WEP_KEY_LEN 13
 
-#ifdef CONFIG_IEEE80211W
-#define BIP_MAX_KEYID 5
-#define BIP_AAD_SIZE  20
-#endif //CONFIG_IEEE80211W
-
 struct ieee80211_security {
 	u16 active_key:2,
             enabled:1,
@@ -1122,9 +1117,9 @@ enum rtw_ieee80211_category {
 	RTW_WLAN_CATEGORY_FT = 6,
 	RTW_WLAN_CATEGORY_HT = 7,
 	RTW_WLAN_CATEGORY_SA_QUERY = 8,
-	RTW_WLAN_CATEGORY_UNPROTECTED_WNM = 11, // add for CONFIG_IEEE80211W, none 11w also can use
+	RTW_WLAN_CATEGORY_UNPROTECTED_WNM = 11,
 	RTW_WLAN_CATEGORY_TDLS = 12,
-	RTW_WLAN_CATEGORY_SELF_PROTECTED = 15, // add for CONFIG_IEEE80211W, none 11w also can use
+	RTW_WLAN_CATEGORY_SELF_PROTECTED = 15,
 	RTW_WLAN_CATEGORY_WMM = 17,
 	RTW_WLAN_CATEGORY_VHT = 21,
 	RTW_WLAN_CATEGORY_P2P = 0x7f,//P2P action frames

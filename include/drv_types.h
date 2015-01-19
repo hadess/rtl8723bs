@@ -590,7 +590,7 @@ struct _ADAPTER{
 	struct	recv_priv	recvpriv;
 	struct	sta_priv	stapriv;
 	struct	security_priv	securitypriv;
-	_lock   security_key_mutex; // add for CONFIG_IEEE80211W, none 11w also can use
+	_lock   security_key_mutex;
 	struct	registry_priv	registrypriv;
 	struct 	eeprom_priv eeprompriv;
 	struct	led_priv	ledpriv;
