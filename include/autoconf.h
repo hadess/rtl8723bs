@@ -59,9 +59,6 @@
  */
 //#define SUPPORT_HW_RFOFF_DETECTED
 
-//#define CONFIG_SW_LED
-
-
 /*
  * Interface Related Config
  */
