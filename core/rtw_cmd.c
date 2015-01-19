@@ -2687,50 +2687,6 @@ exit:
 
 }
 
-#if (RATE_ADAPTIVE_SUPPORT==1)
-void rpt_timer_setting_wk_hdl(_adapter *padapter, u16 minRptTime)
-{
-	rtw_hal_set_hwreg(padapter, HW_VAR_RPT_TIMER_SETTING, (u8 *)(&minRptTime));
-}
-
-u8 rtw_rpt_timer_cfg_cmd(_adapter*padapter, u16 minRptTime)
-{
-	struct cmd_obj		*ph2c;
-	struct drvextra_cmd_parm	*pdrvextra_cmd_parm;	
-	struct cmd_priv	*pcmdpriv = &padapter->cmdpriv;
-
-	u8	res = _SUCCESS;
-
-_func_enter_;
-	ph2c = (struct cmd_obj*)rtw_zmalloc(sizeof(struct cmd_obj));	
-	if(ph2c==NULL){
-		res= _FAIL;
-		goto exit;
-	}
-
-	pdrvextra_cmd_parm = (struct drvextra_cmd_parm*)rtw_zmalloc(sizeof(struct drvextra_cmd_parm));
-	if(pdrvextra_cmd_parm==NULL){
-		rtw_mfree((unsigned char *)ph2c, sizeof(struct cmd_obj));
-		res= _FAIL;
-		goto exit;
-	}
-
-	pdrvextra_cmd_parm->ec_id = RTP_TIMER_CFG_WK_CID;
-	pdrvextra_cmd_parm->type = minRptTime;
-	pdrvextra_cmd_parm->size = 0;
-	pdrvextra_cmd_parm->pbuf = NULL;
-	init_h2fwcmd_w_parm_no_rsp(ph2c, pdrvextra_cmd_parm, GEN_CMD_CODE(_Set_Drv_Extra));
-	res = rtw_enqueue_cmd(pcmdpriv, ph2c);
-exit:
-
-_func_exit_;
-
-	return res;
-
-}
-
-#endif
-
 static void rtw_dm_ra_mask_hdl(_adapter *padapter, struct sta_info *psta)
 {
 	if (psta) {
@@ -3197,11 +3153,6 @@ u8 rtw_drvextra_cmd_hdl(_adapter *padapter, unsigned char *pbuf)
 			break;
 		case LPS_CHANGE_DTIM_CID:
 			rtw_lps_change_dtim_hdl(padapter, (u8)pdrvextra_cmd->type);
-			break;
-#endif
-#if (RATE_ADAPTIVE_SUPPORT==1)
-		case RTP_TIMER_CFG_WK_CID:
-			rpt_timer_setting_wk_hdl(padapter, pdrvextra_cmd->type);
 			break;
 #endif
 #ifdef CONFIG_AP_MODE
