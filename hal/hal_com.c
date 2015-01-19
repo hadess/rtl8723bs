@@ -625,10 +625,8 @@ s32 c2h_evt_read_88xx(_adapter *adapter, u8 *buf)
 	RT_PRINT_DATA(_module_hal_init_c_, _drv_info_, "c2h_evt_read(): ",
 		&c2h_evt , sizeof(c2h_evt));
 
-	if (0) {
-		DBG_871X("%s id:%u, len:%u, seq:%u, trigger:0x%02x\n", __func__
-			, c2h_evt->id, c2h_evt->plen, c2h_evt->seq, trigger);
-	}
+	DBG_871X("%s id:%u, len:%u, seq:%u, trigger:0x%02x\n", __func__
+		 , c2h_evt->id, c2h_evt->plen, c2h_evt->seq, trigger);
 
 	/* Read the content */
 	for (i = 0; i < c2h_evt->plen; i++)
@@ -785,7 +783,6 @@ _func_enter_;
 		odm->SupportAbility &= *((u32 *)val);
 		break;
 	default:
-		if (0)
 		DBG_871X_LEVEL(_drv_always_, FUNC_ADPT_FMT" variable(%d) not defined!\n",
 			FUNC_ADPT_ARG(adapter), variable);
 		break;
@@ -812,7 +809,6 @@ _func_enter_;
 		*((u8*)val) = hal_data->rf_type;
 		break;
 	default:
-		if (0)
 		DBG_871X_LEVEL(_drv_always_, FUNC_ADPT_FMT" variable(%d) not defined!\n",
 			FUNC_ADPT_ARG(adapter), variable);
 		break;
