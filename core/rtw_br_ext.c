@@ -30,13 +30,11 @@
 
 #include <drv_types.h>
 
-#ifdef CL_IPV6_PASS
 #ifdef __KERNEL__
 #include <linux/ipv6.h>
 #include <linux/icmpv6.h>
 #include <net/ndisc.h>
 #include <net/checksum.h>
-#endif
 #endif
 
 #ifdef CONFIG_BR_EXT
@@ -201,7 +199,6 @@ static __inline__ void __nat25_generate_pppoe_network_addr(unsigned char *networ
 }
 
 
-#ifdef CL_IPV6_PASS
 static  void __nat25_generate_ipv6_network_addr(unsigned char *networkAddr,
 				unsigned int *ipAddr)
 {
@@ -310,8 +307,6 @@ static void convert_ipv6_mac_to_mc(struct sk_buff *skb)
 	skb->pkt_type = PACKET_MULTICAST;
 	#endif
 }
-#endif /* CL_IPV6_PASS */
-
 
 static __inline__ int __nat25_network_hash(unsigned char *networkAddr)
 {
@@ -348,7 +343,6 @@ static __inline__ int __nat25_network_hash(unsigned char *networkAddr)
 
 		return x & (NAT25_HASH_SIZE - 1);
 	}
-#ifdef CL_IPV6_PASS
 	else if(networkAddr[0] == NAT25_IPV6)
 	{
 		unsigned long x;
@@ -360,7 +354,6 @@ static __inline__ int __nat25_network_hash(unsigned char *networkAddr)
 	
 		return x & (NAT25_HASH_SIZE - 1);
 	}
-#endif	
 	else
 	{
 		unsigned long x = 0;
@@ -425,7 +418,6 @@ static int __nat25_db_network_lookup_and_replace(_adapter *priv,
 				memcpy(skb->data, db->macAddr, ETH_ALEN);
 				atomic_inc(&db->use_count);
 
-#ifdef CL_IPV6_PASS
 				DEBUG_INFO("NAT25: Lookup M:%02x%02x%02x%02x%02x%02x N:%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x"	
 							"%02x%02x%02x%02x%02x%02x\n",				
 					db->macAddr[0],
@@ -451,26 +443,6 @@ static int __nat25_db_network_lookup_and_replace(_adapter *priv,
 					db->networkAddr[14],
 					db->networkAddr[15],
 					db->networkAddr[16]);
-#else				
-				DEBUG_INFO("NAT25: Lookup M:%02x%02x%02x%02x%02x%02x N:%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x\n",
-					db->macAddr[0],
-					db->macAddr[1],
-					db->macAddr[2],
-					db->macAddr[3],
-					db->macAddr[4],
-					db->macAddr[5],
-					db->networkAddr[0],
-					db->networkAddr[1],
-					db->networkAddr[2],
-					db->networkAddr[3],
-					db->networkAddr[4],
-					db->networkAddr[5],
-					db->networkAddr[6],
-					db->networkAddr[7],
-					db->networkAddr[8],
-					db->networkAddr[9],
-					db->networkAddr[10]);
-#endif
 			}
 			_exit_critical_bh(&priv->br_ext_lock, &irqL);
 			return 1;
@@ -544,7 +516,6 @@ static void __nat25_db_print(_adapter *priv)
 
 		while (db != NULL)
 		{
-#ifdef CL_IPV6_PASS
 			panic_printk("NAT25: DB(%d) H(%02d) C(%d) M:%02x%02x%02x%02x%02x%02x N:%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x"
 					"%02x%02x%02x%02x%02x%02x\n",
 				j,
@@ -595,7 +566,6 @@ static void __nat25_db_print(_adapter *priv)
 				db->networkAddr[8],
 				db->networkAddr[9],
 				db->networkAddr[10]);
-#endif
 			j++;
 
 			db = db->next_hash;
@@ -667,7 +637,6 @@ void nat25_db_expire(_adapter *priv)
 					if(atomic_dec_and_test(&f->use_count))
 					{
 #ifdef BR_EXT_DEBUG
-#ifdef CL_IPV6_PASS
 						panic_printk("NAT25 Expire H(%02d) M:%02x%02x%02x%02x%02x%02x N:%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x"
 								"%02x%02x%02x%02x%02x%02x\n",
 							i,
@@ -694,28 +663,6 @@ void nat25_db_expire(_adapter *priv)
 							f->networkAddr[14],
 							f->networkAddr[15],
 							f->networkAddr[16]);
-#else
-
-						panic_printk("NAT25 Expire H(%02d) M:%02x%02x%02x%02x%02x%02x N:%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x\n",
-							i,
-							f->macAddr[0],
-							f->macAddr[1],
-							f->macAddr[2],
-							f->macAddr[3],
-							f->macAddr[4],
-							f->macAddr[5],
-							f->networkAddr[0],
-							f->networkAddr[1],
-							f->networkAddr[2],
-							f->networkAddr[3],
-							f->networkAddr[4],
-							f->networkAddr[5],
-							f->networkAddr[6],
-							f->networkAddr[7],
-							f->networkAddr[8],
-							f->networkAddr[9],
-							f->networkAddr[10]);
-#endif
 #endif
 						if(priv->scdb_entry == f)
 						{
@@ -1357,7 +1304,6 @@ int nat25_db_handle(_adapter *priv, struct sk_buff *skb, int method)
 	/*---------------------------------------------------*/
 	/*         Handle IPV6 frame      							  */
 	/*---------------------------------------------------*/
-#ifdef CL_IPV6_PASS
 	else if(protocol == __constant_htons(ETH_P_IPV6))
 	{
 		struct ipv6hdr *iph = (struct ipv6hdr *)(skb->data + ETH_HLEN);
@@ -1423,7 +1369,6 @@ int nat25_db_handle(_adapter *priv, struct sk_buff *skb, int method)
 				return -1;
 		}
 	}
-#endif	// CL_IPV6_PASS
 
 	return -1;
 }
