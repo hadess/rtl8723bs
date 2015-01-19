@@ -195,13 +195,11 @@ void rtw_hal_get_hwreg(_adapter *padapter, u8 variable, u8 *val)
 		padapter->HalFunc.GetHwRegHandler(padapter, variable, val);
 }
 
-#ifdef CONFIG_C2H_PACKET_EN
 void rtw_hal_set_hwreg_with_buf(_adapter *padapter, u8 variable, u8 *pbuf, int len)
 {
 	if (padapter->HalFunc.SetHwRegHandlerWithBuf)
 		padapter->HalFunc.SetHwRegHandlerWithBuf(padapter, variable, pbuf, len);
 }
-#endif
 
 u8 rtw_hal_set_def_var(_adapter *padapter, HAL_DEF_VARIABLE eVariable, void * pValue)
 {	

@@ -439,16 +439,6 @@ int rtw_cmd_filter(struct cmd_priv *pcmdpriv, struct cmd_obj *cmd_obj)
 	}
 	#endif
 
-#ifndef CONFIG_C2H_PACKET_EN
-	/* C2H should be always allowed */
-	if(cmd_obj->cmdcode == GEN_CMD_CODE(_Set_Drv_Extra)) {
-		struct drvextra_cmd_parm *pdrvextra_cmd_parm = (struct drvextra_cmd_parm *)cmd_obj->parmbuf;
-		if(pdrvextra_cmd_parm->ec_id == C2H_WK_CID) {
-			bAllow = true;
-		}
-	}
-#endif
-
 	if(cmd_obj->cmdcode == GEN_CMD_CODE(_SetChannelPlan))
 		bAllow = true;
 
@@ -2975,7 +2965,6 @@ exit:
 	return res;
 }
 
-//#ifdef CONFIG_C2H_PACKET_EN
 u8 rtw_c2h_packet_wk_cmd(PADAPTER padapter, u8 *pbuf, u16 length)
 {
 	struct cmd_obj *ph2c;
@@ -3009,10 +2998,8 @@ exit:
 	return res;
 }
 
-//#else //CONFIG_C2H_PACKET_EN
 /* dont call R/W in this function, beucase SDIO interrupt have claim host */
 /* or deadlock will happen and cause special-systemserver-died in android */
-
 u8 rtw_c2h_wk_cmd(PADAPTER padapter, u8 *c2h_evt)
 {
 	struct cmd_obj *ph2c;
@@ -3046,7 +3033,6 @@ exit:
 	
 	return res;
 }
-//#endif //CONFIG_C2H_PACKET_EN
 
 u8 rtw_run_in_thread_cmd(PADAPTER padapter, void (*func)(void*), void* context)
 {
@@ -3173,11 +3159,7 @@ u8 rtw_drvextra_cmd_hdl(_adapter *padapter, unsigned char *pbuf)
 			free_assoc_resources_hdl(padapter);
 			break;
 		case C2H_WK_CID:
-#ifdef CONFIG_C2H_PACKET_EN
 			rtw_hal_set_hwreg_with_buf(padapter, HW_VAR_C2H_HANDLE, pdrvextra_cmd->pbuf, pdrvextra_cmd->size);
-#else		
-			c2h_evt_hdl(padapter, pdrvextra_cmd->pbuf, NULL);
-#endif
 			break;
 		case DM_RA_MSK_WK_CID:
 			rtw_dm_ra_mask_hdl(padapter, (struct sta_info *)pdrvextra_cmd->pbuf);
