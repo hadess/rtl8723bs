@@ -257,13 +257,7 @@ _func_enter_;
 	if(((struct xmit_frame*)pxmitframe)->buf_addr==NULL)
 		return;
 
-#ifdef CONFIG_USB_TX_AGGREGATION
-	hw_hdr_offset = TXDESC_SIZE +
-		 (((struct xmit_frame*)pxmitframe)->pkt_offset * PACKET_OFFSET_SZ);	
-#else
 	hw_hdr_offset = TXDESC_OFFSET;
-#endif
-
 	pframe = ((struct xmit_frame*)pxmitframe)->buf_addr + hw_hdr_offset;
 	
 	//start to encrypt each fragment
@@ -745,14 +739,9 @@ _func_enter_;
 	if(((struct xmit_frame*)pxmitframe)->buf_addr==NULL)
 		return _FAIL;
 
-#ifdef CONFIG_USB_TX_AGGREGATION
-	hw_hdr_offset = TXDESC_SIZE +
-		 (((struct xmit_frame*)pxmitframe)->pkt_offset * PACKET_OFFSET_SZ);	
-#else
 	hw_hdr_offset = TXDESC_OFFSET;
-#endif
-
 	pframe = ((struct xmit_frame*)pxmitframe)->buf_addr + hw_hdr_offset;
+
 	//4 start to encrypt each fragment
 	if(pattrib->encrypt==_TKIP_){
 
@@ -1671,13 +1660,7 @@ _func_enter_;
 	if(((struct xmit_frame*)pxmitframe)->buf_addr==NULL)
 		return _FAIL;
 
-#ifdef CONFIG_USB_TX_AGGREGATION
-	hw_hdr_offset = TXDESC_SIZE +
-		 (((struct xmit_frame*)pxmitframe)->pkt_offset * PACKET_OFFSET_SZ);
-#else
 	hw_hdr_offset = TXDESC_OFFSET;
-#endif
-
 	pframe = ((struct xmit_frame*)pxmitframe)->buf_addr + hw_hdr_offset;
 
 	//4 start to encrypt each fragment

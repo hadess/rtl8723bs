@@ -1055,11 +1055,7 @@ static s32 xmitframe_addmic(_adapter *padapter, struct xmit_frame *pxmitframe){
 
 _func_enter_;
 
-#ifdef CONFIG_USB_TX_AGGREGATION
-	hw_hdr_offset = TXDESC_SIZE + (pxmitframe->pkt_offset * PACKET_OFFSET_SZ);;	
-#else
 	hw_hdr_offset = TXDESC_OFFSET;
-#endif	
 	
 	if(pattrib->encrypt ==_TKIP_)//if(psecuritypriv->dot11PrivacyAlgrthm==_TKIP_PRIVACY_) 
 	{
@@ -1546,12 +1542,7 @@ _func_enter_;
 
 	pbuf_start = pxmitframe->buf_addr;
 	
-#ifdef CONFIG_USB_TX_AGGREGATION
-	hw_hdr_offset =  TXDESC_SIZE + (pxmitframe->pkt_offset * PACKET_OFFSET_SZ);
-#else
 	hw_hdr_offset = TXDESC_OFFSET;
-#endif
-
 	mem_start = pbuf_start +	hw_hdr_offset;
 
 	if (rtw_make_wlanhdr(padapter, mem_start, pattrib) == _FAIL) {
