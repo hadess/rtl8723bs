@@ -75,16 +75,6 @@ int rtw_os_alloc_recvframe(_adapter *padapter, union recv_frame *precvframe, u8 
 	}
 	else
 	{
-#ifdef CONFIG_USE_USB_BUFFER_ALLOC_RX
-		DBG_871X("%s:can not allocate memory for skb copy\n", __FUNCTION__);
-
-		precvframe->u.hdr.pkt = NULL;
-
-		//rtw_free_recvframe(precvframe, pfree_recv_queue);
-		//goto _exit_recvbuf2recvframe;
-
-		res = _FAIL;	
-#else
 		if((pattrib->mfrag == 1)&&(pattrib->frag_num == 0))
 		{				
 			DBG_871X("%s: alloc_skb fail , drop frag frame \n", __FUNCTION__);
@@ -112,7 +102,6 @@ int rtw_os_alloc_recvframe(_adapter *padapter, union recv_frame *precvframe, u8 
 			//goto _exit_recvbuf2recvframe;
 			res = _FAIL;
 		}
-#endif			
 	}		
 
 exit_rtw_os_recv_resource_alloc:
