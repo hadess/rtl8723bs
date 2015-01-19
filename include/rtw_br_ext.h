@@ -20,7 +20,6 @@
 #ifndef _RTW_BR_EXT_H_
 #define _RTW_BR_EXT_H_
 
-#define CL_IPV6_PASS    	1
 #define MACADDRLEN		6
 #define _DEBUG_ERR		DBG_8192C
 #define _DEBUG_INFO		//DBG_8192C
@@ -34,11 +33,7 @@
 #define NAT25_HASH_SIZE		(1 << NAT25_HASH_BITS)
 #define NAT25_AGEING_TIME	300
 
-#ifdef CL_IPV6_PASS
 #define MAX_NETWORK_ADDR_LEN	17
-#else
-#define MAX_NETWORK_ADDR_LEN	11
-#endif
 
 struct nat25_network_db_entry
 {
