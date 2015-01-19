@@ -186,7 +186,6 @@ _pkt *rtw_os_alloc_msdu_pkt(union recv_frame *prframe, u16 nSubframe_Length, u8 
 
 	pattrib = &prframe->u.hdr.attrib;
 
-#ifdef CONFIG_SKB_COPY
 	sub_skb = rtw_skb_alloc(nSubframe_Length + 12);
 	if(sub_skb)
 	{
@@ -195,7 +194,6 @@ _pkt *rtw_os_alloc_msdu_pkt(union recv_frame *prframe, u16 nSubframe_Length, u8 
 		memcpy(data_ptr, (pdata + ETH_HLEN), nSubframe_Length);
 	}
 	else
-#endif // CONFIG_SKB_COPY
 	{
 		sub_skb = rtw_skb_clone(prframe->u.hdr.pkt);
 		if(sub_skb)
