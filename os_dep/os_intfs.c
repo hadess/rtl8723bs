@@ -59,10 +59,6 @@ static int rtw_smart_ps = 2;
 
 static int rtw_check_fw_ps = 1;
 
-#ifdef CONFIG_TX_EARLY_MODE
-static int rtw_early_mode=1;
-#endif
-
 static int rtw_usb_rxagg_mode = 2;//USB_RX_AGG_DMA =1,USB_RX_AGG_USB=2
 module_param(rtw_usb_rxagg_mode, int, 0644);
 
@@ -202,10 +198,6 @@ module_param(rtw_hwpdn_mode, int, 0644);
 module_param(rtw_hwpwrp_detect, int, 0644);
 
 module_param(rtw_hw_wps_pbc, int, 0644);
-
-#ifdef CONFIG_TX_EARLY_MODE
-module_param(rtw_early_mode, int, 0644);
-#endif
 
 #ifdef CONFIG_LAYER2_ROAMING
 static uint rtw_max_roaming_times=2;
@@ -351,9 +343,6 @@ _func_enter_;
 	registry_par->stbc_cap = (u8)rtw_stbc_cap;
 	registry_par->beamform_cap = (u8)rtw_beamform_cap;
 
-#ifdef CONFIG_TX_EARLY_MODE
-	registry_par->early_mode = (u8)rtw_early_mode;
-#endif
 	registry_par->lowrate_two_xmit = (u8)rtw_lowrate_two_xmit;
 	registry_par->rf_config = (u8)rtw_rf_config;
 	registry_par->low_power = (u8)rtw_low_power;
