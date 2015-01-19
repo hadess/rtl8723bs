@@ -31,11 +31,7 @@ odm_ConfigRFReg_8723B(
 {
     if(Addr == 0xfe || Addr == 0xffe)
 	{ 					  
-		#ifdef CONFIG_LONG_DELAY_ISSUE
 		msleep(50);
-		#else		
-		mdelay(50);
-		#endif
 	}
 	else
 	{
@@ -159,11 +155,7 @@ odm_ConfigBB_PHY_REG_PG_8723B(
     )
 {    
 	if (Addr == 0xfe || Addr == 0xffe)
-		#ifdef CONFIG_LONG_DELAY_ISSUE
 		msleep(50);
-		#else		
-		mdelay(50);
-		#endif
     else 
     {
 	    PHY_StoreTxPowerByRate(pDM_Odm->Adapter, Band, RfPath, TxNum, Addr, Bitmask, Data);
@@ -180,11 +172,7 @@ odm_ConfigBB_PHY_8723B(
     )
 {    
 	if (Addr == 0xfe)
-		#ifdef CONFIG_LONG_DELAY_ISSUE
 		msleep(50);
-		#else		
-		mdelay(50);
-		#endif
 	else if (Addr == 0xfd)
 		mdelay(5);
 	else if (Addr == 0xfc)
