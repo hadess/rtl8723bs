@@ -909,9 +909,7 @@ void InitInterrupt8723BSdio(PADAPTER padapter)
 	pHalData = GET_HAL_DATA(padapter);
 	pHalData->sdio_himr = (u32)(			\
 								SDIO_HIMR_RX_REQUEST_MSK			|
-#ifdef CONFIG_SDIO_TX_ENABLE_AVAL_INT
 								SDIO_HIMR_AVAL_MSK					|
-#endif
 //								SDIO_HIMR_TXERR_MSK				|
 //								SDIO_HIMR_RXERR_MSK				|
 //								SDIO_HIMR_TXFOVW_MSK				|
@@ -1174,7 +1172,6 @@ void sd_int_dpc(PADAPTER padapter)
 	dvobj = adapter_to_dvobj(padapter);
 	pwrctl = dvobj_to_pwrctl(dvobj);
 
-#ifdef CONFIG_SDIO_TX_ENABLE_AVAL_INT
 	if (phal->sdio_hisr & SDIO_HISR_AVAL)
 	{
 		//_irqL irql;
@@ -1191,7 +1188,6 @@ void sd_int_dpc(PADAPTER padapter)
 		//	freepage[3]);
 		up(&(padapter->xmitpriv.xmit_sema));
 	}
-#endif
 	if (phal->sdio_hisr & SDIO_HISR_CPWM1)
 	{
 		struct reportpwrstate_parm report;
