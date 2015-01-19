@@ -33,7 +33,6 @@
 /*
  * Functions Config
  */
-#define CONFIG_ACTIVE_KEEP_ALIVE_CHECK
 //#define CONFIG_DEBUG_CFG80211
 
 #define CONFIG_AP_MODE
