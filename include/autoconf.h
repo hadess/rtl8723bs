@@ -55,11 +55,6 @@
 //#define CONFIG_80211D
 
 /*
- * Hardware Related Config
- */
-//#define SUPPORT_HW_RFOFF_DETECTED
-
-/*
  * Interface Related Config
  */
 #define CONFIG_TX_AGGREGATION
