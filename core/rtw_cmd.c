@@ -957,13 +957,9 @@ _func_enter_;
 	}
 
 	init_h2fwcmd_w_parm_no_rsp(ph2c, pbsetdataratepara, GEN_CMD_CODE(_SetDataRate));
-#ifdef MP_FIRMWARE_OFFLOAD
-	pbsetdataratepara->curr_rateidx = *(u32*)rateset;
-//	memcpy(pbsetdataratepara, rateset, sizeof(u32));
-#else
 	pbsetdataratepara->mac_id = 5;
 	memcpy(pbsetdataratepara->datarates, rateset, NumRates);
-#endif
+
 	res = rtw_enqueue_cmd(pcmdpriv, ph2c);
 exit:
 
