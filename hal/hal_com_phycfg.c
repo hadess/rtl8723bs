@@ -2487,11 +2487,7 @@ phy_ConfigBBWithParaFile(
 					}
 					else if (u4bRegOffset == 0xfe || u4bRegOffset == 0xffe)
 					{
-						#ifdef CONFIG_LONG_DELAY_ISSUE
 						msleep(50);
-						#else
-						mdelay(50);
-						#endif
 					}
 					else if (u4bRegOffset == 0xfd)
 					{
@@ -3018,11 +3014,7 @@ PHY_ConfigRFWithParaFile(
 				{
 			 		if(u4bRegOffset == 0xfe || u4bRegOffset == 0xffe)
 					{ // Deay specific ms. Only RF configuration require delay.												
-						#ifdef CONFIG_LONG_DELAY_ISSUE
 						msleep(50);
-						#else
-						mdelay(50);
-						#endif
 					}
 					else if (u4bRegOffset == 0xfd)
 					{
