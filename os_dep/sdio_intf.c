@@ -342,10 +342,6 @@ static void sd_intf_stop(PADAPTER padapter)
 }
 
 
-#ifdef RTW_SUPPORT_PLATFORM_SHUTDOWN
-PADAPTER g_test_adapter = NULL;
-#endif // RTW_SUPPORT_PLATFORM_SHUTDOWN
-
 static _adapter *rtw_sdio_if1_init(struct dvobj_priv *dvobj, const struct sdio_device_id  *pdid)
 {
 	int status = _FAIL;
@@ -356,9 +352,6 @@ static _adapter *rtw_sdio_if1_init(struct dvobj_priv *dvobj, const struct sdio_d
 		goto exit;
 	}
 
-#ifdef RTW_SUPPORT_PLATFORM_SHUTDOWN
-	g_test_adapter = padapter;
-#endif // RTW_SUPPORT_PLATFORM_SHUTDOWN
 	padapter->dvobj = dvobj;
 	dvobj->if1 = padapter;
 
@@ -486,10 +479,6 @@ static void rtw_sdio_if1_deinit(_adapter *if1)
 
 	if(pnetdev)
 		rtw_free_netdev(pnetdev);
-
-#ifdef RTW_SUPPORT_PLATFORM_SHUTDOWN
-	g_test_adapter = NULL;
-#endif // RTW_SUPPORT_PLATFORM_SHUTDOWN
 }
 
 /*
