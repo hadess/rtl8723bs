@@ -453,13 +453,6 @@ static void ConstructARPResponse(
 	SET_ARP_PKT_OPERATION(pARPRspPkt, 0x0200); // ARP response
 	SET_ARP_PKT_SENDER_MAC_ADDR(pARPRspPkt, myid(&(padapter->eeprompriv)));
 	SET_ARP_PKT_SENDER_IP_ADDR(pARPRspPkt, pIPAddress);
-#ifdef CONFIG_ARP_KEEP_ALIVE
-	if (rtw_gw_addr_query(padapter)==0) {
-		SET_ARP_PKT_TARGET_MAC_ADDR(pARPRspPkt, pmlmepriv->gw_mac_addr);
-		SET_ARP_PKT_TARGET_IP_ADDR(pARPRspPkt, pmlmepriv->gw_ip);
-	}
-	else
-#endif
 	{
 		SET_ARP_PKT_TARGET_MAC_ADDR(pARPRspPkt, get_my_bssid(&(pmlmeinfo->network)));
 		SET_ARP_PKT_TARGET_IP_ADDR(pARPRspPkt, pIPAddress);

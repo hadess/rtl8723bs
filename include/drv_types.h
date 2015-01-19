@@ -34,10 +34,6 @@
 #include <wlan_bssdef.h>
 #include <wifi.h>
 #include <ieee80211.h>
-#ifdef CONFIG_ARP_KEEP_ALIVE
-#include <net/neighbour.h>
-#include <net/arp.h>
-#endif
 
 enum _NIC_VERSION {
 
