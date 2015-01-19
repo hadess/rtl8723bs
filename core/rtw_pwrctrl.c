@@ -162,11 +162,6 @@ int ips_leave(_adapter * padapter)
 }
 #endif /* CONFIG_IPS */
 
-#ifdef CONFIG_AUTOSUSPEND
-extern void autosuspend_enter(_adapter* padapter);	
-extern int autoresume_enter(_adapter* padapter);
-#endif
-
 static bool rtw_pwr_unassociated_idle(_adapter *adapter)
 {
 	_adapter *buddy = adapter->pbuddy_adapter;
@@ -266,43 +261,8 @@ void rtw_ps_processor(_adapter*padapter)
 	if((pwrpriv->rf_pwrstate == rf_on) && ((pwrpriv->pwr_state_check_cnts%4)==0))
 	{
 		DBG_871X("==>%s .fw_state(%x)\n",__FUNCTION__,get_fwstate(pmlmepriv));
-		#if defined (CONFIG_AUTOSUSPEND)
-		#else
 		pwrpriv->change_rfpwrstate = rf_off;
-		#endif
-		#ifdef CONFIG_AUTOSUSPEND
-		if(padapter->registrypriv.usbss_enable)
 		{
-			if(pwrpriv->bHWPwrPindetect) 
-				pwrpriv->bkeepfwalive = true;
-			
-			if(padapter->net_closed == true)
-				pwrpriv->ps_flag = true;
-
-			#if defined (CONFIG_AUTOSUSPEND)
-			if (true==pwrpriv->bInternalAutoSuspend) {
-				DBG_871X("<==%s .pwrpriv->bInternalAutoSuspend)(%x)\n",__FUNCTION__,pwrpriv->bInternalAutoSuspend);
-			} else {
-				pwrpriv->change_rfpwrstate = rf_off;
-				padapter->bCardDisableWOHSM = true;
-				DBG_871X("<==%s .pwrpriv->bInternalAutoSuspend)(%x) call autosuspend_enter\n",__FUNCTION__,pwrpriv->bInternalAutoSuspend);
-				autosuspend_enter(padapter);
-			}		
-			#else
-			padapter->bCardDisableWOHSM = true;
-			autosuspend_enter(padapter);
-			#endif	//if defined (CONFIG_AUTOSUSPEND)
-		}		
-		else if(pwrpriv->bHWPwrPindetect)
-		{
-		}
-		else
-		#endif //CONFIG_AUTOSUSPEND
-		{
-			#if defined (CONFIG_AUTOSUSPEND)
-			pwrpriv->change_rfpwrstate = rf_off;
-			#endif	//defined (CONFIG_AUTOSUSPEND)
-
 			#ifdef CONFIG_IPS
 			ips_enter(padapter);			
 			#endif
@@ -903,13 +863,6 @@ _func_enter_;
 	{
 		if(pwrpriv->rf_pwrstate== rf_off)
 		{
-			#ifdef CONFIG_AUTOSUSPEND
-			if(Adapter->registrypriv.usbss_enable)
-			{
-				usb_disable_autosuspend(adapter_to_dvobj(Adapter)->pusbdev);
-			}
-			else
-			#endif
 			{
 #if defined(CONFIG_FWLPS_IN_IPS) || defined(CONFIG_SWLPS_IN_IPS)
 				#ifdef CONFIG_IPS
@@ -979,13 +932,6 @@ _func_enter_;
 	{
 		if(adapter_to_pwrctl(Adapter)->rf_pwrstate== rf_off)
 		{
-			#ifdef CONFIG_AUTOSUSPEND
-			if(Adapter->registrypriv.usbss_enable)
-			{
-				usb_disable_autosuspend(adapter_to_dvobj(Adapter)->pusbdev);
-			}
-			else
-			#endif
 			{
 #if defined(CONFIG_FWLPS_IN_IPS) || defined(CONFIG_SWLPS_IN_IPS)
 				#ifdef CONFIG_IPS
@@ -1847,21 +1793,8 @@ int _rtw_pwr_wakeup(_adapter *padapter, u32 ips_deffer_ms, const char *caller)
 	//I think this should be check in IPS, LPS, autosuspend functions...
 	if (check_fwstate(pmlmepriv, _FW_LINKED) == true)
 	{
-#if defined (CONFIG_AUTOSUSPEND)
-		if(true==pwrpriv->bInternalAutoSuspend){
-			if(0==pwrpriv->autopm_cnt){
-			if (usb_autopm_get_interface(adapter_to_dvobj(padapter)->pusbintf) < 0) 
-			{
-				DBG_871X( "can't get autopm: \n");
-			}			
-			pwrpriv->autopm_cnt++;
-			}
-#endif	//#if defined (CONFIG_AUTOSUSPEND)
 		ret = _SUCCESS;
 		goto exit;
-#if defined (CONFIG_AUTOSUSPEND)
-		}
-#endif	//#if defined (CONFIG_AUTOSUSPEND)
 	}	
 
 	if(rf_off == pwrpriv->rf_pwrstate )
