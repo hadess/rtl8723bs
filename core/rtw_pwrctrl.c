@@ -71,7 +71,6 @@ exit_fw_ps_state:
 	return ret;
 }
 
-#ifdef CONFIG_IPS
 void _ips_enter(_adapter * padapter)
 {
 	struct pwrctrl_priv *pwrpriv = adapter_to_pwrctl(padapter);
@@ -160,7 +159,6 @@ int ips_leave(_adapter * padapter)
 
 	return ret;
 }
-#endif /* CONFIG_IPS */
 
 static bool rtw_pwr_unassociated_idle(_adapter *adapter)
 {
@@ -257,15 +255,10 @@ void rtw_ps_processor(_adapter*padapter)
 		DBG_871X("==>%s .fw_state(%x)\n",__FUNCTION__,get_fwstate(pmlmepriv));
 		pwrpriv->change_rfpwrstate = rf_off;
 		{
-			#ifdef CONFIG_IPS
 			ips_enter(padapter);			
-			#endif
 		}
 	}
 exit:
-#ifndef CONFIG_IPS_CHECK_IN_WD
-	rtw_set_pwr_state_check_timer(pwrpriv);
-#endif
 	pwrpriv->ps_processing = false;
 	return;
 }
@@ -857,15 +850,9 @@ _func_enter_;
 	{
 		if(pwrpriv->rf_pwrstate== rf_off)
 		{
+			if(false == ips_leave(pri_padapter))
 			{
-#if defined(CONFIG_FWLPS_IN_IPS)
-				#ifdef CONFIG_IPS
-				if(false == ips_leave(pri_padapter))
-				{
-					DBG_871X("======> ips_leave fail.............\n");			
-				}
-				#endif
-#endif //CONFIG_FWLPS_IN_IPS
+				DBG_871X("======> ips_leave fail.............\n");
 			}
 		}
 	}
@@ -926,16 +913,10 @@ _func_enter_;
 	{
 		if(adapter_to_pwrctl(Adapter)->rf_pwrstate== rf_off)
 		{
+			if(false == ips_leave(Adapter))
 			{
-#if defined(CONFIG_FWLPS_IN_IPS)
-				#ifdef CONFIG_IPS
-				if(false == ips_leave(Adapter))
-				{
-					DBG_871X("======> ips_leave fail.............\n");			
-				}
-				#endif
-#endif //CONFIG_FWLPS_IN_IPS
-			}				
+				DBG_871X("======> ips_leave fail.............\n");
+			}
 		}	
 	}
 
@@ -1750,7 +1731,6 @@ int _rtw_pwr_wakeup(_adapter *padapter, u32 ips_deffer_ms, const char *caller)
 	if(rf_off == pwrpriv->rf_pwrstate )
 	{		
 		{
-#ifdef CONFIG_IPS
 			DBG_8192C("%s call ips_leave....\n",__FUNCTION__);
 			if(_FAIL ==  ips_leave(padapter))
 			{
@@ -1758,7 +1738,6 @@ int _rtw_pwr_wakeup(_adapter *padapter, u32 ips_deffer_ms, const char *caller)
 				ret = _FAIL;
 				goto exit;
 			}
-#endif
 		}
 	}
 

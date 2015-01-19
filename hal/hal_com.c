@@ -1359,15 +1359,11 @@ void linked_info_dump(_adapter *padapter,u8 benable)
 		rtw_pm_set_lps(padapter,PS_MODE_ACTIVE);
 		#endif	
 								
-		#ifdef CONFIG_IPS	
 		pwrctrlpriv->ips_org_mode = pwrctrlpriv->ips_mode;//keep org value
 		rtw_pm_set_ips(padapter,IPS_NONE);
-		#endif	
 	}
 	else{
-		#ifdef CONFIG_IPS		
 		rtw_pm_set_ips(padapter, pwrctrlpriv->ips_org_mode);
-		#endif // CONFIG_IPS
 
 		#ifdef CONFIG_LPS	
 		rtw_pm_set_lps(padapter, pwrctrlpriv->ips_org_mode);
