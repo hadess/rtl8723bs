@@ -534,13 +534,6 @@ static int rtw_drv_init(
 	gpio_hostwakeup_alloc_irq(if1);
 #endif
 
-#ifdef CONFIG_GLOBAL_UI_PID
-	if(ui_pid[1]!=0) {
-		DBG_871X("ui_pid[1]:%d\n",ui_pid[1]);
-		rtw_signal_process(ui_pid[1], SIGUSR2);
-	}
-#endif
-
 	RT_TRACE(_module_hci_intfs_c_,_drv_err_,("-871x_drv - drv_init, success!\n"));
 
 	status = _SUCCESS;
