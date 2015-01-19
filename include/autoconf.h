@@ -40,13 +40,6 @@
 #endif
 #define CONFIG_RECV_REORDERING_CTRL
 
-	/*
-	 * Indecate new sta asoc through cfg80211_new_sta
-	 * If kernel version >= 3.2 or
-	 * version < 3.2 but already apply cfg80211 patch,
-	 * RTW_USE_CFG80211_STA_EVENT must be defiend!
-	 */
-	//#define RTW_USE_CFG80211_STA_EVENT
 	//#define CONFIG_DEBUG_CFG80211
 	#define CONFIG_SET_SCAN_DENY_TIMER
 
