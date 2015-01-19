@@ -2029,7 +2029,6 @@ _func_enter_;
 _func_exit_;
 }
 
-#ifdef CONFIG_C2H_PACKET_EN
 static void SetHwRegWithBuf8723B(PADAPTER padapter, u8 variable, u8 *pbuf, int len)
 {
 	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(padapter);
@@ -2048,7 +2047,6 @@ _func_enter_;
 	}
 _func_exit_;
 }
-#endif
 
 //
 //	Description:
@@ -2142,9 +2140,7 @@ _func_enter_;
 #endif
 	pHalFunc->SetHwRegHandler = &SetHwReg8723BS;
 	pHalFunc->GetHwRegHandler = &GetHwReg8723BS;
-#ifdef CONFIG_C2H_PACKET_EN
 	pHalFunc->SetHwRegHandlerWithBuf = &SetHwRegWithBuf8723B;
-#endif
 	pHalFunc->GetHalDefVarHandler = &GetHalDefVar8723BSDIO;
  	pHalFunc->SetHalDefVarHandler = &SetHalDefVar8723BSDIO;
 

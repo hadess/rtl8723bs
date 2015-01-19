@@ -164,7 +164,6 @@ static void update_recvframe_phyinfo(
 	}
 }
 
-#ifdef CONFIG_C2H_PACKET_EN
 static void rtl8723bs_c2h_packet_handler(PADAPTER padapter, u8 *pbuf, u16 length)
 {
 	u8 *tmpBuf=NULL;
@@ -190,7 +189,6 @@ static void rtl8723bs_c2h_packet_handler(PADAPTER padapter, u8 *pbuf, u16 length
 
 	return;
 }
-#endif
 
 static void rtl8723bs_recv_tasklet(void *priv)
 {
@@ -348,10 +346,7 @@ static void rtl8723bs_recv_tasklet(void *priv)
 					ptr += 4;
 				}
 
-#ifdef CONFIG_C2H_PACKET_EN
 				if(pattrib->pkt_rpt_type == NORMAL_RX)//Normal rx packet
-				{
-#endif
 				{
 					if (pattrib->physt)
 						update_recvframe_phyinfo(precvframe, (struct phy_stat*)ptr);
@@ -360,8 +355,6 @@ static void rtl8723bs_recv_tasklet(void *priv)
 					{
 						RT_TRACE(_module_rtl871x_recv_c_, _drv_dump_, ("%s: rtw_recv_entry(precvframe) != _SUCCESS\n",__FUNCTION__));
 					}
-				}
-#ifdef CONFIG_C2H_PACKET_EN
 				}
 				else if(pattrib->pkt_rpt_type == C2H_PACKET)
 				{
@@ -388,7 +381,6 @@ static void rtl8723bs_recv_tasklet(void *priv)
 					rtw_free_recvframe(precvframe, &precvpriv->free_recv_queue);
 					
 				}
-#endif				
 			}
 
 			pkt_offset = _RND8(pkt_offset);

@@ -4578,16 +4578,7 @@ static void process_c2h_event(PADAPTER padapter, PC2H_EVT_HDR pC2hEvent, u8 *c2h
 		default:
 			break;
 	}
-
-#ifndef CONFIG_C2H_PACKET_EN
-	// Clear event to notify FW we have read the command.
-	// Note:
-	//	If this field isn't clear, the FW won't update the next command message.
-	rtw_write8(padapter, REG_C2HEVT_CLEAR, C2H_EVT_HOST_CLOSE);
-#endif
 }
-
-#ifdef CONFIG_C2H_PACKET_EN
 
 void C2HPacketHandler_8723B(PADAPTER padapter, u8 *pbuffer, u16 length)
 {
@@ -4615,77 +4606,6 @@ void C2HPacketHandler_8723B(PADAPTER padapter, u8 *pbuffer, u16 length)
 	//c2h_handler_8723b(padapter,&C2hEvent);
 	return;
 }
-#else
-//
-//C2H event format:
-// Field	 TRIGGER		CONTENT    CMD_SEQ	CMD_LEN 	 CMD_ID
-// BITS  [127:120]	[119:16]	  [15:8]		  [7:4] 	   [3:0]
-//2009.10.08. by tynli.
-static void C2HCommandHandler(PADAPTER padapter)
-{
-	C2H_EVT_HDR 	C2hEvent;
-
-	u8				*tmpBuf = NULL;
-	u8				index = 0;
-	u8				bCmdMsgReady = false;
-	u8				U1bTmp = 0;
-//	u8				QueueID = 0;
-
-	memset(&C2hEvent, 0, sizeof(C2H_EVT_HDR));
-
-	C2hEvent.CmdID = rtw_read8(padapter, REG_C2HEVT_CMD_ID_8723B);
-	C2hEvent.CmdLen = rtw_read8(padapter, REG_C2HEVT_CMD_LEN_8723B);
-	C2hEvent.CmdSeq = rtw_read8(padapter, REG_C2HEVT_CMD_ID_8723B + 1);
-
-	RT_PRINT_DATA(_module_hal_init_c_, _drv_info_, "C2HCommandHandler(): ",
-		&C2hEvent , sizeof(C2hEvent));
-
-	U1bTmp = rtw_read8(padapter, REG_C2HEVT_CLEAR);
-	DBG_871X("%s C2hEvent.CmdID:%x C2hEvent.CmdLen:%x C2hEvent.CmdSeq:%x\n",
-			__func__, C2hEvent.CmdID, C2hEvent.CmdLen, C2hEvent.CmdSeq);
-
-	if (U1bTmp == C2H_EVT_HOST_CLOSE)
-	{
-		// Not ready.
-		return;
-	}
-	else if (U1bTmp == C2H_EVT_FW_CLOSE)
-	{
-		bCmdMsgReady = true;
-	}
-	else
-	{
-		// Not a valid value, reset the clear event.
-		goto exit;
-	}
-
-	if(C2hEvent.CmdLen == 0)
-		goto exit;
-	tmpBuf = rtw_zmalloc(C2hEvent.CmdLen);
-	if (tmpBuf == NULL)
-		goto exit;
-
-	// Read the content
-	for (index = 0; index < C2hEvent.CmdLen; index++)
-	{
-		tmpBuf[index] = rtw_read8(padapter, REG_C2HEVT_CMD_ID_8723B + 2 + index);
-	}
-
-	RT_PRINT_DATA(_module_hal_init_c_, _drv_notice_, "C2HCommandHandler(): Command Content:\n", tmpBuf, C2hEvent.CmdLen);
-
-	//process_c2h_event(padapter,&C2hEvent, tmpBuf);
-	c2h_handler_8723b(padapter,&C2hEvent);
-	if (tmpBuf)
-		rtw_mfree(tmpBuf, C2hEvent.CmdLen);
-
-	//REG_C2HEVT_CLEAR have done in process_c2h_event
-	return;
-exit:
-	rtw_write8(padapter, REG_C2HEVT_CLEAR, C2H_EVT_HOST_CLOSE);
-	return;
-}
-
-#endif
 
 void SetHwReg8723B(PADAPTER padapter, u8 variable, u8 *val)
 {
@@ -5085,12 +5005,6 @@ _func_enter_;
 				rtw_write8(padapter, REG_NAV_UPPER, (u8)usNavUpper);
 			}
 			break;
-			
-#ifndef CONFIG_C2H_PACKET_EN
-		case HW_VAR_C2H_HANDLE:
-					C2HCommandHandler(padapter);
-				break;
-#endif
 
 //		case HW_VAR_C2H_HANDLE:
 //			C2HCommandHandler(padapter);

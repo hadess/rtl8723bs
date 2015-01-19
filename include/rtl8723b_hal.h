@@ -264,10 +264,7 @@ void Hal_EfuseParseThermalMeter_8723B(PADAPTER padapter, u8 *hwinfo, u8 AutoLoad
 void Hal_EfuseParsePackageType_8723B(PADAPTER pAdapter,u8* hwinfo,bool AutoLoadFail);
 void Hal_EfuseParseVoltage_8723B(PADAPTER pAdapter,u8* hwinfo,bool 	AutoLoadFail); 
 
-#ifdef CONFIG_C2H_PACKET_EN
 void C2HPacketHandler_8723B(PADAPTER padapter, u8 *pbuffer, u16 length);
-#endif
-
 
 void rtl8723b_set_hal_ops(struct hal_ops *pHalFunc);
 void SetHwReg8723B(PADAPTER padapter, u8 variable, u8 *val);

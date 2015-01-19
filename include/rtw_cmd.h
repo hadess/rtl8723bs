@@ -1018,11 +1018,8 @@ extern u8 rtw_led_blink_cmd(_adapter*padapter, void * pLed);
 extern u8 rtw_set_csa_cmd(_adapter*padapter, u8 new_ch_no);
 extern u8 rtw_tdls_cmd(_adapter*padapter, u8 *addr, u8 option);
 
-//#ifdef CONFIG_C2H_PACKET_EN
 extern u8 rtw_c2h_packet_wk_cmd(PADAPTER padapter, u8 *pbuf, u16 length);
-//#else
 extern u8 rtw_c2h_wk_cmd(PADAPTER padapter, u8 *c2h_evt);
-//#endif
 
 u8 rtw_run_in_thread_cmd(PADAPTER padapter, void (*func)(void*), void* context);
 

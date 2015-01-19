@@ -31,9 +31,6 @@
 #define CONFIG_EMBEDDED_FWIMG
 //#define CONFIG_FILE_FWIMG
 
-#define CONFIG_C2H_PACKET_EN
-
-
 /*
  * Functions Config
  */
@@ -126,11 +123,6 @@
 	#ifndef CONFIG_LPS
 		#define CONFIG_LPS	// download reserved page to FW
 	#endif
-
-	#ifndef CONFIG_C2H_PACKET_EN
-		#define CONFIG_C2H_PACKET_EN
-	#endif
-
 
 #define CONFIG_RF_GAIN_OFFSET
 
