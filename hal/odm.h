@@ -1690,7 +1690,5 @@ ODM_DynamicARFBSelect(
 	IN  		bool			Collision_State	
 	);
 
-void odm_dtc(PDM_ODM_T pDM_Odm);
-
 #endif
 
