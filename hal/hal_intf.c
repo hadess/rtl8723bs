@@ -140,10 +140,7 @@ uint	 rtw_hal_init(_adapter *padapter)
 
 		init_hw_mlme_ext(padapter);
 		
-#ifdef CONFIG_RF_GAIN_OFFSET
 		rtw_bb_rf_gain_offset(padapter);
-#endif //CONFIG_RF_GAIN_OFFSET
-
 	}
 	else{
 		for (i = 0; i<dvobj->iface_nums; i++)

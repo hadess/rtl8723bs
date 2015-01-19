@@ -3551,7 +3551,6 @@ Hal_EfuseParseThermalMeter_8723B(
 }
 
 
-#ifdef CONFIG_RF_GAIN_OFFSET
 void Hal_ReadRFGainOffset(
 	IN		PADAPTER		Adapter,
 	IN		u8* 			PROMContent,
@@ -3574,7 +3573,6 @@ void Hal_ReadRFGainOffset(
 	}
 	DBG_871X("EEPRORFGainOffset = 0x%02x\n", Adapter->eeprompriv.EEPROMRFGainOffset);
 }
-#endif //CONFIG_RF_GAIN_OFFSET
 
 u8 
 BWMapping_8723B(

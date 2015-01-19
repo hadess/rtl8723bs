@@ -1521,9 +1521,7 @@ _ReadEfuseInfo8723BS(
 	Hal_DetectWoWMode(padapter);
 #endif
 
-#ifdef CONFIG_RF_GAIN_OFFSET
-		Hal_ReadRFGainOffset(padapter, hwinfo, pEEPROM->bautoload_fail_flag);
-#endif	//CONFIG_RF_GAIN_OFFSET
+	Hal_ReadRFGainOffset(padapter, hwinfo, pEEPROM->bautoload_fail_flag);
 
 	RT_TRACE(_module_hci_hal_init_c_, _drv_info_, ("<==== _ReadEfuseInfo8723BS()\n"));
 }
