@@ -2250,14 +2250,12 @@ static void dynamic_chk_wk_hdl(_adapter *padapter)
 	struct mlme_priv *pmlmepriv;
 	pmlmepriv = &(padapter->mlmepriv);
 
-#ifdef CONFIG_ACTIVE_KEEP_ALIVE_CHECK
 #ifdef CONFIG_AP_MODE
 	if(check_fwstate(pmlmepriv, WIFI_AP_STATE) == true)
 	{			
 		expire_timeout_chk(padapter);
 	}
 #endif
-#endif //CONFIG_ACTIVE_KEEP_ALIVE_CHECK
 
 	//for debug purpose
 	_linked_info_dump(padapter);

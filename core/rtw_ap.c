@@ -424,29 +424,6 @@ void	expire_timeout_chk(_adapter *padapter)
 			psta->expire_to--;
 		}
 
-#ifndef CONFIG_ACTIVE_KEEP_ALIVE_CHECK
-#ifdef CONFIG_TX_MCAST2UNI
-		if ( (psta->flags & WLAN_STA_HT) && (psta->htpriv.agg_enable_bitmap || psta->under_exist_checking) ) {
-			// check sta by delba(addba) for 11n STA 
-			// ToDo: use CCX report to check for all STAs
-			//DBG_871X("asoc check by DELBA/ADDBA! (pstapriv->expire_to=%d s)(psta->expire_to=%d s), [%02x, %d]\n", pstapriv->expire_to*2, psta->expire_to*2, psta->htpriv.agg_enable_bitmap, psta->under_exist_checking);
-			
-				if ( psta->expire_to <= (pstapriv->expire_to - 50 ) ) {
-				DBG_871X("asoc expire by DELBA/ADDBA! (%d s)\n", (pstapriv->expire_to-psta->expire_to)*2);
-				psta->under_exist_checking = 0;
-				psta->expire_to = 0;
-			} else if ( psta->expire_to <= (pstapriv->expire_to - 3) && (psta->under_exist_checking==0)) {
-				DBG_871X("asoc check by DELBA/ADDBA! (%d s)\n", (pstapriv->expire_to-psta->expire_to)*2);
-				psta->under_exist_checking = 1;
-				//tear down TX AMPDU
-				send_delba(padapter, 1, psta->hwaddr);// // originator
-				psta->htpriv.agg_enable_bitmap = 0x0;//reset
-				psta->htpriv.candidate_tid_bitmap = 0x0;//reset
-			}
-		}
-#endif //CONFIG_TX_MCAST2UNI
-#endif //CONFIG_ACTIVE_KEEP_ALIVE_CHECK
-
 		if (psta->expire_to <= 0)
 		{
 			struct mlme_ext_priv *pmlmeext = &padapter->mlmeextpriv;
@@ -457,65 +434,6 @@ void	expire_timeout_chk(_adapter *padapter)
 				continue;
 			}
 
-#ifndef CONFIG_ACTIVE_KEEP_ALIVE_CHECK
-
-#define KEEP_ALIVE_TRYCNT (3)
-
-			if(psta->keep_alive_trycnt > 0 && psta->keep_alive_trycnt <= KEEP_ALIVE_TRYCNT)
-			{				
-				if(psta->state & WIFI_STA_ALIVE_CHK_STATE)
-					psta->state ^= WIFI_STA_ALIVE_CHK_STATE;
-				else
-					psta->keep_alive_trycnt = 0;
-				
-			}
-			else if((psta->keep_alive_trycnt > KEEP_ALIVE_TRYCNT) && !(psta->state & WIFI_STA_ALIVE_CHK_STATE))
-			{
-				psta->keep_alive_trycnt = 0;
-			}			
-			if((psta->htpriv.ht_option==true) && (psta->htpriv.ampdu_enable==true)) 
-			{
-				uint priority = 1; //test using BK
-				u8 issued=0;				
-		
-				//issued = (psta->htpriv.agg_enable_bitmap>>priority)&0x1;
-				issued |= (psta->htpriv.candidate_tid_bitmap>>priority)&0x1;
-
-				if(0==issued)
-				{
-					if (!(psta->state & WIFI_STA_ALIVE_CHK_STATE))
-					{
-						psta->htpriv.candidate_tid_bitmap |= BIT((u8)priority);
-
-						if (psta->state & WIFI_SLEEP_STATE) 
-							psta->expire_to = 2; // 2x2=4 sec
-						else
-							psta->expire_to = 1; // 2 sec
-					
-						psta->state |= WIFI_STA_ALIVE_CHK_STATE;
-					
-						//add_ba_hdl(padapter, (u8*)paddbareq_parm);
-
-						DBG_871X("issue addba_req to check if sta alive, keep_alive_trycnt=%d\n", psta->keep_alive_trycnt);
-						
-						issue_action_BA(padapter, psta->hwaddr, RTW_WLAN_ACTION_ADDBA_REQ, (u16)priority);		
-		
-						_set_timer(&psta->addba_retry_timer, ADDBA_TO);
-						
-						psta->keep_alive_trycnt++;						
-
-						continue;
-					}			
-				}					
-			}
-			if(psta->keep_alive_trycnt > 0 && psta->state & WIFI_STA_ALIVE_CHK_STATE)
-			{
-				psta->keep_alive_trycnt = 0;
-				psta->state ^= WIFI_STA_ALIVE_CHK_STATE;
-				DBG_871X("change to another methods to check alive if staion is at ps mode\n");
-			}	
-			
-#endif //CONFIG_ACTIVE_KEEP_ALIVE_CHECK	
 			if (psta->state & WIFI_SLEEP_STATE) {
 				if (!(psta->state & WIFI_STA_ALIVE_CHK_STATE)) {
 					//to check if alive by another methods if staion is at ps mode.					
@@ -532,7 +450,6 @@ void	expire_timeout_chk(_adapter *padapter)
 						continue;
 				}
 			}
-			#ifdef CONFIG_ACTIVE_KEEP_ALIVE_CHECK
 			if (pmlmeext->active_keep_alive_check) {
 				int stainfo_offset;
 
@@ -543,7 +460,6 @@ void	expire_timeout_chk(_adapter *padapter)
 
 				continue;
 			}
-			#endif /* CONFIG_ACTIVE_KEEP_ALIVE_CHECK */
 			rtw_list_delete(&psta->asoc_list);
 			pstapriv->asoc_list_cnt--;
 			DBG_871X("asoc expire "MAC_FMT", state=0x%x\n", MAC_ARG(psta->hwaddr), psta->state);
@@ -565,7 +481,6 @@ void	expire_timeout_chk(_adapter *padapter)
 
 	_exit_critical_bh(&pstapriv->asoc_list_lock, &irqL);
 
-#ifdef CONFIG_ACTIVE_KEEP_ALIVE_CHECK
 if (chk_alive_num) {
 
 	u8 backup_oper_channel=0;
@@ -619,7 +534,6 @@ if (chk_alive_num) {
 	if (backup_oper_channel>0) /* back to the original operation channel */
 		SelectChannel(padapter, backup_oper_channel);
 }
-#endif /* CONFIG_ACTIVE_KEEP_ALIVE_CHECK */
 
 	associated_clients_update(padapter, updated);
 }

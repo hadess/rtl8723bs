@@ -134,11 +134,7 @@ _func_enter_;
 	pstapriv->assoc_to = 3;
 	//pstapriv->expire_to = 900;// 900*2 = 1800 sec = 30 min, expire after no any traffic.
 	//pstapriv->expire_to = 30;// 30*2 = 60 sec = 1 min, expire after no any traffic.
-#ifdef CONFIG_ACTIVE_KEEP_ALIVE_CHECK
 	pstapriv->expire_to = 3; // 3*2 = 6 sec
-#else
-	pstapriv->expire_to = 60;// 60*2 = 120 sec = 2 min, expire after no any traffic.
-#endif	
 	pstapriv->max_num_sta = NUM_STA;
 		
 #endif

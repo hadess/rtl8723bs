@@ -582,13 +582,7 @@ int	init_mlme_ext_priv(_adapter* padapter)
 	pmlmeext->last_scan_time = 0;
 	pmlmeext->chan_scan_time = SURVEY_TO;
 	pmlmeext->mlmeext_init = true;
-
-
-#ifdef CONFIG_ACTIVE_KEEP_ALIVE_CHECK	
 	pmlmeext->active_keep_alive_check = true;
-#else
-	pmlmeext->active_keep_alive_check = false;
-#endif
 
 #ifdef DBG_FIXED_CHAN		
 	pmlmeext->fixed_chan = 0xFF;	
