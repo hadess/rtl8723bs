@@ -5321,7 +5321,6 @@ void start_clnt_join(_adapter* padapter)
 #endif
 		rtw_hal_set_hwreg(padapter, HW_VAR_SEC_CFG, (u8 *)(&val8));
 
-		#ifdef CONFIG_DEAUTH_BEFORE_CONNECT
 		// Because of AP's not receiving deauth before
 		// AP may: 1)not response auth or 2)deauth us after link is complete
 		// issue deauth before issuing auth to deal with the situation
@@ -5332,7 +5331,6 @@ void start_clnt_join(_adapter* padapter)
 				//To avoid connecting to AP fail during resume process, change retry count from 5 to 1
 				issue_deauth_ex(padapter, pnetwork->MacAddress, WLAN_REASON_DEAUTH_LEAVING, 1, 100);
 		}
-		#endif /* CONFIG_DEAUTH_BEFORE_CONNECT */
 
 		//here wait for receiving the beacon to start auth
 		//and enable a timer
