@@ -47,11 +47,7 @@ static int rtw_adhoc_tx_pwr = 1;
 static int rtw_soft_ap = 0;
 //int smart_ps = 1;
 static int rtw_power_mgnt = 1;
-#ifdef CONFIG_IPS_LEVEL_2
-static int rtw_ips_mode = IPS_LEVEL_2;
-#else
 static int rtw_ips_mode = IPS_NORMAL;
-#endif
 module_param(rtw_ips_mode, int, 0644);
 MODULE_PARM_DESC(rtw_ips_mode,"The default IPS mode");
 
