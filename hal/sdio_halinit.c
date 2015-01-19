@@ -277,9 +277,7 @@ static void _InitQueueReservedPage(PADAPTER padapter)
 
 	rtw_hal_set_sdio_tx_max_length(padapter, numHQ, numNQ, numLQ, numPubQ);
 
-#ifdef CONFIG_SDIO_TX_ENABLE_AVAL_INT
 	_init_available_page_threshold(padapter, numHQ, numNQ, numLQ, numPubQ);
-#endif
 }
 
 static void _InitTxBufferBoundary(PADAPTER padapter)

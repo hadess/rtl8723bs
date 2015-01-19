@@ -64,12 +64,7 @@ static s32 rtl8723_dequeue_writeport(PADAPTER padapter)
 	s32 ret = 0;
 	u8	PageIdx = 0;
 	u32	deviceId;
-#ifdef CONFIG_SDIO_TX_ENABLE_AVAL_INT
 	u8	bUpdatePageNum = false;
-#else
-	u32	polling_num = 0;
-#endif
-
 
 	ret = ret || check_fwstate(pmlmepriv, _FW_UNDER_SURVEY);
 
@@ -102,7 +97,6 @@ query_free_page:
 	// check if hardware tx fifo page is enough
 	if( false == rtw_hal_sdio_query_tx_freepage(pri_padapter, PageIdx, pxmitbuf->pg_num))
 	{
-#ifdef CONFIG_SDIO_TX_ENABLE_AVAL_INT
 		if (!bUpdatePageNum) {
 			// Total number of page is NOT available, so update current FIFO status
 			HalQueryTxBufferStatus8723BSdio(padapter);
@@ -113,18 +107,6 @@ query_free_page:
 			enqueue_pending_xmitbuf_to_head(pxmitpriv, pxmitbuf);
 			return true;
 		}
-#else //CONFIG_SDIO_TX_ENABLE_AVAL_INT
-		polling_num++;
-		if ((polling_num % 0x7F) == 0) {//or 80
-			//DBG_871X("%s: FIFO starvation!(%d) len=%d agg=%d page=(R)%d(A)%d\n",
-			//	__func__, polling_num, pxmitbuf->len, pxmitbuf->agg_num, pframe->pg_num, freePage[PageIdx] + freePage[PUBLIC_QUEUE_IDX]);
-			msleep(1);
-		}
-
-		// Total number of page is NOT available, so update current FIFO status
-		HalQueryTxBufferStatus8723BSdio(padapter);
-		goto query_free_page;
-#endif //CONFIG_SDIO_TX_ENABLE_AVAL_INT
 	}
 
 	if ((padapter->bSurpriseRemoved == true) 
@@ -327,9 +309,7 @@ static s32 xmit_xmitframes(PADAPTER padapter, struct xmit_priv *pxmitpriv)
 						DBG_871X_LEVEL(_drv_err_, "%s: xmit_buf is not enough!\n", __FUNCTION__);
 #endif
 						err = -2;
-#ifdef CONFIG_SDIO_TX_ENABLE_AVAL_INT
 						up(&(pxmitpriv->xmit_sema));
-#endif
 						break;
 					}
 					k = 0;

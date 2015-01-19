@@ -55,7 +55,6 @@
  */
 #define CONFIG_TX_AGGREGATION
 #define CONFIG_XMIT_THREAD_MODE
-#define CONFIG_SDIO_TX_ENABLE_AVAL_INT
 
 /*
  * Others
