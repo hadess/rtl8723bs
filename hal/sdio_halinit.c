@@ -615,10 +615,6 @@ static void HalRxAggr8723BSdio(PADAPTER padapter)
 		valueDMAPageCount = 0x06;
 	}
 
-#ifdef CONFIG_DONT_CARE_TP
-	valueDMATimeout = 0x0f;
-	valueDMAPageCount = 0x04;  //RxAggUpthreshold = [4]*1K bytes+1.5k.  since RxAggUpthreshold+SzAmsdu(3839)<MaxRxBuffSize(8k), MaxvalueDMAPageCount=4.
-#endif
 	rtw_write8(padapter, REG_RXDMA_AGG_PG_TH+1, valueDMATimeout);
 	rtw_write8(padapter, REG_RXDMA_AGG_PG_TH, valueDMAPageCount);
 }
