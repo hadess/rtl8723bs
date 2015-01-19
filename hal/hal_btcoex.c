@@ -165,11 +165,6 @@ static void halbtcoutsrc_DbgInit(void)
 			0;
 }
 
-static u8 halbtcoutsrc_IsHwMailboxExist(PBTC_COEXIST pBtCoexist)
-{
-	return true;
-}
-
 static void halbtcoutsrc_LeaveLps(PBTC_COEXIST pBtCoexist)
 {
 	PADAPTER padapter;
@@ -1012,37 +1007,6 @@ static void halbtcoutsrc_DisplayDbgMsg(void *pBtcContext, u8 dispType)
 		default:
 			break;
 	}
-}
-
-static u8 halbtcoutsrc_UnderIps(PBTC_COEXIST pBtCoexist)
-{
-	PADAPTER padapter;
-	struct pwrctrl_priv *pwrpriv;
-	u8 bMacPwrCtrlOn;
-
-	padapter = pBtCoexist->Adapter;
-	pwrpriv = &padapter->dvobj->pwrctl_priv;
-	bMacPwrCtrlOn = false;
-
-	if ((true == pwrpriv->bips_processing)
-		&& (IPS_NONE != pwrpriv->ips_mode_req)
-		)
-	{
-		return true;
-	}
-
-	if (rf_off == pwrpriv->rf_pwrstate)
-	{
-		return true;
-	}
-
-	rtw_hal_get_hwreg(padapter, HW_VAR_APFM_ON_MAC, &bMacPwrCtrlOn);
-	if (false == bMacPwrCtrlOn)
-	{
-		return true;
-	}
-
-	return false;
 }
 
 //====================================

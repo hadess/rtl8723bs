@@ -164,13 +164,6 @@ static void update_recvframe_phyinfo(
 	}
 }
 
-static s32 pre_recv_entry(union recv_frame *precvframe, struct recv_buf	*precvbuf, struct phy_stat *pphy_status)
-{
-	s32 ret=_SUCCESS;
-	return ret;
-
-}
-
 #ifdef CONFIG_C2H_PACKET_EN
 static void rtl8723bs_c2h_packet_handler(PADAPTER padapter, u8 *pbuf, u16 length)
 {

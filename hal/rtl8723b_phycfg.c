@@ -165,61 +165,6 @@ PHY_SetBBReg_8723B(
 // 2. RF register R/W API
 //
 
-/*-----------------------------------------------------------------------------
- * Function:	phy_FwRFSerialRead()
- *
- * Overview:	We support firmware to execute RF-R/W.
- *
- * Input:		NONE
- *
- * Output:		NONE
- *
- * Return:		NONE
- *
- * Revised History:
- *	When		Who		Remark
- *	01/21/2008	MHC		Create Version 0.
- *
- *---------------------------------------------------------------------------*/
-static	u32
-phy_FwRFSerialRead(
-	IN	PADAPTER			Adapter,
-	IN	RF_PATH			eRFPath,
-	IN	u32				Offset	)
-{
-	u32		retValue = 0;
-	//RT_ASSERT(false,("deprecate!\n"));
-	return	(retValue);
-
-}	/* phy_FwRFSerialRead */
-
-
-/*-----------------------------------------------------------------------------
- * Function:	phy_FwRFSerialWrite()
- *
- * Overview:	We support firmware to execute RF-R/W.
- *
- * Input:		NONE
- *
- * Output:		NONE
- *
- * Return:		NONE
- *
- * Revised History:
- *	When		Who		Remark
- *	01/21/2008	MHC		Create Version 0.
- *
- *---------------------------------------------------------------------------*/
-static	void
-phy_FwRFSerialWrite(
-	IN	PADAPTER			Adapter,
-	IN	RF_PATH			eRFPath,
-	IN	u32				Offset,
-	IN	u32				Data	)
-{
-	//RT_ASSERT(false,("deprecate!\n"));
-}
-
 static	u32
 phy_RFSerialRead_8723B(
 	IN	PADAPTER			Adapter,
@@ -751,44 +696,6 @@ PHY_ConfigRFWithParaFile_8723B(
 	return _SUCCESS;
 }
 
-//****************************************
-/*-----------------------------------------------------------------------------
- * Function:    PHY_ConfigRFWithHeaderFile()
- *
- * Overview:    This function read RF parameters from general file format, and do RF 3-wire
- *
- * Input:      	PADAPTER			Adapter
- *			s8 * 				pFileName
- *			RF_PATH				eRFPath
- *
- * Output:      NONE
- *
- * Return:      RT_STATUS_SUCCESS: configuration file exist
- *
- * Note:		Delay may be required for RF configuration
- *---------------------------------------------------------------------------*/
-static void phy_PowerIndexCheck8723B(
-	IN	PADAPTER		Adapter,
-	IN	u8			channel,
-	IN OUT u8		*cckPowerLevel,
-	IN OUT u8		*ofdmPowerLevel,
-	IN OUT u8		*BW20PowerLevel,
-	IN OUT u8		*BW40PowerLevel	
-	)
-{
-
-	HAL_DATA_TYPE		*pHalData = GET_HAL_DATA(Adapter);
-
-	pHalData->CurrentCckTxPwrIdx = cckPowerLevel[0];
-	pHalData->CurrentOfdm24GTxPwrIdx = ofdmPowerLevel[0];
-	pHalData->CurrentBW2024GTxPwrIdx = BW20PowerLevel[0];
-	pHalData->CurrentBW4024GTxPwrIdx = BW40PowerLevel[0];
-
-	RT_TRACE(_module_hal_init_c_, _drv_info_, 
-		("PHY_SetTxPowerLevel8723B(): CurrentCckTxPwrIdx : 0x%x,CurrentOfdm24GTxPwrIdx: 0x%x\n", 
-		pHalData->CurrentCckTxPwrIdx, pHalData->CurrentOfdm24GTxPwrIdx));
-}
-
 /**************************************************************************************************************
  *   Description: 
  *       The low-level interface to set TxAGC , called by both MP and Normal Driver.
@@ -842,14 +749,6 @@ PHY_SetTxPowerIndex_8723B(
 	{
 		RT_TRACE(_module_hal_init_c_, _drv_err_,("Invalid RFPath!!\n"));
 	}
-}
-
-static u8
-phy_GetCurrentTxNum_8723B(
-	IN	PADAPTER		pAdapter
-	)
-{
-	return RF_TX_NUM_NONIMPLEMENT;
 }
 
 u8
@@ -917,148 +816,6 @@ PHY_GetTxPowerLevel8723B(
 {
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
 	s32				TxPwrDbm = 13;
-}
-
-
-// <20130321, VincentLan> A workaround to eliminate the 2440MHz & 2480MHz spur of 8723B. (Asked by Rock.)
-static void
-phy_SpurCalibration_8723B(
-	IN	PADAPTER					pAdapter,
-	IN	u1Byte						ToChannel,
-	IN	u1Byte						threshold
-	)
-{
-	u4Byte 		freq[6] = {0xFCCD, 0xFC4D, 0xFFCD, 0xFF4D, 0xFCCD, 0xFF9A}; // {chnl 5, 6, 7, 8, 13, 14}
-	u1Byte 		idx = 0;
-	u1Byte		b_doNotch = false;
-	u1Byte 		initial_gain;
-	bool		bHW_Ctrl = false, bSW_Ctrl = false,bHW_Ctrl_S1 = false, bSW_Ctrl_S1 = false;
-	u4Byte		reg948;
-
-	// add for notch
-	u4Byte				wlan_channel, CurrentChannel, Is40MHz;
-	HAL_DATA_TYPE		*pHalData	= GET_HAL_DATA(pAdapter);
-	//PMGNT_INFO			pMgntInfo = &(pAdapter->MgntInfo);
-	PDM_ODM_T		pDM_Odm = &(pHalData->odmpriv);
-	//PDM_ODM_T			pDM_Odm = &pHalData->DM_OutSrc;
-
-	// check threshold
-	if(threshold <= 0x0)
-		threshold = 0x16;
-
-	DBG_8192C("===>phy_SpurCalibration_8723B: Channel = %d\n", ToChannel);
-
-	if (ToChannel == 5)
-		idx = 0;
-	else if (ToChannel == 6)
-		idx = 1;
-	else if (ToChannel == 7)
-		idx = 2;
-	else if (ToChannel == 8)
-		idx = 3;
-	else if (ToChannel == 13)
-		idx = 4;
-	else if (ToChannel == 14)
-		idx = 5;
-	else
-		idx = 10;
-
-	reg948 = PHY_QueryBBReg(pAdapter, rS0S1_PathSwitch, bMaskDWord);
-	if((reg948 & BIT6) == 0x0)
-		bSW_Ctrl = true;
-	else
-		bHW_Ctrl = true;
-
-	if(bHW_Ctrl)
-		bHW_Ctrl_S1 = (PHY_QueryBBReg(pAdapter, rFPGA0_XB_RFInterfaceOE, BIT5|BIT4|BIT3)==0x1)? true:false;
-	else if(bSW_Ctrl)
-		bSW_Ctrl_S1 = ((reg948 & BIT9) == 0x0)? true:false;
-
-	// If wlan at S1 (both HW control & SW control) and current channel=5,6,7,8,13,14
-	if ((bHW_Ctrl_S1 || bSW_Ctrl_S1) && (idx <= 5)) 
-	{
-		initial_gain = (u1Byte) (ODM_GetBBReg(pDM_Odm, rOFDM0_XAAGCCore1, bMaskByte0) & 0x7f);
-		ODM_Write_DIG(pDM_Odm, 0x30);
-		PHY_SetBBReg(pAdapter, rFPGA0_AnalogParameter4, bMaskDWord, 0xccf000c0); 		// disable 3-wire
-
-		PHY_SetBBReg(pAdapter, rFPGA0_PSDFunction, bMaskDWord, freq[idx]); 				// Setup PSD
-		PHY_SetBBReg(pAdapter, rFPGA0_PSDFunction, bMaskDWord, 0x400000 | freq[idx]); // Start PSD	
-
-		msleep(30);
-
-		if(PHY_QueryBBReg(pAdapter, rFPGA0_PSDReport, bMaskDWord) >= threshold)
-			b_doNotch = true;
-		
-		PHY_SetBBReg(pAdapter, rFPGA0_PSDFunction, bMaskDWord, freq[idx]); // turn off PSD
-		PHY_SetBBReg(pAdapter, rFPGA0_AnalogParameter4, bMaskDWord, 0xccc000c0); 	// enable 3-wire
-		ODM_Write_DIG(pDM_Odm, initial_gain);
-	}
-
-	// --- Notch Filter --- Asked by Rock	
- 	if (b_doNotch)
-	{
-		CurrentChannel = ODM_GetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_CHNLBW, bRFRegOffsetMask);  
-		wlan_channel   = CurrentChannel & 0x0f;						    //Get center frequency
-
-		switch(wlan_channel)								    				//Set notch filter				
-		{
-			case 5:
-			case 13:
-				ODM_SetBBReg(pDM_Odm, 0xC40, BIT28|BIT27|BIT26|BIT25|BIT24, 0xB);
-				ODM_SetBBReg(pDM_Odm, 0xC40, BIT9, 0x1);                     	//enable notch filter
-				ODM_SetBBReg(pDM_Odm, 0xD40, bMaskDWord, 0x06000000);
-				ODM_SetBBReg(pDM_Odm, 0xD44, bMaskDWord, 0x00000000);
-				ODM_SetBBReg(pDM_Odm, 0xD48, bMaskDWord, 0x00000000);
-				ODM_SetBBReg(pDM_Odm, 0xD4C, bMaskDWord, 0x00000000);
-				ODM_SetBBReg(pDM_Odm, 0xD2C, BIT28, 0x1);                    	//enable CSI mask
-				break;
-			case 6:
-				ODM_SetBBReg(pDM_Odm, 0xC40, BIT28|BIT27|BIT26|BIT25|BIT24, 0x4);
-				ODM_SetBBReg(pDM_Odm, 0xC40, BIT9, 0x1);                   	 	//enable notch filter
-				ODM_SetBBReg(pDM_Odm, 0xD40, bMaskDWord, 0x00000600);
-				ODM_SetBBReg(pDM_Odm, 0xD44, bMaskDWord, 0x00000000);
-				ODM_SetBBReg(pDM_Odm, 0xD48, bMaskDWord, 0x00000000);
-				ODM_SetBBReg(pDM_Odm, 0xD4C, bMaskDWord, 0x00000000);
-				ODM_SetBBReg(pDM_Odm, 0xD2C, BIT28, 0x1);                    	//enable CSI mask
-				break;
-			case 7:
-				ODM_SetBBReg(pDM_Odm, 0xC40, BIT28|BIT27|BIT26|BIT25|BIT24, 0x3);
-				ODM_SetBBReg(pDM_Odm, 0xC40, BIT9, 0x1);                    	//enable notch filter
-				ODM_SetBBReg(pDM_Odm, 0xD40, bMaskDWord, 0x00000000);
-				ODM_SetBBReg(pDM_Odm, 0xD44, bMaskDWord, 0x00000000);
-				ODM_SetBBReg(pDM_Odm, 0xD48, bMaskDWord, 0x00000000);
-				ODM_SetBBReg(pDM_Odm, 0xD4C, bMaskDWord, 0x06000000);
-				ODM_SetBBReg(pDM_Odm, 0xD2C, BIT28, 0x1);                   	//enable CSI mask
-				break;
-			case 8:
-				ODM_SetBBReg(pDM_Odm, 0xC40, BIT28|BIT27|BIT26|BIT25|BIT24, 0xA);
-				ODM_SetBBReg(pDM_Odm, 0xC40, BIT9, 0x1);                    	//enable notch filter
-				ODM_SetBBReg(pDM_Odm, 0xD40, bMaskDWord, 0x00000000);
-				ODM_SetBBReg(pDM_Odm, 0xD44, bMaskDWord, 0x00000000);
-				ODM_SetBBReg(pDM_Odm, 0xD48, bMaskDWord, 0x00000000);
-				ODM_SetBBReg(pDM_Odm, 0xD4C, bMaskDWord, 0x00000380);
-				ODM_SetBBReg(pDM_Odm, 0xD2C, BIT28, 0x1);                   	//enable CSI mask
-				break;
-			case 14:
-				ODM_SetBBReg(pDM_Odm, 0xC40, BIT28|BIT27|BIT26|BIT25|BIT24, 0x5);
-				ODM_SetBBReg(pDM_Odm, 0xC40, BIT9, 0x1);                   	 	//enable notch filter
-				ODM_SetBBReg(pDM_Odm, 0xD40, bMaskDWord, 0x00000000);
-				ODM_SetBBReg(pDM_Odm, 0xD44, bMaskDWord, 0x00000000);
-				ODM_SetBBReg(pDM_Odm, 0xD48, bMaskDWord, 0x00000000);
-				ODM_SetBBReg(pDM_Odm, 0xD4C, bMaskDWord, 0x00180000);
-				ODM_SetBBReg(pDM_Odm, 0xD2C, BIT28, 0x1);                    	//enable CSI mask
-				break;
-			default:
-				ODM_SetBBReg(pDM_Odm, 0xC40, BIT9, 0x0);				//disable notch filter
-				ODM_SetBBReg(pDM_Odm, 0xD2C, BIT28, 0x0);                    	//disable CSI mask	function
-				break;
-		}//switch(wlan_channel)	
-		return;
-	}
-
-	ODM_SetBBReg(pDM_Odm, 0xC40, BIT9, 0x0);                     //disable notch filter
-	ODM_SetBBReg(pDM_Odm, 0xD2C, BIT28, 0x0);                    //disable CSI mask
-
 }
 
 static void
@@ -1218,7 +975,6 @@ phy_SwChnl8723B(
 	PHY_SetRFReg(pAdapter, ODM_RF_PATH_B, RF_CHNLBW, 0x3FF, pHalData->RfRegChnlVal[0] );
 
 	DBG_8192C("===>phy_SwChnl8723B: Channel = %d\n", channelToSW);
-	//phy_SpurCalibration_8723B(pAdapter, channelToSW, 0x16);
 }
 
 static void
@@ -1391,19 +1147,3 @@ PHY_SetSwChnlBWMode8723B(
 
 	//DBG_871X("<==%s()\n",__FUNCTION__);
 }
-
-static void
-_PHY_DumpRFReg_8723B(IN	PADAPTER	pAdapter)
-{
-	u32 rfRegValue,rfRegOffset;
-
-	RT_TRACE(_module_hal_init_c_, _drv_info_, ("_PHY_DumpRFReg_8723B()====>\n"));
-
-	for(rfRegOffset = 0x00;rfRegOffset<=0x30;rfRegOffset++){
-		rfRegValue = PHY_QueryRFReg_8723B(pAdapter,RF_PATH_A, rfRegOffset, bMaskDWord);
-		RT_TRACE(_module_hal_init_c_, _drv_info_, (" 0x%02x = 0x%08x\n",rfRegOffset,rfRegValue));
-	}
-	RT_TRACE(_module_hal_init_c_, _drv_info_, ("<===== _PHY_DumpRFReg_8723B()\n"));
-}
-
-

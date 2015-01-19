@@ -820,19 +820,6 @@ static u16 SdioLocalCmd52Read2Byte(PADAPTER padapter, u32 addr)
 	return val;
 }
 
-static u32 SdioLocalCmd52Read4Byte(PADAPTER padapter, u32 addr)
-{	
-	u32 val = 0;
-	struct intf_hdl * pintfhdl=&padapter->iopriv.intf;
-
-	HalSdioGetCmdAddr8723BSdio(padapter, SDIO_LOCAL_DEVICE_ID, addr, &addr);
-	sd_cmd52_read(pintfhdl, addr, 4, (u8*)&val);
-
-	val = le32_to_cpu(val);
-
-	return val;
-}
-
 static u32 SdioLocalCmd53Read4Byte(PADAPTER padapter, u32 addr)
 {
 	
@@ -863,15 +850,6 @@ void SdioLocalCmd52Write1Byte(PADAPTER padapter, u32 addr, u8 v)
 
 	HalSdioGetCmdAddr8723BSdio(padapter, SDIO_LOCAL_DEVICE_ID, addr, &addr);
 	sd_cmd52_write(pintfhdl, addr, 1, &v);
-}
-
-static void SdioLocalCmd52Write2Byte(PADAPTER padapter, u32 addr, u16 v)
-{
-	struct intf_hdl * pintfhdl=&padapter->iopriv.intf;
-
-	HalSdioGetCmdAddr8723BSdio(padapter, SDIO_LOCAL_DEVICE_ID, addr, &addr);
-	v = cpu_to_le16(v);
-	sd_cmd52_write(pintfhdl, addr, 2, (u8*)&v);
 }
 
 static void SdioLocalCmd52Write4Byte(PADAPTER padapter, u32 addr, u32 v)
@@ -1015,33 +993,6 @@ void ClearInterrupt8723BSdio(PADAPTER padapter)
 
 //
 //	Description:
-//		Clear corresponding system Host ISR interrupt service.
-//
-//
-//	Created by Roger, 2011.02.11.
-//
-static void ClearSysInterrupt8723BSdio(PADAPTER padapter)
-{
-	PHAL_DATA_TYPE pHalData;
-	u32 clear;
-
-
-	if (true == padapter->bSurpriseRemoved)
-		return;
-
-	pHalData = GET_HAL_DATA(padapter);
-
-	// Clear corresponding HISR Content if needed
-	clear = pHalData->SysIntrStatus & MASK_HSISR_CLEAR;
-	if (clear)
-	{
-		// Perform write one clear operation
-		rtw_write32(padapter, REG_HSISR, clear);
-	}
-}
-
-//
-//	Description:
 //		Enalbe SDIO Host Interrupt Mask configuration on SDIO local domain.
 //
 //	Assumption:
@@ -1131,31 +1082,6 @@ void DisableInterruptButCpwm28723BSdio(PADAPTER padapter)
 	DBG_871X("DisableInterruptButCpwm28723BSdio(): Read again SDIO_REG_HIMR: 0x%08x\n", tmp);
 }
 #endif //CONFIG_WOWLAN
-//
-//	Description:
-//		Update SDIO Host Interrupt Mask configuration on SDIO local domain.
-//
-//	Assumption:
-//		1. Using SDIO Local register ONLY for configuration.
-//		2. PASSIVE LEVEL
-//
-//	Created by Roger, 2011.02.11.
-//
-static void UpdateInterruptMask8723BSdio(PADAPTER padapter, u32 AddMSR, u32 RemoveMSR)
-{
-	HAL_DATA_TYPE *pHalData;
-
-	pHalData = GET_HAL_DATA(padapter);
-
-	if (AddMSR)
-		pHalData->sdio_himr |= AddMSR;
-
-	if (RemoveMSR)
-		pHalData->sdio_himr &= (~RemoveMSR);
-
-	DisableInterrupt8723BSdio(padapter);
-	EnableInterrupt8723BSdio(padapter);
-}
 
 static struct recv_buf* sd_recv_rxfifo(PADAPTER padapter, u32 size)
 {

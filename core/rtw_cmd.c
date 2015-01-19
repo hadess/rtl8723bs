@@ -2984,37 +2984,6 @@ struct btinfo {
 	u8 rsvd_7;
 };
 
-static void btinfo_evt_dump(void *sel, void *buf)
-{
-	struct btinfo *info = (struct btinfo *)buf;
-	
-	DBG_871X_SEL_NL(sel, "cid:0x%02x, len:%u\n", info->cid, info->len);
-
-	if (info->len > 2)
-	DBG_871X_SEL_NL(sel, "byte2:%s%s%s%s%s%s%s%s\n"
-		, info->bConnection?"bConnection ":""
-		, info->bSCOeSCO?"bSCOeSCO ":""
-		, info->bInQPage?"bInQPage ":""
-		, info->bACLBusy?"bACLBusy ":""
-		, info->bSCOBusy?"bSCOBusy ":""
-		, info->bHID?"bHID ":""
-		, info->bA2DP?"bA2DP ":""
-		, info->bFTP?"bFTP":""
-	);
-
-	if (info->len > 3)
-	DBG_871X_SEL_NL(sel, "retry_cnt:%u\n", info->retry_cnt);
-
-	if (info->len > 4)
-	DBG_871X_SEL_NL(sel, "rssi:%u\n", info->rssi);
-
-	if (info->len > 5)
-	DBG_871X_SEL_NL(sel, "byte5:%s%s\n"
-		, info->eSCO_SCO?"eSCO_SCO ":""
-		, info->Master_Slave?"Master_Slave ":""
-	);
-}
-
 static void rtw_btinfo_hdl(_adapter *adapter, u8 *buf, u16 buf_len)
 {
 	#define BTINFO_WIFI_FETCH 0x23
@@ -3196,32 +3165,6 @@ exit:
 _func_exit_;
 
 	return res;
-}
-
-static s32 c2h_evt_hdl(_adapter *adapter, u8 *c2h_evt, c2h_id_filter filter)
-{
-	s32 ret = _FAIL;
-	u8 buf[16];
-
-	if (!c2h_evt) {
-		/* No c2h event in cmd_obj, read c2h event before handling*/
-		if (rtw_hal_c2h_evt_read(adapter, buf) == _SUCCESS) {
-			c2h_evt = buf;
-			
-			if (filter && filter(c2h_evt) == false)
-				goto exit;
-
-			ret = rtw_hal_c2h_handler(adapter, c2h_evt);
-		}
-	} else {
-
-		if (filter && filter(c2h_evt) == false)
-			goto exit;
-
-		ret = rtw_hal_c2h_handler(adapter, c2h_evt);
-	}
-exit:
-	return ret;
 }
 
 static void c2h_wk_callback(_workitem *work)

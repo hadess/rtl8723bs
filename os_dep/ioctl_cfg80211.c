@@ -3002,11 +3002,6 @@ fail:
 	
 }
 
-static void rtw_cfg80211_monitor_if_set_multicast_list(struct net_device *ndev)
-{
-	DBG_8192C("%s\n", __func__);
-}
-
 static int rtw_cfg80211_monitor_if_set_mac_address(struct net_device *ndev, void *addr)
 {
 	int ret = 0;
@@ -3469,30 +3464,6 @@ static int	cfg80211_rtw_change_bss(struct wiphy *wiphy, struct net_device *ndev,
 	
 }
 
-static int	cfg80211_rtw_set_channel(struct wiphy *wiphy
-	, struct net_device *ndev
-	, struct ieee80211_channel *chan, enum nl80211_channel_type channel_type)
-{
-	DBG_871X(FUNC_NDEV_FMT"\n", FUNC_NDEV_ARG(ndev));
-	
-	return 0;
-}
-
-static int	cfg80211_rtw_auth(struct wiphy *wiphy, struct net_device *ndev,
-			struct cfg80211_auth_request *req)
-{
-	DBG_871X(FUNC_NDEV_FMT"\n", FUNC_NDEV_ARG(ndev));
-	
-	return 0;
-}
-
-static int	cfg80211_rtw_assoc(struct wiphy *wiphy, struct net_device *ndev,
-			 struct cfg80211_assoc_request *req)
-{
-	DBG_871X(FUNC_NDEV_FMT"\n", FUNC_NDEV_ARG(ndev));
-	
-	return 0;
-}
 #endif //CONFIG_AP_MODE
 
 void rtw_cfg80211_rx_action_p2p(_adapter *padapter, u8 *pmgmt_frame, uint frame_len)
@@ -4242,8 +4213,6 @@ static struct cfg80211_ops rtw_cfg80211_ops = {
 	.change_station = cfg80211_rtw_change_station,
 	.dump_station = cfg80211_rtw_dump_station,
 	.change_bss = cfg80211_rtw_change_bss,
-	//.auth = cfg80211_rtw_auth,
-	//.assoc = cfg80211_rtw_assoc,	
 #endif //CONFIG_AP_MODE
 
 	.mgmt_tx = cfg80211_rtw_mgmt_tx,

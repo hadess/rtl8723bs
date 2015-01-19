@@ -1555,14 +1555,6 @@ ODM_RAStateCheck(
 //3 RSSI Monitor
 //3============================================================
 
-static void
-odm_RSSIDumpToRegister(
-	IN	PDM_ODM_T	pDM_Odm
-	)
-{
-}
-
-
 void
 odm_RSSIMonitorInit(
 	IN	PDM_ODM_T	pDM_Odm
@@ -1994,42 +1986,6 @@ ConvertTo_dB(
 	dB = i*12 + j + 1;
 
 	return (dB);
-}
-
-//Remove PathDiversity related function to odm_PathDiv.c
-
-static void
-odm_PHY_SaveAFERegisters(
-	IN	PDM_ODM_T	pDM_Odm,
-	IN	pu4Byte		AFEReg,
-	IN	pu4Byte		AFEBackup,
-	IN	u4Byte		RegisterNum
-	)
-{
-	u4Byte	i;
-	
-	//RT_DISP(FINIT, INIT_IQK, ("Save ADDA parameters.\n"));
-	for( i = 0 ; i < RegisterNum ; i++){
-		AFEBackup[i] = ODM_GetBBReg(pDM_Odm, AFEReg[i], bMaskDWord);
-	}
-}
-
-static void
-odm_PHY_ReloadAFERegisters(
-	IN	PDM_ODM_T	pDM_Odm,
-	IN	pu4Byte		AFEReg,
-	IN	pu4Byte		AFEBackup,
-	IN	u4Byte		RegiesterNum
-	)
-{
-	u4Byte	i;
-
-	//RT_DISP(FINIT, INIT_IQK, ("Reload ADDA power saving parameters !\n"));
-	for(i = 0 ; i < RegiesterNum; i++)
-	{
-	
-		ODM_SetBBReg(pDM_Odm, AFEReg[i], bMaskDWord, AFEBackup[i]);
-	}
 }
 
 //
