@@ -450,11 +450,6 @@ void Switch_DM_Func(_adapter *padapter, u32 mode, u8 enable)
 		rtw_hal_set_hwreg(padapter, HW_VAR_DM_FUNC_CLR, (u8 *)(&mode));
 }
 
-static void Set_NETYPE1_MSR(_adapter *padapter, u8 type)
-{
-	rtw_hal_set_hwreg(padapter, HW_VAR_MEDIA_STATUS1, (u8 *)(&type));
-}
-
 static void Set_NETYPE0_MSR(_adapter *padapter, u8 type)
 {
 	rtw_hal_set_hwreg(padapter, HW_VAR_MEDIA_STATUS, (u8 *)(&type));
@@ -462,16 +457,7 @@ static void Set_NETYPE0_MSR(_adapter *padapter, u8 type)
 
 void Set_MSR(_adapter *padapter, u8 type)
 {
-#ifdef CONFIG_CONCURRENT_MODE
-	if(padapter->iface_type == IFACE_PORT1)
-	{
-		Set_NETYPE1_MSR(padapter, type);
-	}
-	else
-#endif
-	{
-		Set_NETYPE0_MSR(padapter, type);
-	}
+	Set_NETYPE0_MSR(padapter, type);
 }
 
 inline u8 rtw_get_oper_ch(_adapter *adapter)
@@ -638,12 +624,6 @@ void SelectChannel(_adapter *padapter, unsigned char channel)
 {
 	struct mlme_ext_priv *pmlmeext = &padapter->mlmeextpriv;	
 
-#ifdef CONFIG_DUALMAC_CONCURRENT
-	//saved channel info
-	rtw_set_oper_ch(padapter, channel);
-	dc_SelectChannel(padapter, channel);
-#else //CONFIG_DUALMAC_CONCURRENT
-
 	_enter_critical_mutex(&(adapter_to_dvobj(padapter)->setch_mutex), NULL);
 	
 	//saved channel info
@@ -652,20 +632,11 @@ void SelectChannel(_adapter *padapter, unsigned char channel)
 	rtw_hal_set_chan(padapter, channel);
 	
 	_exit_critical_mutex(&(adapter_to_dvobj(padapter)->setch_mutex), NULL);
-		
-#endif // CONFIG_DUALMAC_CONCURRENT
 }
 
 void SetBWMode(_adapter *padapter, unsigned short bwmode, unsigned char channel_offset)
 {
 	struct mlme_ext_priv *pmlmeext = &padapter->mlmeextpriv;
-
-#ifdef CONFIG_DUALMAC_CONCURRENT
-	//saved bw info
-	rtw_set_oper_bw(padapter, bwmode);
-	rtw_set_oper_choffset(padapter, channel_offset);
-	dc_SetBWMode(padapter, bwmode, channel_offset);
-#else //CONFIG_DUALMAC_CONCURRENT
 
 	_enter_critical_mutex(&(adapter_to_dvobj(padapter)->setbw_mutex), NULL);
 
@@ -676,8 +647,6 @@ void SetBWMode(_adapter *padapter, unsigned short bwmode, unsigned char channel_
 	rtw_hal_set_bwmode(padapter, (CHANNEL_WIDTH)bwmode, channel_offset);
 
 	_exit_critical_mutex(&(adapter_to_dvobj(padapter)->setbw_mutex), NULL);
-
-#endif // CONFIG_DUALMAC_CONCURRENT
 }
 
 void set_channel_bwmode(_adapter *padapter, unsigned char channel, unsigned char channel_offset, unsigned short bwmode)
@@ -703,15 +672,6 @@ void set_channel_bwmode(_adapter *padapter, unsigned char channel, unsigned char
 	}
 
 	//set Channel
-#ifdef CONFIG_DUALMAC_CONCURRENT
-	//saved channel/bw info
-	rtw_set_oper_ch(padapter, channel);
-	rtw_set_oper_bw(padapter, bwmode);
-	rtw_set_oper_choffset(padapter, channel_offset);
-	SelectChannel(padapter, channel);
-	SetBWMode(padapter, bwmode, channel_offset);
-#else //CONFIG_DUALMAC_CONCURRENT
-	
 	_enter_critical_mutex(&(adapter_to_dvobj(padapter)->setch_mutex), NULL);
 
 	//saved channel/bw info
@@ -722,8 +682,6 @@ void set_channel_bwmode(_adapter *padapter, unsigned char channel, unsigned char
 	rtw_hal_set_chnl_bw(padapter, center_ch, bwmode, channel_offset, chnl_offset80); // set center channel
 
 	_exit_critical_mutex(&(adapter_to_dvobj(padapter)->setch_mutex), NULL);
-
-#endif // CONFIG_DUALMAC_CONCURRENT
 }
 
 int get_bsstype(unsigned short capability)
@@ -847,7 +805,7 @@ void invalidate_cam_all(_adapter *padapter)
 	memset(dvobj->cam_cache, 0, sizeof(struct cam_entry_cache)*TOTAL_CAM_ENTRY);
 	_exit_critical_bh(&cam_ctl->lock, &irqL);
 }
-#if 1
+
 static u32 _ReadCAM(_adapter *padapter ,u32 addr)
 {
 	u32 count = 0, cmd;
@@ -877,7 +835,6 @@ void read_cam(_adapter *padapter ,u8 entry, u8 *get_key)
 	}
 	//DBG_8192C("*********************************\n");
 }
-#endif
 
 void _write_cam(_adapter *padapter, u8 entry, u16 ctrl, u8 *mac, u8 *key)
 {
@@ -1035,20 +992,6 @@ exit:
 	return ret;
 }
 
-static bool rtw_camid_is_gk(_adapter *adapter, u8 cam_id)
-{
-	struct dvobj_priv *dvobj = adapter_to_dvobj(adapter);
-	struct cam_ctl_t *cam_ctl = &dvobj->cam_ctl;
-	_irqL irqL;
-	bool ret;
-
-	_enter_critical_bh(&cam_ctl->lock, &irqL);
-	ret = _rtw_camid_is_gk(adapter, cam_id);
-	_exit_critical_bh(&cam_ctl->lock, &irqL);
-
-	return ret;
-}
-
 static s16 _rtw_camid_search(_adapter *adapter, u8 *addr, s16 kid)
 {
 	struct dvobj_priv *dvobj = adapter_to_dvobj(adapter);
@@ -1066,14 +1009,12 @@ static s16 _rtw_camid_search(_adapter *adapter, u8 *addr, s16 kid)
 		break;
 	}
 
-	if (0) {
-		if (addr)
-			DBG_871X(FUNC_ADPT_FMT" addr:"MAC_FMT" kid:%d, return cam_id:%d\n"
-				, FUNC_ADPT_ARG(adapter), MAC_ARG(addr), kid, cam_id);
-		else
-			DBG_871X(FUNC_ADPT_FMT" addr:%p kid:%d, return cam_id:%d\n"
-				, FUNC_ADPT_ARG(adapter), addr, kid, cam_id);
-	}
+	if (addr)
+		DBG_871X(FUNC_ADPT_FMT" addr:"MAC_FMT" kid:%d, return cam_id:%d\n"
+			 , FUNC_ADPT_ARG(adapter), MAC_ARG(addr), kid, cam_id);
+	else
+		DBG_871X(FUNC_ADPT_FMT" addr:%p kid:%d, return cam_id:%d\n"
+			 , FUNC_ADPT_ARG(adapter), addr, kid, cam_id);
 
 	return cam_id;
 }
@@ -1210,54 +1151,11 @@ void flush_all_cam_entry(_adapter *padapter)
 	struct mlme_ext_info *pmlmeinfo = &(pmlmeext->mlmext_info);
 	struct mlme_priv *pmlmepriv = &(padapter->mlmepriv);
 
-#ifdef CONFIG_CONCURRENT_MODE
-	if(check_buddy_fwstate(padapter, _FW_LINKED) == true)
-	{
-		if(check_fwstate(pmlmepriv, WIFI_STATION_STATE))
-		{
-			struct sta_priv	*pstapriv = &padapter->stapriv;
-			struct sta_info	*psta;
-
-			psta = rtw_get_stainfo(pstapriv, pmlmeinfo->network.MacAddress);
-			if(psta) {
-				if(psta->state & WIFI_AP_STATE)
-				{}   //clear cam when ap free per sta_info        
-				else {
-					rtw_clearstakey_cmd(padapter, psta, false);
-				}
-			}
-		}
-		else if(check_fwstate(pmlmepriv, WIFI_AP_STATE) == true)
-		{
-			/* clear default key */
-			int i, cam_id;
-			u8 null_addr[ETH_ALEN]= {0,0,0,0,0,0};
-
-			for (i=0;i<4;i++) {
-				cam_id = rtw_camid_search(padapter, null_addr, i);
-				if (cam_id >= 0) {
-					clear_cam_entry(padapter, cam_id);
-					rtw_camid_free(padapter, cam_id);
-				}
-			}
-
-			/* clear default key related key search setting */
-			#ifdef DYNAMIC_CAMID_ALLOC
-			rtw_hal_set_hwreg(padapter, HW_VAR_SEC_DK_CFG, (u8*)false);
-			#endif
-
-			/* leave pairwise key when ap free per sta_info */
-		}
-	}
-	else
-#endif //CONFIG_CONCURRENT_MODE
-	{
-		invalidate_cam_all(padapter);
-		/* clear default key related key search setting */
-		#ifdef DYNAMIC_CAMID_ALLOC
-		rtw_hal_set_hwreg(padapter, HW_VAR_SEC_DK_CFG, (u8*)false);
-		#endif
-	}
+	invalidate_cam_all(padapter);
+	/* clear default key related key search setting */
+	#ifdef DYNAMIC_CAMID_ALLOC
+	rtw_hal_set_hwreg(padapter, HW_VAR_SEC_DK_CFG, (u8*)false);
+	#endif
 
 	memset((u8 *)(pmlmeinfo->FW_sta_info), 0, sizeof(pmlmeinfo->FW_sta_info));
 	
@@ -1657,25 +1555,6 @@ void HT_caps_handler(_adapter *padapter, PNDIS_802_11_VARIABLE_IEs pIE)
 			DBG_871X("Enable HT Tx STBC !\n");
 		}
 		phtpriv->stbc_cap = cur_stbc_cap;
-
-#ifdef CONFIG_BEAMFORMING
-		// Config Tx beamforming setting
-		if (TEST_FLAG(phtpriv->beamform_cap, BEAMFORMING_HT_BEAMFORMER_ENABLE) && 
-			GET_HT_CAP_TXBF_EXPLICIT_COMP_STEERING_CAP(pIE->data))
-		{
-			SET_FLAG(cur_beamform_cap, BEAMFORMING_HT_BEAMFORMER_ENABLE);
-		}
-
-		if (TEST_FLAG(phtpriv->beamform_cap, BEAMFORMING_HT_BEAMFORMEE_ENABLE) &&
-			GET_HT_CAP_TXBF_EXPLICIT_COMP_FEEDBACK_CAP(pIE->data))
-		{
-			SET_FLAG(cur_beamform_cap, BEAMFORMING_HT_BEAMFORMEE_ENABLE);
-		}
-		phtpriv->beamform_cap = cur_beamform_cap;
-		if (cur_beamform_cap) {
-			DBG_871X("AP HT Beamforming Cap = 0x%02X\n", cur_beamform_cap);
-		}
-#endif //CONFIG_BEAMFORMING
 	} else {
 		// Config LDPC Coding Capability
 		if (TEST_FLAG(phtpriv->ldpc_cap, LDPC_HT_ENABLE_TX) && GET_HT_CAPABILITY_ELE_LDPC_CAP(pIE->data))
@@ -1692,25 +1571,6 @@ void HT_caps_handler(_adapter *padapter, PNDIS_802_11_VARIABLE_IEs pIE)
 			DBG_871X("Enable HT Tx STBC!\n");
 		}
 		phtpriv->stbc_cap = cur_stbc_cap;
-
-#ifdef CONFIG_BEAMFORMING
-		// Config Tx beamforming setting
-		if (TEST_FLAG(phtpriv->beamform_cap, BEAMFORMING_HT_BEAMFORMEE_ENABLE) && 
-			GET_HT_CAP_TXBF_EXPLICIT_COMP_STEERING_CAP(pIE->data))
-		{
-			SET_FLAG(cur_beamform_cap, BEAMFORMING_HT_BEAMFORMER_ENABLE);
-		}
-
-		if (TEST_FLAG(phtpriv->beamform_cap, BEAMFORMING_HT_BEAMFORMER_ENABLE) &&
-			GET_HT_CAP_TXBF_EXPLICIT_COMP_FEEDBACK_CAP(pIE->data))
-		{
-			SET_FLAG(cur_beamform_cap, BEAMFORMING_HT_BEAMFORMEE_ENABLE);
-		}
-		phtpriv->beamform_cap = cur_beamform_cap;
-		if (cur_beamform_cap) {
-			DBG_871X("Client HT Beamforming Cap = 0x%02X\n", cur_beamform_cap);
-		}
-#endif //CONFIG_BEAMFORMING
 	}
 }
 
@@ -1768,57 +1628,6 @@ void HTOnAssocRsp(_adapter *padapter)
 	rtw_hal_set_hwreg(padapter, HW_VAR_AMPDU_MIN_SPACE, (u8 *)(&min_MPDU_spacing));
 
 	rtw_hal_set_hwreg(padapter, HW_VAR_AMPDU_FACTOR, (u8 *)(&max_AMPDU_len));
-
-#if 0 //move to rtw_update_ht_cap()
-	if ((pregpriv->bw_mode > 0) &&
-		(pmlmeinfo->HT_caps.u.HT_cap_element.HT_caps_info & BIT(1)) && 
-		(pmlmeinfo->HT_info.infos[0] & BIT(2)))
-	{
-		//switch to the 40M Hz mode accoring to the AP
-		pmlmeext->cur_bwmode = CHANNEL_WIDTH_40;
-		switch ((pmlmeinfo->HT_info.infos[0] & 0x3))
-		{
-			case EXTCHNL_OFFSET_UPPER:
-				pmlmeext->cur_ch_offset = HAL_PRIME_CHNL_OFFSET_LOWER;
-				break;
-			
-			case EXTCHNL_OFFSET_LOWER:
-				pmlmeext->cur_ch_offset = HAL_PRIME_CHNL_OFFSET_UPPER;
-				break;
-				
-			default:
-				pmlmeext->cur_ch_offset = HAL_PRIME_CHNL_OFFSET_DONT_CARE;
-				break;
-		}
-		
-		//SelectChannel(padapter, pmlmeext->cur_channel, pmlmeext->cur_ch_offset);
-	}
-#endif
-
-	//set_channel_bwmode(padapter, pmlmeext->cur_channel, pmlmeext->cur_ch_offset, pmlmeext->cur_bwmode);
-
-#if 0 //move to rtw_update_ht_cap()
-	//
-	// Config SM Power Save setting
-	//
-	pmlmeinfo->SM_PS = (pmlmeinfo->HT_caps.u.HT_cap_element.HT_caps_info & 0x0C) >> 2;
-	if(pmlmeinfo->SM_PS == WLAN_HT_CAP_SM_PS_STATIC)
-	{
-		/*u8 i;
-		//update the MCS rates
-		for (i = 0; i < 16; i++)
-		{
-			pmlmeinfo->HT_caps.HT_cap_element.MCS_rate[i] &= MCS_rate_1R[i];
-		}*/
-		DBG_871X("%s(): WLAN_HT_CAP_SM_PS_STATIC\n",__FUNCTION__);
-	}
-
-	//
-	// Config current HT Protection mode.
-	//
-	pmlmeinfo->HT_protection = pmlmeinfo->HT_info.infos[1] & 0x3;
-#endif
-	
 }
 
 void ERP_IE_handler(_adapter *padapter, PNDIS_802_11_VARIABLE_IEs pIE)
@@ -1896,24 +1705,6 @@ void	update_ldpc_stbc_cap(struct sta_info *psta)
 		psta->stbc = 0;
 	}
 }
-
-#ifdef CONFIG_TDLS
-int check_ap_tdls_prohibited(u8 *pframe, u8 pkt_len)
-{
-	u8 tdls_prohibited_bit = 0x40; //bit(38); TDLS_prohibited
-
-	if(pkt_len < 5)
-	{
-		return false;
-	}
-
-	pframe += 4;
-	if( (*pframe) & tdls_prohibited_bit )
-		return true;
-
-	return false;
-}
-#endif //CONFIG_TDLS
 
 int rtw_check_bcn_info(ADAPTER *Adapter, u8 *pframe, u32 packet_len)
 {
@@ -2158,11 +1949,6 @@ void update_beacon_info(_adapter *padapter, u8 *pframe, uint pkt_len, struct sta
 	unsigned int len;
 	PNDIS_802_11_VARIABLE_IEs	pIE;
 		
-#ifdef CONFIG_TDLS
-	struct tdls_info *ptdlsinfo = &padapter->tdlsinfo;
-	u8 tdls_prohibited[] = { 0x00, 0x00, 0x00, 0x00, 0x10 }; //bit(38): TDLS_prohibited
-#endif //CONFIG_TDLS
-		
 	len = pkt_len - (_BEACON_IE_OFFSET_ + WLAN_HDR_A3_LEN);
 
 	for (i = 0; i < len;)
@@ -2191,12 +1977,6 @@ void update_beacon_info(_adapter *padapter, u8 *pframe, uint pkt_len, struct sta
 				VCS_update(padapter, psta);
 				break;
 
-#ifdef CONFIG_TDLS
-			case _EXT_CAP_IE_:
-				if( check_ap_tdls_prohibited(pIE->data, pIE->Length) == true )
-					ptdlsinfo->ap_prohibited = true;
-				break;
-#endif //CONFIG_TDLS
 			default:
 				break;
 		}
@@ -2799,34 +2579,6 @@ void update_wireless_mode(_adapter *padapter)
 		update_mgnt_tx_rate(padapter, IEEE80211_OFDM_RATE_6MB);
 }
 
-void fire_write_MAC_cmd(_adapter *padapter, unsigned int addr, unsigned int value);
-void fire_write_MAC_cmd(_adapter *padapter, unsigned int addr, unsigned int value)
-{
-#if 0
-	struct cmd_obj					*ph2c;
-	struct reg_rw_parm			*pwriteMacPara;
-	struct cmd_priv					*pcmdpriv = &(padapter->cmdpriv);
-
-	if ((ph2c = (struct cmd_obj*)rtw_zmalloc(sizeof(struct cmd_obj))) == NULL)
-	{
-		return;
-	}	
-
-	if ((pwriteMacPara = (struct reg_rw_parm*)rtw_malloc(sizeof(struct reg_rw_parm))) == NULL) 
-	{		
-		rtw_mfree((unsigned char *)ph2c, sizeof(struct cmd_obj));
-		return;
-	}
-	
-	pwriteMacPara->rw = 1;
-	pwriteMacPara->addr = addr;
-	pwriteMacPara->value = value;
-	
-	init_h2fwcmd_w_parm_no_rsp(ph2c, pwriteMacPara, GEN_CMD_CODE(_Write_MACREG));
-	rtw_enqueue_cmd(pcmdpriv, ph2c);
-#endif	
-}
-
 void update_sta_basic_rate(struct sta_info *psta, u8 wireless_mode)
 {
 	if(IsSupportedTxCCK(wireless_mode))
@@ -3120,108 +2872,6 @@ u8 rtw_search_max_mac_id(_adapter *padapter)
 	return max_mac_id;
 
 }		
-
-#if 0
-unsigned int setup_beacon_frame(_adapter *padapter, unsigned char *beacon_frame)
-{
-	unsigned short				ATIMWindow;
-	unsigned char					*pframe;
-	struct tx_desc 				*ptxdesc;
-	struct rtw_ieee80211_hdr 	*pwlanhdr;
-	unsigned short				*fctrl;
-	unsigned int					rate_len, len = 0;
-	struct xmit_priv			*pxmitpriv = &(padapter->xmitpriv);
-	struct mlme_ext_priv	*pmlmeext = &(padapter->mlmeextpriv);
-	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
-	WLAN_BSSID_EX 		*cur_network = &(pmlmeinfo->network);
-	u8	bc_addr[] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
-	
-	memset(beacon_frame, 0, 256);
-	
-	pframe = beacon_frame + TXDESC_SIZE;
-	
-	pwlanhdr = (struct rtw_ieee80211_hdr *)pframe;	
-	
-	fctrl = &(pwlanhdr->frame_ctl);
-	*(fctrl) = 0;
-	
-	memcpy(pwlanhdr->addr1, bc_addr, ETH_ALEN);
-	memcpy(pwlanhdr->addr2, myid(&(padapter->eeprompriv)), ETH_ALEN);
-	memcpy(pwlanhdr->addr3, get_my_bssid(cur_network), ETH_ALEN);
-	
-	SetFrameSubType(pframe, WIFI_BEACON);
-	
-	pframe += sizeof(struct rtw_ieee80211_hdr_3addr);	
-	len = sizeof(struct rtw_ieee80211_hdr_3addr);
-
-	//timestamp will be inserted by hardware
-	pframe += 8;
-	len += 8;
-
-	// beacon interval: 2 bytes
-	memcpy(pframe, (unsigned char *)(rtw_get_beacon_interval_from_ie(cur_network->IEs)), 2); 
-
-	pframe += 2;
-	len += 2;
-
-	// capability info: 2 bytes
-	memcpy(pframe, (unsigned char *)(rtw_get_capability_from_ie(cur_network->IEs)), 2);
-
-	pframe += 2;
-	len += 2;
-
-	// SSID
-	pframe = rtw_set_ie(pframe, _SSID_IE_, cur_network->Ssid.SsidLength, cur_network->Ssid.Ssid, &len);
-
-	// supported rates...
-	rate_len = rtw_get_rateset_len(cur_network->SupportedRates);
-	pframe = rtw_set_ie(pframe, _SUPPORTEDRATES_IE_, ((rate_len > 8)? 8: rate_len), cur_network->SupportedRates, &len);
-
-	// DS parameter set
-	pframe = rtw_set_ie(pframe, _DSSET_IE_, 1, (unsigned char *)&(cur_network->Configuration.DSConfig), &len);
-
-	// IBSS Parameter Set...
-	//ATIMWindow = cur->Configuration.ATIMWindow;
-	ATIMWindow = 0;
-	pframe = rtw_set_ie(pframe, _IBSS_PARA_IE_, 2, (unsigned char *)(&ATIMWindow), &len);
-
-	//todo: ERP IE
-	
-	// EXTERNDED SUPPORTED RATE
-	if (rate_len > 8)
-	{
-		pframe = rtw_set_ie(pframe, _EXT_SUPPORTEDRATES_IE_, (rate_len - 8), (cur_network->SupportedRates + 8), &len);
-	}
-
-	if ((len + TXDESC_SIZE) > 256)
-	{
-		//DBG_871X("marc: beacon frame too large\n");
-		return 0;
-	}
-
-	//fill the tx descriptor
-	ptxdesc = (struct tx_desc *)beacon_frame;
-	
-	//offset 0	
-	ptxdesc->txdw0 |= cpu_to_le32(len & 0x0000ffff); 
-	ptxdesc->txdw0 |= cpu_to_le32(((TXDESC_SIZE + OFFSET_SZ) << OFFSET_SHT) & 0x00ff0000); //default = 32 bytes for TX Desc
-	
-	//offset 4	
-	ptxdesc->txdw1 |= cpu_to_le32((0x10 << QSEL_SHT) & 0x00001f00);
-	
-	//offset 8		
-	ptxdesc->txdw2 |= cpu_to_le32(BMC);
-	ptxdesc->txdw2 |= cpu_to_le32(BK);
-
-	//offset 16		
-	ptxdesc->txdw4 = 0x80000000;
-	
-	//offset 20
-	ptxdesc->txdw5 = 0x00000000; //1M	
-	
-	return (len + TXDESC_SIZE);
-}
-#endif
 
 static _adapter *pbuddy_padapter = NULL;
 

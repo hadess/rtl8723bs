@@ -25,61 +25,6 @@
 // LED object.
 //================================================================================
 
-
-//================================================================================
-//	Prototype of protected function.
-//================================================================================
-
-//================================================================================
-// LED_819xUsb routines.
-//================================================================================
-
-//
-//	Description:
-//		Turn on LED according to LedPin specified.
-//
-static void
-SwLedOn_8723BS(
-	_adapter			*padapter,
-	PLED_SDIO		pLed
-)
-{
-	u8	LedCfg;
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
-
-	if( (padapter->bSurpriseRemoved == true) || ( padapter->bDriverStopped == true))
-	{
-		return;
-	}
-
-	pLed->bLedOn = true;
-
-}
-
-
-//
-//	Description:
-//		Turn off LED according to LedPin specified.
-//
-static void
-SwLedOff_8723BS(
-	_adapter			*padapter,
-	PLED_SDIO		pLed
-)
-{
-	u8	LedCfg;
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
-
-	if((padapter->bSurpriseRemoved == true) || ( padapter->bDriverStopped == true))
-	{
-		goto exit;
-	}
-
-exit:
-	pLed->bLedOn = false;
-
-}
-
 //================================================================================
 // Interface to manipulate LED objects.
 //================================================================================
@@ -97,18 +42,6 @@ rtl8723bs_InitSwLeds(
 	_adapter	*padapter
 	)
 {
-#if 0
-	struct led_priv *pledpriv = &(padapter->ledpriv);
-
-	pledpriv->LedControlHandler = LedControlSDIO;
-
-	pledpriv->SwLedOn = SwLedOn_8723BS;
-	pledpriv->SwLedOff = SwLedOff_8723BS;
-	
-	InitLed871x(padapter, &(pledpriv->SwLed0), LED_PIN_LED0);
-
-	InitLed871x(padapter,&(pledpriv->SwLed1), LED_PIN_LED1);
-#endif
 }
 
 
@@ -121,11 +54,5 @@ rtl8723bs_DeInitSwLeds(
 	_adapter	*padapter
 	)
 {
-#if 0
-	struct led_priv	*ledpriv = &(padapter->ledpriv);
-
-	DeInitLed871x( &(ledpriv->SwLed0) );
-	DeInitLed871x( &(ledpriv->SwLed1) );
-#endif
 }
 

@@ -368,36 +368,6 @@ struct	ss_res
 
 #define	WIFI_FW_LINKING_STATE		(WIFI_FW_AUTH_NULL | WIFI_FW_AUTH_STATE | WIFI_FW_AUTH_SUCCESS |WIFI_FW_ASSOC_STATE)
 
-#ifdef CONFIG_TDLS
-// 1: Write RCR DATA BIT
-// 2: Issue peer traffic indication
-// 3: Go back to the channel linked with AP, terminating channel switch procedure
-// 4: Init channel sensing, receive all data and mgnt frame
-// 5: Channel sensing and report candidate channel
-// 6: First time set channel to off channel
-// 7: Go back tp the channel linked with AP when set base channel as target channel
-// 8: Set channel back to base channel
-// 9: Set channel back to off channel
-// 10: Restore RCR DATA BIT
-// 11: Free TDLS sta
-enum TDLS_option
-{
-	TDLS_ESTABLISHED	= 	1,
-	TDLS_SD_PTI		=	2,
-	TDLS_CS_OFF		= 	3,
-	TDLS_INIT_CH_SEN	= 	4,
-	TDLS_DONE_CH_SEN	=	5,
-	TDLS_OFF_CH		=	6,
-	TDLS_BASE_CH 		=	7,
-	TDLS_P_OFF_CH		=	8,
-	TDLS_P_BASE_CH	= 	9,
-	TDLS_RS_RCR		=	10,
-	TDLS_TEAR_STA		=	11,
-	maxTDLS,
-};
-
-#endif //CONFIG_TDLS
-
 struct FW_Sta_Info
 {
 	struct sta_info	*psta;
@@ -425,12 +395,6 @@ struct FW_Sta_Info
  * 4. Back to channel 1 for 300 milliseconds
  * 5. ... and so on, till survey done.
  */
-#if defined(CONFIG_STA_MODE_SCAN_UNDER_AP_MODE)
-#define RTW_SCAN_NUM_OF_CH			3
-#define RTW_STAY_AP_CH_MILLISECOND		4	// this value is a multiplier,for example, when this value is 3, 
-							// it would stay AP's op ch for  3 * SURVEY_TO millisecond.
-#endif 
-
 struct mlme_ext_info
 {
 	u32	state;
@@ -476,10 +440,6 @@ struct mlme_ext_info
 	struct HT_info_element		HT_info;
 	WLAN_BSSID_EX			network;//join network or bss_network, if in ap mode, it is the same to cur_network.network
 	struct FW_Sta_Info		FW_sta_info[NUM_STA];
-
-#if defined(CONFIG_STA_MODE_SCAN_UNDER_AP_MODE)
-	u8 scan_cnt;
-#endif //CONFIG_STA_MODE_SCAN_UNDER_AP_MODE
 };
 
 // The channel information about this channel including joining, scanning, and power constraints.
@@ -490,9 +450,6 @@ typedef struct _RT_CHANNEL_INFO
 	//u16				ScanPeriod;		// Listen time in millisecond in this channel.
 	//s32				MaxTxPwrDbm;	// Max allowed tx power.
 	//u32				ExInfo;			// Extended Information for this channel.
-#ifdef CONFIG_FIND_BEST_CHANNEL
-	u32				rx_count;
-#endif
 }RT_CHANNEL_INFO, *PRT_CHANNEL_INFO;
 
 int rtw_ch_set_search_ch(RT_CHANNEL_INFO *ch_set, const u32 ch);
@@ -593,9 +550,7 @@ struct mlme_ext_priv
 	u8 action_public_dialog_token;
 	u16 	 action_public_rxseq;
 
-//#ifdef CONFIG_ACTIVE_KEEP_ALIVE_CHECK
 	u8 active_keep_alive_check;
-//#endif
 #ifdef DBG_FIXED_CHAN
 	u8 fixed_chan;
 #endif
@@ -688,9 +643,6 @@ int is_IBSS_empty(_adapter *padapter);
 unsigned char check_assoc_AP(u8 *pframe, uint len);
 
 int WMM_param_handler(_adapter *padapter, PNDIS_802_11_VARIABLE_IEs	pIE);
-#ifdef CONFIG_WFD
-int WFD_info_handler(_adapter *padapter, PNDIS_802_11_VARIABLE_IEs	pIE);
-#endif
 void WMMOnAssocRsp(_adapter *padapter);
 
 void HT_caps_handler(_adapter *padapter, PNDIS_802_11_VARIABLE_IEs pIE);
@@ -844,26 +796,6 @@ extern void update_TSF(struct mlme_ext_priv *pmlmeext, u8 *pframe, uint len);
 extern void correct_TSF(_adapter *padapter, struct mlme_ext_priv *pmlmeext);
 extern void adaptive_early_32k(struct mlme_ext_priv *pmlmeext, u8 *pframe, uint len);
 extern u8 traffic_status_watchdog(_adapter *padapter, u8 from_timer);
-
-#ifdef CONFIG_CONCURRENT_MODE
- sint check_buddy_mlmeinfo_state(_adapter *padapter, u32 state);
-void concurrent_chk_joinbss_done(_adapter *padapter, int join_res);
-#endif //CONFIG_CONCURRENT_MODE
-
-#ifdef CONFIG_DUALMAC_CONCURRENT
-void	dc_SelectChannel(_adapter *padapter, unsigned char channel);
-void	dc_SetBWMode(_adapter *padapter, unsigned short bwmode, unsigned char channel_offset);
-void	dc_set_channel_bwmode_disconnect(_adapter *padapter);
-u8	dc_handle_join_request(_adapter *padapter, u8 *ch, u8 *bw, u8 *offset);
-void	dc_handle_join_done(_adapter *padapter, u8 join_res);
-sint	dc_check_fwstate(_adapter *padapter, sint fw_state);
-u8	dc_handle_site_survey(_adapter *padapter);
-void	dc_report_survey_event(_adapter *padapter, union recv_frame *precv_frame);
-void	dc_set_channel_bwmode_survey_done(_adapter *padapter);
-void	dc_set_ap_channel_bandwidth(_adapter *padapter, u8 channel, u8 channel_offset, u8 bwmode);
-void	dc_resume_xmit(_adapter *padapter);
-u8	dc_check_xmit(_adapter *padapter);
-#endif
 
 int rtw_chk_start_clnt_join(_adapter *padapter, u8 *ch, u8 *bw, u8 *offset);
 int rtw_get_ch_setting_union(_adapter *adapter, u8 *ch, u8 *bw, u8 *offset);

@@ -3,16 +3,16 @@ EXTRA_CFLAGS += -O1
 #EXTRA_CFLAGS += -O3
 #EXTRA_CFLAGS += -Wall
 #EXTRA_CFLAGS += -Wextra
-#EXTRA_CFLAGS += -Werror
+EXTRA_CFLAGS += -Werror
 #EXTRA_CFLAGS += -pedantic
 #EXTRA_CFLAGS += -Wshadow -Wpointer-arith -Wcast-qual -Wstrict-prototypes -Wmissing-prototypes
 
 EXTRA_CFLAGS += -Wno-unused-variable
-EXTRA_CFLAGS += -Wno-unused-value
-EXTRA_CFLAGS += -Wno-unused-label
-EXTRA_CFLAGS += -Wno-unused-parameter
-EXTRA_CFLAGS += -Wno-unused-function
-EXTRA_CFLAGS += -Wno-unused
+#EXTRA_CFLAGS += -Wno-unused-value
+#EXTRA_CFLAGS += -Wno-unused-label
+#EXTRA_CFLAGS += -Wno-unused-parameter
+#EXTRA_CFLAGS += -Wno-unused-function
+#EXTRA_CFLAGS += -Wno-unused
 
 #EXTRA_CFLAGS += -Wno-uninitialized
 
@@ -67,7 +67,7 @@ _HAL_INTFS_FILES :=	hal/hal_intf.o \
 			hal/hal_btcoex.o \
 			hal/hal_sdio.o \
 			hal/hal_sdio_led.o
-			
+
 _OUTSRC_FILES := hal/odm_debug.o	\
 		hal/odm_AntDiv.o\
 		hal/odm_interface.o\
@@ -81,7 +81,7 @@ _OUTSRC_FILES := hal/odm_debug.o	\
 		hal/odm_DynamicTxPower.o\
 		hal/odm_CfoTracking.o\
 		hal/odm_NoiseMonitor.o
-		
+
 EXTRA_CFLAGS += -I$(src)/hal/OUTSRC-BTCoexist
 _OUTSRC_FILES += \
 				hal/HalBtc8723b1Ant.o \
@@ -99,7 +99,6 @@ _HAL_INTFS_FILES +=	hal/rtl8723b_hal_init.o \
 			hal/rtl8723b_dm.o \
 			hal/rtl8723b_rxdesc.o \
 			hal/rtl8723b_cmd.o \
-			
 
 _HAL_INTFS_FILES +=	\
 			hal/sdio_halinit.o \
@@ -214,11 +213,7 @@ rtk_core :=	core/rtw_cmd.o \
 		core/rtw_sta_mgt.o \
 		core/rtw_ap.o \
 		core/rtw_xmit.o	\
-		core/rtw_tdls.o \
-		core/rtw_br_ext.o \
-		core/rtw_iol.o \
 		core/rtw_btcoex.o \
-		core/rtw_beamforming.o \
 		core/rtw_odm.o \
 		core/rtw_efuse.o
 
@@ -228,7 +223,7 @@ $(MODULE_NAME)-$(CONFIG_INTEL_WIDI) += core/rtw_intel_widi.o
 
 $(MODULE_NAME)-$(CONFIG_WAPI_SUPPORT) += core/rtw_wapi.o	\
 					core/rtw_wapi_sms4.o
-					
+
 $(MODULE_NAME)-y += $(_OS_INTFS_FILES)
 $(MODULE_NAME)-y += $(_HAL_INTFS_FILES)
 $(MODULE_NAME)-y += $(_OUTSRC_FILES)

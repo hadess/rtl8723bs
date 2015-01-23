@@ -554,9 +554,6 @@ ODM_DMReset(
 	IN		PDM_ODM_T		pDM_Odm
 	)
 {
-#ifdef CONFIG_HW_ANTENNA_DIVERSITY
-	ODM_AntDivReset(pDM_Odm);
-#endif // CONFIG_HW_ANTENNA_DIVERSITY
 }
 
 //
@@ -621,8 +618,6 @@ ODM_DMWatchdog(
 	//2010.05.30 LukeLee: For CE platform, files in IC subfolders may not be included to be compiled,
 	// so compile flags must be left here to prevent from compile errors
 	pDM_Odm->PhyDbgInfo.NumQryBeaconPkt = 0;
-
-	odm_dtc(pDM_Odm);
 }
 
 
@@ -1558,14 +1553,6 @@ ODM_RAStateCheck(
 //3 RSSI Monitor
 //3============================================================
 
-static void
-odm_RSSIDumpToRegister(
-	IN	PDM_ODM_T	pDM_Odm
-	)
-{
-}
-
-
 void
 odm_RSSIMonitorInit(
 	IN	PDM_ODM_T	pDM_Odm
@@ -1595,53 +1582,6 @@ odm_RSSIMonitorCheckMP(
 	IN	PDM_ODM_T	pDM_Odm
 	)
 {
-}
-
-//
-//sherry move from DUSC to here 20110517
-//
-static void
-FindMinimumRSSI_Dmsp(
-	IN	PADAPTER	pAdapter
-)
-{
-#if 0
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
-	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
-	s32	Rssi_val_min_back_for_mac0;
-	bool		bGetValueFromBuddyAdapter = dm_DualMacGetParameterFromBuddyAdapter(pAdapter);
-	bool		bRestoreRssi = false;
-	PADAPTER	BuddyAdapter = pAdapter->BuddyAdapter;
-
-	if(pHalData->MacPhyMode92D == DUALMAC_SINGLEPHY)
-	{
-		if(BuddyAdapter!= NULL)
-		{
-			if(pHalData->bSlaveOfDMSP)
-			{
-				//ODM_RT_TRACE(pDM_Odm,COMP_EASY_CONCURRENT,DBG_LOUD,("bSlavecase of dmsp\n"));
-				BuddyAdapter->DualMacDMSPControl.RssiValMinForAnotherMacOfDMSP = pdmpriv->MinUndecoratedPWDBForDM;
-			}
-			else
-			{
-				if(bGetValueFromBuddyAdapter)
-				{
-					//ODM_RT_TRACE(pDM_Odm,COMP_EASY_CONCURRENT,DBG_LOUD,("get new RSSI\n"));
-					bRestoreRssi = true;
-					Rssi_val_min_back_for_mac0 = pdmpriv->MinUndecoratedPWDBForDM;
-					pdmpriv->MinUndecoratedPWDBForDM = pAdapter->DualMacDMSPControl.RssiValMinForAnotherMacOfDMSP;
-				}
-			}
-		}
-		
-	}
-
-	if(bRestoreRssi)
-	{
-		bRestoreRssi = false;
-		pdmpriv->MinUndecoratedPWDBForDM = Rssi_val_min_back_for_mac0;
-	}
-#endif
 }
 
 static void
@@ -1695,7 +1635,6 @@ odm_RSSIMonitorCheckCE(
 
 	//if(check_fwstate(&Adapter->mlmepriv, WIFI_AP_STATE|WIFI_ADHOC_STATE|WIFI_ADHOC_MASTER_STATE) == true)
 	{
-		#if 1
 		struct sta_info *psta;
 		
 		for(i=0; i<ODM_ASSOCIATE_ENTRY_NUM; i++) {
@@ -1713,61 +1652,11 @@ odm_RSSIMonitorCheckCE(
 					if(psta->rssi_stat.UndecoratedSmoothedPWDB > tmpEntryMaxPWDB)
 						tmpEntryMaxPWDB = psta->rssi_stat.UndecoratedSmoothedPWDB;
 
-					#if 0
-					DBG_871X("%s mac_id:%u, mac:"MAC_FMT", rssi:%d\n", __func__,
-						psta->mac_id, MAC_ARG(psta->hwaddr), psta->rssi_stat.UndecoratedSmoothedPWDB);
-					#endif
-
 					if(psta->rssi_stat.UndecoratedSmoothedPWDB != (-1)) {
 						PWDB_rssi[sta_cnt++] = (psta->mac_id | (psta->rssi_stat.UndecoratedSmoothedPWDB<<16) );
 					}
 			}
 		}
-		#else
-		_irqL irqL;
-		_list	*plist, *phead;
-		struct sta_info *psta;
-		struct sta_priv *pstapriv = &Adapter->stapriv;
-		u8 bcast_addr[ETH_ALEN]= {0xff,0xff,0xff,0xff,0xff,0xff};
-
-		_enter_critical_bh(&pstapriv->sta_hash_lock, &irqL);
-
-		for(i=0; i< NUM_STA; i++)
-		{
-			phead = &(pstapriv->sta_hash[i]);
-			plist = get_next(phead);
-		
-			while ((rtw_end_of_queue_search(phead, plist)) == false)
-			{
-				psta = LIST_CONTAINOR(plist, struct sta_info, hash_list);
-
-				plist = get_next(plist);
-
-				if(!memcmp(psta->hwaddr, bcast_addr, ETH_ALEN) || 
-					!memcmp(psta->hwaddr, myid(&Adapter->eeprompriv), ETH_ALEN))
-					continue;
-
-				if(psta->state & WIFI_ASOC_STATE)
-				{
-					
-					if(psta->rssi_stat.UndecoratedSmoothedPWDB < tmpEntryMinPWDB)
-						tmpEntryMinPWDB = psta->rssi_stat.UndecoratedSmoothedPWDB;
-
-					if(psta->rssi_stat.UndecoratedSmoothedPWDB > tmpEntryMaxPWDB)
-						tmpEntryMaxPWDB = psta->rssi_stat.UndecoratedSmoothedPWDB;
-
-					if(psta->rssi_stat.UndecoratedSmoothedPWDB != (-1)){
-						//printk("%s==> mac_id(%d),rssi(%d)\n",__FUNCTION__,psta->mac_id,psta->rssi_stat.UndecoratedSmoothedPWDB);
-						PWDB_rssi[sta_cnt++] = (psta->mac_id | (psta->rssi_stat.UndecoratedSmoothedPWDB<<16) );
-					}
-				}
-			
-			}
-
-		}
-	
-		_exit_critical_bh(&pstapriv->sta_hash_lock, &irqL);
-		#endif
 
 		//printk("%s==> sta_cnt(%d)\n",__FUNCTION__,sta_cnt);
 
@@ -1822,12 +1711,6 @@ ODM_InitAllTimers(
 	IN PDM_ODM_T	pDM_Odm 
 	)
 {
-#if(defined(CONFIG_HW_ANTENNA_DIVERSITY))
-	ODM_AntDivTimers(pDM_Odm,INIT_ANTDIV_TIMMER);
-#elif(defined(CONFIG_SW_ANTENNA_DIVERSITY))
-	ODM_InitializeTimer(pDM_Odm,&pDM_Odm->DM_SWAT_Table.SwAntennaSwitchTimer,
-		(RT_TIMER_CALL_BACK)odm_SwAntDivChkAntSwitchCallback, NULL, "SwAntennaSwitchTimer");
-#endif
 }
 
 void
@@ -1835,11 +1718,6 @@ ODM_CancelAllTimers(
 	IN PDM_ODM_T	pDM_Odm 
 	)
 {
-#if(defined(CONFIG_HW_ANTENNA_DIVERSITY))
-	ODM_AntDivTimers(pDM_Odm,CANCEL_ANTDIV_TIMMER);
-#elif(defined(CONFIG_SW_ANTENNA_DIVERSITY))
-	ODM_CancelTimer(pDM_Odm,&pDM_Odm->DM_SWAT_Table.SwAntennaSwitchTimer);
-#endif
 }
 
 
@@ -1848,11 +1726,6 @@ ODM_ReleaseAllTimers(
 	IN PDM_ODM_T	pDM_Odm 
 	)
 {
-#if(defined(CONFIG_HW_ANTENNA_DIVERSITY))
-	ODM_AntDivTimers(pDM_Odm,RELEASE_ANTDIV_TIMMER);
-#elif(defined(CONFIG_SW_ANTENNA_DIVERSITY))
-	ODM_ReleaseTimer(pDM_Odm,&pDM_Odm->DM_SWAT_Table.SwAntennaSwitchTimer);
-#endif
 }
 
 
@@ -2009,11 +1882,6 @@ odm_AntennaDiversityInit(
 {
 	if(*(pDM_Odm->mp_mode) == true)
 		return;
-
-	#if(defined(CONFIG_HW_ANTENNA_DIVERSITY))
-	ODM_AntDiv_Config(pDM_Odm);
-	ODM_AntDivInit(pDM_Odm);
-	#endif
 }
 
 void
@@ -2023,10 +1891,6 @@ odm_AntennaDiversity(
 {
 	if(*(pDM_Odm->mp_mode) == true)
 		return;
-
-	#if(defined(CONFIG_HW_ANTENNA_DIVERSITY))
-	ODM_AntDiv(pDM_Odm);
-	#endif
 }
 
 
@@ -2120,42 +1984,6 @@ ConvertTo_dB(
 	dB = i*12 + j + 1;
 
 	return (dB);
-}
-
-//Remove PathDiversity related function to odm_PathDiv.c
-
-static void
-odm_PHY_SaveAFERegisters(
-	IN	PDM_ODM_T	pDM_Odm,
-	IN	pu4Byte		AFEReg,
-	IN	pu4Byte		AFEBackup,
-	IN	u4Byte		RegisterNum
-	)
-{
-	u4Byte	i;
-	
-	//RT_DISP(FINIT, INIT_IQK, ("Save ADDA parameters.\n"));
-	for( i = 0 ; i < RegisterNum ; i++){
-		AFEBackup[i] = ODM_GetBBReg(pDM_Odm, AFEReg[i], bMaskDWord);
-	}
-}
-
-static void
-odm_PHY_ReloadAFERegisters(
-	IN	PDM_ODM_T	pDM_Odm,
-	IN	pu4Byte		AFEReg,
-	IN	pu4Byte		AFEBackup,
-	IN	u4Byte		RegiesterNum
-	)
-{
-	u4Byte	i;
-
-	//RT_DISP(FINIT, INIT_IQK, ("Reload ADDA power saving parameters !\n"));
-	for(i = 0 ; i < RegiesterNum; i++)
-	{
-	
-		ODM_SetBBReg(pDM_Odm, AFEReg[i], bMaskDWord, AFEBackup[i]);
-	}
 }
 
 //
@@ -2551,88 +2379,4 @@ ODM_UpdateInitRate(
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD,("Get C2H Command! Rate=0x%x\n", Rate));
 	
 	pDM_Odm->TxRate = Rate;
-}
-
-/* Justin: According to the current RRSI to adjust Response Frame TX power, 2012/11/05 */
-void odm_dtc(PDM_ODM_T pDM_Odm)
-{
-#ifdef CONFIG_DM_RESP_TXAGC
-	#define DTC_BASE            35	/* RSSI higher than this value, start to decade TX power */
-	#define DTC_DWN_BASE       (DTC_BASE-5)	/* RSSI lower than this value, start to increase TX power */
-
-	/* RSSI vs TX power step mapping: decade TX power */
-	static const u8 dtc_table_down[]={
-		DTC_BASE,
-		(DTC_BASE+5),
-		(DTC_BASE+10),
-		(DTC_BASE+15),
-		(DTC_BASE+20),
-		(DTC_BASE+25)
-	};
-
-	/* RSSI vs TX power step mapping: increase TX power */
-	static const u8 dtc_table_up[]={
-		DTC_DWN_BASE,
-		(DTC_DWN_BASE-5),
-		(DTC_DWN_BASE-10),
-		(DTC_DWN_BASE-15),
-		(DTC_DWN_BASE-15),
-		(DTC_DWN_BASE-20),
-		(DTC_DWN_BASE-20),
-		(DTC_DWN_BASE-25),
-		(DTC_DWN_BASE-25),
-		(DTC_DWN_BASE-30),
-		(DTC_DWN_BASE-35)
-	};
-
-	u8 i;
-	u8 dtc_steps=0;
-	u8 sign;
-	u8 resp_txagc=0;
-
-	#if 0
-	/* As DIG is disabled, DTC is also disable */
-	if(!(pDM_Odm->SupportAbility & ODM_XXXXXX))
-		return;
-	#endif
-
-	if (DTC_BASE < pDM_Odm->RSSI_Min) {
-		/* need to decade the CTS TX power */
-		sign = 1;
-		for (i=0;i<ARRAY_SIZE(dtc_table_down);i++)
-		{
-			if ((dtc_table_down[i] >= pDM_Odm->RSSI_Min) || (dtc_steps >= 6))
-				break;
-			else
-				dtc_steps++;
-		}
-	}
-#if 0
-	else if (DTC_DWN_BASE > pDM_Odm->RSSI_Min)
-	{
-		/* needs to increase the CTS TX power */
-		sign = 0;
-		dtc_steps = 1;
-		for (i=0;i<ARRAY_SIZE(dtc_table_up);i++)
-		{
-			if ((dtc_table_up[i] <= pDM_Odm->RSSI_Min) || (dtc_steps>=10))
-				break;
-			else
-				dtc_steps++;
-		}
-	}
-#endif
-	else
-	{
-		sign = 0;
-		dtc_steps = 0;
-	}
-
-	resp_txagc = dtc_steps | (sign << 4);
-	resp_txagc = resp_txagc | (resp_txagc << 5);
-	ODM_Write1Byte(pDM_Odm, 0x06d9, resp_txagc);
-
-	DBG_871X("%s RSSI_Min:%u, set RESP_TXAGC to %s %u\n", 
-		__func__, pDM_Odm->RSSI_Min, sign?"minus":"plus", dtc_steps);
-#endif /* CONFIG_RESP_TXAGC_ADJUST */
 }

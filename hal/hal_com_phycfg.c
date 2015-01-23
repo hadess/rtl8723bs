@@ -268,49 +268,6 @@ phy_SetTxPowerByRateBase(
 }
 
 static void
-phy_StoreTxPowerByRateBaseOld(	
-	IN	PADAPTER	pAdapter
-	)
-{
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA( pAdapter );
-	u16			rawValue = 0;
-	u8			base = 0;
-	u8			path = 0;
-
-	rawValue = ( u16 ) ( pHalData->MCSTxPowerLevelOriginalOffset[0][7] >> 8 ) & 0xFF; 
-	base = ( rawValue >> 4 ) * 10 + ( rawValue & 0xF );
-	phy_SetTxPowerByRateBase( pAdapter, BAND_ON_2_4G, ODM_RF_PATH_A, CCK, RF_1TX, base );
-
-	rawValue = ( u16 ) ( pHalData->MCSTxPowerLevelOriginalOffset[0][1] >> 24 ) & 0xFF; 
-	base = ( rawValue >> 4 ) * 10 + ( rawValue & 0xF );
-	phy_SetTxPowerByRateBase( pAdapter, BAND_ON_2_4G, ODM_RF_PATH_A, OFDM, RF_1TX, base );
-
-	rawValue = ( u16 ) ( pHalData->MCSTxPowerLevelOriginalOffset[0][3] >> 24 ) & 0xFF; 
-	base = ( rawValue >> 4 ) * 10 + ( rawValue & 0xF );
-	phy_SetTxPowerByRateBase( pAdapter, BAND_ON_2_4G, ODM_RF_PATH_A, HT_MCS0_MCS7, RF_1TX, base );
-
-	rawValue = ( u16 ) ( pHalData->MCSTxPowerLevelOriginalOffset[0][5] >> 24 ) & 0xFF; 
-	base = ( rawValue >> 4) * 10 + ( rawValue & 0xF );
-	phy_SetTxPowerByRateBase( pAdapter, BAND_ON_2_4G, ODM_RF_PATH_A, HT_MCS8_MCS15, RF_2TX, base );
-
-	rawValue = ( u16 ) ( pHalData->MCSTxPowerLevelOriginalOffset[0][7] & 0xFF ); 
-	base = ( rawValue >> 4 ) * 10 + ( rawValue & 0xF );
-	phy_SetTxPowerByRateBase( pAdapter, BAND_ON_2_4G, ODM_RF_PATH_B, CCK, RF_1TX, base );
-
-	rawValue = ( u16 ) ( pHalData->MCSTxPowerLevelOriginalOffset[0][9] >> 24 ) & 0xFF; 
-	base = ( rawValue >> 4 ) * 10 + ( rawValue & 0xF );
-	phy_SetTxPowerByRateBase( pAdapter, BAND_ON_2_4G, ODM_RF_PATH_B, OFDM, RF_1TX, base );
-
-	rawValue = ( u16 ) ( pHalData->MCSTxPowerLevelOriginalOffset[0][11] >> 24 ) & 0xFF; 
-	base = ( rawValue >> 4 ) * 10 + ( rawValue & 0xF );
-	phy_SetTxPowerByRateBase( pAdapter, BAND_ON_2_4G, ODM_RF_PATH_B, HT_MCS0_MCS7, RF_1TX, base );
-
-	rawValue = ( u16 ) ( pHalData->MCSTxPowerLevelOriginalOffset[0][13] >> 24 ) & 0xFF; 
-	base = ( rawValue >> 4 ) * 10 + ( rawValue & 0xF );
-	phy_SetTxPowerByRateBase( pAdapter, BAND_ON_2_4G, ODM_RF_PATH_B, HT_MCS8_MCS15, RF_2TX, base );
-}
-
-static void
 phy_StoreTxPowerByRateBase(	
 	IN	PADAPTER	pAdapter
 	)
@@ -957,111 +914,6 @@ PHY_StoreTxPowerByRate(
 	else
 		DBG_871X("Invalid PHY_REG_PG.txt version %d\n",  pDM_Odm->PhyRegPgVersion );
 	
-}
-
-static void
-phy_ConvertTxPowerByRateByBase(
-	IN	u32*		pData,
-	IN	u8			Start,
-	IN	u8			End,
-	IN	u8			BaseValue
-	)
-{
-	s8	i = 0;
-	u8	TempValue = 0;
-	u32	TempData = 0;
-	
-	for ( i = 3; i >= 0; --i )
-	{
-		if ( i >= Start && i <= End )
-		{
-			// Get the exact value
-			TempValue = ( u8 ) ( *pData >> ( i * 8 ) ) & 0xF; 
-			TempValue += ( ( u8 ) ( ( *pData >> ( i * 8 + 4 ) ) & 0xF ) ) * 10; 
-			
-			// Change the value to a relative value
-			TempValue = ( TempValue > BaseValue ) ? TempValue - BaseValue : BaseValue - TempValue;
-		}
-		else
-		{
-			TempValue = ( u8 ) ( *pData >> ( i * 8 ) ) & 0xFF;
-		}
-		
-		TempData <<= 8;
-		TempData |= TempValue;
-	}
-
-	*pData = TempData;
-}
-
-
-static void
-PHY_ConvertTxPowerByRateInDbmToRelativeValuesOld(
-	IN	PADAPTER	pAdapter
-	)
-{
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA( pAdapter );
-	u8			base = 0;
-	
-	//DBG_871X("===>PHY_ConvertTxPowerByRateInDbmToRelativeValuesOld()\n" );
-	
-	// CCK
-	base = PHY_GetTxPowerByRateBase( pAdapter, BAND_ON_2_4G, ODM_RF_PATH_A, RF_1TX, CCK );
-	phy_ConvertTxPowerByRateByBase( 
-			&( pHalData->MCSTxPowerLevelOriginalOffset[0][6] ), 1, 1, base );
-	phy_ConvertTxPowerByRateByBase( 
-			&( pHalData->MCSTxPowerLevelOriginalOffset[0][7] ), 1, 3, base );
-
-	// OFDM
-	base = PHY_GetTxPowerByRateBase( pAdapter, BAND_ON_2_4G, ODM_RF_PATH_A, RF_1TX, OFDM );
-	phy_ConvertTxPowerByRateByBase( 
-			&( pHalData->MCSTxPowerLevelOriginalOffset[0][0] ), 0, 3, base );
-	phy_ConvertTxPowerByRateByBase( 
-			&( pHalData->MCSTxPowerLevelOriginalOffset[0][1] ),	0, 3, base );
-
-	// HT MCS0~7
-	base = PHY_GetTxPowerByRateBase( pAdapter, BAND_ON_2_4G, ODM_RF_PATH_A, RF_1TX, HT_MCS0_MCS7 );
-	phy_ConvertTxPowerByRateByBase( 
-			&( pHalData->MCSTxPowerLevelOriginalOffset[0][2] ),	0, 3, base );
-	phy_ConvertTxPowerByRateByBase( 
-			&( pHalData->MCSTxPowerLevelOriginalOffset[0][3] ),	0, 3, base );
-
-	// HT MCS8~15
-	base = PHY_GetTxPowerByRateBase( pAdapter, BAND_ON_2_4G, ODM_RF_PATH_A, RF_2TX, HT_MCS8_MCS15 );
-	phy_ConvertTxPowerByRateByBase( 
-			&( pHalData->MCSTxPowerLevelOriginalOffset[0][4] ), 0, 3, base );
-	phy_ConvertTxPowerByRateByBase( 
-			&( pHalData->MCSTxPowerLevelOriginalOffset[0][5] ), 0, 3, base );
-
-	// CCK
-	base = PHY_GetTxPowerByRateBase( pAdapter, BAND_ON_2_4G, ODM_RF_PATH_B, RF_1TX, CCK );
-	phy_ConvertTxPowerByRateByBase( 
-			&( pHalData->MCSTxPowerLevelOriginalOffset[0][14] ), 1, 3, base );
-	phy_ConvertTxPowerByRateByBase( 
-			&( pHalData->MCSTxPowerLevelOriginalOffset[0][15] ), 0, 0, base );
-
-	// OFDM
-	base = PHY_GetTxPowerByRateBase( pAdapter, BAND_ON_2_4G, ODM_RF_PATH_B, RF_1TX, OFDM );
-	phy_ConvertTxPowerByRateByBase( 
-			&( pHalData->MCSTxPowerLevelOriginalOffset[0][8] ), 0, 3, base );
-	phy_ConvertTxPowerByRateByBase( 
-			&( pHalData->MCSTxPowerLevelOriginalOffset[0][9] ),	0, 3, base );
-
-	// HT MCS0~7
-	base = PHY_GetTxPowerByRateBase( pAdapter, BAND_ON_2_4G, ODM_RF_PATH_B, RF_1TX, HT_MCS0_MCS7 );
-	phy_ConvertTxPowerByRateByBase( 
-			&( pHalData->MCSTxPowerLevelOriginalOffset[0][10] ), 0, 3, base );
-	phy_ConvertTxPowerByRateByBase( 
-			&( pHalData->MCSTxPowerLevelOriginalOffset[0][11] ), 0, 3, base );
-
-	// HT MCS8~15
-	base = PHY_GetTxPowerByRateBase( pAdapter, BAND_ON_2_4G, ODM_RF_PATH_B, RF_2TX, HT_MCS8_MCS15 );
-	phy_ConvertTxPowerByRateByBase( 
-			&( pHalData->MCSTxPowerLevelOriginalOffset[0][12] ), 0, 3, base );
-	phy_ConvertTxPowerByRateByBase( 
-			&( pHalData->MCSTxPowerLevelOriginalOffset[0][13] ), 0, 3, base );
-
-	//DBG_871X("<===PHY_ConvertTxPowerByRateInDbmToRelativeValuesOld()\n" );
 }
 
 static void
@@ -2635,11 +2487,7 @@ phy_ConfigBBWithParaFile(
 					}
 					else if (u4bRegOffset == 0xfe || u4bRegOffset == 0xffe)
 					{
-						#ifdef CONFIG_LONG_DELAY_ISSUE
 						msleep(50);
-						#else
-						mdelay(50);
-						#endif
 					}
 					else if (u4bRegOffset == 0xfd)
 					{
@@ -3166,11 +3014,7 @@ PHY_ConfigRFWithParaFile(
 				{
 			 		if(u4bRegOffset == 0xfe || u4bRegOffset == 0xffe)
 					{ // Deay specific ms. Only RF configuration require delay.												
-						#ifdef CONFIG_LONG_DELAY_ISSUE
 						msleep(50);
-						#else
-						mdelay(50);
-						#endif
 					}
 					else if (u4bRegOffset == 0xfd)
 					{
@@ -3461,27 +3305,7 @@ PHY_ConfigRFWithTxPwrTrackParaFile(
 	{
 		DBG_871X("%s(): No File %s, Load from HWImg Array!\n", __FUNCTION__, pFileName);
 	}
-#if 0
-	for (i = 0; i < DELTA_SWINGIDX_SIZE; ++i)
-	{
-		DBG_871X("pRFCalibrateInfo->DeltaSwingTableIdx_2GA_P[%d] = %d\n", i, pRFCalibrateInfo->DeltaSwingTableIdx_2GA_P[i]);
-		DBG_871X("pRFCalibrateInfo->DeltaSwingTableIdx_2GA_N[%d] = %d\n", i, pRFCalibrateInfo->DeltaSwingTableIdx_2GA_N[i]);
-		DBG_871X("pRFCalibrateInfo->DeltaSwingTableIdx_2GB_P[%d] = %d\n", i, pRFCalibrateInfo->DeltaSwingTableIdx_2GB_P[i]);
-		DBG_871X("pRFCalibrateInfo->DeltaSwingTableIdx_2GB_N[%d] = %d\n", i, pRFCalibrateInfo->DeltaSwingTableIdx_2GB_N[i]);
-		DBG_871X("pRFCalibrateInfo->DeltaSwingTableIdx_2GCCKA_P[%d] = %d\n", i, pRFCalibrateInfo->DeltaSwingTableIdx_2GCCKA_P[i]);
-		DBG_871X("pRFCalibrateInfo->DeltaSwingTableIdx_2GCCKA_N[%d] = %d\n", i, pRFCalibrateInfo->DeltaSwingTableIdx_2GCCKA_N[i]);
-		DBG_871X("pRFCalibrateInfo->DeltaSwingTableIdx_2GCCKB_P[%d] = %d\n", i, pRFCalibrateInfo->DeltaSwingTableIdx_2GCCKB_P[i]);
-		DBG_871X("pRFCalibrateInfo->DeltaSwingTableIdx_2GCCKB_N[%d] = %d\n", i, pRFCalibrateInfo->DeltaSwingTableIdx_2GCCKB_N[i]);
 
-		for (j = 0; j < 3; ++j)
-		{
-		    DBG_871X("pRFCalibrateInfo->DeltaSwingTableIdx_5GA_P[%d][%d] = %d\n", j, i, pRFCalibrateInfo->DeltaSwingTableIdx_5GA_P[j][i]);
-		    DBG_871X("pRFCalibrateInfo->DeltaSwingTableIdx_5GA_N[%d][%d] = %d\n", j, i, pRFCalibrateInfo->DeltaSwingTableIdx_5GA_N[j][i]);
-		    DBG_871X("pRFCalibrateInfo->DeltaSwingTableIdx_5GB_P[%d][%d] = %d\n", j, i, pRFCalibrateInfo->DeltaSwingTableIdx_5GB_P[j][i]);
-		    DBG_871X("pRFCalibrateInfo->DeltaSwingTableIdx_5GB_N[%d][%d] = %d\n", j, i, pRFCalibrateInfo->DeltaSwingTableIdx_5GB_N[j][i]);
-		}
-	}
-#endif
 	return rtStatus;
 }
 

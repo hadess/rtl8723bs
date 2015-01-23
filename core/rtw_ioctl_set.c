@@ -176,21 +176,6 @@ _func_enter_;
 				// can't associate ; reset under-linking			
 				_clr_fwstate_(pmlmepriv, _FW_UNDER_LINKING);
 
-#if 0	
-				if((check_fwstate(pmlmepriv, WIFI_STATION_STATE) == true))
-				{
-					if(!memcmp(pmlmepriv->cur_network.network.Ssid.Ssid, pmlmepriv->assoc_ssid.Ssid, pmlmepriv->assoc_ssid.SsidLength))
-					{ 
-						// for funk to do roaming
-						// funk will reconnect, but funk will not sitesurvey before reconnect
-						RT_TRACE(_module_rtl871x_ioctl_set_c_,_drv_info_,("for funk to do roaming"));
-						if(pmlmepriv->sitesurveyctrl.traffic_busy==false)
-							rtw_sitesurvey_cmd(padapter, &pmlmepriv->assoc_ssid, 1, NULL, 0);
-					}
-				
-				}				
-#endif
-
 				//when set_ssid/set_bssid for rtw_do_join(), but there are no desired bss in scanning queue
 				//we try to issue sitesurvey firstly			
 				if(pmlmepriv->LinkDetectInfo.bBusyTraffic==false
@@ -369,11 +354,9 @@ _func_enter_;
 					goto release_mlme_lock;//it means driver is in WIFI_ADHOC_MASTER_STATE, we needn't create bss again.
 				}
 			}
-#ifdef CONFIG_LPS
 			else {
 				rtw_lps_ctrl_wk_cmd(padapter, LPS_CTRL_JOINBSS, 1);
 			}
-#endif
 		}
 		else
 		{

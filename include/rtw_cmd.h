@@ -70,37 +70,12 @@
 		_mutex sctx_mutex;
 	};
 
-#ifdef CONFIG_EVENT_THREAD_MODE
-	struct evt_obj {
-		u16	evtcode;
-		u8	res;
-		u8	*parmbuf;
-		u32	evtsz;		
-		_list	list;
-	};
-#endif
-
 	struct	evt_priv {
-#ifdef CONFIG_EVENT_THREAD_MODE
-		_sema	evt_notify;
-		_sema	terminate_evtthread_sema;
-		_queue	evt_queue;
-#endif
-
-#define CONFIG_C2H_WK
-#ifdef CONFIG_C2H_WK
 		_workitem c2h_wk;
 		bool c2h_wk_alive;
 		struct rtw_cbuf *c2h_queue;
 		#define C2H_QUEUE_MAX_LEN 10
-#endif
 		
-#ifdef CONFIG_H2CLBK
-		_sema	lbkevt_done;
-		u8	lbkevt_limit;
-		u8	lbkevt_num;
-		u8	*cmdevt_parm;		
-#endif
 		atomic_t event_seq;
 		u8	*evt_buf;	//shall be non-paged, and 4 bytes aligned		
 		u8	*evt_allocated_buf;
@@ -164,12 +139,6 @@ struct P2P_PS_CTWPeriod_t {
 extern u32 rtw_enqueue_cmd(struct cmd_priv *pcmdpriv, struct cmd_obj *obj);
 extern struct cmd_obj *rtw_dequeue_cmd(struct cmd_priv *pcmdpriv);
 extern void rtw_free_cmd_obj(struct cmd_obj *pcmd);
-
-#ifdef CONFIG_EVENT_THREAD_MODE
-extern u32 rtw_enqueue_evt(struct evt_priv *pevtpriv, struct evt_obj *obj);
-extern struct evt_obj *rtw_dequeue_evt(_queue *queue);
-extern void rtw_free_evt_obj(struct evt_obj *pcmd);
-#endif
 
 void rtw_stop_cmd_thread(_adapter *adapter);
 int rtw_cmd_thread(void * context);
@@ -463,12 +432,8 @@ Command Mode
 
 */
 struct setdatarate_parm {
-#ifdef MP_FIRMWARE_OFFLOAD
-	u32	curr_rateidx;
-#else
 	u8	mac_id;
 	u8	datarates[NumRates];
-#endif
 };
 
 /*
@@ -641,36 +606,6 @@ struct Tx_Beacon_param
 	event will be the same with the cmd's param.
 		
 */
-
-#ifdef CONFIG_H2CLBK
-
-struct seth2clbk_parm {
-	u8 mac[6];
-	u16	s0;
-	u16	s1;
-	u32	w0;
-	u8	b0;
-	u16  s2;
-	u8	b1;
-	u32	w1;
-};
-
-struct geth2clbk_parm {
-	u32 rsv;	
-};
-
-struct geth2clbk_rsp {
-	u8	mac[6];
-	u16	s0;
-	u16	s1;
-	u32	w0;
-	u8	b0;
-	u16	s2;
-	u8	b1;
-	u32	w1;
-};
-
-#endif	/* CONFIG_H2CLBK */
 
 // CMD param Formart for driver extra cmd handler
 struct drvextra_cmd_parm {
@@ -850,64 +785,6 @@ struct set_ch_parm {
 	u8 ch_offset;
 };
 
-#ifdef MP_FIRMWARE_OFFLOAD
-/*H2C Handler index: 47 */
-struct SetTxPower_parm
-{
-	u8 TxPower;
-};
-
-/*H2C Handler index: 48 */
-struct SwitchAntenna_parm
-{
-	u16 antenna_tx;
-	u16 antenna_rx;
-//	R_ANTENNA_SELECT_CCK cck_txrx;
-	u8 cck_txrx;
-};
-
-/*H2C Handler index: 49 */
-struct SetCrystalCap_parm
-{
-	u32 curr_crystalcap;
-};
-
-/*H2C Handler index: 50 */
-struct SetSingleCarrierTx_parm
-{
-	u8 bStart;
-};
-
-/*H2C Handler index: 51 */
-struct SetSingleToneTx_parm
-{
-	u8 bStart;
-	u8 curr_rfpath;
-};
-
-/*H2C Handler index: 52 */
-struct SetCarrierSuppressionTx_parm
-{
-	u8 bStart;
-	u32 curr_rateidx;
-};
-
-/*H2C Handler index: 53 */
-struct SetContinuousTx_parm
-{
-	u8 bStart;
-	u8 CCK_flag; /*1:CCK 2:OFDM*/
-	u32 curr_rateidx;
-};
-
-/*H2C Handler index: 54 */
-struct SwitchBandwidth_parm
-{
-	u8 curr_bandwidth;
-};
-
-#endif	/* MP_FIRMWARE_OFFLOAD */
-
 /*H2C Handler index: 59 */ 
 struct SetChannelPlan_param
 {
@@ -1005,14 +882,6 @@ u8 rtw_lps_ctrl_wk_cmd(_adapter*padapter, u8 lps_ctrl_type, u8 enqueue);
 u8 rtw_dm_in_lps_wk_cmd(_adapter*padapter);
 u8 rtw_lps_change_dtim_cmd(_adapter*padapter, u8 dtim);
 
-#if (RATE_ADAPTIVE_SUPPORT==1)
-u8 rtw_rpt_timer_cfg_cmd(_adapter*padapter, u16 minRptTime);
-#endif
-
-#ifdef CONFIG_ANTENNA_DIVERSITY
-extern  u8 rtw_antenna_select_cmd(_adapter*padapter, u8 antenna,u8 enqueue);
-#endif
-
 u8 rtw_dm_ra_mask_wk_cmd(_adapter*padapter, u8 *psta);
 
 extern u8 rtw_ps_cmd(_adapter*padapter);
@@ -1029,11 +898,8 @@ extern u8 rtw_led_blink_cmd(_adapter*padapter, void * pLed);
 extern u8 rtw_set_csa_cmd(_adapter*padapter, u8 new_ch_no);
 extern u8 rtw_tdls_cmd(_adapter*padapter, u8 *addr, u8 option);
 
-//#ifdef CONFIG_C2H_PACKET_EN
 extern u8 rtw_c2h_packet_wk_cmd(PADAPTER padapter, u8 *pbuf, u16 length);
-//#else
 extern u8 rtw_c2h_wk_cmd(PADAPTER padapter, u8 *c2h_evt);
-//#endif
 
 u8 rtw_run_in_thread_cmd(PADAPTER padapter, void (*func)(void*), void* context);
 

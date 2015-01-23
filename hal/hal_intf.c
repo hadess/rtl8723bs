@@ -119,37 +119,6 @@ uint	 rtw_hal_init(_adapter *padapter)
 	struct dvobj_priv *dvobj = adapter_to_dvobj(padapter);
 	int i;
 
-#ifdef CONFIG_DUALMAC_CONCURRENT
-	if(padapter->hw_init_completed == true)
-	{
-		DBG_871X("rtw_hal_init: hw_init_completed == true\n");
-		return status;
-	}
-
-	// before init mac0, driver must init mac1 first to avoid usb rx error.
-	if((padapter->pbuddy_adapter != NULL) && (padapter->DualMacConcurrent == true)
-		&& (padapter->adapter_type == PRIMARY_ADAPTER))
-	{
-		if(padapter->pbuddy_adapter->hw_init_completed == true)
-		{
-			DBG_871X("rtw_hal_init: pbuddy_adapter hw_init_completed == true\n");
-		}
-		else
-		{
-			status = 	padapter->HalFunc.hal_init(padapter->pbuddy_adapter);
-			if(status == _SUCCESS){
-				padapter->pbuddy_adapter->hw_init_completed = true;
-			}
-			else{
-			 	padapter->pbuddy_adapter->hw_init_completed = false;
-				RT_TRACE(_module_hal_init_c_,_drv_err_,("rtw_hal_init: hal__init fail(pbuddy_adapter)\n"));
-				DBG_871X("rtw_hal_init: hal__init fail(pbuddy_adapter)\n");
-				return status;
-			}
-		}
-	}
-#endif
-
 	status = padapter->HalFunc.hal_init(padapter);
 
 	if(status == _SUCCESS){
@@ -171,10 +140,7 @@ uint	 rtw_hal_init(_adapter *padapter)
 
 		init_hw_mlme_ext(padapter);
 		
-#ifdef CONFIG_RF_GAIN_OFFSET
 		rtw_bb_rf_gain_offset(padapter);
-#endif //CONFIG_RF_GAIN_OFFSET
-
 	}
 	else{
 		for (i = 0; i<dvobj->iface_nums; i++)
@@ -226,13 +192,11 @@ void rtw_hal_get_hwreg(_adapter *padapter, u8 variable, u8 *val)
 		padapter->HalFunc.GetHwRegHandler(padapter, variable, val);
 }
 
-#ifdef CONFIG_C2H_PACKET_EN
 void rtw_hal_set_hwreg_with_buf(_adapter *padapter, u8 variable, u8 *pbuf, int len)
 {
 	if (padapter->HalFunc.SetHwRegHandlerWithBuf)
 		padapter->HalFunc.SetHwRegHandlerWithBuf(padapter, variable, pbuf, len);
 }
-#endif
 
 u8 rtw_hal_set_def_var(_adapter *padapter, HAL_DEF_VARIABLE eVariable, void * pValue)
 {	
@@ -516,11 +480,6 @@ void	rtw_hal_get_tx_power_level(_adapter *padapter, s32 *powerlevel)
 
 void	rtw_hal_dm_watchdog(_adapter *padapter)
 {
-#if defined(CONFIG_CONCURRENT_MODE)
-	if (padapter->adapter_type != PRIMARY_ADAPTER)
-		return;
-#endif	
-
 	if(padapter->HalFunc.hal_dm_watchdog)
 		padapter->HalFunc.hal_dm_watchdog(padapter);
 	
@@ -528,11 +487,6 @@ void	rtw_hal_dm_watchdog(_adapter *padapter)
 
 void	rtw_hal_dm_watchdog_in_lps(_adapter *padapter)
 {
-#if defined(CONFIG_CONCURRENT_MODE)
-	if (padapter->iface_type != IFACE_PORT0)
-		return;
-#endif	
-
 	if (adapter_to_pwrctl(padapter)->bFwCurrentInPSMode ==true )
 	{
 		if(padapter->HalFunc.hal_dm_watchdog_in_lps)
@@ -549,46 +503,12 @@ void rtw_hal_bcn_related_reg_setting(_adapter *padapter)
 }
 
 
-#ifdef CONFIG_ANTENNA_DIVERSITY
-u8	rtw_hal_antdiv_before_linked(_adapter *padapter)
-{	
-	if(padapter->HalFunc.AntDivBeforeLinkHandler)
-		return padapter->HalFunc.AntDivBeforeLinkHandler(padapter);
-	return false;		
-}
-void	rtw_hal_antdiv_rssi_compared(_adapter *padapter, WLAN_BSSID_EX *dst, WLAN_BSSID_EX *src)
-{
-	if(padapter->HalFunc.AntDivCompareHandler)
-		padapter->HalFunc.AntDivCompareHandler(padapter, dst, src);
-}
-#endif
-
-#ifdef CONFIG_HOSTAPD_MLME
-s32	rtw_hal_hostap_mgnt_xmit_entry(_adapter *padapter, _pkt *pkt)
-{
-	if(padapter->HalFunc.hostap_mgnt_xmit_entry)
-		return padapter->HalFunc.hostap_mgnt_xmit_entry(padapter, pkt);
-	return _FAIL;
-}
-#endif //CONFIG_HOSTAPD_MLME
-
-#ifdef CONFIG_IOL
-int rtw_hal_iol_cmd(ADAPTER *adapter, struct xmit_frame *xmit_frame, u32 max_wating_ms, u32 bndy_cnt)
-{
-	if(adapter->HalFunc.IOL_exec_cmds_sync)
-		return adapter->HalFunc.IOL_exec_cmds_sync(adapter, xmit_frame, max_wating_ms,bndy_cnt);
-	return _FAIL;
-}
-#endif
-
-#ifdef CONFIG_XMIT_THREAD_MODE
 s32 rtw_hal_xmit_thread_handler(_adapter *padapter)
 {
 	if(padapter->HalFunc.xmit_thread_handler)
 		return padapter->HalFunc.xmit_thread_handler(padapter);
 	return _FAIL;
 }
-#endif
 
 void rtw_hal_notch_filter(_adapter *adapter, bool enable)
 {

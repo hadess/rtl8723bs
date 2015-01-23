@@ -75,16 +75,6 @@ int rtw_os_alloc_recvframe(_adapter *padapter, union recv_frame *precvframe, u8 
 	}
 	else
 	{
-#ifdef CONFIG_USE_USB_BUFFER_ALLOC_RX
-		DBG_871X("%s:can not allocate memory for skb copy\n", __FUNCTION__);
-
-		precvframe->u.hdr.pkt = NULL;
-
-		//rtw_free_recvframe(precvframe, pfree_recv_queue);
-		//goto _exit_recvbuf2recvframe;
-
-		res = _FAIL;	
-#else
 		if((pattrib->mfrag == 1)&&(pattrib->frag_num == 0))
 		{				
 			DBG_871X("%s: alloc_skb fail , drop frag frame \n", __FUNCTION__);
@@ -112,7 +102,6 @@ int rtw_os_alloc_recvframe(_adapter *padapter, union recv_frame *precvframe, u8 
 			//goto _exit_recvbuf2recvframe;
 			res = _FAIL;
 		}
-#endif			
 	}		
 
 exit_rtw_os_recv_resource_alloc:
@@ -197,7 +186,6 @@ _pkt *rtw_os_alloc_msdu_pkt(union recv_frame *prframe, u16 nSubframe_Length, u8 
 
 	pattrib = &prframe->u.hdr.attrib;
 
-#ifdef CONFIG_SKB_COPY
 	sub_skb = rtw_skb_alloc(nSubframe_Length + 12);
 	if(sub_skb)
 	{
@@ -206,7 +194,6 @@ _pkt *rtw_os_alloc_msdu_pkt(union recv_frame *prframe, u16 nSubframe_Length, u8 
 		memcpy(data_ptr, (pdata + ETH_HLEN), nSubframe_Length);
 	}
 	else
-#endif // CONFIG_SKB_COPY
 	{
 		sub_skb = rtw_skb_clone(prframe->u.hdr.pkt);
 		if(sub_skb)
@@ -247,9 +234,6 @@ _pkt *rtw_os_alloc_msdu_pkt(union recv_frame *prframe, u16 nSubframe_Length, u8 
 void rtw_os_recv_indicate_pkt(_adapter *padapter, _pkt *pkt, struct rx_pkt_attrib *pattrib)
 {
 	struct mlme_priv*pmlmepriv = &padapter->mlmepriv;
-#ifdef CONFIG_BR_EXT
-	void *br_port = NULL;
-#endif
 	int ret;
 
 	/* Indicat the packets to upper layer */
@@ -302,30 +286,6 @@ void rtw_os_recv_indicate_pkt(_adapter *padapter, _pkt *pkt, struct rx_pkt_attri
 				DBG_COUNTER(padapter->rx_logs.os_indicate_ap_self);
 			}
 		}
-		
-#ifdef CONFIG_BR_EXT
-		// Insert NAT2.5 RX here!
-		rcu_read_lock();
-		br_port = rcu_dereference(padapter->pnetdev->rx_handler_data);
-		rcu_read_unlock();
-
-		if( br_port && (check_fwstate(pmlmepriv, WIFI_STATION_STATE|WIFI_ADHOC_STATE) == true) )
-		{
-			int nat25_handle_frame(_adapter *priv, struct sk_buff *skb);
-			if (nat25_handle_frame(padapter, pkt) == -1) {
-				//priv->ext_stats.rx_data_drops++;
-				//DEBUG_ERR("RX DROP: nat25_handle_frame fail!\n");
-				//return FAIL;
-				
-#if 1
-				// bypass this frame to upper layer!!
-#else
-				rtw_skb_free(sub_skb);
-				continue;
-#endif
-			}							
-		}
-#endif	// CONFIG_BR_EXT
 
 		pkt->protocol = eth_type_trans(pkt, padapter->pnetdev);
 		pkt->dev = padapter->pnetdev;
@@ -408,43 +368,6 @@ void rtw_handle_tkip_mic_err(_adapter *padapter,u8 bgroup)
 
 void rtw_hostapd_mlme_rx(_adapter *padapter, union recv_frame *precv_frame)
 {
-#ifdef CONFIG_HOSTAPD_MLME
-	_pkt *skb;
-	struct hostapd_priv *phostapdpriv  = padapter->phostapdpriv;
-	struct net_device *pmgnt_netdev = phostapdpriv->pmgnt_netdev;
-
-	RT_TRACE(_module_recv_osdep_c_, _drv_info_, ("+rtw_hostapd_mlme_rx\n"));
-
-	skb = precv_frame->u.hdr.pkt;
-
-	if (skb == NULL)
-		return;
-
-	skb->data = precv_frame->u.hdr.rx_data;
-	skb->tail = precv_frame->u.hdr.rx_tail;
-	skb->len = precv_frame->u.hdr.len;
-
-	//pskb_copy = rtw_skb_copy(skb);
-//	if(skb == NULL) goto _exit;
-
-	skb->dev = pmgnt_netdev;
-	skb->ip_summed = CHECKSUM_NONE;
-	skb->pkt_type = PACKET_OTHERHOST;
-	//skb->protocol = __constant_htons(0x0019); /*ETH_P_80211_RAW*/
-	skb->protocol = __constant_htons(0x0003); /*ETH_P_80211_RAW*/
-
-	//DBG_871X("(1)data=0x%x, head=0x%x, tail=0x%x, mac_header=0x%x, len=%d\n", skb->data, skb->head, skb->tail, skb->mac_header, skb->len);
-
-	//skb->mac.raw = skb->data;
-	skb_reset_mac_header(skb);
-
-       //skb_pull(skb, 24);
-       memset(skb->cb, 0, sizeof(skb->cb));
-
-	rtw_netif_rx(pmgnt_netdev, skb);
-
-	precv_frame->u.hdr.pkt = NULL; // set pointer to NULL before rtw_free_recvframe() if call rtw_netif_rx()
-#endif
 }
 
 #ifdef CONFIG_AUTO_AP_MODE
@@ -479,13 +402,6 @@ static void rtw_os_ksocket_send(_adapter *padapter, union recv_frame *precv_fram
 				//DBG_871X("0x%x\n", *(skb->data+ETH_HLEN+6+i));
 
 			DBG_871X("eth, RC-end\n"); 
-
-#if 0
-			//send_sz = ksocket_send(padapter->ksock_send, &padapter->kaddr_send, (skb->data+ETH_HLEN+2), len);				
-			rtw_recv_ksocket_send_cmd(padapter, (skb->data+ETH_HLEN+2), len);
-
-			//DBG_871X("ksocket_send size=%d\n", send_sz); 
-#endif			
 		}
 		
 	}		
@@ -507,13 +423,6 @@ _func_enter_;
 
 	precvpriv = &(padapter->recvpriv);
 	pfree_recv_queue = &(precvpriv->free_recv_queue);
-
-#ifdef CONFIG_DRVEXT_MODULE
-	if (drvext_rx_handler(padapter, precv_frame->u.hdr.rx_data, precv_frame->u.hdr.len) == _SUCCESS)
-	{
-		goto _recv_indicatepkt_drop;
-	}
-#endif
 
 #ifdef CONFIG_WAPI_SUPPORT
 	if (rtw_wapi_check_for_drop(padapter,precv_frame))
@@ -543,28 +452,15 @@ _func_enter_;
 	RT_TRACE(_module_recv_osdep_c_,_drv_info_,("\n skb->head=%p skb->data=%p skb->tail=%p skb->end=%p skb->len=%d\n", skb->head, skb->data, skb_tail_pointer(skb), skb_end_pointer(skb), skb->len));
 
 #ifdef CONFIG_AUTO_AP_MODE	
-#if 1 //for testing
-#if 1
 	if (0x8899 == pattrib->eth_type)
 	{
 		rtw_os_ksocket_send(padapter, precv_frame);
 
 		//goto _recv_indicatepkt_drop;
 	}
-#else
-	if (0x8899 == pattrib->eth_type)
-	{
-		rtw_auto_ap_mode_rx(padapter, precv_frame);
-		
-		goto _recv_indicatepkt_end;
-	}
-#endif
-#endif
 #endif //CONFIG_AUTO_AP_MODE
 
 	rtw_os_recv_indicate_pkt(padapter, skb, pattrib);
-
-_recv_indicatepkt_end:
 
 	precv_frame->u.hdr.pkt = NULL; // pointers to NULL before rtw_free_recvframe()
 

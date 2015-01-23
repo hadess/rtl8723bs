@@ -520,49 +520,7 @@ static void _ThreeOutPipeMapping(
 	}
 
 }
-static void _FourOutPipeMapping(
-	IN	PADAPTER	pAdapter,
-	IN	bool	 	bWIFICfg
-	)
-{
-	struct dvobj_priv	*pdvobjpriv = adapter_to_dvobj(pAdapter);
 
-	if(bWIFICfg){//for WMM
-		
-		//	BK, 	BE, 	VI, 	VO, 	BCN,	CMD,MGT,HIGH,HCCA 
-		//{  1, 	2, 	1, 	0, 	0, 	0, 	0, 	0, 		0	};
-		//0:H, 1:N, 2:L ,3:E
-		
-		pdvobjpriv->Queue2Pipe[0] = pdvobjpriv->RtOutPipe[0];//VO
-		pdvobjpriv->Queue2Pipe[1] = pdvobjpriv->RtOutPipe[1];//VI
-		pdvobjpriv->Queue2Pipe[2] = pdvobjpriv->RtOutPipe[2];//BE
-		pdvobjpriv->Queue2Pipe[3] = pdvobjpriv->RtOutPipe[1];//BK
-		
-		pdvobjpriv->Queue2Pipe[4] = pdvobjpriv->RtOutPipe[0];//BCN
-		pdvobjpriv->Queue2Pipe[5] = pdvobjpriv->RtOutPipe[0];//MGT
-		pdvobjpriv->Queue2Pipe[6] = pdvobjpriv->RtOutPipe[3];//HIGH
-		pdvobjpriv->Queue2Pipe[7] = pdvobjpriv->RtOutPipe[0];//TXCMD
-		
-	}
-	else{//typical setting
-
-		
-		//	BK, 	BE, 	VI, 	VO, 	BCN,	CMD,MGT,HIGH,HCCA 
-		//{  2, 	2, 	1, 	0, 	0, 	0, 	0, 	0, 		0	};			
-		//0:H, 1:N, 2:L 
-		
-		pdvobjpriv->Queue2Pipe[0] = pdvobjpriv->RtOutPipe[0];//VO
-		pdvobjpriv->Queue2Pipe[1] = pdvobjpriv->RtOutPipe[1];//VI
-		pdvobjpriv->Queue2Pipe[2] = pdvobjpriv->RtOutPipe[2];//BE
-		pdvobjpriv->Queue2Pipe[3] = pdvobjpriv->RtOutPipe[2];//BK
-		
-		pdvobjpriv->Queue2Pipe[4] = pdvobjpriv->RtOutPipe[0];//BCN
-		pdvobjpriv->Queue2Pipe[5] = pdvobjpriv->RtOutPipe[0];//MGT
-		pdvobjpriv->Queue2Pipe[6] = pdvobjpriv->RtOutPipe[3];//HIGH
-		pdvobjpriv->Queue2Pipe[7] = pdvobjpriv->RtOutPipe[0];//TXCMD	
-	}
-
-}
 bool
 Hal_MappingOutPipe(
 	IN	PADAPTER	pAdapter,
@@ -599,10 +557,6 @@ Hal_MappingOutPipe(
 void hal_init_macaddr(_adapter *adapter)
 {
 	rtw_hal_set_hwreg(adapter, HW_VAR_MAC_ADDR, adapter->eeprompriv.mac_addr);
-#ifdef  CONFIG_CONCURRENT_MODE
-	if (adapter->pbuddy_adapter)
-		rtw_hal_set_hwreg(adapter->pbuddy_adapter, HW_VAR_MAC_ADDR, adapter->pbuddy_adapter->eeprompriv.mac_addr);
-#endif
 }
 
 void rtw_init_hal_com_default_value(PADAPTER Adapter)
@@ -671,10 +625,8 @@ s32 c2h_evt_read_88xx(_adapter *adapter, u8 *buf)
 	RT_PRINT_DATA(_module_hal_init_c_, _drv_info_, "c2h_evt_read(): ",
 		&c2h_evt , sizeof(c2h_evt));
 
-	if (0) {
-		DBG_871X("%s id:%u, len:%u, seq:%u, trigger:0x%02x\n", __func__
-			, c2h_evt->id, c2h_evt->plen, c2h_evt->seq, trigger);
-	}
+	DBG_871X("%s id:%u, len:%u, seq:%u, trigger:0x%02x\n", __func__
+		 , c2h_evt->id, c2h_evt->plen, c2h_evt->seq, trigger);
 
 	/* Read the content */
 	for (i = 0; i < c2h_evt->plen; i++)
@@ -749,198 +701,6 @@ void rtw_hal_update_sta_rate_mask(PADAPTER padapter, struct sta_info *psta)
 
 void hw_var_port_switch(_adapter *adapter)
 {
-#ifdef CONFIG_CONCURRENT_MODE
-#ifdef CONFIG_RUNTIME_PORT_SWITCH
-/*
-0x102: MSR
-0x550: REG_BCN_CTRL
-0x551: REG_BCN_CTRL_1
-0x55A: REG_ATIMWND
-0x560: REG_TSFTR
-0x568: REG_TSFTR1
-0x570: REG_ATIMWND_1
-0x610: REG_MACID
-0x618: REG_BSSID
-0x700: REG_MACID1
-0x708: REG_BSSID1
-*/
-
-	int i;
-	u8 msr;
-	u8 bcn_ctrl;
-	u8 bcn_ctrl_1;
-	u8 atimwnd[2];
-	u8 atimwnd_1[2];
-	u8 tsftr[8];
-	u8 tsftr_1[8];
-	u8 macid[6];
-	u8 bssid[6];
-	u8 macid_1[6];
-	u8 bssid_1[6];
-
-	u8 iface_type;
-
-	msr = rtw_read8(adapter, MSR);
-	bcn_ctrl = rtw_read8(adapter, REG_BCN_CTRL);
-	bcn_ctrl_1 = rtw_read8(adapter, REG_BCN_CTRL_1);
-
-	for (i=0; i<2; i++)
-		atimwnd[i] = rtw_read8(adapter, REG_ATIMWND+i);
-	for (i=0; i<2; i++)
-		atimwnd_1[i] = rtw_read8(adapter, REG_ATIMWND_1+i);
-
-	for (i=0; i<8; i++)
-		tsftr[i] = rtw_read8(adapter, REG_TSFTR+i);
-	for (i=0; i<8; i++)
-		tsftr_1[i] = rtw_read8(adapter, REG_TSFTR1+i);
-
-	for (i=0; i<6; i++)
-		macid[i] = rtw_read8(adapter, REG_MACID+i);
-
-	for (i=0; i<6; i++)
-		bssid[i] = rtw_read8(adapter, REG_BSSID+i);
-
-	for (i=0; i<6; i++)
-		macid_1[i] = rtw_read8(adapter, REG_MACID1+i);
-
-	for (i=0; i<6; i++)
-		bssid_1[i] = rtw_read8(adapter, REG_BSSID1+i);
-
-#ifdef DBG_RUNTIME_PORT_SWITCH
-	DBG_871X(FUNC_ADPT_FMT" before switch\n"
-		"msr:0x%02x\n"
-		"bcn_ctrl:0x%02x\n"
-		"bcn_ctrl_1:0x%02x\n"
-		"atimwnd:0x%04x\n"
-		"atimwnd_1:0x%04x\n"
-		"tsftr:%llu\n"
-		"tsftr1:%llu\n"
-		"macid:"MAC_FMT"\n"
-		"bssid:"MAC_FMT"\n"
-		"macid_1:"MAC_FMT"\n"
-		"bssid_1:"MAC_FMT"\n"
-		, FUNC_ADPT_ARG(adapter)
-		, msr
-		, bcn_ctrl
-		, bcn_ctrl_1
-		, *((u16*)atimwnd)
-		, *((u16*)atimwnd_1)
-		, *((u64*)tsftr)
-		, *((u64*)tsftr_1)
-		, MAC_ARG(macid)
-		, MAC_ARG(bssid)
-		, MAC_ARG(macid_1)
-		, MAC_ARG(bssid_1)
-	);
-#endif /* DBG_RUNTIME_PORT_SWITCH */
-
-	/* disable bcn function, disable update TSF  */
-	rtw_write8(adapter, REG_BCN_CTRL, (bcn_ctrl & (~EN_BCN_FUNCTION)) | DIS_TSF_UDT);
-	rtw_write8(adapter, REG_BCN_CTRL_1, (bcn_ctrl_1 & (~EN_BCN_FUNCTION)) | DIS_TSF_UDT);
-
-	/* switch msr */
-	msr = (msr&0xf0) |((msr&0x03) << 2) | ((msr&0x0c) >> 2);
-	rtw_write8(adapter, MSR, msr);
-
-	/* write port0 */
-	rtw_write8(adapter, REG_BCN_CTRL, bcn_ctrl_1 & ~EN_BCN_FUNCTION);
-	for (i=0; i<2; i++)
-		rtw_write8(adapter, REG_ATIMWND+i, atimwnd_1[i]);
-	for (i=0; i<8; i++)
-		rtw_write8(adapter, REG_TSFTR+i, tsftr_1[i]);
-	for (i=0; i<6; i++)
-		rtw_write8(adapter, REG_MACID+i, macid_1[i]);
-	for (i=0; i<6; i++)
-		rtw_write8(adapter, REG_BSSID+i, bssid_1[i]);
-
-	/* write port1 */
-	rtw_write8(adapter, REG_BCN_CTRL_1, bcn_ctrl & ~EN_BCN_FUNCTION);
-	for (i=0; i<2; i++)
-		rtw_write8(adapter, REG_ATIMWND_1+1, atimwnd[i]);
-	for (i=0; i<8; i++)
-		rtw_write8(adapter, REG_TSFTR1+i, tsftr[i]);
-	for (i=0; i<6; i++)
-		rtw_write8(adapter, REG_MACID1+i, macid[i]);
-	for (i=0; i<6; i++)
-		rtw_write8(adapter, REG_BSSID1+i, bssid[i]);
-
-	/* write bcn ctl */
-	// always enable port0 beacon function for PSTDMA
-	bcn_ctrl_1 |= EN_BCN_FUNCTION;
-	// always disable port1 beacon function for PSTDMA
-	bcn_ctrl &= ~EN_BCN_FUNCTION;
-
-	rtw_write8(adapter, REG_BCN_CTRL, bcn_ctrl_1);
-	rtw_write8(adapter, REG_BCN_CTRL_1, bcn_ctrl);
-
-	if (adapter->iface_type == IFACE_PORT0) {
-		adapter->iface_type = IFACE_PORT1;
-		adapter->pbuddy_adapter->iface_type = IFACE_PORT0;
-		DBG_871X_LEVEL(_drv_always_, "port switch - port0("ADPT_FMT"), port1("ADPT_FMT")\n",
-			ADPT_ARG(adapter->pbuddy_adapter), ADPT_ARG(adapter));
-	} else {
-		adapter->iface_type = IFACE_PORT0;
-		adapter->pbuddy_adapter->iface_type = IFACE_PORT1;
-		DBG_871X_LEVEL(_drv_always_, "port switch - port0("ADPT_FMT"), port1("ADPT_FMT")\n",
-			ADPT_ARG(adapter), ADPT_ARG(adapter->pbuddy_adapter));
-	}
-
-#ifdef DBG_RUNTIME_PORT_SWITCH
-	msr = rtw_read8(adapter, MSR);
-	bcn_ctrl = rtw_read8(adapter, REG_BCN_CTRL);
-	bcn_ctrl_1 = rtw_read8(adapter, REG_BCN_CTRL_1);
-
-	for (i=0; i<2; i++)
-		atimwnd[i] = rtw_read8(adapter, REG_ATIMWND+i);
-	for (i=0; i<2; i++)
-		atimwnd_1[i] = rtw_read8(adapter, REG_ATIMWND_1+i);
-
-	for (i=0; i<8; i++)
-		tsftr[i] = rtw_read8(adapter, REG_TSFTR+i);
-	for (i=0; i<8; i++)
-		tsftr_1[i] = rtw_read8(adapter, REG_TSFTR1+i);
-
-	for (i=0; i<6; i++)
-		macid[i] = rtw_read8(adapter, REG_MACID+i);
-
-	for (i=0; i<6; i++)
-		bssid[i] = rtw_read8(adapter, REG_BSSID+i);
-
-	for (i=0; i<6; i++)
-		macid_1[i] = rtw_read8(adapter, REG_MACID1+i);
-
-	for (i=0; i<6; i++)
-		bssid_1[i] = rtw_read8(adapter, REG_BSSID1+i);
-
-	DBG_871X(FUNC_ADPT_FMT" after switch\n"
-		"msr:0x%02x\n"
-		"bcn_ctrl:0x%02x\n"
-		"bcn_ctrl_1:0x%02x\n"
-		"atimwnd:%u\n"
-		"atimwnd_1:%u\n"
-		"tsftr:%llu\n"
-		"tsftr1:%llu\n"
-		"macid:"MAC_FMT"\n"
-		"bssid:"MAC_FMT"\n"
-		"macid_1:"MAC_FMT"\n"
-		"bssid_1:"MAC_FMT"\n"
-		, FUNC_ADPT_ARG(adapter)
-		, msr
-		, bcn_ctrl
-		, bcn_ctrl_1
-		, *((u16*)atimwnd)
-		, *((u16*)atimwnd_1)
-		, *((u64*)tsftr)
-		, *((u64*)tsftr_1)
-		, MAC_ARG(macid)
-		, MAC_ARG(bssid)
-		, MAC_ARG(macid_1)
-		, MAC_ARG(bssid_1)
-	);
-#endif /* DBG_RUNTIME_PORT_SWITCH */
-
-#endif /* CONFIG_RUNTIME_PORT_SWITCH */
-#endif /* CONFIG_CONCURRENT_MODE */
 }
 
 void SetHwReg(_adapter *adapter, u8 variable, u8 *val)
@@ -965,10 +725,7 @@ _func_enter_;
 		break;
 	case HW_VAR_SEC_CFG:
 	{
-		#if defined(CONFIG_CONCURRENT_MODE) && !defined(DYNAMIC_CAMID_ALLOC)
-		// enable tx enc and rx dec engine, and no key search for MC/BC
-		rtw_write8(adapter, REG_SECCFG, SCR_NoSKMC|SCR_RxDecEnable|SCR_TxEncEnable);
-		#elif defined(DYNAMIC_CAMID_ALLOC)
+		#if defined(DYNAMIC_CAMID_ALLOC)
 		u16 reg_scr;
 
 		reg_scr = rtw_read16(adapter, REG_SECCFG);
@@ -1026,7 +783,6 @@ _func_enter_;
 		odm->SupportAbility &= *((u32 *)val);
 		break;
 	default:
-		if (0)
 		DBG_871X_LEVEL(_drv_always_, FUNC_ADPT_FMT" variable(%d) not defined!\n",
 			FUNC_ADPT_ARG(adapter), variable);
 		break;
@@ -1053,7 +809,6 @@ _func_enter_;
 		*((u8*)val) = hal_data->rf_type;
 		break;
 	default:
-		if (0)
 		DBG_871X_LEVEL(_drv_always_, FUNC_ADPT_FMT" variable(%d) not defined!\n",
 			FUNC_ADPT_ARG(adapter), variable);
 		break;
@@ -1599,24 +1354,16 @@ void linked_info_dump(_adapter *padapter,u8 benable)
 	DBG_871X("%s %s \n",__FUNCTION__,(benable)?"enable":"disable");
 										
 	if(benable){
-		#ifdef CONFIG_LPS
 		pwrctrlpriv->org_power_mgnt = pwrctrlpriv->power_mgnt;//keep org value
 		rtw_pm_set_lps(padapter,PS_MODE_ACTIVE);
-		#endif	
 								
-		#ifdef CONFIG_IPS	
 		pwrctrlpriv->ips_org_mode = pwrctrlpriv->ips_mode;//keep org value
 		rtw_pm_set_ips(padapter,IPS_NONE);
-		#endif	
 	}
 	else{
-		#ifdef CONFIG_IPS		
 		rtw_pm_set_ips(padapter, pwrctrlpriv->ips_org_mode);
-		#endif // CONFIG_IPS
 
-		#ifdef CONFIG_LPS	
 		rtw_pm_set_lps(padapter, pwrctrlpriv->ips_org_mode);
-		#endif // CONFIG_LPS
 	}
 	padapter->bLinkInfoDump = benable ;	
 }
@@ -1702,7 +1449,6 @@ void rtw_store_phy_info(_adapter *padapter, union recv_frame *prframe)
 }
 #endif
 
-#ifdef CONFIG_RF_GAIN_OFFSET
 static u32 Array_kfreemap[] = { 
 0xf8,0xe,
 0xf6,0xc,
@@ -1761,6 +1507,3 @@ void rtw_bb_rf_gain_offset(_adapter *padapter)
 		DBG_871X("Using the default RF gain.\n");
 	}
 }
-#endif //CONFIG_RF_GAIN_OFFSET
-
-

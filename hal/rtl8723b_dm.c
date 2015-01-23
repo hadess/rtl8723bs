@@ -37,51 +37,10 @@
 
 
 static void
-dm_CheckProtection(
-	IN	PADAPTER	Adapter
-	)
-{
-#if 0
-	PMGNT_INFO		pMgntInfo = &(Adapter->MgntInfo);
-	u1Byte			CurRate, RateThreshold;
-
-	if(pMgntInfo->pHTInfo->bCurBW40MHz)
-		RateThreshold = MGN_MCS1;
-	else
-		RateThreshold = MGN_MCS3;
-
-	if(Adapter->TxStats.CurrentInitTxRate <= RateThreshold)
-	{
-		pMgntInfo->bDmDisableProtect = true;
-		DbgPrint("Forced disable protect: %x\n", Adapter->TxStats.CurrentInitTxRate);
-	}
-	else
-	{
-		pMgntInfo->bDmDisableProtect = false;
-		DbgPrint("Enable protect: %x\n", Adapter->TxStats.CurrentInitTxRate);
-	}
-#endif
-}
-
-static void
 dm_CheckStatistics(
 	IN	PADAPTER	Adapter
 	)
 {
-#if 0
-	if(!Adapter->MgntInfo.bMediaConnect)
-		return;
-
-	//2008.12.10 tynli Add for getting Current_Tx_Rate_Reg flexibly.
-	rtw_hal_get_hwreg( Adapter, HW_VAR_INIT_TX_RATE, (pu1Byte)(&Adapter->TxStats.CurrentInitTxRate) );
-
-	// Calculate current Tx Rate(Successful transmited!!)
-
-	// Calculate current Rx Rate(Successful received!!)
-
-	//for tx tx retry count
-	rtw_hal_get_hwreg( Adapter, HW_VAR_RETRY_COUNT, (pu1Byte)(&Adapter->TxStats.NumTxRetryCount) );
-#endif
 }
 #ifdef CONFIG_SUPPORT_HW_WPS_PBC
 static void dm_CheckPbcGPIO(_adapter *padapter)
@@ -113,24 +72,6 @@ static void dm_CheckPbcGPIO(_adapter *padapter)
 }
 #endif //#ifdef CONFIG_SUPPORT_HW_WPS_PBC
 
-
-//
-// Initialize GPIO setting registers
-//
-static void
-dm_InitGPIOSetting(
-	IN	PADAPTER	Adapter
-	)
-{
-	PHAL_DATA_TYPE		pHalData = GET_HAL_DATA(Adapter);
-
-	u8	tmp1byte;
-
-	tmp1byte = rtw_read8(Adapter, REG_GPIO_MUXCFG);
-	tmp1byte &= (GPIOSEL_GPIO | ~GPIOSEL_ENBT);
-
-	rtw_write8(Adapter, REG_GPIO_MUXCFG, tmp1byte);
-}
 //============================================================
 // functions
 //============================================================
@@ -212,11 +153,6 @@ static void Update_ODM_ComInfo_8723b(PADAPTER	Adapter)
 #endif
 		;
 
-#ifdef CONFIG_ANTENNA_DIVERSITY
-	if(pHalData->AntDivCfg)
-		pdmpriv->InitODMFlag |= ODM_BB_ANT_DIV;
-#endif
-
 	//
 	// Pointer reference
 	//
@@ -286,92 +222,6 @@ rtl8723b_InitHalDm(
 
 }
 
-static void
-FindMinimumRSSI_8723b(
-IN	PADAPTER	pAdapter
-	)
-{
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
-	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
-	struct mlme_priv	*pmlmepriv = &pAdapter->mlmepriv;
-
-	//1 1.Determine the minimum RSSI
-
-
-#ifdef CONFIG_CONCURRENT_MODE
-	//	FindMinimumRSSI()	per-adapter
-	{
-		PADAPTER pbuddy_adapter = pAdapter->pbuddy_adapter;
-		PHAL_DATA_TYPE	pbuddy_HalData = GET_HAL_DATA(pbuddy_adapter);
-		struct dm_priv *pbuddy_dmpriv = &pbuddy_HalData->dmpriv;
-
-		if((pdmpriv->EntryMinUndecoratedSmoothedPWDB != 0) &&
-                  (pbuddy_dmpriv->EntryMinUndecoratedSmoothedPWDB != 0))
-      		{
-
-			if(pdmpriv->EntryMinUndecoratedSmoothedPWDB > pbuddy_dmpriv->EntryMinUndecoratedSmoothedPWDB)
-				pdmpriv->EntryMinUndecoratedSmoothedPWDB = pbuddy_dmpriv->EntryMinUndecoratedSmoothedPWDB;
-             }
-		else
-		{
-			if(pdmpriv->EntryMinUndecoratedSmoothedPWDB == 0)
-			      pdmpriv->EntryMinUndecoratedSmoothedPWDB = pbuddy_dmpriv->EntryMinUndecoratedSmoothedPWDB;
-
-		}
- 		#if 0
-		if((pdmpriv->UndecoratedSmoothedPWDB != (-1)) &&
-			 (pbuddy_dmpriv->UndecoratedSmoothedPWDB != (-1)))
-		{
-
-			if((pdmpriv->UndecoratedSmoothedPWDB > pbuddy_dmpriv->UndecoratedSmoothedPWDB) &&
-				(pbuddy_dmpriv->UndecoratedSmoothedPWDB!=0))
-			            pdmpriv->UndecoratedSmoothedPWDB = pbuddy_dmpriv->UndecoratedSmoothedPWDB;
-		}
-		else
-		{
-			if((pdmpriv->UndecoratedSmoothedPWDB == (-1)) && (pbuddy_dmpriv->UndecoratedSmoothedPWDB!=0))
-			      pdmpriv->UndecoratedSmoothedPWDB = pbuddy_dmpriv->UndecoratedSmoothedPWDB;
-		}
-		#endif
-	}
-#endif
-
-	if((check_fwstate(pmlmepriv, _FW_LINKED) == false) &&
-		(pdmpriv->EntryMinUndecoratedSmoothedPWDB == 0))
-	{
-		pdmpriv->MinUndecoratedPWDBForDM = 0;
-		//ODM_RT_TRACE(pDM_Odm,COMP_BB_POWERSAVING, DBG_LOUD, ("Not connected to any \n"));
-	}
-	if(check_fwstate(pmlmepriv, _FW_LINKED) == true)	// Default port
-	{
-		#if 0
-		if((check_fwstate(pmlmepriv, WIFI_AP_STATE) == true) ||
-			(check_fwstate(pmlmepriv, WIFI_ADHOC_MASTER_STATE) == true) ||
-			(check_fwstate(pmlmepriv, WIFI_ADHOC_STATE) == true))
-		{
-			pdmpriv->MinUndecoratedPWDBForDM = pdmpriv->EntryMinUndecoratedSmoothedPWDB;
-			//ODM_RT_TRACE(pDM_Odm,COMP_BB_POWERSAVING, DBG_LOUD, ("AP Client PWDB = 0x%x \n", pHalData->MinUndecoratedPWDBForDM));
-		}
-		else//for STA mode
-		{
-			pdmpriv->MinUndecoratedPWDBForDM = pdmpriv->UndecoratedSmoothedPWDB;
-			//ODM_RT_TRACE(pDM_Odm,COMP_BB_POWERSAVING, DBG_LOUD, ("STA Default Port PWDB = 0x%x \n", pHalData->MinUndecoratedPWDBForDM));
-		}
-		#else
-		pdmpriv->MinUndecoratedPWDBForDM = pdmpriv->EntryMinUndecoratedSmoothedPWDB;
-		#endif
-	}
-	else // associated entry pwdb
-	{
-		pdmpriv->MinUndecoratedPWDBForDM = pdmpriv->EntryMinUndecoratedSmoothedPWDB;
-		//ODM_RT_TRACE(pDM_Odm,COMP_BB_POWERSAVING, DBG_LOUD, ("AP Ext Port or disconnet PWDB = 0x%x \n", pHalData->MinUndecoratedPWDBForDM));
-	}
-
-	//odm_FindMinimumRSSI_Dmsp(pAdapter);
-	//DBG_8192C("%s=>MinUndecoratedPWDBForDM(%d)\n",__FUNCTION__,pdmpriv->MinUndecoratedPWDBForDM);
-	//ODM_RT_TRACE(pDM_Odm,COMP_DIG, DBG_LOUD, ("MinUndecoratedPWDBForDM =%d\n",pHalData->MinUndecoratedPWDBForDM));
-}
-
 void
 rtl8723b_HalDmWatchDog(
 	IN	PADAPTER	Adapter
@@ -382,19 +232,14 @@ rtl8723b_HalDmWatchDog(
 	u8 hw_init_completed = false;
 	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(Adapter);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
-#ifdef CONFIG_CONCURRENT_MODE
-	PADAPTER pbuddy_adapter = Adapter->pbuddy_adapter;
-#endif //CONFIG_CONCURRENT_MODE
 
 	hw_init_completed = Adapter->hw_init_completed;
 
 	if (hw_init_completed == false)
 		goto skip_dm;
 
-#ifdef CONFIG_LPS
 	bFwCurrentInPSMode = adapter_to_pwrctl(Adapter)->bFwCurrentInPSMode;
 	rtw_hal_get_hwreg(Adapter, HW_VAR_FWLPS_RF_ON, (u8 *)(&bFwPSAwake));
-#endif
 
 	if( (hw_init_completed == true)
 		&& ((!bFwCurrentInPSMode) && bFwPSAwake))
@@ -404,10 +249,6 @@ rtl8723b_HalDmWatchDog(
 		//
 		dm_CheckStatistics(Adapter);
 		rtw_hal_check_rxfifo_full(Adapter);
-		//
-		// Dynamically switch RTS/CTS protection.
-		//
-		//dm_CheckProtection(Adapter);
 	}
 
 	//ODM
@@ -422,19 +263,10 @@ rtl8723b_HalDmWatchDog(
 			if (check_fwstate(&Adapter->mlmepriv, WIFI_STATION_STATE))
 				bsta_state = true;
 		}
-			
-#ifdef CONFIG_CONCURRENT_MODE
-		if(pbuddy_adapter && rtw_linked_check(pbuddy_adapter)){
-			bLinked = true;
-			if(pbuddy_adapter && check_fwstate(&pbuddy_adapter->mlmepriv, WIFI_STATION_STATE))
-				bsta_state = true;
-		}
-#endif //CONFIG_CONCURRENT_MODE
 
 		ODM_CmnInfoUpdate(&pHalData->odmpriv ,ODM_CMNINFO_LINK, bLinked);
 		ODM_CmnInfoUpdate(&pHalData->odmpriv ,ODM_CMNINFO_STATION_STATE, bsta_state);
 
-		//FindMinimumRSSI_8723b(Adapter);
 		//ODM_CmnInfoUpdate(&pHalData->odmpriv ,ODM_CMNINFO_RSSI_MIN, pdmpriv->MinUndecoratedPWDBForDM);
 
 		bBtDisabled = rtw_btcoex_IsBtDisabled(Adapter);
@@ -496,9 +328,6 @@ void rtl8723b_HalDmWatchDog_in_LPS(IN	PADAPTER	Adapter)
 	pDIG_T	pDM_DigTable = &pDM_Odm->DM_DigTable;
 	struct sta_priv *pstapriv = &Adapter->stapriv;
 	struct sta_info *psta = NULL;
-#ifdef CONFIG_CONCURRENT_MODE
-	PADAPTER pbuddy_adapter = Adapter->pbuddy_adapter;
-#endif //CONFIG_CONCURRENT_MODE
 
 	if (Adapter->hw_init_completed == false)
 		goto skip_lps_dm;
@@ -506,11 +335,6 @@ void rtl8723b_HalDmWatchDog_in_LPS(IN	PADAPTER	Adapter)
 
 	if(rtw_linked_check(Adapter))
 		bLinked = true;
-
-#ifdef CONFIG_CONCURRENT_MODE
-	if (pbuddy_adapter && rtw_linked_check(pbuddy_adapter))
-		bLinked = true;
-#endif //CONFIG_CONCURRENT_MODE
 
 	ODM_CmnInfoUpdate(&pHalData->odmpriv ,ODM_CMNINFO_LINK, bLinked);
 

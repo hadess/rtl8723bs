@@ -77,55 +77,11 @@ _func_exit_;
 void rtw_set_tx_chksum_offload(_pkt *pkt, struct pkt_attrib *pattrib)
 {
 
-#ifdef CONFIG_TCP_CSUM_OFFLOAD_TX
-	struct sk_buff *skb = (struct sk_buff *)pkt;
-	pattrib->hw_tcp_csum = 0;
-	
-	if (skb->ip_summed == CHECKSUM_PARTIAL) {
-		if (skb_shinfo(skb)->nr_frags == 0)
-		{	
-                        const struct iphdr *ip = ip_hdr(skb);
-                        if (ip->protocol == IPPROTO_TCP) {
-                                // TCP checksum offload by HW
-                                DBG_871X("CHECKSUM_PARTIAL TCP\n");
-                                pattrib->hw_tcp_csum = 1;
-                                //skb_checksum_help(skb);
-                        } else if (ip->protocol == IPPROTO_UDP) {
-                                //DBG_871X("CHECKSUM_PARTIAL UDP\n");
-#if 1                       
-                                skb_checksum_help(skb);
-#else
-                                // Set UDP checksum = 0 to skip checksum check
-                                struct udphdr *udp = skb_transport_header(skb);
-                                udp->check = 0;
-#endif
-                        } else {
-				DBG_871X("%s-%d TCP CSUM offload Error!!\n", __FUNCTION__, __LINE__);
-                                WARN_ON(1);     /* we need a WARN() */
-			    }
-		}
-		else { // IP fragmentation case
-			DBG_871X("%s-%d nr_frags != 0, using skb_checksum_help(skb);!!\n", __FUNCTION__, __LINE__);
-                	skb_checksum_help(skb);
-		}		
-	}
-#endif	
-	
 }
 
 int rtw_os_xmit_resource_alloc(_adapter *padapter, struct xmit_buf *pxmitbuf, u32 alloc_sz, u8 flag)
 {
 	if (alloc_sz > 0) {
-#ifdef CONFIG_USE_USB_BUFFER_ALLOC_TX
-		struct dvobj_priv	*pdvobjpriv = adapter_to_dvobj(padapter);
-		struct usb_device	*pusbd = pdvobjpriv->pusbdev;
-
-		pxmitbuf->pallocated_buf = rtw_usb_buffer_alloc(pusbd, (size_t)alloc_sz, &pxmitbuf->dma_transfer_addr);
-		pxmitbuf->pbuf = pxmitbuf->pallocated_buf;
-		if(pxmitbuf->pallocated_buf == NULL)
-			return _FAIL;
-#else // CONFIG_USE_USB_BUFFER_ALLOC_TX
-		
 		pxmitbuf->pallocated_buf = rtw_zmalloc(alloc_sz);
 		if (pxmitbuf->pallocated_buf == NULL)
 		{
@@ -133,8 +89,6 @@ int rtw_os_xmit_resource_alloc(_adapter *padapter, struct xmit_buf *pxmitbuf, u3
 		}
 
 		pxmitbuf->pbuf = (u8 *)N_BYTE_ALIGMENT((SIZE_PTR)(pxmitbuf->pallocated_buf), XMITBUF_ALIGN_SZ);
-
-#endif // CONFIG_USE_USB_BUFFER_ALLOC_TX
 	}
 
 	return _SUCCESS;	
@@ -143,17 +97,8 @@ int rtw_os_xmit_resource_alloc(_adapter *padapter, struct xmit_buf *pxmitbuf, u3
 void rtw_os_xmit_resource_free(_adapter *padapter, struct xmit_buf *pxmitbuf,u32 free_sz, u8 flag)
 {
 	if (free_sz > 0 ) {
-#ifdef CONFIG_USE_USB_BUFFER_ALLOC_TX
-		struct dvobj_priv	*pdvobjpriv = adapter_to_dvobj(padapter);
-		struct usb_device	*pusbd = pdvobjpriv->pusbdev;
-
-		rtw_usb_buffer_free(pusbd, (size_t)free_sz, pxmitbuf->pallocated_buf, pxmitbuf->dma_transfer_addr);
-		pxmitbuf->pallocated_buf =  NULL;
-		pxmitbuf->dma_transfer_addr = 0;
-#else	// CONFIG_USE_USB_BUFFER_ALLOC_TX
 		if(pxmitbuf->pallocated_buf)
 			rtw_mfree(pxmitbuf->pallocated_buf, free_sz);
-#endif	// CONFIG_USE_USB_BUFFER_ALLOC_TX
 	}
 }
 
@@ -193,11 +138,6 @@ void rtw_os_xmit_schedule(_adapter *padapter)
 
 	if(!padapter)
 		return;
-
-#ifdef CONFIG_CONCURRENT_MODE
-	if(padapter->adapter_type > PRIMARY_ADAPTER)
-		pri_adapter = padapter->pbuddy_adapter;
-#endif
 
 	if (_rtw_queue_empty(&padapter->xmitpriv.pending_xmitbuf_queue) == false)
 		up(&pri_adapter->xmitpriv.xmit_sema);

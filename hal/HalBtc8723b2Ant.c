@@ -245,65 +245,6 @@ halbtc8723b2ant_WifiRssiState(
 }
 
 static void
-halbtc8723b2ant_MonitorBtEnableDisable(
-	IN 	PBTC_COEXIST		pBtCoexist
-	)
-{
-	static bool	bPreBtDisabled=false;
-	static u4Byte	btDisableCnt=0;
-	bool			bBtActive=true, bBtDisabled=false;
-
-	// This function check if bt is disabled
-
-	if(	pCoexSta->highPriorityTx == 0 &&
-		pCoexSta->highPriorityRx == 0 &&
-		pCoexSta->lowPriorityTx == 0 &&
-		pCoexSta->lowPriorityRx == 0)
-	{
-		bBtActive = false;
-	}
-	if(	pCoexSta->highPriorityTx == 0xffff &&
-		pCoexSta->highPriorityRx == 0xffff &&
-		pCoexSta->lowPriorityTx == 0xffff &&
-		pCoexSta->lowPriorityRx == 0xffff)
-	{
-		bBtActive = false;
-	}
-	if(bBtActive)
-	{
-		btDisableCnt = 0;
-		bBtDisabled = false;
-		pBtCoexist->fBtcSet(pBtCoexist, BTC_SET_BL_BT_DISABLE, &bBtDisabled);
-		BTC_PRINT(BTC_MSG_ALGORITHM, ALGO_BT_MONITOR, ("[BTCoex], BT is enabled !!\n"));
-	}
-	else
-	{
-		btDisableCnt++;
-		BTC_PRINT(BTC_MSG_ALGORITHM, ALGO_BT_MONITOR, ("[BTCoex], bt all counters=0, %d times!!\n", 
-				btDisableCnt));
-		if(btDisableCnt >= 2)
-		{
-			bBtDisabled = true;
-			pBtCoexist->fBtcSet(pBtCoexist, BTC_SET_BL_BT_DISABLE, &bBtDisabled);
-			BTC_PRINT(BTC_MSG_ALGORITHM, ALGO_BT_MONITOR, ("[BTCoex], BT is disabled !!\n"));
-		}
-	}
-	if(bPreBtDisabled != bBtDisabled)
-	{
-		BTC_PRINT(BTC_MSG_ALGORITHM, ALGO_BT_MONITOR, ("[BTCoex], BT is from %s to %s!!\n", 
-			(bPreBtDisabled ? "disabled":"enabled"), 
-			(bBtDisabled ? "disabled":"enabled")));
-		bPreBtDisabled = bBtDisabled;
-		if(!bBtDisabled)
-		{
-		}
-		else
-		{
-		}
-	}
-}
-
-static void
 halbtc8723b2ant_LimitedRx(
 	IN	PBTC_COEXIST		pBtCoexist,
 	IN	bool				bForceExec,
@@ -424,7 +365,6 @@ halbtc8723b2ant_UpdateBtLinkInfo(
 	PBTC_BT_LINK_INFO	pBtLinkInfo=&pBtCoexist->btLinkInfo;
 	bool				bBtHsOn=false;
 
-#if(BT_AUTO_REPORT_ONLY_8723B_2ANT == 1)	// profile from bt patch
 	pBtCoexist->fBtcGet(pBtCoexist, BTC_GET_BL_HS_OPERATION, &bBtHsOn);
 
 	pBtLinkInfo->bBtLinkExist = pCoexSta->bBtLinkExist;
@@ -439,20 +379,6 @@ halbtc8723b2ant_UpdateBtLinkInfo(
 		pBtLinkInfo->bPanExist = true;
 		pBtLinkInfo->bBtLinkExist = true;
 	}
-#else	// profile from bt stack
-	pBtLinkInfo->bBtLinkExist = pStackInfo->bBtLinkExist;
-	pBtLinkInfo->bScoExist = pStackInfo->bScoExist;
-	pBtLinkInfo->bA2dpExist = pStackInfo->bA2dpExist;
-	pBtLinkInfo->bPanExist = pStackInfo->bPanExist;
-	pBtLinkInfo->bHidExist = pStackInfo->bHidExist;
-
-	//for win-8 stack HID report error
-	if(!pStackInfo->bHidExist)
-		pStackInfo->bHidExist = pCoexSta->bHidExist;  //sync  BTInfo with BT firmware and stack
-	// when stack HID report error, here we use the info from bt fw.
-	if(!pStackInfo->bBtLinkExist)
-		pStackInfo->bBtLinkExist = pCoexSta->bBtLinkExist;	
-#endif
 	// check if Sco only
 	if( pBtLinkInfo->bScoExist &&
 		!pBtLinkInfo->bA2dpExist &&
@@ -584,18 +510,8 @@ halbtc8723b2ant_ActionAlgorithm(
 			if( pBtLinkInfo->bHidExist &&
 				pBtLinkInfo->bA2dpExist )
 			{
-#if 0
-				if(pStackInfo->numOfHid >= 2)
-				{
-					BTC_PRINT(BTC_MSG_ALGORITHM, ALGO_TRACE, ("[BTCoex], HID*2 + A2DP\n"));
-					algorithm = BT_8723B_2ANT_COEX_ALGO_HID_A2DP_PANEDR;
-				}
-				else
-#endif
-				{			
-					BTC_PRINT(BTC_MSG_ALGORITHM, ALGO_TRACE, ("[BTCoex], HID + A2DP\n"));
-					algorithm = BT_8723B_2ANT_COEX_ALGO_HID_A2DP;
-				}
+				BTC_PRINT(BTC_MSG_ALGORITHM, ALGO_TRACE, ("[BTCoex], HID + A2DP\n"));
+				algorithm = BT_8723B_2ANT_COEX_ALGO_HID_A2DP;
 			}
 			else if( pBtLinkInfo->bHidExist &&
 				pBtLinkInfo->bPanExist )
@@ -766,51 +682,6 @@ halbtc8723b2ant_DecBtPwr(
 	halbtc8723b2ant_SetFwDecBtPwr(pBtCoexist, pCoexDm->curBtDecPwrLvl);
 
 	pCoexDm->preBtDecPwrLvl = pCoexDm->curBtDecPwrLvl;
-}
-
-static void
-halbtc8723b2ant_SetBtAutoReport(
-	IN	PBTC_COEXIST		pBtCoexist,
-	IN	bool			bEnableAutoReport
-	)
-{
-	u1Byte			H2C_Parameter[1] ={0};
-	
-	H2C_Parameter[0] = 0;
-
-	if(bEnableAutoReport)
-	{
-		H2C_Parameter[0] |= BIT0;
-	}
-
-	BTC_PRINT(BTC_MSG_ALGORITHM, ALGO_TRACE_FW_EXEC, ("[BTCoex], BT FW auto report : %s, FW write 0x68=0x%x\n", 
-		(bEnableAutoReport? "Enabled!!":"Disabled!!"), H2C_Parameter[0]));
-
-	pBtCoexist->fBtcFillH2c(pBtCoexist, 0x68, 1, H2C_Parameter);	
-}
-
-static void
-halbtc8723b2ant_BtAutoReport(
-	IN	PBTC_COEXIST		pBtCoexist,
-	IN	bool			bForceExec,
-	IN	bool			bEnableAutoReport
-	)
-{
-	BTC_PRINT(BTC_MSG_ALGORITHM, ALGO_TRACE_FW, ("[BTCoex], %s BT Auto report = %s\n",  
-		(bForceExec? "force to":""), ((bEnableAutoReport)? "Enabled":"Disabled")));
-	pCoexDm->bCurBtAutoReport = bEnableAutoReport;
-
-	if(!bForceExec)
-	{
-		BTC_PRINT(BTC_MSG_ALGORITHM, ALGO_TRACE_FW_DETAIL, ("[BTCoex], bPreBtAutoReport=%d, bCurBtAutoReport=%d\n", 
-			pCoexDm->bPreBtAutoReport, pCoexDm->bCurBtAutoReport));
-
-		if(pCoexDm->bPreBtAutoReport == pCoexDm->bCurBtAutoReport) 
-			return;
-	}
-	halbtc8723b2ant_SetBtAutoReport(pBtCoexist, pCoexDm->bCurBtAutoReport);
-
-	pCoexDm->bPreBtAutoReport = pCoexDm->bCurBtAutoReport;
 }
 
 static void
@@ -994,48 +865,6 @@ halbtc8723b2ant_DacSwing(
 
 	pCoexDm->bPreDacSwingOn = pCoexDm->bCurDacSwingOn;
 	pCoexDm->preDacSwingLvl = pCoexDm->curDacSwingLvl;
-}
-
-static void
-halbtc8723b2ant_SetAdcBackOff(
-	IN	PBTC_COEXIST		pBtCoexist,
-	IN	bool			bAdcBackOff
-	)
-{
-	if(bAdcBackOff)
-	{
-		BTC_PRINT(BTC_MSG_ALGORITHM, ALGO_TRACE_SW_EXEC, ("[BTCoex], BB BackOff Level On!\n"));
-		pBtCoexist->fBtcWrite1ByteBitMask(pBtCoexist, 0xc05, 0x30, 0x3);
-	}
-	else
-	{
-		BTC_PRINT(BTC_MSG_ALGORITHM, ALGO_TRACE_SW_EXEC, ("[BTCoex], BB BackOff Level Off!\n"));
-		pBtCoexist->fBtcWrite1ByteBitMask(pBtCoexist, 0xc05, 0x30, 0x1);
-	}
-}
-
-static void
-halbtc8723b2ant_AdcBackOff(
-	IN	PBTC_COEXIST		pBtCoexist,
-	IN	bool			bForceExec,
-	IN	bool			bAdcBackOff
-	)
-{
-	BTC_PRINT(BTC_MSG_ALGORITHM, ALGO_TRACE_SW, ("[BTCoex], %s turn AdcBackOff = %s\n",  
-		(bForceExec? "force to":""), ((bAdcBackOff)? "ON":"OFF")));
-	pCoexDm->bCurAdcBackOff = bAdcBackOff;
-
-	if(!bForceExec)
-	{
-		BTC_PRINT(BTC_MSG_ALGORITHM, ALGO_TRACE_SW_DETAIL, ("[BTCoex], bPreAdcBackOff=%d, bCurAdcBackOff=%d\n", 
-			pCoexDm->bPreAdcBackOff, pCoexDm->bCurAdcBackOff));
-
-		if(pCoexDm->bPreAdcBackOff == pCoexDm->bCurAdcBackOff) 
-			return;
-	}
-	halbtc8723b2ant_SetAdcBackOff(pBtCoexist, pCoexDm->bCurAdcBackOff);
-
-	pCoexDm->bPreAdcBackOff = pCoexDm->bCurAdcBackOff;
 }
 
 static void
@@ -1356,7 +1185,6 @@ halbtc8723b2ant_SwMechanism2(
 	) 
 {
 	halbtc8723b2ant_AgcTable(pBtCoexist, NORMAL_EXEC, bAGCTableShift);
-	//halbtc8723b2ant_AdcBackOff(pBtCoexist, NORMAL_EXEC, bADCBackOff);
 	halbtc8723b2ant_DacSwing(pBtCoexist, NORMAL_EXEC, bSWDACSwing, dacSwingLvl);
 }
 
@@ -3898,9 +3726,8 @@ EXhalbtc8723b2ant_DisplayCoexInfo(
 	CL_SPRINTF(cliBuf, BT_TMP_BUF_SIZE, "\r\n %-35s = %d/ %d", "0x774(low-pri rx/tx)", \
 		pCoexSta->lowPriorityRx, pCoexSta->lowPriorityTx);
 	CL_PRINTF(cliBuf);
-#if(BT_AUTO_REPORT_ONLY_8723B_2ANT == 1)
+
 	halbtc8723b2ant_MonitorBtCtr(pBtCoexist);
-#endif
 	pBtCoexist->fBtcDispDbgMsg(pBtCoexist, BTC_DBG_DISP_COEX_STATISTICS);
 }
 
@@ -4130,16 +3957,6 @@ EXhalbtc8723b2ant_BtInfoNotify(
 		{
 			// BT already NOT ignore Wlan active, do nothing here.
 		}
-#if(BT_AUTO_REPORT_ONLY_8723B_2ANT == 0)
-		if( (pCoexSta->btInfoExt & BIT4) )
-		{
-			// BT auto report already enabled, do nothing
-		}
-		else
-		{
-			halbtc8723b2ant_BtAutoReport(pBtCoexist, FORCE_EXEC, true);
-		}
-#endif
 	}
 
 	// check BIT2 first ==> check if bt is under inquiry or page scan
@@ -4290,15 +4107,9 @@ EXhalbtc8723b2ant_Periodical(
 		BTC_PRINT(BTC_MSG_INTERFACE, INTF_INIT, ("[BTCoex], ****************************************************************\n"));
 	}
 
-#if(BT_AUTO_REPORT_ONLY_8723B_2ANT == 0)
-	halbtc8723b2ant_QueryBtInfo(pBtCoexist);
-	halbtc8723b2ant_MonitorBtCtr(pBtCoexist);
-	halbtc8723b2ant_MonitorBtEnableDisable(pBtCoexist);
-#else
 	if( halbtc8723b2ant_IsWifiStatusChanged(pBtCoexist) ||
 		pCoexDm->bAutoTdmaAdjust)
 	{
 		halbtc8723b2ant_RunCoexistMechanism(pBtCoexist);
 	}
-#endif
 }

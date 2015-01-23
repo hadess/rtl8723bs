@@ -21,13 +21,7 @@
 #define _RTW_XMIT_H_
 
 
-#ifdef CONFIG_TX_AGGREGATION
 #define MAX_XMITBUF_SZ	(20480)	// 20k
-//#define SDIO_TX_AGG_MAX	5
-#else
-#define MAX_XMITBUF_SZ (1664)
-#define SDIO_TX_AGG_MAX	1
-#endif
 
 #define NR_XMITBUFF	(16)
 
@@ -99,11 +93,6 @@ do{\
 // For Buffer Descriptor ring architecture
 #define TXDESC_SIZE 40
 
-#ifdef CONFIG_TX_EARLY_MODE
-#define EARLY_MODE_INFO_SIZE	8
-#endif
-
-
 #define TXDESC_OFFSET TXDESC_SIZE
 
 enum TXDESC_SC{
@@ -160,57 +149,6 @@ struct	hw_xmit	{
 	int	accnt;
 };
 
-#if 0
-struct pkt_attrib
-{
-	u8	type;
-	u8	subtype;
-	u8	bswenc;
-	u8	dhcp_pkt;
-	u16	ether_type;
-	int	pktlen;		//the original 802.3 pkt raw_data len (not include ether_hdr data)
-	int	pkt_hdrlen;	//the original 802.3 pkt header len
-	int	hdrlen;		//the WLAN Header Len
-	int	nr_frags;
-	int	last_txcmdsz;
-	int	encrypt;	//when 0 indicate no encrypt. when non-zero, indicate the encrypt algorith
-	u8	iv[8];
-	int	iv_len;
-	u8	icv[8];
-	int	icv_len;
-	int	priority;
-	int	ack_policy;
-	int	mac_id;
-	int	vcs_mode;	//virtual carrier sense method
-
-	u8 	dst[ETH_ALEN];
-	u8	src[ETH_ALEN];
-	u8	ta[ETH_ALEN];
-	u8 	ra[ETH_ALEN];
-
-	u8	key_idx;
-
-	u8	qos_en;
-	u8	ht_en;
-	u8	raid;//rate adpative id
-	u8	bwmode;
-	u8	ch_offset;//PRIME_CHNL_OFFSET
-	u8	sgi;//short GI
-	u8	ampdu_en;//tx ampdu enable
-	u8	mdata;//more data bit
-	u8	eosp;
-
-	u8	triggered;//for ap mode handling Power Saving sta
-
-	u32	qsel;
-	u16	seqnum;
-
-	struct sta_info * psta;
-#ifdef CONFIG_TCP_CSUM_OFFLOAD_TX
-	u8	hw_tcp_csum;
-#endif
-};
-#else
 //reduce size
 struct pkt_attrib
 {
@@ -260,9 +198,6 @@ struct pkt_attrib
 	u8	ldpc;
 	u8	stbc;
 	struct sta_info * psta;
-#ifdef CONFIG_TCP_CSUM_OFFLOAD_TX
-	u8	hw_tcp_csum;
-#endif
 
 	u8 rtsen;
 	u8 cts2self;
@@ -270,15 +205,9 @@ struct pkt_attrib
 	//union Keytype	dot11tkiprxmickey;
 	union Keytype	dot118021x_UncstKey;
 
-#ifdef CONFIG_TDLS
-	u8 direct_link;
-	struct sta_info *ptdls_sta;
-#endif //CONFIG_TDLS
-
 	u8 icmp_pkt;
 	
 };
-#endif
 
 #define WLANHDR_OFFSET	64
 
@@ -384,9 +313,7 @@ struct xmit_frame
 	u8	pg_num;
 	u8	agg_num;
 
-#ifdef CONFIG_XMIT_ACK
 	u8 ack_report;
-#endif
 
 	u8 *alloc_addr; /* the actual address this xmitframe allocated */
 	u8 ext_tag; /* 0:data, 1:mgmt */
@@ -524,19 +451,11 @@ struct	xmit_priv	{
 	struct xmit_buf	pcmd_xmitbuf[CMDBUF_MAX];
 
 	u16	nqos_ssn;
-	#ifdef CONFIG_TX_EARLY_MODE
 
-	#define MAX_AGG_PKT_NUM 20
-
-	struct agg_pkt_info agg_pkt[MAX_AGG_PKT_NUM];
-	#endif
-
-#ifdef CONFIG_XMIT_ACK
 	int	ack_tx;
 	_mutex ack_tx_mutex;
 	struct submit_ctx ack_tx_ops;
 	u8 seq_no;
-#endif
 	_lock lock_sctx;
 };
 
@@ -553,8 +472,6 @@ extern s32 rtw_free_xmitbuf(struct xmit_priv *pxmitpriv, struct xmit_buf *pxmitb
 
 void rtw_count_tx_stats(_adapter *padapter, struct xmit_frame *pxmitframe, int sz);
 extern void rtw_update_protection(_adapter *padapter, u8 *ie, uint ie_len);
-static s32 update_attrib_sec_info(_adapter *padapter, struct pkt_attrib *pattrib, struct sta_info *psta);
-static void update_attrib_phy_info(_adapter *padapter, struct pkt_attrib *pattrib, struct sta_info *psta);
 extern s32 rtw_make_wlanhdr(_adapter *padapter, u8 *hdr, struct pkt_attrib *pattrib);
 extern s32 rtw_put_snap(u8 *data, u16 h_proto);
 
@@ -574,11 +491,6 @@ extern s32 rtw_xmitframe_coalesce(_adapter *padapter, _pkt *pkt, struct xmit_fra
 #ifdef CONFIG_IEEE80211W
 extern s32 rtw_mgmt_xmitframe_coalesce(_adapter *padapter, _pkt *pkt, struct xmit_frame *pxmitframe);
 #endif //CONFIG_IEEE80211W
-#ifdef CONFIG_TDLS
-extern struct tdls_txmgmt *ptxmgmt;
-s32 rtw_xmit_tdls_coalesce(_adapter *padapter, struct xmit_frame *pxmitframe, struct tdls_txmgmt *ptxmgmt);
-s32 update_tdls_attrib(_adapter *padapter, struct pkt_attrib *pattrib);
-#endif
 s32 _rtw_init_hw_txqueue(struct hw_txqueue* phw_txqueue, u8 ac_tag);
 void _rtw_init_sta_xmit_priv(struct sta_xmit_priv *psta_xmitpriv);
 
@@ -598,7 +510,7 @@ void rtw_free_hwxmits(_adapter *padapter);
 
 s32 rtw_xmit(_adapter *padapter, _pkt **pkt);
 bool xmitframe_hiq_filter(struct xmit_frame *xmitframe);
-#if defined(CONFIG_AP_MODE) || defined(CONFIG_TDLS)
+#if defined(CONFIG_AP_MODE)
 sint xmitframe_enqueue_for_sleeping_sta(_adapter *padapter, struct xmit_frame *pxmitframe);
 void stop_sta_xmit(_adapter *padapter, struct sta_info *psta);
 void wakeup_sta_to_xmit(_adapter *padapter, struct sta_info *psta);
@@ -609,23 +521,17 @@ u8	query_ra_short_GI(struct sta_info *psta);
 
 u8	qos_acm(u8 acm_mask, u8 priority);
 
-#ifdef CONFIG_XMIT_THREAD_MODE
 void	enqueue_pending_xmitbuf(struct xmit_priv *pxmitpriv, struct xmit_buf *pxmitbuf);
 void enqueue_pending_xmitbuf_to_head(struct xmit_priv *pxmitpriv, struct xmit_buf *pxmitbuf);
 struct xmit_buf*	dequeue_pending_xmitbuf(struct xmit_priv *pxmitpriv);
 struct xmit_buf*	dequeue_pending_xmitbuf_under_survey(struct xmit_priv *pxmitpriv);
 sint	check_pending_xmitbuf(struct xmit_priv *pxmitpriv);
 int	rtw_xmit_thread(void * context);
-#endif
 
-static void do_queue_select(_adapter * padapter, struct pkt_attrib * pattrib);
 u32	rtw_get_ff_hwaddr(struct xmit_frame	*pxmitframe);
 
-#ifdef CONFIG_XMIT_ACK
 int rtw_ack_tx_wait(struct xmit_priv *pxmitpriv, u32 timeout_ms);
 void rtw_ack_tx_done(struct xmit_priv *pxmitpriv, int status);
-#endif //CONFIG_XMIT_ACK
-
 
 //include after declaring struct xmit_buf, in order to avoid warning
 #include <xmit_osdep.h>

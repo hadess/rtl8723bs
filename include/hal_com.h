@@ -327,9 +327,7 @@ void rtw_dump_raw_rssi_info(_adapter *padapter);
 
 #define		HWSET_MAX_SIZE			512
 
-#ifdef CONFIG_RF_GAIN_OFFSET
 void rtw_bb_rf_gain_offset(_adapter *padapter);
-#endif //CONFIG_RF_GAIN_OFFSET
 
 void GetHalODMVar(	
 	PADAPTER				Adapter,

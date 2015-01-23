@@ -97,19 +97,6 @@ PHY_RF6052SetBandwidth8723B(
 
 }
 
-static void
-phy_RF6052_Config_HardCode(
-	IN	PADAPTER		Adapter
-	)
-{
-
-	// Set Default Bandwidth to 20M
-	//Adapter->HalFunc	.SetBWModeHandler(Adapter, CHANNEL_WIDTH_20);
-
-	// TODO: Set Default Channel to channel one for RTL8225
-
-}
-
 static int
 phy_RF6052_Config_ParaFile(
 	IN	PADAPTER		Adapter
@@ -176,10 +163,8 @@ phy_RF6052_Config_ParaFile(
 			if (PHY_ConfigRFWithParaFile(Adapter, pszRadioAFile, eRFPath) == _FAIL)
 #endif
 			{
-#ifdef CONFIG_EMBEDDED_FWIMG
 				if(HAL_STATUS_FAILURE ==ODM_ConfigRFWithHeaderFile(&pHalData->odmpriv,CONFIG_RF_RADIO, (ODM_RF_RADIO_PATH_E)eRFPath))
 					rtStatus = _FAIL;
-#endif
 			}
 			break;
 		case RF_PATH_B:
@@ -187,10 +172,8 @@ phy_RF6052_Config_ParaFile(
 			if (PHY_ConfigRFWithParaFile(Adapter, pszRadioBFile, eRFPath) == _FAIL)
 #endif
 			{
-#ifdef CONFIG_EMBEDDED_FWIMG
 				if(HAL_STATUS_FAILURE ==ODM_ConfigRFWithHeaderFile(&pHalData->odmpriv,CONFIG_RF_RADIO, (ODM_RF_RADIO_PATH_E)eRFPath))
 					rtStatus = _FAIL;
-#endif
 			}
 			break;
 		case RF_PATH_C:
@@ -227,9 +210,7 @@ phy_RF6052_Config_ParaFile(
 	if (PHY_ConfigRFWithTxPwrTrackParaFile(Adapter, pszTxPwrTrackFile) == _FAIL)
 #endif
 	{
-#ifdef CONFIG_EMBEDDED_FWIMG
 		ODM_ConfigRFWithTxPwrTrackHeaderFile(&pHalData->odmpriv);
-#endif
 	}
 	
 	//RT_TRACE(COMP_INIT, DBG_LOUD, ("<---phy_RF6052_Config_ParaFile()\n"));

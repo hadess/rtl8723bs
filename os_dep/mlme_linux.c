@@ -53,24 +53,16 @@ static void _dynamic_check_timer_handlder (void *FunctionContext)
 {
 	_adapter *adapter = (_adapter *)FunctionContext;
 
-#ifdef CONFIG_CONCURRENT_MODE
-	if(adapter->pbuddy_adapter)
-		rtw_dynamic_check_timer_handlder(adapter->pbuddy_adapter);
-#endif //CONFIG_CONCURRENT_MODE
-
 	rtw_dynamic_check_timer_handlder(adapter);
 	
 	_set_timer(&adapter->mlmepriv.dynamic_chk_timer, 2000);
 }
 
-#ifdef CONFIG_SET_SCAN_DENY_TIMER
 static void _rtw_set_scan_deny_timer_hdl(void *FunctionContext)
 {
 	_adapter *adapter = (_adapter *)FunctionContext;	 
 	rtw_set_scan_deny_timer_hdl(adapter);
 }
-#endif
-
 
 void rtw_init_mlme_timer(_adapter *padapter)
 {
@@ -82,9 +74,7 @@ void rtw_init_mlme_timer(_adapter *padapter)
 
 	_init_timer(&(pmlmepriv->dynamic_chk_timer), padapter->pnetdev, _dynamic_check_timer_handlder, padapter);
 
-	#ifdef CONFIG_SET_SCAN_DENY_TIMER
 	_init_timer(&(pmlmepriv->set_scan_deny_timer), padapter->pnetdev, _rtw_set_scan_deny_timer_hdl, padapter);
-	#endif
 }
 
 extern void rtw_indicate_wx_assoc_event(_adapter *padapter);
@@ -247,10 +237,7 @@ _func_enter_;
 		rtw_mfree(buff, IW_CUSTOM_MAX);
 	}
 
-exit:
-
 _func_exit_;
-
 }
 
 static void _survey_timer_hdl (void *FunctionContext)
@@ -361,150 +348,4 @@ void rtw_indicate_sta_disassoc_event(_adapter *padapter, struct sta_info *psta)
 	DBG_871X("+rtw_indicate_sta_disassoc_event\n");
 }
 
-
-#ifdef CONFIG_HOSTAPD_MLME
-
-static int mgnt_xmit_entry(struct sk_buff *skb, struct net_device *pnetdev)
-{
-	struct hostapd_priv *phostapdpriv = rtw_netdev_priv(pnetdev);
-	_adapter *padapter = (_adapter *)phostapdpriv->padapter;
-
-	//DBG_871X("%s\n", __FUNCTION__);
-
-	return rtw_hal_hostap_mgnt_xmit_entry(padapter, skb);
-}
-
-static int mgnt_netdev_open(struct net_device *pnetdev)
-{
-	struct hostapd_priv *phostapdpriv = rtw_netdev_priv(pnetdev);
-
-	DBG_871X("mgnt_netdev_open: MAC Address:" MAC_FMT "\n", MAC_ARG(pnetdev->dev_addr));
-
-
-	init_usb_anchor(&phostapdpriv->anchored);
-	
-	if(!rtw_netif_queue_stopped(pnetdev))
-		rtw_netif_start_queue(pnetdev);
-	else
-		rtw_netif_wake_queue(pnetdev);
-
-
-	netif_carrier_on(pnetdev);
-		
-	//rtw_write16(phostapdpriv->padapter, 0x0116, 0x0100);//only excluding beacon 
-		
-	return 0;	
-}
-static int mgnt_netdev_close(struct net_device *pnetdev)
-{
-	struct hostapd_priv *phostapdpriv = rtw_netdev_priv(pnetdev);
-
-	DBG_871X("%s\n", __FUNCTION__);
-
-	usb_kill_anchored_urbs(&phostapdpriv->anchored);
-
-	netif_carrier_off(pnetdev);
-
-	if (!rtw_netif_queue_stopped(pnetdev))
-		rtw_netif_stop_queue(pnetdev);
-	
-	//rtw_write16(phostapdpriv->padapter, 0x0116, 0x3f3f);
-	
-	return 0;	
-}
-
-static const struct net_device_ops rtl871x_mgnt_netdev_ops = {
-	.ndo_open = mgnt_netdev_open,
-       .ndo_stop = mgnt_netdev_close,
-       .ndo_start_xmit = mgnt_xmit_entry,
-       //.ndo_set_mac_address = r871x_net_set_mac_address,
-       //.ndo_get_stats = r871x_net_get_stats,
-       //.ndo_do_ioctl = r871x_mp_ioctl,
-};
-
-int hostapd_mode_init(_adapter *padapter)
-{
-	unsigned char mac[ETH_ALEN];
-	struct hostapd_priv *phostapdpriv;
-	struct net_device *pnetdev;
-	
-	pnetdev = rtw_alloc_etherdev(sizeof(struct hostapd_priv));	
-	if (!pnetdev)
-	   return -ENOMEM;
-
-	//SET_MODULE_OWNER(pnetdev);
-       ether_setup(pnetdev);
-
-	//pnetdev->type = ARPHRD_IEEE80211;
-	
-	phostapdpriv = rtw_netdev_priv(pnetdev);
-	phostapdpriv->pmgnt_netdev = pnetdev;
-	phostapdpriv->padapter= padapter;
-	padapter->phostapdpriv = phostapdpriv;
-	
-	//pnetdev->init = NULL;
-	
-	DBG_871X("register rtl871x_mgnt_netdev_ops to netdev_ops\n");
-
-	pnetdev->netdev_ops = &rtl871x_mgnt_netdev_ops;
-
-	pnetdev->watchdog_timeo = HZ; /* 1 second timeout */	
-
-	//pnetdev->wireless_handlers = NULL;
-
-#ifdef CONFIG_TCP_CSUM_OFFLOAD_TX
-	pnetdev->features |= NETIF_F_IP_CSUM;
-#endif	
-
-	
-	
-	if(dev_alloc_name(pnetdev,"mgnt.wlan%d") < 0)
-	{
-		DBG_871X("hostapd_mode_init(): dev_alloc_name, fail! \n");		
-	}
-
-
-	//SET_NETDEV_DEV(pnetdev, pintfpriv->udev);
-
-
-	mac[0]=0x00;
-	mac[1]=0xe0;
-	mac[2]=0x4c;
-	mac[3]=0x87;
-	mac[4]=0x11;
-	mac[5]=0x12;
-				
-	memcpy(pnetdev->dev_addr, mac, ETH_ALEN);
-	
-
-	netif_carrier_off(pnetdev);
-
-
-	/* Tell the network stack we exist */
-	if (register_netdev(pnetdev) != 0)
-	{
-		DBG_871X("hostapd_mode_init(): register_netdev fail!\n");
-		
-		if(pnetdev)
-      		{	 
-			rtw_free_netdev(pnetdev);
-      		}
-	}
-	
-	return 0;
-	
-}
-
-void hostapd_mode_unload(_adapter *padapter)
-{
-	struct hostapd_priv *phostapdpriv = padapter->phostapdpriv;
-	struct net_device *pnetdev = phostapdpriv->pmgnt_netdev;
-
-	unregister_netdev(pnetdev);
-	rtw_free_netdev(pnetdev);
-	
-}
-
 #endif
-#endif
-

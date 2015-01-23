@@ -187,31 +187,6 @@ struct tx_invite_resp_info{
 	u8					token;	//	Used to record the dialog token of p2p invitation request frame.
 };
 
-#ifdef CONFIG_WFD
-
-struct wifi_display_info{
-	u16							wfd_enable;			//	Eanble/Disable the WFD function.
-	u16							rtsp_ctrlport;		//	TCP port number at which the this WFD device listens for RTSP messages
-	u16							peer_rtsp_ctrlport;	//	TCP port number at which the peer WFD device listens for RTSP messages
-													//	This filed should be filled when receiving the gropu negotiation request
-
-	u8							peer_session_avail;	//	WFD session is available or not for the peer wfd device.
-													//	This variable will be set when sending the provisioning discovery request to peer WFD device.
-													//	And this variable will be reset when it is read by using the iwpriv p2p_get wfd_sa command.
-	u8							ip_address[4];
-	u8							peer_ip_address[4];
-	u8							wfd_pc;				//	WFD preferred connection
-													//	0 -> Prefer to use the P2P for WFD connection on peer side.
-													//	1 -> Prefer to use the TDLS for WFD connection on peer side.
-											
-	u8							wfd_device_type;	//	WFD Device Type
-													//	0 -> WFD Source Device
-													//	1 -> WFD Primary Sink Device
-	enum	SCAN_RESULT_TYPE	scan_result_type;	//	Used when P2P is enable. This parameter will impact the scan result.
-
-};
-#endif //CONFIG_WFD
-
 struct tx_provdisc_req_info{
 	u16					wps_config_method_request;	//	Used when sending the provisioning request frame
 	u16					peer_channel_num[2];		//	The channel number which the receiver stands.
@@ -262,10 +237,6 @@ struct wifidirect_info{
 	_timer					pre_tx_scan_timer;
 	_timer					reset_ch_sitesurvey;
 	_timer					reset_ch_sitesurvey2;	//	Just for resetting the scan limit function by using p2p nego
-#ifdef CONFIG_CONCURRENT_MODE
-	//	Used to switch the channel between legacy AP and listen state.
-	_timer					ap_p2p_switch_timer;
-#endif
 	struct tx_provdisc_req_info	tx_prov_disc_info;
 	struct rx_provdisc_req_info rx_prov_disc_info;
 	struct tx_invite_req_info	invitereq_info;
@@ -275,9 +246,6 @@ struct wifidirect_info{
 	struct group_id_info		groupid_info;	//	Store the group id information when doing the group negotiation handshake.
 	struct scan_limit_info		rx_invitereq_info;	//	Used for get the limit scan channel from the Invitation procedure
 	struct scan_limit_info		p2p_info;		//	Used for get the limit scan channel from the P2P negotiation handshake
-#ifdef CONFIG_WFD
-	struct wifi_display_info		*wfd_info;
-#endif	
 	enum P2P_ROLE			role;
 	enum P2P_STATE			pre_p2p_state;
 	enum P2P_STATE			p2p_state;
@@ -332,11 +300,6 @@ struct wifidirect_info{
 	u8						channel_list_attr[100];		//	This field will contain the body of P2P Channel List attribute of group negotitation response frame.
 														//	We will use the channel_cnt and channel_list fields when constructing the group negotitation confirm frame.
 	u8						driver_interface;			//	Indicate DRIVER_WEXT or DRIVER_CFG80211
-
-#ifdef CONFIG_CONCURRENT_MODE
-	u16						ext_listen_interval;	//	The interval to be available with legacy AP (ms)
-	u16						ext_listen_period;	//	The time period to be available for P2P listen state (ms)
-#endif
 };
 
 struct tdls_ss_record{	//signal strength record
@@ -361,9 +324,6 @@ struct tdls_info{
 	u8					dev_discovered;		//WFD_TDLS: for sigma test
 	u8					tdls_enable;
 	u8					external_setup;	// true: setup is handled by wpa_supplicant
-#ifdef CONFIG_WFD
-	struct wifi_display_info		*wfd_info;
-#endif		
 };
 
 struct tdls_txmgmt {
@@ -413,11 +373,6 @@ struct mlme_priv {
 
 	struct wlan_network	cur_network;
 	struct wlan_network *cur_network_scanned;
-#ifdef CONFIG_ARP_KEEP_ALIVE
-	// for arp offload keep alive
-	u8	gw_mac_addr[6];
-	u8	gw_ip[4];
-#endif
 
 	//uint wireless_mode; no used, remove it
 
@@ -431,10 +386,8 @@ struct mlme_priv {
 	_timer scan_to_timer; // driver itself handles scan_timeout status.
 	unsigned long scan_start_time; // used to evaluate the time spent in scanning
 
-	#ifdef CONFIG_SET_SCAN_DENY_TIMER
 	_timer set_scan_deny_timer;
 	atomic_t set_scan_deny; //0: allowed, 1: deny
-	#endif
 
 	struct qos_priv qospriv;
 
@@ -448,10 +401,6 @@ struct mlme_priv {
 	int num_FortyMHzIntolerant;
 
 	struct ht_priv	htpriv;
-
-#ifdef CONFIG_BEAMFORMING
-	struct beamforming_info	beamforming_info;
-#endif
 
 	RT_LINK_DETECT_T	LinkDetectInfo;
 	_timer	dynamic_chk_timer; //dynamic/periodic check timer
@@ -523,22 +472,6 @@ struct mlme_priv {
 	
 #endif //#if defined (CONFIG_AP_MODE) && defined (CONFIG_NATIVEAP_MLME)
 
-#if defined(CONFIG_WFD)
-	
-	u8 *wfd_beacon_ie;
-	u8 *wfd_probe_req_ie;
-	u8 *wfd_probe_resp_ie;	
-	u8 *wfd_go_probe_resp_ie; //for GO	
-	u8 *wfd_assoc_req_ie;
-
-	u32 wfd_beacon_ie_len;
-	u32 wfd_probe_req_ie_len;
-	u32 wfd_probe_resp_ie_len;
-	u32 wfd_go_probe_resp_ie_len; //for GO
-	u32 wfd_assoc_req_ie_len;
-
-#endif
-
 #ifdef CONFIG_INTEL_WIDI
 	int	widi_state;
 	int	listen_state;
@@ -566,10 +499,6 @@ struct mlme_priv {
 							//such that it will cause p2p disabled. Use this flag to reject.
 #endif // CONFIG_INTEL_WIDI
 
-#ifdef CONFIG_CONCURRENT_MODE
-	u8	scanning_via_buddy_intf;
-#endif
-
 	u8 	NumOfBcnInfoChkFail;
 	unsigned long	timeBcnInfoChkStart;
 };
@@ -586,12 +515,6 @@ void rtw_mlme_reset_auto_scan_int(_adapter *adapter);
 struct hostapd_priv
 {
 	_adapter *padapter;
-
-#ifdef CONFIG_HOSTAPD_MLME
-	struct net_device *pmgnt_netdev;
-	struct usb_anchor anchored;
-#endif	
-	
 };
 
 extern int hostapd_mode_init(_adapter *padapter);
@@ -700,12 +623,6 @@ __inline static void up_scanned_network(struct mlme_priv *pmlmepriv)
 	_exit_critical_bh(&pmlmepriv->lock, &irqL);
 }
 
-#ifdef CONFIG_CONCURRENT_MODE
-sint rtw_buddy_adapter_up(_adapter *padapter);
-sint check_buddy_fwstate(_adapter *padapter, sint state);
-u8 rtw_get_buddy_bBusyTraffic(_adapter *padapter);
-#endif //CONFIG_CONCURRENT_MODE
-
 __inline static void down_scanned_network(struct mlme_priv *pmlmepriv)
 {
 	_irqL irqL;
@@ -751,18 +668,10 @@ extern void _rtw_join_timeout_handler(_adapter *adapter);
 extern void rtw_scan_timeout_handler(_adapter *adapter);
 
 extern void rtw_dynamic_check_timer_handlder(_adapter *adapter);
-#ifdef CONFIG_SET_SCAN_DENY_TIMER
 bool rtw_is_scan_deny(_adapter *adapter);
 void rtw_clear_scan_deny(_adapter *adapter);
 void rtw_set_scan_deny_timer_hdl(_adapter *adapter);
 void rtw_set_scan_deny(_adapter *adapter, u32 ms);
-#else
-#define rtw_is_scan_deny(adapter) false
-#define rtw_clear_scan_deny(adapter) do {} while (0)
-#define rtw_set_scan_deny_timer_hdl(adapter) do {} while (0)
-#define rtw_set_scan_deny(adapter, ms) do {} while (0)
-#endif
-
 
 extern int _rtw_init_mlme_priv(_adapter *padapter);
 
@@ -846,10 +755,5 @@ int rtw_select_roaming_candidate(struct mlme_priv *pmlmepriv);
 
 void rtw_sta_media_status_rpt(_adapter *adapter,struct sta_info *psta, u32 mstatus);
 
-#ifdef CONFIG_INTEL_PROXIM
-void rtw_proxim_enable(_adapter *padapter);
-void rtw_proxim_disable(_adapter *padapter);
-void rtw_proxim_send_packet(_adapter *padapter,u8 *pbuf,u16 len,u8 hw_rate);
-#endif //CONFIG_INTEL_PROXIM
 #endif //__RTL871X_MLME_H_
 
