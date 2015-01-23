@@ -23,7 +23,6 @@ EXTRA_LDFLAGS += --strip-debug
 ########################## Features ###########################
 CONFIG_HW_PWRP_DETECTION = n
 CONFIG_INTEL_WIDI = n
-CONFIG_WAPI_SUPPORT = n
 CONFIG_EXT_CLK = n
 CONFIG_TRAFFIC_PROTECT = y
 CONFIG_LOAD_PHY_PARA_FROM_FILE = y
@@ -127,11 +126,6 @@ ifeq ($(CONFIG_INTEL_WIDI), y)
 EXTRA_CFLAGS += -DCONFIG_INTEL_WIDI
 endif
 
-ifeq ($(CONFIG_WAPI_SUPPORT), y)
-EXTRA_CFLAGS += -DCONFIG_WAPI_SUPPORT
-endif
-
-
 ifeq ($(CONFIG_EXT_CLK), y)
 EXTRA_CFLAGS += -DCONFIG_EXT_CLK
 endif
@@ -220,9 +214,6 @@ rtk_core :=	core/rtw_cmd.o \
 $(MODULE_NAME)-y += $(rtk_core)
 
 $(MODULE_NAME)-$(CONFIG_INTEL_WIDI) += core/rtw_intel_widi.o
-
-$(MODULE_NAME)-$(CONFIG_WAPI_SUPPORT) += core/rtw_wapi.o	\
-					core/rtw_wapi_sms4.o
 
 $(MODULE_NAME)-y += $(_OS_INTFS_FILES)
 $(MODULE_NAME)-y += $(_HAL_INTFS_FILES)

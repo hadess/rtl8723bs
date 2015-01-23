@@ -424,14 +424,6 @@ _func_enter_;
 	precvpriv = &(padapter->recvpriv);
 	pfree_recv_queue = &(precvpriv->free_recv_queue);
 
-#ifdef CONFIG_WAPI_SUPPORT
-	if (rtw_wapi_check_for_drop(padapter,precv_frame))
-	{
-		WAPI_TRACE(WAPI_ERR, "%s(): Rx Reorder Drop case!!\n", __FUNCTION__);
-		goto _recv_indicatepkt_drop;
-	}
-#endif
-
 	skb = precv_frame->u.hdr.pkt;
 	if(skb == NULL)
 	{

@@ -84,10 +84,6 @@ typedef struct _ADAPTER _adapter, ADAPTER,*PADAPTER;
 #include <rtw_version.h>
 #include <rtw_odm.h>
 
-#ifdef CONFIG_WAPI_SUPPORT
-#include <rtw_wapi.h>
-#endif // CONFIG_WAPI_SUPPORT
-
 #include "ioctl_cfg80211.h"
 
 #include <linux/ip.h>
@@ -580,11 +576,6 @@ struct _ADAPTER{
 #endif
 
 	u32	setband;
-
-#ifdef CONFIG_WAPI_SUPPORT
-	u8	WapiSupport;
-	RT_WAPI_T	wapiInfo;
-#endif
 
 	void *			HalData;
 	u32 hal_data_sz;

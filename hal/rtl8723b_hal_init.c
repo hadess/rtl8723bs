@@ -3710,11 +3710,6 @@ static u8 fill_txdesc_sectype(struct pkt_attrib *pattrib)
 				sectype = 1;
 				break;
 
-#ifdef CONFIG_WAPI_SUPPORT
-			case _SMS4_:
-				sectype = 2;
-				break;
-#endif
 			case _AES_:
 				sectype = 3;
 				break;

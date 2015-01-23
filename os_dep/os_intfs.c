@@ -940,11 +940,6 @@ _func_enter_;
 	}
 #endif //CONFIG_INTEL_WIDI
 
-#ifdef CONFIG_WAPI_SUPPORT
-	padapter->WapiSupport = true; //set true temp, will revise according to Efuse or Registry value later.
-	rtw_wapi_init(padapter);
-#endif
-
 exit:
 
 	RT_TRACE(_module_os_intfs_c_,_drv_info_,("-rtw_init_drv_sw\n"));
@@ -1000,10 +995,6 @@ u8 rtw_free_drv_sw(_adapter *padapter)
 	struct net_device *pnetdev = (struct net_device*)padapter->pnetdev;
 
 	RT_TRACE(_module_os_intfs_c_,_drv_info_,("==>rtw_free_drv_sw"));
-
-#ifdef CONFIG_WAPI_SUPPORT
-	rtw_wapi_free(padapter);
-#endif
 
 #ifdef CONFIG_INTEL_WIDI
 	rtw_free_intel_widi(padapter);
@@ -1367,10 +1358,6 @@ static int netdev_close(struct net_device *pnetdev)
 	rtw_scan_abort(padapter);
 	adapter_wdev_data(padapter)->bandroid_scan = false;
 	//padapter->rtw_wdev->iftype = NL80211_IFTYPE_MONITOR; //set this at the end
-
-#ifdef CONFIG_WAPI_SUPPORT
-	rtw_wapi_disable_tx(padapter);
-#endif
 
 	RT_TRACE(_module_os_intfs_c_,_drv_info_,("-871x_drv - drv_close\n"));
 	DBG_871X("-871x_drv - drv_close, bup=%d\n", padapter->bup);
