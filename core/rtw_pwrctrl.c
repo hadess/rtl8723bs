@@ -71,7 +71,6 @@ exit_fw_ps_state:
 	return ret;
 }
 
-#ifdef CONFIG_IPS
 void _ips_enter(_adapter * padapter)
 {
 	struct pwrctrl_priv *pwrpriv = adapter_to_pwrctl(padapter);
@@ -150,13 +149,6 @@ int ips_leave(_adapter * padapter)
 
 	down(&pwrpriv->lock);
 	ret = _ips_leave(padapter);
-#ifdef DBG_CHECK_FW_PS_STATE
-	if(rtw_fw_ps_state(padapter) == _FAIL)
-	{
-		DBG_871X("ips leave doesn't leave 32k\n");
-		pdbgpriv->dbg_leave_ips_fail_cnt++;
-	}
-#endif //DBG_CHECK_FW_PS_STATE
 	up(&pwrpriv->lock);
 
 	if (_SUCCESS == ret)
@@ -167,17 +159,6 @@ int ips_leave(_adapter * padapter)
 
 	return ret;
 }
-#endif /* CONFIG_IPS */
-
-#ifdef CONFIG_AUTOSUSPEND
-extern void autosuspend_enter(_adapter* padapter);	
-extern int autoresume_enter(_adapter* padapter);
-#endif
-
-#ifdef SUPPORT_HW_RFOFF_DETECTED
-int rtw_hw_suspend(_adapter *padapter );
-int rtw_hw_resume(_adapter *padapter);
-#endif
 
 static bool rtw_pwr_unassociated_idle(_adapter *adapter)
 {
@@ -218,12 +199,6 @@ static bool rtw_pwr_unassociated_idle(_adapter *adapter)
 		}
 	}
 
-#ifdef CONFIG_INTEL_PROXIM
-	if(adapter->proximity.proxim_on==true){
-		return;
-	}
-#endif
-
 	if (pxmit_priv->free_xmitbuf_cnt != NR_XMITBUFF ||
 		pxmit_priv->free_xmit_extbuf_cnt != NR_XMIT_EXTBUFF) {
 		DBG_871X_LEVEL(_drv_always_, "There are some pkts to transmit\n");
@@ -249,9 +224,6 @@ void rtw_ps_processor(_adapter*padapter)
 	struct mlme_priv *pmlmepriv = &(padapter->mlmepriv);
 	struct dvobj_priv *psdpriv = padapter->dvobj;
 	struct debug_priv *pdbgpriv = &psdpriv->drv_dbg;
-#ifdef SUPPORT_HW_RFOFF_DETECTED
-	rt_rf_power_state rfpwrstate;
-#endif //SUPPORT_HW_RFOFF_DETECTED
 	u32 ps_deny = 0;
 
 	down(&adapter_to_pwrctl(padapter)->lock);
@@ -272,64 +244,6 @@ void rtw_ps_processor(_adapter*padapter)
 
 	pwrpriv->ps_processing = true;
 
-#ifdef SUPPORT_HW_RFOFF_DETECTED
-	if(pwrpriv->bips_processing == true)
-		goto exit;
-	
-	//DBG_871X("==> fw report state(0x%x)\n",rtw_read8(padapter,0x1ca));	
-	if(pwrpriv->bHWPwrPindetect) 
-	{
-	#ifdef CONFIG_AUTOSUSPEND
-		if(padapter->registrypriv.usbss_enable)
-		{
-			if(pwrpriv->rf_pwrstate == rf_on)
-			{
-				if(padapter->net_closed == true)
-					pwrpriv->ps_flag = true;
-
-				rfpwrstate = RfOnOffDetect(padapter);
-				DBG_871X("@@@@- #1  %s==> rfstate:%s \n",__FUNCTION__,(rfpwrstate==rf_on)?"rf_on":"rf_off");
-				if(rfpwrstate!= pwrpriv->rf_pwrstate)
-				{
-					if(rfpwrstate == rf_off)
-					{
-						pwrpriv->change_rfpwrstate = rf_off;
-						
-						pwrpriv->bkeepfwalive = true;	
-						pwrpriv->brfoffbyhw = true;						
-						
-						autosuspend_enter(padapter);							
-					}
-				}
-			}			
-		}
-		else
-	#endif //CONFIG_AUTOSUSPEND
-		{
-			rfpwrstate = RfOnOffDetect(padapter);
-			DBG_871X("@@@@- #2  %s==> rfstate:%s \n",__FUNCTION__,(rfpwrstate==rf_on)?"rf_on":"rf_off");
-
-			if(rfpwrstate!= pwrpriv->rf_pwrstate)
-			{
-				if(rfpwrstate == rf_off)
-				{	
-					pwrpriv->change_rfpwrstate = rf_off;														
-					pwrpriv->brfoffbyhw = true;
-					padapter->bCardDisableWOHSM = true;
-					rtw_hw_suspend(padapter );	
-				}
-				else
-				{
-					pwrpriv->change_rfpwrstate = rf_on;
-					rtw_hw_resume(padapter );			
-				}
-				DBG_871X("current rf_pwrstate(%s)\n",(pwrpriv->rf_pwrstate == rf_off)?"rf_off":"rf_on");
-			}
-		}
-		pwrpriv->pwr_state_check_cnts ++;	
-	}
-#endif //SUPPORT_HW_RFOFF_DETECTED
-
 	if (pwrpriv->ips_mode_req == IPS_NONE)
 		goto exit;
 
@@ -339,52 +253,12 @@ void rtw_ps_processor(_adapter*padapter)
 	if((pwrpriv->rf_pwrstate == rf_on) && ((pwrpriv->pwr_state_check_cnts%4)==0))
 	{
 		DBG_871X("==>%s .fw_state(%x)\n",__FUNCTION__,get_fwstate(pmlmepriv));
-		#if defined (CONFIG_AUTOSUSPEND)
-		#else
 		pwrpriv->change_rfpwrstate = rf_off;
-		#endif
-		#ifdef CONFIG_AUTOSUSPEND
-		if(padapter->registrypriv.usbss_enable)
 		{
-			if(pwrpriv->bHWPwrPindetect) 
-				pwrpriv->bkeepfwalive = true;
-			
-			if(padapter->net_closed == true)
-				pwrpriv->ps_flag = true;
-
-			#if defined (CONFIG_AUTOSUSPEND)
-			if (true==pwrpriv->bInternalAutoSuspend) {
-				DBG_871X("<==%s .pwrpriv->bInternalAutoSuspend)(%x)\n",__FUNCTION__,pwrpriv->bInternalAutoSuspend);
-			} else {
-				pwrpriv->change_rfpwrstate = rf_off;
-				padapter->bCardDisableWOHSM = true;
-				DBG_871X("<==%s .pwrpriv->bInternalAutoSuspend)(%x) call autosuspend_enter\n",__FUNCTION__,pwrpriv->bInternalAutoSuspend);
-				autosuspend_enter(padapter);
-			}		
-			#else
-			padapter->bCardDisableWOHSM = true;
-			autosuspend_enter(padapter);
-			#endif	//if defined (CONFIG_AUTOSUSPEND)
-		}		
-		else if(pwrpriv->bHWPwrPindetect)
-		{
-		}
-		else
-		#endif //CONFIG_AUTOSUSPEND
-		{
-			#if defined (CONFIG_AUTOSUSPEND)
-			pwrpriv->change_rfpwrstate = rf_off;
-			#endif	//defined (CONFIG_AUTOSUSPEND)
-
-			#ifdef CONFIG_IPS
 			ips_enter(padapter);			
-			#endif
 		}
 	}
 exit:
-#ifndef CONFIG_IPS_CHECK_IN_WD
-	rtw_set_pwr_state_check_timer(pwrpriv);
-#endif
 	pwrpriv->ps_processing = false;
 	return;
 }
@@ -396,10 +270,8 @@ void pwr_state_check_handler(RTW_TIMER_HDL_ARGS)
 	rtw_ps_cmd(padapter);
 }
 
-#ifdef CONFIG_LPS
 void	traffic_check_for_leave_lps(PADAPTER padapter, u8 tx, u32 tx_packets)
 {
-#ifdef CONFIG_CHECK_LEAVE_LPS
 	static unsigned long start_time = 0;
 	static u32 xmit_cnt = 0;
 	u8	bLeaveLPS = false;
@@ -454,7 +326,6 @@ void	traffic_check_for_leave_lps(PADAPTER padapter, u8 tx, u32 tx_packets)
 		//rtw_lps_ctrl_wk_cmd(padapter, LPS_CTRL_LEAVE, 1);
 		rtw_lps_ctrl_wk_cmd(padapter, LPS_CTRL_LEAVE, tx?0:1);
 	}
-#endif //CONFIG_CHECK_LEAVE_LPS
 }		
 
 /*
@@ -470,28 +341,21 @@ void rtw_set_rpwm(PADAPTER padapter, u8 pslv)
 {
 	u8	rpwm;
 	struct pwrctrl_priv *pwrpriv = adapter_to_pwrctl(padapter);
-#ifdef CONFIG_DETECT_CPWM_BY_POLLING
 	u8 cpwm_orig;
-#endif // CONFIG_DETECT_CPWM_BY_POLLING
 	struct dvobj_priv *psdpriv = padapter->dvobj;
 	struct debug_priv *pdbgpriv = &psdpriv->drv_dbg;
 _func_enter_;
 
 	pslv = PS_STATE(pslv);
 
-#ifdef CONFIG_LPS_RPWM_TIMER
 	if (pwrpriv->brpwmtimeout == true)
 	{
 		DBG_871X("%s: RPWM timeout, force to set RPWM(0x%02X) again!\n", __FUNCTION__, pslv);
 	}
 	else
-#endif // CONFIG_LPS_RPWM_TIMER
 	{
 		if ( (pwrpriv->rpwm == pslv)
-#ifdef CONFIG_LPS_LCLK
-			|| ((pwrpriv->rpwm >= PS_STATE_S2)&&(pslv >= PS_STATE_S2))
-#endif
-			)
+			|| ((pwrpriv->rpwm >= PS_STATE_S2)&&(pslv >= PS_STATE_S2)))
 		{
 			RT_TRACE(_module_rtl871x_pwrctrl_c_,_drv_err_,
 				("%s: Already set rpwm[0x%02X], new=0x%02X!\n", __FUNCTION__, pwrpriv->rpwm, pslv));
@@ -524,37 +388,29 @@ _func_enter_;
 	}
 
 	rpwm = pslv | pwrpriv->tog;
-#ifdef CONFIG_LPS_LCLK
 	// only when from PS_STATE S0/S1 to S2 and higher needs ACK
 	if ((pwrpriv->cpwm < PS_STATE_S2) && (pslv >= PS_STATE_S2))
 		rpwm |= PS_ACK;
-#endif
 	RT_TRACE(_module_rtl871x_pwrctrl_c_, _drv_notice_,
 			 ("rtw_set_rpwm: rpwm=0x%02x cpwm=0x%02x\n", rpwm, pwrpriv->cpwm));
 
 	pwrpriv->rpwm = pslv;
 
-#ifdef CONFIG_DETECT_CPWM_BY_POLLING
 	cpwm_orig = 0;
 	if (rpwm & PS_ACK)
 	{
 		rtw_hal_get_hwreg(padapter, HW_VAR_CPWM, &cpwm_orig);
 	}
-#endif
 
-#if defined(CONFIG_LPS_RPWM_TIMER) && !defined(CONFIG_DETECT_CPWM_BY_POLLING)
 	if (rpwm & PS_ACK)
 		_set_timer(&pwrpriv->pwr_rpwm_timer, LPS_RPWM_WAIT_MS);
-#endif // CONFIG_LPS_RPWM_TIMER & !CONFIG_DETECT_CPWM_BY_POLLING
 	rtw_hal_set_hwreg(padapter, HW_VAR_SET_RPWM, (u8 *)(&rpwm));
 
 	pwrpriv->tog += 0x80;
 
-#ifdef CONFIG_LPS_LCLK
 	// No LPS 32K, No Ack
 	if (rpwm & PS_ACK)
 	{
-#ifdef CONFIG_DETECT_CPWM_BY_POLLING
 		unsigned long start_time;
 		u8 cpwm_now;
 		u8 poll_cnt=0;
@@ -570,38 +426,18 @@ _func_enter_;
 			{
 				pwrpriv->cpwm = PS_STATE_S4;
 				pwrpriv->cpwm_tog = cpwm_now & PS_TOGGLE;
-#ifdef DBG_CHECK_FW_PS_STATE
-				DBG_871X("%s: polling cpwm OK! poll_cnt=%d, cpwm_orig=%02x, cpwm_now=%02x , 0x100=0x%x\n"
-				, __FUNCTION__,poll_cnt, cpwm_orig, cpwm_now, rtw_read8(padapter, REG_CR));
-				if(rtw_fw_ps_state(padapter) == _FAIL)
-				{
-					DBG_871X("leave 32k but fw state in 32k\n");
-					pdbgpriv->dbg_rpwm_toogle_cnt++;
-				}
-#endif //DBG_CHECK_FW_PS_STATE
 				break;
 			}
 
 			if (jiffies_to_msecs(jiffies - start_time) > LPS_RPWM_WAIT_MS)
 			{
 				DBG_871X("%s: polling cpwm timeout! poll_cnt=%d, cpwm_orig=%02x, cpwm_now=%02x \n", __FUNCTION__,poll_cnt, cpwm_orig, cpwm_now);
-#ifdef DBG_CHECK_FW_PS_STATE
-				if(rtw_fw_ps_state(padapter) == _FAIL)
-				{
-					DBG_871X("rpwm timeout and fw ps state in 32k\n");
-					pdbgpriv->dbg_rpwm_timeout_fail_cnt++;
-				}
-#endif //DBG_CHECK_FW_PS_STATE
-#ifdef CONFIG_LPS_RPWM_TIMER
 				_set_timer(&pwrpriv->pwr_rpwm_timer, 1);
-#endif // CONFIG_LPS_RPWM_TIMER
 				break;
 			}
 		} while (1);
-#endif // CONFIG_DETECT_CPWM_BY_POLLING
 	}
 	else
-#endif // CONFIG_LPS_LCLK
 	{
 		pwrpriv->cpwm = pslv;
 	}
@@ -641,10 +477,6 @@ static u8 PS_RDY_CHECK(_adapter * padapter)
 		|| check_fwstate(pmlmepriv, WIFI_AP_STATE)
 		|| check_fwstate(pmlmepriv, WIFI_ADHOC_MASTER_STATE|WIFI_ADHOC_STATE)
 		|| rtw_is_scan_deny(padapter)
-#ifdef CONFIG_TDLS
-		// TDLS link is established.
-		|| ( padapter->tdlsinfo.link_established == true )
-#endif // CONFIG_TDLS		
 	)
 		return false;
 
@@ -665,13 +497,6 @@ void rtw_set_ps_mode(PADAPTER padapter, u8 ps_mode, u8 smart_ps, u8 bcn_ant_mode
 	struct pwrctrl_priv *pwrpriv = adapter_to_pwrctl(padapter);
 	struct dvobj_priv *psdpriv = padapter->dvobj;
 	struct debug_priv *pdbgpriv = &psdpriv->drv_dbg;
-#ifdef CONFIG_TDLS
-	struct sta_priv *pstapriv = &padapter->stapriv;
-	_irqL irqL;
-	int i, j;
-	_list	*plist, *phead;
-	struct sta_info *ptdls_sta;
-#endif //CONFIG_TDLS
 
 _func_enter_;
 
@@ -689,9 +514,7 @@ _func_enter_;
 		if (PS_MODE_ACTIVE == ps_mode) return;
 	}
 
-#ifdef CONFIG_LPS_LCLK
 	down(&pwrpriv->lock);
-#endif
 
 	//if(pwrpriv->pwr_mode == PS_MODE_ACTIVE)
 	if(ps_mode == PS_MODE_ACTIVE)
@@ -706,27 +529,6 @@ _func_enter_;
 		{
 			DBG_871X(FUNC_ADPT_FMT" Leave 802.11 power save - %s\n",
 				FUNC_ADPT_ARG(padapter), msg);
-
-#ifdef CONFIG_TDLS
-			_enter_critical_bh(&pstapriv->sta_hash_lock, &irqL);
-
-			for(i=0; i< NUM_STA; i++)
-			{
-				phead = &(pstapriv->sta_hash[i]);
-				plist = get_next(phead);
-
-				while ((rtw_end_of_queue_search(phead, plist)) == false)
-				{
-					ptdls_sta = LIST_CONTAINOR(plist, struct sta_info, hash_list);
-
-					if( ptdls_sta->tdls_sta_state & TDLS_LINKED_STATE )
-						issue_nulldata_to_TDLS_peer_STA(padapter, ptdls_sta->hwaddr, 0, 0, 0);
-					plist = get_next(plist);
-				}
-			}
-
-			_exit_critical_bh(&pstapriv->sta_hash_lock, &irqL);
-#endif //CONFIG_TDLS
 
 			pwrpriv->pwr_mode = ps_mode;
 			rtw_set_rpwm(padapter, PS_STATE_S4);
@@ -775,27 +577,6 @@ _func_enter_;
 			DBG_871X(FUNC_ADPT_FMT" Enter 802.11 power save - %s\n",
 				FUNC_ADPT_ARG(padapter), msg);
 
-#ifdef CONFIG_TDLS
-			_enter_critical_bh(&pstapriv->sta_hash_lock, &irqL);
-
-			for(i=0; i< NUM_STA; i++)
-			{
-				phead = &(pstapriv->sta_hash[i]);
-				plist = get_next(phead);
-
-				while ((rtw_end_of_queue_search(phead, plist)) == false)
-				{
-					ptdls_sta = LIST_CONTAINOR(plist, struct sta_info, hash_list);
-
-					if( ptdls_sta->tdls_sta_state & TDLS_LINKED_STATE )
-						issue_nulldata_to_TDLS_peer_STA(padapter, ptdls_sta->hwaddr, 1, 0, 0);
-					plist = get_next(plist);
-				}
-			}
-
-			_exit_critical_bh(&pstapriv->sta_hash_lock, &irqL);
-#endif //CONFIG_TDLS
-
 			rtw_btcoex_LpsNotify(padapter, ps_mode);
 
 			pwrpriv->bFwCurrentInPSMode = true;
@@ -805,10 +586,8 @@ _func_enter_;
 			rtw_hal_set_hwreg(padapter, HW_VAR_H2C_FW_PWRMODE, (u8 *)(&ps_mode));
 
 			pslv = PS_STATE_S2;
-#ifdef CONFIG_LPS_LCLK
 			if (pwrpriv->alives == 0)
 				pslv = PS_STATE_S0;
-#endif // CONFIG_LPS_LCLK
 
 			if ((rtw_btcoex_IsBtDisabled(padapter) == false)
 				&& (rtw_btcoex_IsBtControlLps(padapter) == true))
@@ -824,9 +603,7 @@ _func_enter_;
 		}
 	}
 
-#ifdef CONFIG_LPS_LCLK
 	up(&pwrpriv->lock);
-#endif
 
 _func_exit_;
 }
@@ -964,18 +741,10 @@ _func_enter_;
 	}
 
 	pwrpriv->bpower_saving = false;
-#ifdef DBG_CHECK_FW_PS_STATE
-	if(rtw_fw_ps_state(padapter) == _FAIL)
-	{
-		DBG_871X("leave lps, fw in 32k\n");
-		pdbgpriv->dbg_leave_lps_fail_cnt++;
-	}
-#endif //DBG_CHECK_FW_PS_STATE
 //	DBG_871X("-LeisurePSLeave\n");
 
 _func_exit_;
 }
-#endif
 
 void LeaveAllPowerSaveModeDirect(PADAPTER Adapter)
 {
@@ -984,10 +753,8 @@ void LeaveAllPowerSaveModeDirect(PADAPTER Adapter)
 	struct pwrctrl_priv *pwrpriv = adapter_to_pwrctl(Adapter);
 	struct dvobj_priv *psdpriv = Adapter->dvobj;
 	struct debug_priv *pdbgpriv = &psdpriv->drv_dbg;
-#ifndef CONFIG_DETECT_CPWM_BY_POLLING
 	u8 cpwm_orig, cpwm_now;
 	unsigned long start_time;
-#endif // CONFIG_DETECT_CPWM_BY_POLLING
 
 _func_enter_;
 
@@ -1000,11 +767,7 @@ _func_enter_;
 		return;
 	}
 
-	if ((check_fwstate(pmlmepriv, _FW_LINKED) == true)
-#ifdef CONFIG_CONCURRENT_MODE
-		|| (check_buddy_fwstate(Adapter,_FW_LINKED) == true)
-#endif
-		)
+	if ((check_fwstate(pmlmepriv, _FW_LINKED) == true))
 	{ //connect
 
 		if(pwrpriv->pwr_mode == PS_MODE_ACTIVE) {
@@ -1012,82 +775,21 @@ _func_enter_;
 			return;
 		}
 
-#ifdef CONFIG_LPS_LCLK
 		down(&pwrpriv->lock);
 
-#ifndef CONFIG_DETECT_CPWM_BY_POLLING
-		cpwm_orig = 0;
-		rtw_hal_get_hwreg(Adapter, HW_VAR_CPWM, &cpwm_orig);
-#endif //CONFIG_DETECT_CPWM_BY_POLLING
 		rtw_set_rpwm(Adapter, PS_STATE_S4);
 
-#ifndef CONFIG_DETECT_CPWM_BY_POLLING
-
-		start_time = jiffies;
-
-		// polling cpwm
-		do {
-			mdelay(1);
-
-			rtw_hal_get_hwreg(Adapter, HW_VAR_CPWM, &cpwm_now);
-			if ((cpwm_orig ^ cpwm_now) & 0x80)
-			{
-				pwrpriv->cpwm = PS_STATE_S4;
-				pwrpriv->cpwm_tog = cpwm_now & PS_TOGGLE;
-#ifdef DBG_CHECK_FW_PS_STATE
-				DBG_871X("%s: polling cpwm OK! cpwm_orig=%02x, cpwm_now=%02x, 0x100=0x%x \n"
-				, __FUNCTION__, cpwm_orig, cpwm_now, rtw_read8(Adapter, REG_CR));
-				if(rtw_fw_ps_state(Adapter) == _FAIL)
-				{
-					DBG_871X("%s: leave 32k but fw state in 32k\n", __FUNCTION__);
-					pdbgpriv->dbg_rpwm_toogle_cnt++;
-				}
-#endif //DBG_CHECK_FW_PS_STATE
-				break;
-			}
-
-			if (jiffies_to_msecs(jiffies - start_time) > LPS_RPWM_WAIT_MS)
-			{
-				DBG_871X("%s: polling cpwm timeout! cpwm_orig=%02x, cpwm_now=%02x \n", __FUNCTION__, cpwm_orig, cpwm_now);
-#ifdef DBG_CHECK_FW_PS_STATE
-				if(rtw_fw_ps_state(Adapter) == _FAIL)
-				{
-					DBG_871X("rpwm timeout and fw ps state in 32k\n");
-					pdbgpriv->dbg_rpwm_timeout_fail_cnt++;
-				}
-#endif //DBG_CHECK_FW_PS_STATE
-				break;
-			}
-		} while (1);
-#endif // CONFIG_DETECT_CPWM_BY_POLLING
-
 	up(&pwrpriv->lock);
-#endif
 
-#ifdef CONFIG_LPS
 		rtw_lps_ctrl_wk_cmd(pri_padapter, LPS_CTRL_LEAVE, 0);
-#endif
 	}
 	else
 	{
 		if(pwrpriv->rf_pwrstate== rf_off)
 		{
-			#ifdef CONFIG_AUTOSUSPEND
-			if(Adapter->registrypriv.usbss_enable)
+			if(false == ips_leave(pri_padapter))
 			{
-				usb_disable_autosuspend(adapter_to_dvobj(Adapter)->pusbdev);
-			}
-			else
-			#endif
-			{
-#if defined(CONFIG_FWLPS_IN_IPS) || defined(CONFIG_SWLPS_IN_IPS)
-				#ifdef CONFIG_IPS
-				if(false == ips_leave(pri_padapter))
-				{
-					DBG_871X("======> ips_leave fail.............\n");			
-				}
-				#endif
-#endif //CONFIG_SWLPS_IN_IPS
+				DBG_871X("======> ips_leave fail.............\n");
 			}
 		}
 	}
@@ -1132,46 +834,26 @@ _func_enter_;
 
 	if (n_assoc_iface)
 	{ //connect
-#ifdef CONFIG_LPS_LCLK
 		enqueue = 1;
-#endif
 
-#ifdef CONFIG_LPS
 		rtw_lps_ctrl_wk_cmd(Adapter, LPS_CTRL_LEAVE, enqueue);
-#endif
 
-#ifdef CONFIG_LPS_LCLK
 		LPS_Leave_check(Adapter);
-#endif	
 	}
 	else
 	{
 		if(adapter_to_pwrctl(Adapter)->rf_pwrstate== rf_off)
 		{
-			#ifdef CONFIG_AUTOSUSPEND
-			if(Adapter->registrypriv.usbss_enable)
+			if(false == ips_leave(Adapter))
 			{
-				usb_disable_autosuspend(adapter_to_dvobj(Adapter)->pusbdev);
+				DBG_871X("======> ips_leave fail.............\n");
 			}
-			else
-			#endif
-			{
-#if defined(CONFIG_FWLPS_IN_IPS) || defined(CONFIG_SWLPS_IN_IPS)
-				#ifdef CONFIG_IPS
-				if(false == ips_leave(Adapter))
-				{
-					DBG_871X("======> ips_leave fail.............\n");			
-				}
-				#endif
-#endif //CONFIG_SWLPS_IN_IPS
-			}				
 		}	
 	}
 
 _func_exit_;
 }
 
-#ifdef CONFIG_LPS_LCLK
 void LPS_Leave_check(
 	PADAPTER padapter)
 {
@@ -1232,25 +914,15 @@ void cpwm_int_hdl(
 _func_enter_;
 
 	pwrpriv = adapter_to_pwrctl(padapter);
-#if 0
-	if (pwrpriv->cpwm_tog == (preportpwrstate->state & PS_TOGGLE)) {
-		RT_TRACE(_module_rtl871x_pwrctrl_c_, _drv_err_,
-				 ("cpwm_int_hdl: tog(old)=0x%02x cpwm(new)=0x%02x toggle bit didn't change!?\n",
-				  pwrpriv->cpwm_tog, preportpwrstate->state));
-		goto exit;
-	}
-#endif
 
 	down(&pwrpriv->lock);
 
-#ifdef CONFIG_LPS_RPWM_TIMER
 	if (pwrpriv->rpwm < PS_STATE_S2)
 	{
 		DBG_871X("%s: Redundant CPWM Int. RPWM=0x%02X CPWM=0x%02x\n", __func__, pwrpriv->rpwm, pwrpriv->cpwm);
 		up(&pwrpriv->lock);
 		goto exit;
 	}
-#endif // CONFIG_LPS_RPWM_TIMER
 
 	pwrpriv->cpwm = PS_STATE(preportpwrstate->state);
 	pwrpriv->cpwm_tog = preportpwrstate->state & PS_TOGGLE;
@@ -1286,7 +958,6 @@ static void cpwm_event_callback(struct work_struct *work)
 	cpwm_int_hdl(adapter, &report);
 }
 
-#ifdef CONFIG_LPS_RPWM_TIMER
 static void rpwmtimeout_workitem_callback(struct work_struct *work)
 {
 	PADAPTER padapter;
@@ -1309,16 +980,12 @@ static void rpwmtimeout_workitem_callback(struct work_struct *work)
 
 	if (rtw_read8(padapter, 0x100) != 0xEA)
 	{
-#if 1
 		struct reportpwrstate_parm report;
 
 		report.state = PS_STATE_S2;
 		DBG_871X("\n%s: FW already leave 32K!\n\n", __func__);
 		cpwm_int_hdl(padapter, &report);
-#else
-		DBG_871X("\n%s: FW already leave 32K!\n\n", __func__);
-		cpwm_event_callback(&pwrpriv->cpwm_event);
-#endif
+
 		return;
 	}
 
@@ -1358,7 +1025,6 @@ static void pwr_rpwm_timeout_handler(void *FunctionContext)
 
 	_set_workitem(&pwrpriv->rpwmtimeoutwi);
 }
-#endif // CONFIG_LPS_RPWM_TIMER
 
 __inline static void register_task_alive(struct pwrctrl_priv *pwrctrl, u32 tag)
 {
@@ -1419,13 +1085,11 @@ _func_enter_;
 
 	up(&pwrctrl->lock);
 
-#ifdef CONFIG_DETECT_CPWM_BY_POLLING
 	if (_FAIL == res)
 	{
 		if (pwrctrl->cpwm >= PS_STATE_S2)
 			res = _SUCCESS;
 	}
-#endif // CONFIG_DETECT_CPWM_BY_POLLING
 
 _func_exit_;
 
@@ -1531,13 +1195,11 @@ _func_enter_;
 
 	up(&pwrctrl->lock);
 
-#ifdef CONFIG_DETECT_CPWM_BY_POLLING
 	if (_FAIL == res)
 	{
 		if (pwrctrl->cpwm >= PS_STATE_S2)
 			res = _SUCCESS;
 	}
-#endif // CONFIG_DETECT_CPWM_BY_POLLING
 
 _func_exit_;
 
@@ -1590,13 +1252,11 @@ _func_enter_;
 
 	up(&pwrctrl->lock);
 
-#ifdef CONFIG_DETECT_CPWM_BY_POLLING
 	if (_FAIL == res)
 	{
 		if (pwrctrl->cpwm >= PS_STATE_S2)
 			res = _SUCCESS;
 	}
-#endif // CONFIG_DETECT_CPWM_BY_POLLING
 
 _func_exit_;
 
@@ -1807,20 +1467,10 @@ _func_enter_;
 
 _func_exit_;
 }
-#endif	/* CONFIG_LPS_LCLK */
-
-#ifdef CONFIG_RESUME_IN_WORKQUEUE
-static void resume_workitem_callback(struct work_struct *work);
-#endif //CONFIG_RESUME_IN_WORKQUEUE
 
 void rtw_init_pwrctrl_priv(PADAPTER padapter)
 {
 	struct pwrctrl_priv *pwrctrlpriv = adapter_to_pwrctl(padapter);
-
-#if defined(CONFIG_CONCURRENT_MODE)
-	if (padapter->adapter_type != PRIMARY_ADAPTER)
-		return;
-#endif
 
 _func_enter_;
 
@@ -1839,12 +1489,6 @@ _func_enter_;
 	pwrctrlpriv->bInternalAutoSuspend = false;
 	pwrctrlpriv->bInSuspend = false;
 	pwrctrlpriv->bkeepfwalive = false;
-
-#ifdef CONFIG_AUTOSUSPEND
-#ifdef SUPPORT_HW_RFOFF_DETECTED
-	pwrctrlpriv->pwr_state_check_interval = (pwrctrlpriv->bHWPwrPindetect) ?1000:2000;		
-#endif
-#endif
 
 	pwrctrlpriv->LpsIdleCount = 0;
 	//pwrctrlpriv->FWCtrlPSMode =padapter->registrypriv.power_mgnt;// PS_MODE_MIN;
@@ -1866,27 +1510,18 @@ _func_enter_;
 
 	pwrctrlpriv->tog = 0x80;
 
-#ifdef CONFIG_LPS_LCLK
 	rtw_hal_set_hwreg(padapter, HW_VAR_SET_RPWM, (u8 *)(&pwrctrlpriv->rpwm));
 
 	_init_workitem(&pwrctrlpriv->cpwm_event, cpwm_event_callback, NULL);
 
-#ifdef CONFIG_LPS_RPWM_TIMER
 	pwrctrlpriv->brpwmtimeout = false;
 	_init_workitem(&pwrctrlpriv->rpwmtimeoutwi, rpwmtimeout_workitem_callback, NULL);
 	_init_timer(&pwrctrlpriv->pwr_rpwm_timer, padapter->pnetdev, pwr_rpwm_timeout_handler, padapter);
-#endif // CONFIG_LPS_RPWM_TIMER
-#endif // CONFIG_LPS_LCLK
 
 	rtw_init_timer(&pwrctrlpriv->pwr_state_check_timer, padapter, pwr_state_check_handler);
 
 	pwrctrlpriv->wowlan_mode = false;
 	pwrctrlpriv->wowlan_ap_mode = false;
-
-	#ifdef CONFIG_RESUME_IN_WORKQUEUE
-	_init_workitem(&pwrctrlpriv->resume_work, resume_workitem_callback, NULL);
-	pwrctrlpriv->rtw_workqueue = create_singlethread_workqueue("rtw_workqueue");
-	#endif //CONFIG_RESUME_IN_WORKQUEUE
 
 #ifdef CONFIG_PNO_SUPPORT
 	pwrctrlpriv->pno_inited = false;
@@ -1905,22 +1540,9 @@ void rtw_free_pwrctrl_priv(PADAPTER adapter)
 {
 	struct pwrctrl_priv *pwrctrlpriv = adapter_to_pwrctl(adapter);
 
-#if defined(CONFIG_CONCURRENT_MODE)
-	if (adapter->adapter_type != PRIMARY_ADAPTER)
-		return;
-#endif	
-
 _func_enter_;
 
 	//memset((unsigned char *)pwrctrlpriv, 0, sizeof(struct pwrctrl_priv));
-
-
-	#ifdef CONFIG_RESUME_IN_WORKQUEUE
-	if (pwrctrlpriv->rtw_workqueue) { 
-		flush_workqueue(pwrctrlpriv->rtw_workqueue);
-		destroy_workqueue(pwrctrlpriv->rtw_workqueue);
-	}
-	#endif
 
 #ifdef CONFIG_PNO_SUPPORT
 	if (pwrctrlpriv->pnlo_info != NULL)
@@ -1935,37 +1557,6 @@ _func_enter_;
 
 _func_exit_;
 }
-
-#ifdef CONFIG_RESUME_IN_WORKQUEUE
-extern int rtw_resume_process(_adapter *padapter);
-
-static void resume_workitem_callback(struct work_struct *work)
-{
-	struct pwrctrl_priv *pwrpriv = container_of(work, struct pwrctrl_priv, resume_work);
-	struct dvobj_priv *dvobj = pwrctl_to_dvobj(pwrpriv);
-	_adapter *adapter = dvobj->if1;
-
-	DBG_871X("%s\n",__FUNCTION__);
-
-	rtw_resume_process(adapter);
-
-	rtw_resume_unlock_suspend();
-}
-
-void rtw_resume_in_workqueue(struct pwrctrl_priv *pwrpriv)
-{
-	// accquire system's suspend lock preventing from falliing asleep while resume in workqueue
-	//rtw_lock_suspend();
-
-	rtw_resume_lock_suspend();
-	
-	#if 1
-	queue_work(pwrpriv->rtw_workqueue, &pwrpriv->resume_work);	
-	#else
-	_set_workitem(&pwrpriv->resume_work);
-	#endif
-}
-#endif //CONFIG_RESUME_IN_WORKQUEUE
 
 u8 rtw_interface_ps_func(_adapter *padapter,HAL_INTF_PS_FUNC efunc_id,u8* val)
 {
@@ -2048,27 +1639,13 @@ int _rtw_pwr_wakeup(_adapter *padapter, u32 ips_deffer_ms, const char *caller)
 	//I think this should be check in IPS, LPS, autosuspend functions...
 	if (check_fwstate(pmlmepriv, _FW_LINKED) == true)
 	{
-#if defined (CONFIG_AUTOSUSPEND)
-		if(true==pwrpriv->bInternalAutoSuspend){
-			if(0==pwrpriv->autopm_cnt){
-			if (usb_autopm_get_interface(adapter_to_dvobj(padapter)->pusbintf) < 0) 
-			{
-				DBG_871X( "can't get autopm: \n");
-			}			
-			pwrpriv->autopm_cnt++;
-			}
-#endif	//#if defined (CONFIG_AUTOSUSPEND)
 		ret = _SUCCESS;
 		goto exit;
-#if defined (CONFIG_AUTOSUSPEND)
-		}
-#endif	//#if defined (CONFIG_AUTOSUSPEND)
 	}	
 
 	if(rf_off == pwrpriv->rf_pwrstate )
 	{		
 		{
-#ifdef CONFIG_IPS
 			DBG_8192C("%s call ips_leave....\n",__FUNCTION__);
 			if(_FAIL ==  ips_leave(padapter))
 			{
@@ -2076,7 +1653,6 @@ int _rtw_pwr_wakeup(_adapter *padapter, u32 ips_deffer_ms, const char *caller)
 				ret = _FAIL;
 				goto exit;
 			}
-#endif
 		}
 	}
 

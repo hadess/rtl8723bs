@@ -34,10 +34,6 @@
 #include <wlan_bssdef.h>
 #include <wifi.h>
 #include <ieee80211.h>
-#ifdef CONFIG_ARP_KEEP_ALIVE
-#include <net/neighbour.h>
-#include <net/arp.h>
-#endif
 
 enum _NIC_VERSION {
 
@@ -66,10 +62,6 @@ typedef struct _ADAPTER _adapter, ADAPTER,*PADAPTER;
 #include <xmit_osdep.h>
 #include <rtw_recv.h>
 
-#ifdef CONFIG_BEAMFORMING
-#include <rtw_beamforming.h>
-#endif
-
 #include <recv_osdep.h>
 #include <rtw_efuse.h>
 #include <hal_intf.h>
@@ -92,25 +84,9 @@ typedef struct _ADAPTER _adapter, ADAPTER,*PADAPTER;
 #include <rtw_version.h>
 #include <rtw_odm.h>
 
-#ifdef CONFIG_TDLS
-#include <rtw_tdls.h>
-#endif // CONFIG_TDLS
-
 #ifdef CONFIG_WAPI_SUPPORT
 #include <rtw_wapi.h>
 #endif // CONFIG_WAPI_SUPPORT
-
-#ifdef CONFIG_DRVEXT_MODULE
-#include <drvext_api.h>
-#endif // CONFIG_DRVEXT_MODULE
-
-#ifdef CONFIG_BR_EXT
-#include <rtw_br_ext.h>
-#endif // CONFIG_BR_EXT
-
-#ifdef CONFIG_IOL
-#include <rtw_iol.h>
-#endif // CONFIG_IOL
 
 #include "ioctl_cfg80211.h"
 
@@ -165,9 +141,6 @@ struct registry_priv
 	u8  mp_dm;
 	u8	software_encrypt;
 	u8	software_decrypt;
-	#ifdef CONFIG_TX_EARLY_MODE
-	u8   early_mode;
-	#endif
 	u8	acm_method;
 	  //UAPSD
 	u8	wmm_enable;
@@ -231,18 +204,6 @@ struct registry_priv
 	u8	max_roaming_times; // the max number driver will try to roaming
 #endif
 
-#ifdef CONFIG_IOL
-	u8 fw_iol; //enable iol without other concern
-#endif
-
-#ifdef CONFIG_DUALMAC_CONCURRENT
-	u8	dmsp;//0:disable,1:enable
-#endif
-
-#ifdef CONFIG_80211D
-	u8 enable80211d;
-#endif
-
 	u8 ifname[16];
 	u8 if2name[16];
 
@@ -286,13 +247,8 @@ struct registry_priv
 #include <drv_types_sdio.h>
 #define INTF_DATA SDIO_DATA
 
-#ifdef CONFIG_CONCURRENT_MODE
-#define is_primary_adapter(adapter) (adapter->adapter_type == PRIMARY_ADAPTER)
-#define get_iface_type(adapter) (adapter->iface_type)
-#else
 #define is_primary_adapter(adapter) (1)
 #define get_iface_type(adapter) (IFACE_PORT0)
-#endif
 #define GET_PRIMARY_ADAPTER(padapter) (((_adapter *)padapter)->dvobj->if1)
 #define GET_IFACE_NUMS(padapter) (((_adapter *)padapter)->dvobj->iface_nums)
 #define GET_ADAPTER(padapter, iface_id) (((_adapter *)padapter)->dvobj->padapters[iface_id])
@@ -565,7 +521,7 @@ struct dvobj_priv
 #define dvobj_to_pwrctl(dvobj) (&(dvobj->pwrctl_priv))
 #define pwrctl_to_dvobj(pwrctl) container_of(pwrctl, struct dvobj_priv, pwrctl_priv)
 
-static struct device *dvobj_to_dev(struct dvobj_priv *dvobj)
+__inline static struct device *dvobj_to_dev(struct dvobj_priv *dvobj)
 {
 	/* todo: get interface type from dvobj and the return the dev accordingly */
 #ifdef RTW_DVOBJ_CHIP_HW_TYPE
@@ -594,18 +550,6 @@ typedef enum _DRIVER_STATE{
 	DRIVER_REPLACE_DONGLE = 2,
 }DRIVER_STATE;
 
-#ifdef CONFIG_INTEL_PROXIM
-struct proxim {
-	bool proxim_support;
-	bool proxim_on;
-
-	void *proximity_priv;
-	int (*proxim_rx)(_adapter *padapter,
-		union recv_frame *precv_frame);
-	u8	(*proxim_get_var)(_adapter* padapter, u8 type);
-};
-#endif	//CONFIG_INTEL_PROXIM
-
 struct _ADAPTER{
 	int	DriverState;// for disable driver using module, use dongle to replace module.
 	int	pid[3];//process id from UI, 0:wps, 1:hostapd, 2:dhcpcd
@@ -622,14 +566,10 @@ struct _ADAPTER{
 	struct	recv_priv	recvpriv;
 	struct	sta_priv	stapriv;
 	struct	security_priv	securitypriv;
-	_lock   security_key_mutex; // add for CONFIG_IEEE80211W, none 11w also can use
+	_lock   security_key_mutex;
 	struct	registry_priv	registrypriv;
 	struct 	eeprom_priv eeprompriv;
 	struct	led_priv	ledpriv;
-
-#ifdef CONFIG_DRVEXT_MODULE
-	struct	drvext_priv	drvextpriv;
-#endif
 
 #ifdef CONFIG_AP_MODE
 	struct	hostapd_priv	*phostapdpriv;
@@ -637,19 +577,10 @@ struct _ADAPTER{
 
 	u32	setband;
 
-#ifdef CONFIG_TDLS
-	struct tdls_info	tdlsinfo;
-#endif //CONFIG_TDLS
-
 #ifdef CONFIG_WAPI_SUPPORT
 	u8	WapiSupport;
 	RT_WAPI_T	wapiInfo;
 #endif
-
-
-#ifdef CONFIG_WFD
-	struct wifi_display_info wfd_info;
-#endif //CONFIG_WFD
 
 	void *			HalData;
 	u32 hal_data_sz;
@@ -713,9 +644,6 @@ struct _ADAPTER{
 	//	Added by Albert 2012/10/26
 	//	The driver will show up the desired channel number when this flag is 1.
 	u8 bNotifyChannelChange;
-#ifdef CONFIG_AUTOSUSPEND
-	u8	bDisableAutosuspend;
-#endif
 
 	//pbuddy_adapter is used only in  two inteface case, (iface_nums=2 in struct dvobj_priv)
 	//PRIMARY_ADAPTER's buddy is SECONDARY_ADAPTER
@@ -725,46 +653,10 @@ struct _ADAPTER{
 	//for PRIMARY_ADAPTER(IFACE_ID0) can directly refer to if1 in struct dvobj_priv
 	_adapter *pbuddy_adapter;
 
-#if defined(CONFIG_CONCURRENT_MODE) || defined(CONFIG_DUALMAC_CONCURRENT)
-	u8 isprimary; //is primary adapter or not
-	//notes:
-	// if isprimary is true, the adapter_type value is 0, iface_id is IFACE_ID0 for PRIMARY_ADAPTER
-	// if isprimary is false, the adapter_type value is 1, iface_id is IFACE_ID1 for SECONDARY_ADAPTER
-	// refer to iface_id if iface_nums>2 and isprimary is false and the adapter_type value is 0xff.
-	u8 adapter_type;//used only in  two inteface case(PRIMARY_ADAPTER and SECONDARY_ADAPTER) .
-	u8 iface_type; //interface port type, it depends on HW port
-#endif //CONFIG_CONCURRENT_MODE || CONFIG_DUALMAC_CONCURRENT
-
 	//extend to support multi interface
        //IFACE_ID0 is equals to PRIMARY_ADAPTER
        //IFACE_ID1 is equals to SECONDARY_ADAPTER
 	u8 iface_id;
-
-#ifdef CONFIG_DUALMAC_CONCURRENT
-	u8 DualMacConcurrent; // 1: DMSP 0:DMDP
-#endif
-
-#ifdef CONFIG_BR_EXT
-	_lock					br_ext_lock;
-	//unsigned int			macclone_completed;
-	struct nat25_network_db_entry	*nethash[NAT25_HASH_SIZE];
-	int				pppoe_connection_in_progress;
-	unsigned char			pppoe_addr[MACADDRLEN];
-	unsigned char			scdb_mac[MACADDRLEN];
-	unsigned char			scdb_ip[4];
-	struct nat25_network_db_entry	*scdb_entry;
-	unsigned char			br_mac[MACADDRLEN];
-	unsigned char			br_ip[4];
-
-	struct br_ext_info		ethBrExtInfo;
-#endif	// CONFIG_BR_EXT
-
-#ifdef CONFIG_INTEL_PROXIM
-	/* intel Proximity, should be alloc mem
-	 * in intel Proximity module and can only
-	 * be used in intel Proximity mode */
-	struct proxim proximity;
-#endif	//CONFIG_INTEL_PROXIM
 
 	//for debug purpose
 	u8 fix_rate;

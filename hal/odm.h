@@ -169,7 +169,6 @@ typedef struct _RX_High_Power_
 #define ASSOCIATE_ENTRY_NUM					32 // Max size of AsocEntry[].
 #define	ODM_ASSOCIATE_ENTRY_NUM				ASSOCIATE_ENTRY_NUM
 
-//#ifdef CONFIG_ANTENNA_DIVERSITY
 // This indicates two different the steps. 
 // In SWAW_STEP_PEAK, driver needs to switch antenna and listen to the signal on the air.
 // In SWAW_STEP_DETERMINE, driver just compares the signal captured in SWAW_STEP_PEAK
@@ -231,40 +230,7 @@ typedef struct _SW_Antenna_Switch_
 	RT_TIMER 	SwAntennaSwitchTimer_8723B;
 	u4Byte		PktCnt_SWAntDivByCtrlFrame;
 	bool		bSWAntDivByCtrlFrame;
-
-/* CE Platform use
-#ifdef CONFIG_SW_ANTENNA_DIVERSITY
-	_timer SwAntennaSwitchTimer; 
-	u8Byte lastTxOkCnt;
-	u8Byte lastRxOkCnt;
-	u8Byte TXByteCnt_A;
-	u8Byte TXByteCnt_B;
-	u8Byte RXByteCnt_A;
-	u8Byte RXByteCnt_B;
-	u1Byte DoubleComfirm;
-	u1Byte TrafficLoad;
-	//SW Antenna Switch
-
-
-#endif
-*/
-#ifdef CONFIG_HW_ANTENNA_DIVERSITY
-	//Hybrid Antenna Diversity
-	u4Byte		CCK_Ant1_Cnt[ASSOCIATE_ENTRY_NUM+1];
-	u4Byte		CCK_Ant2_Cnt[ASSOCIATE_ENTRY_NUM+1];
-	u4Byte		OFDM_Ant1_Cnt[ASSOCIATE_ENTRY_NUM+1];
-	u4Byte		OFDM_Ant2_Cnt[ASSOCIATE_ENTRY_NUM+1];
-	u4Byte		RSSI_Ant1_Sum[ASSOCIATE_ENTRY_NUM+1];
-	u4Byte		RSSI_Ant2_Sum[ASSOCIATE_ENTRY_NUM+1];
-	u1Byte		TxAnt[ASSOCIATE_ENTRY_NUM+1];
-	u1Byte		TargetSTA;
-	u1Byte		antsel;
-	u1Byte		RxIdleAnt;
-
-#endif
-	
 }SWAT_T, *pSWAT_T;
-//#endif
 
 //Remove Edca by YuChen
 
@@ -395,7 +361,6 @@ typedef enum tag_Dynamic_ODM_Support_Ability_Type
 // 2011/20/20 MH For MP driver RT_WLAN_STA =  STA_INFO_T
 // Please declare below ODM relative info in your STA info structure.
 //
-#if 1
 typedef		struct _ODM_STA_INFO{
 	// Driver Write
 	bool		bUsed;				// record the sta status link or not?
@@ -412,19 +377,6 @@ typedef		struct _ODM_STA_INFO{
 	// ODM Write
 	//1 TX_INFO (may changed by IC)
 	//TX_INFO_T		pTxInfo;				// Define in IC folder. Move lower layer.
-#if 0
-	u1Byte		ANTSEL_A;			//in Jagar: 4bit; others: 2bit
-	u1Byte		ANTSEL_B;			//in Jagar: 4bit; others: 2bit
-	u1Byte		ANTSEL_C;			//only in Jagar: 4bit
-	u1Byte		ANTSEL_D;			//only in Jagar: 4bit
-	u1Byte		TX_ANTL;			//not in Jagar: 2bit
-	u1Byte		TX_ANT_HT;			//not in Jagar: 2bit
-	u1Byte		TX_ANT_CCK;			//not in Jagar: 2bit
-	u1Byte		TXAGC_A;			//not in Jagar: 4bit
-	u1Byte		TXAGC_B;			//not in Jagar: 4bit
-	u1Byte		TXPWR_OFFSET;		//only in Jagar: 3bit
-	u1Byte		TX_ANT;				//only in Jagar: 4bit for TX_ANTL/TX_ANTHT/TX_ANT_CCK
-#endif
 
 	//
 	// 	Please use compile flag to disabe the strcutrue for other IC except 88E.
@@ -432,28 +384,7 @@ typedef		struct _ODM_STA_INFO{
 	//
 	// ODM Write Wilson will handle this part(said by Luke.Lee)
 	//TX_RPT_T		pTxRpt;				// Define in IC folder. Move lower layer.
-#if 0	
-	//1 For 88E RA (don't redefine the naming)
-	u1Byte		rate_id;
-	u1Byte		rate_SGI;
-	u1Byte		rssi_sta_ra;
-	u1Byte		SGI_enable;
-	u1Byte		Decision_rate;
-	u1Byte		Pre_rate;
-	u1Byte		Active;
-
-	// Driver write Wilson handle.
-	//1 TX_RPT (don't redefine the naming)
-	u2Byte		RTY[4];				// ???
-	u2Byte		TOTAL;				// ???
-	u2Byte		DROP;				// ???
-	//
-	// Please use compile flag to disabe the strcutrue for other IC except 88E.
-	//
-#endif
-
 }ODM_STA_INFO_T, *PODM_STA_INFO_T;
-#endif
 
 //
 // 2011/10/20 MH Define Common info enum for all team.
@@ -847,7 +778,6 @@ typedef struct _ODM_RA_Info_
 	u2Byte RptTime;
 	u1Byte RAWaitingCounter;
 	u1Byte RAPendingCounter;	
-#if 1 //POWER_TRAINING_ACTIVE == 1 // For compile  pass only~!
 	u1Byte PTActive;  // on or off
 	u1Byte PTTryState;  // 0 trying state, 1 for decision state
 	u1Byte PTStage;  // 0~6
@@ -857,7 +787,6 @@ typedef struct _ODM_RA_Info_
 	u1Byte PTModeSS;  // decide whitch rate should do PT
 	u1Byte RAstage;  // StageRA, decide how many times RA will be done between PT
 	u1Byte PTSmoothFactor;
-#endif
 } ODM_RA_INFO_T,*PODM_RA_INFO_T;
 
 typedef struct _IQK_MATRIX_REGS_SETTING{
@@ -1285,10 +1214,6 @@ typedef  struct DM_Out_Source_Dynamic_Mechanism_Structure
 	// 2012/01/12 MH For MP, we need to reduce one array pointer for default port.??
 	PSTA_INFO_T		pODM_StaInfo[ODM_ASSOCIATE_ENTRY_NUM];
 
-#if (RATE_ADAPTIVE_SUPPORT == 1)
-	u2Byte 			CurrminRptTime;
-	ODM_RA_INFO_T   RAInfo[ODM_ASSOCIATE_ENTRY_NUM]; //See HalMacID support
-#endif
 	//
 	// 2012/02/14 MH Add to share 88E ra with other SW team.
 	// We need to colelct all support abilit to a proper area.
@@ -1323,11 +1248,9 @@ typedef  struct DM_Out_Source_Dynamic_Mechanism_Structure
 	RA_T						DM_RA_Table;  
 	false_ALARM_STATISTICS		FalseAlmCnt;
 	false_ALARM_STATISTICS		FlaseAlmCntBuddyAdapter;
-	//#ifdef CONFIG_ANTENNA_DIVERSITY
 	SWAT_T						DM_SWAT_Table;
 	bool						RSSI_test;
 	CFO_TRACKING    				DM_CfoTrack;
-	//#endif 
 
 	EDCA_T		DM_EDCA_Table;
 	u4Byte		WMMEDCA_BE;
@@ -1414,11 +1337,7 @@ typedef  struct DM_Out_Source_Dynamic_Mechanism_Structure
 	#endif 
 } DM_ODM_T, *PDM_ODM_T;		// DM_Dynamic_Mechanism_Structure
 
-#if 1 //92c-series
 #define ODM_RF_PATH_MAX 2
-#else //jaguar - series
-#define ODM_RF_PATH_MAX 4
-#endif
 
 typedef enum _ODM_RF_RADIO_PATH {
     ODM_RF_PATH_A = 0,   //Radio Path A
@@ -1516,17 +1435,6 @@ typedef enum _RT_STATUS{
 //3 Dynamic Tx Power
 //3===========================================================
 //Dynamic Tx Power Control Threshold
-
-//Remove By YuChen
-
-//3===========================================================
-//3 Tx Power Tracking
-//3===========================================================
-#if 0 //mask this, since these have been defined in typdef.h, vivi
-#define	OFDM_TABLE_SIZE 	43
-#define	CCK_TABLE_SIZE		33
-#endif	
-
 
 //3===========================================================
 //3 Rate Adaptive
@@ -1781,8 +1689,6 @@ ODM_DynamicARFBSelect(
 	IN 		u1Byte			rate,
 	IN  		bool			Collision_State	
 	);
-
-void odm_dtc(PDM_ODM_T pDM_Odm);
 
 #endif
 

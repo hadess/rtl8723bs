@@ -418,10 +418,6 @@ static const struct rtw_proc_hdl adapter_proc_hdls [] = {
 	{"all_sta_info", proc_get_all_sta_info, NULL},
 #endif /* CONFIG_AP_MODE */
 
-#ifdef CONFIG_FIND_BEST_CHANNEL
-	{"best_channel", proc_get_best_channel, proc_set_best_channel},
-#endif
-
 	{"rx_signal", proc_get_rx_signal, proc_set_rx_signal},
 	{"hw_info", proc_get_hw_status, NULL},
 

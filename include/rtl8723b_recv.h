@@ -22,11 +22,6 @@
 
 #include <rtl8192c_recv.h>
 
-#ifndef CONFIG_SDIO_RX_COPY
-#undef MAX_RECVBUF_SZ
-#define MAX_RECVBUF_SZ	(RX_DMA_SIZE_8723B - RX_DMA_RESERVED_SIZE_8723B)
-#endif // !CONFIG_SDIO_RX_COPY
-
 typedef struct rxreport_8723b
 {
 	//DWORD 0

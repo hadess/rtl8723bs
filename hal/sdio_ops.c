@@ -205,10 +205,7 @@ _func_enter_;
 	rtw_hal_get_hwreg(padapter, HW_VAR_APFM_ON_MAC, &bMacPwrCtrlOn);
 	if (((deviceId == WLAN_IOREG_DEVICE_ID) && (offset < 0x100))
 		|| (false == bMacPwrCtrlOn)
-#ifdef CONFIG_LPS_LCLK
-		|| (true == adapter_to_pwrctl(padapter)->bFwCurrentInPSMode)
-#endif
-		)
+		|| (true == adapter_to_pwrctl(padapter)->bFwCurrentInPSMode))
 	{
 		err = sd_cmd52_read(pintfhdl, ftaddr, 4, (u8*)&val);
 #ifdef SDIO_DEBUG_IO
@@ -270,10 +267,7 @@ _func_enter_;
 	rtw_hal_get_hwreg(padapter, HW_VAR_APFM_ON_MAC, &bMacPwrCtrlOn);
 	if (((deviceId == WLAN_IOREG_DEVICE_ID) && (offset < 0x100))
 		|| (false == bMacPwrCtrlOn)
-#ifdef CONFIG_LPS_LCLK
-		|| (true == adapter_to_pwrctl(padapter)->bFwCurrentInPSMode)
-#endif
-		)
+		|| (true == adapter_to_pwrctl(padapter)->bFwCurrentInPSMode))
 	{
 		err = sd_cmd52_read(pintfhdl, ftaddr, cnt, pbuf);
 		return err;
@@ -352,10 +346,7 @@ _func_enter_;
 	rtw_hal_get_hwreg(padapter, HW_VAR_APFM_ON_MAC, &bMacPwrCtrlOn);
 	if (((deviceId == WLAN_IOREG_DEVICE_ID) && (offset < 0x100))
 		|| (false == bMacPwrCtrlOn)
-#ifdef CONFIG_LPS_LCLK
-		|| (true == adapter_to_pwrctl(padapter)->bFwCurrentInPSMode)
-#endif
-		)
+		|| (true == adapter_to_pwrctl(padapter)->bFwCurrentInPSMode))
 	{
 		val = cpu_to_le32(val);
 		err = sd_cmd52_write(pintfhdl, ftaddr, 4, (u8*)&val);
@@ -364,7 +355,6 @@ _func_enter_;
 
 	// 4 bytes alignment
 	shift = ftaddr & 0x3;
-#if 1
 	if (shift == 0)
 	{
 		sd_write32(pintfhdl, ftaddr, val, &err);
@@ -374,28 +364,6 @@ _func_enter_;
 		val = cpu_to_le32(val);
 		err = sd_cmd52_write(pintfhdl, ftaddr, 4, (u8*)&val);
 	}
-#else
-	if (shift == 0) {
-		sd_write32(pintfhdl, ftaddr, val, &err);
-	} else {
-		u8 *ptmpbuf;
-
-		ptmpbuf = (u8*)rtw_malloc(8);
-		if (NULL == ptmpbuf) return (-1);
-
-		ftaddr &= ~(u16)0x3;
-		err = sd_read(pintfhdl, ftaddr, 8, ptmpbuf);
-		if (err) {
-			rtw_mfree(ptmpbuf, 8);
-			return err;
-		}
-		val = cpu_to_le32(val);
-		memcpy(ptmpbuf+shift, &val, 4);
-		err = sd_write(pintfhdl, ftaddr, 8, ptmpbuf);
-
-		rtw_mfree(ptmpbuf, 8);
-	}
-#endif
 
 _func_exit_;
 
@@ -422,10 +390,7 @@ _func_enter_;
 	rtw_hal_get_hwreg(padapter, HW_VAR_APFM_ON_MAC, &bMacPwrCtrlOn);
 	if (((deviceId == WLAN_IOREG_DEVICE_ID) && (offset < 0x100))
 		|| (false == bMacPwrCtrlOn)
-#ifdef CONFIG_LPS_LCLK
-		|| (true == adapter_to_pwrctl(padapter)->bFwCurrentInPSMode)
-#endif
-		)
+		|| (true == adapter_to_pwrctl(padapter)->bFwCurrentInPSMode))
 	{
 		err = sd_cmd52_write(pintfhdl, ftaddr, cnt, pbuf);
 		return err;
@@ -697,10 +662,7 @@ s32 sdio_local_read(
 
 	rtw_hal_get_hwreg(padapter, HW_VAR_APFM_ON_MAC, &bMacPwrCtrlOn);
 	if ((false == bMacPwrCtrlOn)
-#ifdef CONFIG_LPS_LCLK
-		|| (true == adapter_to_pwrctl(padapter)->bFwCurrentInPSMode)
-#endif
-		)
+		|| (true == adapter_to_pwrctl(padapter)->bFwCurrentInPSMode))
 	{
 		err = sd_cmd52_read(pintfhdl, addr, cnt, pbuf);
 		return err;
@@ -747,10 +709,7 @@ s32 _sdio_local_write(
 
 	rtw_hal_get_hwreg(padapter, HW_VAR_APFM_ON_MAC, &bMacPwrCtrlOn);
 	if ((false == bMacPwrCtrlOn)
-#ifdef CONFIG_LPS_LCLK
-		|| (true == adapter_to_pwrctl(padapter)->bFwCurrentInPSMode)
-#endif
-		)
+		|| (true == adapter_to_pwrctl(padapter)->bFwCurrentInPSMode))
 	{
 		err = _sd_cmd52_write(pintfhdl, addr, cnt, pbuf);
 		return err;
@@ -796,10 +755,7 @@ s32 sdio_local_write(
 
 	rtw_hal_get_hwreg(padapter, HW_VAR_APFM_ON_MAC, &bMacPwrCtrlOn);
 	if ((false == bMacPwrCtrlOn)
-#ifdef CONFIG_LPS_LCLK
-		|| (true == adapter_to_pwrctl(padapter)->bFwCurrentInPSMode)
-#endif
-		)
+		|| (true == adapter_to_pwrctl(padapter)->bFwCurrentInPSMode))
 	{
 		err = sd_cmd52_write(pintfhdl, addr, cnt, pbuf);
 		return err;
@@ -843,19 +799,6 @@ static u16 SdioLocalCmd52Read2Byte(PADAPTER padapter, u32 addr)
 	return val;
 }
 
-static u32 SdioLocalCmd52Read4Byte(PADAPTER padapter, u32 addr)
-{	
-	u32 val = 0;
-	struct intf_hdl * pintfhdl=&padapter->iopriv.intf;
-
-	HalSdioGetCmdAddr8723BSdio(padapter, SDIO_LOCAL_DEVICE_ID, addr, &addr);
-	sd_cmd52_read(pintfhdl, addr, 4, (u8*)&val);
-
-	val = le32_to_cpu(val);
-
-	return val;
-}
-
 static u32 SdioLocalCmd53Read4Byte(PADAPTER padapter, u32 addr)
 {
 	
@@ -866,10 +809,7 @@ static u32 SdioLocalCmd53Read4Byte(PADAPTER padapter, u32 addr)
 	HalSdioGetCmdAddr8723BSdio(padapter, SDIO_LOCAL_DEVICE_ID, addr, &addr);
 	rtw_hal_get_hwreg(padapter, HW_VAR_APFM_ON_MAC, &bMacPwrCtrlOn);
 	if ((false == bMacPwrCtrlOn)
-#ifdef CONFIG_LPS_LCLK
-		|| (true == adapter_to_pwrctl(padapter)->bFwCurrentInPSMode)
-#endif
-		)
+		|| (true == adapter_to_pwrctl(padapter)->bFwCurrentInPSMode))
 	{
 		sd_cmd52_read(pintfhdl, addr, 4, (u8*)&val);
 		val = le32_to_cpu(val);
@@ -888,15 +828,6 @@ void SdioLocalCmd52Write1Byte(PADAPTER padapter, u32 addr, u8 v)
 	sd_cmd52_write(pintfhdl, addr, 1, &v);
 }
 
-static void SdioLocalCmd52Write2Byte(PADAPTER padapter, u32 addr, u16 v)
-{
-	struct intf_hdl * pintfhdl=&padapter->iopriv.intf;
-
-	HalSdioGetCmdAddr8723BSdio(padapter, SDIO_LOCAL_DEVICE_ID, addr, &addr);
-	v = cpu_to_le16(v);
-	sd_cmd52_write(pintfhdl, addr, 2, (u8*)&v);
-}
-
 static void SdioLocalCmd52Write4Byte(PADAPTER padapter, u32 addr, u32 v)
 {
 	struct intf_hdl * pintfhdl=&padapter->iopriv.intf;
@@ -904,162 +835,6 @@ static void SdioLocalCmd52Write4Byte(PADAPTER padapter, u32 addr, u32 v)
 	v = cpu_to_le32(v);
 	sd_cmd52_write(pintfhdl, addr, 4, (u8*)&v);
 }
-
-#if 0
-void
-DumpLoggedInterruptHistory8723Sdio(
-	PADAPTER		padapter
-)
-{
-	HAL_DATA_TYPE	*pHalData=GET_HAL_DATA(padapter);
-	u4Byte				DebugLevel = DBG_LOUD;
-
-	if (DBG_Var.DbgPrintIsr == 0)
-		return;
-
-	DBG_ChkDrvResource(padapter);
-
-
-	if(pHalData->InterruptLog.nISR_RX_REQUEST)
-		RT_TRACE(COMP_SEND|COMP_RECV, DebugLevel, ("# RX_REQUEST[%ld]\t\n", pHalData->InterruptLog.nISR_RX_REQUEST));
-
-	if(pHalData->InterruptLog.nISR_AVAL)
-		RT_TRACE(COMP_SEND|COMP_RECV, DebugLevel, ("# AVAL[%ld]\t\n", pHalData->InterruptLog.nISR_AVAL));
-
-	if(pHalData->InterruptLog.nISR_TXERR)
-		RT_TRACE(COMP_SEND|COMP_RECV, DebugLevel, ("# TXERR[%ld]\t\n", pHalData->InterruptLog.nISR_TXERR));
-
-	if(pHalData->InterruptLog.nISR_RXERR)
-		RT_TRACE(COMP_SEND|COMP_RECV, DebugLevel, ("# RXERR[%ld]\t\n", pHalData->InterruptLog.nISR_RXERR));
-
-	if(pHalData->InterruptLog.nISR_TXFOVW)
-		RT_TRACE(COMP_SEND|COMP_RECV, DebugLevel, ("# TXFOVW[%ld]\t\n", pHalData->InterruptLog.nISR_TXFOVW));
-
-	if(pHalData->InterruptLog.nISR_RXFOVW)
-		RT_TRACE(COMP_SEND|COMP_RECV, DebugLevel, ("# RXFOVW[%ld]\t\n", pHalData->InterruptLog.nISR_RXFOVW));
-
-	if(pHalData->InterruptLog.nISR_TXBCNOK)
-		RT_TRACE(COMP_SEND|COMP_RECV, DebugLevel, ("# TXBCNOK[%ld]\t\n", pHalData->InterruptLog.nISR_TXBCNOK));
-
-	if(pHalData->InterruptLog.nISR_TXBCNERR)
-		RT_TRACE(COMP_SEND|COMP_RECV, DebugLevel, ("# TXBCNERR[%ld]\t\n", pHalData->InterruptLog.nISR_TXBCNERR));
-
-	if(pHalData->InterruptLog.nISR_BCNERLY_INT)
-		RT_TRACE(COMP_SEND|COMP_RECV, DebugLevel, ("# BCNERLY_INT[%ld]\t\n", pHalData->InterruptLog.nISR_BCNERLY_INT));
-
-	if(pHalData->InterruptLog.nISR_C2HCMD)
-		RT_TRACE(COMP_SEND|COMP_RECV, DebugLevel, ("# C2HCMD[%ld]\t\n", pHalData->InterruptLog.nISR_C2HCMD));
-
-	if(pHalData->InterruptLog.nISR_CPWM1)
-		RT_TRACE(COMP_SEND|COMP_RECV, DebugLevel, ("# CPWM1L[%ld]\t\n", pHalData->InterruptLog.nISR_CPWM1));
-
-	if(pHalData->InterruptLog.nISR_CPWM2)
-		RT_TRACE(COMP_SEND|COMP_RECV, DebugLevel, ("# CPWM2[%ld]\t\n", pHalData->InterruptLog.nISR_CPWM2));
-
-	if(pHalData->InterruptLog.nISR_HSISR_IND)
-		RT_TRACE(COMP_SEND|COMP_RECV, DebugLevel, ("# HSISR_IND[%ld]\t\n", pHalData->InterruptLog.nISR_HSISR_IND));
-
-	if(pHalData->InterruptLog.nISR_GTINT3_IND)
-		RT_TRACE(COMP_SEND|COMP_RECV, DebugLevel, ("# GTINT3_IND[%ld]\t\n", pHalData->InterruptLog.nISR_GTINT3_IND));
-
-	if(pHalData->InterruptLog.nISR_GTINT4_IND)
-		RT_TRACE(COMP_SEND|COMP_RECV, DebugLevel, ("# GTINT4_IND[%ld]\t\n", pHalData->InterruptLog.nISR_GTINT4_IND));
-
-	if(pHalData->InterruptLog.nISR_PSTIMEOUT)
-		RT_TRACE(COMP_SEND|COMP_RECV, DebugLevel, ("# PSTIMEOUT[%ld]\t\n", pHalData->InterruptLog.nISR_PSTIMEOUT));
-
-	if(pHalData->InterruptLog.nISR_OCPINT)
-		RT_TRACE(COMP_SEND|COMP_RECV, DebugLevel, ("# OCPINT[%ld]\t\n", pHalData->InterruptLog.nISR_OCPINT));
-
-	if(pHalData->InterruptLog.nISR_ATIMEND)
-		RT_TRACE(COMP_SEND|COMP_RECV, DebugLevel, ("# ATIMEND[%ld]\t\n", pHalData->InterruptLog.nISR_ATIMEND));
-
-	if(pHalData->InterruptLog.nISR_ATIMEND_E)
-		RT_TRACE(COMP_SEND|COMP_RECV, DebugLevel, ("# ATIMEND_E[%ld]\t\n", pHalData->InterruptLog.nISR_ATIMEND_E));
-
-	if(pHalData->InterruptLog.nISR_CTWEND)
-		RT_TRACE(COMP_SEND|COMP_RECV, DebugLevel, ("# CTWEND[%ld]\t\n", pHalData->InterruptLog.nISR_CTWEND));
-}
-
-void
-LogInterruptHistory8723Sdio(
-	PADAPTER			padapter,
-	PRT_ISR_CONTENT	pIsrContent
-)
-{
-	HAL_DATA_TYPE	*pHalData=GET_HAL_DATA(padapter);
-
-	if((pHalData->IntrMask[0] & SDIO_HIMR_RX_REQUEST_MSK) &&
-		(pIsrContent->IntArray[0] & SDIO_HISR_RX_REQUEST))
-		pHalData->InterruptLog.nISR_RX_REQUEST ++;
-	if((pHalData->IntrMask[0] & SDIO_HIMR_AVAL_MSK) &&
-		(pIsrContent->IntArray[0] & SDIO_HISR_AVAL))
-		pHalData->InterruptLog.nISR_AVAL++;
-	if((pHalData->IntrMask[0] & SDIO_HIMR_TXERR_MSK) &&
-		(pIsrContent->IntArray[0] & SDIO_HISR_TXERR))
-		pHalData->InterruptLog.nISR_TXERR++;
-	if((pHalData->IntrMask[0] & SDIO_HIMR_RXERR_MSK) &&
-		(pIsrContent->IntArray[0] & SDIO_HISR_RXERR))
-		pHalData->InterruptLog.nISR_RXERR++;
-	if((pHalData->IntrMask[0] & SDIO_HIMR_TXFOVW_MSK) &&
-		(pIsrContent->IntArray[0] & SDIO_HISR_TXFOVW))
-		pHalData->InterruptLog.nISR_TXFOVW++;
-	if((pHalData->IntrMask[0] & SDIO_HIMR_RXFOVW_MSK) &&
-		(pIsrContent->IntArray[0] & SDIO_HISR_RXFOVW))
-		pHalData->InterruptLog.nISR_RXFOVW++;
-	if((pHalData->IntrMask[0] & SDIO_HIMR_TXBCNOK_MSK) &&
-		(pIsrContent->IntArray[0] & SDIO_HISR_TXBCNOK))
-		pHalData->InterruptLog.nISR_TXBCNOK++;
-	if((pHalData->IntrMask[0] & SDIO_HIMR_TXBCNERR_MSK) &&
-		(pIsrContent->IntArray[0] & SDIO_HISR_TXBCNERR))
-		pHalData->InterruptLog.nISR_TXBCNERR++;
-	if((pHalData->IntrMask[0] & SDIO_HIMR_BCNERLY_INT_MSK) &&
-		(pIsrContent->IntArray[0] & SDIO_HISR_BCNERLY_INT))
-		pHalData->InterruptLog.nISR_BCNERLY_INT ++;
-	if((pHalData->IntrMask[0] & SDIO_HIMR_C2HCMD_MSK) &&
-		(pIsrContent->IntArray[0] & SDIO_HISR_C2HCMD))
-		pHalData->InterruptLog.nISR_C2HCMD++;
-	if((pHalData->IntrMask[0] & SDIO_HIMR_CPWM1_MSK) &&
-		(pIsrContent->IntArray[0] & SDIO_HISR_CPWM1))
-		pHalData->InterruptLog.nISR_CPWM1++;
-	if((pHalData->IntrMask[0] & SDIO_HIMR_CPWM2_MSK) &&
-		(pIsrContent->IntArray[0] & SDIO_HISR_CPWM2))
-		pHalData->InterruptLog.nISR_CPWM2++;
-	if((pHalData->IntrMask[0] & SDIO_HIMR_HSISR_IND_MSK) &&
-		(pIsrContent->IntArray[0] & SDIO_HISR_HSISR_IND))
-		pHalData->InterruptLog.nISR_HSISR_IND++;
-	if((pHalData->IntrMask[0] & SDIO_HIMR_GTINT3_IND_MSK) &&
-		(pIsrContent->IntArray[0] & SDIO_HISR_GTINT3_IND))
-		pHalData->InterruptLog.nISR_GTINT3_IND++;
-	if((pHalData->IntrMask[0] & SDIO_HIMR_GTINT4_IND_MSK) &&
-		(pIsrContent->IntArray[0] & SDIO_HISR_GTINT4_IND))
-		pHalData->InterruptLog.nISR_GTINT4_IND++;
-	if((pHalData->IntrMask[0] & SDIO_HIMR_PSTIMEOUT_MSK) &&
-		(pIsrContent->IntArray[0] & SDIO_HISR_PSTIMEOUT))
-		pHalData->InterruptLog.nISR_PSTIMEOUT++;
-	if((pHalData->IntrMask[0] & SDIO_HIMR_OCPINT_MSK) &&
-		(pIsrContent->IntArray[0] & SDIO_HISR_OCPINT))
-		pHalData->InterruptLog.nISR_OCPINT++;
-	if((pHalData->IntrMask[0] & SDIO_HIMR_ATIMEND_MSK) &&
-		(pIsrContent->IntArray[0] & SDIO_HISR_ATIMEND))
-		pHalData->InterruptLog.nISR_ATIMEND++;
-	if((pHalData->IntrMask[0] & SDIO_HIMR_ATIMEND_E_MSK) &&
-		(pIsrContent->IntArray[0] & SDIO_HISR_ATIMEND_E))
-		pHalData->InterruptLog.nISR_ATIMEND_E++;
-	if((pHalData->IntrMask[0] & SDIO_HIMR_CTWEND_MSK) &&
-		(pIsrContent->IntArray[0] & SDIO_HISR_CTWEND))
-		pHalData->InterruptLog.nISR_CTWEND++;
-
-}
-
-void
-DumpHardwareProfile8723Sdio(
-	IN	PADAPTER		padapter
-)
-{
-	DumpLoggedInterruptHistory8723Sdio(padapter);
-}
-#endif
 
 static s32 ReadInterrupt8723BSdio(PADAPTER padapter, u32 *phisr)
 {
@@ -1110,9 +885,7 @@ void InitInterrupt8723BSdio(PADAPTER padapter)
 	pHalData = GET_HAL_DATA(padapter);
 	pHalData->sdio_himr = (u32)(			\
 								SDIO_HIMR_RX_REQUEST_MSK			|
-#ifdef CONFIG_SDIO_TX_ENABLE_AVAL_INT
 								SDIO_HIMR_AVAL_MSK					|
-#endif
 //								SDIO_HIMR_TXERR_MSK				|
 //								SDIO_HIMR_RXERR_MSK				|
 //								SDIO_HIMR_TXFOVW_MSK				|
@@ -1121,10 +894,6 @@ void InitInterrupt8723BSdio(PADAPTER padapter)
 //								SDIO_HIMR_TXBCNERR_MSK			|
 //								SDIO_HIMR_BCNERLY_INT_MSK			|
 //								SDIO_HIMR_C2HCMD_MSK				|
-#if defined(CONFIG_LPS_LCLK) && !defined(CONFIG_DETECT_CPWM_BY_POLLING)
-								SDIO_HIMR_CPWM1_MSK				|
-//								SDIO_HIMR_CPWM2_MSK				|
-#endif // CONFIG_LPS_LCLK && !CONFIG_DETECT_CPWM_BY_POLLING
 //								SDIO_HIMR_HSISR_IND_MSK			|
 //								SDIO_HIMR_GTINT3_IND_MSK			|
 //								SDIO_HIMR_GTINT4_IND_MSK			|
@@ -1194,33 +963,6 @@ void ClearInterrupt8723BSdio(PADAPTER padapter)
 
 //
 //	Description:
-//		Clear corresponding system Host ISR interrupt service.
-//
-//
-//	Created by Roger, 2011.02.11.
-//
-static void ClearSysInterrupt8723BSdio(PADAPTER padapter)
-{
-	PHAL_DATA_TYPE pHalData;
-	u32 clear;
-
-
-	if (true == padapter->bSurpriseRemoved)
-		return;
-
-	pHalData = GET_HAL_DATA(padapter);
-
-	// Clear corresponding HISR Content if needed
-	clear = pHalData->SysIntrStatus & MASK_HSISR_CLEAR;
-	if (clear)
-	{
-		// Perform write one clear operation
-		rtw_write32(padapter, REG_HSISR, clear);
-	}
-}
-
-//
-//	Description:
 //		Enalbe SDIO Host Interrupt Mask configuration on SDIO local domain.
 //
 //	Assumption:
@@ -1234,11 +976,6 @@ void EnableInterrupt8723BSdio(PADAPTER padapter)
 	PHAL_DATA_TYPE pHalData;
 	u32 himr;
 
-#ifdef CONFIG_CONCURRENT_MODE
-	if ((padapter->isprimary == false) && padapter->pbuddy_adapter){
-		padapter = padapter->pbuddy_adapter;
-	}
-#endif
 	pHalData = GET_HAL_DATA(padapter);
 
 	himr = cpu_to_le32(pHalData->sdio_himr);
@@ -1275,11 +1012,6 @@ void DisableInterrupt8723BSdio(PADAPTER padapter)
 {
 	u32 himr;
 
-#ifdef CONFIG_CONCURRENT_MODE
-	if ((padapter->isprimary == false) && padapter->pbuddy_adapter){
-		padapter = padapter->pbuddy_adapter;
-	}
-#endif
 	himr = cpu_to_le32(SDIO_HIMR_DISABLED);
 	sdio_local_write(padapter, SDIO_REG_HIMR, 4, (u8*)&himr);
 
@@ -1310,11 +1042,6 @@ void DisableInterruptButCpwm28723BSdio(PADAPTER padapter)
 {
 	u32 himr, tmp;
 
-#ifdef CONFIG_CONCURRENT_MODE
-	if ((padapter->isprimary == false) && padapter->pbuddy_adapter){
-		padapter = padapter->pbuddy_adapter;
-	}
-#endif
 	sdio_local_read(padapter, SDIO_REG_HIMR, 4, (u8*)&tmp);
 	DBG_871X("DisableInterruptButCpwm28723BSdio(): Read SDIO_REG_HIMR: 0x%08x\n", tmp);
 	
@@ -1325,38 +1052,7 @@ void DisableInterruptButCpwm28723BSdio(PADAPTER padapter)
 	DBG_871X("DisableInterruptButCpwm28723BSdio(): Read again SDIO_REG_HIMR: 0x%08x\n", tmp);
 }
 #endif //CONFIG_WOWLAN
-//
-//	Description:
-//		Update SDIO Host Interrupt Mask configuration on SDIO local domain.
-//
-//	Assumption:
-//		1. Using SDIO Local register ONLY for configuration.
-//		2. PASSIVE LEVEL
-//
-//	Created by Roger, 2011.02.11.
-//
-static void UpdateInterruptMask8723BSdio(PADAPTER padapter, u32 AddMSR, u32 RemoveMSR)
-{
-	HAL_DATA_TYPE *pHalData;
 
-#ifdef CONFIG_CONCURRENT_MODE
-	if ((padapter->isprimary == false) && padapter->pbuddy_adapter){
-		padapter = padapter->pbuddy_adapter;
-	}
-#endif
-	pHalData = GET_HAL_DATA(padapter);
-
-	if (AddMSR)
-		pHalData->sdio_himr |= AddMSR;
-
-	if (RemoveMSR)
-		pHalData->sdio_himr &= (~RemoveMSR);
-
-	DisableInterrupt8723BSdio(padapter);
-	EnableInterrupt8723BSdio(padapter);
-}
-
-#ifdef CONFIG_SDIO_RX_COPY
 static struct recv_buf* sd_recv_rxfifo(PADAPTER padapter, u32 size)
 {
 	u32 readsize, ret;
@@ -1365,13 +1061,9 @@ static struct recv_buf* sd_recv_rxfifo(PADAPTER padapter, u32 size)
 	struct recv_buf	*precvbuf;
 
 
-#if 0
-	readsize = size;
-#else
 	// Patch for some SDIO Host 4 bytes issue
 	// ex. RK3188
 	readsize = RND4(size);
-#endif
 
 	//3 1. alloc recvbuf
 	precvpriv = &padapter->recvpriv;
@@ -1423,71 +1115,6 @@ static struct recv_buf* sd_recv_rxfifo(PADAPTER padapter, u32 size)
 
 	return precvbuf;
 }
-#else // !CONFIG_SDIO_RX_COPY
-static struct recv_buf* sd_recv_rxfifo(PADAPTER padapter, u32 size)
-{
-	u32 sdioblksize, readsize, allocsize, ret;
-	u8 *preadbuf;
-	_pkt *ppkt;
-	struct recv_priv *precvpriv;
-	struct recv_buf	*precvbuf;
-
-
-	sdioblksize = adapter_to_dvobj(padapter)->intf_data.block_transfer_len;
-#if 0
-	readsize = size;
-#else
-	// Patch for some SDIO Host 4 bytes issue
-	// ex. RK3188
-	readsize = RND4(size);
-#endif
-
-	//3 1. alloc skb
-	// align to block size
-	if (readsize > sdioblksize)
-		allocsize = _RND(readsize, sdioblksize);
-	else
-		allocsize = readsize;
-
-	ppkt = rtw_skb_alloc(allocsize);
-
-	if (ppkt == NULL) {
-		RT_TRACE(_module_hci_ops_os_c_, _drv_err_, ("%s: alloc_skb fail! alloc=%d read=%d\n", __FUNCTION__, allocsize, readsize));
-		return NULL;
-	}
-
-	//3 2. read data from rxfifo
-	preadbuf = skb_put(ppkt, size);
-//	rtw_read_port(padapter, WLAN_RX0FF_DEVICE_ID, readsize, preadbuf);
-	ret = sdio_read_port(&padapter->iopriv.intf, WLAN_RX0FF_DEVICE_ID, readsize, preadbuf);
-	if (ret == _FAIL) {
-		rtw_skb_free(ppkt);
-		RT_TRACE(_module_hci_ops_os_c_, _drv_err_, ("%s: read port FAIL!\n", __FUNCTION__));
-		return NULL;
-	}
-
-	//3 3. alloc recvbuf
-	precvpriv = &padapter->recvpriv;
-	precvbuf = rtw_dequeue_recvbuf(&precvpriv->free_recv_buf_queue);
-	if (precvbuf == NULL) {
-		rtw_skb_free(ppkt);
-		DBG_871X_LEVEL(_drv_err_, "%s: alloc recvbuf FAIL!\n", __FUNCTION__);
-		return NULL;
-	}
-
-	//3 4. init recvbuf
-	precvbuf->pskb = ppkt;
-
-	precvbuf->len = ppkt->len;
-
-	precvbuf->phead = ppkt->head;
-	precvbuf->pdata = ppkt->data;
-	precvbuf->ptail = skb_tail_pointer(precvbuf->pskb);
-	precvbuf->pend = skb_end_pointer(precvbuf->pskb);
-
-	return precvbuf;
-}
-#endif // !CONFIG_SDIO_RX_COPY
 
 static void sd_rxhandler(PADAPTER padapter, struct recv_buf *precvbuf)
 {
@@ -1517,7 +1144,6 @@ void sd_int_dpc(PADAPTER padapter)
 	dvobj = adapter_to_dvobj(padapter);
 	pwrctl = dvobj_to_pwrctl(dvobj);
 
-#ifdef CONFIG_SDIO_TX_ENABLE_AVAL_INT
 	if (phal->sdio_hisr & SDIO_HISR_AVAL)
 	{
 		//_irqL irql;
@@ -1534,22 +1160,17 @@ void sd_int_dpc(PADAPTER padapter)
 		//	freepage[3]);
 		up(&(padapter->xmitpriv.xmit_sema));
 	}
-#endif
 	if (phal->sdio_hisr & SDIO_HISR_CPWM1)
 	{
 		struct reportpwrstate_parm report;
 
-#ifdef CONFIG_LPS_RPWM_TIMER
 		u8 bcancelled;
 		_cancel_timer(&(pwrctl->pwr_rpwm_timer), &bcancelled);
-#endif // CONFIG_LPS_RPWM_TIMER
 
 		report.state = SdioLocalCmd52Read1Byte(padapter, SDIO_REG_HCPWM1_8723B);
 
-#ifdef CONFIG_LPS_LCLK
 		//cpwm_int_hdl(padapter, &report);
 		_set_workitem(&(pwrctl->cpwm_event));
-#endif
 	}
 
 	if (phal->sdio_hisr & SDIO_HISR_TXERR)

@@ -20,8 +20,6 @@
 #ifndef _RTW_BR_EXT_H_
 #define _RTW_BR_EXT_H_
 
-#if 1	// rtw_wifi_driver
-#define CL_IPV6_PASS    	1
 #define MACADDRLEN		6
 #define _DEBUG_ERR		DBG_8192C
 #define _DEBUG_INFO		//DBG_8192C
@@ -30,17 +28,12 @@
 #define DEBUG_ERR		DBG_8192C
 //#define GET_MY_HWADDR		((GET_MIB(priv))->dot11OperationEntry.hwaddr)
 #define GET_MY_HWADDR(padapter)		((padapter)->eeprompriv.mac_addr)
-#endif	// rtw_wifi_driver
 
 #define NAT25_HASH_BITS		4
 #define NAT25_HASH_SIZE		(1 << NAT25_HASH_BITS)
 #define NAT25_AGEING_TIME	300
 
-#ifdef CL_IPV6_PASS
 #define MAX_NETWORK_ADDR_LEN	17
-#else
-#define MAX_NETWORK_ADDR_LEN	11
-#endif
 
 struct nat25_network_db_entry
 {

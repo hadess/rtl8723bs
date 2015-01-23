@@ -84,30 +84,11 @@ void rtw_ndev_notifier_unregister(void);
 
 void rtw_ips_dev_unload(_adapter *padapter);
 
-#ifdef CONFIG_IPS
 int rtw_ips_pwr_up(_adapter *padapter);
 void rtw_ips_pwr_down(_adapter *padapter);
-#endif
-
-#ifdef CONFIG_CONCURRENT_MODE
-struct _io_ops;
-_adapter *rtw_drv_if2_init(_adapter *primary_padapter, void (*set_intf_ops)(_adapter *primary_padapter,struct _io_ops *pops));
-void rtw_drv_if2_free(_adapter *if2);
-void rtw_drv_if2_stop(_adapter *if2);
-#ifdef CONFIG_MULTI_VIR_IFACES
-struct dvobj_priv;
-_adapter *rtw_drv_add_vir_if(_adapter *primary_padapter, void (*set_intf_ops)(_adapter *primary_padapter,struct _io_ops *pops));
-void rtw_drv_stop_vir_ifaces(struct dvobj_priv *dvobj);
-void rtw_drv_free_vir_ifaces(struct dvobj_priv *dvobj);
-#endif //CONFIG_MULTI_VIR_IFACES
-#endif
 
 int rtw_drv_register_netdev(_adapter *padapter);
 void rtw_ndev_destructor(_nic_hdl ndev);
-
-#ifdef CONFIG_ARP_KEEP_ALIVE
-int	rtw_gw_addr_query(_adapter *padapter);
-#endif
 
 int rtw_suspend_common(_adapter *padapter);
 int rtw_resume_common(_adapter *padapter);

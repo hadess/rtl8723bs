@@ -123,26 +123,7 @@ u8 _InitPowerOn_8723BS(PADAPTER padapter)
 //	u8 bMacPwrCtrlOn;
 
 
-#if 1
 	// all of these MUST be configured before power on
-#ifdef CONFIG_XTAL_26M
-	// Config PLL Reference CLK,
-	// Change crystal to 26M, APLL_FREF_SEL = 4b'0101
-	// APLL_FREF_SEL[0]=1b'1
-	value8 = rtw_read8(padapter, REG_AFE_PLL_CTRL);
-	value8 |= BIT(2);
-	rtw_write8(padapter, REG_AFE_PLL_CTRL, value8);
-	// APLL_FREF_SEL[2:1]=2b'10
-	value8 = rtw_read8(padapter, REG_AFE_CTRL_4_8723B+1);
-	value8 &= ~(BIT(1)|BIT(0));
-	value8 |= BIT(1);
-	rtw_write16(padapter, REG_AFE_CTRL_4_8723B+1, value8);
-	// APLL_FREF_SEL[3]=1b'0
-	value8 = rtw_read8(padapter, REG_AFE_CTRL_4_8723B);
-	value8 &= ~BIT(7);
-	rtw_write16(padapter, REG_AFE_CTRL_4_8723B, value8);
-#endif // CONFIG_XTAL_26M
-
 #ifdef CONFIG_EXT_CLK
 	// Use external crystal(XTAL)
 	value8 = rtw_read8(padapter, REG_PAD_CTRL1_8723B+2);
@@ -157,7 +138,6 @@ u8 _InitPowerOn_8723BS(PADAPTER padapter)
 	value8 |= BIT(5);
 	rtw_write8(padapter, REG_MULTI_FUNC_CTRL+1, value8);
 #endif // CONFIG_EXT_CLK
-#endif // all of these MUST be configured before power on
 
 	// only cmd52 can be used before power on(card enable)
 	ret = CardEnable(padapter);
@@ -279,17 +259,12 @@ static void _InitQueueReservedPage(PADAPTER padapter)
 
 	rtw_hal_set_sdio_tx_max_length(padapter, numHQ, numNQ, numLQ, numPubQ);
 
-#ifdef CONFIG_SDIO_TX_ENABLE_AVAL_INT
 	_init_available_page_threshold(padapter, numHQ, numNQ, numLQ, numPubQ);
-#endif
 }
 
 static void _InitTxBufferBoundary(PADAPTER padapter)
 {
 	struct registry_priv *pregistrypriv = &padapter->registrypriv;
-#ifdef CONFIG_CONCURRENT_MODE
-	u8 val8;
-#endif // CONFIG_CONCURRENT_MODE
 
 	//u16	txdmactrl;
 	u8	txpktbuf_bndy;
@@ -306,16 +281,6 @@ static void _InitTxBufferBoundary(PADAPTER padapter)
 	rtw_write8(padapter, REG_TXPKTBUF_WMAC_LBK_BF_HD_8723B, txpktbuf_bndy);
 	rtw_write8(padapter, REG_TRXFF_BNDY, txpktbuf_bndy);
 	rtw_write8(padapter, REG_TDECTRL+1, txpktbuf_bndy);
-
-#ifdef CONFIG_CONCURRENT_MODE
-	val8 = txpktbuf_bndy + BCNQ_PAGE_NUM_8723B + WOWLAN_PAGE_NUM_8723B;
-	rtw_write8(padapter, REG_BCNQ1_BDNY, val8);
-	rtw_write8(padapter, REG_DWBCN1_CTRL_8723B+1, val8); // BCN1_HEAD
-
-	val8 = rtw_read8(padapter, REG_DWBCN1_CTRL_8723B+2);
-	val8 |= BIT(1); // BIT1- BIT_SW_BCN_SEL_EN
-	rtw_write8(padapter, REG_DWBCN1_CTRL_8723B+2, val8);
-#endif // CONFIG_CONCURRENT_MODE
 }
 
 static void
@@ -595,16 +560,6 @@ static void _InitEDCA(PADAPTER padapter)
 	rtw_write32(padapter, REG_EDCA_VO_PARAM, 0x002FA226);
 }
 
-static void _InitRateFallback(PADAPTER padapter)
-{
-	// Set Data Auto Rate Fallback Retry Count register.
-	rtw_write32(padapter, REG_DARFRC, 0x00000000);
-	rtw_write32(padapter, REG_DARFRC+4, 0x10080404);
-	rtw_write32(padapter, REG_RARFRC, 0x04030201);
-	rtw_write32(padapter, REG_RARFRC+4, 0x08070605);
-
-}
-
 static void _InitRetryFunction(PADAPTER padapter)
 {
 	u8	value8;
@@ -637,27 +592,11 @@ static void HalRxAggr8723BSdio(PADAPTER padapter)
 	else
 	{
 		// 20130530, Isaac@SD1 suggest 3 kinds of parameter
-#if 1
 		// TX/RX Balance
 		valueDMATimeout = 0x06;
 		valueDMAPageCount = 0x06;
-#endif
-#if 0
-		// TX/RX Balance, but TCP ack may be late
-		valueDMATimeout = 0x16;
-		valueDMAPageCount = 0x06;
-#endif
-#if 0
-		// RX Best
-		valueDMATimeout = 0x16;
-		valueDMAPageCount = 0x08;
-#endif
 	}
 
-#ifdef CONFIG_DONT_CARE_TP
-	valueDMATimeout = 0x0f;
-	valueDMAPageCount = 0x04;  //RxAggUpthreshold = [4]*1K bytes+1.5k.  since RxAggUpthreshold+SzAmsdu(3839)<MaxRxBuffSize(8k), MaxvalueDMAPageCount=4.
-#endif
 	rtw_write8(padapter, REG_RXDMA_AGG_PG_TH+1, valueDMATimeout);
 	rtw_write8(padapter, REG_RXDMA_AGG_PG_TH, valueDMAPageCount);
 }
@@ -698,33 +637,6 @@ static void _initSdioAggregationSetting(PADAPTER padapter)
 	pHalData->UsbRxHighSpeedMode = false;
 }
 
-static void _RXAggrSwitch(PADAPTER padapter, u8 enable)
-{
-	PHAL_DATA_TYPE pHalData;
-	u8 valueDMA;
-	u8 valueRxAggCtrl;
-
-
-	pHalData = GET_HAL_DATA(padapter);
-
-	valueDMA = rtw_read8(padapter, REG_TRXDMA_CTRL);
-	valueRxAggCtrl = rtw_read8(padapter, REG_RXDMA_MODE_CTRL_8723B);
-
-	if (true == enable)
-	{
-		valueDMA |= RXDMA_AGG_EN;
-		valueRxAggCtrl |= RXDMA_AGG_MODE_EN;
-	}
-	else
-	{
-		valueDMA &= ~RXDMA_AGG_EN;
-		valueRxAggCtrl &= ~RXDMA_AGG_MODE_EN;
-	}
-
-	rtw_write8(padapter, REG_TRXDMA_CTRL, valueDMA);
-	rtw_write8(padapter, REG_RXDMA_MODE_CTRL_8723B, valueRxAggCtrl);
-}
-
 static void _InitOperationMode(PADAPTER padapter)
 {
 	PHAL_DATA_TYPE pHalData;
@@ -750,11 +662,6 @@ static void _InitOperationMode(PADAPTER padapter)
 			break;
 		case WIRELESS_MODE_A:
 //			RT_ASSERT(false,("Error wireless a mode\n"));
-#if 0
-			regBwOpMode = BW_OPMODE_5G |BW_OPMODE_20MHZ;
-			regRATR = RATE_ALL_OFDM_AG;
-			regRRSR = RATE_ALL_OFDM_AG;
-#endif
 			break;
 		case WIRELESS_MODE_G:
 			regBwOpMode = BW_OPMODE_20MHZ;
@@ -762,20 +669,9 @@ static void _InitOperationMode(PADAPTER padapter)
 			regRRSR = RATE_ALL_CCK | RATE_ALL_OFDM_AG;
 			break;
 		case WIRELESS_MODE_AUTO:
-#if 0
-			if (padapter->bInHctTest)
-			{
-				regBwOpMode = BW_OPMODE_20MHZ;
-				regRATR = RATE_ALL_CCK | RATE_ALL_OFDM_AG;
-				regRRSR = RATE_ALL_CCK | RATE_ALL_OFDM_AG;
-			}
-			else
-#endif
-			{
-				regBwOpMode = BW_OPMODE_20MHZ;
-				regRATR = RATE_ALL_CCK | RATE_ALL_OFDM_AG | RATE_ALL_OFDM_1SS | RATE_ALL_OFDM_2SS;
-				regRRSR = RATE_ALL_CCK | RATE_ALL_OFDM_AG;
-			}
+			regBwOpMode = BW_OPMODE_20MHZ;
+			regRATR = RATE_ALL_CCK | RATE_ALL_OFDM_AG | RATE_ALL_OFDM_1SS | RATE_ALL_OFDM_2SS;
+			regRRSR = RATE_ALL_CCK | RATE_ALL_OFDM_AG;
 			break;
 		case WIRELESS_MODE_N_24G:
 			// It support CCK rate by default.
@@ -786,11 +682,9 @@ static void _InitOperationMode(PADAPTER padapter)
 			break;
 		case WIRELESS_MODE_N_5G:
 //			RT_ASSERT(false,("Error wireless mode"));
-#if 0
 			regBwOpMode = BW_OPMODE_5G;
 			regRATR = RATE_ALL_OFDM_AG | RATE_ALL_OFDM_1SS | RATE_ALL_OFDM_2SS;
 			regRRSR = RATE_ALL_OFDM_AG;
-#endif
 			break;
 
 		default: //for MacOSX compiler warning.
@@ -820,13 +714,6 @@ static void _InitInterrupt(PADAPTER padapter)
 	InitSysInterrupt8723BSdio(padapter);
 }
 
-static void _InitRDGSetting(PADAPTER padapter)
-{
-	rtw_write8(padapter, REG_RD_CTRL, 0xFF);
-	rtw_write16(padapter, REG_RD_NAV_NXT, 0x200);
-	rtw_write8(padapter, REG_RD_RESP_PKT_TH, 0x05);
-}
-
 static void _InitRFType(PADAPTER padapter)
 {
 	struct registry_priv *pregpriv = &padapter->registrypriv;
@@ -843,54 +730,9 @@ static void _InitRFType(PADAPTER padapter)
 	DBG_8192C("Set RF Chip ID to RF_6052 and RF type to 1T1R.\n");
 }
 
-// Set CCK and OFDM Block "ON"
-static void _BBTurnOnBlock(PADAPTER padapter)
-{
-#if (DISABLE_BB_RF)
-	return;
-#endif
-
-	PHY_SetBBReg(padapter, rFPGA0_RFMOD, bCCKEn, 0x1);
-	PHY_SetBBReg(padapter, rFPGA0_RFMOD, bOFDMEn, 0x1);
-}
-
 static void _RfPowerSave(PADAPTER padapter)
 {
 //YJ,TODO
-}
-
-static void _InitAntenna_Selection(PADAPTER padapter)
-{
-	rtw_write8(padapter, REG_LEDCFG2, 0x82);
-}
-
-static void _InitPABias(PADAPTER padapter)
-{
-	HAL_DATA_TYPE		*pHalData = GET_HAL_DATA(padapter);
-	u8			pa_setting;
-
-	//FIXED PA current issue
-	//efuse_one_byte_read(padapter, 0x1FA, &pa_setting);
-	pa_setting = EFUSE_Read1Byte(padapter, 0x1FA);
-
-	//RT_TRACE(COMP_INIT, DBG_LOUD, ("_InitPABias 0x1FA 0x%x \n",pa_setting));
-
-	if(!(pa_setting & BIT0))
-	{
-		PHY_SetRFReg(padapter, RF_PATH_A, 0x15, 0x0FFFFF, 0x0F406);
-		PHY_SetRFReg(padapter, RF_PATH_A, 0x15, 0x0FFFFF, 0x4F406);
-		PHY_SetRFReg(padapter, RF_PATH_A, 0x15, 0x0FFFFF, 0x8F406);
-		PHY_SetRFReg(padapter, RF_PATH_A, 0x15, 0x0FFFFF, 0xCF406);
-		//RT_TRACE(COMP_INIT, DBG_LOUD, ("PA BIAS path A\n"));
-	}
-
-	if(!(pa_setting & BIT4))
-	{
-		pa_setting = rtw_read8(padapter, 0x16);
-		pa_setting &= 0x0F;
-		rtw_write8(padapter, 0x16, pa_setting | 0x80);
-		rtw_write8(padapter, 0x16, pa_setting | 0x90);
-	}
 }
 
 //
@@ -939,39 +781,6 @@ static u32 rtl8723bs_hal_init(PADAPTER padapter)
 	pwrctrlpriv = adapter_to_pwrctl(padapter);
 	pregistrypriv = &padapter->registrypriv;
 
-#ifdef CONFIG_SWLPS_IN_IPS
-	if (adapter_to_pwrctl(padapter)->bips_processing == true)
-	{
-		u8 val8, bMacPwrCtrlOn = true;
-
-		DBG_871X("%s: run LPS flow in IPS\n", __FUNCTION__);
-
-		//ser rpwm
-		val8 = rtw_read8(padapter, SDIO_LOCAL_BASE|SDIO_REG_HRPWM1);
-		val8 &= 0x80;
-		val8 += 0x80;	
-		val8 |= BIT(6);		
-		rtw_write8(padapter, SDIO_LOCAL_BASE|SDIO_REG_HRPWM1, val8);
-		
-		adapter_to_pwrctl(padapter)->tog = (val8 + 0x80) & 0x80;
-		
-		mdelay(5); //wait set rpwm already
-		
-		ret = HalPwrSeqCmdParsing(padapter, PWR_CUT_ALL_MSK, PWR_FAB_ALL_MSK, PWR_INTF_SDIO_MSK, rtl8723B_leave_swlps_flow);
-		if (ret == false) {
-			DBG_8192C("%s: run LPS flow in IPS fail!\n", __FUNCTION__);
-			return _FAIL;
-		}
-
-		rtw_hal_set_hwreg(padapter, HW_VAR_APFM_ON_MAC, &bMacPwrCtrlOn);
-
-		pHalData->LastHMEBoxNum = 0;
-
-		rtw_btcoex_HAL_Initialize(padapter, false);
-
-		return _SUCCESS;
-	}
-#elif defined(CONFIG_FWLPS_IN_IPS)
 	if (adapter_to_pwrctl(padapter)->bips_processing == true
 		&& adapter_to_pwrctl(padapter)->pre_ips_type == 0)
 	{
@@ -1003,10 +812,6 @@ static u32 rtl8723bs_hal_init(PADAPTER padapter)
 			rtw_hal_get_hwreg(padapter, HW_VAR_CPWM, &cpwm_now);
 			if ((cpwm_orig ^ cpwm_now) & 0x80)
 			{		
-#ifdef DBG_CHECK_FW_PS_STATE				
-				DBG_871X("%s: polling cpwm ok when leaving IPS in FWLPS state, cpwm_orig=%02x, cpwm_now=%02x, 0x100=0x%x \n"
-				, __FUNCTION__, cpwm_orig, cpwm_now, rtw_read8(padapter, REG_CR));
-#endif //DBG_CHECK_FW_PS_STATE
 				break;
 			}
 
@@ -1023,16 +828,8 @@ static u32 rtl8723bs_hal_init(PADAPTER padapter)
 
 		rtw_btcoex_HAL_Initialize(padapter, false);
 
-#ifdef DBG_CHECK_FW_PS_STATE
-		if(rtw_fw_ps_state(padapter) == _FAIL)
-		{
-			DBG_871X("after hal init, fw ps state in 32k\n");
-			pdbgpriv->dbg_ips_drvopen_fail_cnt++;
-		}
-#endif //DBG_CHECK_FW_PS_STATE
 		return _SUCCESS;
 	}	
-#endif //CONFIG_SWLPS_IN_IPS
 
 #ifdef CONFIG_WOWLAN
 	if(rtw_read8(padapter, REG_MCUFWDL)&BIT7) {
@@ -1161,7 +958,6 @@ static u32 rtl8723bs_hal_init(PADAPTER padapter)
 	_InitWMACSetting(padapter);
 	_InitAdaptiveCtrl(padapter);
 	_InitEDCA(padapter);
-	//_InitRateFallback(padapter);
 	_InitRetryFunction(padapter);
 	_initSdioAggregationSetting(padapter);
 	_InitOperationMode(padapter);
@@ -1174,12 +970,7 @@ static u32 rtl8723bs_hal_init(PADAPTER padapter)
 	rtw_write8(padapter, REG_SECONDARY_CCA_CTRL_8723B, 0x3);	// CCA 
 	rtw_write8(padapter, 0x976, 0);	// hpfan_todo: 2nd CCA related
 
-#if defined(CONFIG_CONCURRENT_MODE) || defined(CONFIG_TX_MCAST2UNI)
-
-#ifdef CONFIG_CHECK_AC_LIFETIME
-	// Enable lifetime check for the four ACs
-	rtw_write8(padapter, REG_LIFETIME_EN, 0x0F);
-#endif	// CONFIG_CHECK_AC_LIFETIME
+#if defined(CONFIG_TX_MCAST2UNI)
 
 #ifdef CONFIG_TX_MCAST2UNI
 	rtw_write16(padapter, REG_PKT_VO_VI_LIFE_TIME, 0x0400);	// unit: 256us. 256ms
@@ -1188,7 +979,7 @@ static u32 rtl8723bs_hal_init(PADAPTER padapter)
 	rtw_write16(padapter, REG_PKT_VO_VI_LIFE_TIME, 0x3000);	// unit: 256us. 3s
 	rtw_write16(padapter, REG_PKT_BE_BK_LIFE_TIME, 0x3000);	// unit: 256us. 3s
 #endif	// CONFIG_TX_MCAST2UNI
-#endif	// CONFIG_CONCURRENT_MODE || CONFIG_TX_MCAST2UNI
+#endif	// CONFIG_TX_MCAST2UNI
 
 
 	invalidate_cam_all(padapter);
@@ -1244,10 +1035,8 @@ static u32 rtl8723bs_hal_init(PADAPTER padapter)
 
 	rtw_hal_set_hwreg(padapter, HW_VAR_NAV_UPPER, (u8*)&NavUpper);
 
-#ifdef CONFIG_XMIT_ACK
 	//ack for xmit mgmt frames.
 	rtw_write32(padapter, REG_FWHW_TXQ_CTRL, rtw_read32(padapter, REG_FWHW_TXQ_CTRL)|BIT(12));
-#endif //CONFIG_XMIT_ACK	
 
 //	pHalData->PreRpwmVal = SdioLocalCmd52Read1Byte(padapter, SDIO_REG_HRPWM1) & 0x80;
 
@@ -1365,30 +1154,6 @@ static u32 rtl8723bs_hal_deinit(PADAPTER padapter)
 
 	if (padapter->hw_init_completed == true)
 	{
-#ifdef CONFIG_SWLPS_IN_IPS				
-		if (adapter_to_pwrctl(padapter)->bips_processing == true)
-		{
-			u8	bMacPwrCtrlOn;
-			u8 ret =  true;
-
-			DBG_871X("%s: run LPS flow in IPS\n", __FUNCTION__);
-
-			rtw_write32(padapter, 0x130, 0x0);
-			rtw_write32(padapter, 0x138, 0x100);
-			rtw_write8(padapter, 0x13d, 0x1);
-
-
-			bMacPwrCtrlOn = false;	// Disable CMD53 R/W	
-			rtw_hal_set_hwreg(padapter, HW_VAR_APFM_ON_MAC, &bMacPwrCtrlOn);
-			
-			ret = HalPwrSeqCmdParsing(padapter, PWR_CUT_ALL_MSK, PWR_FAB_ALL_MSK, PWR_INTF_SDIO_MSK, rtl8723B_enter_swlps_flow);
-			if (ret == false) {
-				DBG_8192C("%s: run LPS flow in IPS fail!\n", __FUNCTION__);
-				return _FAIL;
-			}
-		}
-		else
-#elif defined(CONFIG_FWLPS_IN_IPS)
 		if (adapter_to_pwrctl(padapter)->bips_processing == true)
 		{
 			if(padapter->netif_up == true)
@@ -1423,11 +1188,6 @@ static u32 rtl8723bs_hal_deinit(PADAPTER padapter)
 						DBG_871X("%s  polling 0x100=0x%x, cnt=%d \n", __FUNCTION__, val8, cnt);			
 						mdelay(10);
 					}while(cnt<100 && (val8!=0xEA));
-#ifdef DBG_CHECK_FW_PS_STATE
-				if(val8 != 0xEA)
-					DBG_871X("MAC_1C0=%08x, MAC_1C4=%08x, MAC_1C8=%08x, MAC_1CC=%08x\n", rtw_read32(padapter, 0x1c0), rtw_read32(padapter, 0x1c4)
-					, rtw_read32(padapter, 0x1c8), rtw_read32(padapter, 0x1cc));
-#endif //DBG_CHECK_FW_PS_STATE
 				}
 				else
 				{
@@ -1444,13 +1204,6 @@ static u32 rtl8723bs_hal_deinit(PADAPTER padapter)
 			else
 			{
 				pdbgpriv->dbg_carddisable_cnt++;
-#ifdef DBG_CHECK_FW_PS_STATE
-				if(rtw_fw_ps_state(padapter) == _FAIL)
-				{
-					DBG_871X("card disable should leave 32k\n");
-					pdbgpriv->dbg_carddisable_error_cnt++;
-				}
-#endif //DBG_CHECK_FW_PS_STATE
 				CardDisableRTL8723BSdio(padapter);
 
 				adapter_to_pwrctl(padapter)->pre_ips_type = 1;
@@ -1458,16 +1211,8 @@ static u32 rtl8723bs_hal_deinit(PADAPTER padapter)
 			
 		}
 		else
-#endif //CONFIG_SWLPS_IN_IPS
 		{
 			pdbgpriv->dbg_carddisable_cnt++;
-#ifdef DBG_CHECK_FW_PS_STATE
-			if(rtw_fw_ps_state(padapter) == _FAIL)
-			{
-				DBG_871X("card disable should leave 32k\n");
-				pdbgpriv->dbg_carddisable_error_cnt++;
-			}
-#endif //DBG_CHECK_FW_PS_STATE
 			CardDisableRTL8723BSdio(padapter);
 		}
 	}
@@ -1609,15 +1354,7 @@ Hal_EfuseParseMACAddr_8723BS(
 	else
 	{
 		//Read Permanent MAC address
-#if 1
 		memcpy(pEEPROM->mac_addr, &hwinfo[EEPROM_MAC_ADDR_8723BS], ETH_ALEN);
-#else
-		for(i=0; i<6; i+=2)
-		{
-			usValue = *(u16*)&hwinfo[EEPROM_MAC_ADDR_8723S+i];
-			*((u16*)(&pEEPROM->mac_addr[i])) = usValue;
-		}
-#endif
 	}
 //	NicIFSetMacAddress(pAdapter, pAdapter->PermanentAddress);
 
@@ -1694,9 +1431,7 @@ _ReadEfuseInfo8723BS(
 	Hal_DetectWoWMode(padapter);
 #endif
 
-#ifdef CONFIG_RF_GAIN_OFFSET
-		Hal_ReadRFGainOffset(padapter, hwinfo, pEEPROM->bautoload_fail_flag);
-#endif	//CONFIG_RF_GAIN_OFFSET
+	Hal_ReadRFGainOffset(padapter, hwinfo, pEEPROM->bautoload_fail_flag);
 
 	RT_TRACE(_module_hci_hal_init_c_, _drv_info_, ("<==== _ReadEfuseInfo8723BS()\n"));
 }
@@ -1851,19 +1586,6 @@ _func_enter_;
 			break;
 		case HW_VAR_RXDMA_AGG_PG_TH:
 			val8 = *val;
-
-			// TH=1 => invalidate RX DMA aggregation
-			// TH=0 => validate RX DMA aggregation, use init value.
-			if (val8 == 0)
-			{
-				// enable RXDMA aggregation
-				//_RXAggrSwitch(padapter, true);
-			}
-			else
-			{
-				// disable RXDMA aggregation
-				//_RXAggrSwitch(padapter, false);
-			}
 			break;
 
 #ifdef CONFIG_WOWLAN
@@ -1889,13 +1611,6 @@ _func_enter_;
 
 					// 1. Download WOWLAN FW
 					DBG_871X_LEVEL(_drv_always_, "Re-download WoWlan FW!\n");
-#ifdef DBG_CHECK_FW_PS_STATE
-					if(rtw_fw_ps_state(padapter) == _FAIL)
-					{
-						pdbgpriv->dbg_enwow_dload_fw_fail_cnt++;
-						DBG_871X_LEVEL(_drv_always_, "wowlan enable no leave 32k\n");
-					}
-#endif //DBG_CHECK_FW_PS_STATE
 					SetFwRelatedForWoWLAN8723b(padapter, true);
 
 					// 2. RX DMA stop
@@ -1909,20 +1624,6 @@ _func_enter_;
 							// If RX_DMA is not idle, receive one pkt from DMA
 							res = sdio_local_read(padapter, SDIO_REG_RX0_REQ_LEN, 4, (u8*)&tmp);
 							len = le16_to_cpu(tmp);
-#if 0
-							//len = le16_to_cpu(*(u16*)data);
-							if (tmp == 0 && (rtw_read32(padapter, REG_RXPKT_NUM)&RXDMA_IDLE)){
-								res = sdio_local_read(padapter, SDIO_REG_HISR, 4, (u8*)&tmp1);
-								if(tmp1 & SDIO_HIMR_CPWM2_MSK)
-									sdio_local_write(padapter, SDIO_REG_HISR, 4, (u8*)&tmp1);
-								res = sdio_local_read(padapter, SDIO_REG_HISR, 4, (u8*)&tmp1);
-								DBG_871X_LEVEL(_drv_always_, "read SDIO_REG_HISR: 0x%08x and break\n", tmp1);
-								break;
-							}
-
-							res = RecvOnePkt(padapter, tmp);
-							DBG_871X_LEVEL(_drv_always_, "RecvOnePkt Result: %d\n", res);
-#else
 							DBG_871X_LEVEL(_drv_always_, "RX len:%d\n", len);
 							if (len > 0)
 									res = RecvOnePkt(padapter, len);
@@ -1930,8 +1631,7 @@ _func_enter_;
 									DBG_871X_LEVEL(_drv_always_, "read length fail %d\n", len);
 
 							DBG_871X_LEVEL(_drv_always_, "RecvOnePkt Result: %d\n", res);
-#endif
-					}
+                                                }
 					}while(trycnt--);
 					if(trycnt ==0)
 						DBG_871X_LEVEL(_drv_always_, "Stop RX DMA failed...... \n");
@@ -2064,13 +1764,6 @@ _func_enter_;
 	
 						// 4. Re-download Normal FW.
 						DBG_871X_LEVEL(_drv_always_, "Re-download Normal FW!\n");
-#ifdef DBG_CHECK_FW_PS_STATE
-						if(rtw_fw_ps_state(padapter) == _FAIL)
-						{
-							pdbgpriv->dbg_diswow_dload_fw_fail_cnt++;
-							DBG_871X_LEVEL(_drv_always_, "wowlan enable no leave 32k\n");
-						}
-#endif //DBG_CHECK_FW_PS_STATE
 						SetFwRelatedForWoWLAN8723b(padapter, false);
 					}
 #ifdef CONFIG_GPIO_WAKEUP
@@ -2113,12 +1806,6 @@ _func_enter_;
 			DBG_871X("%s, WOWLAN_AP_ENABLE\n", __func__);
 			// 1. Download WOWLAN FW
 			DBG_871X_LEVEL(_drv_always_, "Re-download WoWlan FW!\n");
-#ifdef DBG_CHECK_FW_PS_STATE
-			if(rtw_fw_ps_state(padapter) == _FAIL) {
-				pdbgpriv->dbg_enwow_dload_fw_fail_cnt++;
-				DBG_871X_LEVEL(_drv_always_, "wowlan enable no leave 32k\n");
-			}
-#endif //DBG_CHECK_FW_PS_STATE
 			SetFwRelatedForWoWLAN8723b(padapter, true);
 
 			// 2. RX DMA stop
@@ -2188,12 +1875,6 @@ _func_enter_;
 			rtl8723b_set_ap_wowlan_cmd(padapter, 0);
 			// 6. add some delay for H2C cmd ready
 			msleep(2);
-#ifdef DBG_CHECK_FW_PS_STATE
-			if (rtw_fw_ps_state(padapter) == _FAIL) {
-				pdbgpriv->dbg_diswow_dload_fw_fail_cnt++;
-				DBG_871X_LEVEL(_drv_always_, "wowlan enable no leave 32k\n");
-			}
-#endif //DBG_CHECK_FW_PS_STATE
 
 			DBG_871X_LEVEL(_drv_always_, "Release RXDMA\n");
 
@@ -2206,19 +1887,8 @@ _func_enter_;
 			DBG_871X_LEVEL(_drv_always_, "Set Wake GPIO to high for default.\n");
 			HalSetOutPutGPIO(padapter, WAKEUP_GPIO_IDX, 1);
 #endif //CONFIG_GPIO_WAKEUP
-#ifdef CONFIG_CONCURRENT_MODE
-			if (rtw_buddy_adapter_up(padapter) == true &&
-				check_buddy_fwstate(padapter, WIFI_AP_STATE) == true) {
-				rtl8723b_set_FwJoinBssRpt_cmd(padapter->pbuddy_adapter, RT_MEDIA_CONNECT);
-				issue_beacon(padapter->pbuddy_adapter, 0);
-			} else {
-				rtl8723b_set_FwJoinBssRpt_cmd(padapter, RT_MEDIA_CONNECT);
-				issue_beacon(padapter, 0);
-			}
-#else
 			rtl8723b_set_FwJoinBssRpt_cmd(padapter, RT_MEDIA_CONNECT);
 			issue_beacon(padapter, 0);
-#endif //CONFIG_CONCURRENT_MODE
 			break;
 		default:
 			break;
@@ -2267,7 +1937,6 @@ _func_enter_;
 _func_exit_;
 }
 
-#ifdef CONFIG_C2H_PACKET_EN
 static void SetHwRegWithBuf8723B(PADAPTER padapter, u8 variable, u8 *pbuf, int len)
 {
 	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(padapter);
@@ -2286,7 +1955,6 @@ _func_enter_;
 	}
 _func_exit_;
 }
-#endif
 
 //
 //	Description:
@@ -2305,14 +1973,8 @@ GetHalDefVar8723BSDIO(
 	switch(eVariable)
 	{
 		case HAL_DEF_IS_SUPPORT_ANT_DIV:
-#ifdef CONFIG_ANTENNA_DIVERSITY
-			*((u8 *)pValue) = (IS_92C_SERIAL(pHalData->VersionID) ||(pHalData->AntDivCfg==0))?false:true;
-#endif
 			break;
 		case HAL_DEF_CURRENT_ANTENNA:
-#ifdef CONFIG_ANTENNA_DIVERSITY
-			*(( u8*)pValue) = pHalData->CurAntenna;
-#endif
 			break;
 		case HW_VAR_MAX_RX_AMPDU_FACTOR:
 			// Stanley@BB.SD3 suggests 16K can get stable performance
@@ -2386,20 +2048,13 @@ _func_enter_;
 #endif
 	pHalFunc->SetHwRegHandler = &SetHwReg8723BS;
 	pHalFunc->GetHwRegHandler = &GetHwReg8723BS;
-#ifdef CONFIG_C2H_PACKET_EN
 	pHalFunc->SetHwRegHandlerWithBuf = &SetHwRegWithBuf8723B;
-#endif
 	pHalFunc->GetHalDefVarHandler = &GetHalDefVar8723BSDIO;
  	pHalFunc->SetHalDefVarHandler = &SetHalDefVar8723BSDIO;
 
 	pHalFunc->hal_xmit = &rtl8723bs_hal_xmit;
 	pHalFunc->mgnt_xmit = &rtl8723bs_mgnt_xmit;
 	pHalFunc->hal_xmitframe_enqueue = &rtl8723bs_hal_xmitframe_enqueue;
-
-#ifdef CONFIG_HOSTAPD_MLME
-	pHalFunc->hostap_mgnt_xmit_entry = NULL;
-//	pHalFunc->hostap_mgnt_xmit_entry = &rtl8192cu_hostap_mgnt_xmit_entry;
-#endif
 
 #if defined(CONFIG_CHECK_BT_HANG)
 	pHalFunc->hal_init_checkbthang_workqueue = &rtl8723bs_init_checkbthang_workqueue;

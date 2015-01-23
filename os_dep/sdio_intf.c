@@ -222,7 +222,6 @@ _func_enter_;
 release:
 	sdio_release_host(func);
 
-exit:
 _func_exit_;
 
 	if (err) return _FAIL;
@@ -344,10 +343,6 @@ static void sd_intf_stop(PADAPTER padapter)
 }
 
 
-#ifdef RTW_SUPPORT_PLATFORM_SHUTDOWN
-PADAPTER g_test_adapter = NULL;
-#endif // RTW_SUPPORT_PLATFORM_SHUTDOWN
-
 static _adapter *rtw_sdio_if1_init(struct dvobj_priv *dvobj, const struct sdio_device_id  *pdid)
 {
 	int status = _FAIL;
@@ -358,9 +353,6 @@ static _adapter *rtw_sdio_if1_init(struct dvobj_priv *dvobj, const struct sdio_d
 		goto exit;
 	}
 
-#ifdef RTW_SUPPORT_PLATFORM_SHUTDOWN
-	g_test_adapter = padapter;
-#endif // RTW_SUPPORT_PLATFORM_SHUTDOWN
 	padapter->dvobj = dvobj;
 	dvobj->if1 = padapter;
 
@@ -368,17 +360,6 @@ static _adapter *rtw_sdio_if1_init(struct dvobj_priv *dvobj, const struct sdio_d
 
 	dvobj->padapters[dvobj->iface_nums++] = padapter;
 	padapter->iface_id = IFACE_ID0;
-
-#if defined(CONFIG_CONCURRENT_MODE) || defined(CONFIG_DUALMAC_CONCURRENT)
-	//set adapter_type/iface type for primary padapter
-	padapter->isprimary = true;
-	padapter->adapter_type = PRIMARY_ADAPTER;	
-	#ifndef CONFIG_HWPORT_SWAP
-	padapter->iface_type = IFACE_PORT0;
-	#else
-	padapter->iface_type = IFACE_PORT1;
-	#endif
-#endif
 
 	//3 1. init network device data
 	pnetdev = rtw_init_netdev(padapter);
@@ -448,7 +429,6 @@ free_hal_data:
 	if(status != _SUCCESS && padapter->HalData)
 		rtw_mfree(padapter->HalData, sizeof(padapter->HalData));
 
-free_wdev:
 	if(status != _SUCCESS) {
 		rtw_wdev_unregister(padapter->rtw_wdev);
 		rtw_wdev_free(padapter->rtw_wdev);
@@ -476,9 +456,6 @@ static void rtw_sdio_if1_deinit(_adapter *if1)
 
 #ifdef CONFIG_AP_MODE
 	free_mlme_ap_info(if1);
-	#ifdef CONFIG_HOSTAPD_MLME
-	hostapd_mode_unload(if1);
-	#endif
 #endif
 
 #ifdef CONFIG_GPIO_WAKEUP
@@ -503,10 +480,6 @@ static void rtw_sdio_if1_deinit(_adapter *if1)
 
 	if(pnetdev)
 		rtw_free_netdev(pnetdev);
-
-#ifdef RTW_SUPPORT_PLATFORM_SHUTDOWN
-	g_test_adapter = NULL;
-#endif // RTW_SUPPORT_PLATFORM_SHUTDOWN
 }
 
 /*
@@ -538,20 +511,10 @@ static int rtw_drv_init(
 		goto free_dvobj;
 	}
 
-#ifdef CONFIG_CONCURRENT_MODE
-	if ((if2 = rtw_drv_if2_init(if1, sdio_set_intf_ops)) == NULL) {
-		goto free_if1;
-	}
-#endif
-
 	//dev_alloc_name && register_netdev
 	if((status = rtw_drv_register_netdev(if1)) != _SUCCESS) {
 		goto free_if2;
 	}
-
-#ifdef CONFIG_HOSTAPD_MLME
-	hostapd_mode_init(if1);
-#endif
 
 	if (sdio_alloc_irq(dvobj) != _SUCCESS)
 		goto free_if2;
@@ -560,25 +523,13 @@ static int rtw_drv_init(
 	gpio_hostwakeup_alloc_irq(if1);
 #endif
 
-#ifdef CONFIG_GLOBAL_UI_PID
-	if(ui_pid[1]!=0) {
-		DBG_871X("ui_pid[1]:%d\n",ui_pid[1]);
-		rtw_signal_process(ui_pid[1], SIGUSR2);
-	}
-#endif
-
 	RT_TRACE(_module_hci_intfs_c_,_drv_err_,("-871x_drv - drv_init, success!\n"));
 
 	status = _SUCCESS;
 
 free_if2:
 	if(status != _SUCCESS && if2) {
-		#ifdef CONFIG_CONCURRENT_MODE
-		rtw_drv_if2_stop(if2);
-		rtw_drv_if2_free(if2);
-		#endif
 	}
-free_if1:
 	if (status != _SUCCESS && if1) {
 		rtw_sdio_if1_deinit(if1);
 	}
@@ -623,17 +574,9 @@ _func_enter_;
 
 	LeaveAllPowerSaveMode(padapter);
 
-#ifdef CONFIG_CONCURRENT_MODE
-	rtw_drv_if2_stop(dvobj->if2);
-#endif
-
 	rtw_btcoex_HaltNotify(padapter);
 
 	rtw_sdio_if1_deinit(padapter);
-
-#ifdef CONFIG_CONCURRENT_MODE
-	rtw_drv_if2_free(dvobj->if2);
-#endif
 
 	sdio_dvobj_deinit(func);
 
@@ -736,15 +679,9 @@ static int rtw_sdio_resume(struct device *dev)
 		}
 		else
 		{
-#ifdef CONFIG_RESUME_IN_WORKQUEUE
-			rtw_resume_in_workqueue(pwrpriv);
-#else			
-			{
-				rtw_resume_lock_suspend();			
-				ret = rtw_resume_process(padapter);
-				rtw_resume_unlock_suspend();
-			}
-#endif
+			rtw_resume_lock_suspend();
+			ret = rtw_resume_process(padapter);
+			rtw_resume_unlock_suspend();
 		}
 	}
 	pmlmeext->last_scan_time = jiffies;

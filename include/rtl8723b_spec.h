@@ -208,12 +208,8 @@
 //	0x0600h ~ 0x07FFh	WMAC Configuration
 //
 //-----------------------------------------------------
-#ifdef CONFIG_RF_GAIN_OFFSET
-
 #define EEPROM_RF_GAIN_OFFSET			0xC1
-
-#define EEPROM_RF_GAIN_VAL				0x1F6
-#endif //CONFIG_RF_GAIN_OFFSET
+#define EEPROM_RF_GAIN_VAL			0x1F6
 
 
 //----------------------------------------------------------------------------

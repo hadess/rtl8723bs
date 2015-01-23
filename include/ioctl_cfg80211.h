@@ -95,12 +95,6 @@ struct rtw_wdev_priv
 	u8 bandroid_scan;
 	bool block;
 	bool power_mgmt;
-
-#ifdef CONFIG_CONCURRENT_MODE
-	atomic_t ro_ch_to;
-	atomic_t switch_ch_to;	
-#endif	
-	
 };
 
 #define wiphy_to_adapter(x) (*((_adapter**)wiphy_priv(x)))

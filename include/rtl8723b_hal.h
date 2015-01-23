@@ -61,19 +61,11 @@
 
 typedef struct _RT_FIRMWARE {
 	FIRMWARE_SOURCE	eFWSource;
-#ifdef CONFIG_EMBEDDED_FWIMG
 	u8*			szFwBuffer;
-#else
-	u8			szFwBuffer[FW_8723B_SIZE];
-#endif
 	u32			ulFwLength;
 
-#ifdef CONFIG_EMBEDDED_FWIMG
 	u8*			szBTFwBuffer;
 	u8			myBTFwBuffer[FW_8723B_SIZE];
-#else
-	u8			szBTFwBuffer[FW_8723B_SIZE];
-#endif
 	u32			ulBTFwLength;
 } RT_FIRMWARE_8723B, *PRT_FIRMWARE_8723B;
 
@@ -127,11 +119,7 @@ typedef struct _RT_8723B_FIRMWARE_HDR
 //For General Reserved Page Number(Beacon Queue is reserved page)
 //Beacon:2, PS-Poll:1, Null Data:1,Qos Null Data:1,BT Qos Null Data:1
 #define BCNQ_PAGE_NUM_8723B		0x08
-#ifdef CONFIG_CONCURRENT_MODE
-#define BCNQ1_PAGE_NUM_8723B		0x08 // 0x04
-#else
 #define BCNQ1_PAGE_NUM_8723B		0x00
-#endif
 
 #ifdef CONFIG_PNO_SUPPORT
 #undef BCNQ1_PAGE_NUM_8723B
@@ -268,10 +256,7 @@ void Hal_EfuseParseThermalMeter_8723B(PADAPTER padapter, u8 *hwinfo, u8 AutoLoad
 void Hal_EfuseParsePackageType_8723B(PADAPTER pAdapter,u8* hwinfo,bool AutoLoadFail);
 void Hal_EfuseParseVoltage_8723B(PADAPTER pAdapter,u8* hwinfo,bool 	AutoLoadFail); 
 
-#ifdef CONFIG_C2H_PACKET_EN
 void C2HPacketHandler_8723B(PADAPTER padapter, u8 *pbuffer, u16 length);
-#endif
-
 
 void rtl8723b_set_hal_ops(struct hal_ops *pHalFunc);
 void SetHwReg8723B(PADAPTER padapter, u8 variable, u8 *val);
@@ -310,9 +295,7 @@ s32 c2h_handler_8723b(PADAPTER padapter, u8 *pC2hEvent);
 u8 MRateToHwRate8723B(u8  rate);
 u8 HwRateToMRate8723B(u8	 rate);
 
-#ifdef CONFIG_RF_GAIN_OFFSET
 void Hal_ReadRFGainOffset(PADAPTER pAdapter,u8* hwinfo,bool AutoLoadFail);
-#endif //CONFIG_RF_GAIN_OFFSET
 
 #endif
 

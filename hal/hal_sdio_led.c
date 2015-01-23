@@ -1076,11 +1076,7 @@ void BlinkTimerCallback(void *data)
 		return;
 	}
 
-	#ifdef CONFIG_LED_HANDLED_BY_CMD_THREAD
-	rtw_led_blink_cmd(padapter, pLed);
-	#else
 	_set_workitem(&(pLed->BlinkWorkItem));
-	#endif
 }
 
 //
@@ -2291,12 +2287,6 @@ LedControlSDIO(
 
 	//if(priv->bInHctTest)
 	//	return;
-
-#ifdef CONFIG_CONCURRENT_MODE
-	// Only do led action for PRIMARY_ADAPTER
-	if (padapter->adapter_type != PRIMARY_ADAPTER)
-		return;
-#endif
 
 	if( (adapter_to_pwrctl(padapter)->rf_pwrstate != rf_on &&
 		adapter_to_pwrctl(padapter)->rfoff_reason > RF_CHANGE_BY_PS) &&
