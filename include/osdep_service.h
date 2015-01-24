@@ -74,8 +74,6 @@
 
 extern int RTW_STATUS_CODE(int error_code);
 
-#define CONFIG_USE_VMALLOC
-
 /* flags used for rtw_mstat_update() */
 enum mstat_f {
 	/* type: 0x00ff */
@@ -119,17 +117,10 @@ struct sk_buff *_rtw_skb_clone(struct sk_buff *skb);
 int _rtw_netif_rx(_nic_hdl ndev, struct sk_buff *skb);
 void _rtw_skb_queue_purge(struct sk_buff_head *list);
 
-#ifdef CONFIG_USE_VMALLOC
 #define rtw_zvmalloc(sz)			_rtw_zvmalloc((sz))
 #define rtw_vmfree(pbuf, sz)		_rtw_vmfree((pbuf), (sz))
 #define rtw_zvmalloc_f(sz, mstat_f)		_rtw_zvmalloc((sz))
 #define rtw_vmfree_f(pbuf, sz, mstat_f)	_rtw_vmfree((pbuf), (sz))
-#else /* CONFIG_USE_VMALLOC */
-#define rtw_zvmalloc(sz)			_rtw_zmalloc((sz))
-#define rtw_vmfree(pbuf, sz)		_rtw_mfree((pbuf), (sz))
-#define rtw_zvmalloc_f(sz, mstat_f)		_rtw_zmalloc((sz))
-#define rtw_vmfree_f(pbuf, sz, mstat_f)	_rtw_mfree((pbuf), (sz))
-#endif /* CONFIG_USE_VMALLOC */
 #define rtw_malloc(sz)			_rtw_malloc((sz))
 #define rtw_zmalloc(sz)			_rtw_zmalloc((sz))
 #define rtw_mfree(pbuf, sz)		_rtw_mfree((pbuf), (sz))
