@@ -363,17 +363,7 @@ odm_BasicDbgMessage
 //END---------BB POWER SAVE-----------------------//
 
 void
-odm_RefreshRateAdaptiveMaskMP(
-	IN		PDM_ODM_T		pDM_Odm
-	);
-
-void
 odm_RefreshRateAdaptiveMaskCE(
-	IN		PDM_ODM_T		pDM_Odm
-	);
-
-void
-odm_RefreshRateAdaptiveMaskAPADSL(
 	IN		PDM_ODM_T		pDM_Odm
 	);
 
@@ -384,21 +374,10 @@ odm_RSSIMonitorInit(
 	IN	PDM_ODM_T	pDM_Odm
 	);
 
-void
-odm_RSSIMonitorCheckMP(
-	IN	PDM_ODM_T	pDM_Odm
-	);
-
 void 
 odm_RSSIMonitorCheckCE(
 	IN		PDM_ODM_T		pDM_Odm
 	);
-void 
-odm_RSSIMonitorCheckAP(
-	IN		PDM_ODM_T		pDM_Odm
-	);
-
-
 
 void
 odm_RSSIMonitorCheck(
@@ -410,17 +389,6 @@ odm_SwAntDetectInit(
 	IN 		PDM_ODM_T 		pDM_Odm
 	);
 
-void
-odm_AntennaDiversityInit(
-	IN		PDM_ODM_T		pDM_Odm
-	);
-
-void
-odm_AntennaDiversity(
-	IN		PDM_ODM_T		pDM_Odm
-	);
-
-
 void odm_SwAntDivChkAntSwitchCallback(void *FunctionContext);
 
 
@@ -431,22 +399,12 @@ odm_GlobalAdapterCheck(
 	);
 
 void
-odm_RefreshBasicRateMask(
-	IN		PDM_ODM_T		pDM_Odm	
-	);
-
-void
 odm_RefreshRateAdaptiveMask(
 	IN		PDM_ODM_T		pDM_Odm
 	);
 
 void
 ODM_TXPowerTrackingCheck(
-	IN		PDM_ODM_T		pDM_Odm
-	);
-
-void
-odm_TXPowerTrackingCheckAP(
 	IN		PDM_ODM_T		pDM_Odm
 	);
 
@@ -465,12 +423,6 @@ void
 odm_TXPowerTrackingInit(
 	IN	PDM_ODM_T	pDM_Odm
 	);
-
-void
-odm_TXPowerTrackingCheckMP(
-	IN	PDM_ODM_T	pDM_Odm
-	);
-
 
 void
 odm_TXPowerTrackingCheckCE(
@@ -536,7 +488,6 @@ ODM_DMInit(
 	ODM_EdcaTurboInit(pDM_Odm);
 	odm_RSSIMonitorInit(pDM_Odm);
 	odm_TXPowerTrackingInit(pDM_Odm);
-	odm_AntennaDiversityInit(pDM_Odm);
 
 	ODM_ClearTxPowerTrackingState(pDM_Odm);
 
@@ -547,13 +498,6 @@ ODM_DMInit(
 	odm_DynamicTxPowerInit(pDM_Odm);
 
 	odm_SwAntDetectInit(pDM_Odm);
-}
-
-void
-ODM_DMReset(
-	IN		PDM_ODM_T		pDM_Odm
-	)
-{
 }
 
 //
@@ -605,11 +549,9 @@ ODM_DMWatchdog(
 
 	
 	odm_RefreshRateAdaptiveMask(pDM_Odm);
-	odm_RefreshBasicRateMask(pDM_Odm);
 	odm_EdcaTurboCheck(pDM_Odm);
 	odm_PathDiversity(pDM_Odm);
 	ODM_CfoTracking(pDM_Odm);
-	odm_AntennaDiversity(pDM_Odm);
 
 	ODM_TXPowerTrackingCheck(pDM_Odm);
 
@@ -1387,13 +1329,6 @@ u4Byte ODM_Get_Rate_Bitmap(
 	
 }	
 
-void
-odm_RefreshBasicRateMask(
-	IN		PDM_ODM_T		pDM_Odm	
-	)
-{
-}
-
 /*-----------------------------------------------------------------------------
  * Function:	odm_RefreshRateAdaptiveMask()
  *
@@ -1424,14 +1359,6 @@ odm_RefreshRateAdaptiveMask(
 	}
 	odm_RefreshRateAdaptiveMaskCE(pDM_Odm);
 }
-
-void
-odm_RefreshRateAdaptiveMaskMP(
-	IN		PDM_ODM_T		pDM_Odm	
-	)
-{
-}
-
 
 void
 odm_RefreshRateAdaptiveMaskCE(
@@ -1473,13 +1400,6 @@ odm_RefreshRateAdaptiveMaskCE(
 		
 		}
 	}			
-}
-
-void
-odm_RefreshRateAdaptiveMaskAPADSL(
-	IN		PDM_ODM_T		pDM_Odm
-	)
-{
 }
 
 // Return Value: bool
@@ -1575,14 +1495,6 @@ odm_RSSIMonitorCheck(
 	odm_RSSIMonitorCheckCE(pDM_Odm);
 
 }	// odm_RSSIMonitorCheck
-
-
-void
-odm_RSSIMonitorCheckMP(
-	IN	PDM_ODM_T	pDM_Odm
-	)
-{
-}
 
 static void
 FindMinimumRSSI(
@@ -1695,13 +1607,6 @@ odm_RSSIMonitorCheckCE(
 
 	pDM_Odm->RSSI_Min = pdmpriv->MinUndecoratedPWDBForDM;
 	//ODM_CmnInfoUpdate(&pHalData->odmpriv ,ODM_CMNINFO_RSSI_MIN, pdmpriv->MinUndecoratedPWDBForDM);
-}
-
-void
-odm_RSSIMonitorCheckAP(
-	IN		PDM_ODM_T		pDM_Odm
-	)
-{
 }
 
 //3============================================================
@@ -1832,43 +1737,9 @@ odm_TXPowerTrackingCheckCE(
 	}
 }
 
-void
-odm_TXPowerTrackingCheckMP(
-	IN		PDM_ODM_T		pDM_Odm 
-	)
-{
-}
-
-
-void
-odm_TXPowerTrackingCheckAP(
-	IN		PDM_ODM_T		pDM_Odm
-	)
-{
-}
-
 //3============================================================
 //3 SW Antenna Diversity
 //3============================================================
-void
-odm_AntennaDiversityInit(
-	IN 		PDM_ODM_T		pDM_Odm 
-)
-{
-	if(*(pDM_Odm->mp_mode) == true)
-		return;
-}
-
-void
-odm_AntennaDiversity(
-	IN 		PDM_ODM_T		pDM_Odm 
-)
-{
-	if(*(pDM_Odm->mp_mode) == true)
-		return;
-}
-
-
 void
 odm_SwAntDetectInit(
 	IN		PDM_ODM_T		pDM_Odm

@@ -1572,11 +1572,6 @@ ODM_DMInit(
 );
 
 void
-ODM_DMReset(
-	IN	PDM_ODM_T	pDM_Odm
-	);
-
-void
 ODM_DMWatchdog(
 	IN		PDM_ODM_T			pDM_Odm			// For common use in the future
 	);

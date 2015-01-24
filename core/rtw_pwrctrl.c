@@ -152,9 +152,6 @@ int ips_leave(_adapter * padapter)
 	up(&pwrpriv->lock);
 
 	if (_SUCCESS == ret)
-		ODM_DMReset(&GET_HAL_DATA(padapter)->odmpriv);
-
-	if (_SUCCESS == ret)
 		rtw_btcoex_IpsNotify(padapter, IPS_NONE);
 
 	return ret;
