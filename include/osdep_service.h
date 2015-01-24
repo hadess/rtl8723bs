@@ -119,14 +119,9 @@ void _rtw_skb_queue_purge(struct sk_buff_head *list);
 
 #define rtw_zvmalloc(sz)			_rtw_zvmalloc((sz))
 #define rtw_vmfree(pbuf, sz)		_rtw_vmfree((pbuf), (sz))
-#define rtw_zvmalloc_f(sz, mstat_f)		_rtw_zvmalloc((sz))
-#define rtw_vmfree_f(pbuf, sz, mstat_f)	_rtw_vmfree((pbuf), (sz))
 #define rtw_malloc(sz)			_rtw_malloc((sz))
 #define rtw_zmalloc(sz)			_rtw_zmalloc((sz))
 #define rtw_mfree(pbuf, sz)		_rtw_mfree((pbuf), (sz))
-#define rtw_malloc_f(sz, mstat_f)			_rtw_malloc((sz))
-#define rtw_zmalloc_f(sz, mstat_f)			_rtw_zmalloc((sz))
-#define rtw_mfree_f(pbuf, sz, mstat_f)		_rtw_mfree((pbuf), (sz))
 
 #define rtw_skb_alloc(size) _rtw_skb_alloc((size))
 #define rtw_skb_free(skb) _rtw_skb_free((skb))
