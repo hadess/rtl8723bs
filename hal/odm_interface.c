@@ -192,7 +192,7 @@ ODM_FreeMemory(
 	IN	u4Byte		length
 	)
 {
-	rtw_vmfree(pPtr, length);
+	vfree(pPtr);
 }
 
 //

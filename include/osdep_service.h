@@ -117,7 +117,6 @@ int _rtw_netif_rx(_nic_hdl ndev, struct sk_buff *skb);
 void _rtw_skb_queue_purge(struct sk_buff_head *list);
 
 #define rtw_zvmalloc(sz)			_rtw_zvmalloc((sz))
-#define rtw_vmfree(pbuf, sz)		vfree((pbuf))
 #define rtw_malloc(sz)			_rtw_malloc((sz))
 #define rtw_zmalloc(sz)			_rtw_zmalloc((sz))
 #define rtw_mfree(pbuf, sz)		_rtw_mfree((pbuf), (sz))

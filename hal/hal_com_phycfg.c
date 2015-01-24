@@ -3631,23 +3631,23 @@ void phy_free_filebuf(_adapter *padapter)
 	HAL_DATA_TYPE		*pHalData = GET_HAL_DATA(padapter);
 	
 	if(pHalData->mac_reg)
-		rtw_vmfree(pHalData->mac_reg, pHalData->mac_reg_len);
+		vfree(pHalData->mac_reg);
 	if(pHalData->bb_phy_reg)
-		rtw_vmfree(pHalData->bb_phy_reg, pHalData->bb_phy_reg_len);
+		vfree(pHalData->bb_phy_reg);
 	if(pHalData->bb_agc_tab)
-		rtw_vmfree(pHalData->bb_agc_tab, pHalData->bb_agc_tab_len);
+		vfree(pHalData->bb_agc_tab);
 	if(pHalData->bb_phy_reg_pg)
-		rtw_vmfree(pHalData->bb_phy_reg_pg, pHalData->bb_phy_reg_pg_len);
+		vfree(pHalData->bb_phy_reg_pg);
 	if(pHalData->bb_phy_reg_mp)
-		rtw_vmfree(pHalData->bb_phy_reg_mp, pHalData->bb_phy_reg_mp_len);
+		vfree(pHalData->bb_phy_reg_mp);
 	if(pHalData->rf_radio_a)
-		rtw_vmfree(pHalData->rf_radio_a, pHalData->rf_radio_a_len);
+		vfree(pHalData->rf_radio_a);
 	if(pHalData->rf_radio_b)
-		rtw_vmfree(pHalData->rf_radio_b, pHalData->rf_radio_b_len);
+		vfree(pHalData->rf_radio_b);
 	if(pHalData->rf_tx_pwr_track)
-		rtw_vmfree(pHalData->rf_tx_pwr_track, pHalData->rf_tx_pwr_track_len);
+		vfree(pHalData->rf_tx_pwr_track);
 	if(pHalData->rf_tx_pwr_lmt)
-		rtw_vmfree(pHalData->rf_tx_pwr_lmt, pHalData->rf_tx_pwr_lmt_len);	
+		vfree(pHalData->rf_tx_pwr_lmt);
 	
 }
 

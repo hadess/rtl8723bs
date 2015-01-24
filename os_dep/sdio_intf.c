@@ -439,7 +439,7 @@ free_adapter:
 		if (pnetdev)
 			rtw_free_netdev(pnetdev);
 		else
-			rtw_vmfree((u8*)padapter, sizeof(*padapter));
+			vfree((u8*)padapter);
 		padapter = NULL;
 	}
 exit:
