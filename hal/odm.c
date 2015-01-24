@@ -1704,31 +1704,6 @@ odm_RSSIMonitorCheckAP(
 {
 }
 
-
-
-void
-ODM_InitAllTimers(
-	IN PDM_ODM_T	pDM_Odm 
-	)
-{
-}
-
-void
-ODM_CancelAllTimers(
-	IN PDM_ODM_T	pDM_Odm 
-	)
-{
-}
-
-
-void
-ODM_ReleaseAllTimers(
-	IN PDM_ODM_T	pDM_Odm 
-	)
-{
-}
-
-
 //3============================================================
 //3 Tx Power Tracking
 //3============================================================

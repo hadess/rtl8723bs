@@ -172,38 +172,5 @@ ODM_GetRFReg(
 	IN	u4Byte				BitMask
 	);
 
-
-//
-// ODM Timer relative API.
-//
-void
-ODM_SetTimer(	
-	IN 	PDM_ODM_T		pDM_Odm,
-	IN	PRT_TIMER 		pTimer, 
-	IN	u4Byte 			msDelay
-	);
-
-void
-ODM_InitializeTimer(
-	IN 	PDM_ODM_T			pDM_Odm,
-	IN	PRT_TIMER 			pTimer, 
-	IN	RT_TIMER_CALL_BACK	CallBackFunc, 
-	IN	void *				pContext,
-	IN	const char*			szID
-	);
-
-void
-ODM_CancelTimer(
-	IN 	PDM_ODM_T		pDM_Odm,
-	IN	PRT_TIMER		pTimer
-	);
-
-void
-ODM_ReleaseTimer(
-	IN 	PDM_ODM_T		pDM_Odm,
-	IN	PRT_TIMER		pTimer
-	);
-
-
 #endif	// __ODM_INTERFACE_H__
 

@@ -1665,25 +1665,6 @@ ODM_UpdateInitRate(
 	);
 
 void
-ODM_InitializeTimer(
-	IN 	PDM_ODM_T			pDM_Odm,
-	IN	PRT_TIMER 			pTimer, 
-	IN	RT_TIMER_CALL_BACK	CallBackFunc, 
-	IN	void *				pContext,
-	IN	const char*			szID
-);
-
-void
-ODM_CancelAllTimers(
-	IN PDM_ODM_T	pDM_Odm 
-);
-
-void
-ODM_ReleaseAllTimers(
-	IN PDM_ODM_T	pDM_Odm 
-);
-
-void
 ODM_DynamicARFBSelect(
 	IN		PDM_ODM_T		pDM_Odm,
 	IN 		u1Byte			rate,

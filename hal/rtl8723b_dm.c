@@ -386,14 +386,13 @@ void rtl8723b_init_dm_priv(IN PADAPTER Adapter)
 	PDM_ODM_T 		podmpriv = &pHalData->odmpriv;
 	memset(pdmpriv, 0, sizeof(struct dm_priv));
 	Init_ODM_ComInfo_8723b(Adapter);
-	ODM_InitAllTimers(podmpriv );
 }
 
 void rtl8723b_deinit_dm_priv(IN PADAPTER Adapter)
 {
+/*DEADCODE
 	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(Adapter);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
-	PDM_ODM_T 		podmpriv = &pHalData->odmpriv;
-	ODM_CancelAllTimers(podmpriv);
+	PDM_ODM_T 		podmpriv = &pHalData->odmpriv;*/
 }
 
