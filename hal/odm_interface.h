@@ -174,22 +174,6 @@ ODM_GetRFReg(
 
 
 //
-// Memory Relative Function.
-//
-void
-ODM_AllocateMemory(	
-	IN 	PDM_ODM_T	pDM_Odm,
-	OUT	void *		*pPtr,
-	IN	u4Byte		length
-	);
-void
-ODM_FreeMemory(	
-	IN 	PDM_ODM_T	pDM_Odm,
-	OUT	void *		pPtr,
-	IN	u4Byte		length
-	);
-
-//
 // ODM Timer relative API.
 //
 void

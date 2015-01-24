@@ -172,30 +172,6 @@ ODM_GetRFReg(
 }
 
 //
-// ODM Memory relative API.
-//
-void
-ODM_AllocateMemory(	
-	IN 	PDM_ODM_T	pDM_Odm,
-	OUT	void *		*pPtr,
-	IN	u4Byte		length
-	)
-{
-	*pPtr = rtw_zvmalloc(length);
-}
-
-// length could be ignored, used to detect memory leakage.
-void
-ODM_FreeMemory(	
-	IN 	PDM_ODM_T	pDM_Odm,
-	OUT	void *		pPtr,
-	IN	u4Byte		length
-	)
-{
-	vfree(pPtr);
-}
-
-//
 // ODM Timer relative API.
 //
 void
