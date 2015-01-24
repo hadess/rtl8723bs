@@ -2453,7 +2453,6 @@ void rtl8723b_set_hal_ops(struct hal_ops *pHalFunc)
 	pHalFunc->free_hal_data = &rtl8723b_free_hal_data;
 
 	pHalFunc->dm_init = &rtl8723b_init_dm_priv;
-	pHalFunc->dm_deinit = &rtl8723b_deinit_dm_priv;
 
 	pHalFunc->read_chip_version = &rtl8723b_read_chip_version;
 

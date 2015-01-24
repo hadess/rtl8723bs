@@ -36,7 +36,6 @@
 //============================================================
 
 void rtl8723b_init_dm_priv(PADAPTER padapter);
-void rtl8723b_deinit_dm_priv(PADAPTER padapter);
 
 void rtl8723b_InitHalDm(PADAPTER padapter);
 void rtl8723b_HalDmWatchDog(PADAPTER padapter);

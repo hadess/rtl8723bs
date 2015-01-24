@@ -388,11 +388,3 @@ void rtl8723b_init_dm_priv(IN PADAPTER Adapter)
 	Init_ODM_ComInfo_8723b(Adapter);
 }
 
-void rtl8723b_deinit_dm_priv(IN PADAPTER Adapter)
-{
-/*DEADCODE
-	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(Adapter);
-	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
-	PDM_ODM_T 		podmpriv = &pHalData->odmpriv;*/
-}
-
