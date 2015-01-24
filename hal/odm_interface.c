@@ -215,30 +215,3 @@ ODM_ReleaseTimer(
 	)
 {
 }
-
-
-//
-// ODM FW relative API.
-//
-void
-ODM_FillH2CCmd(
-	IN	PDM_ODM_T		pDM_Odm,
-	IN	u1Byte 			ElementID,
-	IN	u4Byte 			CmdLen,
-	IN	pu1Byte			pCmdBuffer
-)
-{
-	PADAPTER 		Adapter = pDM_Odm->Adapter;
-
-		switch(ElementID)
-		{
-			case ODM_H2C_RSSI_REPORT:
-				FillH2CCmd8723B(Adapter, H2C_8723B_RSSI_SETTING, CmdLen, pCmdBuffer);
-				break;
-			case ODM_H2C_WIFI_CALIBRATION:
-				FillH2CCmd8723B(Adapter, H2C_8723B_BT_WLAN_CALIBRATION, CmdLen, pCmdBuffer);
-			   	break;
-			default:
-				break;			   
-		}
-}

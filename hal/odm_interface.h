@@ -205,16 +205,5 @@ ODM_ReleaseTimer(
 	);
 
 
-//
-// ODM FW relative API.
-//
-void
-ODM_FillH2CCmd(
-	IN	PDM_ODM_T		pDM_Odm,
-	IN	u1Byte 	ElementID,
-	IN	u4Byte 	CmdLen,
-	IN	pu1Byte	pCmdBuffer
-);
-
 #endif	// __ODM_INTERFACE_H__
 
