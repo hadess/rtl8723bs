@@ -222,7 +222,7 @@ $(MODULE_NAME)-y += $(_PLATFORM_FILES)
 
 obj-$(CONFIG_RTL8723BS) := $(MODULE_NAME).o
 
-else
+endif
 
 export CONFIG_RTL8723BS = m
 
@@ -250,16 +250,9 @@ config_r:
 .PHONY: modules clean
 
 clean:
-	cd hal/ ; rm -fr */*.mod.c */*.mod */*.o */.*.cmd */*.ko
-	cd hal/ ; rm -fr *.mod.c *.mod *.o .*.cmd *.ko 
-	cd hal ; rm -fr */*/*.mod.c */*/*.mod */*/*.o */*/.*.cmd */*/*.ko
-	cd hal ; rm -fr */*.mod.c */*.mod */*.o */.*.cmd */*.ko
-	cd hal ; rm -fr *.mod.c *.mod *.o .*.cmd *.ko
-	cd core ; rm -fr *.mod.c *.mod *.o .*.cmd *.ko
-	cd os_dep ; rm -fr *.mod.c *.mod *.o .*.cmd *.ko
-	cd platform ; rm -fr *.mod.c *.mod *.o .*.cmd *.ko
-	rm -fr Module.symvers ; rm -fr Module.markers ; rm -fr modules.order
-	rm -fr *.mod.c *.mod *.o .*.cmd *.ko *~
-	rm -fr .tmp_versions
-endif
-
+	@rm -fr hal/*/*.mod.c hal/*/*.mod hal/*/*.o hal/*/.*.cmd hal/*/*.ko \
+		hal/*.mod.c hal/*.mod hal/*.o hal/.*.cmd hal/*.ko \
+		core/*.mod.c core/*.mod *.o core/.*.cmd core/*.ko \
+		os_dep/*.mod.c os_dep/*.mod os_dep/*.o os_dep/.*.cmd *.ko \
+		platform/*.mod.c platform/*.mod platform/*.o platform/.*.cmd platform/*.ko \
+		Module.symvers Module.markers modules.order *.mod.c *.mod *.o .*.cmd *.ko *~ .tmp_versions
