@@ -374,7 +374,7 @@ struct cfg80211_bss *rtw_cfg80211_inform_bss(_adapter *padapter, struct wlan_net
 	}	
 
 	//To reduce PBC Overlap rate
-	//_enter_critical_bh(&pwdev_priv->scan_req_lock, &irqL);
+	//spin_lock_bh(&pwdev_priv->scan_req_lock);
 	if(adapter_wdev_data(padapter)->scan_request != NULL)
 	{
 		u8 *psr=NULL, sr = 0;
@@ -410,7 +410,7 @@ struct cfg80211_bss *rtw_cfg80211_inform_bss(_adapter *padapter, struct wlan_net
 			}			
 		}		
 	}
-	//_exit_critical_bh(&pwdev_priv->scan_req_lock, &irqL);
+	//spin_unlock_bh(&pwdev_priv->scan_req_lock);
 	
 
 	channel = pnetwork->network.Configuration.DSConfig;
@@ -1543,7 +1543,7 @@ void rtw_cfg80211_indicate_scan_done(_adapter *adapter, bool aborted)
 	struct rtw_wdev_priv *pwdev_priv = adapter_wdev_data(adapter);
 	_irqL	irqL;
 
-	_enter_critical_bh(&pwdev_priv->scan_req_lock, &irqL);
+	spin_lock_bh(&pwdev_priv->scan_req_lock);
 	if (pwdev_priv->scan_request != NULL) {
 		#ifdef CONFIG_DEBUG_CFG80211
 		DBG_871X("%s with scan req\n", __FUNCTION__);
@@ -1565,7 +1565,7 @@ void rtw_cfg80211_indicate_scan_done(_adapter *adapter, bool aborted)
 		DBG_871X("%s without scan req\n", __FUNCTION__);
 		#endif
 	}
-	_exit_critical_bh(&pwdev_priv->scan_req_lock, &irqL);
+	spin_unlock_bh(&pwdev_priv->scan_req_lock);
 }
 
 void rtw_cfg80211_unlink_bss(_adapter *padapter, struct wlan_network *pnetwork)
@@ -1604,7 +1604,7 @@ void rtw_cfg80211_surveydone_event_callback(_adapter *padapter)
 	DBG_8192C("%s\n", __func__);
 #endif
 
-	_enter_critical_bh(&(pmlmepriv->scanned_queue.lock), &irqL);
+	spin_lock_bh(&(pmlmepriv->scanned_queue.lock));
 
 	phead = get_list_head(queue);
 	plist = get_next(phead);
@@ -1630,7 +1630,7 @@ void rtw_cfg80211_surveydone_event_callback(_adapter *padapter)
 	
 	}
 	
-	_exit_critical_bh(&(pmlmepriv->scanned_queue.lock), &irqL);
+	spin_unlock_bh(&(pmlmepriv->scanned_queue.lock));
 }
 
 static int rtw_cfg80211_set_probe_req_wpsp2pie(_adapter *padapter, char *buf, int len)
@@ -1722,9 +1722,9 @@ static int cfg80211_rtw_scan(struct wiphy *wiphy
 	DBG_871X(FUNC_ADPT_FMT"\n", FUNC_ADPT_ARG(padapter));
 //#endif
 
-	_enter_critical_bh(&pwdev_priv->scan_req_lock, &irqL);
+	spin_lock_bh(&pwdev_priv->scan_req_lock);
 	pwdev_priv->scan_request = request;
-	_exit_critical_bh(&pwdev_priv->scan_req_lock, &irqL);
+	spin_unlock_bh(&pwdev_priv->scan_req_lock);
 
 	if (check_fwstate(pmlmepriv, WIFI_AP_STATE) == true)
 	{
@@ -1808,7 +1808,7 @@ static int cfg80211_rtw_scan(struct wiphy *wiphy
 		ch[i].flags = request->channels[i]->flags;
 	}
 
-	_enter_critical_bh(&pmlmepriv->lock, &irqL);
+	spin_lock_bh(&pmlmepriv->lock);
 	if (request->n_channels == 1) {
 		for(i=1;i<survey_times_for_one_ch;i++)
 			memcpy(&ch[i], &ch[0], sizeof(struct rtw_ieee80211_channel));
@@ -1823,7 +1823,7 @@ static int cfg80211_rtw_scan(struct wiphy *wiphy
 	} else {
 		_status = rtw_sitesurvey_cmd(padapter, ssid, RTW_SSID_SCAN_AMOUNT, NULL, 0);
 	}
-	_exit_critical_bh(&pmlmepriv->lock, &irqL);
+	spin_unlock_bh(&pmlmepriv->lock);
 
 
 	if(_status == false)
@@ -3166,7 +3166,7 @@ static int cfg80211_rtw_del_station(struct wiphy *wiphy, struct net_device *ndev
 	}
 
 
-	_enter_critical_bh(&pstapriv->asoc_list_lock, &irqL);
+	spin_lock_bh(&pstapriv->asoc_list_lock);
 	
 	phead = &pstapriv->asoc_list;
 	plist = get_next(phead);
@@ -3191,9 +3191,9 @@ static int cfg80211_rtw_del_station(struct wiphy *wiphy, struct net_device *ndev
 				rtw_list_delete(&psta->asoc_list);
 				pstapriv->asoc_list_cnt--;
 
-				//_exit_critical_bh(&pstapriv->asoc_list_lock, &irqL);
+				//spin_unlock_bh(&pstapriv->asoc_list_lock);
 				updated = ap_free_sta(padapter, psta, true, WLAN_REASON_DEAUTH_LEAVING);
-				//_enter_critical_bh(&pstapriv->asoc_list_lock, &irqL);
+				//spin_lock_bh(&pstapriv->asoc_list_lock);
 
 				psta = NULL;
 
@@ -3204,7 +3204,7 @@ static int cfg80211_rtw_del_station(struct wiphy *wiphy, struct net_device *ndev
 		
 	}
 
-	_exit_critical_bh(&pstapriv->asoc_list_lock, &irqL);
+	spin_unlock_bh(&pstapriv->asoc_list_lock);
 
 	associated_clients_update(padapter, updated);
 
@@ -3258,9 +3258,9 @@ static int	cfg80211_rtw_dump_station(struct wiphy *wiphy, struct net_device *nde
 	struct sta_priv *pstapriv = &padapter->stapriv;
 	DBG_871X(FUNC_NDEV_FMT"\n", FUNC_NDEV_ARG(ndev));
 
-	_enter_critical_bh(&pstapriv->asoc_list_lock, &irqL);
+	spin_lock_bh(&pstapriv->asoc_list_lock);
 	psta = rtw_sta_info_get_by_idx(idx, pstapriv);
-	_exit_critical_bh(&pstapriv->asoc_list_lock, &irqL);
+	spin_unlock_bh(&pstapriv->asoc_list_lock);
 	if(NULL == psta)
 	{
 		DBG_871X("Station is not found\n");

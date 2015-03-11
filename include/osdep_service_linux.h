@@ -96,51 +96,6 @@ __inline static _list	*get_list_head(_queue	*queue)
 #define LIST_CONTAINOR(ptr, type, member) \
         ((type *)((char *)(ptr)-(__kernel_size_t)(&((type *)0)->member)))	
 
-        
-__inline static void _enter_critical(_lock *plock, _irqL *pirqL)
-{
-	spin_lock_irqsave(plock, *pirqL);
-}
-
-__inline static void _exit_critical(_lock *plock, _irqL *pirqL)
-{
-	spin_unlock_irqrestore(plock, *pirqL);
-}
-
-__inline static void _enter_critical_ex(_lock *plock, _irqL *pirqL)
-{
-	spin_lock_irqsave(plock, *pirqL);
-}
-
-__inline static void _exit_critical_ex(_lock *plock, _irqL *pirqL)
-{
-	spin_unlock_irqrestore(plock, *pirqL);
-}
-
-__inline static void _enter_critical_bh(_lock *plock, _irqL *pirqL)
-{
-	spin_lock_bh(plock);
-}
-
-__inline static void _exit_critical_bh(_lock *plock, _irqL *pirqL)
-{
-	spin_unlock_bh(plock);
-}
-
-__inline static int _enter_critical_mutex(_mutex *pmutex, _irqL *pirqL)
-{
-	int ret = 0;
-	//mutex_lock(pmutex);
-	ret = mutex_lock_interruptible(pmutex);
-	return ret;
-}
-
-
-__inline static void _exit_critical_mutex(_mutex *pmutex, _irqL *pirqL)
-{
-	mutex_unlock(pmutex);
-}
-
 __inline static void rtw_list_delete(_list *plist)
 {
 	list_del_init(plist);

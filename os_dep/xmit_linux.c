@@ -182,7 +182,7 @@ static int rtw_mlcst2unicst(_adapter *padapter, struct sk_buff *skb)
 
 	DBG_COUNTER(padapter->tx_logs.os_tx_m2u);
 
-	_enter_critical_bh(&pstapriv->asoc_list_lock, &irqL);
+	spin_lock_bh(&pstapriv->asoc_list_lock);
 	phead = &pstapriv->asoc_list;
 	plist = get_next(phead);
 	
@@ -197,7 +197,7 @@ static int rtw_mlcst2unicst(_adapter *padapter, struct sk_buff *skb)
 			chk_alive_list[chk_alive_num++] = stainfo_offset;
 		}
 	}
-	_exit_critical_bh(&pstapriv->asoc_list_lock, &irqL);
+	spin_unlock_bh(&pstapriv->asoc_list_lock);
 
 	for (i = 0; i < chk_alive_num; i++) {
 		psta = rtw_get_stainfo_by_offset(pstapriv, chk_alive_list[i]);

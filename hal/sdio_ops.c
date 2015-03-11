@@ -1150,9 +1150,9 @@ void sd_int_dpc(PADAPTER padapter)
 		u8	freepage[4];
 
 		_sdio_local_read(padapter, SDIO_REG_FREE_TXPG, 4, freepage);
-		//_enter_critical_bh(&phal->SdioTxFIFOFreePageLock, &irql);
+		//spin_lock_bh(&phal->SdioTxFIFOFreePageLock);
 		//memcpy(phal->SdioTxFIFOFreePage, freepage, 4);
-		//_exit_critical_bh(&phal->SdioTxFIFOFreePageLock, &irql);
+		//spin_unlock_bh(&phal->SdioTxFIFOFreePageLock);
 		//DBG_871X("SDIO_HISR_AVAL, Tx Free Page = 0x%x%x%x%x\n",
 		//	freepage[0],
 		//	freepage[1],
@@ -1330,7 +1330,7 @@ u8 HalQueryTxBufferStatus8723BSdio(PADAPTER padapter)
 
 	NumOfFreePage = SdioLocalCmd53Read4Byte(padapter, SDIO_REG_FREE_TXPG);
 
-	//_enter_critical_bh(&phal->SdioTxFIFOFreePageLock, &irql);
+	//spin_lock_bh(&phal->SdioTxFIFOFreePageLock);
 	memcpy(phal->SdioTxFIFOFreePage, &NumOfFreePage, 4);
 	RT_TRACE(_module_hci_ops_c_, _drv_notice_,
 			("%s: Free page for HIQ(%#x),MIDQ(%#x),LOWQ(%#x),PUBQ(%#x)\n",
@@ -1339,7 +1339,7 @@ u8 HalQueryTxBufferStatus8723BSdio(PADAPTER padapter)
 			phal->SdioTxFIFOFreePage[MID_QUEUE_IDX],
 			phal->SdioTxFIFOFreePage[LOW_QUEUE_IDX],
 			phal->SdioTxFIFOFreePage[PUBLIC_QUEUE_IDX]));
-	//_exit_critical_bh(&phal->SdioTxFIFOFreePageLock, &irql);
+	//spin_unlock_bh(&phal->SdioTxFIFOFreePageLock);
 
 	return true;
 }

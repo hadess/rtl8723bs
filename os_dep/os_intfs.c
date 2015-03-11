@@ -1199,9 +1199,9 @@ int netdev_open(struct net_device *pnetdev)
 		return 0;
 	}
 
-	_enter_critical_mutex(&(adapter_to_dvobj(padapter)->hw_init_mutex), NULL);
+	mutex_lock_interruptible(&(adapter_to_dvobj(padapter)->hw_init_mutex));
 	ret = _netdev_open(pnetdev);
-	_exit_critical_mutex(&(adapter_to_dvobj(padapter)->hw_init_mutex), NULL);
+	mutex_unlock(&(adapter_to_dvobj(padapter)->hw_init_mutex));
 
 	return ret;
 }
@@ -1297,9 +1297,9 @@ static int pm_netdev_open(struct net_device *pnetdev,u8 bnormal)
 
 	if (true == bnormal)
 	{
-		_enter_critical_mutex(&(adapter_to_dvobj(padapter)->hw_init_mutex), NULL);
+		mutex_lock_interruptible(&(adapter_to_dvobj(padapter)->hw_init_mutex));
 		status = _netdev_open(pnetdev);
-		_exit_critical_mutex(&(adapter_to_dvobj(padapter)->hw_init_mutex), NULL);
+		mutex_unlock(&(adapter_to_dvobj(padapter)->hw_init_mutex));
 	}	
 	else
 		status =  (_SUCCESS == ips_netdrv_open(padapter))?(0):(-1);

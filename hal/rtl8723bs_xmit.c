@@ -244,7 +244,7 @@ static s32 xmit_xmitframes(PADAPTER padapter, struct xmit_priv *pxmitpriv)
 
 		max_xmit_len = rtw_hal_get_sdio_tx_max_length(padapter, inx[idx]);
 
-		_enter_critical_bh(&pxmitpriv->lock, &irql);
+		spin_lock_bh(&pxmitpriv->lock);
 		
 		sta_phead = get_list_head(phwxmit->sta_queue);
 		sta_plist = get_next(sta_phead);
@@ -362,7 +362,7 @@ static s32 xmit_xmitframes(PADAPTER padapter, struct xmit_priv *pxmitpriv)
 
 			if (err) break;
 		}
-		_exit_critical_bh(&pxmitpriv->lock, &irql);
+		spin_unlock_bh(&pxmitpriv->lock);
 		
 		// dump xmit_buf to hw tx fifo
 		if (pxmitbuf)
@@ -422,9 +422,9 @@ next:
 		return _FAIL;
 	}
 
-	_enter_critical_bh(&pxmitpriv->lock, &irql);
+	spin_lock_bh(&pxmitpriv->lock);
 	ret = rtw_txframes_pending(padapter);
-	_exit_critical_bh(&pxmitpriv->lock, &irql);
+	spin_unlock_bh(&pxmitpriv->lock);
 	if (ret == 0) {
 		return _SUCCESS;
 	}
@@ -442,9 +442,9 @@ next:
 		goto next;
 	}
 
-	_enter_critical_bh(&pxmitpriv->lock, &irql);
+	spin_lock_bh(&pxmitpriv->lock);
 	ret = rtw_txframes_pending(padapter);
-	_exit_critical_bh(&pxmitpriv->lock, &irql);
+	spin_unlock_bh(&pxmitpriv->lock);
 	if (ret == 1) {
 		goto next;
 	}
@@ -559,9 +559,9 @@ s32 rtl8723bs_hal_xmit(PADAPTER padapter, struct xmit_frame *pxmitframe)
 			rtw_issue_addbareq_cmd(padapter, pxmitframe);
 	}
 
-	_enter_critical_bh(&pxmitpriv->lock, &irql);
+	spin_lock_bh(&pxmitpriv->lock);
 	err = rtw_xmitframe_enqueue(padapter, pxmitframe);
-	_exit_critical_bh(&pxmitpriv->lock, &irql);
+	spin_unlock_bh(&pxmitpriv->lock);
 	if (err != _SUCCESS) {
 		RT_TRACE(_module_hal_xmit_c_, _drv_err_, ("rtl8723bs_hal_xmit: enqueue xmitframe fail\n"));
 		rtw_free_xmitframe(pxmitpriv, pxmitframe);
@@ -637,7 +637,7 @@ void rtl8723bs_free_xmit_priv(PADAPTER padapter)
 	phead = get_list_head(pqueue);
 	_rtw_init_listhead(&tmplist);
 
-	_enter_critical_bh(&pqueue->lock, &irql);
+	spin_lock_bh(&pqueue->lock);
 	if (_rtw_queue_empty(pqueue) == false)
 	{
 		// Insert tmplist to end of queue, and delete phead
@@ -645,7 +645,7 @@ void rtl8723bs_free_xmit_priv(PADAPTER padapter)
 		rtw_list_insert_tail(&tmplist, phead);
 		rtw_list_delete(phead);
 	}
-	_exit_critical_bh(&pqueue->lock, &irql);
+	spin_unlock_bh(&pqueue->lock);
 
 	phead = &tmplist;
 	while (rtw_is_list_empty(phead) == false)
