@@ -265,17 +265,6 @@ __inline static u32 bitshift(u32 bitmask)
 #endif
 
 
-extern void rtw_suspend_lock_init(void);
-extern void rtw_suspend_lock_uninit(void);
-extern void rtw_lock_suspend(void);
-extern void rtw_unlock_suspend(void);
-extern void rtw_lock_suspend_timeout(u32 timeout_ms);
-extern void rtw_lock_ext_suspend_timeout(u32 timeout_ms);
-extern void rtw_lock_rx_suspend_timeout(u32 timeout_ms);
-extern void rtw_lock_traffic_suspend_timeout(u32 timeout_ms);
-extern void rtw_lock_resume_scan_timeout(u32 timeout_ms);
-extern void rtw_resume_lock_suspend(void);
-extern void rtw_resume_unlock_suspend(void);
 #ifdef CONFIG_AP_WOWLAN
 extern void rtw_softap_lock_suspend(void);
 extern void rtw_softap_unlock_suspend(void);

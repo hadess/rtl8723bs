@@ -671,15 +671,11 @@ static int rtw_sdio_resume(struct device *dev)
 	{
 		if(pwrpriv->wowlan_mode || pwrpriv->wowlan_ap_mode)
 		{
-			rtw_resume_lock_suspend();			
 			ret = rtw_resume_process(padapter);
-			rtw_resume_unlock_suspend();
 		}
 		else
 		{
-			rtw_resume_lock_suspend();
 			ret = rtw_resume_process(padapter);
-			rtw_resume_unlock_suspend();
 		}
 	}
 	pmlmeext->last_scan_time = jiffies;
@@ -699,7 +695,6 @@ static int __init rtw_drv_entry(void)
 #endif // BTCOEXVERSION
 
 	sdio_drvpriv.drv_registered = true;
-	rtw_suspend_lock_init();
 	rtw_drv_proc_init();
 	rtw_ndev_notifier_register();
 
@@ -707,7 +702,6 @@ static int __init rtw_drv_entry(void)
 	if (ret != 0)
 	{
 		sdio_drvpriv.drv_registered = false;
-		rtw_suspend_lock_uninit();
 		rtw_drv_proc_deinit();
 		rtw_ndev_notifier_unregister();
 		DBG_871X("%s: register driver failed!!(%d)\n", __FUNCTION__, ret);
@@ -729,7 +723,6 @@ static void __exit rtw_drv_halt(void)
 
 	sdio_unregister_driver(&sdio_drvpriv.r871xs_drv);
 
-	rtw_suspend_lock_uninit();
 	rtw_drv_proc_deinit();
 	rtw_ndev_notifier_unregister();
 

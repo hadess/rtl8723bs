@@ -1994,8 +1994,6 @@ unsigned int OnDeAuth(_adapter *padapter, union recv_frame *precv_frame)
 
 	DBG_871X("%s Reason code(%d)\n", __FUNCTION__,reason);
 
-	rtw_lock_rx_suspend_timeout(8000);
-
 	if(check_fwstate(pmlmepriv, WIFI_AP_STATE) == true)
 	{		
 		_irqL irqL;
@@ -2079,8 +2077,6 @@ unsigned int OnDisassoc(_adapter *padapter, union recv_frame *precv_frame)
 	reason = le16_to_cpu(*(unsigned short *)(pframe + WLAN_HDR_A3_LEN));
 
         DBG_871X("%s Reason code(%d)\n", __FUNCTION__,reason);
-
-	rtw_lock_rx_suspend_timeout(8000);
 
 	if(check_fwstate(pmlmepriv, WIFI_AP_STATE) == true)
 	{	

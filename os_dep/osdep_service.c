@@ -199,58 +199,6 @@ void rtw_sleep_schedulable(int ms)
     return;
 }
 
-#define RTW_SUSPEND_LOCK_NAME "rtw_wifi"
-#define RTW_SUSPEND_EXT_LOCK_NAME "rtw_wifi_ext"
-#define RTW_SUSPEND_RX_LOCK_NAME "rtw_wifi_rx"
-#define RTW_SUSPEND_TRAFFIC_LOCK_NAME "rtw_wifi_traffic"
-#define RTW_SUSPEND_RESUME_LOCK_NAME "rtw_wifi_resume"
-#define RTW_RESUME_SCAN_LOCK_NAME "rtw_wifi_scan"
-
-inline void rtw_suspend_lock_init(void)
-{
-}
-
-inline void rtw_suspend_lock_uninit(void)
-{
-}
-
-inline void rtw_lock_suspend(void)
-{
-}
-
-inline void rtw_unlock_suspend(void)
-{
-}
-
-inline void rtw_resume_lock_suspend(void)
-{
-}
-
-inline void rtw_resume_unlock_suspend(void)
-{
-}
-
-inline void rtw_lock_suspend_timeout(u32 timeout_ms)
-{
-}
-
-inline void rtw_lock_ext_suspend_timeout(u32 timeout_ms)
-{
-}
-
-inline void rtw_lock_rx_suspend_timeout(u32 timeout_ms)
-{
-}
-
-
-inline void rtw_lock_traffic_suspend_timeout(u32 timeout_ms)
-{
-}
-
-inline void rtw_lock_resume_scan_timeout(u32 timeout_ms)
-{
-}
-
 /*
 * Open a file with the specific @param path, @param flag, @param mode
 * @param fpp the pointer of struct file pointer to get struct file pointer while file opening is success

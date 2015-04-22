@@ -2144,8 +2144,6 @@ u8 traffic_status_watchdog(_adapter *padapter, u8 from_timer)
 			TRAFFIC_PROTECT_PERIOD_MS,
 			link_detect->NumTxOkInPeriod,
 			link_detect->NumRxUnicastOkInPeriod);
-
-		rtw_lock_traffic_suspend_timeout(TRAFFIC_PROTECT_PERIOD_MS);
 	}
 #endif
 		
