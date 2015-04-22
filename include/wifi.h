@@ -1187,7 +1187,6 @@ enum P2P_PROTO_WK_ID
 /* Regulatroy Domain */
 struct regd_pair_mapping {
 	u16 reg_dmnenum;
-	u16 reg_5ghz_ctl;
 	u16 reg_2ghz_ctl;
 };
 

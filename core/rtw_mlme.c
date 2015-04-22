@@ -3262,9 +3262,7 @@ unsigned int rtw_restructure_ht_ie(_adapter *padapter, u8 *in_ie, u8 *out_ie, ui
 	ht_capie.cap_info |= IEEE80211_HT_CAP_SM_PS;
 
 	if (TEST_FLAG(phtpriv->stbc_cap, STBC_HT_ENABLE_RX)) {
-		if((pregistrypriv->rx_stbc == 0x3) ||							/* enable for 2.4/5 GHz */
-			((channel <= 14) && (pregistrypriv->rx_stbc == 0x1)) ||	/* enable for 2.4GHz */
-			((channel > 14) && (pregistrypriv->rx_stbc == 0x2)) ||		/* enable for 5GHz */
+		if((channel <= 14 && pregistrypriv->rx_stbc == 0x1) ||	/* enable for 2.4GHz */
 			(pregistrypriv->wifi_spec == 1)) {
 			stbc_rx_enable = 1;
 			DBG_871X("declare supporting RX STBC\n");
