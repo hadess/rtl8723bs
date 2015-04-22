@@ -66,7 +66,6 @@ typedef struct _ADAPTER _adapter, ADAPTER,*PADAPTER;
 #include <rtw_efuse.h>
 #include <hal_intf.h>
 #include <hal_com.h>
-#include <hal_com_led.h>
 #include <rtw_qos.h>
 #include <rtw_pwrctrl.h>
 #include <rtw_mlme.h>
@@ -565,7 +564,6 @@ struct _ADAPTER{
 	_lock   security_key_mutex; // add for CONFIG_IEEE80211W, none 11w also can use
 	struct	registry_priv	registrypriv;
 	struct 	eeprom_priv eeprompriv;
-	struct	led_priv	ledpriv;
 
 	struct	hostapd_priv	*phostapdpriv;
 

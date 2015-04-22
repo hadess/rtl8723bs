@@ -200,9 +200,6 @@ struct hal_ops {
 	s32	(*init_recv_priv)(_adapter *padapter);
 	void	(*free_recv_priv)(_adapter *padapter);
 
-	void	(*InitSwLeds)(_adapter *padapter);
-	void	(*DeInitSwLeds)(_adapter *padapter);
-
 	void	(*dm_init)(_adapter *padapter);
 	void	(*dm_deinit)(_adapter *padapter);
 	void	(*read_chip_version)(_adapter *padapter);
@@ -341,8 +338,6 @@ void	rtw_hal_free_data(_adapter *padapter);
 
 void rtw_hal_dm_init(_adapter *padapter);
 void rtw_hal_dm_deinit(_adapter *padapter);
-void rtw_hal_sw_led_init(_adapter *padapter);
-void rtw_hal_sw_led_deinit(_adapter *padapter);
 
 u32 rtw_hal_power_on(_adapter *padapter);
 void rtw_hal_power_off(_adapter *padapter);

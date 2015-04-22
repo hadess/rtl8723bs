@@ -62,8 +62,7 @@ _HAL_INTFS_FILES :=	hal/hal_intf.o \
 			hal/hal_com_phycfg.o \
 			hal/hal_phy.o \
 			hal/hal_btcoex.o \
-			hal/hal_sdio.o \
-			hal/hal_sdio_led.o
+			hal/hal_sdio.o
 
 _OUTSRC_FILES := hal/odm_debug.o	\
 		hal/odm_AntDiv.o\
@@ -99,7 +98,6 @@ _HAL_INTFS_FILES +=	hal/rtl8723b_hal_init.o \
 
 _HAL_INTFS_FILES +=	\
 			hal/sdio_halinit.o \
-			hal/rtl8723bs_led.o \
 			hal/rtl8723bs_xmit.o \
 			hal/rtl8723bs_recv.o
 

@@ -42,36 +42,6 @@ dm_CheckStatistics(
 	)
 {
 }
-#ifdef CONFIG_SUPPORT_HW_WPS_PBC
-static void dm_CheckPbcGPIO(_adapter *padapter)
-{
-	u8	tmp1byte;
-	u8	bPbcPressed = false;
-
-	if(!padapter->registrypriv.hw_wps_pbc)
-		return;
-
-	tmp1byte = rtw_read8(padapter, GPIO_IN);
-	//RT_TRACE(COMP_IO, DBG_TRACE, ("dm_CheckPbcGPIO - %x\n", tmp1byte));
-
-	if (tmp1byte == 0xff || padapter->init_adpt_in_progress)
-		return ;
-
-	if((tmp1byte&HAL_8192C_HW_GPIO_WPS_BIT)==0)
-	{
-		bPbcPressed = true;
-	}
-
-	if( true == bPbcPressed)
-	{
-		// Here we only set bPbcPressed to true
-		// After trigger PBC, the variable will be set to false
-		DBG_8192C("CheckPbcGPIO - PBC is pressed\n");
-		rtw_request_wps_pbc_event(padapter);
-	}
-}
-#endif //#ifdef CONFIG_SUPPORT_HW_WPS_PBC
-
 //============================================================
 // functions
 //============================================================
@@ -277,17 +247,6 @@ rtl8723b_HalDmWatchDog(
 	}
 
 skip_dm:
-
-	// Check GPIO to determine current RF on/off and Pbc status.
-	// Check Hardware Radio ON/OFF or not
-	//if(Adapter->MgntInfo.PowerSaveControl.bGpioRfSw)
-	//{
-		//RTPRINT(FPWR, PWRHW, ("dm_CheckRfCtrlGPIO \n"));
-	//	dm_CheckRfCtrlGPIO(Adapter);
-	//}
-#ifdef CONFIG_SUPPORT_HW_WPS_PBC
-	dm_CheckPbcGPIO(Adapter);
-#endif
 	return;
 }
 

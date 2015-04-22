@@ -1363,8 +1363,6 @@ _func_enter_;
 
 		set_fwstate(pmlmepriv, _FW_LINKED);
 
-		rtw_led_control(padapter, LED_CTL_LINK);
-
 		rtw_os_indicate_connect(padapter);
 	}
 
@@ -1415,8 +1413,6 @@ _func_enter_;
 		rtw_set_ips_deny(padapter, 3000);
 
 	      _clr_fwstate_(pmlmepriv, _FW_LINKED);
-
-		rtw_led_control(padapter, LED_CTL_NO_LINK);
 
 		rtw_clear_scan_deny(padapter);
 	}

@@ -28,7 +28,6 @@
 #include "rtl8723b_recv.h"
 #include "rtl8723b_xmit.h"
 #include "rtl8723b_cmd.h"
-#include "rtl8723b_led.h"
 #include "rtw_mp.h"
 #include "Hal8723BPwrSeq.h"
 #include "Hal8723BPhyReg.h"

@@ -69,17 +69,6 @@ void rtw_hal_dm_deinit(_adapter *padapter)
 		if(padapter->HalFunc.dm_deinit)
 			padapter->HalFunc.dm_deinit(padapter);
 }
-void	rtw_hal_sw_led_init(_adapter *padapter)
-{
-	if(padapter->HalFunc.InitSwLeds)
-		padapter->HalFunc.InitSwLeds(padapter);
-}
-
-void rtw_hal_sw_led_deinit(_adapter *padapter)
-{
-	if(padapter->HalFunc.DeInitSwLeds)
-		padapter->HalFunc.DeInitSwLeds(padapter);
-}
 
 u32 rtw_hal_power_on(_adapter *padapter)
 {
@@ -136,8 +125,6 @@ uint	 rtw_hal_init(_adapter *padapter)
 		for (i = 0; i<dvobj->iface_nums; i++)
 			rtw_sec_restore_wep_key(dvobj->padapters[i]);
 
-		rtw_led_control(padapter, LED_CTL_POWER_ON);
-
 		init_hw_mlme_ext(padapter);
 		
 		rtw_bb_rf_gain_offset(padapter);
@@ -164,7 +151,6 @@ _func_enter_;
 	status = padapter->HalFunc.hal_deinit(padapter);
 
 	if(status == _SUCCESS){
-		rtw_led_control(padapter, LED_CTL_POWER_OFF);
 		for (i = 0; i<dvobj->iface_nums; i++) {
 			padapter = dvobj->padapters[i];
 			padapter->hw_init_completed = false;

@@ -2902,8 +2902,6 @@ s32 rtw_xmit(_adapter *padapter, _pkt **ppkt)
 	}
 	pxmitframe->pkt = *ppkt;
 
-	rtw_led_control(padapter, LED_CTL_TX);
-
 	do_queue_select(padapter, &pxmitframe->attrib);
 
 	spin_lock_bh(&pxmitpriv->lock);

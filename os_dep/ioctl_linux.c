@@ -95,20 +95,6 @@ static int hwaddr_aton_i(const char *txt, u8 *addr)
 	return 0;
 }
 
-#ifdef CONFIG_SUPPORT_HW_WPS_PBC
-void rtw_request_wps_pbc_event(_adapter *padapter)
-{
-	if ( padapter->pid[0] == 0 )
-	{	//	0 is the default value and it means the application monitors the HW PBC doesn't privde its pid to driver.
-		return;
-	}
-
-	rtw_signal_process(padapter->pid[0], SIGUSR1);
-
-	rtw_led_control(padapter, LED_CTL_START_WPS_BOTTON);
-}
-#endif//#ifdef CONFIG_SUPPORT_HW_WPS_PBC
-
 void indicate_wx_scan_complete_event(_adapter *padapter)
 {	
 	union iwreq_data wrqu;
@@ -3126,19 +3112,6 @@ static int rtw_wps_start(struct net_device *dev,
 
 	DBG_871X( "[%s] wps_start = %d\n", __FUNCTION__, u32wps_start );
 
-	if ( u32wps_start == 1 ) // WPS Start
-	{
-		rtw_led_control(padapter, LED_CTL_START_WPS);
-	}
-	else if ( u32wps_start == 2 ) // WPS Stop because of wps success
-	{
-		rtw_led_control(padapter, LED_CTL_STOP_WPS);
-	}
-	else if ( u32wps_start == 3 ) // WPS Stop because of wps fail
-	{
-		rtw_led_control(padapter, LED_CTL_STOP_WPS_FAIL);
-	}
-
 #ifdef CONFIG_INTEL_WIDI
 	process_intel_widi_wps_status(padapter, u32wps_start);
 #endif //CONFIG_INTEL_WIDI
@@ -3217,12 +3190,6 @@ static int rtw_rereg_nd_name(struct net_device *dev,
 		goto exit;
 	}
 
-	if(!memcmp(rereg_priv->old_ifname, "disable%d", 9)) {
-		padapter->ledpriv.bRegUseLed= rereg_priv->old_bRegUseLed;
-		rtw_hal_sw_led_init(padapter);
-		//rtw_ips_mode_req(&padapter->pwrctrlpriv, rereg_priv->old_ips_mode);
-	}
-
 	strncpy(rereg_priv->old_ifname, new_ifname, IFNAMSIZ);
 	rereg_priv->old_ifname[IFNAMSIZ-1] = 0;
 	
@@ -3231,13 +3198,7 @@ static int rtw_rereg_nd_name(struct net_device *dev,
 		DBG_871X("%s disable\n", __FUNCTION__);
 		// free network queue for Android's timming issue
 		rtw_free_network_queue(padapter, true);
-		
-		// close led
-		rtw_led_control(padapter, LED_CTL_POWER_OFF);
-		rereg_priv->old_bRegUseLed = padapter->ledpriv.bRegUseLed;
-		padapter->ledpriv.bRegUseLed= false;
-		rtw_hal_sw_led_deinit(padapter);
-		
+
 		// the interface is being "disabled", we can do deeper IPS
 		//rereg_priv->old_ips_mode = rtw_get_ips_mode_req(&padapter->pwrctrlpriv);
 		//rtw_ips_mode_req(&padapter->pwrctrlpriv, IPS_NORMAL);

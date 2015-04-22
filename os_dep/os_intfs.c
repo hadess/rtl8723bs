@@ -914,7 +914,6 @@ _func_enter_;
 	//memset((u8 *)&padapter->qospriv, 0, sizeof (struct qos_priv));//move to mlme_priv
 
 	rtw_hal_dm_init(padapter);
-	rtw_hal_sw_led_init(padapter);
 
 #ifdef CONFIG_INTEL_WIDI
 	if(rtw_init_intel_widi(padapter) == _FAIL)
@@ -958,10 +957,6 @@ void rtw_cancel_all_timer(_adapter *padapter)
 
 	_cancel_timer_ex(&padapter->mlmepriv.dynamic_chk_timer);
 	RT_TRACE(_module_os_intfs_c_,_drv_info_,("rtw_cancel_all_timer:cancel dynamic_chk_timer! \n"));
-
-	// cancel sw led timer
-	rtw_hal_sw_led_deinit(padapter);
-	RT_TRACE(_module_os_intfs_c_,_drv_info_,("rtw_cancel_all_timer:cancel DeInitSwLeds! \n"));
 
 	_cancel_timer_ex(&(adapter_to_pwrctl(padapter)->pwr_state_check_timer));
 
@@ -1136,8 +1131,6 @@ int _netdev_open(struct net_device *pnetdev)
 
 		rtw_cfg80211_init_wiphy(padapter);
 
-		rtw_led_control(padapter, LED_CTL_NO_LINK);
-
 		padapter->bup = true;
 		pwrctrlpriv->bips_processing = false;
 	}
@@ -1238,8 +1231,6 @@ int rtw_ips_pwr_up(_adapter *padapter)
 
 	result = ips_netdrv_open(padapter);
 
-	rtw_led_control(padapter, LED_CTL_NO_LINK);
-
  	DBG_871X("<===  rtw_ips_pwr_up.............. in %dms\n", jiffies_to_msecs(jiffies - start_time));
 	return result;
 
@@ -1336,8 +1327,6 @@ static int netdev_close(struct net_device *pnetdev)
 		rtw_free_assoc_resources(padapter, 1);
 		//s2-4.
 		rtw_free_network_queue(padapter,true);
-		// Close LED
-		rtw_led_control(padapter, LED_CTL_POWER_OFF);
 	}
 
 	rtw_scan_abort(padapter);
@@ -1649,8 +1638,6 @@ static int rtw_suspend_normal(_adapter *padapter)
 	}		
 
 	rtw_suspend_free_assoc_resource(padapter);
-
-	rtw_led_control(padapter, LED_CTL_POWER_OFF);
 
 	if ((rtw_hal_check_ips_status(padapter) == true)
 		|| (adapter_to_pwrctl(padapter)->rf_pwrstate == rf_off))

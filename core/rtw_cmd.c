@@ -793,8 +793,6 @@ _func_enter_;
 
 		pmlmepriv->scan_start_time = jiffies;
 		_set_timer(&pmlmepriv->scan_to_timer, SCANNING_TIMEOUT);
-
-		rtw_led_control(padapter, LED_CTL_SITE_SURVEY);
 	} else {
 		_clr_fwstate_(pmlmepriv, _FW_UNDER_SURVEY);
 	}
@@ -1085,8 +1083,6 @@ u8 rtw_createbss_cmd(_adapter  *padapter)
 
 _func_enter_;
 
-	rtw_led_control(padapter, LED_CTL_START_TO_LINK);
-
 	if (pmlmepriv->assoc_ssid.SsidLength == 0){
 		RT_TRACE(_module_rtl871x_cmd_c_,_drv_info_,(" createbss for Any SSid:%s\n",pmlmepriv->assoc_ssid.Ssid));		
 	} else {
@@ -1215,8 +1211,6 @@ u8 rtw_joinbss_cmd(_adapter  *padapter, struct wlan_network* pnetwork)
 	u32 tmp_len;
 	u8 *ptmp=NULL;
 _func_enter_;
-
-	rtw_led_control(padapter, LED_CTL_START_TO_LINK);
 
 	if (pmlmepriv->assoc_ssid.SsidLength == 0){
 		RT_TRACE(_module_rtl871x_cmd_c_, _drv_info_, ("+Join cmd: Any SSid\n"));

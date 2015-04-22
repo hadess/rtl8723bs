@@ -2024,9 +2024,6 @@ _func_enter_;
 	pHalFunc->init_recv_priv = &rtl8723bs_init_recv_priv;
 	pHalFunc->free_recv_priv = &rtl8723bs_free_recv_priv;
 
-	pHalFunc->InitSwLeds = &rtl8723bs_InitSwLeds;
-	pHalFunc->DeInitSwLeds = &rtl8723bs_DeInitSwLeds;
-
 	pHalFunc->init_default_value = &rtl8723bs_init_default_value;
 	pHalFunc->intf_chip_configure = &rtl8723bs_interface_configure;
 	pHalFunc->read_adapter_info = &ReadAdapterInfo8723BS;
