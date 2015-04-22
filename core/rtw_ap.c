@@ -1712,8 +1712,6 @@ int rtw_ap_set_wep_key(_adapter *padapter, u8 *key, u8 keylen, int keyid, u8 set
 	return rtw_ap_set_key(padapter, key, alg, keyid, set_tx);
 }
 
-#ifdef CONFIG_NATIVEAP_MLME
-
 static void update_bcn_fixed_ie(_adapter *padapter)
 {
 	DBG_871X("%s\n", __FUNCTION__);
@@ -2685,5 +2683,3 @@ void stop_ap_mode(_adapter *padapter)
 
 	rtw_btcoex_MediaStatusNotify(padapter, 0); //disconnect 
 }
-
-#endif //CONFIG_NATIVEAP_MLME
