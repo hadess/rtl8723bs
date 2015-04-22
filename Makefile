@@ -42,8 +42,6 @@ CONFIG_RTW_SDIO_PM_KEEP_POWER = y
 CONFIG_PLATFORM_I386_PC = y
 ###############################################################
 
-CONFIG_DRVEXT_MODULE = n
-
 ########### COMMON  #################################
 
 _OS_INTFS_FILES :=	os_dep/osdep_service.o \
