@@ -36,11 +36,6 @@
 //#define CONFIG_DEBUG_CFG80211
 
 /*
- * Others
- */
-#define RTW_NOTCH_FILTER 0 /* 0:Disable, 1:Enable, */
-
-/*
  * Auto Config Section
  */
 #define LPS_RPWM_WAIT_MS 300
