@@ -592,9 +592,7 @@ _func_enter_;
 	{
 
 		if (param->u.crypt.idx >= WEP_KEYS
-#ifdef CONFIG_IEEE80211W
 			&& param->u.crypt.idx > BIP_MAX_KEYID
-#endif //CONFIG_IEEE80211W
 			)
 		{
 			ret = -EINVAL;
@@ -750,7 +748,6 @@ _func_enter_;
 	
 						rtw_set_key(padapter,&padapter->securitypriv,param->u.crypt.idx, 1, true);
 					}
-#ifdef CONFIG_IEEE80211W
 					else if(strcmp(param->u.crypt.alg, "BIP") == 0)
 					{
 						int no;
@@ -765,7 +762,6 @@ _func_enter_;
 						padapter->securitypriv.binstallBIPkey = true;
 						DBG_871X(" ~~~~set sta key:IGKT\n");
 					}
-#endif //CONFIG_IEEE80211W
 				}
 			}
 
@@ -2652,11 +2648,9 @@ static int rtw_wx_set_enc_ext(struct net_device *dev,
 	case IW_ENCODE_ALG_CCMP:
 		alg_name = "CCMP";
 		break;
-#ifdef CONFIG_IEEE80211W
 	case IW_ENCODE_ALG_AES_CMAC:
 		alg_name = "BIP";
 		break;
-#endif //CONFIG_IEEE80211W
 	default:
 		ret = -1;
 		goto exit;
@@ -2674,9 +2668,7 @@ static int rtw_wx_set_enc_ext(struct net_device *dev,
 	 */
 	if ((pext->alg != IW_ENCODE_ALG_WEP) &&
 		((pext->ext_flags & IW_ENCODE_EXT_GROUP_KEY)
-#ifdef CONFIG_IEEE80211W
 		|| (pext->ext_flags & IW_ENCODE_ALG_AES_CMAC)
-#endif //CONFIG_IEEE80211W
 	))
 	{
 		param->u.crypt.set_tx = 0;

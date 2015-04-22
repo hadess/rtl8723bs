@@ -78,12 +78,7 @@ static struct action_handler OnAction_tbl[]={
 	{RTW_WLAN_CATEGORY_RADIO_MEASUREMENT, "ACTION_RADIO_MEASUREMENT", &DoReserved},
 	{RTW_WLAN_CATEGORY_FT, "ACTION_FT",	&DoReserved},
 	{RTW_WLAN_CATEGORY_HT,	"ACTION_HT",	&OnAction_ht},
-#ifdef CONFIG_IEEE80211W
 	{RTW_WLAN_CATEGORY_SA_QUERY, "ACTION_SA_QUERY", &OnAction_sa_query},
-#else
-	{RTW_WLAN_CATEGORY_SA_QUERY, "ACTION_SA_QUERY", &DoReserved},
-#endif //CONFIG_IEEE80211W
-	//add for CONFIG_IEEE80211W
 	{RTW_WLAN_CATEGORY_UNPROTECTED_WNM, "ACTION_UNPROTECTED_WNM", &DoReserved},
 	{RTW_WLAN_CATEGORY_SELF_PROTECTED, "ACTION_SELF_PROTECTED", &DoReserved},
 	{RTW_WLAN_CATEGORY_WMM, "ACTION_WMM", &DoReserved},
@@ -354,11 +349,9 @@ static void init_mlme_ext_priv_value(_adapter* padapter)
 
 	atomic_set(&pmlmeext->event_seq, 0);
 	pmlmeext->mgnt_seq = 0;//reset to zero when disconnect at client mode
-#ifdef CONFIG_IEEE80211W
 	pmlmeext->sa_query_seq = 0;
 	pmlmeext->mgnt_80211w_IPN=0;
 	pmlmeext->mgnt_80211w_IPN_rx=0;
-#endif //CONFIG_IEEE80211W
 	pmlmeext->cur_channel = padapter->registrypriv.channel;
 	pmlmeext->cur_bwmode = CHANNEL_WIDTH_20;
 	pmlmeext->cur_ch_offset = HAL_PRIME_CHNL_OFFSET_DONT_CARE;
@@ -2490,7 +2483,6 @@ exit:
 	return _SUCCESS;
 }
 
-#ifdef CONFIG_IEEE80211W
 unsigned int OnAction_sa_query(_adapter *padapter, union recv_frame *precv_frame)
 {
 	u8 *pframe = precv_frame->u.hdr.rx_data;
@@ -2527,7 +2519,6 @@ unsigned int OnAction_sa_query(_adapter *padapter, union recv_frame *precv_frame
 	
 	return _SUCCESS;
 }
-#endif //CONFIG_IEEE80211W
 
 unsigned int OnAction(_adapter *padapter, union recv_frame *precv_frame)
 {
@@ -4312,7 +4303,6 @@ void issue_action_spct_ch_switch(_adapter *padapter, u8 *ra, u8 new_ch, u8 ch_of
 
 }
 
-#ifdef CONFIG_IEEE80211W
 void issue_action_SA_Query(_adapter *padapter, unsigned char *raddr, unsigned char action, unsigned short tid)
 {
 	u8	category = RTW_WLAN_CATEGORY_SA_QUERY;
@@ -4388,7 +4378,6 @@ void issue_action_SA_Query(_adapter *padapter, unsigned char *raddr, unsigned ch
 
 	dump_mgntframe(padapter, pmgntframe);
 }
-#endif //CONFIG_IEEE80211W
 
 void issue_action_BA(_adapter *padapter, unsigned char *raddr, unsigned char action, unsigned short status)
 {
@@ -6640,7 +6629,6 @@ void addba_timer_hdl(struct sta_info *psta)
 	}
 }
 
-#ifdef CONFIG_IEEE80211W
 void sa_query_timer_hdl(_adapter *padapter)
 {
 	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
@@ -6659,7 +6647,6 @@ void sa_query_timer_hdl(_adapter *padapter)
 	spin_unlock_bh(&pmlmepriv->lock);
 	DBG_871X("SA query timeout disconnect\n");
 }
-#endif //CONFIG_IEEE80211W
 
 u8 NULL_hdl(_adapter *padapter, u8 *pbuf)
 {

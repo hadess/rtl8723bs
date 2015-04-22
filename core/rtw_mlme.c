@@ -1526,9 +1526,7 @@ static struct sta_info *rtw_joinbss_update_stainfo(_adapter *padapter, struct wl
 						
 			memset((u8 *)&psta->dot11txpn, 0, sizeof (union pn48));
 			psta->dot11txpn.val = psta->dot11txpn.val + 1;
-#ifdef CONFIG_IEEE80211W
 			memset((u8 *)&psta->dot11wtxpn, 0, sizeof (union pn48));
-#endif //CONFIG_IEEE80211W
 			memset((u8 *)&psta->dot11rxpn, 0, sizeof (union pn48));	
 		}
 

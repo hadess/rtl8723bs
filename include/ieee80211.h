@@ -848,10 +848,8 @@ struct ieee80211_softmac_stats{
 #define WEP_KEYS 4
 #define WEP_KEY_LEN 13
 
-#ifdef CONFIG_IEEE80211W
 #define BIP_MAX_KEYID 5
 #define BIP_AAD_SIZE  20
-#endif //CONFIG_IEEE80211W
 
 struct ieee80211_security {
 	u16 active_key:2,

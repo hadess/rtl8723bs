@@ -37,9 +37,7 @@ static const u32 rtw_cipher_suites[] = {
 	WLAN_CIPHER_SUITE_WEP104,
 	WLAN_CIPHER_SUITE_TKIP,
 	WLAN_CIPHER_SUITE_CCMP,
-#ifdef CONFIG_IEEE80211W
 	WLAN_CIPHER_SUITE_AES_CMAC,
-#endif //CONFIG_IEEE80211W
 };
 
 #define RATETAB_ENT(_rate, _rateid, _flags) \
@@ -1020,9 +1018,7 @@ _func_enter_;
 	    param->sta_addr[4] == 0xff && param->sta_addr[5] == 0xff) 
 	{
 		if (param->u.crypt.idx >= WEP_KEYS
-#ifdef CONFIG_IEEE80211W
 			&& param->u.crypt.idx > BIP_MAX_KEYID
-#endif //CONFIG_IEEE80211W
 		)
 		{
 			ret = -EINVAL;
@@ -1140,7 +1136,6 @@ _func_enter_;
 						padapter->securitypriv.dot118021XGrpKeyid = param->u.crypt.idx;
 						rtw_set_key(padapter,&padapter->securitypriv,param->u.crypt.idx, 1, true);
 					}
-#ifdef CONFIG_IEEE80211W
 					else if(strcmp(param->u.crypt.alg, "BIP") == 0)
 					{
 						int no;
@@ -1155,7 +1150,6 @@ _func_enter_;
 						padapter->securitypriv.binstallBIPkey = true;
 						DBG_871X(" ~~~~set sta key:IGKT\n");
 					}
-#endif //CONFIG_IEEE80211W
 				}
 			}
 
@@ -1236,13 +1230,10 @@ static int cfg80211_rtw_add_key(struct wiphy *wiphy, struct net_device *ndev,
 	case WLAN_CIPHER_SUITE_CCMP:
 		alg_name = "CCMP";
 		break;
-#ifdef CONFIG_IEEE80211W
 	case WLAN_CIPHER_SUITE_AES_CMAC:
 		alg_name = "BIP";
 		break;
-#endif //CONFIG_IEEE80211W
-
-	default:	
+	default:
 		ret = -ENOTSUPP;
 		goto addkey_end;
 	}

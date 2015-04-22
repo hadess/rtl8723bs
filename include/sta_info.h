@@ -113,9 +113,7 @@ struct sta_info {
 	u8 kck[RTW_KCK_LEN];
 	u8 replay_ctr[RTW_REPLAY_CTR_LEN];
 #endif //CONFIG_GTK_OL
-#ifdef CONFIG_IEEE80211W
 	union pn48		dot11wtxpn;			// PN48 used for Unicast mgmt xmit.
-#endif //CONFIG_IEEE80211W
 	union pn48		dot11rxpn;			// PN48 used for Unicast recv.
 
 
