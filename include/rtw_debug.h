@@ -314,13 +314,13 @@ ssize_t proc_set_read_reg(struct file *file, const char __user *buffer, size_t c
 int proc_get_fwstate(struct seq_file *m, void *v);
 int proc_get_sec_info(struct seq_file *m, void *v);
 int proc_get_mlmext_state(struct seq_file *m, void *v);
-#ifdef CONFIG_LAYER2_ROAMING
+
 int proc_get_roam_flags(struct seq_file *m, void *v);
 ssize_t proc_set_roam_flags(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data);
 int proc_get_roam_param(struct seq_file *m, void *v);
 ssize_t proc_set_roam_param(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data);
 ssize_t proc_set_roam_tgt_addr(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data);
-#endif /* CONFIG_LAYER2_ROAMING */
+
 int proc_get_qos_option(struct seq_file *m, void *v);
 int proc_get_ht_option(struct seq_file *m, void *v);
 int proc_get_rf_info(struct seq_file *m, void *v);

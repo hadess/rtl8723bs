@@ -349,7 +349,7 @@ struct mlme_priv {
 	sint	fw_state;	//shall we protect this variable? maybe not necessarily...
 	u8 bScanInProcess;
 	u8	to_join; //flag
-	#ifdef CONFIG_LAYER2_ROAMING
+
 	u8 to_roam; /* roaming trying times */
 	struct wlan_network *roam_network; /* the target of active roam */
 	u8 roam_flags;
@@ -357,7 +357,6 @@ struct mlme_priv {
 	u32 roam_scan_int_ms; /* scan interval for active roam */
 	u32 roam_scanr_exp_ms; /* scan result expire time in ms  for roam */
 	u8 roam_tgt_addr[ETH_ALEN]; /* request to roam to speicific target without other consideration */
-	#endif
 
 	u8	*nic_hdl;
 
@@ -705,7 +704,6 @@ void rtw_append_exented_cap(_adapter *padapter, u8 *out_ie, uint *pout_len);
 int rtw_is_same_ibss(_adapter *adapter, struct wlan_network *pnetwork);
 int is_same_network(WLAN_BSSID_EX *src, WLAN_BSSID_EX *dst, u8 feature);
 
-#ifdef CONFIG_LAYER2_ROAMING
 #define rtw_roam_flags(adapter) ((adapter)->mlmepriv.roam_flags)
 #define rtw_chk_roam_flags(adapter, flags) ((adapter)->mlmepriv.roam_flags & flags)
 #define rtw_clr_roam_flags(adapter, flags) \
@@ -729,19 +727,6 @@ void rtw_set_to_roam(_adapter *adapter, u8 to_roam);
 u8 rtw_dec_to_roam(_adapter *adapter);
 u8 rtw_to_roam(_adapter *adapter);
 int rtw_select_roaming_candidate(struct mlme_priv *pmlmepriv);
-#else
-#define rtw_roam_flags(adapter) 0
-#define rtw_chk_roam_flags(adapter, flags) 0
-#define rtw_clr_roam_flags(adapter, flags) do {} while (0)
-#define rtw_set_roam_flags(adapter, flags) do {} while (0)
-#define rtw_assign_roam_flags(adapter, flags) do {} while (0)
-#define _rtw_roaming(adapter, tgt_network) do {} while(0)
-#define rtw_roaming(adapter, tgt_network) do {} while(0)
-#define rtw_set_to_roam(adapter, to_roam) do {} while(0)
-#define rtw_dec_to_roam(adapter) 0
-#define rtw_to_roam(adapter) 0
-#define rtw_select_roaming_candidate(mlme) _FAIL
-#endif /* CONFIG_LAYER2_ROAMING */
 
 void rtw_sta_media_status_rpt(_adapter *adapter,struct sta_info *psta, u32 mstatus);
 

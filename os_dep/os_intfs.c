@@ -199,11 +199,9 @@ module_param(rtw_hwpwrp_detect, int, 0644);
 
 module_param(rtw_hw_wps_pbc, int, 0644);
 
-#ifdef CONFIG_LAYER2_ROAMING
 static uint rtw_max_roaming_times=2;
 module_param(rtw_max_roaming_times, uint, 0644);
 MODULE_PARM_DESC(rtw_max_roaming_times,"The max roaming times to try");
-#endif //CONFIG_LAYER2_ROAMING
 
 #ifdef CONFIG_FILE_FWIMG
 static char *rtw_fw_file_path = "/system/etc/firmware/rtlwifi/FW_NIC.BIN";
@@ -370,12 +368,10 @@ _func_enter_;
 
 	registry_par->hw_wps_pbc = (u8)rtw_hw_wps_pbc;
 
-#ifdef CONFIG_LAYER2_ROAMING
 	registry_par->max_roaming_times = (u8)rtw_max_roaming_times;
 #ifdef CONFIG_INTEL_WIDI
 	registry_par->max_roaming_times = (u8)rtw_max_roaming_times + 2;
 #endif // CONFIG_INTEL_WIDI
-#endif
 
 #ifdef CONFIG_80211D
 	registry_par->enable80211d = (u8)rtw_80211d;

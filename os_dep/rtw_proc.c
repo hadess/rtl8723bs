@@ -399,11 +399,9 @@ static const struct rtw_proc_hdl adapter_proc_hdls [] = {
 	{"suspend_info", proc_get_suspend_resume_info, NULL},
 	{"rx_info", proc_get_rx_info, proc_reset_rx_info},
 
-#ifdef CONFIG_LAYER2_ROAMING
 	{"roam_flags", proc_get_roam_flags, proc_set_roam_flags},
 	{"roam_param", proc_get_roam_param, proc_set_roam_param},
 	{"roam_tgt_addr", proc_get_dummy, proc_set_roam_tgt_addr},
-#endif /* CONFIG_LAYER2_ROAMING */
 
 	{"sd_f0_reg_dump", proc_get_sd_f0_reg_dump, NULL},
 

@@ -196,9 +196,7 @@ struct registry_priv
 
 	u8	hw_wps_pbc;//0:disable,1:enable
 
-#ifdef CONFIG_LAYER2_ROAMING
 	u8	max_roaming_times; // the max number driver will try to roaming
-#endif
 
 #ifdef CONFIG_80211D
 	u8 enable80211d;

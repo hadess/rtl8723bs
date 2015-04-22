@@ -41,9 +41,6 @@
 	#define CONFIG_TX_MCAST2UNI		// Support IP multicast->unicast
 #endif
 
-#define CONFIG_LAYER2_ROAMING
-#define CONFIG_LAYER2_ROAMING_RESUME
-
 //#define CONFIG_80211D
 
 /*
