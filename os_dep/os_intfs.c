@@ -1471,13 +1471,11 @@ static int rtw_suspend_free_assoc_resource(_adapter *padapter)
 		//s2-2.  indicate disconnect to os
 		rtw_indicate_disconnect(padapter);
 	}
-	#ifdef CONFIG_AP_MODE
 	else if(check_fwstate(pmlmepriv, WIFI_AP_STATE))	
 	{
 		rtw_sta_flush(padapter);
 	}
-	#endif
-		
+
 	//s2-3.
 	rtw_free_assoc_resources(padapter, 1);
 

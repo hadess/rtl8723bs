@@ -2862,9 +2862,8 @@ s32 rtw_xmit(_adapter *padapter, _pkt **ppkt)
 {
 	static unsigned long start = 0;
 	static u32 drop_cnt = 0;
-#ifdef CONFIG_AP_MODE
 	_irqL irqL0;
-#endif
+
 	struct xmit_priv *pxmitpriv = &padapter->xmitpriv;
 	struct xmit_frame *pxmitframe = NULL;
 
@@ -2907,7 +2906,6 @@ s32 rtw_xmit(_adapter *padapter, _pkt **ppkt)
 
 	do_queue_select(padapter, &pxmitframe->attrib);
 
-#ifdef CONFIG_AP_MODE
 	spin_lock_bh(&pxmitpriv->lock);
 	if(xmitframe_enqueue_for_sleeping_sta(padapter, pxmitframe) == true)
 	{
@@ -2916,7 +2914,6 @@ s32 rtw_xmit(_adapter *padapter, _pkt **ppkt)
 		return 1;		
 	}
 	spin_unlock_bh(&pxmitpriv->lock);
-#endif
 
 	//pre_xmitframe
 	if (rtw_hal_xmit(padapter, pxmitframe) == false)
@@ -2959,8 +2956,6 @@ inline bool xmitframe_hiq_filter(struct xmit_frame *xmitframe)
 
 	return allow;
 }
-
-#if defined(CONFIG_AP_MODE)
 
 sint xmitframe_enqueue_for_sleeping_sta(_adapter *padapter, struct xmit_frame *pxmitframe)
 {
@@ -3489,8 +3484,6 @@ void xmit_delivery_enabled_frames(_adapter *padapter, struct sta_info *psta)
 
 	return;
 }
-
-#endif
 
 void enqueue_pending_xmitbuf(
 	struct xmit_priv *pxmitpriv,

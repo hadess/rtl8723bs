@@ -20,9 +20,6 @@
 #ifndef __RTW_AP_H_
 #define __RTW_AP_H_
 
-
-#ifdef CONFIG_AP_MODE
-
 //external function
 extern void rtw_indicate_sta_assoc_event(_adapter *padapter, struct sta_info *psta);
 extern void rtw_indicate_sta_disassoc_event(_adapter *padapter, struct sta_info *psta);
@@ -64,8 +61,6 @@ void stop_ap_mode(_adapter *padapter);
 #ifdef CONFIG_AUTO_AP_MODE
 extern void rtw_start_auto_ap(_adapter *adapter);
 #endif //CONFIG_AUTO_AP_MODE
-
-#endif //end of CONFIG_AP_MODE
 
 #endif
 void update_bmc_sta(_adapter *padapter);

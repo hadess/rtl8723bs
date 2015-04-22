@@ -298,8 +298,6 @@ void init_mlme_ext_timer(_adapter *padapter)
 	//_init_timer(&pmlmeext->reassoc_timer, padapter->pnetdev, _reassoc_timer_hdl, padapter);
 }
 
-#ifdef CONFIG_AP_MODE
-
 void rtw_indicate_sta_assoc_event(_adapter *padapter, struct sta_info *psta)
 {
 	union iwreq_data wrqu;
@@ -343,5 +341,3 @@ void rtw_indicate_sta_disassoc_event(_adapter *padapter, struct sta_info *psta)
 
 	DBG_871X("+rtw_indicate_sta_disassoc_event\n");
 }
-
-#endif

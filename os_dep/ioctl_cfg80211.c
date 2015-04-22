@@ -701,7 +701,6 @@ void rtw_cfg80211_indicate_disconnect(_adapter *padapter)
 }
  	
 
-#ifdef CONFIG_AP_MODE
 static int rtw_cfg80211_ap_set_encryption(struct net_device *dev, struct ieee_param *param, u32 param_len)
 {
 	int ret = 0;
@@ -990,7 +989,6 @@ exit:
 	return ret;
 	
 }
-#endif
 
 static int rtw_cfg80211_set_encryption(struct net_device *dev, struct ieee_param *param, u32 param_len)
 {
@@ -1269,12 +1267,10 @@ static int cfg80211_rtw_add_key(struct wiphy *wiphy, struct net_device *ndev,
 	}
 	else if(check_fwstate(pmlmepriv, WIFI_AP_STATE) == true)
 	{
-#ifdef CONFIG_AP_MODE
 		if(mac_addr)
 			memcpy(param->sta_addr, (void*)mac_addr, ETH_ALEN);
-	
+
 		ret = rtw_cfg80211_ap_set_encryption(ndev, param, param_len);
-#endif
 	}
         else if(check_fwstate(pmlmepriv, WIFI_ADHOC_STATE) == true
                 || check_fwstate(pmlmepriv, WIFI_ADHOC_MASTER_STATE) == true)
@@ -2605,7 +2601,6 @@ static int cfg80211_rtw_flush_pmksa(struct wiphy *wiphy,
 	return 0;
 }
 
-#ifdef CONFIG_AP_MODE
 void rtw_cfg80211_indicate_sta_assoc(_adapter *padapter, u8 *pmgmt_frame, uint frame_len)
 {
 	s32 freq;
@@ -3273,8 +3268,6 @@ static int	cfg80211_rtw_change_bss(struct wiphy *wiphy, struct net_device *ndev,
 	
 }
 
-#endif //CONFIG_AP_MODE
-
 void rtw_cfg80211_rx_action_p2p(_adapter *padapter, u8 *pmgmt_frame, uint frame_len)
 {
 	int type;
@@ -3909,9 +3902,7 @@ void rtw_cfg80211_init_wiphy(_adapter *padapter)
 struct ieee80211_iface_limit rtw_limits[] = {
 	{ .max = 1, .types = BIT(NL80211_IFTYPE_STATION)
 					| BIT(NL80211_IFTYPE_ADHOC)
-#ifdef CONFIG_AP_MODE
 					| BIT(NL80211_IFTYPE_AP)
-#endif
 	},
 	{.max = 1, .types = BIT(NL80211_IFTYPE_MONITOR)},
 };
@@ -3937,15 +3928,11 @@ static void rtw_cfg80211_preinit_wiphy(_adapter *padapter, struct wiphy *wiphy)
 
 	wiphy->interface_modes =	BIT(NL80211_IFTYPE_STATION)
 								| BIT(NL80211_IFTYPE_ADHOC)
-#ifdef CONFIG_AP_MODE
 								| BIT(NL80211_IFTYPE_AP)
 								| BIT(NL80211_IFTYPE_MONITOR)
-#endif
 								;
 
-#ifdef CONFIG_AP_MODE
 	wiphy->mgmt_stypes = rtw_cfg80211_default_mgmt_stypes;
-#endif //CONFIG_AP_MODE	
 
 	wiphy->software_iftypes |= BIT(NL80211_IFTYPE_MONITOR);
 
@@ -4003,8 +3990,7 @@ static struct cfg80211_ops rtw_cfg80211_ops = {
 	.set_pmksa = cfg80211_rtw_set_pmksa,
 	.del_pmksa = cfg80211_rtw_del_pmksa,
 	.flush_pmksa = cfg80211_rtw_flush_pmksa,
-	
-#ifdef CONFIG_AP_MODE
+
 	.add_virtual_intf = cfg80211_rtw_add_virtual_intf,
 	.del_virtual_intf = cfg80211_rtw_del_virtual_intf,
 
@@ -4017,7 +4003,6 @@ static struct cfg80211_ops rtw_cfg80211_ops = {
 	.change_station = cfg80211_rtw_change_station,
 	.dump_station = cfg80211_rtw_dump_station,
 	.change_bss = cfg80211_rtw_change_bss,
-#endif //CONFIG_AP_MODE
 
 	.mgmt_tx = cfg80211_rtw_mgmt_tx,
 	.mgmt_frame_register = cfg80211_rtw_mgmt_frame_register,

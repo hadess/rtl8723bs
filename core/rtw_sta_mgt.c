@@ -41,8 +41,6 @@ _func_enter_;
 
 	_rtw_init_sta_xmit_priv(&psta->sta_xmitpriv);
 	_rtw_init_sta_recv_priv(&psta->sta_recvpriv);
-	
-#ifdef CONFIG_AP_MODE
 
 	_rtw_init_listhead(&psta->asoc_list);
 
@@ -72,8 +70,6 @@ _func_enter_;
 	
 	psta->keep_alive_trycnt = 0;
 
-#endif	// CONFIG_AP_MODE	
-	
 _func_exit_;	
 
 }
@@ -116,10 +112,6 @@ _func_enter_;
 		psta++;
 	}
 
-	
-
-#ifdef CONFIG_AP_MODE
-
 	pstapriv->sta_dz_bitmap = 0;
 	pstapriv->tim_bitmap = 0;
 
@@ -136,9 +128,7 @@ _func_enter_;
 	//pstapriv->expire_to = 30;// 30*2 = 60 sec = 1 min, expire after no any traffic.
 	pstapriv->expire_to = 3; // 3*2 = 6 sec
 	pstapriv->max_num_sta = NUM_STA;
-		
-#endif
-	
+
 _func_exit_;		
 
 	return _SUCCESS;
@@ -193,9 +183,7 @@ _func_exit_;
 void rtw_mfree_sta_priv_lock(struct	sta_priv *pstapriv);
 void rtw_mfree_sta_priv_lock(struct	sta_priv *pstapriv)
 {
-#ifdef CONFIG_AP_MODE
 	struct wlan_acl_pool *pacl_list = &pstapriv->acl_list;
-#endif
 
 	 rtw_mfree_all_stainfo(pstapriv); //be done before free sta_hash_lock
 }
@@ -499,8 +487,6 @@ _func_enter_;
 	//release mac id for non-bc/mc station,
 	rtw_release_macid(pstapriv->padapter, psta);
 
-#ifdef CONFIG_AP_MODE
-
 /*
 	spin_lock_bh(&pstapriv->asoc_list_lock);
 	rtw_list_delete(&psta->asoc_list);	
@@ -543,8 +529,6 @@ _func_enter_;
 #ifdef CONFIG_TX_MCAST2UNI
 	psta->under_exist_checking = 0;
 #endif	// CONFIG_TX_MCAST2UNI
-
-#endif	// CONFIG_AP_MODE	
 
 	//spin_lock_bh(&(pfree_sta_queue->lock));
 	rtw_list_insert_tail(&psta->list, get_list_head(pfree_sta_queue));
@@ -714,7 +698,6 @@ _func_exit_;
 u8 rtw_access_ctrl(_adapter *padapter, u8 *mac_addr)
 {
 	u8 res = true;
-#ifdef  CONFIG_AP_MODE
 	_irqL irqL;
 	_list	*plist, *phead;
 	struct rtw_wlan_acl_node *paclnode;
@@ -755,10 +738,7 @@ u8 rtw_access_ctrl(_adapter *padapter, u8 *mac_addr)
 	{
 		 res = true;
 	}		
-	
-#endif
 
 	return res;
-
 }
 

@@ -2250,12 +2250,10 @@ static void dynamic_chk_wk_hdl(_adapter *padapter)
 	struct mlme_priv *pmlmepriv;
 	pmlmepriv = &(padapter->mlmepriv);
 
-#ifdef CONFIG_AP_MODE
 	if(check_fwstate(pmlmepriv, WIFI_AP_STATE) == true)
 	{			
 		expire_timeout_chk(padapter);
 	}
-#endif
 
 	//for debug purpose
 	_linked_info_dump(padapter);
@@ -2604,8 +2602,6 @@ _func_exit_;
 
 }
 
-#ifdef CONFIG_AP_MODE
-
 extern u32 g_wait_hiq_empty;
 
 static void rtw_chk_hi_queue_hdl(_adapter *padapter)
@@ -2685,7 +2681,6 @@ exit:
 	return res;
 
 }
-#endif
 
 struct btinfo {
 	u8 cid;
@@ -2969,11 +2964,9 @@ u8 rtw_drvextra_cmd_hdl(_adapter *padapter, unsigned char *pbuf)
 		case LPS_CHANGE_DTIM_CID:
 			rtw_lps_change_dtim_hdl(padapter, (u8)pdrvextra_cmd->type);
 			break;
-#ifdef CONFIG_AP_MODE
 		case CHECK_HIQ_WK_CID:
 			rtw_chk_hi_queue_hdl(padapter);
 			break;
-#endif //CONFIG_AP_MODE
 #ifdef CONFIG_INTEL_WIDI
 		case INTEl_WIDI_WK_CID:
 			intel_widi_wk_hdl(padapter, pdrvextra_cmd->type, pdrvextra_cmd->pbuf);

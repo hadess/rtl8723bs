@@ -886,9 +886,7 @@ u8 rtw_dm_ra_mask_wk_cmd(_adapter*padapter, u8 *psta);
 
 extern u8 rtw_ps_cmd(_adapter*padapter);
 
-#ifdef CONFIG_AP_MODE
 u8 rtw_chk_hi_queue_cmd(_adapter*padapter);
-#endif
 
 u8 rtw_btinfo_cmd(PADAPTER padapter, u8 *pbuf, u16 length);
 

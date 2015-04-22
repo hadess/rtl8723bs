@@ -35,11 +35,8 @@
  */
 //#define CONFIG_DEBUG_CFG80211
 
-#define CONFIG_AP_MODE
-#ifdef CONFIG_AP_MODE
 	#define CONFIG_NATIVEAP_MLME
 	#define CONFIG_TX_MCAST2UNI		// Support IP multicast->unicast
-#endif
 
 /*
  * Others

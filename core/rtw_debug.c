@@ -1323,9 +1323,6 @@ ssize_t proc_set_rssi_disp(struct file *file, const char __user *buffer, size_t 
 	
 }	
 
-		
-#ifdef CONFIG_AP_MODE
-
 int proc_get_all_sta_info(struct seq_file *m, void *v)
 {
 	struct net_device *dev = m->private;
@@ -1396,8 +1393,6 @@ int proc_get_all_sta_info(struct seq_file *m, void *v)
 
 	return 0;
 }
-	
-#endif
 
 int proc_get_btcoex_dbg(struct seq_file *m, void *v)
 {

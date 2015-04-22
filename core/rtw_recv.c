@@ -777,7 +777,6 @@ _func_exit_;
 void process_pwrbit_data(_adapter *padapter, union recv_frame *precv_frame);
 void process_pwrbit_data(_adapter *padapter, union recv_frame *precv_frame)
 {
-#ifdef CONFIG_AP_MODE
 	unsigned char pwrbit;
 	u8 *ptr = precv_frame->u.hdr.rx_data;
 	struct rx_pkt_attrib *pattrib = &precv_frame->u.hdr.attrib;
@@ -816,14 +815,11 @@ void process_pwrbit_data(_adapter *padapter, union recv_frame *precv_frame)
 		}
 
 	}
-
-#endif
 }
 
 void process_wmmps_data(_adapter *padapter, union recv_frame *precv_frame);
 void process_wmmps_data(_adapter *padapter, union recv_frame *precv_frame)
 {
-#ifdef CONFIG_AP_MODE		
 	struct rx_pkt_attrib *pattrib = &precv_frame->u.hdr.attrib;
 	struct sta_priv *pstapriv = &padapter->stapriv;
 	struct sta_info *psta=NULL;
@@ -876,12 +872,7 @@ void process_wmmps_data(_adapter *padapter, union recv_frame *precv_frame)
 				issue_qos_nulldata(padapter, psta->hwaddr, (u16)pattrib->priority, 0, 0);
 			}
 		}
-				
 	}
-
-	
-#endif	
-
 }
 
 void count_rx_stats(_adapter *padapter, union recv_frame *prframe, struct sta_info*sta);
@@ -1314,7 +1305,6 @@ sint validate_recv_ctrl_frame(_adapter *padapter, union recv_frame *precv_frame)
 	//only handle ps-poll
 	if(GetFrameSubType(pframe) == WIFI_PSPOLL)
 	{
-#ifdef CONFIG_AP_MODE
 		u16 aid;
 		u8 wmmps_ac=0;	
 	
@@ -1433,7 +1423,6 @@ sint validate_recv_ctrl_frame(_adapter *padapter, union recv_frame *precv_frame)
 				}
 			}				
 		}
-#endif //CONFIG_AP_MODE
 	}
 
 	return _FAIL;

@@ -3456,10 +3456,9 @@ static int rtw_dbg_port(struct net_device *dev,
 						int i, j;
 						_list	*plist, *phead;
 						struct recv_reorder_ctrl *preorder_ctrl;
-						
-#ifdef CONFIG_AP_MODE
+
 						DBG_871X("sta_dz_bitmap=0x%x, tim_bitmap=0x%x\n", pstapriv->sta_dz_bitmap, pstapriv->tim_bitmap);
-#endif						
+
 						spin_lock_bh(&pstapriv->sta_hash_lock);
 
 						for(i=0; i< NUM_STA; i++)
@@ -3482,15 +3481,12 @@ static int rtw_dbg_port(struct net_device *dev,
 									DBG_871X("bwmode=%d, ch_offset=%d, sgi_20m=%d,sgi_40m=%d\n", psta->bw_mode, psta->htpriv.ch_offset, psta->htpriv.sgi_20m, psta->htpriv.sgi_40m);
 									DBG_871X("ampdu_enable = %d\n", psta->htpriv.ampdu_enable);									
 									DBG_871X("agg_enable_bitmap=%x, candidate_tid_bitmap=%x\n", psta->htpriv.agg_enable_bitmap, psta->htpriv.candidate_tid_bitmap);
-
-#ifdef CONFIG_AP_MODE
 									DBG_871X("capability=0x%x\n", psta->capability);
 									DBG_871X("flags=0x%x\n", psta->flags);
 									DBG_871X("wpa_psk=0x%x\n", psta->wpa_psk);
 									DBG_871X("wpa2_group_cipher=0x%x\n", psta->wpa2_group_cipher);
 									DBG_871X("wpa2_pairwise_cipher=0x%x\n", psta->wpa2_pairwise_cipher);
 									DBG_871X("qos_info=0x%x\n", psta->qos_info);
-#endif
 									DBG_871X("dot118021XPrivacy=0x%x\n", psta->dot118021XPrivacy);
 									
 									
@@ -4088,7 +4084,6 @@ out:
 	
 }
 
-#ifdef CONFIG_AP_MODE
 static int rtw_set_encryption(struct net_device *dev, struct ieee_param *param, u32 param_len)
 {
 	int ret = 0;
@@ -5109,7 +5104,6 @@ out:
 	return ret;
 	
 }
-#endif
 
 static int rtw_wx_set_priv(struct net_device *dev,
 				struct iw_request_info *info,
@@ -6240,11 +6234,9 @@ int rtw_ioctl(struct net_device *dev, struct ifreq *rq, int cmd)
 		case RTL_IOCTL_WPA_SUPPLICANT:
 			ret = wpa_supplicant_ioctl(dev, &wrq->u.data);
 			break;
-#ifdef CONFIG_AP_MODE
 		case RTL_IOCTL_HOSTAPD:
 			ret = rtw_hostapd_ioctl(dev, &wrq->u.data);
 			break;
-#endif // CONFIG_AP_MODE
 		case SIOCDEVPRIVATE:
 			ret = rtw_ioctl_wext_private(dev, &wrq->u);
 			break;

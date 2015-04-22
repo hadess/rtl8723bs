@@ -157,8 +157,6 @@ struct sta_info {
 	//AP_Mode:
 	//curr_network(mlme_priv/security_priv/qos/ht) : AP CAP/INFO
 	//sta_info: (AP & STA) CAP/INFO
-		
-#ifdef CONFIG_AP_MODE
 
 	_list asoc_list;
 	_list auth_list;
@@ -213,8 +211,6 @@ struct sta_info {
 	u8 isrc; //this device is rc
 	u16 pid; // pairing id
 #endif
-
-#endif	// CONFIG_AP_MODE	
 
 	u8 *passoc_req;
 	u32 assoc_req_len;
@@ -346,9 +342,7 @@ struct	sta_priv {
 	_queue wakeup_q;
 	
 	_adapter *padapter;
-	
 
-#ifdef CONFIG_AP_MODE
 	_list asoc_list;
 	_list auth_list;
 	_lock asoc_list_lock;
@@ -372,7 +366,6 @@ struct	sta_priv {
 	u16 max_num_sta;
 
 	struct wlan_acl_pool acl_list;
-#endif
 };
 
 

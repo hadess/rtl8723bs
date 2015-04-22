@@ -567,9 +567,7 @@ struct _ADAPTER{
 	struct 	eeprom_priv eeprompriv;
 	struct	led_priv	ledpriv;
 
-#ifdef CONFIG_AP_MODE
 	struct	hostapd_priv	*phostapdpriv;
-#endif
 
 	u32	setband;
 

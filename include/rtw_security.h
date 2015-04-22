@@ -136,7 +136,7 @@ struct security_priv
 	union Keytype	dot11wBIPKey[6];		// BIP Key, for index4 and index5
 	union pn48		dot11wBIPtxpn;			// PN48 used for Grp Key xmit.
 	union pn48		dot11wBIPrxpn;			// PN48 used for Grp Key recv.
-#ifdef CONFIG_AP_MODE
+
 	//extend security capabilities for AP_MODE 
 	unsigned int dot8021xalg;//0:disable, 1:psk, 2:802.1x
 	unsigned int wpa_psk;//0:disable, bit(0): WPA, bit(1):WPA2
@@ -144,7 +144,6 @@ struct security_priv
 	unsigned int wpa2_group_cipher;
 	unsigned int wpa_pairwise_cipher;
 	unsigned int wpa2_pairwise_cipher;	
-#endif
 
 	u8 wps_ie[MAX_WPS_IE_LEN];//added in assoc req
 	int wps_ie_len;

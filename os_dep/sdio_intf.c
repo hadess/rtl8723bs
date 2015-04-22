@@ -454,9 +454,7 @@ static void rtw_sdio_if1_deinit(_adapter *if1)
 	if(check_fwstate(pmlmepriv, _FW_LINKED))
 		rtw_disassoc_cmd(if1, 0, false);
 
-#ifdef CONFIG_AP_MODE
 	free_mlme_ap_info(if1);
-#endif
 
 #ifdef CONFIG_GPIO_WAKEUP
 	gpio_hostwakeup_free_irq(if1);

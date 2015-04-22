@@ -411,10 +411,8 @@ static const struct rtw_proc_hdl adapter_proc_hdls [] = {
 	{"mac_reg_dump", proc_get_mac_reg_dump, NULL},
 	{"bb_reg_dump", proc_get_bb_reg_dump, NULL},
 	{"rf_reg_dump", proc_get_rf_reg_dump, NULL},
-	
-#ifdef CONFIG_AP_MODE
+
 	{"all_sta_info", proc_get_all_sta_info, NULL},
-#endif /* CONFIG_AP_MODE */
 
 	{"rx_signal", proc_get_rx_signal, proc_set_rx_signal},
 	{"hw_info", proc_get_hw_status, NULL},

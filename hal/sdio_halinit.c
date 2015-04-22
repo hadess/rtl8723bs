@@ -1540,7 +1540,7 @@ static void SetHwReg8723BS(PADAPTER padapter, u8 variable, u8 *val)
 	PHAL_DATA_TYPE pHalData;
 	u8 val8;
 
-#if defined(CONFIG_WOWLAN) || defined(CONFIG_AP_MODE)
+#if defined(CONFIG_WOWLAN)
 	struct wowlan_ioctl_param *poidparam;
 	struct recv_buf *precvbuf;
 	struct pwrctrl_priv *pwrctl = adapter_to_pwrctl(padapter);
