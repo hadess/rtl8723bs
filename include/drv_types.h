@@ -198,9 +198,7 @@ struct registry_priv
 
 	u8	max_roaming_times; // the max number driver will try to roaming
 
-#ifdef CONFIG_80211D
 	u8 enable80211d;
-#endif
 
 	u8 ifname[16];
 	u8 if2name[16];

@@ -41,8 +41,6 @@
 	#define CONFIG_TX_MCAST2UNI		// Support IP multicast->unicast
 #endif
 
-//#define CONFIG_80211D
-
 /*
  * Others
  */

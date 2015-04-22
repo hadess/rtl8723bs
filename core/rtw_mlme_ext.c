@@ -5381,7 +5381,6 @@ unsigned int receive_disconnect(_adapter *padapter, unsigned char *MacAddr, unsi
 	return _SUCCESS;
 }
 
-#ifdef CONFIG_80211D
 static void process_80211d(PADAPTER padapter, WLAN_BSSID_EX *bssid)
 {
 	struct registry_priv *pregistrypriv;
@@ -5646,7 +5645,6 @@ static void process_80211d(PADAPTER padapter, WLAN_BSSID_EX *bssid)
 		i++;
 	}
 }
-#endif
 
 /****************************************************************************
 
@@ -5708,9 +5706,7 @@ void report_survey_event(_adapter *padapter, union recv_frame *precv_frame)
 		return;
 	}
 
-#ifdef CONFIG_80211D
 	process_80211d(padapter, &psurvey_evt->bss);
-#endif
 
 	rtw_enqueue_cmd(pcmdpriv, pcmd_obj);
 
