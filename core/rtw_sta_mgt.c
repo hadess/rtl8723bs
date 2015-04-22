@@ -61,10 +61,8 @@ _func_enter_;
 	psta->no_ht_set = 0;
 	psta->ht_20mhz_set = 0;
 
-#ifdef CONFIG_TX_MCAST2UNI
 	psta->under_exist_checking = 0;
-#endif	// CONFIG_TX_MCAST2UNI
-	
+
 	psta->keep_alive_trycnt = 0;
 
 _func_exit_;	
@@ -519,9 +517,7 @@ _func_enter_;
 		psta->aid = 0;
 	}
 
-#ifdef CONFIG_TX_MCAST2UNI
 	psta->under_exist_checking = 0;
-#endif	// CONFIG_TX_MCAST2UNI
 
 	//spin_lock_bh(&(pfree_sta_queue->lock));
 	rtw_list_insert_tail(&psta->list, get_list_head(pfree_sta_queue));

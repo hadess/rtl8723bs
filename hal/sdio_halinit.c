@@ -970,17 +970,8 @@ static u32 rtl8723bs_hal_init(PADAPTER padapter)
 	rtw_write8(padapter, REG_SECONDARY_CCA_CTRL_8723B, 0x3);	// CCA 
 	rtw_write8(padapter, 0x976, 0);	// hpfan_todo: 2nd CCA related
 
-#if defined(CONFIG_TX_MCAST2UNI)
-
-#ifdef CONFIG_TX_MCAST2UNI
 	rtw_write16(padapter, REG_PKT_VO_VI_LIFE_TIME, 0x0400);	// unit: 256us. 256ms
 	rtw_write16(padapter, REG_PKT_BE_BK_LIFE_TIME, 0x0400);	// unit: 256us. 256ms
-#else	// CONFIG_TX_MCAST2UNI
-	rtw_write16(padapter, REG_PKT_VO_VI_LIFE_TIME, 0x3000);	// unit: 256us. 3s
-	rtw_write16(padapter, REG_PKT_BE_BK_LIFE_TIME, 0x3000);	// unit: 256us. 3s
-#endif	// CONFIG_TX_MCAST2UNI
-#endif	// CONFIG_TX_MCAST2UNI
-
 
 	invalidate_cam_all(padapter);
 

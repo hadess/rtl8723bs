@@ -163,7 +163,6 @@ static void rtw_check_xmit_resource(_adapter *padapter, _pkt *pkt)
 	}
 }
 
-#ifdef CONFIG_TX_MCAST2UNI
 static int rtw_mlcst2unicst(_adapter *padapter, struct sk_buff *skb)
 {
 	struct	sta_priv *pstapriv = &padapter->stapriv;
@@ -242,17 +241,13 @@ static int rtw_mlcst2unicst(_adapter *padapter, struct sk_buff *skb)
 	rtw_skb_free(skb);
 	return true;
 }
-#endif	// CONFIG_TX_MCAST2UNI
-
 
 int _rtw_xmit_entry(_pkt *pkt, _nic_hdl pnetdev)
 {
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(pnetdev);
 	struct xmit_priv *pxmitpriv = &padapter->xmitpriv;
-#ifdef CONFIG_TX_MCAST2UNI
 	struct mlme_priv	*pmlmepriv = &padapter->mlmepriv;
 	extern int rtw_mc2u_disable;
-#endif	// CONFIG_TX_MCAST2UNI	
 	s32 res = 0;
 	u16 queue;
 
@@ -277,7 +272,6 @@ _func_enter_;
 
 	rtw_check_xmit_resource(padapter, pkt);
 
-#ifdef CONFIG_TX_MCAST2UNI
 	if ( !rtw_mc2u_disable
 		&& check_fwstate(pmlmepriv, WIFI_AP_STATE) == true
 		&& ( IP_MCAST_MAC(pkt->data)
@@ -299,8 +293,7 @@ _func_enter_;
 			//DBG_871X("!m2u );
 			DBG_COUNTER(padapter->tx_logs.os_tx_m2u_stop);
 		}
-	}	
-#endif	// CONFIG_TX_MCAST2UNI	
+	}
 
 	res = rtw_xmit(padapter, &pkt);
 	if (res < 0) {

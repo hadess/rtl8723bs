@@ -414,9 +414,7 @@ void	expire_timeout_chk(_adapter *padapter)
 		if (chk_sta_is_alive(psta) || !psta->expire_to) {
 			psta->expire_to = pstapriv->expire_to;
 			psta->keep_alive_trycnt = 0;
-			#ifdef CONFIG_TX_MCAST2UNI
 			psta->under_exist_checking = 0;
-			#endif	// CONFIG_TX_MCAST2UNI
 		} else {
 			psta->expire_to--;
 		}

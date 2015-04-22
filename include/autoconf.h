@@ -35,8 +35,6 @@
  */
 //#define CONFIG_DEBUG_CFG80211
 
-	#define CONFIG_TX_MCAST2UNI		// Support IP multicast->unicast
-
 /*
  * Others
  */
