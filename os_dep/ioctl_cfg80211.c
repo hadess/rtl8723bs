@@ -397,23 +397,6 @@ struct cfg80211_bss *rtw_cfg80211_inform_bss(_adapter *padapter, struct wlan_net
 		goto exit;
 	}
 
-/*	
-	{
-		if( bss->information_elements == bss->proberesp_ies) 
-		{
-			if( bss->len_information_elements !=  bss->len_proberesp_ies)
-			{
-				DBG_8192C("error!, len_information_elements !=  bss->len_proberesp_ies\n");
-			}
-							
-		}
-		else if(bss->len_information_elements <  bss->len_beacon_ies)
-		{
-			bss->information_elements = bss->beacon_ies;			
-			bss->len_information_elements =  bss->len_beacon_ies;
-		}
-	}
-*/
 	cfg80211_put_bss(wiphy, bss);
 
 exit:	
@@ -635,8 +618,6 @@ static int rtw_cfg80211_ap_set_encryption(struct net_device *dev, struct ieee_pa
 	param->u.crypt.err = 0;
 	param->u.crypt.alg[IEEE_CRYPT_ALG_NAME_LEN - 1] = '\0';
 
-	//sizeof(struct ieee_param) = 64 bytes;
-	//if (param_len !=  (u32) ((u8 *) param->u.crypt.key - (u8 *) param) + param->u.crypt.key_len)
 	if (param_len !=  sizeof(struct ieee_param) + param->u.crypt.key_len)
 	{
 		ret =  -EINVAL;
@@ -1164,11 +1145,9 @@ static int cfg80211_rtw_add_key(struct wiphy *wiphy, struct net_device *ndev,
 	} else {
 		param->u.crypt.set_tx = 1; //for wpa/wpa2 pairwise key
 	}
-	
-	
-	//param->u.crypt.idx = key_index - 1;
+
 	param->u.crypt.idx = key_index;
-	
+
 	if (params->seq_len && params->seq) 
 	{	
 		memcpy(param->u.crypt.seq, (u8 *)params->seq, params->seq_len);
@@ -1348,23 +1327,6 @@ exit:
 
 extern int netdev_open(struct net_device *pnetdev);
 
-/*
-enum nl80211_iftype {
-	NL80211_IFTYPE_UNSPECIFIED,
-       NL80211_IFTYPE_ADHOC, //1
-       NL80211_IFTYPE_STATION, //2
-       NL80211_IFTYPE_AP, //3
-       NL80211_IFTYPE_AP_VLAN,
-       NL80211_IFTYPE_WDS,
-       NL80211_IFTYPE_MONITOR, //6
-       NL80211_IFTYPE_MESH_POINT,
-       NL80211_IFTYPE_P2P_CLIENT, //8
-	NL80211_IFTYPE_P2P_GO, //9
-       //keep last 
-       NUM_NL80211_IFTYPES,
-       NL80211_IFTYPE_MAX = NUM_NL80211_IFTYPES - 1
-};
-*/
 static int cfg80211_rtw_change_iface(struct wiphy *wiphy,
 				     struct net_device *ndev,
 				     enum nl80211_iftype type, u32 *flags,
@@ -1579,12 +1541,6 @@ static int rtw_cfg80211_set_probe_req_wpsp2pie(_adapter *padapter, char *buf, in
 			memcpy(pmlmepriv->wps_probe_req_ie, wps_ie, wps_ielen);
 			pmlmepriv->wps_probe_req_ie_len = wps_ielen;
 		}
-
-		//buf += wps_ielen;
-		//len -= wps_ielen;
-
-		//buf += p2p_ielen;
-		//len -= p2p_ielen;
 	}
 
 	return ret;
@@ -1773,13 +1729,6 @@ static int rtw_cfg80211_set_wpa_version(struct security_priv *psecuritypriv, u32
 	{		
 		psecuritypriv->ndisauthtype = Ndis802_11AuthModeWPAPSK;		
 	}
-
-/*
-	if (wpa_version & NL80211_WPA_VERSION_2)
-	{		
-		psecuritypriv->ndisauthtype = Ndis802_11AuthModeWPA2PSK;
-	}
-*/
 
 	return 0;
 
@@ -2160,8 +2109,6 @@ static int cfg80211_rtw_connect(struct wiphy *wiphy, struct net_device *ndev,
 	NDIS_802_11_SSID ndis_ssid;	
 	u8 *dst_ssid, *src_ssid;
 	u8 *dst_bssid, *src_bssid;
-	//u8 matched_by_bssid=false;
-	//u8 matched_by_ssid=false;
 	u8 matched=false;
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(ndev);
 	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;	
@@ -2358,19 +2305,16 @@ static int cfg80211_rtw_disconnect(struct wiphy *wiphy, struct net_device *ndev,
 
 	rtw_set_to_roam(padapter, 0);
 
-	//if(check_fwstate(&padapter->mlmepriv, _FW_LINKED))
-	{
-		rtw_scan_abort(padapter);
-		LeaveAllPowerSaveMode(padapter);
-		rtw_disassoc_cmd(padapter, 500, false);
-		
-		DBG_871X("%s...call rtw_indicate_disconnect\n", __FUNCTION__);
-		
-		rtw_indicate_disconnect(padapter);
-		
-		rtw_free_assoc_resources(padapter, 1);
-		rtw_pwr_wakeup(padapter);		
-	}
+	rtw_scan_abort(padapter);
+	LeaveAllPowerSaveMode(padapter);
+	rtw_disassoc_cmd(padapter, 500, false);
+
+	DBG_871X("%s...call rtw_indicate_disconnect\n", __FUNCTION__);
+
+	rtw_indicate_disconnect(padapter);
+
+	rtw_free_assoc_resources(padapter, 1);
+	rtw_pwr_wakeup(padapter);
 
 	padapter->mlmepriv.not_indic_disco = false;
 
@@ -2899,30 +2843,19 @@ static int rtw_add_beacon(_adapter *adapter, const u8 *head, size_t head_len, co
 	u8 *p2p_ie;
 	u8 got_p2p_ie = false;
 	struct mlme_priv *pmlmepriv = &(adapter->mlmepriv);
-	//struct sta_priv *pstapriv = &padapter->stapriv;
-	
 
 	DBG_8192C("%s beacon_head_len=%zu, beacon_tail_len=%zu\n", __FUNCTION__, head_len, tail_len);
 
-	
 	if(check_fwstate(pmlmepriv, WIFI_AP_STATE) != true)
 		return -EINVAL;
 
 	if(head_len<24)
 		return -EINVAL;
-	
 
 	pbuf = rtw_zmalloc(head_len+tail_len);
 	if(!pbuf)
 		return -ENOMEM;
-	
 
-	//memcpy(&pstapriv->max_num_sta, param->u.bcn_ie.reserved, 2);
-
-	//if((pstapriv->max_num_sta>NUM_STA) || (pstapriv->max_num_sta<=0))
-	//	pstapriv->max_num_sta = NUM_STA;
-
-	
 	memcpy(pbuf, (void *)head+24, head_len-24);// 24=beacon header len.
 	memcpy(pbuf+head_len-24, (void *)tail, tail_len);
 
@@ -3085,9 +3018,7 @@ static int cfg80211_rtw_del_station(struct wiphy *wiphy, struct net_device *ndev
 				rtw_list_delete(&psta->asoc_list);
 				pstapriv->asoc_list_cnt--;
 
-				//spin_unlock_bh(&pstapriv->asoc_list_lock);
 				updated = ap_free_sta(padapter, psta, true, WLAN_REASON_DEAUTH_LEAVING);
-				//spin_lock_bh(&pstapriv->asoc_list_lock);
 
 				psta = NULL;
 
@@ -3167,24 +3098,8 @@ exit:
 static int	cfg80211_rtw_change_bss(struct wiphy *wiphy, struct net_device *ndev,
 			      struct bss_parameters *params)
 {
-	u8 i;
-
 	DBG_871X(FUNC_NDEV_FMT"\n", FUNC_NDEV_ARG(ndev));
-/*
-	DBG_8192C("use_cts_prot=%d\n", params->use_cts_prot);
-	DBG_8192C("use_short_preamble=%d\n", params->use_short_preamble);
-	DBG_8192C("use_short_slot_time=%d\n", params->use_short_slot_time);
-	DBG_8192C("ap_isolate=%d\n", params->ap_isolate);
-
-	DBG_8192C("basic_rates_len=%d\n", params->basic_rates_len);
-	for(i=0; i<params->basic_rates_len; i++)
-	{		
-		DBG_8192C("basic_rates=%d\n", params->basic_rates[i]);
-		
-	}	
-*/	
 	return 0;
-	
 }
 
 void rtw_cfg80211_rx_action_p2p(_adapter *padapter, u8 *pmgmt_frame, uint frame_len)
@@ -3260,12 +3175,10 @@ static int _cfg80211_rtw_mgmt_tx(_adapter *padapter, u8 tx_ch, const u8 *buf, si
 	struct xmit_priv	*pxmitpriv = &(padapter->xmitpriv);
 	struct mlme_priv *pmlmepriv = &(padapter->mlmepriv);	
 	struct mlme_ext_priv	*pmlmeext = &(padapter->mlmeextpriv);
-	//struct cfg80211_wifidirect_info *pcfg80211_wdinfo = &padapter->cfg80211_wdinfo;
 
 	rtw_set_scan_deny(padapter, 1000);
 
 	rtw_scan_abort(padapter);
-	//if (tx_ch != pmlmeext->cur_channel) {
 	if(tx_ch != rtw_get_oper_ch(padapter)) {
 		if (!check_fwstate(&padapter->mlmepriv, _FW_LINKED ))
 			pmlmeext->cur_channel = tx_ch;
@@ -3544,14 +3457,7 @@ static int rtw_cfg80211_set_beacon_wpsp2pie(struct net_device *ndev, char *buf, 
 			update_beacon(padapter, _VENDOR_SPECIFIC_IE_, wps_oui, true);
 
 		}
-
-		//buf += wps_ielen;
-		//len -= wps_ielen;
-
-		//buf += p2p_ielen;
-		//len -= p2p_ielen;
-
-		pmlmeext->bstart_bss = true;		
+		pmlmeext->bstart_bss = true;
 	}
 
 	return ret;
@@ -3640,12 +3546,6 @@ static int rtw_cfg80211_set_probe_resp_wpsp2pie(struct net_device *net, char *bu
 			pmlmepriv->wps_probe_resp_ie_len = wps_ielen;
 			
 		}
-
-		//buf += wps_ielen;
-		//len -= wps_ielen;
-
-		//buf += p2p_ielen;
-		//len -= p2p_ielen;
 	}
 
 	return ret;
@@ -3786,7 +3686,6 @@ void rtw_cfg80211_init_wiphy(_adapter *padapter)
 
 	DBG_8192C("%s:rf_type=%d\n", __func__, rf_type);
 
-	/* if (padapter->registrypriv.wireless_mode & WIRELESS_11G) */
 	{
 		bands = wiphy->bands[IEEE80211_BAND_2GHZ];
 		if(bands)
@@ -3800,23 +3699,6 @@ void rtw_cfg80211_init_wiphy(_adapter *padapter)
 	memcpy(wiphy->perm_addr, padapter->eeprompriv.mac_addr, ETH_ALEN);
 
 }
-
-/*
-struct ieee80211_iface_limit rtw_limits[] = {
-	{ .max = 1, .types = BIT(NL80211_IFTYPE_STATION)
-					| BIT(NL80211_IFTYPE_ADHOC)
-					| BIT(NL80211_IFTYPE_AP)
-	},
-	{.max = 1, .types = BIT(NL80211_IFTYPE_MONITOR)},
-};
-
-struct ieee80211_iface_combination rtw_combinations = {
-	.limits = rtw_limits,
-	.n_limits = ARRAY_SIZE(rtw_limits),
-	.max_interfaces = 2,
-	.num_different_channels = 1,
-};
-*/
 
 static void rtw_cfg80211_preinit_wiphy(_adapter *padapter, struct wiphy *wiphy)
 {
@@ -3838,11 +3720,6 @@ static void rtw_cfg80211_preinit_wiphy(_adapter *padapter, struct wiphy *wiphy)
 	wiphy->mgmt_stypes = rtw_cfg80211_default_mgmt_stypes;
 
 	wiphy->software_iftypes |= BIT(NL80211_IFTYPE_MONITOR);
-
-	/*
-	wiphy->iface_combinations = &rtw_combinations;
-	wiphy->n_iface_combinations = 1;
-	*/
 
 	wiphy->cipher_suites = rtw_cipher_suites;
 	wiphy->n_cipher_suites = ARRAY_SIZE(rtw_cipher_suites);
@@ -3868,8 +3745,6 @@ static void rtw_cfg80211_preinit_wiphy(_adapter *padapter, struct wiphy *wiphy)
 		wiphy->flags |= WIPHY_FLAG_PS_ON_BY_DEFAULT;
 	else 
 		wiphy->flags &= ~WIPHY_FLAG_PS_ON_BY_DEFAULT;
-
-	//wiphy->flags |= WIPHY_FLAG_SUPPORTS_FW_ROAM;
 }
 
 static struct cfg80211_ops rtw_cfg80211_ops = {
