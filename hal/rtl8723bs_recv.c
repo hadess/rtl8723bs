@@ -24,7 +24,7 @@
 
 static s32 initrecvbuf(struct recv_buf *precvbuf, PADAPTER padapter)
 {
-	_rtw_init_listhead(&precvbuf->list);
+	INIT_LIST_HEAD(&precvbuf->list);
 	spin_lock_init(&precvbuf->recvbuf_lock);
 
 	precvbuf->adapter = padapter;
@@ -458,7 +458,7 @@ s32 rtl8723bs_init_recv_priv(PADAPTER padapter)
 			}
 		}
 
-		rtw_list_insert_tail(&precvbuf->list, &precvpriv->free_recv_buf_queue.queue);
+		list_add_tail(&precvbuf->list, &precvpriv->free_recv_buf_queue.queue);
 
 		precvbuf++;
 	}
@@ -481,7 +481,7 @@ initbuferror:
 		precvpriv->free_recv_buf_queue_cnt = 0;
 		for (i = 0; i < n ; i++)
 		{
-			rtw_list_delete(&precvbuf->list);
+			list_del_init(&precvbuf->list);
 			rtw_os_recvbuf_resource_free(padapter, precvbuf);
 			precvbuf++;
 		}
@@ -523,7 +523,7 @@ void rtl8723bs_free_recv_priv(PADAPTER padapter)
 		precvpriv->free_recv_buf_queue_cnt = 0;
 		for (i = 0; i < n ; i++)
 		{
-			rtw_list_delete(&precvbuf->list);
+			list_del_init(&precvbuf->list);
 			rtw_os_recvbuf_resource_free(padapter, precvbuf);
 			precvbuf++;
 		}

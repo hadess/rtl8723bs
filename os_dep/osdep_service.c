@@ -107,38 +107,6 @@ void _rtw_skb_queue_purge(struct sk_buff_head *list)
 		_rtw_skb_free(skb);
 }
 
-void _rtw_init_listhead(_list *list)
-{
-
-        INIT_LIST_HEAD(list);
-}
-
-
-/*
-For the following list_xxx operations, 
-caller must guarantee the atomic context.
-Otherwise, there will be racing condition.
-*/
-u32	rtw_is_list_empty(_list *phead)
-{
-
-	if (list_empty(phead))
-		return true;
-	else
-		return false;
-}
-
-void rtw_list_insert_head(_list *plist, _list *phead)
-{
-	list_add(plist, phead);
-}
-
-void rtw_list_insert_tail(_list *plist, _list *phead)
-{
-
-	list_add_tail(plist, phead);
-}
-
 void rtw_init_timer(_timer *ptimer, void *padapter, void *pfunc)
 {
 	_adapter *adapter = (_adapter *)padapter;	
@@ -146,23 +114,16 @@ void rtw_init_timer(_timer *ptimer, void *padapter, void *pfunc)
 	_init_timer(ptimer, adapter->pnetdev, pfunc, adapter);
 }
 
-/*
-
-Caller must check if the list is empty before calling rtw_list_delete
-
-*/
-
-
 void	_rtw_init_queue(_queue	*pqueue)
 {
-	_rtw_init_listhead(&(pqueue->queue));
+	INIT_LIST_HEAD(&(pqueue->queue));
 
 	spin_lock_init(&(pqueue->lock));
 }
 
 u32	  _rtw_queue_empty(_queue	*pqueue)
 {
-	return (rtw_is_list_empty(&(pqueue->queue)));
+	return (list_empty(&(pqueue->queue)));
 }
 
 

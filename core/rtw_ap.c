@@ -369,7 +369,7 @@ void	expire_timeout_chk(_adapter *padapter)
 			psta->expire_to--;
 			if (psta->expire_to == 0)
 			{
-				rtw_list_delete(&psta->auth_list);
+				list_del_init(&psta->auth_list);
 				pstapriv->auth_list_cnt--;
 				
 				DBG_871X("auth expire %02X%02X%02X%02X%02X%02X\n",
@@ -455,7 +455,7 @@ void	expire_timeout_chk(_adapter *padapter)
 
 				continue;
 			}
-			rtw_list_delete(&psta->asoc_list);
+			list_del_init(&psta->asoc_list);
 			pstapriv->asoc_list_cnt--;
 			DBG_871X("asoc expire "MAC_FMT", state=0x%x\n", MAC_ARG(psta->hwaddr), psta->state);
 			updated = ap_free_sta(padapter, psta, false, WLAN_REASON_DEAUTH_LEAVING);
@@ -517,8 +517,8 @@ if (chk_alive_num) {
 		psta->keep_alive_trycnt = 0;
 		DBG_871X("asoc expire "MAC_FMT", state=0x%x\n", MAC_ARG(psta->hwaddr), psta->state);
 		spin_lock_bh(&pstapriv->asoc_list_lock);
-		if (rtw_is_list_empty(&psta->asoc_list)==false) {
-			rtw_list_delete(&psta->asoc_list);
+		if (list_empty(&psta->asoc_list)==false) {
+			list_del_init(&psta->asoc_list);
 			pstapriv->asoc_list_cnt--;
 			updated = ap_free_sta(padapter, psta, false, WLAN_REASON_DEAUTH_LEAVING);
 		}
@@ -1514,13 +1514,13 @@ int rtw_acl_add_sta(_adapter *padapter, u8 *addr)
 
 		if(paclnode->valid == false)
 		{
-			_rtw_init_listhead(&paclnode->list);
+			INIT_LIST_HEAD(&paclnode->list);
 	
 			memcpy(paclnode->addr, addr, ETH_ALEN);
 		
 			paclnode->valid = true;
 
-			rtw_list_insert_tail(&paclnode->list, get_list_head(pacl_node_q));
+			list_add_tail(&paclnode->list, get_list_head(pacl_node_q));
 	
 			pacl_list->num++;
 
@@ -1564,7 +1564,7 @@ int rtw_acl_remove_sta(_adapter *padapter, u8 *addr)
 			{
 				paclnode->valid = false;
 
-				rtw_list_delete(&paclnode->list);
+				list_del_init(&paclnode->list);
 				
 				pacl_list->num--;
 			}
@@ -1673,7 +1673,7 @@ static int rtw_ap_set_key(_adapter *padapter, u8 *key, u8 alg, int keyid, u8 set
 	pcmd->rspsz = 0;
 
 
-	_rtw_init_listhead(&pcmd->list);
+	INIT_LIST_HEAD(&pcmd->list);
 
 	res = rtw_enqueue_cmd(pcmdpriv, pcmd);
 
@@ -2437,7 +2437,7 @@ int rtw_sta_flush(_adapter *padapter)
 		
 		plist = get_next(plist);
 
-		rtw_list_delete(&psta->asoc_list);
+		list_del_init(&psta->asoc_list);
 		pstapriv->asoc_list_cnt--;
 
 		//spin_unlock_bh(&pstapriv->asoc_list_lock);
@@ -2612,12 +2612,12 @@ void start_ap_mode(_adapter *padapter)
 
 	
 	//for ACL 
-	_rtw_init_listhead(&(pacl_list->acl_node_q.queue));
+	INIT_LIST_HEAD(&(pacl_list->acl_node_q.queue));
 	pacl_list->num = 0;
 	pacl_list->mode = 0;
 	for(i = 0; i < NUM_ACL; i++)
 	{		
-		_rtw_init_listhead(&pacl_list->aclnode[i].list);
+		INIT_LIST_HEAD(&pacl_list->aclnode[i].list);
 		pacl_list->aclnode[i].valid = false;
 	}
 
@@ -2656,7 +2656,7 @@ void stop_ap_mode(_adapter *padapter)
 		{
 			paclnode->valid = false;
 
-			rtw_list_delete(&paclnode->list);
+			list_del_init(&paclnode->list);
 				
 			pacl_list->num--;		
 		}		

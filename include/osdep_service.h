@@ -132,12 +132,6 @@ void _rtw_skb_queue_purge(struct sk_buff_head *list);
 #define rtw_netif_rx(ndev, skb) _rtw_netif_rx(ndev, skb)
 #define rtw_skb_queue_purge(sk_buff_head) _rtw_skb_queue_purge(sk_buff_head)
 
-extern void	_rtw_init_listhead(_list *list);
-extern u32	rtw_is_list_empty(_list *phead);
-extern void	rtw_list_insert_head(_list *plist, _list *phead);
-extern void	rtw_list_insert_tail(_list *plist, _list *phead);
-extern void	rtw_list_delete(_list *plist);
-
 extern void	_rtw_init_queue(_queue	*pqueue);
 extern u32	_rtw_queue_empty(_queue	*pqueue);
 extern u32	rtw_end_of_queue_search(_list *queue, _list *pelement);

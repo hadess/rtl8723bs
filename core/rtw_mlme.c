@@ -68,9 +68,9 @@ _func_enter_;
 	
 	for(i = 0; i < MAX_BSS_CNT; i++)
 	{		
-		_rtw_init_listhead(&(pnetwork->list));
+		INIT_LIST_HEAD(&(pnetwork->list));
 
-		rtw_list_insert_tail(&(pnetwork->list), &(pmlmepriv->free_bss_pool.queue));
+		list_add_tail(&(pnetwork->list), &(pmlmepriv->free_bss_pool.queue));
 
 		pnetwork++;
 	}
@@ -155,7 +155,7 @@ _func_enter_;
 	
 	spin_lock_bh(&queue->lock);
 
-	rtw_list_insert_tail(&pnetwork->list, &queue->queue);
+	list_add_tail(&pnetwork->list, &queue->queue);
 
 	spin_unlock_bh(&queue->lock);
 
@@ -185,7 +185,7 @@ _func_enter_;
 	{
 		pnetwork = LIST_CONTAINOR(get_next(&queue->queue), struct wlan_network, list);
 		
-		rtw_list_delete(&(pnetwork->list));
+		list_del_init(&(pnetwork->list));
 	}
 	
 	spin_unlock_bh(&queue->lock);
@@ -215,7 +215,7 @@ _func_enter_;
 	
 	pnetwork = LIST_CONTAINOR(plist , struct wlan_network, list);
 	
-	rtw_list_delete(&pnetwork->list);
+	list_del_init(&pnetwork->list);
 	
 	RT_TRACE(_module_rtl871x_mlme_c_, _drv_info_, ("_rtw_alloc_network: ptr=%p\n", plist));
 	pnetwork->network_type = 0;
@@ -262,9 +262,9 @@ _func_enter_;
 
 	spin_lock_bh(&free_queue->lock);
 	
-	rtw_list_delete(&(pnetwork->list));
+	list_del_init(&(pnetwork->list));
 
-	rtw_list_insert_tail(&(pnetwork->list),&(free_queue->queue));
+	list_add_tail(&(pnetwork->list),&(free_queue->queue));
 		
 	pmlmepriv->num_of_scanned --;
 	
@@ -294,9 +294,9 @@ _func_enter_;
 
 	//spin_lock_irqsave(&free_queue->lock, irqL);
 	
-	rtw_list_delete(&(pnetwork->list));
+	list_del_init(&(pnetwork->list));
 
-	rtw_list_insert_tail(&(pnetwork->list), get_list_head(free_queue));
+	list_add_tail(&(pnetwork->list), get_list_head(free_queue));
 		
 	pmlmepriv->num_of_scanned --;
 	
@@ -869,7 +869,7 @@ _func_enter_;
 			if (pnetwork->network.PhyInfo.SignalQuality == 101)
 				pnetwork->network.PhyInfo.SignalQuality = 0;
 
-			rtw_list_insert_tail(&(pnetwork->list),&(queue->queue)); 
+			list_add_tail(&(pnetwork->list),&(queue->queue)); 
 
 		}
 	}
@@ -1248,8 +1248,8 @@ _func_enter_;
 	while (plist != phead)
        {
 		ptemp = get_next(plist);
-		rtw_list_delete(plist);
-		rtw_list_insert_tail(plist, &free_queue->queue);
+		list_del_init(plist);
+		list_add_tail(plist, &free_queue->queue);
 		plist =ptemp;
 		pmlmepriv->num_of_scanned --;
         }
@@ -2679,7 +2679,7 @@ _func_enter_;
 	pcmd->rspsz = 0;
 
 
-	_rtw_init_listhead(&pcmd->list);
+	INIT_LIST_HEAD(&pcmd->list);
 
 	RT_TRACE(_module_rtl871x_mlme_c_,_drv_err_,("after enqueue set_auth_cmd, auth_mode=%x\n", psecuritypriv->dot11AuthAlgrthm));
 
@@ -2770,7 +2770,7 @@ _func_enter_;
 		pcmd->rsp = NULL;
 		pcmd->rspsz = 0;
 
-		_rtw_init_listhead(&pcmd->list);
+		INIT_LIST_HEAD(&pcmd->list);
 
 		//sema_init(&(pcmd->cmd_sem), 0);
 

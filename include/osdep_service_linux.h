@@ -96,11 +96,6 @@ __inline static _list	*get_list_head(_queue	*queue)
 #define LIST_CONTAINOR(ptr, type, member) \
         ((type *)((char *)(ptr)-(__kernel_size_t)(&((type *)0)->member)))	
 
-__inline static void rtw_list_delete(_list *plist)
-{
-	list_del_init(plist);
-}
-
 #define RTW_TIMER_HDL_ARGS void *FunctionContext
 
 __inline static void _init_timer(_timer *ptimer,_nic_hdl nic_hdl,void *pfunc,void* cntx)

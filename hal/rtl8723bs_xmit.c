@@ -265,7 +265,7 @@ static s32 xmit_xmitframes(PADAPTER padapter, struct xmit_priv *pxmitpriv)
 
 			frame_phead = get_list_head(pframe_queue);
 
-			while (rtw_is_list_empty(frame_phead) == false)
+			while (list_empty(frame_phead) == false)
 			{
 				frame_plist = get_next(frame_phead);
 				pxmitframe = LIST_CONTAINOR(frame_plist, struct xmit_frame, list);
@@ -319,7 +319,7 @@ static s32 xmit_xmitframes(PADAPTER padapter, struct xmit_priv *pxmitpriv)
 					}
 				}
 
-				rtw_list_delete(&pxmitframe->list);
+				list_del_init(&pxmitframe->list);
 				ptxservq->qcnt--;
 				phwxmit->accnt--;
 
@@ -357,7 +357,7 @@ static s32 xmit_xmitframes(PADAPTER padapter, struct xmit_priv *pxmitpriv)
 			}
 
 			if (_rtw_queue_empty(pframe_queue) == true)
-				rtw_list_delete(&ptxservq->tx_pending);
+				list_del_init(&ptxservq->tx_pending);
 
 			if (err) break;
 		}
@@ -634,23 +634,23 @@ void rtl8723bs_free_xmit_priv(PADAPTER padapter)
 	pxmitpriv = &padapter->xmitpriv;
 	pqueue = &pxmitpriv->pending_xmitbuf_queue;
 	phead = get_list_head(pqueue);
-	_rtw_init_listhead(&tmplist);
+	INIT_LIST_HEAD(&tmplist);
 
 	spin_lock_bh(&pqueue->lock);
 	if (_rtw_queue_empty(pqueue) == false)
 	{
 		// Insert tmplist to end of queue, and delete phead
 		// then tmplist become head of queue.
-		rtw_list_insert_tail(&tmplist, phead);
-		rtw_list_delete(phead);
+		list_add_tail(&tmplist, phead);
+		list_del_init(phead);
 	}
 	spin_unlock_bh(&pqueue->lock);
 
 	phead = &tmplist;
-	while (rtw_is_list_empty(phead) == false)
+	while (list_empty(phead) == false)
 	{
 		plist = get_next(phead);
-		rtw_list_delete(plist);
+		list_del_init(plist);
 
 		pxmitbuf = LIST_CONTAINOR(plist, struct xmit_buf, list);
 		rtw_free_xmitframe(pxmitpriv, (struct xmit_frame*)pxmitbuf->priv_data);

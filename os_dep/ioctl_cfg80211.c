@@ -3015,7 +3015,7 @@ static int cfg80211_rtw_del_station(struct wiphy *wiphy, struct net_device *ndev
 			{
 				DBG_8192C("free psta=%p, aid=%d\n", psta, psta->aid);
 
-				rtw_list_delete(&psta->asoc_list);
+				list_del_init(&psta->asoc_list);
 				pstapriv->asoc_list_cnt--;
 
 				updated = ap_free_sta(padapter, psta, true, WLAN_REASON_DEAUTH_LEAVING);
