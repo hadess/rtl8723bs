@@ -536,11 +536,6 @@ u64 rtw_division64(u64 x, u64 y)
 	return x;
 }
 
-inline u32 rtw_random32(void)
-{
-	return prandom_u32();
-}
-
 void rtw_buf_free(u8 **buf, u32 *buf_len)
 {
 	u32 ori_len;

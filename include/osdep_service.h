@@ -281,7 +281,6 @@ extern void rtw_free_netdev(struct net_device * netdev);
 
 extern u64 rtw_modular64(u64 x, u64 y);
 extern u64 rtw_division64(u64 x, u64 y);
-extern u32 rtw_random32(void);
 
 /* Macros for handling unaligned memory accesses */
 
