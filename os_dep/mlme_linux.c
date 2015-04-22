@@ -23,18 +23,6 @@
 
 #include <drv_types.h>
 
-
-/*
-void sitesurvey_ctrl_handler(void *FunctionContext)
-{
-	_adapter *adapter = (_adapter *)FunctionContext;
-
-	_sitesurvey_ctrl_handler(adapter);
-
-	_set_timer(&adapter->mlmepriv.sitesurveyctrl.sitesurvey_ctrl_timer, 3000);
-}
-*/
-
 void rtw_join_timeout_handler (void *FunctionContext)
 {
 	_adapter *adapter = (_adapter *)FunctionContext;
@@ -270,20 +258,6 @@ void init_addba_retry_timer(_adapter *padapter, struct sta_info *psta)
 
 	_init_timer(&psta->addba_retry_timer, padapter->pnetdev, _addba_timer_hdl, psta);
 }
-
-/*
-void _reauth_timer_hdl(void *FunctionContext)
-{
-	_adapter *padapter = (_adapter *)FunctionContext;
-	reauth_timer_hdl(padapter);
-}
-
-void _reassoc_timer_hdl(void *FunctionContext)
-{
-	_adapter *padapter = (_adapter *)FunctionContext;
-	reassoc_timer_hdl(padapter);
-}
-*/
 
 void init_mlme_ext_timer(_adapter *padapter)
 {	
