@@ -875,12 +875,8 @@ void _clear_cam_entry(_adapter *padapter, u8 entry)
 
 inline void write_cam(_adapter *adapter, u8 id, u16 ctrl, u8 *mac, u8 *key)
 {
-#ifdef CONFIG_WRITE_CACHE_ONLY
-	write_cam_cache(adapter, id ,ctrl, mac, key);
-#else
 	_write_cam(adapter, id, ctrl, mac, key);
 	write_cam_cache(adapter, id ,ctrl, mac, key);
-#endif
 }
 
 inline void clear_cam_entry(_adapter *adapter, u8 id)
