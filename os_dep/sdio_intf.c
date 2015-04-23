@@ -62,7 +62,7 @@ struct sdio_drv_priv {
 static struct sdio_drv_priv sdio_drvpriv = {
 	.r871xs_drv.probe = rtw_drv_init,
 	.r871xs_drv.remove = rtw_dev_remove,
-	.r871xs_drv.name = (char*)DRV_NAME,
+	.r871xs_drv.name = "rtl8723bs",
 	.r871xs_drv.id_table = sdio_ids,
 	.r871xs_drv.drv = {
 		.pm = &rtw_sdio_pm_ops,
@@ -691,7 +691,7 @@ static int __init rtw_drv_entry(void)
 	DBG_871X_LEVEL(_drv_always_, "module init start\n");
 	dump_drv_version(RTW_DBGDUMP);
 #ifdef BTCOEXVERSION
-	DBG_871X_LEVEL(_drv_always_, DRV_NAME" BT-Coex version = %s\n", BTCOEXVERSION);
+	DBG_871X_LEVEL(_drv_always_, "rtl8723bs BT-Coex version = %s\n", BTCOEXVERSION);
 #endif // BTCOEXVERSION
 
 	sdio_drvpriv.drv_registered = true;

@@ -30,7 +30,7 @@ inline struct proc_dir_entry *get_rtw_drv_proc(void)
 	return rtw_proc;
 }
 
-#define RTW_PROC_NAME DRV_NAME
+#define RTW_PROC_NAME "rtl8723bs"
 
 #define get_proc_net init_net.proc_net
 

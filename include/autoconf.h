@@ -23,11 +23,6 @@
  * Automatically generated C config: don't edit
  */
 
-#define AUTOCONF_INCLUDED
-
-#define RTL871X_MODULE_NAME "8723BS"
-#define DRV_NAME "rtl8723bs"
-
 //#define CONFIG_FILE_FWIMG
 
 /*
