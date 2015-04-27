@@ -1746,7 +1746,7 @@ odm_SwAntDetectInit(
 	)
 {
 	pSWAT_T		pDM_SWAT_Table = &pDM_Odm->DM_SWAT_Table;
-	pDM_SWAT_Table->SWAS_NoLink_BK_Reg92c = ODM_Read4Byte(pDM_Odm, rDPDT_control);
+	pDM_SWAT_Table->SWAS_NoLink_BK_Reg92c = rtw_read32(pDM_Odm->Adapter, rDPDT_control);
 	pDM_SWAT_Table->PreAntenna = MAIN_ANT;
 	pDM_SWAT_Table->CurAntenna = MAIN_ANT;
 	pDM_SWAT_Table->SWAS_NoLink_State = 0;
@@ -2112,13 +2112,13 @@ odm_Set_RA_DM_ARFB_by_Noisy(
 {
 	//DbgPrint("DM_ARFB ====> \n");
 	if (pDM_Odm->bNoisyState){
-		ODM_Write4Byte(pDM_Odm,0x430,0x00000000);
-		ODM_Write4Byte(pDM_Odm,0x434,0x05040200);
+		rtw_write32(pDM_Odm->Adapter,0x430,0x00000000);
+		rtw_write32(pDM_Odm->Adapter,0x434,0x05040200);
 		//DbgPrint("DM_ARFB ====> Noisy State\n");
 	}
 	else{
-		ODM_Write4Byte(pDM_Odm,0x430,0x02010000);
-		ODM_Write4Byte(pDM_Odm,0x434,0x07050403);
+		rtw_write32(pDM_Odm->Adapter,0x430,0x02010000);
+		rtw_write32(pDM_Odm->Adapter,0x434,0x07050403);
 		//DbgPrint("DM_ARFB ====> Clean State\n");
 	}
 	

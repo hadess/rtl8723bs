@@ -146,25 +146,25 @@ setCCKFilterCoefficient(
 {
 	if(!pDM_Odm->RFCalibrateInfo.bCCKinCH14)
 	{
-		ODM_Write1Byte(pDM_Odm, 0xa22, CCKSwingTable_Ch1_Ch13_New[CCKSwingIndex][0]);
-		ODM_Write1Byte(pDM_Odm, 0xa23, CCKSwingTable_Ch1_Ch13_New[CCKSwingIndex][1]);
-		ODM_Write1Byte(pDM_Odm, 0xa24, CCKSwingTable_Ch1_Ch13_New[CCKSwingIndex][2]);
-		ODM_Write1Byte(pDM_Odm, 0xa25, CCKSwingTable_Ch1_Ch13_New[CCKSwingIndex][3]);
-		ODM_Write1Byte(pDM_Odm, 0xa26, CCKSwingTable_Ch1_Ch13_New[CCKSwingIndex][4]);
-		ODM_Write1Byte(pDM_Odm, 0xa27, CCKSwingTable_Ch1_Ch13_New[CCKSwingIndex][5]);
-		ODM_Write1Byte(pDM_Odm, 0xa28, CCKSwingTable_Ch1_Ch13_New[CCKSwingIndex][6]);
-		ODM_Write1Byte(pDM_Odm, 0xa29, CCKSwingTable_Ch1_Ch13_New[CCKSwingIndex][7]);		
+		rtw_write8(pDM_Odm->Adapter, 0xa22, CCKSwingTable_Ch1_Ch13_New[CCKSwingIndex][0]);
+		rtw_write8(pDM_Odm->Adapter, 0xa23, CCKSwingTable_Ch1_Ch13_New[CCKSwingIndex][1]);
+		rtw_write8(pDM_Odm->Adapter, 0xa24, CCKSwingTable_Ch1_Ch13_New[CCKSwingIndex][2]);
+		rtw_write8(pDM_Odm->Adapter, 0xa25, CCKSwingTable_Ch1_Ch13_New[CCKSwingIndex][3]);
+		rtw_write8(pDM_Odm->Adapter, 0xa26, CCKSwingTable_Ch1_Ch13_New[CCKSwingIndex][4]);
+		rtw_write8(pDM_Odm->Adapter, 0xa27, CCKSwingTable_Ch1_Ch13_New[CCKSwingIndex][5]);
+		rtw_write8(pDM_Odm->Adapter, 0xa28, CCKSwingTable_Ch1_Ch13_New[CCKSwingIndex][6]);
+		rtw_write8(pDM_Odm->Adapter, 0xa29, CCKSwingTable_Ch1_Ch13_New[CCKSwingIndex][7]);
 	}
 	else
 	{
-		ODM_Write1Byte(pDM_Odm, 0xa22, CCKSwingTable_Ch14_New[CCKSwingIndex][0]);
-		ODM_Write1Byte(pDM_Odm, 0xa23, CCKSwingTable_Ch14_New[CCKSwingIndex][1]);
-		ODM_Write1Byte(pDM_Odm, 0xa24, CCKSwingTable_Ch14_New[CCKSwingIndex][2]);
-		ODM_Write1Byte(pDM_Odm, 0xa25, CCKSwingTable_Ch14_New[CCKSwingIndex][3]);
-		ODM_Write1Byte(pDM_Odm, 0xa26, CCKSwingTable_Ch14_New[CCKSwingIndex][4]);
-		ODM_Write1Byte(pDM_Odm, 0xa27, CCKSwingTable_Ch14_New[CCKSwingIndex][5]);
-		ODM_Write1Byte(pDM_Odm, 0xa28, CCKSwingTable_Ch14_New[CCKSwingIndex][6]);
-		ODM_Write1Byte(pDM_Odm, 0xa29, CCKSwingTable_Ch14_New[CCKSwingIndex][7]);	
+		rtw_write8(pDM_Odm->Adapter, 0xa22, CCKSwingTable_Ch14_New[CCKSwingIndex][0]);
+		rtw_write8(pDM_Odm->Adapter, 0xa23, CCKSwingTable_Ch14_New[CCKSwingIndex][1]);
+		rtw_write8(pDM_Odm->Adapter, 0xa24, CCKSwingTable_Ch14_New[CCKSwingIndex][2]);
+		rtw_write8(pDM_Odm->Adapter, 0xa25, CCKSwingTable_Ch14_New[CCKSwingIndex][3]);
+		rtw_write8(pDM_Odm->Adapter, 0xa26, CCKSwingTable_Ch14_New[CCKSwingIndex][4]);
+		rtw_write8(pDM_Odm->Adapter, 0xa27, CCKSwingTable_Ch14_New[CCKSwingIndex][5]);
+		rtw_write8(pDM_Odm->Adapter, 0xa28, CCKSwingTable_Ch14_New[CCKSwingIndex][6]);
+		rtw_write8(pDM_Odm->Adapter, 0xa29, CCKSwingTable_Ch14_New[CCKSwingIndex][7]);
 	}		
 }
 
@@ -1414,9 +1414,9 @@ _PHY_SaveMACRegisters8723B(
 
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("Save MAC parameters.\n"));
 	for( i = 0 ; i < (IQK_MAC_REG_NUM - 1); i++){
-		MACBackup[i] = ODM_Read1Byte(pDM_Odm, MACReg[i]);		
+		MACBackup[i] = rtw_read8(pDM_Odm->Adapter, MACReg[i]);
 	}
-	MACBackup[i] = ODM_Read4Byte(pDM_Odm, MACReg[i]);		
+	MACBackup[i] = rtw_read32(pDM_Odm->Adapter, MACReg[i]);
 
 }
 
@@ -1453,9 +1453,9 @@ _PHY_ReloadMACRegisters8723B(
 
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_CALIBRATION, ODM_DBG_LOUD,  ("Reload MAC parameters !\n"));
 	for(i = 0 ; i < (IQK_MAC_REG_NUM - 1); i++){
-		ODM_Write1Byte(pDM_Odm, MACReg[i], (u1Byte)MACBackup[i]);
+		rtw_write8(pAdapter, MACReg[i], (u1Byte)MACBackup[i]);
 	}
-	ODM_Write4Byte(pDM_Odm, MACReg[i], MACBackup[i]);	
+	rtw_write32(pAdapter, MACReg[i], MACBackup[i]);
 }
 
 
@@ -1502,12 +1502,12 @@ _PHY_MACSettingCalibration8723B(
 
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("MAC settings for Calibration.\n"));
 
-	ODM_Write1Byte(pDM_Odm, MACReg[i], 0x3F);
+	rtw_write8(pDM_Odm->Adapter, MACReg[i], 0x3F);
 
 	for(i = 1 ; i < (IQK_MAC_REG_NUM - 1); i++){
-		ODM_Write1Byte(pDM_Odm, MACReg[i], (u1Byte)(MACBackup[i]&(~BIT3)));
+		rtw_write8(pDM_Odm->Adapter, MACReg[i], (u1Byte)(MACBackup[i]&(~BIT3)));
 	}
-	ODM_Write1Byte(pDM_Odm, MACReg[i], (u1Byte)(MACBackup[i]&(~BIT5))); 
+	rtw_write8(pDM_Odm->Adapter, MACReg[i], (u1Byte)(MACBackup[i]&(~BIT5))); 
 
 }
 
@@ -1859,12 +1859,12 @@ phy_LCCalibrate_8723B(
 	PADAPTER pAdapter = pDM_Odm->Adapter;
 
 	//Check continuous TX and Packet TX
-	tmpReg = ODM_Read1Byte(pDM_Odm, 0xd03);
+	tmpReg = rtw_read8(pDM_Odm->Adapter, 0xd03);
 
 	if((tmpReg&0x70) != 0)			//Deal with contisuous TX case
-		ODM_Write1Byte(pDM_Odm, 0xd03, tmpReg&0x8F);	//disable all continuous TX
+		rtw_write8(pDM_Odm->Adapter, 0xd03, tmpReg&0x8F);	//disable all continuous TX
 	else							// Deal with Packet TX case
-		ODM_Write1Byte(pDM_Odm, REG_TXPAUSE, 0xFF); 		// block all queues
+		rtw_write8(pDM_Odm->Adapter, REG_TXPAUSE, 0xFF); 		// block all queues
 
 	if((tmpReg&0x70) != 0)
 	{
@@ -1906,7 +1906,7 @@ phy_LCCalibrate_8723B(
 	if((tmpReg&0x70) != 0)	//Deal with contisuous TX case 
 	{  
 		//Path-A
-		ODM_Write1Byte(pDM_Odm, 0xd03, tmpReg);
+		rtw_write8(pDM_Odm->Adapter, 0xd03, tmpReg);
 		ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_AC, bMask12Bits, RF_Amode);
 		
 		//Path-B
@@ -1915,7 +1915,7 @@ phy_LCCalibrate_8723B(
 	}
 	else // Deal with Packet TX case
 	{
-		ODM_Write1Byte(pDM_Odm, REG_TXPAUSE, 0x00); 
+		rtw_write8(pDM_Odm->Adapter, REG_TXPAUSE, 0x00); 
 	}
 }
 

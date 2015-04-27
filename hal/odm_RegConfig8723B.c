@@ -124,7 +124,7 @@ odm_ConfigMAC_8723B(
  	IN 	u1Byte 		Data
  	)
 {
-	ODM_Write1Byte(pDM_Odm, Addr, Data);
+	rtw_write8(pDM_Odm->Adapter, Addr, Data);
     ODM_RT_TRACE(pDM_Odm,ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ConfigMACWithHeaderFile: [MAC_REG] %08X %08X\n", Addr, Data));
 }
 

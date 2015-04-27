@@ -83,6 +83,6 @@ odm_DynamicTxPowerWritePowerIndex(
 	
 	for(index = 0; index< 6; index++)
 		//PlatformEFIOWrite1Byte(Adapter, Power_Index_REG[index], Value);
-		ODM_Write1Byte(pDM_Odm, Power_Index_REG[index], Value);
+		rtw_write8(pDM_Odm->Adapter, Power_Index_REG[index], Value);
 
 }
