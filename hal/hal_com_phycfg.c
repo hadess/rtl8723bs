@@ -2340,7 +2340,7 @@ phy_ConfigMACWithParaFile(
 			if (rlen > 0)
 			{
 				rtStatus = _SUCCESS;
-				pHalData->mac_reg = rtw_zvmalloc(rlen);
+				pHalData->mac_reg = vzalloc(rlen);
 				if(pHalData->mac_reg) {
 					memcpy(pHalData->mac_reg, pHalData->para_file_buf, rlen);
 					pHalData->mac_reg_len = rlen;
@@ -2439,7 +2439,7 @@ phy_ConfigBBWithParaFile(
 			if (rlen > 0)
 			{
 				rtStatus = _SUCCESS;
-				pBuf = rtw_zvmalloc(rlen);
+				pBuf = vzalloc(rlen);
 				if(pBuf) {
 					memcpy(pBuf, pHalData->para_file_buf, rlen);
 					*pBufLen = rlen;
@@ -2888,7 +2888,7 @@ phy_ConfigBBWithPgParaFile(
 			if (rlen > 0)
 			{
 				rtStatus = _SUCCESS;
-				pHalData->bb_phy_reg_pg = rtw_zvmalloc(rlen);
+				pHalData->bb_phy_reg_pg = vzalloc(rlen);
 				if(pHalData->bb_phy_reg_pg) {
 					memcpy(pHalData->bb_phy_reg_pg, pHalData->para_file_buf, rlen);
 					pHalData->bb_phy_reg_pg_len = rlen;
@@ -2968,7 +2968,7 @@ PHY_ConfigRFWithParaFile(
 			if (rlen > 0)
 			{
 				rtStatus = _SUCCESS;
-				pBuf = rtw_zvmalloc(rlen);
+				pBuf = vzalloc(rlen);
 				if(pBuf) {
 					memcpy(pBuf, pHalData->para_file_buf, rlen);
 					*pBufLen = rlen;
@@ -3242,7 +3242,7 @@ PHY_ConfigRFWithTxPwrTrackParaFile(
 			if (rlen > 0)
 			{
 				rtStatus = _SUCCESS;
-				pHalData->rf_tx_pwr_track = rtw_zvmalloc(rlen);
+				pHalData->rf_tx_pwr_track = vzalloc(rlen);
 				if(pHalData->rf_tx_pwr_track) {
 					memcpy(pHalData->rf_tx_pwr_track, pHalData->para_file_buf, rlen);
 					pHalData->rf_tx_pwr_track_len = rlen;
@@ -3591,7 +3591,7 @@ PHY_ConfigRFWithPowerLimitTableParaFile(
 			if (rlen > 0)
 			{
 				rtStatus = _SUCCESS;
-				pHalData->rf_tx_pwr_lmt = rtw_zvmalloc(rlen);
+				pHalData->rf_tx_pwr_lmt = vzalloc(rlen);
 				if(pHalData->rf_tx_pwr_lmt) {
 					memcpy(pHalData->rf_tx_pwr_lmt, pHalData->para_file_buf, rlen);
 					pHalData->rf_tx_pwr_lmt_len = rlen;

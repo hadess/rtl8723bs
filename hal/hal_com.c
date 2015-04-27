@@ -29,7 +29,7 @@ u8 rtw_hal_data_init(_adapter *padapter)
 	if(is_primary_adapter(padapter))	//if(padapter->isprimary)
 	{
 		padapter->hal_data_sz = sizeof(HAL_DATA_TYPE);
-		padapter->HalData = rtw_zvmalloc(padapter->hal_data_sz);
+		padapter->HalData = vzalloc(padapter->hal_data_sz);
 		if(padapter->HalData == NULL){
 			DBG_8192C("cant not alloc memory for HAL DATA \n");
 			return _FAIL;

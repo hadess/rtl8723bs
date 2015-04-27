@@ -37,7 +37,7 @@ sint	_rtw_init_mlme_priv (_adapter* padapter)
 
 _func_enter_;
 
-	// We don't need to memset padapter->XXX to zero, because adapter is allocated by rtw_zvmalloc().
+	// We don't need to memset padapter->XXX to zero, because adapter is allocated by vzalloc().
 	//memset((u8 *)pmlmepriv, 0, sizeof(struct mlme_priv));
 
 	pmlmepriv->nic_hdl = (u8 *)padapter;
@@ -56,7 +56,7 @@ _func_enter_;
 	
 	memset(&pmlmepriv->assoc_ssid,0,sizeof(NDIS_802_11_SSID));
 
-	pbuf = rtw_zvmalloc(MAX_BSS_CNT * (sizeof(struct wlan_network)));
+	pbuf = vzalloc(MAX_BSS_CNT * (sizeof(struct wlan_network)));
 	
 	if (pbuf == NULL){
 		res=_FAIL;

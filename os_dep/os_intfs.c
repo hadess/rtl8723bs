@@ -892,7 +892,7 @@ _func_enter_;
 	// add for CONFIG_IEEE80211W, none 11w also can use
 	spin_lock_init(&padapter->security_key_mutex);
 	
-	// We don't need to memset padapter->XXX to zero, because adapter is allocated by rtw_zvmalloc().
+	// We don't need to memset padapter->XXX to zero, because adapter is allocated by vzalloc().
 	//memset((unsigned char *)&padapter->securitypriv, 0, sizeof (struct security_priv));
 
 	//_init_timer(&(padapter->securitypriv.tkip_timer), padapter->pifp, rtw_use_tkipkey_handler, padapter);

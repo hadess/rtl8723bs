@@ -349,7 +349,7 @@ static _adapter *rtw_sdio_if1_init(struct dvobj_priv *dvobj, const struct sdio_d
 	struct net_device *pnetdev;
 	PADAPTER padapter = NULL;
 	
-	if ((padapter = (_adapter *)rtw_zvmalloc(sizeof(*padapter))) == NULL) {
+	if ((padapter = (_adapter *)vzalloc(sizeof(*padapter))) == NULL) {
 		goto exit;
 	}
 
