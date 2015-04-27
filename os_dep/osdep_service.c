@@ -27,16 +27,11 @@
 * Translate the OS dependent @param error_code to OS independent RTW_STATUS_CODE
 * @return: one of RTW_STATUS_CODE
 */
-inline int RTW_STATUS_CODE(int error_code){
+inline int RTW_STATUS_CODE(int error_code)
+{
 	if(error_code >=0)
 		return _SUCCESS;
-
-	switch(error_code) {
-		//case -ETIMEDOUT:
-		//	return RTW_STATUS_TIMEDOUT;
-		default:
-			return _FAIL;
-	}
+	return _FAIL;
 }
 
 inline u8* _rtw_zvmalloc(u32 sz)
