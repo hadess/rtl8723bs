@@ -573,7 +573,7 @@ _next:
 
 		memcpy(pcmdbuf, pcmd->parmbuf, pcmd->cmdsz);
 
-		if(pcmd->cmdcode < (sizeof(wlancmds) /sizeof(struct cmd_hdl)))
+		if(pcmd->cmdcode < ARRAY_SIZE(wlancmds))
 		{
 			cmd_hdl = wlancmds[pcmd->cmdcode].h2cfuns;
 
@@ -627,7 +627,7 @@ post_process:
 		}
 
 		//call callback function for post-processed
-		if(pcmd->cmdcode < (sizeof(rtw_cmd_callback) /sizeof(struct _cmd_callback)))
+		if(pcmd->cmdcode < ARRAY_SIZE(rtw_cmd_callback))
 		{
 			pcmd_callback = rtw_cmd_callback[pcmd->cmdcode].callback;
 			if(pcmd_callback == NULL)
