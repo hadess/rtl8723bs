@@ -977,8 +977,8 @@ odm_CommonInfoSelfInit(
 	)
 {
 	pFAT_T			pDM_FatTable = &pDM_Odm->DM_FatTable;
-	pDM_Odm->bCckHighPower = (bool) ODM_GetBBReg(pDM_Odm, ODM_REG(CCK_RPT_FORMAT,pDM_Odm), ODM_BIT(CCK_RPT_FORMAT,pDM_Odm));		
-	pDM_Odm->RFPathRxEnable = (u1Byte) ODM_GetBBReg(pDM_Odm, ODM_REG(BB_RX_PATH,pDM_Odm), ODM_BIT(BB_RX_PATH,pDM_Odm));
+	pDM_Odm->bCckHighPower = (bool) PHY_QueryBBReg(pDM_Odm->Adapter, ODM_REG(CCK_RPT_FORMAT,pDM_Odm), ODM_BIT(CCK_RPT_FORMAT,pDM_Odm));
+	pDM_Odm->RFPathRxEnable = (u1Byte) PHY_QueryBBReg(pDM_Odm->Adapter, ODM_REG(BB_RX_PATH,pDM_Odm), ODM_BIT(BB_RX_PATH,pDM_Odm));
 
 	ODM_InitDebugSetting(pDM_Odm);
 
@@ -1722,7 +1722,7 @@ odm_TXPowerTrackingCheckCE(
 	if(!pDM_Odm->RFCalibrateInfo.TM_Trigger)		//at least delay 1 sec
 	{
 		//pHalData->TxPowerCheckCnt++;	//cosa add for debug
-		ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_T_METER_NEW, (BIT17 | BIT16), 0x03);
+		PHY_SetRFReg(pDM_Odm->Adapter, ODM_RF_PATH_A, RF_T_METER_NEW, (BIT17 | BIT16), 0x03);
 
 		//DBG_871X("Trigger Thermal Meter!!\n");
 		
@@ -1780,15 +1780,15 @@ GetPSDData(
 		//(val&BIT25)>>25, (val&BIT14)>>14, (val&BIT15)>>15, rfval);
 
 	//Set DCO frequency index, offset=(40MHz/SamplePts)*point
-	ODM_SetBBReg(pDM_Odm, 0x808, 0x3FF, point);
+	PHY_SetBBReg(pDM_Odm->Adapter, 0x808, 0x3FF, point);
 
 	//Start PSD calculation, Reg808[22]=0->1
-	ODM_SetBBReg(pDM_Odm, 0x808, BIT22, 1);
+	PHY_SetBBReg(pDM_Odm->Adapter, 0x808, BIT22, 1);
 	//Need to wait for HW PSD report
 	udelay(1000);
-	ODM_SetBBReg(pDM_Odm, 0x808, BIT22, 0);
+	PHY_SetBBReg(pDM_Odm->Adapter, 0x808, BIT22, 0);
 	//Read PSD report, Reg8B4[15:0]
-	psd_report = ODM_GetBBReg(pDM_Odm,0x8B4, bMaskDWord) & 0x0000FFFF;
+	psd_report = PHY_QueryBBReg(pDM_Odm->Adapter,0x8B4, bMaskDWord) & 0x0000FFFF;
 	
 	psd_report = (u4Byte) (ConvertTo_dB(psd_report))+(u4Byte)(initial_gain_psd-0x1c);
 
@@ -1913,61 +1913,61 @@ ODM_SingleDualAntennaDetection(
 
 	//1 Backup Current RF/BB Settings	
 	
-	CurrentChannel = ODM_GetRFReg(pDM_Odm, ODM_RF_PATH_A, ODM_CHANNEL, bRFRegOffsetMask);
-	RfLoopReg = ODM_GetRFReg(pDM_Odm, ODM_RF_PATH_A, 0x00, bRFRegOffsetMask);
+	CurrentChannel = PHY_QueryRFReg(pDM_Odm->Adapter, ODM_RF_PATH_A, ODM_CHANNEL, bRFRegOffsetMask);
+	RfLoopReg = PHY_QueryRFReg(pDM_Odm->Adapter, ODM_RF_PATH_A, 0x00, bRFRegOffsetMask);
 
-	Reg92c = ODM_GetBBReg(pDM_Odm, 0x92c, bMaskDWord);
-	Reg948 = ODM_GetBBReg(pDM_Odm, rS0S1_PathSwitch, bMaskDWord);
-	Regb2c = ODM_GetBBReg(pDM_Odm, AGC_table_select, bMaskDWord);
-	ODM_SetBBReg(pDM_Odm, rDPDT_control, 0x3, 0x1);
-	ODM_SetBBReg(pDM_Odm, rfe_ctrl_anta_src, 0xff, 0x77);
-	ODM_SetBBReg(pDM_Odm, rS0S1_PathSwitch, 0x3ff, 0x000);
-	ODM_SetBBReg(pDM_Odm, AGC_table_select, BIT31, 0x0);
+	Reg92c = PHY_QueryBBReg(pDM_Odm->Adapter, 0x92c, bMaskDWord);
+	Reg948 = PHY_QueryBBReg(pDM_Odm->Adapter, rS0S1_PathSwitch, bMaskDWord);
+	Regb2c = PHY_QueryBBReg(pDM_Odm->Adapter, AGC_table_select, bMaskDWord);
+	PHY_SetBBReg(pDM_Odm->Adapter, rDPDT_control, 0x3, 0x1);
+	PHY_SetBBReg(pDM_Odm->Adapter, rfe_ctrl_anta_src, 0xff, 0x77);
+	PHY_SetBBReg(pDM_Odm->Adapter, rS0S1_PathSwitch, 0x3ff, 0x000);
+	PHY_SetBBReg(pDM_Odm->Adapter, AGC_table_select, BIT31, 0x0);
 
 	udelay(10);
 	
 	//Store A Path Register 88c, c08, 874, c50
-	Reg88c = ODM_GetBBReg(pDM_Odm, rFPGA0_AnalogParameter4, bMaskDWord);
-	Regc08 = ODM_GetBBReg(pDM_Odm, rOFDM0_TRMuxPar, bMaskDWord);
-	Reg874 = ODM_GetBBReg(pDM_Odm, rFPGA0_XCD_RFInterfaceSW, bMaskDWord);
-	Regc50 = ODM_GetBBReg(pDM_Odm, rOFDM0_XAAGCCore1, bMaskDWord);	
+	Reg88c = PHY_QueryBBReg(pDM_Odm->Adapter, rFPGA0_AnalogParameter4, bMaskDWord);
+	Regc08 = PHY_QueryBBReg(pDM_Odm->Adapter, rOFDM0_TRMuxPar, bMaskDWord);
+	Reg874 = PHY_QueryBBReg(pDM_Odm->Adapter, rFPGA0_XCD_RFInterfaceSW, bMaskDWord);
+	Regc50 = PHY_QueryBBReg(pDM_Odm->Adapter, rOFDM0_XAAGCCore1, bMaskDWord);
 	
 	// Store AFE Registers
-	AFE_rRx_Wait_CCA = ODM_GetBBReg(pDM_Odm, rRx_Wait_CCA,bMaskDWord);
+	AFE_rRx_Wait_CCA = PHY_QueryBBReg(pDM_Odm->Adapter, rRx_Wait_CCA,bMaskDWord);
 	
 	//Set PSD 128 pts
-	ODM_SetBBReg(pDM_Odm, rFPGA0_PSDFunction, BIT14|BIT15, 0x0);  //128 pts
+	PHY_SetBBReg(pDM_Odm->Adapter, rFPGA0_PSDFunction, BIT14|BIT15, 0x0);  //128 pts
 	
 	// To SET CH1 to do
-	ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, ODM_CHANNEL, bRFRegOffsetMask, 0x7401);     //Channel 1
+	PHY_SetRFReg(pDM_Odm->Adapter, ODM_RF_PATH_A, ODM_CHANNEL, bRFRegOffsetMask, 0x7401);     //Channel 1
 	
 	// AFE all on step
-	ODM_SetBBReg(pDM_Odm, rRx_Wait_CCA, bMaskDWord, 0x01c00016);
+	PHY_SetBBReg(pDM_Odm->Adapter, rRx_Wait_CCA, bMaskDWord, 0x01c00016);
 
 	// 3 wire Disable
-	ODM_SetBBReg(pDM_Odm, rFPGA0_AnalogParameter4, bMaskDWord, 0xCCF000C0);
+	PHY_SetBBReg(pDM_Odm->Adapter, rFPGA0_AnalogParameter4, bMaskDWord, 0xCCF000C0);
 	
 	//BB IQK Setting
-	ODM_SetBBReg(pDM_Odm, rOFDM0_TRMuxPar, bMaskDWord, 0x000800E4);
-	ODM_SetBBReg(pDM_Odm, rFPGA0_XCD_RFInterfaceSW, bMaskDWord, 0x22208000);
+	PHY_SetBBReg(pDM_Odm->Adapter, rOFDM0_TRMuxPar, bMaskDWord, 0x000800E4);
+	PHY_SetBBReg(pDM_Odm->Adapter, rFPGA0_XCD_RFInterfaceSW, bMaskDWord, 0x22208000);
 
 	//IQK setting tone@ 4.34Mhz
-	ODM_SetBBReg(pDM_Odm, rTx_IQK_Tone_A, bMaskDWord, 0x10008C1C);
-	ODM_SetBBReg(pDM_Odm, rTx_IQK, bMaskDWord, 0x01007c00);	
+	PHY_SetBBReg(pDM_Odm->Adapter, rTx_IQK_Tone_A, bMaskDWord, 0x10008C1C);
+	PHY_SetBBReg(pDM_Odm->Adapter, rTx_IQK, bMaskDWord, 0x01007c00);
 
 	//Page B init
-	ODM_SetBBReg(pDM_Odm, rConfig_AntA, bMaskDWord, 0x00080000);
-	ODM_SetBBReg(pDM_Odm, rConfig_AntA, bMaskDWord, 0x0f600000);
-	ODM_SetBBReg(pDM_Odm, rRx_IQK, bMaskDWord, 0x01004800);
-	ODM_SetBBReg(pDM_Odm, rRx_IQK_Tone_A, bMaskDWord, 0x10008c1f);
-	ODM_SetBBReg(pDM_Odm, rTx_IQK_PI_A, bMaskDWord, 0x82150008);
-	ODM_SetBBReg(pDM_Odm, rRx_IQK_PI_A, bMaskDWord, 0x28150008);
-	ODM_SetBBReg(pDM_Odm, rIQK_AGC_Rsp, bMaskDWord, 0x001028d0);	
+	PHY_SetBBReg(pDM_Odm->Adapter, rConfig_AntA, bMaskDWord, 0x00080000);
+	PHY_SetBBReg(pDM_Odm->Adapter, rConfig_AntA, bMaskDWord, 0x0f600000);
+	PHY_SetBBReg(pDM_Odm->Adapter, rRx_IQK, bMaskDWord, 0x01004800);
+	PHY_SetBBReg(pDM_Odm->Adapter, rRx_IQK_Tone_A, bMaskDWord, 0x10008c1f);
+	PHY_SetBBReg(pDM_Odm->Adapter, rTx_IQK_PI_A, bMaskDWord, 0x82150008);
+	PHY_SetBBReg(pDM_Odm->Adapter, rRx_IQK_PI_A, bMaskDWord, 0x28150008);
+	PHY_SetBBReg(pDM_Odm->Adapter, rIQK_AGC_Rsp, bMaskDWord, 0x001028d0);
 
 	//IQK Single tone start
-	ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0x808000);
-	ODM_SetBBReg(pDM_Odm, rIQK_AGC_Pts, bMaskDWord, 0xf9000000);
-	ODM_SetBBReg(pDM_Odm, rIQK_AGC_Pts, bMaskDWord, 0xf8000000);
+	PHY_SetBBReg(pDM_Odm->Adapter, rFPGA0_IQK, bMaskH3Bytes, 0x808000);
+	PHY_SetBBReg(pDM_Odm->Adapter, rIQK_AGC_Pts, bMaskDWord, 0xf9000000);
+	PHY_SetBBReg(pDM_Odm->Adapter, rIQK_AGC_Pts, bMaskDWord, 0xf8000000);
 	
 	udelay(10000);
 
@@ -1981,7 +1981,7 @@ ODM_SingleDualAntennaDetection(
 	}
 
 	 // change to Antenna B
-	ODM_SetBBReg(pDM_Odm, rDPDT_control, 0x3, 0x2);
+	PHY_SetBBReg(pDM_Odm->Adapter, rDPDT_control, 0x3, 0x2);
 
 	udelay(10);	
 
@@ -1995,7 +1995,7 @@ ODM_SingleDualAntennaDetection(
 	}
 
 	// change to open case
-	ODM_SetBBReg(pDM_Odm, rDPDT_control, 0x3, 0x0);
+	PHY_SetBBReg(pDM_Odm->Adapter, rDPDT_control, 0x3, 0x0);
 
 	udelay(10);	
 	
@@ -2009,25 +2009,25 @@ ODM_SingleDualAntennaDetection(
 	}
 
 	//Close IQK Single Tone function
-	ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0x000000);	
+	PHY_SetBBReg(pDM_Odm->Adapter, rFPGA0_IQK, bMaskH3Bytes, 0x000000);
 
 	// external DPDT
-	ODM_SetBBReg(pDM_Odm, rDPDT_control, bMaskDWord, Reg92c);
+	PHY_SetBBReg(pDM_Odm->Adapter, rDPDT_control, bMaskDWord, Reg92c);
 
 	//internal S0/S1
-	ODM_SetBBReg(pDM_Odm, rS0S1_PathSwitch, bMaskDWord, Reg948);
-	ODM_SetBBReg(pDM_Odm, AGC_table_select, bMaskDWord, Regb2c);
+	PHY_SetBBReg(pDM_Odm->Adapter, rS0S1_PathSwitch, bMaskDWord, Reg948);
+	PHY_SetBBReg(pDM_Odm->Adapter, AGC_table_select, bMaskDWord, Regb2c);
 
-	ODM_SetBBReg(pDM_Odm, rFPGA0_AnalogParameter4, bMaskDWord, Reg88c);
-	ODM_SetBBReg(pDM_Odm, rOFDM0_TRMuxPar, bMaskDWord, Regc08);
-	ODM_SetBBReg(pDM_Odm, rFPGA0_XCD_RFInterfaceSW, bMaskDWord, Reg874);
-	ODM_SetBBReg(pDM_Odm, rOFDM0_XAAGCCore1, 0x7F, 0x40);
-	ODM_SetBBReg(pDM_Odm, rOFDM0_XAAGCCore1, bMaskDWord, Regc50);
-	ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_CHNLBW, bRFRegOffsetMask,CurrentChannel);
-	ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, 0x00, bRFRegOffsetMask,RfLoopReg);
+	PHY_SetBBReg(pDM_Odm->Adapter, rFPGA0_AnalogParameter4, bMaskDWord, Reg88c);
+	PHY_SetBBReg(pDM_Odm->Adapter, rOFDM0_TRMuxPar, bMaskDWord, Regc08);
+	PHY_SetBBReg(pDM_Odm->Adapter, rFPGA0_XCD_RFInterfaceSW, bMaskDWord, Reg874);
+	PHY_SetBBReg(pDM_Odm->Adapter, rOFDM0_XAAGCCore1, 0x7F, 0x40);
+	PHY_SetBBReg(pDM_Odm->Adapter, rOFDM0_XAAGCCore1, bMaskDWord, Regc50);
+	PHY_SetRFReg(pDM_Odm->Adapter, ODM_RF_PATH_A, RF_CHNLBW, bRFRegOffsetMask,CurrentChannel);
+	PHY_SetRFReg(pDM_Odm->Adapter, ODM_RF_PATH_A, 0x00, bRFRegOffsetMask,RfLoopReg);
 
 	//Reload AFE Registers
-	ODM_SetBBReg(pDM_Odm, rRx_Wait_CCA, bMaskDWord, AFE_rRx_Wait_CCA);
+	PHY_SetBBReg(pDM_Odm->Adapter, rRx_Wait_CCA, bMaskDWord, AFE_rRx_Wait_CCA);
 
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_ANT_DIV, ODM_DBG_LOUD, ("psd_report_A[%d]= %d \n", 2416, AntA_report));	
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_ANT_DIV, ODM_DBG_LOUD, ("psd_report_B[%d]= %d \n", 2416, AntB_report));	

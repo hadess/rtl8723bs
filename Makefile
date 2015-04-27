@@ -66,7 +66,6 @@ _HAL_INTFS_FILES :=	hal/hal_intf.o \
 
 _OUTSRC_FILES := hal/odm_debug.o	\
 		hal/odm_AntDiv.o\
-		hal/odm_interface.o\
 		hal/odm_HWConfig.o\
 		hal/odm.o\
 		hal/HalPhyRf.o\

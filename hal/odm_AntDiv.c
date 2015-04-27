@@ -45,9 +45,9 @@ ODM_SetAntConfig(
 	)
 {
 	if(antSetting == 0)		// ant A
-		ODM_SetBBReg(pDM_Odm, 0x948, bMaskDWord, 0x00000000);
+		PHY_SetBBReg(pDM_Odm->Adapter, 0x948, bMaskDWord, 0x00000000);
 	else if(antSetting == 1)
-		ODM_SetBBReg(pDM_Odm, 0x948, bMaskDWord, 0x00000280);
+		PHY_SetBBReg(pDM_Odm->Adapter, 0x948, bMaskDWord, 0x00000280);
 }
 
 //======================================================

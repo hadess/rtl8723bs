@@ -35,7 +35,7 @@ odm_ConfigRFReg_8723B(
 	}
 	else
 	{
-		ODM_SetRFReg(pDM_Odm, RF_PATH, RegAddr, bRFRegOffsetMask, Data);
+		PHY_SetRFReg(pDM_Odm->Adapter, RF_PATH, RegAddr, bRFRegOffsetMask, Data);
 		// Add 1us delay between BB/RF register setting.
 		udelay(1);
 
@@ -44,16 +44,16 @@ odm_ConfigRFReg_8723B(
 		{
 			u4Byte getvalue=0;
 			u1Byte	count =0;
-			getvalue = ODM_GetRFReg(pDM_Odm, RF_PATH, Addr, bMaskDWord);	
+			getvalue = PHY_QueryRFReg(pDM_Odm->Adapter, RF_PATH, Addr, bMaskDWord);
 
 			udelay(1);
 			
 			while((getvalue>>8)!=(Data>>8))
 			{
 				count++;
-				ODM_SetRFReg(pDM_Odm, RF_PATH, RegAddr, bRFRegOffsetMask, Data);
+				PHY_SetRFReg(pDM_Odm->Adapter, RF_PATH, RegAddr, bRFRegOffsetMask, Data);
 				udelay(1);
-				getvalue = ODM_GetRFReg(pDM_Odm, RF_PATH, Addr, bMaskDWord);
+				getvalue = PHY_QueryRFReg(pDM_Odm->Adapter, RF_PATH, Addr, bMaskDWord);
 				ODM_RT_TRACE(pDM_Odm,ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ConfigRFWithHeaderFile: [B6] getvalue 0x%x, Data 0x%x, count %d\n", getvalue, Data,count));			
 				if(count>5)
 					break;
@@ -64,19 +64,19 @@ odm_ConfigRFReg_8723B(
 		{
 			u4Byte getvalue=0;
 			u1Byte	count =0;
-			getvalue = ODM_GetRFReg(pDM_Odm, RF_PATH, Addr, bMaskDWord);	
+			getvalue = PHY_QueryRFReg(pDM_Odm->Adapter, RF_PATH, Addr, bMaskDWord);
 
 			udelay(1);
 			
 			while(getvalue!=Data)
 			{
 				count++;
-				ODM_SetRFReg(pDM_Odm, RF_PATH, RegAddr, bRFRegOffsetMask, Data);
+				PHY_SetRFReg(pDM_Odm->Adapter, RF_PATH, RegAddr, bRFRegOffsetMask, Data);
 				udelay(1);
 				//Do LCK againg 
-				ODM_SetRFReg(pDM_Odm, RF_PATH, 0x18, bRFRegOffsetMask, 0x0fc07);
+				PHY_SetRFReg(pDM_Odm->Adapter, RF_PATH, 0x18, bRFRegOffsetMask, 0x0fc07);
 				udelay(1);
-				getvalue = ODM_GetRFReg(pDM_Odm, RF_PATH, Addr, bMaskDWord);
+				getvalue = PHY_QueryRFReg(pDM_Odm->Adapter, RF_PATH, Addr, bMaskDWord);
 				ODM_RT_TRACE(pDM_Odm,ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ConfigRFWithHeaderFile: [B2] getvalue 0x%x, Data 0x%x, count %d\n", getvalue, Data,count));			
 				if(count>5)
 					break;
@@ -136,7 +136,7 @@ odm_ConfigBB_AGC_8723B(
     IN 	u4Byte 		Data
     )
 {
-	ODM_SetBBReg(pDM_Odm, Addr, Bitmask, Data);		
+	PHY_SetBBReg(pDM_Odm->Adapter, Addr, Bitmask, Data);
 	// Add 1us delay between BB/RF register setting.
 	udelay(1);
 
@@ -185,7 +185,7 @@ odm_ConfigBB_PHY_8723B(
 		udelay(1);
 	else 
 	{
-		ODM_SetBBReg(pDM_Odm, Addr, Bitmask, Data);		
+		PHY_SetBBReg(pDM_Odm->Adapter, Addr, Bitmask, Data);
 	}
 	
 	// Add 1us delay between BB/RF register setting.

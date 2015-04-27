@@ -41,7 +41,7 @@ odm_SetCrystalCap(
 
 	// 0x2C[23:18] = 0x2C[17:12] = CrystalCap
 	CrystalCap = CrystalCap & 0x3F;
-	ODM_SetBBReg(pDM_Odm, REG_MAC_PHY_CTRL, 0x00FFF000, (CrystalCap | (CrystalCap << 6)));	
+	PHY_SetBBReg(pDM_Odm->Adapter, REG_MAC_PHY_CTRL, 0x00FFF000, (CrystalCap | (CrystalCap << 6)));
 
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CFO_TRACKING, ODM_DBG_LOUD, ("odm_SetCrystalCap(): CrystalCap = 0x%x\n", CrystalCap));
 }
@@ -76,7 +76,7 @@ odm_SetATCStatus(
 	if(pCfoTrack->bATCStatus == ATCStatus)
 		return;
 	
-	ODM_SetBBReg(pDM_Odm, ODM_REG(BB_ATC,pDM_Odm), ODM_BIT(BB_ATC,pDM_Odm), ATCStatus);
+	PHY_SetBBReg(pDM_Odm->Adapter, ODM_REG(BB_ATC,pDM_Odm), ODM_BIT(BB_ATC,pDM_Odm), ATCStatus);
 	pCfoTrack->bATCStatus = ATCStatus;
 }
 
@@ -88,7 +88,7 @@ odm_GetATCStatus(
 	bool						ATCStatus;
 	PDM_ODM_T					pDM_Odm = (PDM_ODM_T)pDM_VOID;
 
-	ATCStatus = (bool)ODM_GetBBReg(pDM_Odm, ODM_REG(BB_ATC,pDM_Odm), ODM_BIT(BB_ATC,pDM_Odm));
+	ATCStatus = (bool)PHY_QueryBBReg(pDM_Odm->Adapter, ODM_REG(BB_ATC,pDM_Odm), ODM_BIT(BB_ATC,pDM_Odm));
 	return ATCStatus;
 }
 
