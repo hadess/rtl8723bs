@@ -20,6 +20,8 @@
 #ifndef __IOCTL_CFG80211_H__
 #define __IOCTL_CFG80211_H__ 
 
+#include <linux/version.h>
+
 #if (LINUX_VERSION_CODE < KERNEL_VERSION(4, 0, 0))
 #error This driver only works with kernel 4.0
 #endif
