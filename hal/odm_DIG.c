@@ -170,8 +170,6 @@ odm_NHMBB(
 			//Enable EDCCA since it is possible running Adaptivity testing
 			//test_status = 1;
             		pDM_Odm->adaptivity_flag = true;
-            		ODM_SetMACReg(pDM_Odm, REG_TX_PTCL_CTRL, BIT15, 0);	//don't ignore EDCCA	 reg520[15]=0
-			ODM_SetMACReg(pDM_Odm, REG_RD_CTRL, BIT11, 1);	//reg524[11]=1	
 			pDM_Odm->tolerance_cnt = 0;
             	}
 		else
@@ -184,8 +182,6 @@ odm_NHMBB(
 			if(pDM_Odm->tolerance_cnt > 3)
 			{
 				//test_status = 3;
-				ODM_SetMACReg(pDM_Odm, REG_TX_PTCL_CTRL, BIT15, 1);	//ignore EDCCA	reg520[15]=1
-            			ODM_SetMACReg(pDM_Odm, REG_RD_CTRL, BIT11, 0);		//reg524[11]=0
             			pDM_Odm->adaptivity_flag = false;
 			}
 		}
@@ -195,8 +191,6 @@ odm_NHMBB(
 		if(pDM_Odm->adaptivity_flag == true && pDM_Odm->NHM_cnt_0 <= 200)
 		{
 			//test_status = 2;
-			ODM_SetMACReg(pDM_Odm, REG_TX_PTCL_CTRL, BIT15, 0);	//don't ignore EDCCA	 reg520[15]=0
-			ODM_SetMACReg(pDM_Odm, REG_RD_CTRL, BIT11, 1);	//reg524[11]=1	
 			pDM_Odm->tolerance_cnt = 0;
 		}
 		else
@@ -209,8 +203,6 @@ odm_NHMBB(
 			if(pDM_Odm->tolerance_cnt >3)
 			{
 				//test_status = 4;
-				ODM_SetMACReg(pDM_Odm, REG_TX_PTCL_CTRL, BIT15, 1);	//ignore EDCCA	reg520[15]=1
-            			ODM_SetMACReg(pDM_Odm, REG_RD_CTRL, BIT11, 0);		//reg524[11]=0
             			pDM_Odm->adaptivity_flag = false;
 			}
 		}

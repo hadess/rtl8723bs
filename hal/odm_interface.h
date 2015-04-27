@@ -86,14 +86,6 @@ typedef void (*RT_WORKITEM_CALL_BACK)(void * pContext);
 //
 
 
-void
-ODM_SetMACReg(	
-	IN 	PDM_ODM_T	pDM_Odm,
-	IN	u4Byte		RegAddr,
-	IN	u4Byte		BitMask,
-	IN	u4Byte		Data
-	);
-
 u4Byte 
 ODM_GetMACReg(	
 	IN 	PDM_ODM_T	pDM_Odm,
