@@ -2216,7 +2216,7 @@ u32	rtw_BIP_verify(_adapter *padapter, u8 *precvframe)
 		res = RTW_RX_HANDLED;
 BIP_exit:
 
-	rtw_mfree(BIP_AAD, ori_len);
+	kfree(BIP_AAD);
 	return res;
 }
 
@@ -2498,7 +2498,7 @@ static void gf_mulx(u8 *pad)
 static void aes_encrypt_deinit(void *ctx)
 {
 	memset(ctx, 0, AES_PRIV_SIZE);
-	rtw_mfree(ctx, AES_PRIV_SIZE);
+	kfree(ctx);
 }
 
 

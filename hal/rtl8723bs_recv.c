@@ -183,7 +183,7 @@ static void rtl8723bs_c2h_packet_handler(PADAPTER padapter, u8 *pbuf, u16 length
 	res = rtw_c2h_packet_wk_cmd(padapter, tmpBuf, length);
 
 	if (res == false && tmpBuf != NULL)
-			rtw_mfree(tmpBuf, length);
+			kfree(tmpBuf);
 
 	//DBG_871X("-%s res(%d)\n", __func__, res);
 
@@ -490,7 +490,7 @@ initbuferror:
 
 	if (precvpriv->pallocated_recv_buf) {
 		n = NR_RECVBUFF * sizeof(struct recv_buf) + 4;
-		rtw_mfree(precvpriv->pallocated_recv_buf, n);
+		kfree(precvpriv->pallocated_recv_buf);
 		precvpriv->pallocated_recv_buf = NULL;
 	}
 
@@ -532,7 +532,7 @@ void rtl8723bs_free_recv_priv(PADAPTER padapter)
 
 	if (precvpriv->pallocated_recv_buf) {
 		n = NR_RECVBUFF * sizeof(struct recv_buf) + 4;
-		rtw_mfree(precvpriv->pallocated_recv_buf, n);
+		kfree(precvpriv->pallocated_recv_buf);
 		precvpriv->pallocated_recv_buf = NULL;
 	}
 }

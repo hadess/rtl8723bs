@@ -777,7 +777,7 @@ _func_enter_;
 exit:
 	
 	if (pwep) {
-		rtw_mfree((u8 *)pwep, wep_total_len);		
+		kfree((u8 *)pwep);
 	}	
 	
 _func_exit_;
@@ -940,7 +940,7 @@ static int rtw_set_wpa_ie(_adapter *padapter, char *pie, unsigned short ielen)
  	
 exit:
 
-	if (buf) rtw_mfree(buf, ielen);
+	if (buf) kfree(buf);
 
 	return ret;
 }
@@ -2685,7 +2685,7 @@ static int rtw_wx_set_enc_ext(struct net_device *dev,
 exit:
 	if(param)
 	{
-		rtw_mfree((u8*)param, param_len);
+		kfree((u8*)param);
 	}
 
 	return ret;
@@ -2785,7 +2785,7 @@ static int rtw_wx_read32(struct net_device *dev,
 	DBG_871X(KERN_INFO "%s: addr=0x%08X data=%s\n", __func__, addr, extra);
 
 exit:
-	rtw_mfree(ptmp, len);
+	kfree(ptmp);
 
 	return 0;
 }
@@ -4001,7 +4001,7 @@ static int wpa_supplicant_ioctl(struct net_device *dev, struct iw_point *p)
 	
 	if (copy_from_user(param, p->pointer, p->length))
 	{
-		rtw_mfree((u8*)param, p->length);
+		kfree((u8*)param);
 		ret = -EFAULT;
 		goto out;
 	}
@@ -4035,7 +4035,7 @@ static int wpa_supplicant_ioctl(struct net_device *dev, struct iw_point *p)
 	if (ret == 0 && copy_to_user(p->pointer, param, p->length))
 		ret = -EFAULT;
 
-	rtw_mfree((u8 *)param, p->length);
+	kfree((u8 *)param);
 	
 out:
 	
@@ -4367,7 +4367,7 @@ exit:
 
 	if(pwep)
 	{
-		rtw_mfree((u8 *)pwep, wep_total_len);		
+		kfree((u8 *)pwep);
 	}	
 	
 	return ret;
@@ -4707,7 +4707,7 @@ static int rtw_set_wps_beacon(struct net_device *dev, struct ieee_param *param, 
 
 	if(pmlmepriv->wps_beacon_ie)
 	{
-		rtw_mfree(pmlmepriv->wps_beacon_ie, pmlmepriv->wps_beacon_ie_len);
+		kfree(pmlmepriv->wps_beacon_ie);
 		pmlmepriv->wps_beacon_ie = NULL;			
 	}	
 
@@ -4750,7 +4750,7 @@ static int rtw_set_wps_probe_resp(struct net_device *dev, struct ieee_param *par
 
 	if(pmlmepriv->wps_probe_resp_ie)
 	{
-		rtw_mfree(pmlmepriv->wps_probe_resp_ie, pmlmepriv->wps_probe_resp_ie_len);
+		kfree(pmlmepriv->wps_probe_resp_ie);
 		pmlmepriv->wps_probe_resp_ie = NULL;			
 	}	
 
@@ -4787,7 +4787,7 @@ static int rtw_set_wps_assoc_resp(struct net_device *dev, struct ieee_param *par
 
 	if(pmlmepriv->wps_assoc_resp_ie)
 	{
-		rtw_mfree(pmlmepriv->wps_assoc_resp_ie, pmlmepriv->wps_assoc_resp_ie_len);
+		kfree(pmlmepriv->wps_assoc_resp_ie);
 		pmlmepriv->wps_assoc_resp_ie = NULL;			
 	}	
 
@@ -4954,7 +4954,7 @@ static int rtw_hostapd_ioctl(struct net_device *dev, struct iw_point *p)
 	
 	if (copy_from_user(param, p->pointer, p->length))
 	{
-		rtw_mfree((u8*)param, p->length);
+		kfree((u8*)param);
 		ret = -EFAULT;
 		goto out;
 	}
@@ -5058,7 +5058,7 @@ static int rtw_hostapd_ioctl(struct net_device *dev, struct iw_point *p)
 		ret = -EFAULT;
 
 
-	rtw_mfree((u8 *)param, p->length);
+	kfree((u8 *)param);
 	
 out:
 		
@@ -5130,7 +5130,7 @@ static int rtw_wx_set_priv(struct net_device *dev,
 			{
 				u32 free_len = pmlmepriv->wps_probe_req_ie_len;
 				pmlmepriv->wps_probe_req_ie_len = 0;
-				rtw_mfree(pmlmepriv->wps_probe_req_ie, free_len);
+				kfree(pmlmepriv->wps_probe_req_ie);
 				pmlmepriv->wps_probe_req_ie = NULL;			
 			}	
 
@@ -5451,7 +5451,7 @@ static int rtw_test(
 	}
 
 	if (copy_from_user(pbuf, wrqu->data.pointer, len)) {
-		rtw_mfree(pbuf, len);
+		kfree(pbuf);
 		DBG_871X("%s: copy from user fail!\n", __func__);
 		return -EFAULT;
 	}
@@ -5460,7 +5460,7 @@ static int rtw_test(
 	ptmp = (char*)pbuf;
 	pch = strsep(&ptmp, delim);
 	if ((pch == NULL) || (strlen(pch) == 0)) {
-		rtw_mfree(pbuf, len);
+		kfree(pbuf);
 		DBG_871X("%s: parameter error(level 1)!\n", __func__);
 		return -EFAULT;
 	}
@@ -5495,7 +5495,7 @@ static int rtw_test(
 		} while (count < 8);
 
 		if (count == 0) {
-			rtw_mfree(pbuf, len);
+			kfree(pbuf);
 			DBG_871X("%s: parameter error(level 2)!\n", __func__);
 			return -EFAULT;
 		}
@@ -5513,7 +5513,7 @@ static int rtw_test(
 		wrqu->data.length = strlen(extra) + 1;
 	}
 
-	rtw_mfree(pbuf, len);
+	kfree(pbuf);
 	return 0;
 }
 
@@ -6065,7 +6065,7 @@ static int rtw_ioctl_wext_private(struct net_device *dev, union iwreq_data *wrq_
 		}
 	}
 
-	rtw_mfree(input, input_len);
+	kfree(input);
 	input = NULL;
 
 	extra_size = 0;
@@ -6090,7 +6090,7 @@ static int rtw_ioctl_wext_private(struct net_device *dev, union iwreq_data *wrq_
 
 	if (extra_size == 0) {
 		extra = (u8*)&wdata;
-		rtw_mfree(buffer, 4096);
+		kfree(buffer);
 		buffer = NULL;
 	} else
 		extra = buffer;
@@ -6176,11 +6176,11 @@ static int rtw_ioctl_wext_private(struct net_device *dev, union iwreq_data *wrq_
 
 exit:
 	if (input)
-		rtw_mfree(input, input_len);
+		kfree(input);
 	if (buffer)
-		rtw_mfree(buffer, 4096);
+		kfree(buffer);
 	if (output)
-		rtw_mfree(output, 4096);
+		kfree(output);
 
 	return err;
 }

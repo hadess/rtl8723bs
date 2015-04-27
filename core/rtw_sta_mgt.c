@@ -149,8 +149,8 @@ inline struct sta_info *rtw_get_stainfo_by_offset(struct sta_priv *stapriv, int 
 }
 
 // this function is used to free the memory of lock || sema for all stainfos
-void rtw_mfree_all_stainfo(struct sta_priv *pstapriv );
-void rtw_mfree_all_stainfo(struct sta_priv *pstapriv )
+void kfree_all_stainfo(struct sta_priv *pstapriv );
+void kfree_all_stainfo(struct sta_priv *pstapriv )
 {
 	_irqL	 irqL;
 	_list	*plist, *phead;
@@ -175,12 +175,12 @@ _func_exit_;
 
 }
 
-void rtw_mfree_sta_priv_lock(struct	sta_priv *pstapriv);
-void rtw_mfree_sta_priv_lock(struct	sta_priv *pstapriv)
+void kfree_sta_priv_lock(struct	sta_priv *pstapriv);
+void kfree_sta_priv_lock(struct	sta_priv *pstapriv)
 {
 	struct wlan_acl_pool *pacl_list = &pstapriv->acl_list;
 
-	 rtw_mfree_all_stainfo(pstapriv); //be done before free sta_hash_lock
+	 kfree_all_stainfo(pstapriv); //be done before free sta_hash_lock
 }
 
 u32	_rtw_free_sta_priv(struct	sta_priv *pstapriv)
@@ -217,7 +217,7 @@ _func_enter_;
 		spin_unlock_bh(&pstapriv->sta_hash_lock);
 		/*===============================*/
 		
-		rtw_mfree_sta_priv_lock(pstapriv);
+		kfree_sta_priv_lock(pstapriv);
 
 		if(pstapriv->pallocated_stainfo_buf) {
 			vfree(pstapriv->pallocated_stainfo_buf);

@@ -54,11 +54,6 @@ u8* _rtw_zmalloc(u32 sz)
 	return pbuf;	
 }
 
-void	_rtw_mfree(u8 *pbuf, u32 sz)
-{
-	kfree(pbuf);
-}
-
 inline struct sk_buff *_rtw_skb_alloc(u32 sz)
 {
 	return __dev_alloc_skb(sz, in_interrupt() ? GFP_ATOMIC : GFP_KERNEL);
@@ -495,7 +490,7 @@ void rtw_buf_free(u8 **buf, u32 *buf_len)
 	if (*buf) {
 		u32 tmp_buf_len = *buf_len;
 		*buf_len = 0;
-		rtw_mfree(*buf, tmp_buf_len);
+		kfree(*buf);
 		*buf = NULL;
 	}
 }
@@ -530,7 +525,7 @@ keep_ori:
 
 	/* free ori */
 	if (ori && ori_len > 0)
-		rtw_mfree(ori, ori_len);
+		kfree(ori);
 }
 
 
@@ -622,6 +617,6 @@ struct rtw_cbuf *rtw_cbuf_alloc(u32 size)
  */
 void rtw_cbuf_free(struct rtw_cbuf *cbuf)
 {
-	rtw_mfree((u8*)cbuf, sizeof(*cbuf) + sizeof(void*)*cbuf->size);
+	kfree((u8*)cbuf);
 }
 

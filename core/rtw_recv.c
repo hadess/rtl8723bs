@@ -1677,7 +1677,7 @@ static sint validate_80211w_mgmt(_adapter *adapter, union recv_frame *precv_fram
 			memcpy(ptr+pattrib->hdrlen, mgmt_DATA, data_len);
 			//remove the iv and icv length
 			pattrib->pkt_len = pattrib->pkt_len - pattrib->iv_len - pattrib->icv_len;
-			rtw_mfree(mgmt_DATA, data_len);
+			kfree(mgmt_DATA);
 			/*//print packet content after decryption
 			{
 				int pp;

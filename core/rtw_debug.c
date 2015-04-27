@@ -1490,7 +1490,7 @@ int proc_get_btcoex_info(struct seq_file *m, void *v)
 
 	DBG_871X_SEL(m, "%s\n", pbuf);
 	
-	rtw_mfree(pbuf, bufsize);
+	kfree(pbuf);
 
 	return 0;
 }

@@ -106,7 +106,7 @@ typedef enum mstat_status{
 #define rtw_mstat_dump(sel) do {} while(0)
 u8*	_rtw_zmalloc(u32 sz);
 u8*	_rtw_malloc(u32 sz);
-void	_rtw_mfree(u8 *pbuf, u32 sz);
+void	_kfree(u8 *pbuf, u32 sz);
 
 struct sk_buff *_rtw_skb_alloc(u32 sz);
 void _rtw_skb_free(struct sk_buff *skb);
@@ -117,7 +117,6 @@ void _rtw_skb_queue_purge(struct sk_buff_head *list);
 
 #define rtw_malloc(sz)			_rtw_malloc((sz))
 #define rtw_zmalloc(sz)			_rtw_zmalloc((sz))
-#define rtw_mfree(pbuf, sz)		_rtw_mfree((pbuf), (sz))
 
 #define rtw_skb_alloc(size) _rtw_skb_alloc((size))
 #define rtw_skb_free(skb) _rtw_skb_free((skb))

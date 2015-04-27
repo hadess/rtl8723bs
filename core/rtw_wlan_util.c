@@ -1912,11 +1912,11 @@ int rtw_check_bcn_info(ADAPTER *Adapter, u8 *pframe, u32 packet_len)
 		}
 	}
 
-	rtw_mfree((u8 *)bssid, sizeof(WLAN_BSSID_EX));
+	kfree((u8 *)bssid);
 	return _SUCCESS;
 
 _mismatch:
-	rtw_mfree((u8 *)bssid, sizeof(WLAN_BSSID_EX));
+	kfree((u8 *)bssid);
 
 	if (pmlmepriv->NumOfBcnInfoChkFail == 0)
 	{
@@ -3315,7 +3315,7 @@ int rtw_dev_nlo_info_set(struct pno_nlo_info *nlo_info, pno_ssid_t* ssid,
 	if (source != NULL) {
 		len = vfs_read(fp, source, len, &pos);
 		rtw_parse_cipher_list(nlo_info, source);
-		rtw_mfree(source, 2048);
+		kfree(source);
 	}
 
 	set_fs(fs);
@@ -3425,15 +3425,15 @@ int rtw_dev_pno_set(struct net_device *net, pno_ssid_t* ssid, int num,
 
 failing:
 	if (pwrctl->pnlo_info) {
-		rtw_mfree(pwrctl->pnlo_info, sizeof(pno_nlo_info_t));
+		kfree(pwrctl->pnlo_info);
 		pwrctl->pnlo_info = NULL;
 	}
 	if (pwrctl->pno_ssid_list) {
-		rtw_mfree(pwrctl->pno_ssid_list, sizeof(pno_ssid_list_t));
+		kfree(pwrctl->pno_ssid_list);
 		pwrctl->pno_ssid_list = NULL;
 	}
 	if (pwrctl->pscan_info) {
-		rtw_mfree(pwrctl->pscan_info, sizeof(pno_scan_info_t));
+		kfree(pwrctl->pscan_info);
 		pwrctl->pscan_info = NULL;
 	}
 

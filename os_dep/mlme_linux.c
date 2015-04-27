@@ -222,7 +222,7 @@ _func_enter_;
 
 		wrqu.data.length = (wrqu.data.length<IW_CUSTOM_MAX) ? wrqu.data.length:IW_CUSTOM_MAX;
 
-		rtw_mfree(buff, IW_CUSTOM_MAX);
+		kfree(buff);
 	}
 
 _func_exit_;

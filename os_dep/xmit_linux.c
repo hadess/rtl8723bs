@@ -98,7 +98,7 @@ void rtw_os_xmit_resource_free(_adapter *padapter, struct xmit_buf *pxmitbuf,u32
 {
 	if (free_sz > 0 ) {
 		if(pxmitbuf->pallocated_buf)
-			rtw_mfree(pxmitbuf->pallocated_buf, free_sz);
+			kfree(pxmitbuf->pallocated_buf);
 	}
 }
 

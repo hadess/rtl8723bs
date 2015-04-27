@@ -830,7 +830,7 @@ u8 rtw_efuse_map_write(PADAPTER padapter, u16 addr, u16 cnts, u8 *data)
 
 exit:
 
-	rtw_mfree(map, mapLen);
+	kfree(map);
 
 	return ret;
 }
@@ -920,7 +920,7 @@ u8 rtw_BT_efuse_map_write(PADAPTER padapter, u16 addr, u16 cnts, u8 *data)
 
 exit:
 
-	rtw_mfree(map, mapLen);
+	kfree(map);
 
 	return ret;
 }

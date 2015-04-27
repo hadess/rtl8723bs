@@ -557,9 +557,9 @@ fwdl_stat:
 
 exit:
 	if (pFirmware)
-		rtw_mfree((u8*)pFirmware, sizeof(RT_FIRMWARE_8723B));
+		kfree((u8*)pFirmware);
 	if (pBTFirmware)
-		rtw_mfree((u8*)pBTFirmware, sizeof(RT_FIRMWARE_8723B));
+		kfree((u8*)pBTFirmware);
 	DBG_871X(" <=== rtl8723b_FirmwareDownload()\n");
 	return rtStatus;
 }
@@ -1091,7 +1091,7 @@ if(1)
 	}
 
 	if (efuseTbl)
-		rtw_mfree(efuseTbl, EFUSE_MAX_MAP_LEN);
+		kfree(efuseTbl);
 }
 
 static void
@@ -1245,7 +1245,7 @@ hal_ReadEFuse_BT(
 
 exit:
 	if (efuseTbl)
-		rtw_mfree(efuseTbl, EFUSE_BT_MAP_LEN);
+		kfree(efuseTbl);
 }
 
 static void

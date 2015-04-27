@@ -188,7 +188,7 @@ static void update_BCNTIM(_adapter *padapter)
 		{
 			memcpy(dst_ie, pbackup_remainder_ie, remainder_ielen);
 
-			rtw_mfree(pbackup_remainder_ie, remainder_ielen);
+			kfree(pbackup_remainder_ie);
 		}	
 
 		offset =  (uint)(dst_ie - pie);
@@ -263,7 +263,7 @@ void rtw_add_bcn_ie(_adapter *padapter, WLAN_BSSID_EX *pnetwork, u8 index, u8 *d
 	{
 		memcpy(dst_ie, pbackup_remainder_ie, remainder_ielen);
 
-		rtw_mfree(pbackup_remainder_ie, remainder_ielen);
+		kfree(pbackup_remainder_ie);
 	}
 
 	offset =  (uint)(dst_ie - pie);
@@ -305,7 +305,7 @@ void rtw_remove_bcn_ie(_adapter *padapter, WLAN_BSSID_EX *pnetwork, u8 index)
 	{
 		memcpy(dst_ie, pbackup_remainder_ie, remainder_ielen);
 
-		rtw_mfree(pbackup_remainder_ie, remainder_ielen);
+		kfree(pbackup_remainder_ie);
 	}
 
 	offset =  (uint)(dst_ie - pie);
@@ -1594,7 +1594,7 @@ u8 rtw_ap_set_pairwise_key(_adapter *padapter, struct sta_info *psta)
 
 	psetstakey_para = (struct set_stakey_parm*)rtw_zmalloc(sizeof(struct set_stakey_parm));
 	if(psetstakey_para==NULL){
-		rtw_mfree((u8 *) ph2c, sizeof(struct cmd_obj));
+		kfree((u8 *) ph2c);
 		res=_FAIL;
 		goto exit;
 	}
@@ -1634,7 +1634,7 @@ static int rtw_ap_set_key(_adapter *padapter, u8 *key, u8 alg, int keyid, u8 set
 	}
 	psetkeyparm=(struct setkey_parm*)rtw_zmalloc(sizeof(struct setkey_parm));
 	if(psetkeyparm==NULL){
-		rtw_mfree((unsigned char *)pcmd, sizeof(struct cmd_obj));
+		kfree((unsigned char *)pcmd);
 		res= _FAIL;
 		goto exit;
 	}
@@ -1831,7 +1831,7 @@ static void update_bcn_wps_ie(_adapter *padapter)
 	}
 
 	if(pbackup_remainder_ie)
-		rtw_mfree(pbackup_remainder_ie, remainder_ielen);
+		kfree(pbackup_remainder_ie);
 	
 	// deal with the case without set_tx_beacon_cmd() in update_beacon() 
 #if defined( CONFIG_INTERRUPT_BASED_TXBCN )

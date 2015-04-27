@@ -793,7 +793,7 @@ void devobj_deinit(struct dvobj_priv *pdvobj)
 	mutex_destroy(&pdvobj->setch_mutex);
 	mutex_destroy(&pdvobj->setbw_mutex);
 
-	rtw_mfree((u8*)pdvobj, sizeof(*pdvobj));
+	kfree((u8*)pdvobj);
 }	
 
 u8 rtw_reset_drv_sw(_adapter *padapter)
@@ -998,7 +998,7 @@ u8 rtw_free_drv_sw(_adapter *padapter)
 
 	rtw_free_pwrctrl_priv(padapter);
 
-	//rtw_mfree((void *)padapter, sizeof (padapter));
+	//kfree((void *)padapter);
 
 	rtw_hal_free_data(padapter);
 
@@ -1345,7 +1345,7 @@ void rtw_ndev_destructor(struct net_device *ndev)
 	DBG_871X(FUNC_NDEV_FMT"\n", FUNC_NDEV_ARG(ndev));
 
 	if (ndev->ieee80211_ptr)
-		rtw_mfree((u8 *)ndev->ieee80211_ptr, sizeof(struct wireless_dev));
+		kfree((u8 *)ndev->ieee80211_ptr);
 
 	free_netdev(ndev);
 }

@@ -239,7 +239,7 @@ _func_enter_;
 		memcpy(&val, ptmpbuf+shift, 4);
 		val = le32_to_cpu(val);
 
-		rtw_mfree(ptmpbuf, 8);
+		kfree(ptmpbuf);
 	}
 
 _func_exit_;
@@ -288,7 +288,7 @@ _func_enter_;
 		err = sd_read(pintfhdl, ftaddr, n, ptmpbuf);
 		if (!err)
 			memcpy(pbuf, ptmpbuf+shift, cnt);
-		rtw_mfree(ptmpbuf, n);
+		kfree(ptmpbuf);
 	}
 
 _func_exit_;
@@ -409,12 +409,12 @@ _func_enter_;
 		if (NULL == ptmpbuf) return -1;
 		err = sd_read(pintfhdl, ftaddr, 4, ptmpbuf);
 		if (err) {
-			rtw_mfree(ptmpbuf, n);
+			kfree(ptmpbuf);
 			return err;
 		}
 		memcpy(ptmpbuf+shift, pbuf, cnt);
 		err = sd_write(pintfhdl, ftaddr, n, ptmpbuf);
-		rtw_mfree(ptmpbuf, n);
+		kfree(ptmpbuf);
 	}
 
 _func_exit_;
@@ -518,7 +518,7 @@ static u32 sdio_read_port(
 #ifdef SDIO_DYNAMIC_ALLOC_MEM
 	if ((oldcnt != cnt) && (oldmem)) {
 		memcpy(oldmem, mem, oldcnt);
-		rtw_mfree(mem, cnt);
+		kfree(mem);
 	}
 #endif
 
@@ -636,7 +636,7 @@ s32 _sdio_local_read(
 		memcpy(pbuf, ptmpbuf, cnt);
 
 	if (ptmpbuf)
-		rtw_mfree(ptmpbuf, n);
+		kfree(ptmpbuf);
 
 	return err;
 }
@@ -678,7 +678,7 @@ s32 sdio_local_read(
 		memcpy(pbuf, ptmpbuf, cnt);
 
 	if (ptmpbuf)
-		rtw_mfree(ptmpbuf, n);
+		kfree(ptmpbuf);
 
 	return err;
 }
@@ -724,7 +724,7 @@ s32 _sdio_local_write(
 	err = _sd_write(pintfhdl, addr, cnt, ptmpbuf);
 
 	if (ptmpbuf)
-		rtw_mfree(ptmpbuf, cnt);
+		kfree(ptmpbuf);
 
 	return err;
 }
@@ -770,7 +770,7 @@ s32 sdio_local_write(
 	err = sd_write(pintfhdl, addr, cnt, ptmpbuf);
 
 	if (ptmpbuf)
-		rtw_mfree(ptmpbuf, cnt);
+		kfree(ptmpbuf);
 
 	return err;
 }
@@ -957,7 +957,7 @@ void ClearInterrupt8723BSdio(PADAPTER padapter)
 		sdio_local_write(padapter, SDIO_REG_HISR, 4, clear);
 	}
 
-	rtw_mfree(clear, 4);
+	kfree(clear);
 }
 #endif
 
@@ -1186,7 +1186,7 @@ void sd_int_dpc(PADAPTER padapter)
 			_sd_read(pintfhdl, addr, 4, status);
 			_sd_write(pintfhdl, addr, 4, status);
 			DBG_8192C("%s: SDIO_HISR_TXERR (0x%08x)\n", __func__, le32_to_cpu(*(u32*)status));
-			rtw_mfree(status, 4);
+			kfree(status);
 		} else {
 			DBG_8192C("%s: SDIO_HISR_TXERR, but can't allocate memory to read status!\n", __func__);
 		}
@@ -1212,7 +1212,7 @@ void sd_int_dpc(PADAPTER padapter)
 				if (c2h_id_filter_ccx_8723b((u8 *)c2h_evt)) {
 					/* Handle CCX report here */
 					rtw_hal_c2h_handler(padapter, (u8 *)c2h_evt);
-					rtw_mfree((u8*)c2h_evt, 16);
+					kfree((u8*)c2h_evt);
 				} else {
 					rtw_c2h_wk_cmd(padapter, (u8 *)c2h_evt);
 				}

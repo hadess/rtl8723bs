@@ -427,7 +427,7 @@ static _adapter *rtw_sdio_if1_init(struct dvobj_priv *dvobj, const struct sdio_d
 	
 free_hal_data:
 	if(status != _SUCCESS && padapter->HalData)
-		rtw_mfree(padapter->HalData, sizeof(padapter->HalData));
+		kfree(padapter->HalData);
 
 	if(status != _SUCCESS) {
 		rtw_wdev_unregister(padapter->rtw_wdev);

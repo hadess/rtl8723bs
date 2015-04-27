@@ -1877,13 +1877,13 @@ _func_enter_;
 
 xmitframe_coalesce_success:
 	spin_unlock_bh(&padapter->security_key_mutex);
-	rtw_mfree(BIP_AAD, ori_len);
+	kfree(BIP_AAD);
 _func_exit_;
 	return _SUCCESS;
 	
 xmitframe_coalesce_fail:
 	spin_unlock_bh(&padapter->security_key_mutex);
-	rtw_mfree(BIP_AAD, ori_len);
+	kfree(BIP_AAD);
 _func_exit_;
 
 	return _FAIL;
@@ -2401,7 +2401,7 @@ _func_enter_;
 
 	if (pxmitframe->alloc_addr) {
 		DBG_871X("################## %s with alloc_addr ##################\n", __func__);
-		rtw_mfree(pxmitframe->alloc_addr, sizeof(struct xmit_frame) + 4);
+		kfree(pxmitframe->alloc_addr);
 		goto check_pkt_complete;
 	}
 
@@ -2783,7 +2783,7 @@ void rtw_free_hwxmits(_adapter *padapter)
 
 	hwxmits = pxmitpriv->hwxmits;
 	if(hwxmits)
-		rtw_mfree((u8 *)hwxmits, (sizeof (struct hw_xmit) * pxmitpriv->hwxmit_entry));
+		kfree((u8 *)hwxmits);
 }
 
 void rtw_init_hwxmits(struct hw_xmit *phwxmit, sint entry)

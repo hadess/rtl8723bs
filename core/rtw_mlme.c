@@ -108,7 +108,7 @@ static void rtw_free_mlme_ie_data(u8 **ppie, u32 *plen)
 {
 	if(*ppie)
 	{		
-		rtw_mfree(*ppie, *plen);
+		kfree(*ppie);
 		*plen = 0;
 		*ppie=NULL;
 	}	
@@ -1080,7 +1080,7 @@ _func_enter_;
 	{
 		u32 free_len = pmlmepriv->wps_probe_req_ie_len;
 		pmlmepriv->wps_probe_req_ie_len = 0;
-		rtw_mfree(pmlmepriv->wps_probe_req_ie, free_len);
+		kfree(pmlmepriv->wps_probe_req_ie);
 		pmlmepriv->wps_probe_req_ie = NULL;			
 	}
 	
@@ -1903,7 +1903,7 @@ _func_enter_;
 					assoc_req_len = psta->assoc_req_len;
 					memcpy(passoc_req, psta->passoc_req, assoc_req_len);
 					
-					rtw_mfree(psta->passoc_req , psta->assoc_req_len);
+					kfree(psta->passoc_req);
 					psta->passoc_req = NULL;
 					psta->assoc_req_len = 0;
 				}
@@ -1914,7 +1914,7 @@ _func_enter_;
 			{
 				rtw_cfg80211_indicate_sta_assoc(adapter, passoc_req, assoc_req_len);
 
-				rtw_mfree(passoc_req, assoc_req_len);
+				kfree(passoc_req);
 			}			
 #endif //!CONFIG_AUTO_AP_MODE
 		}		
@@ -2664,7 +2664,7 @@ _func_enter_;
 	
 	psetauthparm=(struct setauth_parm*)rtw_zmalloc(sizeof(struct setauth_parm));
 	if(psetauthparm==NULL){
-		rtw_mfree((unsigned char *)pcmd, sizeof(struct	cmd_obj));
+		kfree((unsigned char *)pcmd);
 		res= _FAIL;
 		goto exit;
 	}
@@ -2751,7 +2751,7 @@ _func_enter_;
 		default:
 			RT_TRACE(_module_rtl871x_mlme_c_,_drv_err_,("\n rtw_set_key:psecuritypriv->dot11PrivacyAlgrthm = %x (must be 1 or 2 or 4 or 5)\n",psecuritypriv->dot11PrivacyAlgrthm));
 			res= _FAIL;
-			rtw_mfree((unsigned char *)psetkeyparm, sizeof(struct setkey_parm));
+			kfree((unsigned char *)psetkeyparm);
 			goto exit;
 	}
 		
@@ -2759,7 +2759,7 @@ _func_enter_;
 	if(enqueue){
 		pcmd = (struct	cmd_obj*)rtw_zmalloc(sizeof(struct	cmd_obj));
 		if(pcmd==NULL){
-			rtw_mfree((unsigned char *)psetkeyparm, sizeof(struct setkey_parm));
+			kfree((unsigned char *)psetkeyparm);
 			res= _FAIL;  //try again
 			goto exit;
 		}
@@ -2778,7 +2778,7 @@ _func_enter_;
 	}
 	else{
 		setkey_hdl(adapter, (u8 *)psetkeyparm);
-		rtw_mfree((u8 *) psetkeyparm, sizeof(struct setkey_parm));
+		kfree((u8 *) psetkeyparm);
 	}
 exit:
 _func_exit_;
