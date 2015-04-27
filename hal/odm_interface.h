@@ -68,12 +68,4 @@ typedef enum _ODM_H2C_CMD
 }ODM_H2C_CMD;
 
 
-//
-// 2012/02/17 MH For non-MP compile pass only. Linux does not support workitem.
-// Suggest HW team to use thread instead of workitem. Windows also support the feature.
-//
-typedef  void *PRT_WORK_ITEM ;
-typedef  void RT_WORKITEM_HANDLE,*PRT_WORKITEM_HANDLE;
-typedef void (*RT_WORKITEM_CALL_BACK)(void * pContext);
-
 #endif	// __ODM_INTERFACE_H__
