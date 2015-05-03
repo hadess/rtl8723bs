@@ -624,7 +624,8 @@ void SelectChannel(_adapter *padapter, unsigned char channel)
 {
 	struct mlme_ext_priv *pmlmeext = &padapter->mlmeextpriv;	
 
-	mutex_lock_interruptible(&(adapter_to_dvobj(padapter)->setch_mutex));
+	if (mutex_lock_interruptible(&(adapter_to_dvobj(padapter)->setch_mutex)))
+		return;
 	
 	//saved channel info
 	rtw_set_oper_ch(padapter, channel);
@@ -638,7 +639,8 @@ void SetBWMode(_adapter *padapter, unsigned short bwmode, unsigned char channel_
 {
 	struct mlme_ext_priv *pmlmeext = &padapter->mlmeextpriv;
 
-	mutex_lock_interruptible(&(adapter_to_dvobj(padapter)->setbw_mutex));
+	if (mutex_lock_interruptible(&(adapter_to_dvobj(padapter)->setbw_mutex)))
+		return;
 
 	//saved bw info
 	rtw_set_oper_bw(padapter, bwmode);
@@ -672,7 +674,8 @@ void set_channel_bwmode(_adapter *padapter, unsigned char channel, unsigned char
 	}
 
 	//set Channel
-	mutex_lock_interruptible(&(adapter_to_dvobj(padapter)->setch_mutex));
+	if (mutex_lock_interruptible(&(adapter_to_dvobj(padapter)->setch_mutex)))
+		return;
 
 	//saved channel/bw info
 	rtw_set_oper_ch(padapter, channel);

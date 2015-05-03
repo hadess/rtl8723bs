@@ -2676,16 +2676,17 @@ s32 dump_mgntframe_and_wait_ack(_adapter *padapter, struct xmit_frame *pmgntfram
 		return -1;
 	}
 
-	mutex_lock_interruptible(&pxmitpriv->ack_tx_mutex);
-	pxmitpriv->ack_tx = true;
-	pxmitpriv->seq_no = seq_no++;
-	pmgntframe->ack_report = 1;
-	if (rtw_hal_mgnt_xmit(padapter, pmgntframe) == _SUCCESS) {
-		ret = rtw_ack_tx_wait(pxmitpriv, timeout_ms);
-	}
+	if (mutex_lock_interruptible(&pxmitpriv->ack_tx_mutex) == 0) {
+		pxmitpriv->ack_tx = true;
+		pxmitpriv->seq_no = seq_no++;
+		pmgntframe->ack_report = 1;
+		if (rtw_hal_mgnt_xmit(padapter, pmgntframe) == _SUCCESS) {
+			ret = rtw_ack_tx_wait(pxmitpriv, timeout_ms);
+		}
 
-	pxmitpriv->ack_tx = false;
-	mutex_unlock(&pxmitpriv->ack_tx_mutex);
+		pxmitpriv->ack_tx = false;
+		mutex_unlock(&pxmitpriv->ack_tx_mutex);
+	}
 
 	 return ret;
 }

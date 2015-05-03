@@ -594,18 +594,18 @@ _next:
 
 post_process:
 
-		mutex_lock_interruptible(&(pcmd->padapter->cmdpriv.sctx_mutex));
-		if (pcmd->sctx) {
-			DBG_871X_LEVEL(_drv_always_, FUNC_ADPT_FMT" pcmd->sctx\n",
-				FUNC_ADPT_ARG(pcmd->padapter));
+		if (mutex_lock_interruptible(&(pcmd->padapter->cmdpriv.sctx_mutex)) == 0) {
+			if (pcmd->sctx) {
+				DBG_871X_LEVEL(_drv_always_, FUNC_ADPT_FMT" pcmd->sctx\n",
+					       FUNC_ADPT_ARG(pcmd->padapter));
 
-			if (pcmd->res == H2C_SUCCESS)
-				rtw_sctx_done(&pcmd->sctx);
-			else
-				rtw_sctx_done_err(&pcmd->sctx, RTW_SCTX_DONE_CMD_ERROR);
+				if (pcmd->res == H2C_SUCCESS)
+					rtw_sctx_done(&pcmd->sctx);
+				else
+					rtw_sctx_done_err(&pcmd->sctx, RTW_SCTX_DONE_CMD_ERROR);
+			}
+			mutex_unlock(&(pcmd->padapter->cmdpriv.sctx_mutex));
 		}
-		mutex_unlock(&(pcmd->padapter->cmdpriv.sctx_mutex));
-
 
 		if((cmd_process_time = jiffies_to_msecs(jiffies - cmd_start_time)) > 1000)
 		{
@@ -1179,10 +1179,11 @@ _func_enter_;
 
 		if (res == _SUCCESS && (flags & RTW_CMDF_WAIT_ACK)) {
 			rtw_sctx_wait(&sctx, __func__);
-			mutex_lock_interruptible(&pcmdpriv->sctx_mutex);
-			if (sctx.status == RTW_SCTX_SUBMITTED)
-				pcmd->sctx = NULL;
-			mutex_unlock(&pcmdpriv->sctx_mutex);
+			if (mutex_lock_interruptible(&pcmdpriv->sctx_mutex) == 0) {
+				if (sctx.status == RTW_SCTX_SUBMITTED)
+					pcmd->sctx = NULL;
+				mutex_unlock(&pcmdpriv->sctx_mutex);
+			}
 		}
 	}
 

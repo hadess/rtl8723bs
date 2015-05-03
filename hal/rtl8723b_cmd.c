@@ -76,7 +76,8 @@ _func_enter_;
 
 	padapter = GET_PRIMARY_ADAPTER(padapter);
 	pHalData = GET_HAL_DATA(padapter);
-	mutex_lock_interruptible(&(adapter_to_dvobj(padapter)->h2c_fwcmd_mutex));
+	if (mutex_lock_interruptible(&(adapter_to_dvobj(padapter)->h2c_fwcmd_mutex)))
+		return ret;
 
 	if (!pCmdBuffer) {
 		goto exit;
