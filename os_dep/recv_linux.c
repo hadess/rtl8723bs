@@ -114,7 +114,7 @@ void rtw_os_free_recvframe(union recv_frame *precvframe)
 {
 	if(precvframe->u.hdr.pkt)
 	{
-		rtw_skb_free(precvframe->u.hdr.pkt);//free skb by driver
+		dev_kfree_skb_any(precvframe->u.hdr.pkt);//free skb by driver
 
 		precvframe->u.hdr.pkt = NULL;
 	}
@@ -149,7 +149,7 @@ void rtw_os_recv_resource_free(struct recv_priv *precvpriv)
 	{
 		if(precvframe->u.hdr.pkt)
 		{
-			rtw_skb_free(precvframe->u.hdr.pkt);//free skb by driver
+			dev_kfree_skb_any(precvframe->u.hdr.pkt);//free skb by driver
 			precvframe->u.hdr.pkt = NULL;
 		}
 		precvframe++;
@@ -171,7 +171,7 @@ int rtw_os_recvbuf_resource_free(_adapter *padapter, struct recv_buf *precvbuf)
 
 	if(precvbuf->pskb)
 	{
-		rtw_skb_free(precvbuf->pskb);
+		dev_kfree_skb_any(precvbuf->pskb);
 	}
 	return ret;
 

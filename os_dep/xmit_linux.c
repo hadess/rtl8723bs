@@ -121,7 +121,7 @@ void rtw_os_pkt_complete(_adapter *padapter, _pkt *pkt)
 			netif_wake_subqueue(padapter->pnetdev, queue);
 	}
 
-	rtw_skb_free(pkt);
+	dev_kfree_skb_any(pkt);
 }
 
 void rtw_os_xmit_complete(_adapter *padapter, struct xmit_frame *pxframe)
@@ -227,18 +227,18 @@ static int rtw_mlcst2unicst(_adapter *padapter, struct sk_buff *skb)
 				DBG_COUNTER(padapter->tx_logs.os_tx_m2u_entry_err_xmit);
 				DBG_871X("%s()-%d: rtw_xmit() return error!\n", __FUNCTION__, __LINE__);
 				pxmitpriv->tx_drop++;
-				rtw_skb_free(newskb);
+				dev_kfree_skb_any(newskb);
 			}
 		} else {
 			DBG_COUNTER(padapter->tx_logs.os_tx_m2u_entry_err_skb);
 			DBG_871X("%s-%d: rtw_skb_copy() failed!\n", __FUNCTION__, __LINE__);
 			pxmitpriv->tx_drop++;
-			//rtw_skb_free(skb);
+			//dev_kfree_skb_any(skb);
 			return false;	// Caller shall tx this multicast frame via normal way.
 		}
 	}
 
-	rtw_skb_free(skb);
+	dev_kfree_skb_any(skb);
 	return true;
 }
 
@@ -308,7 +308,7 @@ _func_enter_;
 
 drop_packet:
 	pxmitpriv->tx_drop++;
-	rtw_skb_free(pkt);
+	dev_kfree_skb_any(pkt);
 	RT_TRACE(_module_xmit_osdep_c_, _drv_notice_, ("rtw_xmit_entry: drop, tx_drop=%d\n", (u32)pxmitpriv->tx_drop));
 
 exit:

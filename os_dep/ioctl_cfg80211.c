@@ -2665,7 +2665,7 @@ static int rtw_cfg80211_monitor_if_xmit_entry(struct sk_buff *skb, struct net_de
 	
 fail:
 	
-	rtw_skb_free(skb);
+	dev_kfree_skb_any(skb);
 
 	return 0;
 	

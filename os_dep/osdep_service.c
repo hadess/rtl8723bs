@@ -59,11 +59,6 @@ inline struct sk_buff *_rtw_skb_alloc(u32 sz)
 	return __dev_alloc_skb(sz, in_interrupt() ? GFP_ATOMIC : GFP_KERNEL);
 }
 
-inline void _rtw_skb_free(struct sk_buff *skb)
-{
-	dev_kfree_skb_any(skb);
-}
-
 inline struct sk_buff *_rtw_skb_copy(const struct sk_buff *skb)
 {
 	return skb_copy(skb, in_interrupt() ? GFP_ATOMIC : GFP_KERNEL);
@@ -85,7 +80,7 @@ void _rtw_skb_queue_purge(struct sk_buff_head *list)
 	struct sk_buff *skb;
 
 	while ((skb = skb_dequeue(list)) != NULL)
-		_rtw_skb_free(skb);
+		dev_kfree_skb_any(skb);
 }
 
 void rtw_init_timer(_timer *ptimer, void *padapter, void *pfunc)
