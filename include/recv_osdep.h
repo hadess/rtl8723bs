@@ -37,7 +37,6 @@ int	rtw_init_recv_priv(struct recv_priv *precvpriv, _adapter *padapter);
 void rtw_free_recv_priv (struct recv_priv *precvpriv);
 
 
-int rtw_os_recv_resource_init(struct recv_priv *precvpriv, _adapter *padapter);
 int rtw_os_recv_resource_alloc(_adapter *padapter, union recv_frame *precvframe);
 void rtw_os_recv_resource_free(struct recv_priv *precvpriv);
 
