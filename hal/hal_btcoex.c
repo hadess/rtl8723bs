@@ -1307,20 +1307,6 @@ void EXhalbtcoutsrc_BtInfoNotify(PBTC_COEXIST pBtCoexist, u8 *tmpBuf, u8 length)
 //	halbtcoutsrc_NormalLowPower(pBtCoexist);
 }
 
-void
-EXhalbtcoutsrc_RfStatusNotify(
-	IN	PBTC_COEXIST		pBtCoexist,
-	IN	u1Byte 				type
-	)
-{
-	if(!halbtcoutsrc_IsBtCoexistAvailable(pBtCoexist))
-		return;
-	pBtCoexist->statistics.cntRfStatusNotify++;
-	
-	if(pBtCoexist->boardInfo.btdmAntNum == 1)
-		EXhalbtc8723b1ant_RfStatusNotify(pBtCoexist, type);
-}
-
 void EXhalbtcoutsrc_HaltNotify(PBTC_COEXIST pBtCoexist)
 {
 	if (!halbtcoutsrc_IsBtCoexistAvailable(pBtCoexist))
@@ -1332,18 +1318,6 @@ void EXhalbtcoutsrc_HaltNotify(PBTC_COEXIST pBtCoexist)
 		EXhalbtc8723b1ant_HaltNotify(pBtCoexist);
 
 	pBtCoexist->bBinded = false;
-}
-
-static void EXhalbtcoutsrc_SwitchBtTRxMask(PBTC_COEXIST pBtCoexist)
-{
-	if (pBtCoexist->boardInfo.btdmAntNum == 2)
-	{
-		halbtcoutsrc_SetBtReg(pBtCoexist, 0, 0x3c, 0x01); //BT goto standby while GNT_BT 1-->0
-	}
-	else if (pBtCoexist->boardInfo.btdmAntNum == 1)
-	{
-		halbtcoutsrc_SetBtReg(pBtCoexist, 0, 0x3c, 0x15); //BT goto standby while GNT_BT 1-->0
-	}
 }
 
 void EXhalbtcoutsrc_PnpNotify(PBTC_COEXIST pBtCoexist, u8 pnpState)
@@ -1362,27 +1336,6 @@ void EXhalbtcoutsrc_PnpNotify(PBTC_COEXIST pBtCoexist, u8 pnpState)
 		EXhalbtc8723b2ant_PnpNotify(pBtCoexist,pnpState);
 }
 
-void EXhalbtcoutsrc_CoexDmSwitch(PBTC_COEXIST pBtCoexist)
-{
-	if (!halbtcoutsrc_IsBtCoexistAvailable(pBtCoexist))
-		return;
-	pBtCoexist->statistics.cntCoexDmSwitch++;
-
-	halbtcoutsrc_LeaveLowPower(pBtCoexist);
-
-	if (pBtCoexist->boardInfo.btdmAntNum == 1)
-	{
-		pBtCoexist->bStopCoexDm = true;
-		EXhalbtc8723b1ant_CoexDmReset(pBtCoexist);
-		EXhalbtcoutsrc_SetAntNum(BT_COEX_ANT_TYPE_DETECTED, 2);
-		EXhalbtc8723b2ant_InitHwConfig(pBtCoexist, false);
-		EXhalbtc8723b2ant_InitCoexDm(pBtCoexist);
-		pBtCoexist->bStopCoexDm = false;
-	}
-
-	halbtcoutsrc_NormalLowPower(pBtCoexist);
-}
-
 void EXhalbtcoutsrc_Periodical(PBTC_COEXIST pBtCoexist)
 {
 	if (!halbtcoutsrc_IsBtCoexistAvailable(pBtCoexist))
@@ -1399,51 +1352,6 @@ void EXhalbtcoutsrc_Periodical(PBTC_COEXIST pBtCoexist)
 		EXhalbtc8723b1ant_Periodical(pBtCoexist);
 
 //	halbtcoutsrc_NormalLowPower(pBtCoexist);
-}
-
-void EXhalbtcoutsrc_DbgControl(PBTC_COEXIST pBtCoexist, u8 opCode, u8 opLen, u8 *pData)
-{
-	if (!halbtcoutsrc_IsBtCoexistAvailable(pBtCoexist))
-		return;
-
-	pBtCoexist->statistics.cntDbgCtrl++;
-
-	// This function doesn't be called yet,
-	// default no need to leave low power to avoid deadlock
-//	halbtcoutsrc_LeaveLowPower(pBtCoexist);
-
-//	halbtcoutsrc_NormalLowPower(pBtCoexist);
-}
-
-void EXhalbtcoutsrc_UpdateMinBtRssi(s8 btRssi)
-{
-	PBTC_COEXIST pBtCoexist = &GLBtCoexist;
-
-	if (!halbtcoutsrc_IsBtCoexistAvailable(pBtCoexist))
-		return;
-
-	pBtCoexist->stackInfo.minBtRssi = btRssi;
-}
-
-void EXhalbtcoutsrc_SetHciVersion(u16 hciVersion)
-{
-	PBTC_COEXIST pBtCoexist = &GLBtCoexist;
-
-	if (!halbtcoutsrc_IsBtCoexistAvailable(pBtCoexist))
-		return;
-
-	pBtCoexist->stackInfo.hciVersion = hciVersion;
-}
-
-void EXhalbtcoutsrc_SetBtPatchVersion(u16 btHciVersion, u16 btPatchVersion)
-{
-	PBTC_COEXIST pBtCoexist = &GLBtCoexist;
-
-	if (!halbtcoutsrc_IsBtCoexistAvailable(pBtCoexist))
-		return;
-
-	pBtCoexist->btInfo.btRealFwVer = btPatchVersion;
-	pBtCoexist->btInfo.btHciVer = btHciVersion;
 }
 
 void EXhalbtcoutsrc_SetChipType(u8 chipType)
@@ -1546,15 +1454,6 @@ void hal_btcoex_SetChipType(PADAPTER padapter, u8 chipType)
 	EXhalbtcoutsrc_SetChipType(chipType);
 }
 
-u8 hal_btcoex_GetChipType(PADAPTER padapter)
-{
-	PHAL_DATA_TYPE	pHalData;
-
-
-	pHalData = GET_HAL_DATA(padapter);
-	return pHalData->bt_coexist.btChipType;
-}
-
 void hal_btcoex_SetPgAntNum(PADAPTER padapter, u8 antNum)
 {
 	PHAL_DATA_TYPE	pHalData;
@@ -1564,16 +1463,6 @@ void hal_btcoex_SetPgAntNum(PADAPTER padapter, u8 antNum)
 
 	pHalData->bt_coexist.btTotalAntNum = antNum;
 	EXhalbtcoutsrc_SetAntNum(BT_COEX_ANT_TYPE_PG, antNum);
-}
-
-u8 hal_btcoex_GetPgAntNum(PADAPTER padapter)
-{
-	PHAL_DATA_TYPE pHalData;
-
-
-	pHalData = GET_HAL_DATA(padapter);
-
-	return pHalData->bt_coexist.btTotalAntNum;
 }
 
 void hal_btcoex_SetSingleAntPath(PADAPTER padapter, u8 singleAntPath)
@@ -1666,11 +1555,6 @@ void hal_btcoex_HaltNotify(PADAPTER padapter)
 	EXhalbtcoutsrc_HaltNotify(&GLBtCoexist);
 }
 
-void hal_btcoex_SwitchBtTRxMask(PADAPTER padapter)
-{
-	EXhalbtcoutsrc_SwitchBtTRxMask(&GLBtCoexist);
-}
-
 void hal_btcoex_Hanlder(PADAPTER padapter)
 {
 	EXhalbtcoutsrc_Periodical(&GLBtCoexist);
@@ -1681,25 +1565,9 @@ s32 hal_btcoex_IsBTCoexCtrlAMPDUSize(PADAPTER padapter)
 	return (s32)GLBtCoexist.btInfo.bBtCtrlAggBufSize;
 }
 
-u32 hal_btcoex_GetAMPDUSize(PADAPTER padapter)
-{
-	return (u32)GLBtCoexist.btInfo.aggBufSize;
-}
-
 void hal_btcoex_SetManualControl(PADAPTER padapter, u8 bmanual)
 {
 	GLBtCoexist.bManualControl = bmanual;
-}
-
-u8 hal_btcoex_1Ant(PADAPTER padapter)
-{
-	if (hal_btcoex_IsBtExist(padapter) == false)
-		return false;
-
-	if (GLBtCoexist.boardInfo.btdmAntNum == 1)
-		return true;
-
-	return false;
 }
 
 u8 hal_btcoex_IsBtControlLps(PADAPTER padapter)
@@ -1911,23 +1779,4 @@ exit:
 //	DBG_871X(FUNC_ADPT_FMT ": usedsize=%d\n", FUNC_ADPT_ARG(padapter), count);
 
 	return count;
-}
-
-u8 hal_btcoex_IncreaseScanDeviceNum(PADAPTER padapter)
-{
-	if (!hal_btcoex_IsBtExist(padapter))
-		return false;
-
-	if (GLBtCoexist.btInfo.bIncreaseScanDevNum)
-		return true;
-
-	return false;
-}
-
-u8 hal_btcoex_IsBtLinkExist(PADAPTER padapter)
-{
-	if (GLBtCoexist.btLinkInfo.bBtLinkExist)
-		return true;
-
-	return false;
 }

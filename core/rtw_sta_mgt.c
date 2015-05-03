@@ -509,8 +509,6 @@ _func_enter_;
 	pstapriv->sta_dz_bitmap &=~BIT(psta->aid);
 	pstapriv->tim_bitmap &=~BIT(psta->aid);	
 
-	//rtw_indicate_sta_disassoc_event(padapter, psta);
-
 	if ((psta->aid >0)&&(pstapriv->sta_aid[psta->aid - 1] == psta))
 	{
 		pstapriv->sta_aid[psta->aid - 1] = NULL;

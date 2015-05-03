@@ -339,14 +339,6 @@ odm_RxPhyStatus92CSeries_Parsing(
 		//isCCKrate, pPhyInfo->RxPWDBAll, pPhyStaRpt->cck_agc_rpt_ofdm_cfosho_a);
 }
 
-void
-odm_Init_RSSIForDM(
-	IN OUT	PDM_ODM_T	pDM_Odm
-	)
-{
-
-}
-
 static void
 odm_Process_RSSIForDM(	
 	IN OUT	PDM_ODM_T					pDM_Odm,
@@ -563,22 +555,6 @@ ODM_PhyStatusQuery(
 
 	ODM_PhyStatusQuery_92CSeries(pDM_Odm,pPhyInfo,pPhyStatus,pPktinfo);
 }
-	
-// For future use.
-void
-ODM_MacStatusQuery(
-	IN OUT	PDM_ODM_T					pDM_Odm,
-	IN 		pu1Byte						pMacStatus,
-	IN		u1Byte						MacID,	
-	IN		bool						bPacketMatchBSSID,
-	IN		bool						bPacketToSelf,
-	IN		bool						bPacketBeacon
-	)
-{
-	// 2011/10/19 Driver team will handle in the future.
-	
-}
-
 
 //
 // If you want to add a new IC, Please follow below template and generate a new one.

@@ -189,13 +189,6 @@ typedef enum tag_DIG_Connect_Definition
 #define 		RSSI_OFFSET_DIG				0x05
 
 void
-ODM_ChangeDynamicInitGainThresh(
-	IN		void *					pDM_VOID,
-	IN		u4Byte  					DM_Type,
-	IN		u4Byte 					DM_Value
-	);
-
-void
 odm_NHMCounterStatisticsInit(
 	IN		void *					pDM_VOID
 	);
@@ -271,11 +264,6 @@ odm_DIGbyRSSI_LPS(
 	);
 
 void
-odm_DigForBtHsMode(
-	IN		void *					pDM_VOID
-	);
-
-void
 odm_FalseAlarmCounterStatistics(
 	IN		void *					pDM_VOID
 	);
@@ -297,21 +285,9 @@ odm_ForbiddenIGICheck(
 	IN		u1Byte					CurrentIGI
 	);
 
-void
-odm_InbandNoiseCalculate (	
-	IN		void *					pDM_VOID
-	);
-
 bool 
 odm_DigAbort(
 	IN		void *					pDM_VOID
-	);
-
-void
-odm_PauseCCKPacketDetection(
-	IN		void *					pDM_VOID,
-	IN		ODM_Pause_CCKPD_TYPE	PauseType,
-	IN		u1Byte					CCKPDThreshold
 	);
 
 void

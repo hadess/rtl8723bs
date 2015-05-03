@@ -31,7 +31,6 @@ extern u8 SdioLocalCmd52Read1Byte(PADAPTER padapter, u32 addr);
 extern void SdioLocalCmd52Write1Byte(PADAPTER padapter, u32 addr, u8 v);
 extern s32 _sdio_local_read(PADAPTER padapter, u32 addr, u32 cnt, u8 *pbuf);
 extern s32 sdio_local_read(PADAPTER padapter, u32 addr, u32 cnt, u8 *pbuf);
-extern s32 _sdio_local_write(PADAPTER padapter, u32 addr, u32 cnt, u8 *pbuf);
 extern s32 sdio_local_write(PADAPTER padapter, u32 addr, u32 cnt, u8 *pbuf);
 
 u32 _sdio_read32(PADAPTER padapter, u32 addr);
@@ -50,7 +49,6 @@ extern void DisableInterrupt8723BSdio(PADAPTER padapter);
 extern u8 HalQueryTxBufferStatus8723BSdio(PADAPTER padapter);
 extern u8 HalQueryTxOQTBufferStatus8723BSdio(PADAPTER padapter);
 #if defined(CONFIG_WOWLAN) || defined(CONFIG_AP_WOWLAN)
-extern void DisableInterruptButCpwm28723BSdio(PADAPTER padapter);
 extern void ClearInterrupt8723BSdio(PADAPTER padapter);
 #endif //CONFIG_WOWLAN
 

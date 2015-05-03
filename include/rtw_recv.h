@@ -464,7 +464,6 @@ typedef enum _RX_PACKET_TYPE{
 
 extern union recv_frame *_rtw_alloc_recvframe (_queue *pfree_recv_queue);  //get a free recv_frame from pfree_recv_queue
 extern union recv_frame *rtw_alloc_recvframe (_queue *pfree_recv_queue);  //get a free recv_frame from pfree_recv_queue
-extern void rtw_init_recvframe(union recv_frame *precvframe ,struct recv_priv *precvpriv);
 extern int	 rtw_free_recvframe(union recv_frame *precvframe, _queue *pfree_recv_queue);
 
 #define rtw_dequeue_recvframe(queue) rtw_alloc_recvframe(queue)
@@ -489,13 +488,6 @@ __inline static u8 *get_rxmem(union recv_frame *precvframe)
 	return precvframe->u.hdr.rx_head;
 }
 
-__inline static u8 *get_rx_status(union recv_frame *precvframe)
-{
-
-	return get_rxmem(precvframe);
-
-}
-
 __inline static u8 *get_recvframe_data(union recv_frame *precvframe)
 {
 
@@ -506,34 +498,6 @@ __inline static u8 *get_recvframe_data(union recv_frame *precvframe)
 	return precvframe->u.hdr.rx_data;
 
 }
-
-__inline static u8 *recvframe_push(union recv_frame *precvframe, sint sz)
-{
-	// append data before rx_data
-
-	/* add data to the start of recv_frame
- *
- *      This function extends the used data area of the recv_frame at the buffer
- *      start. rx_data must be still larger than rx_head, after pushing.
- */
-
-	if(precvframe==NULL)
-		return NULL;
-
-
-	precvframe->u.hdr.rx_data -= sz ;
-	if( precvframe->u.hdr.rx_data < precvframe->u.hdr.rx_head )
-	{
-		precvframe->u.hdr.rx_data += sz ;
-		return NULL;
-	}
-
-	precvframe->u.hdr.len +=sz;
-
-	return precvframe->u.hdr.rx_data;
-
-}
-
 
 __inline static u8 *recvframe_pull(union recv_frame *precvframe, sint sz)
 {
@@ -613,18 +577,6 @@ __inline static u8 *recvframe_pull_tail(union recv_frame *precvframe, sint sz)
 
 }
 
-
-
-__inline static _buffer * get_rxbuf_desc(union recv_frame *precvframe)
-{
-	_buffer * buf_desc;
-
-	if(precvframe==NULL)
-		return NULL;
-	return buf_desc;
-}
-
-
 __inline static union recv_frame *rxmem_to_recvframe(u8 *rxmem)
 {
 	//due to the design of 2048 bytes alignment of recv_frame, we can reference the union recv_frame
@@ -634,37 +586,6 @@ __inline static union recv_frame *rxmem_to_recvframe(u8 *rxmem)
 	return (union recv_frame*)(((SIZE_PTR)rxmem >> RXFRAME_ALIGN) << RXFRAME_ALIGN);
 
 }
-
-__inline static union recv_frame *pkt_to_recvframe(_pkt *pkt)
-{
-
-	u8 * buf_star;
-	union recv_frame * precv_frame;
-	precv_frame = rxmem_to_recvframe((unsigned char*)buf_star);
-
-	return precv_frame;
-}
-
-__inline static u8 *pkt_to_recvmem(_pkt *pkt)
-{
-	// return the rx_head
-
-	union recv_frame * precv_frame = pkt_to_recvframe(pkt);
-
-	return 	precv_frame->u.hdr.rx_head;
-
-}
-
-__inline static u8 *pkt_to_recvdata(_pkt *pkt)
-{
-	// return the rx_data
-
-	union recv_frame * precv_frame =pkt_to_recvframe(pkt);
-
-	return 	precv_frame->u.hdr.rx_data;
-
-}
-
 
 __inline static sint get_recvframe_len(union recv_frame *precvframe)
 {

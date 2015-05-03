@@ -164,59 +164,6 @@ _func_enter_;
 _func_exit_;	
 }
 
-inline u8 *rtw_set_ie_ch_switch(u8 *buf, u32 *buf_len, u8 ch_switch_mode,
-	u8 new_ch, u8 ch_switch_cnt)
-{
-	u8 ie_data[3];
-
-	ie_data[0] = ch_switch_mode;
-	ie_data[1] = new_ch;
-	ie_data[2] = ch_switch_cnt;
-	return rtw_set_ie(buf, WLAN_EID_CHANNEL_SWITCH,  3, ie_data, buf_len);
-}
-
-inline u8 secondary_ch_offset_to_hal_ch_offset(u8 ch_offset)
-{
-	if (ch_offset == SCN)
-		return HAL_PRIME_CHNL_OFFSET_DONT_CARE;
-	else if(ch_offset == SCA)
-		return HAL_PRIME_CHNL_OFFSET_UPPER;
-	else if(ch_offset == SCB)
-		return HAL_PRIME_CHNL_OFFSET_LOWER;
-
-	return HAL_PRIME_CHNL_OFFSET_DONT_CARE;
-}
-
-inline u8 hal_ch_offset_to_secondary_ch_offset(u8 ch_offset)
-{
-	if (ch_offset == HAL_PRIME_CHNL_OFFSET_DONT_CARE)
-		return SCN;
-	else if(ch_offset == HAL_PRIME_CHNL_OFFSET_LOWER)
-		return SCB;
-	else if(ch_offset == HAL_PRIME_CHNL_OFFSET_UPPER)
-		return SCA;
-
-	return SCN;
-}
-
-inline u8 *rtw_set_ie_secondary_ch_offset(u8 *buf, u32 *buf_len, u8 secondary_ch_offset)
-{
-	return rtw_set_ie(buf, WLAN_EID_SECONDARY_CHANNEL_OFFSET,  1, &secondary_ch_offset, buf_len);
-}
-
-inline u8 *rtw_set_ie_mesh_ch_switch_parm(u8 *buf, u32 *buf_len, u8 ttl,
-	u8 flags, u16 reason, u16 precedence)
-{
-	u8 ie_data[6];
-
-	ie_data[0] = ttl;
-	ie_data[1] = flags;
-	RTW_PUT_LE16((u8*)&ie_data[2], reason);
-	RTW_PUT_LE16((u8*)&ie_data[4], precedence);
-
-	return rtw_set_ie(buf, 0x118,  6, ie_data, buf_len);
-}
-
 /*----------------------------------------------------------------------------
 index: the information element id index, limit is the limit for search
 -----------------------------------------------------------------------------*/
@@ -896,28 +843,6 @@ u8 rtw_is_wps_ie(u8 *ie_ptr, uint *wps_ielen)
 	return match;
 }
 
-u8 *rtw_get_wps_ie_from_scan_queue(u8 *in_ie, uint in_len, u8 *wps_ie, uint *wps_ielen, u8 frame_type)
-{
-	u8*	wps = NULL;
-
-	DBG_871X( "[%s] frame_type = %d\n", __FUNCTION__, frame_type );
-	switch( frame_type )
-	{
-		case 1:
-		case 3:
-		{	//	Beacon or Probe Response
-			wps = rtw_get_wps_ie(in_ie + _PROBERSP_IE_OFFSET_, in_len - _PROBERSP_IE_OFFSET_, wps_ie, wps_ielen);
-			break;
-		}
-		case 2:
-		{	//	Probe Request
-			wps = rtw_get_wps_ie(in_ie + _PROBEREQ_IE_OFFSET_ , in_len - _PROBEREQ_IE_OFFSET_ , wps_ie, wps_ielen);
-			break;
-		}
-	}
-	return wps;
-}
-
 /**
  * rtw_get_wps_ie - Search WPS IE from a series of IEs
  * @in_ie: Address of IEs to search
@@ -1318,31 +1243,10 @@ static u8 key_char2num(u8 ch)
 	 return 0xff;
 }
 
-u8 str_2char2num(u8 hch, u8 lch);
-u8 str_2char2num(u8 hch, u8 lch)
-{
-    return ((key_char2num(hch) * 10 ) + key_char2num(lch));
-}
-
 u8 key_2char2num(u8 hch, u8 lch);
 u8 key_2char2num(u8 hch, u8 lch)
 {
     return ((key_char2num(hch) << 4) | key_char2num(lch));
-}
-
-void macstr2num(u8 *dst, u8 *src);
-void macstr2num(u8 *dst, u8 *src)
-{
-	int	jj, kk;
-	for (jj = 0, kk = 0; jj < ETH_ALEN; jj++, kk += 3)
-	{
-		dst[jj] = key_2char2num(src[kk], src[kk + 1]);
-	}
-}
-
-u8 convert_ip_addr(u8 hch, u8 mch, u8 lch)
-{
-    return ((key_char2num(hch) * 100) + (key_char2num(mch) * 10 ) + key_char2num(lch));
 }
 
 extern char* rtw_initmac;
@@ -1383,90 +1287,6 @@ void rtw_macaddr_cfg(u8 *mac_addr)
 	}	
 
 	DBG_871X("rtw_macaddr_cfg MAC Address  = "MAC_FMT"\n", MAC_ARG(mac_addr));
-}
-
-void dump_ies(u8 *buf, u32 buf_len)
-{
-	u8* pos = (u8*)buf;
-	u8 id, len;
-
-	while(pos-buf<=buf_len){
-		id = *pos;
-		len = *(pos+1);
-
-		DBG_871X("%s ID:%u, LEN:%u\n", __FUNCTION__, id, len);
-		dump_wps_ie(pos, len);
-
-		pos+=(2+len);
-	}
-}
-
-void dump_wps_ie(u8 *ie, u32 ie_len)
-{
-	u8* pos = (u8*)ie;
-	u16 id;
-	u16 len;
-
-	u8 *wps_ie;
-	uint wps_ielen;
-
-	wps_ie = rtw_get_wps_ie(ie, ie_len, NULL, &wps_ielen);
-	if(wps_ie != ie || wps_ielen == 0)
-		return;
-
-	pos+=6;
-	while(pos-ie < ie_len){
-		id = RTW_GET_BE16(pos);
-		len = RTW_GET_BE16(pos + 2);
-
-		DBG_871X("%s ID:0x%04x, LEN:%u\n", __FUNCTION__, id, len);
-
-		pos+=(4+len);
-	}
-}
-
-//Baron adds to avoid FreeBSD warning
-int ieee80211_is_empty_essid(const char *essid, int essid_len)
-{
-	/* Single white space is for Linksys APs */
-	if (essid_len == 1 && essid[0] == ' ')
-		return 1;
-
-	/* Otherwise, if the entire essid is 0, we assume it is hidden */
-	while (essid_len) {
-		essid_len--;
-		if (essid[essid_len] != '\0')
-			return 0;
-	}
-
-	return 1;
-}
-
-int ieee80211_get_hdrlen(u16 fc)
-{
-	int hdrlen = 24;
-
-	switch (WLAN_FC_GET_TYPE(fc)) {
-	case RTW_IEEE80211_FTYPE_DATA:
-		if (fc & RTW_IEEE80211_STYPE_QOS_DATA)
-			hdrlen += 2;
-		if ((fc & RTW_IEEE80211_FCTL_FROMDS) && (fc & RTW_IEEE80211_FCTL_TODS))
-			hdrlen += 6; /* Addr4 */
-		break;
-	case RTW_IEEE80211_FTYPE_CTL:
-		switch (WLAN_FC_GET_STYPE(fc)) {
-		case RTW_IEEE80211_STYPE_CTS:
-		case RTW_IEEE80211_STYPE_ACK:
-			hdrlen = 10;
-			break;
-		default:
-			hdrlen = 16;
-			break;
-		}
-		break;
-	}
-
-	return hdrlen;
 }
 
 int rtw_get_cipher_info(struct wlan_network *pnetwork)

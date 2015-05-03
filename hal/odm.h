@@ -1515,9 +1515,6 @@ ODM_SetAntenna(
 
 //Remove BB power saving by Yuchen
 
-#define SwAntDivRestAfterLink	ODM_SwAntDivRestAfterLink
-void ODM_SwAntDivRestAfterLink(	IN	PDM_ODM_T	pDM_Odm);
-
 #define dm_CheckTXPowerTracking 	ODM_TXPowerTrackingCheck
 void	
 ODM_TXPowerTrackingCheck(
@@ -1538,14 +1535,6 @@ void ODM_SwAntDivChkPerPktRssi(
 	IN u1Byte			StationID,
 	IN PODM_PHY_INFO_T pPhyInfo
 	);
-
-u4Byte ConvertTo_dB(u4Byte Value);
-
-u4Byte
-GetPSDData(
-	PDM_ODM_T	pDM_Odm,
-	unsigned int 	point,
-	u1Byte initial_gain_psd);
 
 u4Byte ODM_Get_Rate_Bitmap(
 	IN	PDM_ODM_T	pDM_Odm,
@@ -1627,37 +1616,6 @@ ODM_AntselStatistics_88C(
 	IN		u4Byte			PWDBAll,
 	IN		bool			isCCKrate
 );
-
-void
-ODM_SingleDualAntennaDefaultSetting(
-	IN		PDM_ODM_T		pDM_Odm
-	);
-
-bool
-ODM_SingleDualAntennaDetection(
-	IN		PDM_ODM_T		pDM_Odm,
-	IN		u1Byte			mode
-	);
-
-void
-ODM_UpdateNoisyState(
-	IN	PDM_ODM_T	pDM_Odm,
-	IN 	bool 	bNoisyStateFromC2H
-);
-
-u4Byte
-Set_RA_DM_Ratrbitmap_by_Noisy(
-	IN	PDM_ODM_T	pDM_Odm,
-	IN	WIRELESS_MODE	WirelessMode,
-	IN	u4Byte			ratr_bitmap,
-	IN	u1Byte			rssi_level
-);
-
-void
-ODM_UpdateInitRate(
-	IN	PDM_ODM_T	pDM_Odm,
-	IN	u1Byte		Rate
-	);
 
 void
 ODM_DynamicARFBSelect(

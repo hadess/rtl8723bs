@@ -450,8 +450,6 @@ u32 rtw_tkip_decrypt(_adapter *padapter, u8  *precvframe);
 void rtw_wep_decrypt(_adapter *padapter, u8  *precvframe);
 u32	rtw_BIP_verify(_adapter *padapter, u8 *precvframe);
 
-void rtw_use_tkipkey_handler(RTW_TIMER_HDL_ARGS);
-
 void rtw_sec_restore_wep_key(_adapter *adapter);
 u8 rtw_handle_tkip_countermeasure(_adapter* adapter, const char *caller);
 

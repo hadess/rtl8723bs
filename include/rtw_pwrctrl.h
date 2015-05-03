@@ -347,12 +347,8 @@ s32 rtw_register_task_alive(PADAPTER, u32 task);
 void rtw_unregister_task_alive(PADAPTER, u32 task);
 extern s32 rtw_register_tx_alive(PADAPTER padapter);
 extern void rtw_unregister_tx_alive(PADAPTER padapter);
-extern s32 rtw_register_rx_alive(PADAPTER padapter);
-extern void rtw_unregister_rx_alive(PADAPTER padapter);
 extern s32 rtw_register_cmd_alive(PADAPTER padapter);
 extern void rtw_unregister_cmd_alive(PADAPTER padapter);
-extern s32 rtw_register_evt_alive(PADAPTER padapter);
-extern void rtw_unregister_evt_alive(PADAPTER padapter);
 extern void cpwm_int_hdl(PADAPTER padapter, struct reportpwrstate_parm *preportpwrstate);
 extern void LPS_Leave_check(PADAPTER padapter);
 
@@ -365,8 +361,6 @@ int ips_leave(_adapter * padapter);
 
 void rtw_ps_processor(_adapter*padapter);
 
-int rtw_fw_ps_state(PADAPTER padapter);
-
 s32 LPS_RF_ON_check(PADAPTER padapter, u32 delay_ms);
 void LPS_Enter(PADAPTER padapter, const char *msg);
 void LPS_Leave(PADAPTER padapter, const char *msg);
@@ -374,7 +368,6 @@ void traffic_check_for_leave_lps(PADAPTER padapter, u8 tx, u32 tx_packets);
 void rtw_set_ps_mode(PADAPTER padapter, u8 ps_mode, u8 smart_ps, u8 bcn_ant_mode, const char *msg);
 void rtw_set_rpwm(_adapter * padapter, u8 val8);
 
-u8 rtw_interface_ps_func(_adapter *padapter,HAL_INTF_PS_FUNC efunc_id,u8* val);
 void rtw_set_ips_deny(_adapter *padapter, u32 ms);
 int _rtw_pwr_wakeup(_adapter *padapter, u32 ips_deffer_ms, const char *caller);
 #define rtw_pwr_wakeup(adapter) _rtw_pwr_wakeup(adapter, RTW_PWR_STATE_CHK_INTERVAL, __FUNCTION__)

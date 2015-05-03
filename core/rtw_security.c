@@ -2593,30 +2593,6 @@ int omac1_aes_128(u8 *key, u8 *data, size_t data_len, u8 *mac)
 	return omac1_aes_128_vector(key, 1, &data, &data_len, mac);
 }
 
-void rtw_use_tkipkey_handler(RTW_TIMER_HDL_ARGS)
-{
-        _adapter *padapter = (_adapter *)FunctionContext;
-
-_func_enter_;			
-
-	RT_TRACE(_module_rtl871x_security_c_,_drv_err_,("^^^rtw_use_tkipkey_handler ^^^\n"));
-	
-/*
-	if(padapter->bDriverStopped ||padapter->bSurpriseRemoved){
-			RT_TRACE(_module_rtl871x_security_c_,_drv_err_,("^^^rtw_use_tkipkey_handler (padapter->bDriverStopped %d)(padapter->bSurpriseRemoved %d)^^^\n",padapter->bDriverStopped,padapter->bSurpriseRemoved));
-
-		return;
-	}
-	*/
-	
-	padapter->securitypriv.busetkipkey=true;
-
-	RT_TRACE(_module_rtl871x_security_c_,_drv_err_,("^^^rtw_use_tkipkey_handler padapter->securitypriv.busetkipkey=%d^^^\n",padapter->securitypriv.busetkipkey));
-
-_func_exit_;	
-
-}
-
 /* Restore HW wep key setting according to key_mask */
 void rtw_sec_restore_wep_key(_adapter *adapter)
 {

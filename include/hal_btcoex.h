@@ -38,9 +38,7 @@ void hal_btcoex_SetBTCoexist(PADAPTER padapter, u8 bBtExist);
 u8 hal_btcoex_IsBtExist(PADAPTER padapter);
 u8 hal_btcoex_IsBtDisabled(PADAPTER);
 void hal_btcoex_SetChipType(PADAPTER padapter, u8 chipType);
-u8 hal_btcoex_GetChipType(PADAPTER padapter);
 void hal_btcoex_SetPgAntNum(PADAPTER padapter, u8 antNum);
-u8 hal_btcoex_GetPgAntNum(PADAPTER padapter);
 void hal_btcoex_SetSingleAntPath(PADAPTER padapter, u8 singleAntPath);
 
 u8 hal_btcoex_Initialize(PADAPTER padapter);
@@ -57,14 +55,11 @@ void hal_btcoex_IQKNotify(PADAPTER padapter, u8 state);
 void hal_btcoex_BtInfoNotify(PADAPTER padapter, u8 length, u8 *tmpBuf);
 void hal_btcoex_SuspendNotify(PADAPTER padapter, u8 state);
 void hal_btcoex_HaltNotify(PADAPTER padapter);
-void hal_btcoex_SwitchBtTRxMask(PADAPTER padapter);
 
 void hal_btcoex_Hanlder(PADAPTER padapter);
 
 s32 hal_btcoex_IsBTCoexCtrlAMPDUSize(PADAPTER padapter);
-u32 hal_btcoex_GetAMPDUSize(PADAPTER padapter);
 void hal_btcoex_SetManualControl(PADAPTER padapter, u8 bmanual);
-u8 hal_btcoex_1Ant(PADAPTER padapter);
 u8 hal_btcoex_IsBtControlLps(PADAPTER);
 u8 hal_btcoex_IsLpsOn(PADAPTER);
 u8 hal_btcoex_RpwmVal(PADAPTER);
@@ -74,8 +69,6 @@ void hal_btcoex_RecordPwrMode(PADAPTER padapter, u8 *pCmdBuf, u8 cmdLen);
 void hal_btcoex_DisplayBtCoexInfo(PADAPTER, u8 *pbuf, u32 bufsize);
 void hal_btcoex_SetDBG(PADAPTER, u32 *pDbgModule);
 u32 hal_btcoex_GetDBG(PADAPTER, u8 *pStrBuf, u32 bufSize);
-u8 hal_btcoex_IncreaseScanDeviceNum(PADAPTER);
-u8 hal_btcoex_IsBtLinkExist(PADAPTER);
 
 #endif // !__HAL_BTCOEX_H__
 

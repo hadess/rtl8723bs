@@ -686,52 +686,6 @@ s32 sdio_local_read(
 /*
  * Todo: align address to 4 bytes.
  */
-s32 _sdio_local_write(
-	PADAPTER	padapter,
-	u32			addr,
-	u32			cnt,
-	u8			*pbuf)
-{
-	struct intf_hdl * pintfhdl;
-	u8 bMacPwrCtrlOn;
-	s32 err;
-	u8 *ptmpbuf;
-
-	if(addr & 0x3)
-		DBG_8192C("%s, address must be 4 bytes alignment\n", __FUNCTION__);
-
-	if(cnt  & 0x3)
-		DBG_8192C("%s, size must be the multiple of 4 \n", __FUNCTION__);
-
-	pintfhdl=&padapter->iopriv.intf;
-
-	HalSdioGetCmdAddr8723BSdio(padapter, SDIO_LOCAL_DEVICE_ID, addr, &addr);
-
-	rtw_hal_get_hwreg(padapter, HW_VAR_APFM_ON_MAC, &bMacPwrCtrlOn);
-	if ((false == bMacPwrCtrlOn)
-		|| (true == adapter_to_pwrctl(padapter)->bFwCurrentInPSMode))
-	{
-		err = _sd_cmd52_write(pintfhdl, addr, cnt, pbuf);
-		return err;
-	}
-
-	ptmpbuf = (u8*)rtw_malloc(cnt);
-	if (!ptmpbuf)
-		return (-1);
-
-	memcpy(ptmpbuf, pbuf, cnt);
-
-	err = _sd_write(pintfhdl, addr, cnt, ptmpbuf);
-
-	if (ptmpbuf)
-		kfree(ptmpbuf);
-
-	return err;
-}
-
-/*
- * Todo: align address to 4 bytes.
- */
 s32 sdio_local_write(
 	PADAPTER	padapter,
 	u32		addr,
@@ -1036,22 +990,6 @@ u8 CheckIPSStatus(PADAPTER padapter)
 	else
 		return false;
 }
-
-#ifdef CONFIG_WOWLAN
-void DisableInterruptButCpwm28723BSdio(PADAPTER padapter)
-{
-	u32 himr, tmp;
-
-	sdio_local_read(padapter, SDIO_REG_HIMR, 4, (u8*)&tmp);
-	DBG_871X("DisableInterruptButCpwm28723BSdio(): Read SDIO_REG_HIMR: 0x%08x\n", tmp);
-	
-	himr = cpu_to_le32(SDIO_HIMR_DISABLED)|SDIO_HIMR_CPWM2_MSK;
-	sdio_local_write(padapter, SDIO_REG_HIMR, 4, (u8*)&himr);
-
-	sdio_local_read(padapter, SDIO_REG_HIMR, 4, (u8*)&tmp);
-	DBG_871X("DisableInterruptButCpwm28723BSdio(): Read again SDIO_REG_HIMR: 0x%08x\n", tmp);
-}
-#endif //CONFIG_WOWLAN
 
 static struct recv_buf* sd_recv_rxfifo(PADAPTER padapter, u32 size)
 {

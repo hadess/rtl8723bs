@@ -444,11 +444,6 @@ _func_exit_;
 	return le16_to_cpu(val);
 }
 
-u8 *rtw_get_timestampe_from_ie(u8 *ie)
-{
-	return (ie + 0);	
-}
-
 u8 *rtw_get_beacon_interval_from_ie(u8 *ie)
 {
 	return (ie + 8);	
@@ -472,16 +467,6 @@ _func_enter_;
 _func_exit_;	
 }
 
-int	rtw_enqueue_network(_queue *queue, struct wlan_network *pnetwork);
-int	rtw_enqueue_network(_queue *queue, struct wlan_network *pnetwork)
-{
-	int	res;
-_func_enter_;		
-	res = _rtw_enqueue_network(queue, pnetwork);
-_func_exit_;		
-	return res;
-}
-
 /*
 static struct	wlan_network *rtw_dequeue_network(_queue *queue)
 {
@@ -501,15 +486,6 @@ _func_enter_;
 	pnetwork = _rtw_alloc_network(pmlmepriv);
 _func_exit_;			
 	return pnetwork;
-}
-
-void rtw_free_network(struct mlme_priv *pmlmepriv, struct	wlan_network *pnetwork, u8 is_freeall);
-void rtw_free_network(struct mlme_priv *pmlmepriv, struct	wlan_network *pnetwork, u8 is_freeall)//(struct	wlan_network *pnetwork, _queue	*free_queue)
-{
-_func_enter_;		
-	RT_TRACE(_module_rtl871x_mlme_c_,_drv_err_,("rtw_free_network==> ssid = %s \n\n" , pnetwork->network.Ssid.Ssid));
-	_rtw_free_network(pmlmepriv, pnetwork, is_freeall);
-_func_exit_;
 }
 
 void rtw_free_network_nolock(_adapter * padapter, struct wlan_network *pnetwork );
@@ -623,22 +599,6 @@ struct wlan_network *_rtw_find_same_network(_queue *scanned_queue, struct wlan_n
 	if(plist == phead)
 		found = NULL;
 
-	return found;
-}
-
-struct wlan_network *rtw_find_same_network(_queue *scanned_queue, struct wlan_network *network)
-{
-	_irqL irqL;
-	struct wlan_network *found = NULL;
-
-	if (scanned_queue == NULL || network == NULL)
-		goto exit;	
-
-	spin_lock_bh(&scanned_queue->lock);
-	found = _rtw_find_same_network(scanned_queue, network);
-	spin_unlock_bh(&scanned_queue->lock);
-
-exit:
 	return found;
 }
 

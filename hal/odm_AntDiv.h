@@ -40,14 +40,4 @@
 #define CANCEL_ANTDIV_TIMMER 1
 #define RELEASE_ANTDIV_TIMMER 2
 
-void
-ODM_StopAntennaSwitchDm(
-	IN	PDM_ODM_T	pDM_Odm
-	);
-void
-ODM_SetAntConfig(
-	IN	PDM_ODM_T	pDM_Odm,
-	IN	u1Byte		antSetting	// 0=A, 1=B, 2=C, ....
-	);
-
 #endif //#ifndef	__ODMANTDIV_H__

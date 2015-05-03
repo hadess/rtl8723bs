@@ -894,8 +894,6 @@ _func_enter_;
 	// We don't need to memset padapter->XXX to zero, because adapter is allocated by vzalloc().
 	//memset((unsigned char *)&padapter->securitypriv, 0, sizeof (struct security_priv));
 
-	//_init_timer(&(padapter->securitypriv.tkip_timer), padapter->pifp, rtw_use_tkipkey_handler, padapter);
-
 	if(_rtw_init_sta_priv(&padapter->stapriv) == _FAIL)
 	{
 		DBG_871X("Can't _rtw_init_sta_priv\n");
@@ -932,14 +930,6 @@ exit:
 	return ret8;
 
 }
-
-#ifdef CONFIG_WOWLAN
-void rtw_cancel_dynamic_chk_timer(_adapter *padapter)
-{
-	_cancel_timer_ex(&padapter->mlmepriv.dynamic_chk_timer);
-	RT_TRACE(_module_os_intfs_c_,_drv_info_,("rtw_cancel_all_timer:cancel dynamic_chk_timer! \n"));
-}
-#endif
 
 void rtw_cancel_all_timer(_adapter *padapter)
 {

@@ -1254,27 +1254,6 @@ _func_enter_;
 _func_exit_;
 }
 
-void rtl8723b_set_FwBtMpOper_cmd(PADAPTER padapter, u8 idx, u8 ver, u8 reqnum, u8 *param)
-{
-	u8 u1H2CBtMpOperParm[H2C_BTMP_OPER_LEN+1]={0};
-
-_func_enter_;
-
-	DBG_8192C("%s: idx=%d ver=%d reqnum=%d param1=0x%02x param2=0x%02x\n", __FUNCTION__, idx, ver, reqnum, param[0], param[1]);
-
-	SET_8723B_H2CCMD_BT_MPOPER_VER(u1H2CBtMpOperParm, ver);
-	SET_8723B_H2CCMD_BT_MPOPER_REQNUM(u1H2CBtMpOperParm, reqnum);
-	SET_8723B_H2CCMD_BT_MPOPER_IDX(u1H2CBtMpOperParm, idx);
-	SET_8723B_H2CCMD_BT_MPOPER_PARAM1(u1H2CBtMpOperParm, param[0]);
-	SET_8723B_H2CCMD_BT_MPOPER_PARAM2(u1H2CBtMpOperParm, param[1]);
-	SET_8723B_H2CCMD_BT_MPOPER_PARAM3(u1H2CBtMpOperParm, param[2]);
-
-	RT_PRINT_DATA(_module_hal_init_c_, _drv_always_, "u1H2CBtMpOperParm:", u1H2CBtMpOperParm, H2C_BTMP_OPER_LEN);
-
-	FillH2CCmd8723B(padapter, H2C_8723B_BT_MP_OPER, H2C_BTMP_OPER_LEN+1, u1H2CBtMpOperParm);
-_func_exit_;
-}
-
 void rtl8723b_set_FwPwrModeInIPS_cmd(PADAPTER padapter, u8 cmd_param)
 {
 	//u8 cmd_param; //BIT0:enable, BIT1:NoConnect32k

@@ -337,7 +337,6 @@ void rtl8723b_fw_try_ap_cmd(PADAPTER padapter, u32 need_ack);
 void rtl8723b_set_FwPsTuneParam_cmd(PADAPTER padapter);
 void rtl8723b_set_FwMacIdConfig_cmd(_adapter* padapter, u8 mac_id, u8 raid, u8 bw, u8 sgi, u32 mask);
 void rtl8723b_set_FwMediaStatusRpt_cmd(PADAPTER	padapter, u8 mstatus, u8 macid);
-void rtl8723b_set_FwBtMpOper_cmd(PADAPTER padapter, u8 idx, u8 ver, u8 reqnum, u8 *param);
 void rtl8723b_download_rsvd_page(PADAPTER padapter, u8 mstatus);
 void rtl8723b_download_BTCoex_AP_mode_rsvd_page(PADAPTER padapter);
 

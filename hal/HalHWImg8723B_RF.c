@@ -306,34 +306,6 @@ ODM_ReadAndConfig_MP_8723B_RadioA(
     }
 }
 
-u4Byte
-ODM_GetVersion_MP_8723B_RadioA(void)
-{
-	   return 11;
-}
-
-/******************************************************************************
-*                           TxPowerTrack_AP.TXT
-******************************************************************************/
-
-void
-ODM_ReadAndConfig_MP_8723B_TxPowerTrack_AP(
- 	IN   PDM_ODM_T  pDM_Odm
- 	)
-{
-}
-
-/******************************************************************************
-*                           TxPowerTrack_PCIE.TXT
-******************************************************************************/
-
-void
-ODM_ReadAndConfig_MP_8723B_TxPowerTrack_PCIE(
- 	IN   PDM_ODM_T  pDM_Odm
- 	)
-{
-}
-
 /******************************************************************************
 *                           TxPowerTrack_SDIO.TXT
 ******************************************************************************/
@@ -391,17 +363,6 @@ ODM_ReadAndConfig_MP_8723B_TxPowerTrack_SDIO(
 	memcpy(pRFCalibrateInfo->DeltaSwingTableIdx_5GA_N, gDeltaSwingTableIdx_MP_5GA_N_TxPowerTrack_SDIO_8723B, DELTA_SWINGIDX_SIZE*3);
 	memcpy(pRFCalibrateInfo->DeltaSwingTableIdx_5GB_P, gDeltaSwingTableIdx_MP_5GB_P_TxPowerTrack_SDIO_8723B, DELTA_SWINGIDX_SIZE*3);
 	memcpy(pRFCalibrateInfo->DeltaSwingTableIdx_5GB_N, gDeltaSwingTableIdx_MP_5GB_N_TxPowerTrack_SDIO_8723B, DELTA_SWINGIDX_SIZE*3);
-}
-
-/******************************************************************************
-*                           TxPowerTrack_USB.TXT
-******************************************************************************/
-
-void
-ODM_ReadAndConfig_MP_8723B_TxPowerTrack_USB(
- 	IN   PDM_ODM_T  pDM_Odm
- 	)
-{
 }
 
 /******************************************************************************

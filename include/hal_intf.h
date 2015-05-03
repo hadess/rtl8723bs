@@ -339,8 +339,6 @@ void	rtw_hal_free_data(_adapter *padapter);
 void rtw_hal_dm_init(_adapter *padapter);
 void rtw_hal_dm_deinit(_adapter *padapter);
 
-u32 rtw_hal_power_on(_adapter *padapter);
-void rtw_hal_power_off(_adapter *padapter);
 uint rtw_hal_init(_adapter *padapter);
 uint rtw_hal_deinit(_adapter *padapter);
 void rtw_hal_stop(_adapter *padapter);
@@ -363,13 +361,6 @@ void rtw_hal_enable_interrupt(_adapter *padapter);
 void rtw_hal_disable_interrupt(_adapter *padapter);
 
 u8 rtw_hal_check_ips_status(_adapter *padapter);
-
-u32	rtw_hal_inirp_init(_adapter *padapter);
-u32	rtw_hal_inirp_deinit(_adapter *padapter);
-
-void	rtw_hal_irp_reset(_adapter *padapter);
-
-u8	rtw_hal_intf_ps_func(_adapter *padapter,HAL_INTF_PS_FUNC efunc_id, u8* val);
 
 s32	rtw_hal_xmitframe_enqueue(_adapter *padapter, struct xmit_frame *pxmitframe);
 s32	rtw_hal_xmit(_adapter *padapter, struct xmit_frame *pxmitframe);
@@ -402,16 +393,10 @@ void	rtw_hal_write_rfreg(_adapter *padapter, u32 eRFPath, u32 RegAddr, u32 BitMa
 #define PHY_SetMacReg	PHY_SetBBReg
 #define PHY_QueryMacReg PHY_QueryBBReg
 
-s32	rtw_hal_interrupt_handler(_adapter *padapter);
-
-void	rtw_hal_set_bwmode(_adapter *padapter, CHANNEL_WIDTH Bandwidth, u8 Offset);
 void	rtw_hal_set_chan(_adapter *padapter, u8 channel);
 void	rtw_hal_set_chnl_bw(_adapter *padapter, u8 channel, CHANNEL_WIDTH Bandwidth, u8 Offset40, u8 Offset80);
 void	rtw_hal_dm_watchdog(_adapter *padapter);
 void	rtw_hal_dm_watchdog_in_lps(_adapter *padapter);
-
-void	rtw_hal_set_tx_power_level(_adapter *padapter, u8 channel);
-void	rtw_hal_get_tx_power_level(_adapter *padapter, s32 *powerlevel);
 
 s32 rtw_hal_xmit_thread_handler(_adapter *padapter);
 

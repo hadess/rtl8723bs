@@ -115,7 +115,6 @@ void rtw_reset_securitypriv( _adapter *adapter )
 		pmlmeext->mgnt_80211w_IPN_rx = 0;
 
 		memset((unsigned char *)&adapter->securitypriv, 0, sizeof (struct security_priv));
-		//_init_timer(&(adapter->securitypriv.tkip_timer),adapter->pnetdev, rtw_use_tkipkey_handler, adapter);
 
 		// Added by Albert 2009/02/18
 		// Restore the PMK information to securitypriv structure for the following connection.
@@ -230,48 +229,4 @@ void init_mlme_ext_timer(_adapter *padapter)
 
 	//_init_timer(&pmlmeext->reauth_timer, padapter->pnetdev, _reauth_timer_hdl, padapter);
 	//_init_timer(&pmlmeext->reassoc_timer, padapter->pnetdev, _reassoc_timer_hdl, padapter);
-}
-
-void rtw_indicate_sta_assoc_event(_adapter *padapter, struct sta_info *psta)
-{
-	union iwreq_data wrqu;
-	struct sta_priv *pstapriv = &padapter->stapriv;
-
-	if(psta==NULL)
-		return;
-
-	if(psta->aid > NUM_STA)
-		return;
-
-	if(pstapriv->sta_aid[psta->aid - 1] != psta)
-		return;
-	
-	
-	wrqu.addr.sa_family = ARPHRD_ETHER;	
-	
-	memcpy(wrqu.addr.sa_data, psta->hwaddr, ETH_ALEN);
-
-	DBG_871X("+rtw_indicate_sta_assoc_event\n");
-}
-
-void rtw_indicate_sta_disassoc_event(_adapter *padapter, struct sta_info *psta)
-{
-	union iwreq_data wrqu;
-	struct sta_priv *pstapriv = &padapter->stapriv;
-
-	if(psta==NULL)
-		return;
-
-	if(psta->aid > NUM_STA)
-		return;
-
-	if(pstapriv->sta_aid[psta->aid - 1] != psta)
-		return;
-	
-	
-	wrqu.addr.sa_family = ARPHRD_ETHER;	
-	
-	memcpy(wrqu.addr.sa_data, psta->hwaddr, ETH_ALEN);
-
-	DBG_871X("+rtw_indicate_sta_disassoc_event\n");
 }

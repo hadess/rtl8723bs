@@ -24,53 +24,6 @@
 #include <linux/jiffies.h>
 
 
-int rtw_fw_ps_state(PADAPTER padapter)
-{
-	struct dvobj_priv *psdpriv = padapter->dvobj;
-	struct debug_priv *pdbgpriv = &psdpriv->drv_dbg;
-	int ret=_FAIL, dont_care=0;
-	u16 fw_ps_state=0;
-	u32 start_time;
-	struct pwrctrl_priv *pwrpriv = adapter_to_pwrctl(padapter);
-	struct registry_priv  *registry_par = &padapter->registrypriv;
-	
-	if(registry_par->check_fw_ps != 1)
-		return _SUCCESS;
-	
-	down(&pwrpriv->check_32k_lock);
-	
-	if ((padapter->bSurpriseRemoved == true))
-	{
-		DBG_871X("%s: bSurpriseRemoved=%d , hw_init_completed=%d, bDriverStopped=%d \n", __FUNCTION__, padapter->bSurpriseRemoved,
-		padapter->hw_init_completed,padapter->bDriverStopped);
-		goto exit_fw_ps_state;
-	}
-	rtw_hal_set_hwreg(padapter, HW_VAR_SET_REQ_FW_PS, (u8 *)&dont_care);
-	{
-		//4. if 0x88[7]=1, driver set cmd to leave LPS/IPS. 
-		//Else, hw will keep in active mode.
-		//debug info:
-		//0x88[7] = 32kpermission, 
-		//0x88[6:0] = current_ps_state
-		//0x89[7:0] = last_rpwm
-
-		rtw_hal_get_hwreg(padapter, HW_VAR_FW_PS_STATE, (u8 *)&fw_ps_state);
-		
-		if((fw_ps_state & 0x80) == 0)
-			ret=_SUCCESS;
-		else
-		{
-			pdbgpriv->dbg_poll_fail_cnt++;
-			DBG_871X("%s: fw_ps_state=%04x \n", __FUNCTION__, fw_ps_state);
-		}
-	}
-
-
-exit_fw_ps_state:
-	up(&pwrpriv->check_32k_lock);
-	return ret;
-}
-
 void _ips_enter(_adapter * padapter)
 {
 	struct pwrctrl_priv *pwrpriv = adapter_to_pwrctl(padapter);
@@ -1261,68 +1214,6 @@ _func_exit_;
 }
 
 /*
- * Caller: rx_isr
- *
- * Calling Context: Dispatch/ISR
- *
- * Return Value:
- *	_SUCCESS
- *	_FAIL
- */
-s32 rtw_register_rx_alive(PADAPTER padapter)
-{
-	struct pwrctrl_priv *pwrctrl;
-
-_func_enter_;
-
-	pwrctrl = adapter_to_pwrctl(padapter);
-
-	down(&pwrctrl->lock);
-
-	register_task_alive(pwrctrl, RECV_ALIVE);
-	RT_TRACE(_module_rtl871x_pwrctrl_c_, _drv_notice_,
-			 ("rtw_register_rx_alive: cpwm=0x%02x alives=0x%08x\n",
-			  pwrctrl->cpwm, pwrctrl->alives));
-
-	up(&pwrctrl->lock);
-
-_func_exit_;
-
-	return _SUCCESS;
-}
-
-/*
- * Caller: evt_isr or evt_thread
- *
- * Calling Context: Dispatch/ISR or Passive
- *
- * Return Value:
- *	_SUCCESS
- *	_FAIL
- */
-s32 rtw_register_evt_alive(PADAPTER padapter)
-{
-	struct pwrctrl_priv *pwrctrl;
-
-_func_enter_;
-
-	pwrctrl = adapter_to_pwrctl(padapter);
-
-	down(&pwrctrl->lock);
-
-	register_task_alive(pwrctrl, EVT_ALIVE);
-	RT_TRACE(_module_rtl871x_pwrctrl_c_, _drv_notice_,
-			 ("rtw_register_evt_alive: cpwm=0x%02x alives=0x%08x\n",
-			  pwrctrl->cpwm, pwrctrl->alives));
-
-	up(&pwrctrl->lock);
-
-_func_exit_;
-
-	return _SUCCESS;
-}
-
-/*
  * Caller: ISR
  *
  * If ISR's txdone,
@@ -1422,49 +1313,6 @@ _func_enter_;
 _func_exit_;
 }
 
-/*
- * Caller: ISR
- */
-void rtw_unregister_rx_alive(PADAPTER padapter)
-{
-	struct pwrctrl_priv *pwrctrl;
-
-_func_enter_;
-
-	pwrctrl = adapter_to_pwrctl(padapter);
-
-	down(&pwrctrl->lock);
-
-	unregister_task_alive(pwrctrl, RECV_ALIVE);
-
-	RT_TRACE(_module_rtl871x_pwrctrl_c_, _drv_notice_,
-			 ("rtw_unregister_rx_alive: cpwm=0x%02x alives=0x%08x\n",
-			  pwrctrl->cpwm, pwrctrl->alives));
-
-	up(&pwrctrl->lock);
-
-_func_exit_;
-}
-
-void rtw_unregister_evt_alive(PADAPTER padapter)
-{
-	struct pwrctrl_priv *pwrctrl;
-
-_func_enter_;
-
-	pwrctrl = adapter_to_pwrctl(padapter);
-
-	unregister_task_alive(pwrctrl, EVT_ALIVE);
-
-	RT_TRACE(_module_rtl871x_pwrctrl_c_, _drv_notice_,
-			 ("rtw_unregister_evt_alive: cpwm=0x%02x alives=0x%08x\n",
-			  pwrctrl->cpwm, pwrctrl->alives));
-
-	up(&pwrctrl->lock);
-
-_func_exit_;
-}
-
 void rtw_init_pwrctrl_priv(PADAPTER padapter)
 {
 	struct pwrctrl_priv *pwrctrlpriv = adapter_to_pwrctl(padapter);
@@ -1554,15 +1402,6 @@ _func_enter_;
 
 _func_exit_;
 }
-
-u8 rtw_interface_ps_func(_adapter *padapter,HAL_INTF_PS_FUNC efunc_id,u8* val)
-{
-	u8 bResult = true;
-	rtw_hal_intf_ps_func(padapter,efunc_id,val);
-	
-	return bResult;
-}
-
 
 inline void rtw_set_ips_deny(_adapter *padapter, u32 ms)
 {

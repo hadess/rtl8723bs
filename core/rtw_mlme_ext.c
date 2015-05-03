@@ -2547,12 +2547,6 @@ inline struct xmit_frame *alloc_mgtxmitframe(struct xmit_priv *pxmitpriv)
 	return _alloc_mgtxmitframe(pxmitpriv, false);
 }
 
-inline struct xmit_frame *alloc_mgtxmitframe_once(struct xmit_priv *pxmitpriv)
-{
-	return _alloc_mgtxmitframe(pxmitpriv, true);
-}
-
-
 /****************************************************************************
 
 Following are some TX fuctions for WiFi MLME
@@ -4182,70 +4176,6 @@ exit:
 	return ret;
 }
 
-void issue_action_spct_ch_switch(_adapter *padapter, u8 *ra, u8 new_ch, u8 ch_offset)
-{	
-	_irqL	irqL;
-	_list		*plist, *phead;
-	struct xmit_frame			*pmgntframe;
-	struct pkt_attrib			*pattrib;
-	unsigned char				*pframe;
-	struct rtw_ieee80211_hdr	*pwlanhdr;
-	unsigned short			*fctrl;
-	struct xmit_priv			*pxmitpriv = &(padapter->xmitpriv);
-	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
-	struct mlme_ext_priv	*pmlmeext = &(padapter->mlmeextpriv);
-	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
-
-
-	DBG_871X(FUNC_NDEV_FMT" ra="MAC_FMT", ch:%u, offset:%u\n",
-		FUNC_NDEV_ARG(padapter->pnetdev), MAC_ARG(ra), new_ch, ch_offset);
-
-	if ((pmgntframe = alloc_mgtxmitframe(pxmitpriv)) == NULL)
-		return;
-
-	//update attribute
-	pattrib = &pmgntframe->attrib;
-	update_mgntframe_attrib(padapter, pattrib);
-
-	memset(pmgntframe->buf_addr, 0, WLANHDR_OFFSET + TXDESC_OFFSET);
-
-	pframe = (u8 *)(pmgntframe->buf_addr) + TXDESC_OFFSET;
-	pwlanhdr = (struct rtw_ieee80211_hdr *)pframe;
-
-	fctrl = &(pwlanhdr->frame_ctl);
-	*(fctrl) = 0;
-
-	memcpy(pwlanhdr->addr1, ra, ETH_ALEN); /* RA */
-	memcpy(pwlanhdr->addr2, myid(&(padapter->eeprompriv)), ETH_ALEN); /* TA */
-	memcpy(pwlanhdr->addr3, ra, ETH_ALEN); /* DA = RA */
-
-	SetSeqNum(pwlanhdr, pmlmeext->mgnt_seq);
-	pmlmeext->mgnt_seq++;
-	SetFrameSubType(pframe, WIFI_ACTION);
-
-	pframe += sizeof(struct rtw_ieee80211_hdr_3addr);
-	pattrib->pktlen = sizeof(struct rtw_ieee80211_hdr_3addr);
-
-	/* category, action */
-	{
-		u8 category, action;
-		category = RTW_WLAN_CATEGORY_SPECTRUM_MGMT;
-		action = RTW_WLAN_ACTION_SPCT_CHL_SWITCH;
-
-		pframe = rtw_set_fixed_ie(pframe, 1, &(category), &(pattrib->pktlen));
-		pframe = rtw_set_fixed_ie(pframe, 1, &(action), &(pattrib->pktlen));
-	}
-
-	pframe = rtw_set_ie_ch_switch(pframe, &(pattrib->pktlen), 0, new_ch, 0);
-	pframe = rtw_set_ie_secondary_ch_offset(pframe, &(pattrib->pktlen),
-		hal_ch_offset_to_secondary_ch_offset(ch_offset));
-
-	pattrib->last_txcmdsz = pattrib->pktlen;
-
-	dump_mgntframe(padapter, pmgntframe);
-
-}
-
 void issue_action_SA_Query(_adapter *padapter, unsigned char *raddr, unsigned char action, unsigned short tid)
 {
 	u8	category = RTW_WLAN_CATEGORY_SA_QUERY;
@@ -4756,22 +4686,6 @@ unsigned int send_beacon(_adapter *padapter)
 Following are some utitity fuctions for WiFi MLME
 
 *****************************************************************************/
-
-bool IsLegal5GChannel(
-	IN PADAPTER			Adapter,
-	IN u8			channel)
-{
-	
-	int i=0;
-	u8 Channel_5G[45] = {36,38,40,42,44,46,48,50,52,54,56,58,
-		60,62,64,100,102,104,106,108,110,112,114,116,118,120,122,
-		124,126,128,130,132,134,136,138,140,149,151,153,155,157,159,
-		161,163,165};
-	for(i=0;i<sizeof(Channel_5G);i++)
-		if(channel == Channel_5G[i])
-			return true;
-	return false;
-}
 
 void site_survey(_adapter *padapter)
 {
@@ -6593,15 +6507,6 @@ u8 NULL_hdl(_adapter *padapter, u8 *pbuf)
 }
 
 #ifdef CONFIG_AUTO_AP_MODE
-void rtw_start_auto_ap(_adapter *adapter)
-{
-	DBG_871X("%s\n", __FUNCTION__);
-
-	rtw_set_802_11_infrastructure_mode(adapter, Ndis802_11APMode);
-
-	rtw_setopmode_cmd(adapter, Ndis802_11APMode,true);
-}
-
 static int rtw_auto_ap_start_beacon(_adapter *adapter)
 {
 	int ret=0;
@@ -7494,58 +7399,6 @@ u8 tx_beacon_hdl(_adapter *padapter, unsigned char *pbuf)
 	chk_bmc_sleepq_hdl(padapter, NULL);
 
 	return H2C_SUCCESS;
-}
-
-void change_band_update_ie(_adapter *padapter, WLAN_BSSID_EX *pnetwork)
-{
-	u8	network_type,rate_len, total_rate_len,remainder_rate_len;
-	struct mlme_ext_priv *pmlmeext = &(padapter->mlmeextpriv);
-	struct mlme_ext_info *pmlmeinfo = &(pmlmeext->mlmext_info);
-	u8	erpinfo=0x4;
-
-	//DBG_871X("%s\n", __FUNCTION__);
-
-	if(pmlmeext->cur_channel >= 36)
-	{
-		network_type = WIRELESS_11A;
-		total_rate_len = IEEE80211_NUM_OFDM_RATESLEN;
-		DBG_871X("%s(): change to 5G Band\n",__FUNCTION__);
-		rtw_remove_bcn_ie(padapter, pnetwork, _ERPINFO_IE_);
-	}
-	else
-	{
-		network_type = WIRELESS_11BG;
-		total_rate_len = IEEE80211_CCK_RATE_LEN+IEEE80211_NUM_OFDM_RATESLEN;
-		DBG_871X("%s(): change to 2.4G Band\n",__FUNCTION__);
-		rtw_add_bcn_ie(padapter, pnetwork, _ERPINFO_IE_, &erpinfo, 1);
-	}
-
-	rtw_set_supported_rate(pnetwork->SupportedRates, network_type);
-
-	UpdateBrateTbl(padapter, pnetwork->SupportedRates);
-	rtw_hal_set_hwreg(padapter, HW_VAR_BASIC_RATE, pnetwork->SupportedRates);
-
-	if(total_rate_len > 8)
-	{
-		rate_len = 8;
-		remainder_rate_len = total_rate_len - 8;
-	}
-	else
-	{
-		rate_len = total_rate_len;
-		remainder_rate_len = 0;
-	}
-
-	rtw_add_bcn_ie(padapter, pnetwork, _SUPPORTEDRATES_IE_, pnetwork->SupportedRates, rate_len);
-
-	if(remainder_rate_len)
-	{
-		rtw_add_bcn_ie(padapter, pnetwork, _EXT_SUPPORTEDRATES_IE_, (pnetwork->SupportedRates+8), remainder_rate_len);
-	}
-	else
-	{
-		rtw_remove_bcn_ie(padapter, pnetwork, _EXT_SUPPORTEDRATES_IE_);
-	}
 }
 
 int rtw_chk_start_clnt_join(_adapter *padapter, u8 *ch, u8 *bw, u8 *offset)

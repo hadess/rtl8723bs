@@ -659,11 +659,6 @@ EXhalbtcoutsrc_BtInfoNotify(
 	IN	u1Byte			length
 	);
 void
-EXhalbtcoutsrc_RfStatusNotify(
-	IN	PBTC_COEXIST		pBtCoexist,
-	IN	u1Byte 				type
-	);
-void
 EXhalbtcoutsrc_HaltNotify(
 	IN	PBTC_COEXIST		pBtCoexist
 	);
@@ -673,32 +668,8 @@ EXhalbtcoutsrc_PnpNotify(
 	IN	u1Byte			pnpState
 	);
 void
-EXhalbtcoutsrc_CoexDmSwitch(
-	IN	PBTC_COEXIST		pBtCoexist
-	);
-void
 EXhalbtcoutsrc_Periodical(
 	IN	PBTC_COEXIST		pBtCoexist
-	);
-void
-EXhalbtcoutsrc_DbgControl(
-	IN	PBTC_COEXIST			pBtCoexist,
-	IN	u1Byte				opCode,
-	IN	u1Byte				opLen,
-	IN	pu1Byte				pData
-	);
-void
-EXhalbtcoutsrc_SetHciVersion(
-	IN	u2Byte	hciVersion
-	);
-void
-EXhalbtcoutsrc_SetBtPatchVersion(
-	IN	u2Byte	btHciVersion,
-	IN	u2Byte	btPatchVersion
-	);
-void
-EXhalbtcoutsrc_UpdateMinBtRssi(
-	IN	s8	btRssi
 	);
 void
 EXhalbtcoutsrc_SetChipType(

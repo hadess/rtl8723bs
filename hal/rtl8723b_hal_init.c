@@ -971,7 +971,6 @@ hal_ReadEFuse_WiFi(
 if(0)
 {
 	for(i=0; i<256; i++)
-		//ReadEFuseByte(padapter, i, &efuseTbl[i], false);
 		efuse_OneByteRead(padapter, i, &efuseTbl[i], false);
 	DBG_871X("Efuse Content:\n");
 	for(i=0; i<256; i++)
@@ -990,7 +989,6 @@ if(0)
 
 	while (AVAILABLE_EFUSE_ADDR(eFuse_Addr))
 	{
-		//ReadEFuseByte(padapter, eFuse_Addr++, &efuseHeader, bPseudoTest);
 		efuse_OneByteRead(padapter, eFuse_Addr++, &efuseHeader, bPseudoTest);
 		if (efuseHeader == 0xFF)
 		{
@@ -1005,7 +1003,6 @@ if(0)
 			offset = GET_HDR_OFFSET_2_0(efuseHeader);
 			//DBG_8192C("%s: extended header offset=0x%X\n", __FUNCTION__, offset);
 
-			//ReadEFuseByte(padapter, eFuse_Addr++, &efuseExtHdr, bPseudoTest);
 			efuse_OneByteRead(padapter, eFuse_Addr++, &efuseExtHdr, bPseudoTest);
 			//DBG_8192C("%s: efuse[0x%X]=0x%02X\n", __FUNCTION__, eFuse_Addr-1, efuseExtHdr);
 			if (ALL_WORDS_DISABLED(efuseExtHdr))
@@ -1035,12 +1032,10 @@ if(0)
 				// Check word enable condition in the section
 				if (!(wden & (0x01<<i)))
 				{
-					//ReadEFuseByte(padapter, eFuse_Addr++, &efuseData, bPseudoTest);
 					efuse_OneByteRead(padapter, eFuse_Addr++, &efuseData, bPseudoTest);
 //					DBG_8192C("%s: efuse[%#X]=0x%02X\n", __FUNCTION__, eFuse_Addr-1, efuseData);
 					efuseTbl[addr] = efuseData;
 
-					//ReadEFuseByte(padapter, eFuse_Addr++, &efuseData, bPseudoTest);
 					efuse_OneByteRead(padapter, eFuse_Addr++, &efuseData, bPseudoTest);
 //					DBG_8192C("%s: efuse[%#X]=0x%02X\n", __FUNCTION__, eFuse_Addr-1, efuseData);
 					efuseTbl[addr+1] = efuseData;
@@ -1147,7 +1142,6 @@ hal_ReadEFuse_BT(
 
 		while (AVAILABLE_EFUSE_ADDR(eFuse_Addr))
 		{
-			//ReadEFuseByte(padapter, eFuse_Addr++, &efuseHeader, bPseudoTest);
 			efuse_OneByteRead(padapter, eFuse_Addr++, &efuseHeader, bPseudoTest);
 			if (efuseHeader == 0xFF) break;
 			DBG_8192C("%s: efuse[%#X]=0x%02x (header)\n", __FUNCTION__, (((bank-1)*EFUSE_REAL_CONTENT_LEN_8723B)+eFuse_Addr-1), efuseHeader);
@@ -1158,7 +1152,6 @@ hal_ReadEFuse_BT(
 				offset = GET_HDR_OFFSET_2_0(efuseHeader);
 				DBG_8192C("%s: extended header offset_2_0=0x%X\n", __FUNCTION__, offset);
 
-				//ReadEFuseByte(padapter, eFuse_Addr++, &efuseExtHdr, bPseudoTest);
 				efuse_OneByteRead(padapter, eFuse_Addr++, &efuseExtHdr, bPseudoTest);
 				DBG_8192C("%s: efuse[%#X]=0x%02x (ext header)\n", __FUNCTION__, (((bank-1)*EFUSE_REAL_CONTENT_LEN_8723B)+eFuse_Addr-1), efuseExtHdr);
 				if (ALL_WORDS_DISABLED(efuseExtHdr))
@@ -1188,12 +1181,10 @@ hal_ReadEFuse_BT(
 					// Check word enable condition in the section
 					if (!(wden & (0x01<<i)))
 					{
-						//ReadEFuseByte(padapter, eFuse_Addr++, &efuseData, bPseudoTest);
 						efuse_OneByteRead(padapter, eFuse_Addr++, &efuseData, bPseudoTest);
 						DBG_8192C("%s: efuse[%#X]=0x%02X\n", __FUNCTION__, eFuse_Addr-1, efuseData);
 						efuseTbl[addr] = efuseData;
 
-						//ReadEFuseByte(padapter, eFuse_Addr++, &efuseData, bPseudoTest);
 						efuse_OneByteRead(padapter, eFuse_Addr++, &efuseData, bPseudoTest);
 						DBG_8192C("%s: efuse[%#X]=0x%02X\n", __FUNCTION__, eFuse_Addr-1, efuseData);
 						efuseTbl[addr+1] = efuseData;
@@ -1300,15 +1291,11 @@ hal_EfuseGetCurrentSize_WiFi(
 	count = 0;
 	while (AVAILABLE_EFUSE_ADDR(efuse_addr))
 	{
-#if 1
 		if (efuse_OneByteRead(padapter, efuse_addr, &efuse_data, bPseudoTest) == false)
 		{
 			DBG_8192C(KERN_ERR "%s: efuse_OneByteRead Fail! addr=0x%X !!\n", __FUNCTION__, efuse_addr);
 			goto error;
 		}
-#else
-		ReadEFuseByte(padapter, efuse_addr, &efuse_data, bPseudoTest);
-#endif
 
 		if (efuse_data == 0xFF) break;
 
@@ -1695,12 +1682,10 @@ Hal_EfusePgPacketRead(
 				// Check word enable condition in the section
 				if (!(hworden & (0x01<<i)))
 				{
-					//ReadEFuseByte(padapter, efuse_addr++, &efuse_data, bPseudoTest);
 					efuse_OneByteRead(padapter, efuse_addr++, &efuse_data, bPseudoTest);
 //					DBG_8192C("%s: efuse[%#X]=0x%02X\n", __FUNCTION__, efuse_addr+tmpidx, efuse_data);
 					data[i*2] = efuse_data;
 
-					//ReadEFuseByte(padapter, efuse_addr++, &efuse_data, bPseudoTest);
 					efuse_OneByteRead(padapter, efuse_addr++, &efuse_data, bPseudoTest);
 //					DBG_8192C("%s: efuse[%#X]=0x%02X\n", __FUNCTION__, efuse_addr+tmpidx, efuse_data);
 					data[(i*2)+1] = efuse_data;
@@ -2518,35 +2503,6 @@ void rtl8723b_InitAntenna_Selection(PADAPTER padapter)
 	rtw_write8(padapter, REG_LEDCFG2, val);
 }
 
-void rtl8723b_CheckAntenna_Selection(PADAPTER padapter)
-{
-	PHAL_DATA_TYPE pHalData;
-	u8 val;
-
-
-	pHalData = GET_HAL_DATA(padapter);
-
-	val = rtw_read8(padapter, REG_LEDCFG2);
-	// Let 8051 take control antenna settting
-	if(!(val &BIT(7))){
-		val |= BIT(7); // DPDT_SEL_EN, 0x4C[23]
-		rtw_write8(padapter, REG_LEDCFG2, val);
-	}
-}
-void rtl8723b_DeinitAntenna_Selection(PADAPTER padapter)
-{
-	PHAL_DATA_TYPE pHalData;
-	u8 val;
-
-
-	pHalData = GET_HAL_DATA(padapter);
-	val = rtw_read8(padapter, REG_LEDCFG2);
-	// Let 8051 take control antenna settting
-	val &= ~BIT(7); // DPDT_SEL_EN, clear 0x4C[23]
-	rtw_write8(padapter, REG_LEDCFG2, val);
-
-}
-
 void rtl8723b_init_default_value(PADAPTER padapter)
 {
 	PHAL_DATA_TYPE pHalData;
@@ -2653,40 +2609,6 @@ s32 rtl8723b_InitLLTTable(PADAPTER padapter)
 
 	return ret;
 }
-
-static void _DisableGPIO(PADAPTER	padapter)
-{
-/***************************************
-j. GPIO_PIN_CTRL 0x44[31:0]=0x000		//
-k.Value = GPIO_PIN_CTRL[7:0]
-l. GPIO_PIN_CTRL 0x44[31:0] = 0x00FF0000 | (value <<8); //write external PIN level
-m. GPIO_MUXCFG 0x42 [15:0] = 0x0780
-n. LEDCFG 0x4C[15:0] = 0x8080
-***************************************/
-	u8	value8;
-	u16	value16;
-	u32	value32;
-	u32	u4bTmp;
-
-
-	//1. Disable GPIO[7:0]
-	rtw_write16(padapter, REG_GPIO_PIN_CTRL+2, 0x0000);
-	value32 = rtw_read32(padapter, REG_GPIO_PIN_CTRL) & 0xFFFF00FF;
-	u4bTmp = value32 & 0x000000FF;
-	value32 |= ((u4bTmp<<8) | 0x00FF0000);
-	rtw_write32(padapter, REG_GPIO_PIN_CTRL, value32);
-
-	//2. Disable GPIO[10:8]
-	rtw_write8(padapter, REG_MAC_PINMUX_CFG, 0x00);
-	value16 = rtw_read16(padapter, REG_GPIO_IO_SEL) & 0xFF0F;
-	value8 = (u8) (value16&0x000F);
-	value16 |= ((value8<<4) | 0x0780);
-	rtw_write16(padapter, REG_GPIO_IO_SEL, value16);
-
-	//3. Disable LED0 & 1
-	rtw_write16(padapter, REG_LEDCFG0, 0x8080);
-//	RT_TRACE(COMP_INIT, DBG_LOUD, ("======> Disable GPIO and LED.\n"));
-} //end of _DisableGPIO()
 
 static void _DisableRFAFEAndResetBB8192C(PADAPTER padapter)
 {
@@ -2909,62 +2831,6 @@ static void _DisableAnalog(PADAPTER padapter, bool bWithoutHWSM)
 	rtw_write8(padapter, REG_RSV_CTRL, 0x0e);
 
 //	RT_TRACE(COMP_INIT, DBG_LOUD, ("======> Disable Analog Reg0x04:0x%04x.\n",value16));
-}
-
-// HW Auto state machine
-s32 CardDisableHWSM(PADAPTER padapter, u8 resetMCU)
-{
-	int rtStatus = _SUCCESS;
-
-
-	if (padapter->bSurpriseRemoved){
-		return rtStatus;
-	}
-	//==== RF Off Sequence ====
-	_DisableRFAFEAndResetBB(padapter);
-
-	//  ==== Reset digital sequence   ======
-	_ResetDigitalProcedure1(padapter, false);
-
-	//  ==== Pull GPIO PIN to balance level and LED control ======
-	_DisableGPIO(padapter);
-
-	//  ==== Disable analog sequence ===
-	_DisableAnalog(padapter, false);
-
-	RT_TRACE(_module_hci_hal_init_c_, _drv_info_, ("======> Card disable finished.\n"));
-
-	return rtStatus;
-}
-
-// without HW Auto state machine
-s32 CardDisableWithoutHWSM(PADAPTER padapter)
-{
-	s32 rtStatus = _SUCCESS;
-
-
-	//RT_TRACE(COMP_INIT, DBG_LOUD, ("======> Card Disable Without HWSM .\n"));
-	if (padapter->bSurpriseRemoved) {
-		return rtStatus;
-	}
-
-	//==== RF Off Sequence ====
-	_DisableRFAFEAndResetBB(padapter);
-
-	//  ==== Reset digital sequence   ======
-	_ResetDigitalProcedure1(padapter, true);
-
-	//  ==== Pull GPIO PIN to balance level and LED control ======
-	_DisableGPIO(padapter);
-
-	//  ==== Reset digital sequence   ======
-	_ResetDigitalProcedure2(padapter);
-
-	//  ==== Disable analog sequence ===
-	_DisableAnalog(padapter, true);
-
-	//RT_TRACE(COMP_INIT, DBG_LOUD, ("<====== Card Disable Without HWSM .\n"));
-	return rtStatus;
 }
 
 static bool

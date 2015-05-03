@@ -291,11 +291,6 @@ phy_RFSerialWrite_8723B(
 	Offset &= 0xff;
 
 	//
-	// Shadow Update
-	//
-	//PHY_RFShadowWrite(Adapter, eRFPath, Offset, Data);
-
-	//
 	// Switch page for 8256 RF IC
 	//
 	NewOffset = Offset;
@@ -659,31 +654,6 @@ PHY_RFConfig8723B(
 	//PHY_BB8723B_Config_1T(Adapter);
 
 	return rtStatus;
-}
-
-/*-----------------------------------------------------------------------------
- * Function:    PHY_ConfigRFWithParaFile()
- *
- * Overview:    This function read RF parameters from general file format, and do RF 3-wire
- *
- * Input:      	PADAPTER			Adapter
- *			s8 * 				pFileName
- *			RF_PATH				eRFPath
- *
- * Output:      NONE
- *
- * Return:      RT_STATUS_SUCCESS: configuration file exist
- *
- * Note:		Delay may be required for RF configuration
- *---------------------------------------------------------------------------*/
-int
-PHY_ConfigRFWithParaFile_8723B(
-	IN	PADAPTER			Adapter,
-	IN	u8* 				pFileName,
-	RF_PATH				eRFPath
-)
-{
-	return _SUCCESS;
 }
 
 /**************************************************************************************************************

@@ -244,7 +244,6 @@ void hal_init_macaddr(_adapter *adapter);
 void rtw_init_hal_com_default_value(PADAPTER Adapter);
 
 void c2h_evt_clear(_adapter *adapter);
-s32 c2h_evt_read(_adapter *adapter, u8 *buf);
 s32 c2h_evt_read_88xx(_adapter *adapter, u8 *buf);
 
 u8  rtw_hal_networktype_to_raid(_adapter *adapter, struct sta_info *psta);

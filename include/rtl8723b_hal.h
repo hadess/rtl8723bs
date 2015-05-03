@@ -231,14 +231,9 @@ void rtl8723b_FirmwareSelfReset(PADAPTER padapter);
 void rtl8723b_InitializeFirmwareVars(PADAPTER padapter);
 
 void rtl8723b_InitAntenna_Selection(PADAPTER padapter);
-void rtl8723b_DeinitAntenna_Selection(PADAPTER padapter);
-void rtl8723b_CheckAntenna_Selection(PADAPTER padapter);
 void rtl8723b_init_default_value(PADAPTER padapter);
 
 s32 rtl8723b_InitLLTTable(PADAPTER padapter);
-
-s32 CardDisableHWSM(PADAPTER padapter, u8 resetMCU);
-s32 CardDisableWithoutHWSM(PADAPTER padapter);
 
 // EFuse
 u8 GetEEPROMSize8723B(PADAPTER padapter);

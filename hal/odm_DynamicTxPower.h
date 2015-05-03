@@ -42,19 +42,4 @@ odm_DynamicTxPowerInit(
 	IN		void *					pDM_VOID
 	);
 
-void
-odm_DynamicTxPowerRestorePowerIndex(
-	IN		void *					pDM_VOID
-	);
-
-void
-odm_DynamicTxPowerSavePowerIndex(
-	IN		void *					pDM_VOID
-	);
-
-void
-odm_DynamicTxPowerWritePowerIndex(
-	IN		void *					pDM_VOID, 
-	IN 	u1Byte		Value);
-
 #endif

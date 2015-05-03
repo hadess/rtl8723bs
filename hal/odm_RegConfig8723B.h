@@ -37,13 +37,6 @@ odm_ConfigRF_RadioA_8723B(
 	);
 
 void 
-odm_ConfigRF_RadioB_8723B(
-	IN 	PDM_ODM_T 				pDM_Odm,
-	IN 	u4Byte 					Addr,
-	IN 	u4Byte 					Data
-	);
-
-void 
 odm_ConfigMAC_8723B(
  	IN 	PDM_ODM_T 	pDM_Odm,
  	IN 	u4Byte 		Addr,

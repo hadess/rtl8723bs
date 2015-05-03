@@ -22,94 +22,6 @@
 #include <drv_types.h>
 #include <linux/jiffies.h>
 
-int rtw_os_alloc_recvframe(_adapter *padapter, union recv_frame *precvframe, u8 *pdata, _pkt *pskb)
-{
-	int res = _SUCCESS;
-	u8	shift_sz = 0;
-	u32	skb_len, alloc_sz;
-	_pkt	 *pkt_copy = NULL;	
-	struct rx_pkt_attrib *pattrib = &precvframe->u.hdr.attrib;
-
-
-	if(pdata == NULL)
-	{		
-		precvframe->u.hdr.pkt = NULL;
-		res = _FAIL;
-		return res;
-	}	
-
-
-	//	Modified by Albert 20101213
-	//	For 8 bytes IP header alignment.
-	shift_sz = pattrib->qos ? 6:0;//	Qos data, wireless lan header length is 26
-
-	skb_len = pattrib->pkt_len;
-
-	// for first fragment packet, driver need allocate 1536+drvinfo_sz+RXDESC_SIZE to defrag packet.
-	// modify alloc_sz for recvive crc error packet by thomas 2011-06-02
-	if((pattrib->mfrag == 1)&&(pattrib->frag_num == 0))
-	{
-		//alloc_sz = 1664;	//1664 is 128 alignment.
-		alloc_sz = (skb_len <= 1650) ? 1664:(skb_len + 14);		
-	}
-	else 
-	{
-		alloc_sz = skb_len;
-		//	6 is for IP header 8 bytes alignment in QoS packet case.
-		//	8 is for skb->data 4 bytes alignment.
-		alloc_sz += 14;
-	}	
-
-	pkt_copy = rtw_skb_alloc(alloc_sz);
-
-	if(pkt_copy)
-	{
-		pkt_copy->dev = padapter->pnetdev;
-		precvframe->u.hdr.pkt = pkt_copy;
-		precvframe->u.hdr.rx_head = pkt_copy->data;
-		precvframe->u.hdr.rx_end = pkt_copy->data + alloc_sz;
-		skb_reserve(pkt_copy, 8 - ((SIZE_PTR)( pkt_copy->data) & 7 ));//force pkt_copy->data at 8-byte alignment address
-		skb_reserve(pkt_copy, shift_sz);//force ip_hdr at 8-byte alignment address according to shift_sz.
-		memcpy(pkt_copy->data, pdata, skb_len);
-		precvframe->u.hdr.rx_data = precvframe->u.hdr.rx_tail = pkt_copy->data;
-	}
-	else
-	{
-		if((pattrib->mfrag == 1)&&(pattrib->frag_num == 0))
-		{				
-			DBG_871X("%s: alloc_skb fail , drop frag frame \n", __FUNCTION__);
-			//rtw_free_recvframe(precvframe, pfree_recv_queue);
-			res = _FAIL;
-			goto exit_rtw_os_recv_resource_alloc;
-		}
-
-		if(pskb == NULL)
-		{
-			res = _FAIL;
-			goto exit_rtw_os_recv_resource_alloc;
-		}
-			
-		precvframe->u.hdr.pkt = rtw_skb_clone(pskb);
-		if(precvframe->u.hdr.pkt)
-		{
-			precvframe->u.hdr.rx_head = precvframe->u.hdr.rx_data = precvframe->u.hdr.rx_tail = pdata;
-			precvframe->u.hdr.rx_end =  pdata + alloc_sz;
-		}
-		else
-		{
-			DBG_871X("%s: rtw_skb_clone fail\n", __FUNCTION__);
-			//rtw_free_recvframe(precvframe, pfree_recv_queue);
-			//goto _exit_recvbuf2recvframe;
-			res = _FAIL;
-		}
-	}		
-
-exit_rtw_os_recv_resource_alloc:
-
-	return res;
-
-}
-
 void rtw_os_free_recvframe(union recv_frame *precvframe)
 {
 	if(precvframe->u.hdr.pkt)
@@ -457,12 +369,6 @@ _func_exit_;
 
 }
 
-void rtw_os_read_port(_adapter *padapter, struct recv_buf *precvbuf)
-{
-	struct recv_priv *precvpriv = &padapter->recvpriv;
-
-	precvbuf->pskb = NULL;
-}
 void rtw_init_recv_timer(struct recv_reorder_ctrl *preorder_ctrl)
 {
 	_adapter *padapter = preorder_ctrl->padapter;

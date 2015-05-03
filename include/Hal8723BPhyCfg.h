@@ -77,13 +77,6 @@ int PHY_RFConfig8723B(PADAPTER	Adapter	);
 
 s32 PHY_MACConfig8723B(PADAPTER padapter);
 
-int
-PHY_ConfigRFWithParaFile_8723B(
-	IN	PADAPTER			Adapter,
-	IN	u8* 				pFileName,
-	RF_PATH				eRFPath
-);
-
 void
 PHY_SetTxPowerIndex_8723B(
 	IN	PADAPTER			Adapter,
@@ -135,10 +128,6 @@ PHY_SetSwChnlBWMode8723B(
 	IN	u8					Offset80
 );
 
-void PHY_SetRFPathSwitch_8723B(
-	IN	PADAPTER	pAdapter,
-	IN	bool		bMain
-	);
 /*--------------------------Exported Function prototype End---------------------*/
 
 #endif

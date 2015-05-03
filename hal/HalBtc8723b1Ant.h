@@ -213,11 +213,6 @@ EXhalbtc8723b1ant_BtInfoNotify(
 	IN	u1Byte			length
 	);
 void
-EXhalbtc8723b1ant_RfStatusNotify(
-	IN	PBTC_COEXIST			pBtCoexist,
-	IN	u1Byte					type
-	);
-void
 EXhalbtc8723b1ant_HaltNotify(
 	IN	PBTC_COEXIST			pBtCoexist
 	);
@@ -225,10 +220,6 @@ void
 EXhalbtc8723b1ant_PnpNotify(
 	IN	PBTC_COEXIST			pBtCoexist,
 	IN	u1Byte				pnpState
-	);
-void
-EXhalbtc8723b1ant_CoexDmReset(
-	IN	PBTC_COEXIST			pBtCoexist
 	);
 void
 EXhalbtc8723b1ant_Periodical(

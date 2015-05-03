@@ -84,13 +84,6 @@ typedef struct _BB_REGISTER_DEFINITION{
 
 
 //----------------------------------------------------------------------
-s32
-phy_TxPwrIdxToDbm(
-	IN	PADAPTER		Adapter,
-	IN	WIRELESS_MODE	WirelessMode,
-	IN	u8				TxPwrIdx	
-	);
-
 u8
 PHY_GetTxPowerByRateBase(
 	IN	PADAPTER		Adapter,

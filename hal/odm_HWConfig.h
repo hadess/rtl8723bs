@@ -137,11 +137,6 @@ typedef struct _Phy_Status_Rpt_8812
 
 
 void
-odm_Init_RSSIForDM(
-	IN OUT	PDM_ODM_T	pDM_Odm
-	);
-
-void
 ODM_PhyStatusQuery(
 	IN OUT	PDM_ODM_T					pDM_Odm,
 	OUT		PODM_PHY_INFO_T			pPhyInfo,
@@ -149,15 +144,6 @@ ODM_PhyStatusQuery(
 	IN		PODM_PACKET_INFO_T			pPktinfo
 	);
 
-void
-ODM_MacStatusQuery(
-	IN OUT	PDM_ODM_T					pDM_Odm,
-	IN 		pu1Byte						pMacStatus,
-	IN		u1Byte						MacID,	
-	IN		bool						bPacketMatchBSSID,
-	IN		bool						bPacketToSelf,
-	IN		bool						bPacketBeacon
-	);
 HAL_STATUS
 ODM_ConfigRFWithTxPwrTrackHeaderFile(
 	IN 	PDM_ODM_T	        	pDM_Odm

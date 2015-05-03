@@ -39,7 +39,6 @@ int rtw_os_recv_resource_alloc(_adapter *padapter, union recv_frame *precvframe)
 void rtw_os_recv_resource_free(struct recv_priv *precvpriv);
 
 
-int rtw_os_alloc_recvframe(_adapter *padapter, union recv_frame *precvframe, u8 *pdata, _pkt *pskb);
 void rtw_os_free_recvframe(union recv_frame *precvframe);
 
 
@@ -47,8 +46,6 @@ int rtw_os_recvbuf_resource_free(_adapter *padapter, struct recv_buf *precvbuf);
 
 _pkt *rtw_os_alloc_msdu_pkt(union recv_frame *prframe, u16 nSubframe_Length, u8 *pdata);
 void rtw_os_recv_indicate_pkt(_adapter *padapter, _pkt *pkt, struct rx_pkt_attrib *pattrib);
-
-void rtw_os_read_port(_adapter *padapter, struct recv_buf *precvbuf);
 
 void rtw_init_recv_timer(struct recv_reorder_ctrl *preorder_ctrl);
 

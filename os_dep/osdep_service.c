@@ -97,31 +97,6 @@ void	_rtw_init_queue(_queue	*pqueue)
 	spin_lock_init(&(pqueue->lock));
 }
 
-inline u32 rtw_systime_to_ms(u32 systime)
-{
-	return systime * 1000 / HZ;
-}
-
-inline s32 rtw_get_time_interval_ms(u32 start, u32 end)
-{
-	return rtw_systime_to_ms(end-start);
-}
-
-void rtw_sleep_schedulable(int ms)	
-{
-    u32 delta;
-    
-    delta = (ms * HZ)/1000;//(ms)
-    if (delta == 0) {
-        delta = 1;// 1 ms
-    }
-    set_current_state(TASK_INTERRUPTIBLE);
-    if (schedule_timeout(delta) != 0) {
-        return ;
-    }
-    return;
-}
-
 /*
 * Open a file with the specific @param path, @param flag, @param mode
 * @param fpp the pointer of struct file pointer to get struct file pointer while file opening is success
@@ -174,27 +149,6 @@ static int readFile(struct file *fp,char *buf,int len)
 	}
 	
 	return  sum;
-
-}
-
-static int writeFile(struct file *fp,char *buf,int len) 
-{ 
-	int wlen=0, sum=0;
-	
-	if (!fp->f_op || !fp->f_op->write) 
-		return -EPERM; 
-
-	while(sum<len) {
-		wlen=fp->f_op->write(fp,(char __force __user *)buf+sum,len-sum, &fp->f_pos);
-		if(wlen>0)
-			sum+=wlen;
-		else if(0 != wlen)
-			return wlen;
-		else
-			break;
-	}
-
-	return sum;
 
 }
 
@@ -261,40 +215,6 @@ static int retriveFromFile(char *path, u8* buf, u32 sz)
 }
 
 /*
-* Open the file with @param path and wirte @param sz byte of data starting from @param buf into the file
-* @param path the path of the file to open and write
-* @param buf the starting address of the data to write into file
-* @param sz how many bytes to write at most
-* @return the byte we've written, or Linux specific error code
-*/
-static int storeToFile(char *path, u8* buf, u32 sz)
-{
-	int ret =0;
-	mm_segment_t oldfs;
-	struct file *fp;
-	
-	if(path && buf) {
-		if( 0 == (ret=openFile(&fp, path, O_CREAT|O_WRONLY, 0666)) ) {
-			DBG_871X("%s openFile path:%s fp=%p\n",__FUNCTION__, path ,fp);
-
-			oldfs = get_fs(); set_fs(get_ds());
-			ret=writeFile(fp, buf, sz);
-			set_fs(oldfs);
-			closeFile(fp);
-
-			DBG_871X("%s writeFile, ret:%d\n",__FUNCTION__, ret);
-			
-		} else {
-			DBG_871X("%s openFile path:%s Fail, ret:%d\n",__FUNCTION__, path, ret);
-		}	
-	} else {
-		DBG_871X("%s NULL pointer\n",__FUNCTION__);
-		ret =  -EINVAL;
-	}
-	return ret;
-}
-
-/*
 * Test if the specifi @param path is a file and readable
 * @param path the path of the file to test
 * @return true or false
@@ -317,19 +237,6 @@ int rtw_is_file_readable(char *path)
 int rtw_retrive_from_file(char *path, u8* buf, u32 sz)
 {
 	int ret =retriveFromFile(path, buf, sz);
-	return ret>=0?ret:0;
-}
-
-/*
-* Open the file with @param path and wirte @param sz byte of data starting from @param buf into the file
-* @param path the path of the file to open and write
-* @param buf the starting address of the data to write into file
-* @param sz how many bytes to write at most
-* @return the byte we've written
-*/
-int rtw_store_to_file(char *path, u8* buf, u32 sz)
-{
-	int ret =storeToFile(path, buf, sz);
 	return ret>=0?ret:0;
 }
 
@@ -451,12 +358,6 @@ error:
 u64 rtw_modular64(u64 x, u64 y)
 {
 	return do_div(x, y);
-}
-
-u64 rtw_division64(u64 x, u64 y)
-{
-	do_div(x, y);
-	return x;
 }
 
 void rtw_buf_free(u8 **buf, u32 *buf_len)

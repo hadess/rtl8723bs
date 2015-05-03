@@ -60,12 +60,10 @@ _OS_INTFS_FILES :=	os_dep/osdep_service.o \
 _HAL_INTFS_FILES :=	hal/hal_intf.o \
 			hal/hal_com.o \
 			hal/hal_com_phycfg.o \
-			hal/hal_phy.o \
 			hal/hal_btcoex.o \
 			hal/hal_sdio.o
 
 _OUTSRC_FILES := hal/odm_debug.o	\
-		hal/odm_AntDiv.o\
 		hal/odm_HWConfig.o\
 		hal/odm.o\
 		hal/HalPhyRf.o\

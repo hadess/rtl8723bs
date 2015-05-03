@@ -30,27 +30,6 @@ void
 ODM_ReadAndConfig_MP_8723B_RadioA( // TC: Test Chip, MP: MP Chip
 	IN   PDM_ODM_T  pDM_Odm
 );
-u4Byte ODM_GetVersion_MP_8723B_RadioA(void);
-
-/******************************************************************************
-*                           TxPowerTrack_AP.TXT
-******************************************************************************/
-
-void
-ODM_ReadAndConfig_MP_8723B_TxPowerTrack_AP( // TC: Test Chip, MP: MP Chip
-	IN   PDM_ODM_T  pDM_Odm
-);
-u4Byte ODM_GetVersion_MP_8723B_TxPowerTrack_AP(void);
-
-/******************************************************************************
-*                           TxPowerTrack_PCIE.TXT
-******************************************************************************/
-
-void
-ODM_ReadAndConfig_MP_8723B_TxPowerTrack_PCIE( // TC: Test Chip, MP: MP Chip
-	IN   PDM_ODM_T  pDM_Odm
-);
-u4Byte ODM_GetVersion_MP_8723B_TxPowerTrack_PCIE(void);
 
 /******************************************************************************
 *                           TxPowerTrack_SDIO.TXT
@@ -61,16 +40,6 @@ ODM_ReadAndConfig_MP_8723B_TxPowerTrack_SDIO( // TC: Test Chip, MP: MP Chip
 	IN   PDM_ODM_T  pDM_Odm
 );
 u4Byte ODM_GetVersion_MP_8723B_TxPowerTrack_SDIO(void);
-
-/******************************************************************************
-*                           TxPowerTrack_USB.TXT
-******************************************************************************/
-
-void
-ODM_ReadAndConfig_MP_8723B_TxPowerTrack_USB( // TC: Test Chip, MP: MP Chip
-	IN   PDM_ODM_T  pDM_Odm
-);
-u4Byte ODM_GetVersion_MP_8723B_TxPowerTrack_USB(void);
 
 /******************************************************************************
 *                           TXPWR_LMT.TXT

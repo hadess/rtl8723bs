@@ -128,11 +128,6 @@ void _rtw_skb_queue_purge(struct sk_buff_head *list);
 
 extern void	_rtw_init_queue(_queue	*pqueue);
 
-extern u32	rtw_systime_to_ms(u32 systime);
-extern s32	rtw_get_time_interval_ms(u32 start, u32 end);
-
-extern void	rtw_sleep_schedulable(int ms);
-
 extern void rtw_init_timer(_timer *ptimer, void *padapter, void *pfunc);
 
 
@@ -152,17 +147,6 @@ __inline static void flush_signals_thread(void)
 	{
 		flush_signals(current);
 	}
-}
-
-__inline static _OS_STATUS res_to_status(sint res)
-{
-
-	return res;
-}
-
-__inline static void rtw_dump_stack(void)
-{
-	dump_stack();
 }
 
 #define rtw_warn_on(condition) WARN_ON(condition)
@@ -200,49 +184,6 @@ __inline static u32 _RND8(u32 sz)
 
 }
 
-__inline static u32 _RND128(u32 sz)
-{
-
-	u32	val;
-
-	val = ((sz >> 7) + ((sz & 127) ? 1: 0)) << 7;
-	
-	return val;
-
-}
-
-__inline static u32 _RND256(u32 sz)
-{
-
-	u32	val;
-
-	val = ((sz >> 8) + ((sz & 255) ? 1: 0)) << 8;
-	
-	return val;
-
-}
-
-__inline static u32 _RND512(u32 sz)
-{
-
-	u32	val;
-
-	val = ((sz >> 9) + ((sz & 511) ? 1: 0)) << 9;
-	
-	return val;
-
-}
-
-__inline static u32 bitshift(u32 bitmask)
-{
-	u32 i;
-
-	for (i = 0; i <= 31; i++)
-		if (((bitmask>>i) &  0x1) == 1) break;
-
-	return i;
-}
-
 #ifndef MAC_FMT
 #define MAC_FMT "%02x:%02x:%02x:%02x:%02x:%02x"
 #endif
@@ -259,14 +200,11 @@ extern void rtw_softap_unlock_suspend(void);
 //File operation APIs, just for linux now
 extern int rtw_is_file_readable(char *path);
 extern int rtw_retrive_from_file(char *path, u8* buf, u32 sz);
-extern int rtw_store_to_file(char *path, u8* buf, u32 sz);
-
 
 extern void rtw_free_netdev(struct net_device * netdev);
 
 
 extern u64 rtw_modular64(u64 x, u64 y);
-extern u64 rtw_division64(u64 x, u64 y);
 
 /* Macros for handling unaligned memory accesses */
 

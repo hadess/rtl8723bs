@@ -27,52 +27,6 @@
 
 
 void
-ODM_ChangeDynamicInitGainThresh(
-	IN	void *		pDM_VOID,
-	IN	u4Byte		DM_Type,
-	IN	u4Byte		DM_Value
-	)
-{
-	PDM_ODM_T		pDM_Odm = (PDM_ODM_T)pDM_VOID;
-	pDIG_T			pDM_DigTable = &pDM_Odm->DM_DigTable;
-
-	if (DM_Type == DIG_TYPE_THRESH_HIGH)
-	{
-		pDM_DigTable->RssiHighThresh = DM_Value;		
-	}
-	else if (DM_Type == DIG_TYPE_THRESH_LOW)
-	{
-		pDM_DigTable->RssiLowThresh = DM_Value;
-	}
-	else if (DM_Type == DIG_TYPE_ENABLE)
-	{
-		pDM_DigTable->Dig_Enable_Flag	= true;
-	}	
-	else if (DM_Type == DIG_TYPE_DISABLE)
-	{
-		pDM_DigTable->Dig_Enable_Flag = false;
-	}	
-	else if (DM_Type == DIG_TYPE_BACKOFF)
-	{
-		if(DM_Value > 30)
-			DM_Value = 30;
-		pDM_DigTable->BackoffVal = (u1Byte)DM_Value;
-	}
-	else if(DM_Type == DIG_TYPE_RX_GAIN_MIN)
-	{
-		if(DM_Value == 0)
-			DM_Value = 0x1;
-		pDM_DigTable->rx_gain_range_min = (u1Byte)DM_Value;
-	}
-	else if(DM_Type == DIG_TYPE_RX_GAIN_MAX)
-	{
-		if(DM_Value > 0x50)
-			DM_Value = 0x50;
-		pDM_DigTable->rx_gain_range_max = (u1Byte)DM_Value;
-	}
-}	// DM_ChangeDynamicInitGainThresh //
-
-void
 odm_NHMCounterStatisticsInit(
 	IN		void *			pDM_VOID
 	)
@@ -917,14 +871,6 @@ odm_DIGbyRSSI_LPS(
 	ODM_Write_DIG(pDM_Odm, CurrentIGI);//ODM_Write_DIG(pDM_Odm, pDM_DigTable->CurIGValue);
 }
 
-void
-odm_DigForBtHsMode(
-	IN		void *		pDM_VOID
-	)
-{
-}
-
-
 //3============================================================
 //3 FASLE ALARM CHECK
 //3============================================================
@@ -1107,80 +1053,9 @@ odm_ForbiddenIGICheck(
 
 }
 
-void
-odm_InbandNoiseCalculate (	
-	IN		void *		pDM_VOID
-	)
-{
-	return;
-}
-
 //3============================================================
 //3 CCK Packet Detect Threshold
 //3============================================================
-
-void
-odm_PauseCCKPacketDetection(
-	IN		void *					pDM_VOID,
-	IN		ODM_Pause_CCKPD_TYPE	PauseType,
-	IN		u1Byte					CCKPDThreshold
-)
-{
-	PDM_ODM_T			pDM_Odm = (PDM_ODM_T)pDM_VOID;
-	pDIG_T				pDM_DigTable = &pDM_Odm->DM_DigTable;
-	static	bool		bPaused = false;
-
-	ODM_RT_TRACE(pDM_Odm,ODM_COMP_CCK_PD, ODM_DBG_LOUD, ("odm_PauseCCKPacketDetection()=========>\n"));
-
-	if(!bPaused && (!(pDM_Odm->SupportAbility & ODM_BB_CCK_PD) || !(pDM_Odm->SupportAbility & ODM_BB_FA_CNT)))
-	{
-		ODM_RT_TRACE(pDM_Odm,ODM_COMP_CCK_PD, ODM_DBG_LOUD, ("Return: SupportAbility ODM_BB_CCK_PD or ODM_BB_FA_CNT is disabled\n"));
-		return;
-	}
-
-	switch(PauseType)
-	{
-		//1 Pause CCK Packet Detection Threshold
-		case ODM_PAUSE_CCKPD:
-			//2 Disable DIG
-			ODM_CmnInfoUpdate(pDM_Odm, ODM_CMNINFO_ABILITY, pDM_Odm->SupportAbility & (~ODM_BB_CCK_PD));
-			ODM_RT_TRACE(pDM_Odm,ODM_COMP_CCK_PD, ODM_DBG_LOUD, ("Pause CCK packet detection threshold !!\n"));
-
-			//2 Backup CCK Packet Detection Threshold value
-			if(!bPaused)
-			{
-				pDM_DigTable->CCKPDBackup = pDM_DigTable->CurCCK_CCAThres;
-				bPaused = true;
-			}
-			ODM_RT_TRACE(pDM_Odm,ODM_COMP_CCK_PD, ODM_DBG_LOUD, ("Backup CCK packet detection tgreshold  = %d\n", pDM_DigTable->CCKPDBackup));
-
-			//2 Write new CCK Packet Detection Threshold value
-			ODM_Write_CCK_CCA_Thres(pDM_Odm, CCKPDThreshold);
-			ODM_RT_TRACE(pDM_Odm,ODM_COMP_CCK_PD, ODM_DBG_LOUD, ("Write new CCK packet detection tgreshold = %d\n", CCKPDThreshold));
-			break;
-			
-		//1 Resume CCK Packet Detection Threshold
-		case ODM_RESUME_CCKPD:
-			if(bPaused)
-			{
-				//2 Write backup CCK Packet Detection Threshold value
-				ODM_Write_CCK_CCA_Thres(pDM_Odm, pDM_DigTable->CCKPDBackup);
-				bPaused = false;
-				ODM_RT_TRACE(pDM_Odm,ODM_COMP_CCK_PD, ODM_DBG_LOUD, ("Write original CCK packet detection tgreshold = %d\n", pDM_DigTable->CCKPDBackup));
-
-				//2 Enable CCK Packet Detection Threshold
-				ODM_CmnInfoUpdate(pDM_Odm, ODM_CMNINFO_ABILITY, pDM_Odm->SupportAbility | ODM_BB_CCK_PD);		
-				ODM_RT_TRACE(pDM_Odm,ODM_COMP_CCK_PD, ODM_DBG_LOUD, ("Resume CCK packet detection threshold  !!\n"));
-			}
-			break;
-			
-		default:
-			ODM_RT_TRACE(pDM_Odm,ODM_COMP_CCK_PD, ODM_DBG_LOUD, ("Wrong  type !!\n"));
-			break;
-	}	
-	return;
-}
-
 
 void
 odm_CCKPacketDetectionThresh(

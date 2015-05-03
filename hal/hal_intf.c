@@ -70,18 +70,6 @@ void rtw_hal_dm_deinit(_adapter *padapter)
 			padapter->HalFunc.dm_deinit(padapter);
 }
 
-u32 rtw_hal_power_on(_adapter *padapter)
-{
-	if(padapter->HalFunc.hal_power_on)
-		return padapter->HalFunc.hal_power_on(padapter);
-	return _FAIL;
-}
-void rtw_hal_power_off(_adapter *padapter)
-{
-	if(padapter->HalFunc.hal_power_off)
-		padapter->HalFunc.hal_power_off(padapter);	
-}
-
 static void rtw_hal_init_opmode(_adapter *padapter) 
 {
 	NDIS_802_11_NETWORK_INFRASTRUCTURE networkType = Ndis802_11InfrastructureMax;
@@ -247,41 +235,6 @@ void rtw_hal_clear_interrupt(_adapter *padapter)
 }
 #endif
 
-u32	rtw_hal_inirp_init(_adapter *padapter)
-{
-	u32 rst = _FAIL;
-	if(padapter->HalFunc.inirp_init)	
-		rst = padapter->HalFunc.inirp_init(padapter);	
-	else		
-		DBG_871X(" %s HalFunc.inirp_init is NULL!!!\n",__FUNCTION__);		
-	return rst;
-}
-	
-u32	rtw_hal_inirp_deinit(_adapter *padapter)
-{
-	
-	if(padapter->HalFunc.inirp_deinit)
-		return padapter->HalFunc.inirp_deinit(padapter);
-
-	return _FAIL;
-		
-}
-
-void	rtw_hal_irp_reset(_adapter *padapter)
-{
-	if(padapter->HalFunc.irp_reset)
-		padapter->HalFunc.irp_reset(padapter);
-	else 
-		DBG_871X("%s: HalFunc.rtw_hal_irp_reset is NULL!\n", __FUNCTION__);
-}
-
-u8	rtw_hal_intf_ps_func(_adapter *padapter,HAL_INTF_PS_FUNC efunc_id, u8* val)
-{	
-	if(padapter->HalFunc.interface_ps_func)	
-		return padapter->HalFunc.interface_ps_func(padapter,efunc_id,val);
-	return _FAIL;
-}
-
 s32	rtw_hal_xmitframe_enqueue(_adapter *padapter, struct xmit_frame *pxmitframe)
 {
 	if(padapter->HalFunc.hal_xmitframe_enqueue)
@@ -425,19 +378,6 @@ void	rtw_hal_write_rfreg(_adapter *padapter, u32 eRFPath, u32 RegAddr, u32 BitMa
 		padapter->HalFunc.write_rfreg(padapter, eRFPath, RegAddr, BitMask, Data);	
 }
 
-s32	rtw_hal_interrupt_handler(_adapter *padapter)
-{
-	if(padapter->HalFunc.interrupt_handler)
-		return padapter->HalFunc.interrupt_handler(padapter);
-	return _FAIL;
-}
-
-void	rtw_hal_set_bwmode(_adapter *padapter, CHANNEL_WIDTH Bandwidth, u8 Offset)
-{
-	if(padapter->HalFunc.set_bwmode_handler)
-		padapter->HalFunc.set_bwmode_handler(padapter, Bandwidth, Offset);
-}
-
 void	rtw_hal_set_chan(_adapter *padapter, u8 channel)
 {
 	if(padapter->HalFunc.set_channel_handler)
@@ -448,18 +388,6 @@ void	rtw_hal_set_chnl_bw(_adapter *padapter, u8 channel, CHANNEL_WIDTH Bandwidth
 {
 	if(padapter->HalFunc.set_chnl_bw_handler)
 		padapter->HalFunc.set_chnl_bw_handler(padapter, channel, Bandwidth, Offset40, Offset80);
-}
-
-void	rtw_hal_set_tx_power_level(_adapter *padapter, u8 channel)
-{
-	if(padapter->HalFunc.set_tx_power_level_handler)
-		padapter->HalFunc.set_tx_power_level_handler(padapter, channel);
-}
-
-void	rtw_hal_get_tx_power_level(_adapter *padapter, s32 *powerlevel)
-{
-	if(padapter->HalFunc.get_tx_power_level_handler)
-		padapter->HalFunc.get_tx_power_level_handler(padapter, powerlevel);
 }
 
 void	rtw_hal_dm_watchdog(_adapter *padapter)

@@ -41,14 +41,10 @@ void rtw_btcoex_IQKNotify(PADAPTER padapter, u8 state);
 void rtw_btcoex_BtInfoNotify(PADAPTER, u8 length, u8 *tmpBuf);
 void rtw_btcoex_SuspendNotify(PADAPTER, u8 state);
 void rtw_btcoex_HaltNotify(PADAPTER);
-void rtw_btcoex_SwitchBtTRxMask(PADAPTER);
-void rtw_btcoex_Switch(PADAPTER, u8 enable);
 u8 rtw_btcoex_IsBtDisabled(PADAPTER);
 void rtw_btcoex_Handler(PADAPTER);
 s32 rtw_btcoex_IsBTCoexCtrlAMPDUSize(PADAPTER);
-u32 rtw_btcoex_GetAMPDUSize(PADAPTER);
 void rtw_btcoex_SetManualControl(PADAPTER, u8 bmanual);
-u8 rtw_btcoex_1Ant(PADAPTER);
 u8 rtw_btcoex_IsBtControlLps(PADAPTER);
 u8 rtw_btcoex_IsLpsOn(PADAPTER);
 u8 rtw_btcoex_RpwmVal(PADAPTER);
@@ -56,15 +52,12 @@ u8 rtw_btcoex_LpsVal(PADAPTER);
 void rtw_btcoex_SetBTCoexist(PADAPTER, u8 bBtExist);
 void rtw_btcoex_SetChipType(PADAPTER, u8 chipType);
 void rtw_btcoex_SetPGAntNum(PADAPTER, u8 antNum);
-u8 rtw_btcoex_GetPGAntNum(PADAPTER);
 void rtw_btcoex_SetSingleAntPath(PADAPTER padapter, u8 singleAntPath);
 u32 rtw_btcoex_GetRaMask(PADAPTER);
 void rtw_btcoex_RecordPwrMode(PADAPTER, u8 *pCmdBuf, u8 cmdLen);
 void rtw_btcoex_DisplayBtCoexInfo(PADAPTER, u8 *pbuf, u32 bufsize);
 void rtw_btcoex_SetDBG(PADAPTER, u32 *pDbgModule);
 u32 rtw_btcoex_GetDBG(PADAPTER, u8 *pStrBuf, u32 bufSize);
-u8 rtw_btcoex_IncreaseScanDeviceNum(PADAPTER);
-u8 rtw_btcoex_IsBtLinkExist(PADAPTER);
 
 // ==================================================
 // Below Functions are called by BT-Coex

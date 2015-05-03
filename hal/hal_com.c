@@ -577,20 +577,6 @@ void c2h_evt_clear(_adapter *adapter)
 	rtw_write8(adapter, REG_C2HEVT_CLEAR, C2H_EVT_HOST_CLOSE);
 }
 
-s32 c2h_evt_read(_adapter *adapter, u8 *buf)
-{
-	s32 ret = _FAIL;
-	struct c2h_evt_hdr *c2h_evt;
-	int i;
-	u8 trigger;
-
-	if (buf == NULL)
-		goto exit;
-
-exit:
-	return ret;
-}
-
 /* 
 * C2H event format:
 * Field    TRIGGER    CMD_LEN    CONTENT    CMD_SEQ    CMD_ID

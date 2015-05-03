@@ -3606,32 +3606,6 @@ EXhalbtc8723b1ant_BtInfoNotify(
 }
 
 void
-EXhalbtc8723b1ant_RfStatusNotify(
-	IN	PBTC_COEXIST			pBtCoexist,
-	IN	u1Byte					type
-	)
-{
-	BTC_PRINT(BTC_MSG_INTERFACE, INTF_NOTIFY, ("[BTCoex], RF Status notify\n"));
-
-	if(BTC_RF_ON == type)
-	{
-		BTC_PRINT(BTC_MSG_INTERFACE, INTF_NOTIFY, ("[BTCoex], RF is turned ON!!\n"));
-		pBtCoexist->bStopCoexDm = false;
-	}
-	else if(BTC_RF_OFF == type)
-	{
-		BTC_PRINT(BTC_MSG_INTERFACE, INTF_NOTIFY, ("[BTCoex], RF is turned OFF!!\n"));
-		
-		halbtc8723b1ant_PowerSaveState(pBtCoexist, BTC_PS_WIFI_NATIVE, 0x0, 0x0);
-		halbtc8723b1ant_PsTdma(pBtCoexist, FORCE_EXEC, false, 0);
-		halbtc8723b1ant_SetAntPath(pBtCoexist, BTC_ANT_PATH_BT, false, true);
-		
-		halbtc8723b1ant_IgnoreWlanAct(pBtCoexist, FORCE_EXEC, true);
-		pBtCoexist->bStopCoexDm = true;
-	}
-}
-
-void
 EXhalbtc8723b1ant_HaltNotify(
 	IN	PBTC_COEXIST			pBtCoexist
 	)
@@ -3678,19 +3652,6 @@ EXhalbtc8723b1ant_PnpNotify(
 		halbtc8723b1ant_InitCoexDm(pBtCoexist);
 		halbtc8723b1ant_QueryBtInfo(pBtCoexist);
 	}
-}
-
-void
-EXhalbtc8723b1ant_CoexDmReset(
-	IN	PBTC_COEXIST			pBtCoexist
-	)
-{
-	BTC_PRINT(BTC_MSG_ALGORITHM, ALGO_TRACE, ("[BTCoex], *****************Coex DM Reset*****************\n"));
-
-	halbtc8723b1ant_InitHwConfig(pBtCoexist, false, false);
-	//pBtCoexist->fBtcSetRfReg(pBtCoexist, BTC_RF_A, 0x1, 0xfffff, 0x0);
-	//pBtCoexist->fBtcSetRfReg(pBtCoexist, BTC_RF_A, 0x2, 0xfffff, 0x0);
-	halbtc8723b1ant_InitCoexDm(pBtCoexist);
 }
 
 void

@@ -183,14 +183,6 @@ union recv_frame *rtw_alloc_recvframe (_queue *pfree_recv_queue)
 	return precvframe;
 }
 
-void rtw_init_recvframe(union recv_frame *precvframe, struct recv_priv *precvpriv)
-{
-	/* Perry: This can be removed */
-	INIT_LIST_HEAD(&precvframe->u.hdr.list);
-
-	precvframe->u.hdr.len=0;
-}
-
 int rtw_free_recvframe(union recv_frame *precvframe, _queue *pfree_recv_queue)
 {
 	_irqL irqL;

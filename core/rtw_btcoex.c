@@ -108,16 +108,6 @@ void rtw_btcoex_HaltNotify(PADAPTER padapter)
 	hal_btcoex_HaltNotify(padapter);
 }
 
-void rtw_btcoex_SwitchBtTRxMask(PADAPTER padapter)
-{
-	hal_btcoex_SwitchBtTRxMask(padapter);	
-}
-
-void rtw_btcoex_Switch(PADAPTER padapter, u8 enable)
-{
-	hal_btcoex_SetBTCoexist(padapter, enable);
-}
-
 u8 rtw_btcoex_IsBtDisabled(PADAPTER padapter)
 {
 	return hal_btcoex_IsBtDisabled(padapter);
@@ -137,15 +127,6 @@ s32 rtw_btcoex_IsBTCoexCtrlAMPDUSize(PADAPTER padapter)
 	return coexctrl;
 }
 
-u32 rtw_btcoex_GetAMPDUSize(PADAPTER padapter)
-{
-	u32 size;
-
-	size = hal_btcoex_GetAMPDUSize(padapter);
-
-	return size;
-}
-
 void rtw_btcoex_SetManualControl(PADAPTER padapter, u8 manual)
 {
 	if (true == manual)
@@ -156,11 +137,6 @@ void rtw_btcoex_SetManualControl(PADAPTER padapter, u8 manual)
 	{
 		hal_btcoex_SetManualControl(padapter, false);
 	}
-}
-
-u8 rtw_btcoex_1Ant(PADAPTER padapter)
-{
-	return hal_btcoex_1Ant(padapter);
 }
 
 u8 rtw_btcoex_IsBtControlLps(PADAPTER padapter)
@@ -198,11 +174,6 @@ void rtw_btcoex_SetPGAntNum(PADAPTER padapter, u8 antNum)
 	hal_btcoex_SetPgAntNum(padapter, antNum);
 }
 
-u8 rtw_btcoex_GetPGAntNum(PADAPTER padapter)
-{
-	return hal_btcoex_GetPgAntNum(padapter);
-}
-
 void rtw_btcoex_SetSingleAntPath(PADAPTER padapter, u8 singleAntPath)
 {
 	hal_btcoex_SetSingleAntPath(padapter, singleAntPath);
@@ -231,16 +202,6 @@ void rtw_btcoex_SetDBG(PADAPTER padapter, u32 *pDbgModule)
 u32 rtw_btcoex_GetDBG(PADAPTER padapter, u8 *pStrBuf, u32 bufSize)
 {
 	return hal_btcoex_GetDBG(padapter, pStrBuf, bufSize);
-}
-
-u8 rtw_btcoex_IncreaseScanDeviceNum(PADAPTER padapter)
-{
-	return hal_btcoex_IncreaseScanDeviceNum(padapter);
-}
-
-u8 rtw_btcoex_IsBtLinkExist(PADAPTER padapter)
-{
-	return hal_btcoex_IsBtLinkExist(padapter);
 }
 
 // ==================================================
