@@ -258,7 +258,7 @@ _func_enter_;
 			kfree(c2h);
 		}
 	}
-	rtw_cbuf_free(pevtpriv->c2h_queue);
+	kfree(pevtpriv->c2h_queue);
 
 	RT_TRACE(_module_rtl871x_cmd_c_,_drv_info_,("-_rtw_free_evt_priv \n"));
 

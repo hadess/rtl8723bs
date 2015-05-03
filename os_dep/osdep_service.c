@@ -591,13 +591,3 @@ struct rtw_cbuf *rtw_cbuf_alloc(u32 size)
 
 	return cbuf;
 }
-
-/**
- * rtw_cbuf_free - free the given rtw_cbuf
- * @cbuf: pointer of struct rtw_cbuf to free
- */
-void rtw_cbuf_free(struct rtw_cbuf *cbuf)
-{
-	kfree((u8*)cbuf);
-}
-
