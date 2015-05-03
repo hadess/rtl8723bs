@@ -2011,17 +2011,6 @@ _func_exit_;
 	return res;
 }
 
-u8 rtw_tdls_cmd(_adapter *padapter, u8 *addr, u8 option)
-{
-	u8	res=_SUCCESS;
-
-_func_enter_;
-
-_func_exit_;	
-
-	return res;
-}
-
 static void collect_traffic_statistics(_adapter *padapter)
 {
 	struct dvobj_priv	*pdvobjpriv = adapter_to_dvobj(padapter);
