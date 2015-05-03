@@ -434,10 +434,6 @@ s32 rtl8723bs_init_recv_priv(PADAPTER padapter)
 		if (res == _FAIL)
 			break;
 
-		res = rtw_os_recvbuf_resource_alloc(padapter, precvbuf);
-		if (res == _FAIL)
-			break;
-
 		if (precvbuf->pskb == NULL) {
 			SIZE_PTR tmpaddr=0;
 			SIZE_PTR alignment=0;

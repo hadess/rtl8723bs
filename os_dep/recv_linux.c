@@ -148,14 +148,6 @@ void rtw_os_recv_resource_free(struct recv_priv *precvpriv)
 	}
 }
 
-//alloc os related resource in struct recv_buf
-int rtw_os_recvbuf_resource_alloc(_adapter *padapter, struct recv_buf *precvbuf)
-{
-	int res=_SUCCESS;
-
-	return res;
-}
-
 //free os related resource in struct recv_buf
 int rtw_os_recvbuf_resource_free(_adapter *padapter, struct recv_buf *precvbuf)
 {
