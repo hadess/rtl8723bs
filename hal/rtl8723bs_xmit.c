@@ -356,7 +356,7 @@ static s32 xmit_xmitframes(PADAPTER padapter, struct xmit_priv *pxmitpriv)
 				pxmitframe = NULL;
 			}
 
-			if (_rtw_queue_empty(pframe_queue) == true)
+			if (list_empty(&pframe_queue->queue))
 				list_del_init(&ptxservq->tx_pending);
 
 			if (err) break;
@@ -637,7 +637,7 @@ void rtl8723bs_free_xmit_priv(PADAPTER padapter)
 	INIT_LIST_HEAD(&tmplist);
 
 	spin_lock_bh(&pqueue->lock);
-	if (_rtw_queue_empty(pqueue) == false)
+	if (!list_empty(&pqueue->queue))
 	{
 		// Insert tmplist to end of queue, and delete phead
 		// then tmplist become head of queue.

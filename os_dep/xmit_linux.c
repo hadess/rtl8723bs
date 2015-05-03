@@ -139,7 +139,7 @@ void rtw_os_xmit_schedule(_adapter *padapter)
 	if(!padapter)
 		return;
 
-	if (_rtw_queue_empty(&padapter->xmitpriv.pending_xmitbuf_queue) == false)
+	if (!list_empty(&padapter->xmitpriv.pending_xmitbuf_queue.queue))
 		up(&pri_adapter->xmitpriv.xmit_sema);
 }
 

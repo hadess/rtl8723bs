@@ -1360,10 +1360,10 @@ s32 rtw_txframes_pending(_adapter *padapter)
 {
 	struct xmit_priv *pxmitpriv = &padapter->xmitpriv;
 
-	return ((_rtw_queue_empty(&pxmitpriv->be_pending) == false) || 
-			 (_rtw_queue_empty(&pxmitpriv->bk_pending) == false) || 
-			 (_rtw_queue_empty(&pxmitpriv->vi_pending) == false) ||
-			 (_rtw_queue_empty(&pxmitpriv->vo_pending) == false));
+	return ((!list_empty(&pxmitpriv->be_pending.queue)) ||
+			 (!list_empty(&pxmitpriv->bk_pending.queue)) ||
+			 (!list_empty(&pxmitpriv->vi_pending.queue)) ||
+			 (!list_empty(&pxmitpriv->vo_pending.queue)));
 }
 
 s32 rtw_txframes_sta_ac_pending(_adapter *padapter, struct pkt_attrib *pattrib)
@@ -2073,7 +2073,7 @@ _func_enter_;
 
 	spin_lock_irqsave(&pfree_queue->lock, irqL);
 
-	if(_rtw_queue_empty(pfree_queue) == true) {
+	if(list_empty(&pfree_queue->queue)) {
 		pxmitbuf = NULL;
 	} else {
 
@@ -2156,7 +2156,7 @@ _func_enter_;
 
 	spin_lock_irqsave(&pfree_xmitbuf_queue->lock, irqL);
 
-	if(_rtw_queue_empty(pfree_xmitbuf_queue) == true) {
+	if(list_empty(&pfree_xmitbuf_queue->queue)) {
 		pxmitbuf = NULL;
 	} else {
 
@@ -2294,7 +2294,7 @@ _func_enter_;
 
 	spin_lock_bh(&pfree_xmit_queue->lock);
 
-	if (_rtw_queue_empty(pfree_xmit_queue) == true) {
+	if (list_empty(&pfree_xmit_queue->queue)) {
 		RT_TRACE(_module_rtl871x_xmit_c_,_drv_info_,("rtw_alloc_xmitframe:%d\n", pxmitpriv->free_xmitframe_cnt));
 		pxframe =  NULL;
 	} else {
@@ -2329,7 +2329,7 @@ _func_enter_;
 
 	spin_lock_bh(&queue->lock);
 
-	if (_rtw_queue_empty(queue) == true) {
+	if (list_empty(&queue->queue)) {
 		RT_TRACE(_module_rtl871x_xmit_c_,_drv_info_,("rtw_alloc_xmitframe_ext:%d\n", pxmitpriv->free_xframe_ext_cnt));
 		pxframe =  NULL;
 	} else {
@@ -2561,7 +2561,7 @@ _func_enter_;
 				phwxmit->accnt--;
 
 				//Remove sta node when there is no pending packets.
-				if(_rtw_queue_empty(pframe_queue)) //must be done after get_next and before break
+				if(list_empty(&pframe_queue->queue)) //must be done after get_next and before break
 					list_del_init(&ptxservq->tx_pending);
 
 				//spin_unlock_irqrestore(&phwxmit->sta_queue->lock, irqL0);
@@ -3530,7 +3530,7 @@ struct xmit_buf* dequeue_pending_xmitbuf(
 
 	spin_lock_bh(&pqueue->lock);
 
-	if (_rtw_queue_empty(pqueue) == false)
+	if (!list_empty(&pqueue->queue))
 	{
 		_list *plist, *phead;
 
@@ -3558,7 +3558,7 @@ struct xmit_buf* dequeue_pending_xmitbuf_under_survey(
 
 	spin_lock_bh(&pqueue->lock);
 
-	if (_rtw_queue_empty(pqueue) == false)
+	if (!list_empty(&pqueue->queue))
 	{
 		_list *plist, *phead;
 		u8 type;
@@ -3600,7 +3600,7 @@ sint check_pending_xmitbuf(
 
 	spin_lock_bh(&pqueue->lock);
 
-	if(_rtw_queue_empty(pqueue) == false)
+	if(!list_empty(&pqueue->queue))
 		ret = true;
 
 	spin_unlock_bh(&pqueue->lock);

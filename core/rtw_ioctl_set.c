@@ -103,7 +103,7 @@ _func_enter_;
 
 	pmlmepriv->to_join = true;
 
-	if(_rtw_queue_empty(queue)== true)
+	if(list_empty(&queue->queue))
 	{	
 		spin_unlock_bh(&(pmlmepriv->scanned_queue.lock));
 		_clr_fwstate_(pmlmepriv, _FW_UNDER_LINKING);

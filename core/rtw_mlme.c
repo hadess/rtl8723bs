@@ -177,7 +177,7 @@ _func_enter_;
 
 	spin_lock_bh(&queue->lock);
 
-	if (_rtw_queue_empty(queue) == true)
+	if (list_empty(&queue->queue))
 
 		pnetwork = NULL;
 	
@@ -207,7 +207,7 @@ _func_enter_;
 
 	spin_lock_bh(&free_queue->lock);
 	
-	if (_rtw_queue_empty(free_queue) == true) {
+	if (list_empty(&free_queue->queue)) {
 		pnetwork=NULL;
 		goto exit;
 	}
@@ -828,7 +828,7 @@ _func_enter_;
 	 * with this beacon's information */
 	//if (rtw_end_of_queue_search(phead,plist)== true) {
 	if (!target_find) {		
-		if (_rtw_queue_empty(&(pmlmepriv->free_bss_pool)) == true) {
+		if (list_empty(&pmlmepriv->free_bss_pool.queue)) {
 			/* If there are no more slots, expire the oldest */
 			//list_del_init(&oldest->list);
 			pnetwork = oldest;

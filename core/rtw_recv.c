@@ -144,7 +144,7 @@ union recv_frame *_rtw_alloc_recvframe (_queue *pfree_recv_queue)
 	struct recv_priv *precvpriv;
 _func_enter_;
 
-	if(_rtw_queue_empty(pfree_recv_queue) == true)
+	if(list_empty(&pfree_recv_queue->queue))
 	{
 		precvframe = NULL;
 	}
@@ -363,7 +363,7 @@ struct recv_buf *rtw_dequeue_recvbuf (_queue *queue)
 
 	spin_lock_bh(&queue->lock);
 
-	if(_rtw_queue_empty(queue) == true)
+	if(list_empty(&queue->queue))
 	{
 		precvbuf = NULL;
 	}
@@ -2137,7 +2137,7 @@ _func_enter_;
 			if(fragnum==0)
 			{
 				//the first fragment
-				if(_rtw_queue_empty(pdefrag_q) == false)
+				if(!list_empty(&pdefrag_q->queue))
 				{
 					//free current defrag_q
 					rtw_free_recvframe_queue(pdefrag_q, pfree_recv_queue);

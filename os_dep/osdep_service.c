@@ -97,12 +97,6 @@ void	_rtw_init_queue(_queue	*pqueue)
 	spin_lock_init(&(pqueue->lock));
 }
 
-u32	  _rtw_queue_empty(_queue	*pqueue)
-{
-	return (list_empty(&(pqueue->queue)));
-}
-
-
 u32 rtw_end_of_queue_search(_list *head, _list *plist)
 {
 	if (head == plist)

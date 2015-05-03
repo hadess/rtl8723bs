@@ -248,7 +248,7 @@ _func_enter_;
 
 	//spin_lock_bh(&(pfree_sta_queue->lock));
 	spin_lock_bh(&(pstapriv->sta_hash_lock));
-	if (_rtw_queue_empty(pfree_sta_queue) == true)
+	if (list_empty(&pfree_sta_queue->queue))
 	{
 		//spin_unlock_bh(&(pfree_sta_queue->lock));
 		spin_unlock_bh(&(pstapriv->sta_hash_lock));
