@@ -693,8 +693,6 @@ void mgt_dispatcher(_adapter *padapter, union recv_frame *precv_frame)
 			break;
 		default:
 			_mgt_dispatcher(padapter, ptable, precv_frame);	
-			if(check_fwstate(pmlmepriv, WIFI_AP_STATE) == true)
-				rtw_hostapd_mlme_rx(padapter, precv_frame);			
 			break;
 	}
 }

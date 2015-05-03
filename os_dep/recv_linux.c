@@ -350,10 +350,6 @@ void rtw_handle_tkip_mic_err(_adapter *padapter,u8 bgroup)
 	wrqu.data.length = sizeof( ev );
 }
 
-void rtw_hostapd_mlme_rx(_adapter *padapter, union recv_frame *precv_frame)
-{
-}
-
 #ifdef CONFIG_AUTO_AP_MODE
 static void rtw_os_ksocket_send(_adapter *padapter, union recv_frame *precv_frame)
 {	
