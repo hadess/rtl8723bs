@@ -25,11 +25,6 @@
 
 static struct proc_dir_entry *rtw_proc = NULL;
 
-inline struct proc_dir_entry *get_rtw_drv_proc(void)
-{
-	return rtw_proc;
-}
-
 #define RTW_PROC_NAME "rtl8723bs"
 
 #define get_proc_net init_net.proc_net
@@ -712,7 +707,7 @@ static void rtw_odm_proc_deinit(_adapter	*adapter)
 
 struct proc_dir_entry *rtw_adapter_proc_init(struct net_device *dev)
 {
-	struct proc_dir_entry *drv_proc = get_rtw_drv_proc();
+	struct proc_dir_entry *drv_proc = rtw_proc;
 	struct proc_dir_entry *dir_dev = NULL;
 	struct proc_dir_entry *entry = NULL;
 	_adapter *adapter = rtw_netdev_priv(dev);
@@ -753,7 +748,7 @@ exit:
 
 void rtw_adapter_proc_deinit(struct net_device *dev)
 {
-	struct proc_dir_entry *drv_proc = get_rtw_drv_proc();
+	struct proc_dir_entry *drv_proc = rtw_proc;
 	struct proc_dir_entry *dir_dev = NULL;
 	_adapter *adapter = rtw_netdev_priv(dev);
 	int i;
@@ -777,7 +772,7 @@ void rtw_adapter_proc_deinit(struct net_device *dev)
 
 void rtw_adapter_proc_replace(struct net_device *dev)
 {
-	struct proc_dir_entry *drv_proc = get_rtw_drv_proc();
+	struct proc_dir_entry *drv_proc = rtw_proc;
 	struct proc_dir_entry *dir_dev = NULL;
 	_adapter *adapter = rtw_netdev_priv(dev);
 	int i;
