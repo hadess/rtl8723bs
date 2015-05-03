@@ -75,14 +75,6 @@ inline int _rtw_netif_rx(_nic_hdl ndev, struct sk_buff *skb)
 	return netif_rx(skb);
 }
 
-void _rtw_skb_queue_purge(struct sk_buff_head *list)
-{
-	struct sk_buff *skb;
-
-	while ((skb = skb_dequeue(list)) != NULL)
-		dev_kfree_skb_any(skb);
-}
-
 void rtw_init_timer(_timer *ptimer, void *padapter, void *pfunc)
 {
 	_adapter *adapter = (_adapter *)padapter;	

@@ -34,8 +34,6 @@ Compiler Flag Option:
     a. USE_SYNC_IRP:  Only sync operations are provided.
     b. USE_ASYNC_IRP:Both sync/async operations are provided.
 
-Only sync read/rtw_write_mem operations are provided.
-
 jackson@realtek.com.tw
 
 */
@@ -143,22 +141,6 @@ int _rtw_write32(_adapter *adapter, u32 addr, u32 val)
 	return RTW_STATUS_CODE(ret);
 }
 
-int _rtw_writeN(_adapter *adapter, u32 addr ,u32 length , u8 *pdata)
-{
-	//struct	io_queue  	*pio_queue = (struct io_queue *)adapter->pio_queue;
-	struct io_priv *pio_priv = &adapter->iopriv;
-        struct	intf_hdl	*pintfhdl = (struct intf_hdl*)(&(pio_priv->intf));
-	int (*_writeN)(struct intf_hdl *pintfhdl, u32 addr,u32 length, u8 *pdata);
-	int ret;
-	_func_enter_;
-	_writeN = pintfhdl->io_ops._writeN;
-
-	ret = _writeN(pintfhdl, addr,length,pdata);
-	_func_exit_;
-
-	return RTW_STATUS_CODE(ret);
-}
-
 u8 _rtw_sd_f0_read8(_adapter *adapter, u32 addr)
 {
 	u8 r_val = 0x00;
@@ -176,52 +158,6 @@ u8 _rtw_sd_f0_read8(_adapter *adapter, u32 addr)
 
 	_func_exit_;
 	return r_val;
-}
-
-int _rtw_write8_async(_adapter *adapter, u32 addr, u8 val)
-{
-	//struct	io_queue  	*pio_queue = (struct io_queue *)adapter->pio_queue;
-	struct io_priv *pio_priv = &adapter->iopriv;
-	struct	intf_hdl		*pintfhdl = &(pio_priv->intf);
-	int (*_write8_async)(struct intf_hdl *pintfhdl, u32 addr, u8 val);
-	int ret;
-	_func_enter_;
-	_write8_async = pintfhdl->io_ops._write8_async;
-
-	ret = _write8_async(pintfhdl, addr, val);
-	_func_exit_;
-
-	return RTW_STATUS_CODE(ret);
-}
-int _rtw_write16_async(_adapter *adapter, u32 addr, u16 val)
-{
-	//struct	io_queue  	*pio_queue = (struct io_queue *)adapter->pio_queue;
-	struct io_priv *pio_priv = &adapter->iopriv;
-	struct	intf_hdl		*pintfhdl = &(pio_priv->intf);
-	int (*_write16_async)(struct intf_hdl *pintfhdl, u32 addr, u16 val);
-	int ret;
-	_func_enter_;
-	_write16_async = pintfhdl->io_ops._write16_async;
-	val = rtw_cpu_to_le16(val);
-	ret = _write16_async(pintfhdl, addr, val);
-	_func_exit_;
-
-	return RTW_STATUS_CODE(ret);
-}
-int _rtw_write32_async(_adapter *adapter, u32 addr, u32 val)
-{
-	//struct	io_queue  	*pio_queue = (struct io_queue *)adapter->pio_queue;
-	struct io_priv *pio_priv = &adapter->iopriv;
-	struct	intf_hdl		*pintfhdl = &(pio_priv->intf);
-	int (*_write32_async)(struct intf_hdl *pintfhdl, u32 addr, u32 val);
-	int ret;
-	_func_enter_;
-	_write32_async = pintfhdl->io_ops._write32_async;
-	val = rtw_cpu_to_le32(val);
-	ret = _write32_async(pintfhdl, addr, val);
-	_func_exit_;
-
-	return RTW_STATUS_CODE(ret);
 }
 
 void _rtw_read_mem(_adapter *adapter, u32 addr, u32 cnt, u8 *pmem)
@@ -242,23 +178,6 @@ void _rtw_read_mem(_adapter *adapter, u32 addr, u32 cnt, u8 *pmem)
 	_read_mem = pintfhdl->io_ops._read_mem;
 
 	_read_mem(pintfhdl, addr, cnt, pmem);
-
-	_func_exit_;
-
-}
-
-void _rtw_write_mem(_adapter *adapter, u32 addr, u32 cnt, u8 *pmem)
-{
-	void (*_write_mem)(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, u8 *pmem);
-	//struct	io_queue  	*pio_queue = (struct io_queue *)adapter->pio_queue;
-	struct io_priv *pio_priv = &adapter->iopriv;
-	struct	intf_hdl		*pintfhdl = &(pio_priv->intf);
-
-	_func_enter_;
-
-	_write_mem = pintfhdl->io_ops._write_mem;
-
-	_write_mem(pintfhdl, addr, cnt, pmem);
 
 	_func_exit_;
 
@@ -320,36 +239,6 @@ u32 _rtw_write_port(_adapter *adapter, u32 addr, u32 cnt, u8 *pmem)
 	return ret;
 }
 
-u32 _rtw_write_port_and_wait(_adapter *adapter, u32 addr, u32 cnt, u8 *pmem, int timeout_ms)
-{
-	int ret = _SUCCESS;
-	struct xmit_buf *pxmitbuf = (struct xmit_buf *)pmem;
-	struct submit_ctx sctx;
-
-	rtw_sctx_init(&sctx, timeout_ms);
-	pxmitbuf->sctx = &sctx;
-
-	ret = _rtw_write_port(adapter, addr, cnt, pmem);
-
-	if (ret == _SUCCESS)
-		ret = rtw_sctx_wait(&sctx, __func__);
-
-	 return ret;
-}
-
-void _rtw_write_port_cancel(_adapter *adapter)
-{
-	void (*_write_port_cancel)(struct intf_hdl *pintfhdl);
-	struct io_priv *pio_priv = &adapter->iopriv;
-	struct intf_hdl *pintfhdl = &(pio_priv->intf);
-
-	_write_port_cancel = pintfhdl->io_ops._write_port_cancel;
-
-	RTW_DISABLE_FUNC(adapter, DF_TX_BIT);
-
-	if(_write_port_cancel)
-		_write_port_cancel(pintfhdl);
-}
 int rtw_init_io_priv(_adapter *padapter, void (*set_intf_ops)(_adapter *padapter,struct _io_ops *pops))
 {
 	struct io_priv	*piopriv = &padapter->iopriv;

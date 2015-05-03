@@ -230,37 +230,6 @@ _func_exit_;
 	return err;
 }
 
-u8 _sd_read8(struct intf_hdl *pintfhdl, u32 addr, s32 *err)
-{
-	PADAPTER padapter;
-	struct dvobj_priv *psdiodev;
-	PSDIO_DATA psdio;
-
-	u8 v=0;
-	struct sdio_func *func;
-
-_func_enter_;
-	padapter = pintfhdl->padapter;
-	psdiodev = pintfhdl->pintf_dev;
-	psdio = &psdiodev->intf_data;
-
-	if(padapter->bSurpriseRemoved){
-		//DBG_871X(" %s (padapter->bSurpriseRemoved ||adapter->pwrctrlpriv.pnp_bstop_trx)!!!\n",__FUNCTION__);
-		return v;
-	}
-	
-	func = psdio->func;
-
-	v = sdio_readb(func, addr, err);
-
-	if (err && *err)
-		DBG_871X(KERN_ERR "%s: FAIL!(%d) addr=0x%05x\n", __func__, *err, addr);
-
-_func_exit_;
-
-	return v;
-}
-
 u8 sd_read8(struct intf_hdl *pintfhdl, u32 addr, s32 *err)
 {
 	PADAPTER padapter;
@@ -295,72 +264,6 @@ _func_enter_;
 _func_exit_;
 
 	return v;
-}
-
-u32 _sd_read32(struct intf_hdl *pintfhdl, u32 addr, s32 *err)
-{
-	PADAPTER padapter;
-	struct dvobj_priv *psdiodev;
-	PSDIO_DATA psdio;
-	
-	u32 v=0;
-	struct sdio_func *func;
-
-_func_enter_;
-	padapter = pintfhdl->padapter;
-	psdiodev = pintfhdl->pintf_dev;
-	psdio = &psdiodev->intf_data;
-
-	if(padapter->bSurpriseRemoved){
-		//DBG_871X(" %s (padapter->bSurpriseRemoved ||adapter->pwrctrlpriv.pnp_bstop_trx)!!!\n",__FUNCTION__);
-		return v;
-	}
-		
-	func = psdio->func;
-
-	v = sdio_readl(func, addr, err);
-
-	if (err && *err)
-	{
-		int i;
-
-		DBG_871X(KERN_ERR "%s: (%d) addr=0x%05x, val=0x%x\n", __func__, *err, addr, v);
-
-		*err = 0;
-		for(i=0; i<SD_IO_TRY_CNT; i++)
-		{
-			//sdio_claim_host(func);
-			v = sdio_readl(func, addr, err);
-			//sdio_release_host(func);
-			if (*err == 0){
-				rtw_reset_continual_io_error(psdiodev);
-				break;
-			}
-			else{
-				DBG_871X(KERN_ERR "%s: (%d) addr=0x%05x, val=0x%x, try_cnt=%d\n", __func__, *err, addr, v, i);
-				if(( -ESHUTDOWN == *err ) || ( -ENODEV == *err))
-				{			
-					padapter->bSurpriseRemoved = true;
-				}
-
-				if(rtw_inc_and_chk_continual_io_error(psdiodev) == true ){
-					padapter->bSurpriseRemoved = true;
-					break;
-				}						
-					
-			}
-		}
-
-		if (i==SD_IO_TRY_CNT)
-			DBG_871X(KERN_ERR "%s: FAIL!(%d) addr=0x%05x, val=0x%x, try_cnt=%d\n", __func__, *err, addr, v, i);
-		else
-			DBG_871X(KERN_ERR "%s: (%d) addr=0x%05x, val=0x%x, try_cnt=%d\n", __func__, *err, addr, v, i);
-
-	}
-
-_func_exit_;
-
-	return  v;
 }
 
 u32 sd_read32(struct intf_hdl *pintfhdl, u32 addr, s32 *err)

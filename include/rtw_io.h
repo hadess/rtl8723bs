@@ -326,18 +326,10 @@ extern void _rtw_read_port_cancel(_adapter *adapter);
 extern int _rtw_write8(_adapter *adapter, u32 addr, u8 val);
 extern int _rtw_write16(_adapter *adapter, u32 addr, u16 val);
 extern int _rtw_write32(_adapter *adapter, u32 addr, u32 val);
-extern int _rtw_writeN(_adapter *adapter, u32 addr, u32 length, u8 *pdata);
 
 extern u8 _rtw_sd_f0_read8(_adapter *adapter, u32 addr);
 
-extern int _rtw_write8_async(_adapter *adapter, u32 addr, u8 val);
-extern int _rtw_write16_async(_adapter *adapter, u32 addr, u16 val);
-extern int _rtw_write32_async(_adapter *adapter, u32 addr, u32 val);
-
-extern void _rtw_write_mem(_adapter *adapter, u32 addr, u32 cnt, u8 *pmem);
 extern u32 _rtw_write_port(_adapter *adapter, u32 addr, u32 cnt, u8 *pmem);
-u32 _rtw_write_port_and_wait(_adapter *adapter, u32 addr, u32 cnt, u8 *pmem, int timeout_ms);
-extern void _rtw_write_port_cancel(_adapter *adapter);
 
 #define rtw_read8(adapter, addr) _rtw_read8((adapter), (addr))
 #define rtw_read16(adapter, addr) _rtw_read16((adapter), (addr))
@@ -349,16 +341,8 @@ extern void _rtw_write_port_cancel(_adapter *adapter);
 #define  rtw_write8(adapter, addr, val) _rtw_write8((adapter), (addr), (val))
 #define  rtw_write16(adapter, addr, val) _rtw_write16((adapter), (addr), (val))
 #define  rtw_write32(adapter, addr, val) _rtw_write32((adapter), (addr), (val))
-#define  rtw_writeN(adapter, addr, length, data) _rtw_writeN((adapter), (addr), (length), (data))
 
-#define rtw_write8_async(adapter, addr, val) _rtw_write8_async((adapter), (addr), (val))
-#define rtw_write16_async(adapter, addr, val) _rtw_write16_async((adapter), (addr), (val))
-#define rtw_write32_async(adapter, addr, val) _rtw_write32_async((adapter), (addr), (val))
-
-#define rtw_write_mem(adapter, addr, cnt, mem) _rtw_write_mem((adapter), (addr), (cnt), (mem))
 #define rtw_write_port(adapter, addr, cnt, mem) _rtw_write_port((adapter), (addr), (cnt), (mem))
-#define rtw_write_port_and_wait(adapter, addr, cnt, mem, timeout_ms) _rtw_write_port_and_wait((adapter), (addr), (cnt), (mem), (timeout_ms))
-#define rtw_write_port_cancel(adapter) _rtw_write_port_cancel((adapter))
 
 #define rtw_sd_f0_read8(adapter, addr) _rtw_sd_f0_read8((adapter), (addr))
 
@@ -414,10 +398,6 @@ extern void dev_power_down(_adapter * Adapter, u8 bpwrup);
 */
 
 /*
-#define RTL_W8_ASYNC(reg, val8) rtw_write32_async(padapter, reg, val8)
-#define RTL_W16_ASYNC(reg, val16) rtw_write32_async(padapter, reg, val16)
-#define RTL_W32_ASYNC(reg, val32) rtw_write32_async(padapter, reg, val32)
-
 #define RTL_WRITE_BB(reg, val32)	phy_SetUsbBBReg(padapter, reg, val32)
 #define RTL_READ_BB(reg)	phy_QueryUsbBBReg(padapter, reg)
 */
