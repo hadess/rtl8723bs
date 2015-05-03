@@ -962,7 +962,6 @@ static u32 rtl8723bs_hal_init(PADAPTER padapter)
 	_initSdioAggregationSetting(padapter);
 	_InitOperationMode(padapter);
 	rtl8723b_InitBeaconParameters(padapter);
-	rtl8723b_InitBeaconMaxError(padapter, true);
 	_InitInterrupt(padapter);
 	_InitBurstPktLen_8723BS(padapter);
 

@@ -2193,15 +2193,6 @@ void rtl8723b_InitBeaconParameters(PADAPTER padapter)
 	pHalData->RegCR_1 = rtw_read8(padapter, REG_CR+1);
 }
 
-void rtl8723b_InitBeaconMaxError(PADAPTER padapter, u8 InfraMode)
-{
-#ifdef RTL8192CU_ADHOC_WORKAROUND_SETTING
-	rtw_write8(padapter, REG_BCN_MAX_ERR, 0xFF);
-#else
-	//rtw_write8(Adapter, REG_BCN_MAX_ERR, (InfraMode ? 0xFF : 0x10));
-#endif
-}
-
 void	_InitBurstPktLen_8723BS(PADAPTER Adapter)
 {
 	HAL_DATA_TYPE		*pHalData = GET_HAL_DATA(Adapter);

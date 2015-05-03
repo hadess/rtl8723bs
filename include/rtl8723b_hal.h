@@ -260,7 +260,6 @@ u8 GetHalDefVar8723B(PADAPTER padapter, HAL_DEF_VARIABLE variable, void *pval);
 
 // register
 void rtl8723b_InitBeaconParameters(PADAPTER padapter);
-void rtl8723b_InitBeaconMaxError(PADAPTER padapter, u8 InfraMode);
 void	_InitBurstPktLen_8723BS(PADAPTER Adapter);
 void _8051Reset8723(PADAPTER padapter);
 #ifdef CONFIG_WOWLAN
