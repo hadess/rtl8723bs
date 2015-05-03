@@ -1973,43 +1973,6 @@ _func_exit_;
 	return res;
 }
 
-u8 rtw_led_blink_cmd(_adapter*padapter, void * pLed)
-{
-	struct	cmd_obj*	pcmdobj;
-	struct	LedBlink_param *ledBlink_param;
-	struct	cmd_priv   *pcmdpriv = &padapter->cmdpriv;
-
-	u8	res=_SUCCESS;
-
-_func_enter_;
-
-	RT_TRACE(_module_rtl871x_cmd_c_, _drv_notice_, ("+rtw_led_blink_cmd\n"));
-	
-	pcmdobj = (struct	cmd_obj*)rtw_zmalloc(sizeof(struct	cmd_obj));
-	if(pcmdobj == NULL){
-		res=_FAIL;
-		goto exit;
-	}
-
-	ledBlink_param = (struct	LedBlink_param *)rtw_zmalloc(sizeof(struct	LedBlink_param));
-	if(ledBlink_param == NULL) {
-		kfree((u8 *)pcmdobj);
-		res= _FAIL;
-		goto exit;
-	}
-
-	ledBlink_param->pLed=pLed;
-	
-	init_h2fwcmd_w_parm_no_rsp(pcmdobj, ledBlink_param, GEN_CMD_CODE(_LedBlink));
-	res = rtw_enqueue_cmd(pcmdpriv, pcmdobj);
-	
-exit:
-
-_func_exit_;	
-
-	return res;
-}
-
 u8 rtw_set_csa_cmd(_adapter*padapter, u8 new_ch_no)
 {
 	struct	cmd_obj*	pcmdobj;
