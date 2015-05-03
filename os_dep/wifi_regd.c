@@ -164,48 +164,12 @@ static void _rtw_reg_apply_flags(struct wiphy *wiphy)
 	}
 }
 
-static void _rtw_reg_apply_world_flags(struct wiphy *wiphy,
-				       enum nl80211_reg_initiator initiator,
-				       struct rtw_regulatory *reg)
-{
-	//_rtw_reg_apply_beaconing_flags(wiphy, initiator);
-	//_rtw_reg_apply_active_scan_flags(wiphy, initiator);
-	return;
-}
-
 static int _rtw_reg_notifier_apply(struct wiphy *wiphy,
 				   struct regulatory_request *request,
 				   struct rtw_regulatory *reg)
 {
-
 	/* Hard code flags */
 	_rtw_reg_apply_flags(wiphy);
-
-	switch (request->initiator) {
-	case NL80211_REGDOM_SET_BY_DRIVER:
-		DBG_8192C("%s: %s\n", __func__, "NL80211_REGDOM_SET_BY_DRIVER");
-		_rtw_reg_apply_world_flags(wiphy, NL80211_REGDOM_SET_BY_DRIVER,
-					   reg);
-		break;
-	case NL80211_REGDOM_SET_BY_CORE:
-		DBG_8192C("%s: %s\n", __func__,
-			  "NL80211_REGDOM_SET_BY_CORE to DRV");
-		_rtw_reg_apply_world_flags(wiphy, NL80211_REGDOM_SET_BY_DRIVER,
-					   reg);
-		break;
-	case NL80211_REGDOM_SET_BY_USER:
-		DBG_8192C("%s: %s\n", __func__,
-			  "NL80211_REGDOM_SET_BY_USER to DRV");
-		_rtw_reg_apply_world_flags(wiphy, NL80211_REGDOM_SET_BY_DRIVER,
-					   reg);
-		break;
-	case NL80211_REGDOM_SET_BY_COUNTRY_IE:
-		DBG_8192C("%s: %s\n", __func__,
-			  "NL80211_REGDOM_SET_BY_COUNTRY_IE");
-		_rtw_reg_apply_world_flags(wiphy, request->initiator, reg);
-		break;
-	}
-
 	return 0;
 }
 
@@ -235,7 +199,6 @@ static void _rtw_regd_init_wiphy(struct rtw_regulatory *reg,
 
 	/* Hard code flags */
 	_rtw_reg_apply_flags(wiphy);
-	_rtw_reg_apply_world_flags(wiphy, NL80211_REGDOM_SET_BY_DRIVER, reg);
 }
 
 int rtw_regd_init(_adapter * padapter,
