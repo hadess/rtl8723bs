@@ -1479,7 +1479,7 @@ void rtw_cfg80211_surveydone_event_callback(_adapter *padapter)
        
 	while(1)
 	{
-		if (rtw_end_of_queue_search(phead,plist)== true)
+		if (phead == plist)
 			break;
 
 		pnetwork = LIST_CONTAINOR(plist, struct wlan_network, list);
@@ -2999,7 +2999,7 @@ static int cfg80211_rtw_del_station(struct wiphy *wiphy, struct net_device *ndev
 	plist = get_next(phead);
 
 	//check asoc_queue
-	while ((rtw_end_of_queue_search(phead, plist)) == false)	
+	while (phead != plist)
 	{
 		psta = LIST_CONTAINOR(plist, struct sta_info, asoc_list);
 		
@@ -3058,7 +3058,7 @@ static struct sta_info *rtw_sta_info_get_by_idx(const int idx, struct sta_priv *
 	plist = get_next(phead);
 
 	//check asoc_queue
-	while ((rtw_end_of_queue_search(phead, plist)) == false)	
+	while (phead != plist)
 	{
 		if(idx == i) psta = LIST_CONTAINOR(plist, struct sta_info, asoc_list);
 		plist = get_next(plist);	

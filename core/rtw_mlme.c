@@ -374,7 +374,7 @@ _func_enter_;
 	phead = get_list_head(scanned_queue);
 	plist = get_next(phead);
 
-	while (rtw_end_of_queue_search(phead, plist) == false)
+	while (phead != plist)
 	{
 
 		pnetwork = LIST_CONTAINOR(plist, struct wlan_network, list);
@@ -657,7 +657,7 @@ _func_enter_;
 	while(1)
 	{
 		
-		if (rtw_end_of_queue_search(phead,plist)== true)
+		if (phead == plist)
 			break;
 		
 		pwlan= LIST_CONTAINOR(plist, struct wlan_network, list);
@@ -799,7 +799,7 @@ _func_enter_;
 
 	while(1)
 	{
-		if (rtw_end_of_queue_search(phead,plist)== true)
+		if (phead == plist)
 			break;
 
 		pnetwork = LIST_CONTAINOR(plist, struct wlan_network, list);
@@ -826,7 +826,7 @@ _func_enter_;
 	
 	/* If we didn't find a match, then get a new network slot to initialize
 	 * with this beacon's information */
-	//if (rtw_end_of_queue_search(phead,plist)== true) {
+	//if (phead == plist) {
 	if (!target_find) {		
 		if (list_empty(&pmlmepriv->free_bss_pool.queue)) {
 			/* If there are no more slots, expire the oldest */
@@ -2450,7 +2450,7 @@ _func_enter_;
 
 	mlme->pscanned = get_next(phead);
 
-	while (!rtw_end_of_queue_search(phead, mlme->pscanned)) {
+	while (phead != mlme->pscanned) {
 
 		pnetwork = LIST_CONTAINOR(mlme->pscanned, struct wlan_network, list);
 		if(pnetwork==NULL){
@@ -2589,7 +2589,7 @@ _func_enter_;
 	phead = get_list_head(queue);
 	pmlmepriv->pscanned = get_next(phead);
 
-	while (!rtw_end_of_queue_search(phead, pmlmepriv->pscanned)) {
+	while (phead != pmlmepriv->pscanned) {
 
 		pnetwork = LIST_CONTAINOR(pmlmepriv->pscanned, struct wlan_network, list);
 		if(pnetwork==NULL){

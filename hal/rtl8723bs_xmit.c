@@ -250,7 +250,7 @@ static s32 xmit_xmitframes(PADAPTER padapter, struct xmit_priv *pxmitpriv)
 		sta_plist = get_next(sta_phead);
 		//because stop_sta_xmit may delete sta_plist at any time
 		//so we should add lock here, or while loop can not exit
-		while (rtw_end_of_queue_search(sta_phead, sta_plist) == false)
+		while (sta_phead != sta_plist)
 		{
 			ptxservq = LIST_CONTAINOR(sta_plist, struct tx_servq, tx_pending);
 			sta_plist = get_next(sta_plist);

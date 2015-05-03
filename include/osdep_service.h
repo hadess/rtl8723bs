@@ -127,7 +127,6 @@ void _rtw_skb_queue_purge(struct sk_buff_head *list);
 #define rtw_skb_queue_purge(sk_buff_head) _rtw_skb_queue_purge(sk_buff_head)
 
 extern void	_rtw_init_queue(_queue	*pqueue);
-extern u32	rtw_end_of_queue_search(_list *queue, _list *pelement);
 
 extern u32	rtw_systime_to_ms(u32 systime);
 extern s32	rtw_get_time_interval_ms(u32 start, u32 end);

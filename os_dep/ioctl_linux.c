@@ -1445,11 +1445,8 @@ static int rtw_wx_set_wap(struct net_device *dev,
 
 	while (1)
 	 {
-			
-		if ((rtw_end_of_queue_search(phead, pmlmepriv->pscanned)) == true)
-		{
+		if (phead == pmlmepriv->pscanned)
 			break;
-		}
 	
 		pnetwork = LIST_CONTAINOR(pmlmepriv->pscanned, struct wlan_network, list);
 
@@ -1785,7 +1782,7 @@ static int rtw_wx_get_scan(struct net_device *dev, struct iw_request_info *a,
        
 	while(1)
 	{
-		if (rtw_end_of_queue_search(phead,plist)== true)
+		if (phead == plist)
 			break;
 
 		if((stop - ev) < SCAN_ITEM_SIZE) {
@@ -1899,7 +1896,7 @@ static int rtw_wx_set_essid(struct net_device *dev,
 
 		while (1)
 		{			
-			if (rtw_end_of_queue_search(phead, pmlmepriv->pscanned) == true)
+			if (phead == pmlmepriv->pscanned)
 			{
 			        RT_TRACE(_module_rtl871x_ioctl_os_c, _drv_warning_,
 					 ("rtw_wx_set_essid: scan_q is empty, set ssid to check if scanning again!\n"));
@@ -3001,7 +2998,7 @@ static int rtw_get_ap_info(struct net_device *dev,
        
 	while(1)
 	{
-		if (rtw_end_of_queue_search(phead,plist)== true)
+		if (phead == plist)
 			break;
 
 
@@ -3427,7 +3424,7 @@ static int rtw_dbg_port(struct net_device *dev,
 							phead = &(pstapriv->sta_hash[i]);
 							plist = get_next(phead);
 		
-							while ((rtw_end_of_queue_search(phead, plist)) == false)
+							while (phead != plist)
 							{
 								psta = LIST_CONTAINOR(plist, struct sta_info, hash_list);
 

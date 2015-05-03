@@ -4588,7 +4588,7 @@ static void issue_action_BSSCoexistPacket(_adapter *padapter)
 			u8 *p;
 			WLAN_BSSID_EX *pbss_network;
 	
-			if (rtw_end_of_queue_search(phead,plist)== true)
+			if (phead == plist)
 				break;		
 
 			pnetwork = LIST_CONTAINOR(plist, struct wlan_network, list);      
@@ -6246,7 +6246,7 @@ void _linked_info_dump(_adapter *padapter)
 			spin_lock_bh(&pstapriv->asoc_list_lock);
 			phead = &pstapriv->asoc_list;
 			plist = get_next(phead);
-			while ((rtw_end_of_queue_search(phead, plist)) == false)
+			while (phead != plist)
 			{
 				psta = LIST_CONTAINOR(plist, struct sta_info, asoc_list);
 				plist = get_next(plist);			
@@ -7451,7 +7451,7 @@ u8 chk_bmc_sleepq_hdl(_adapter *padapter, unsigned char *pbuf)
 		xmitframe_phead = get_list_head(&psta_bmc->sleep_q);
 		xmitframe_plist = get_next(xmitframe_phead);
 
-		while ((rtw_end_of_queue_search(xmitframe_phead, xmitframe_plist)) == false)
+		while (xmitframe_phead != xmitframe_plist)
 		{
 			pxmitframe = LIST_CONTAINOR(xmitframe_plist, struct xmit_frame, list);
 

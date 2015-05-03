@@ -97,14 +97,6 @@ void	_rtw_init_queue(_queue	*pqueue)
 	spin_lock_init(&(pqueue->lock));
 }
 
-u32 rtw_end_of_queue_search(_list *head, _list *plist)
-{
-	if (head == plist)
-		return true;
-	else
-		return false;
-}
-
 inline u32 rtw_systime_to_ms(u32 systime)
 {
 	return systime * 1000 / HZ;
