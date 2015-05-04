@@ -2755,6 +2755,9 @@ static struct wireless_dev *
 	cfg80211_rtw_add_virtual_intf(
 		struct wiphy *wiphy,
 		const char *name,
+	#if (LINUX_VERSION_CODE >= KERNEL_VERSION(4, 1, 0))
+		unsigned char name_assign_type,
+	#endif
 		enum nl80211_iftype type, u32 *flags, struct vif_params *params)
 {
 	int ret = 0;
