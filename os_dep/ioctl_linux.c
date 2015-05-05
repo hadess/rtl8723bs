@@ -20,6 +20,7 @@
 #define _IOCTL_LINUX_C_
 
 #include <drv_types.h>
+#include <rtw_mp.h>
 #include <linux/jiffies.h>
 
 extern int rtw_ht_enable;
