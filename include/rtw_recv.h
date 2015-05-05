@@ -541,7 +541,7 @@ __inline static u8 *recvframe_put(union recv_frame *precvframe, sint sz)
 
 	if(precvframe->u.hdr.rx_tail > precvframe->u.hdr.rx_end)
 	{
-		precvframe->u.hdr.rx_tail -= sz;
+		precvframe->u.hdr.rx_tail = prev_rx_tail;
 		return NULL;
 	}
 
