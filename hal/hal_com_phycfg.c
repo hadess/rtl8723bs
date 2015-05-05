@@ -228,7 +228,7 @@ phy_StoreTxPowerByRateBase(
 	IN	PADAPTER	pAdapter
 	)
 {
-	u8	path = 0, base = 0, index = 0;
+	u8	path, base;
 	
 	//DBG_871X( "===>%s\n", __FUNCTION__ );
 	
@@ -355,9 +355,8 @@ PHY_GetRateValuesOfTxPowerByRate(
 	)
 {
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA( pAdapter );
-	PDM_ODM_T		pDM_Odm = &pHalData->odmpriv;
-	u8	 			index = 0, i = 0;
-	
+	u8 i = 0;
+
 	switch ( RegAddr )
 	{
 		case rTxAGC_A_Rate18_06:
@@ -831,7 +830,7 @@ PHY_InitTxPowerByRate(
 	)
 {
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
-	u8	band = 0, rfPath = 0, TxNum = 0, rate = 0, i = 0, j = 0;
+	u8	band, rfPath, TxNum, rate;
 
 	for ( band = BAND_ON_2_4G; band <= BAND_ON_5G; ++band )
 			for ( rfPath = 0; rfPath < TX_PWR_BY_RATE_NUM_RF; ++rfPath )
@@ -877,10 +876,8 @@ phy_ConvertTxPowerByRateInDbmToRelativeValues(
 	IN	PADAPTER	pAdapter
 	)
 {
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA( pAdapter );
 	u8 			base = 0, i = 0, value = 0,
-				band = 0, path = 0, txNum = 0, index = 0, 
-				startIndex = 0, endIndex = 0;
+				band = 0, path = 0, txNum = 0;
 	u8			cckRates[4] = {MGN_1M, MGN_2M, MGN_5_5M, MGN_11M},
 				ofdmRates[8] = {MGN_6M, MGN_9M, MGN_12M, MGN_18M, MGN_24M, MGN_36M, MGN_48M, MGN_54M},
 				mcs0_7Rates[8] = {MGN_MCS0, MGN_MCS1, MGN_MCS2, MGN_MCS3, MGN_MCS4, MGN_MCS5, MGN_MCS6, MGN_MCS7},
@@ -980,8 +977,6 @@ PHY_TxPowerByRateConfiguration(
 	IN  PADAPTER			pAdapter
 	)
 {
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA( pAdapter);
-
 	phy_StoreTxPowerByRateBase( pAdapter );
 	phy_ConvertTxPowerByRateInDbmToRelativeValues( pAdapter );
 }
@@ -1122,7 +1117,6 @@ PHY_GetTxPowerIndexBase(
 	)
 {
 	PHAL_DATA_TYPE		pHalData = GET_HAL_DATA(pAdapter);
-	PDM_ODM_T			pDM_Odm = &pHalData->odmpriv;
 	u8					i = 0;	//default set to 1S
 	u8					txPower = 0;
 	u8					chnlIdx = (Channel-1);
@@ -1431,7 +1425,7 @@ PHY_GetTxPowerByRate(
 	)
 {
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA( pAdapter );
-	s8 			value = 0, limit = 0;
+	s8 			value = 0;
 	u8			rateIndex = PHY_GetRateIndexOfTxPowerByRate( Rate );
 
 	if ( ( pAdapter->registrypriv.RegEnableTxPowerByRate == 2 && pHalData->EEPROMRegulatory == 2 ) || 
@@ -1881,10 +1875,8 @@ PHY_ConvertTxPowerLimitToPowerIndex(
 	)
 {
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
-	u8 				BW40PwrBasedBm2_4G = 0x2E, BW40PwrBasedBm5G = 0x2E;
+	u8 				BW40PwrBasedBm2_4G = 0x2E;
 	u8 				regulation, bw, channel, rateSection;	
-	u8 				baseIndex2_4G;
-	u8				baseIndex5G;
 	s8 				tempValue = 0, tempPwrLmt = 0;
 	u8 				rfPath = 0;
 
@@ -2077,11 +2069,7 @@ PHY_GetTxPowerIndex(
 	IN	u8					Channel
 	)
 {
-	u8	txPower = 0x3E;
-
-	txPower = PHY_GetTxPowerIndex_8723B(pAdapter, RFPath, Rate, BandWidth, Channel);
-
-	return txPower;
+	return PHY_GetTxPowerIndex_8723B(pAdapter, RFPath, Rate, BandWidth, Channel);
 }
 
 void
