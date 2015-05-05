@@ -2245,9 +2245,7 @@ static int cfg80211_rtw_connect(struct wiphy *wiphy, struct net_device *ndev,
 			ret = -EOPNOTSUPP ;
 		}
 
-		if (pwep) {
-			kfree((u8 *)pwep);
-		}
+		kfree((u8 *)pwep);
 
 		if(ret < 0)
 			goto exit;
