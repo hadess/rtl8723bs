@@ -159,9 +159,10 @@ _func_enter_;
 		memcpy((void *)(pbuf + 2), (void *)source, len);
 	
 	*frlen = *frlen + (len + 2);
-	
+
+	_func_exit_;
+
 	return (pbuf + len + 2);
-_func_exit_;	
 }
 
 /*----------------------------------------------------------------------------
