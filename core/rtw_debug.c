@@ -463,6 +463,7 @@ int proc_get_survey_info(struct seq_file *m, void *v)
 
 	spin_lock_bh(&(pmlmepriv->scanned_queue.lock));
 	phead = get_list_head(queue);
+	plist = phead ? get_next(phead) : NULL;
 	plist = get_next(phead);
 	if ((!phead) || (!plist)) {
 		spin_unlock_bh(&(pmlmepriv->scanned_queue.lock));
