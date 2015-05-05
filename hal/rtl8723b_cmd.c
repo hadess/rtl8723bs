@@ -1256,14 +1256,11 @@ _func_exit_;
 
 void rtl8723b_set_FwPwrModeInIPS_cmd(PADAPTER padapter, u8 cmd_param)
 {
-	//u8 cmd_param; //BIT0:enable, BIT1:NoConnect32k
+	//BIT0:enable, BIT1:NoConnect32k
 
 	DBG_871X("%s()\n", __func__);
 
-	cmd_param = cmd_param;
-
 	FillH2CCmd8723B(padapter, H2C_8723B_FWLPS_IN_IPS_, 1, &cmd_param);
-
 }
 
 #ifdef CONFIG_WOWLAN
