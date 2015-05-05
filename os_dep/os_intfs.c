@@ -1839,20 +1839,6 @@ _func_enter_;
 		}
 	}
 
-	if (pwrpriv->wowlan_wake_reason == FWDecisionDisconnect) {
-		rtw_lock_ext_suspend_timeout(2000);
-	}
-
-	if (pwrpriv->wowlan_wake_reason == Rx_GTK ||
-		pwrpriv->wowlan_wake_reason == Rx_DisAssoc ||
-		pwrpriv->wowlan_wake_reason == Rx_DeAuth) {
-		rtw_lock_ext_suspend_timeout(8000);
-	}
-
-	if (pwrpriv->wowlan_wake_reason == RX_PNOWakeUp) {
-		rtw_lock_ext_suspend_timeout(15000);
-	}
-
 	if (pwrpriv->wowlan_mode == true) {
 		pwrpriv->bips_processing = false;
 		_set_timer(&padapter->mlmepriv.dynamic_chk_timer, 2000);
@@ -1938,9 +1924,6 @@ _func_enter_;
 		DBG_871X("pid[1]:%d\n",padapter->pid[1]);
 		rtw_signal_process(padapter->pid[1], SIGUSR2);
 	}	
-
-	if (pwrpriv->wowlan_wake_reason == AP_WakeUp)
-		rtw_lock_ext_suspend_timeout(8000);
 
 	pwrpriv->bips_processing = false;
 	_set_timer(&padapter->mlmepriv.dynamic_chk_timer, 2000);
