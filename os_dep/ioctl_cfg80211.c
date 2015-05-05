@@ -457,18 +457,10 @@ void rtw_cfg80211_ibss_indicate_connect(_adapter *padapter)
 		{
 			
 			memcpy(&cur_network->network, pnetwork, sizeof(WLAN_BSSID_EX));
-			if(cur_network)
-			{
-				if (!rtw_cfg80211_inform_bss(padapter,cur_network))
-					DBG_871X(FUNC_ADPT_FMT" inform fail !!\n", FUNC_ADPT_ARG(padapter));
-				else
-					DBG_871X(FUNC_ADPT_FMT" inform success !!\n", FUNC_ADPT_ARG(padapter));
-			}
+			if (!rtw_cfg80211_inform_bss(padapter,cur_network))
+				DBG_871X(FUNC_ADPT_FMT" inform fail !!\n", FUNC_ADPT_ARG(padapter));
 			else
-			{
-				DBG_871X("cur_network is not exist!!!\n");
-				return ;
-			}
+				DBG_871X(FUNC_ADPT_FMT" inform success !!\n", FUNC_ADPT_ARG(padapter));
 		}
 		else
 		{
