@@ -865,69 +865,64 @@ s16 rtw_camid_alloc(_adapter *adapter, struct sta_info *sta, u8 kid)
 	struct cam_ctl_t *cam_ctl = &dvobj->cam_ctl;
 	_irqL irqL;
 	s16 cam_id = -1;
+	struct mlme_ext_info *mlmeinfo;
 
 	spin_lock_bh(&cam_ctl->lock);
 
-#ifdef DYNAMIC_CAMID_ALLOC
-	{
-		struct mlme_ext_info *mlmeinfo = &adapter->mlmeextpriv.mlmext_info;
+	mlmeinfo = &adapter->mlmeextpriv.mlmext_info;
 
-		if((((mlmeinfo->state&0x03) == WIFI_FW_AP_STATE) || ((mlmeinfo->state&0x03) == WIFI_FW_ADHOC_STATE))
-			&& !sta) {
-			/* AP/Ad-hoc mode group key: static alloction to default key by key ID */
-			if (kid > 3) {
-				DBG_871X_LEVEL(_drv_always_, FUNC_ADPT_FMT" group key with invalid key id:%u\n"
-					, FUNC_ADPT_ARG(adapter), kid);
-				rtw_warn_on(1);
-				goto bitmap_handle;
-			}
-
-			cam_id = kid;
+	if((((mlmeinfo->state&0x03) == WIFI_FW_AP_STATE) || ((mlmeinfo->state&0x03) == WIFI_FW_ADHOC_STATE))
+		&& !sta) {
+		/* AP/Ad-hoc mode group key: static alloction to default key by key ID */
+		if (kid > 3) {
+			DBG_871X_LEVEL(_drv_always_, FUNC_ADPT_FMT" group key with invalid key id:%u\n"
+				, FUNC_ADPT_ARG(adapter), kid);
+			rtw_warn_on(1);
+			goto bitmap_handle;
 		}
-		else {
-			int i;
-			u8 *addr = sta?sta->hwaddr:NULL;
 
-			if(!sta) {
-				if (!(mlmeinfo->state & WIFI_FW_ASSOC_SUCCESS)) {
-					/* bypass STA mode group key setting before connected(ex:WEP) because bssid is not ready */
-					goto bitmap_handle;
-				}
-
-				addr = get_bssid(&adapter->mlmepriv);
-			}
-
-			if ((i = _rtw_camid_search(adapter, addr, kid)) >= 0) {
-				/* Fix issue that pairwise and group key have same key id. Pairwise key first, group key can overwirte group only(ex: rekey) */
-				if (sta || _rtw_camid_is_gk(adapter, i) == true)
-					cam_id = i;
-				else
-					DBG_871X_LEVEL(_drv_always_, FUNC_ADPT_FMT" group key id:%u the same key id as pairwise key\n"
-						, FUNC_ADPT_ARG(adapter), kid);
-				goto bitmap_handle;
-			}
-
-			for (i=4;i<TOTAL_CAM_ENTRY;i++)
-				if (!(cam_ctl->bitmap & BIT(i)))
-					break;
-
-			if (i == TOTAL_CAM_ENTRY) {
-				if (sta)
-					DBG_871X_LEVEL(_drv_always_, FUNC_ADPT_FMT" pairwise key with "MAC_FMT" id:%u no room\n"
-					, FUNC_ADPT_ARG(adapter), MAC_ARG(sta->hwaddr), kid);
-				else
-					DBG_871X_LEVEL(_drv_always_, FUNC_ADPT_FMT" group key id:%u no room\n"
-					, FUNC_ADPT_ARG(adapter), kid);
-				rtw_warn_on(1);
-				goto bitmap_handle;
-			}
-
-			cam_id = i;
-		}
+		cam_id = kid;
 	}
-#else
-	cam_id = rtw_get_camid(adapter, sta, kid);
-#endif /* DYNAMIC_CAMID_ALLOC */
+	else {
+		int i;
+		u8 *addr = sta?sta->hwaddr:NULL;
+
+		if(!sta) {
+			if (!(mlmeinfo->state & WIFI_FW_ASSOC_SUCCESS)) {
+				/* bypass STA mode group key setting before connected(ex:WEP) because bssid is not ready */
+				goto bitmap_handle;
+			}
+
+			addr = get_bssid(&adapter->mlmepriv);
+		}
+
+		if ((i = _rtw_camid_search(adapter, addr, kid)) >= 0) {
+			/* Fix issue that pairwise and group key have same key id. Pairwise key first, group key can overwirte group only(ex: rekey) */
+			if (sta || _rtw_camid_is_gk(adapter, i) == true)
+				cam_id = i;
+			else
+				DBG_871X_LEVEL(_drv_always_, FUNC_ADPT_FMT" group key id:%u the same key id as pairwise key\n"
+					, FUNC_ADPT_ARG(adapter), kid);
+			goto bitmap_handle;
+		}
+
+		for (i=4;i<TOTAL_CAM_ENTRY;i++)
+			if (!(cam_ctl->bitmap & BIT(i)))
+				break;
+
+		if (i == TOTAL_CAM_ENTRY) {
+			if (sta)
+				DBG_871X_LEVEL(_drv_always_, FUNC_ADPT_FMT" pairwise key with "MAC_FMT" id:%u no room\n"
+				, FUNC_ADPT_ARG(adapter), MAC_ARG(sta->hwaddr), kid);
+			else
+				DBG_871X_LEVEL(_drv_always_, FUNC_ADPT_FMT" group key id:%u no room\n"
+				, FUNC_ADPT_ARG(adapter), kid);
+			rtw_warn_on(1);
+			goto bitmap_handle;
+		}
+
+		cam_id = i;
+	}
 
 bitmap_handle:
 	if (cam_id >= 0)
@@ -979,9 +974,7 @@ void flush_all_cam_entry(_adapter *padapter)
 
 	invalidate_cam_all(padapter);
 	/* clear default key related key search setting */
-	#ifdef DYNAMIC_CAMID_ALLOC
 	rtw_hal_set_hwreg(padapter, HW_VAR_SEC_DK_CFG, (u8*)false);
-	#endif
 
 	memset((u8 *)(pmlmeinfo->FW_sta_info), 0, sizeof(pmlmeinfo->FW_sta_info));
 	

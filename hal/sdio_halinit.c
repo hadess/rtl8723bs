@@ -1586,12 +1586,6 @@ _func_enter_;
 				case WOWLAN_ENABLE:
 					DBG_871X_LEVEL(_drv_always_, "WOWLAN_ENABLE\n");
 
-					#ifndef DYNAMIC_CAMID_ALLOC
-					val8 = (psecuritypriv->dot11AuthAlgrthm == dot11AuthAlgrthm_8021X)? 0xcc: 0xcf;
-					rtw_write8(padapter, REG_SECCFG, val8);
-					DBG_871X_LEVEL(_drv_always_, "REG_SECCFG: %02x\n", rtw_read8(padapter, REG_SECCFG));
-					#endif
-
 					//backup data rate to register 0x8b for wowlan FW
 					rtw_write8(padapter, 0x8d, 1);
 					rtw_write8(padapter, 0x8c, 0);
@@ -1672,11 +1666,6 @@ _func_enter_;
 					else
 						DBG_871X("psta is null\n");
 
-					#ifndef DYNAMIC_CAMID_ALLOC
-					rtw_write8(padapter, REG_SECCFG, 0x0c|BIT(5));// enable tx enc and rx dec engine, and no key search for MC/BC
-					DBG_871X_LEVEL(_drv_always_, "REG_SECCFG: %02x\n", rtw_read8(padapter, REG_SECCFG));
-					#endif
-					
 					// 1. Read wakeup reason
 					pwrctl->wowlan_wake_reason = rtw_read8(padapter, REG_WOWLAN_WAKE_REASON);
 					DBG_871X_LEVEL(_drv_always_, "wakeup_reason: 0x%02x, mac_630=0x%08x, mac_634=0x%08x, mac_1c0=0x%08x, mac_1c4=0x%08x"

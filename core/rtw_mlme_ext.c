@@ -7090,10 +7090,8 @@ u8 setkey_hdl(_adapter *padapter, u8 *pbuf)
 			,cam_id, MAC_ARG(addr), pparm->keyid, security_type_str(pparm->algorithm));
 	}
 
-	#ifdef DYNAMIC_CAMID_ALLOC
 	if (cam_id >=0 && cam_id <=3)
 		rtw_hal_set_hwreg(padapter, HW_VAR_SEC_DK_CFG, (u8*)true);
-	#endif
 
 	//allow multicast packets to driver
 	padapter->HalFunc.SetHwRegHandler(padapter, HW_VAR_ON_RCR_AM, null_addr);

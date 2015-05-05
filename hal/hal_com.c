@@ -709,14 +709,10 @@ _func_enter_;
 		break;
 	case HW_VAR_SEC_CFG:
 	{
-		#if defined(DYNAMIC_CAMID_ALLOC)
 		u16 reg_scr;
 
 		reg_scr = rtw_read16(adapter, REG_SECCFG);
 		rtw_write16(adapter, REG_SECCFG, reg_scr|SCR_CHK_KEYID|SCR_RxDecEnable|SCR_TxEncEnable);
-		#else
-		rtw_write8(adapter, REG_SECCFG, *((u8*)val));
-		#endif
 	}
 		break;
 	case HW_VAR_SEC_DK_CFG:

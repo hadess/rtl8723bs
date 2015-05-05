@@ -27,7 +27,6 @@
 
 //2 Config Flags and Structs - defined by each ODM Type
 
-	//#include <drv_conf.h>
 	//#include <basic_types.h>
 	//#include <osdep_service.h>
 	//#include <drv_types.h>
