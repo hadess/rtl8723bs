@@ -108,7 +108,7 @@ static void DBG_BT_INFO_INIT(PBTCDBGINFO pinfo, u8 *pbuf, u32 size)
 void DBG_BT_INFO(u8 *dbgmsg)
 {
 	PBTCDBGINFO pinfo;
-	u32 msglen, buflen;
+	u32 msglen;
 	u8 *pbuf;
 
 
@@ -218,7 +218,6 @@ static void halbtcoutsrc_LeaveLowPower(PBTC_COEXIST pBtCoexist)
 {
 	PADAPTER padapter;
 	PHAL_DATA_TYPE pHalData;
-	struct pwrctrl_priv *pwrctrl;
 	s32 ready;
 	unsigned long stime;
 	unsigned long utime;
@@ -227,7 +226,6 @@ static void halbtcoutsrc_LeaveLowPower(PBTC_COEXIST pBtCoexist)
 
 	padapter = pBtCoexist->Adapter;
 	pHalData = GET_HAL_DATA(padapter);
-	pwrctrl = adapter_to_pwrctl(padapter);
 	ready = _FAIL;
 #ifdef LPS_RPWM_WAIT_MS
 	timeout = LPS_RPWM_WAIT_MS;
@@ -373,7 +371,6 @@ static u32 halbtcoutsrc_GetWifiLinkStatus(PBTC_COEXIST pBtCoexist)
 
 
 	padapter = pBtCoexist->Adapter;
-	retVal = 0;
 	portConnectedStatus = 0;
 	numOfConnectedPort = 0;
 
@@ -391,10 +388,6 @@ static u32 halbtcoutsrc_GetWifiLinkStatus(PBTC_COEXIST pBtCoexist)
 
 static u32 halbtcoutsrc_GetBtPatchVer(PBTC_COEXIST pBtCoexist)
 {
-	u16 btRealFwVer = 0x0;
-	u8 btFwVer = 0x0;
-	u8 cnt = 0;
-
 	return pBtCoexist->btInfo.btRealFwVer;
 }
 
@@ -417,8 +410,6 @@ static u8 halbtcoutsrc_GetWifiScanAPNum(PADAPTER padapter)
 	struct mlme_ext_priv *pmlmeext;
 	static u8 scan_AP_num = 0;
 
-
-	pmlmepriv = &padapter->mlmepriv;
 	pmlmeext = &padapter->mlmeextpriv;
 
 	if (GLBtcWiFiInScanState == false) {
@@ -437,7 +428,6 @@ static u8 halbtcoutsrc_Get(void *pBtcContext, u8 getType, void *pOutBuf)
 	PADAPTER padapter;
 	PHAL_DATA_TYPE pHalData;
 	struct mlme_ext_priv *mlmeext;
-	u8 bSoftApExist, bVwifiExist;
 	u8 *pu8;
 	s32 *pS4Tmp;
 	u32 *pU4Tmp;
@@ -452,8 +442,6 @@ static u8 halbtcoutsrc_Get(void *pBtcContext, u8 getType, void *pOutBuf)
 	padapter = pBtCoexist->Adapter;
 	pHalData = GET_HAL_DATA(padapter);
 	mlmeext = &padapter->mlmeextpriv;
-	bSoftApExist = false;
-	bVwifiExist = false;
 	pu8 = (u8*)pOutBuf;
 	pS4Tmp = (s32*)pOutBuf;
 	pU4Tmp = (u32*)pOutBuf;
@@ -1011,7 +999,6 @@ static void halbtcoutsrc_DisplayDbgMsg(void *pBtcContext, u8 dispType)
 static u8 EXhalbtcoutsrc_BindBtCoexWithAdapter(void *padapter)
 {
 	PBTC_COEXIST		pBtCoexist=&GLBtCoexist;
-	u1Byte	antNum=2, chipType;
 	
 	if(pBtCoexist->bBinded)
 		return false;
@@ -1664,7 +1651,6 @@ u32 hal_btcoex_GetDBG(PADAPTER padapter, u8 *pStrBuf, u32 bufSize)
 	if ((NULL == pStrBuf) || (0 == bufSize))
 		return 0;
 
-	count = 0;
 	pstr = pStrBuf;
 	leftSize = bufSize;
 //	DBG_871X(FUNC_ADPT_FMT ": bufsize=%d\n", FUNC_ADPT_ARG(padapter), bufSize);
