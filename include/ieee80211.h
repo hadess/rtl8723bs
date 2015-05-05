@@ -214,11 +214,11 @@ enum NETWORK_TYPE
 #define IsSupportedRxOFDM(NetType) IsEnableHWOFDM(NetType)
 #define IsSupportedRxHT(NetType) IsEnableHWOFDM(NetType)
 
-#define IsSupportedTxCCK(NetType) ((NetType) & (WIRELESS_11B) ? true : false)
-#define IsSupportedTxOFDM(NetType) ((NetType) & (WIRELESS_11G|WIRELESS_11A) ? true : false)
-#define IsSupportedHT(NetType) ((NetType) & (WIRELESS_11_24N|WIRELESS_11_5N) ? true : false) 
+#define IsSupportedTxCCK(NetType) (((NetType) & (WIRELESS_11B)) ? true : false)
+#define IsSupportedTxOFDM(NetType) (((NetType) & (WIRELESS_11G|WIRELESS_11A)) ? true : false)
+#define IsSupportedHT(NetType) (((NetType) & (WIRELESS_11_24N|WIRELESS_11_5N)) ? true : false)
 
-#define IsSupportedVHT(NetType) ((NetType) & (WIRELESS_11AC) ? true : false) 
+#define IsSupportedVHT(NetType) (((NetType) & (WIRELESS_11AC)) ? true : false)
 
 
 typedef struct ieee_param {
