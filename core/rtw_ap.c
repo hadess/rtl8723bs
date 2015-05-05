@@ -300,10 +300,11 @@ void	expire_timeout_chk(_adapter *padapter)
 			psta->keep_alive_trycnt = 0;
 			psta->under_exist_checking = 0;
 		} else {
-			psta->expire_to--;
+			if (psta->expire_to > 0)
+				psta->expire_to--;
 		}
 
-		if (psta->expire_to <= 0)
+		if (psta->expire_to == 0)
 		{
 			struct mlme_ext_priv *pmlmeext = &padapter->mlmeextpriv;
 
