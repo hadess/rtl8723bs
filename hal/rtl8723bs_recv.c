@@ -182,8 +182,8 @@ static void rtl8723bs_c2h_packet_handler(PADAPTER padapter, u8 *pbuf, u16 length
 
 	res = rtw_c2h_packet_wk_cmd(padapter, tmpBuf, length);
 
-	if (res == false && tmpBuf != NULL)
-			kfree(tmpBuf);
+	if (res == false)
+		kfree(tmpBuf);
 
 	//DBG_871X("-%s res(%d)\n", __func__, res);
 
