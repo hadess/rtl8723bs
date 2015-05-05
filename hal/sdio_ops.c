@@ -723,8 +723,7 @@ s32 sdio_local_write(
 
 	err = sd_write(pintfhdl, addr, cnt, ptmpbuf);
 
-	if (ptmpbuf)
-		kfree(ptmpbuf);
+	kfree(ptmpbuf);
 
 	return err;
 }
