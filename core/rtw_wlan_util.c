@@ -757,49 +757,6 @@ void clear_cam_cache(_adapter *adapter, u8 id)
 	spin_unlock_bh(&cam_ctl->lock);
 }
 
-s16 rtw_get_camid(_adapter *adapter, struct sta_info *sta, s16 kid)
-{
-	u8 macid;
-	s16 camid;
-
-	//cam_entry:
-	//0~3 for default key
-
-	//for concurrent mode (ap+sta, sta+sta):
-	//default key is disable, using sw encrypt/decrypt
-	//camid 0, 1, 2, 3 is default entry for default key/group key
-	//macid = 1 is for bc/mc stainfo, no mapping to camid
-	//macid = 0 mapping to camid 4
-	//for macid >=2, camid = macid+3;
-
-	if (sta) {
-		struct mlme_ext_info *mlmeinfo = &adapter->mlmeextpriv.mlmext_info;
-		macid = sta->mac_id;
-
-		if((mlmeinfo->state&0x03) == WIFI_FW_AP_STATE) {
-			if((macid == 1) || (macid>(NUM_STA-4))){
-				DBG_871X_LEVEL(_drv_always_, FUNC_ADPT_FMT" failed, mac_id=%d\n", FUNC_ADPT_ARG(adapter), macid);
-				camid = -1;
-				goto exit;
-			}
-		}
-
-		if(macid==0)
-			camid = 4;
-		else if(macid >=2)
-			camid = macid + 3;
-		else
-			camid = 4;
-	}
-	else {
-		/* default key is disabled */
-		camid = -1;
-	}
-
-exit:
-	return (s16)camid;
-}
-
 static bool _rtw_camid_is_gk(_adapter *adapter, u8 cam_id)
 {
 	struct dvobj_priv *dvobj = adapter_to_dvobj(adapter);

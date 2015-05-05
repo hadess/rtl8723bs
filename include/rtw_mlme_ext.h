@@ -653,7 +653,6 @@ unsigned char get_highest_rate_idx(u32 mask);
 int support_short_GI(_adapter *padapter, struct HT_caps_element *pHT_caps, u8 bwmode);
 unsigned int is_ap_in_tkip(_adapter *padapter);
 
-s16 rtw_get_camid(_adapter *adapter, struct sta_info* sta, s16 kid);
 s16 rtw_camid_search(_adapter *adapter, u8 *addr, s16 kid);
 s16 rtw_camid_alloc(_adapter *adapter, struct sta_info *sta, u8 kid);
 void rtw_camid_free(_adapter *adapter, u8 cam_id);
