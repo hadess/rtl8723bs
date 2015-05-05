@@ -36,7 +36,6 @@ u32 sd_read32(struct intf_hdl *pintfhdl, u32 addr, s32 *err);
 s32 _sd_read(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, void *pdata);
 s32 sd_read(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, void *pdata);
 void sd_write8(struct intf_hdl *pintfhdl, u32 addr, u8 v, s32 *err);
-void _sd_write32(struct intf_hdl *pintfhdl, u32 addr, u32 v, s32 *err);
 void sd_write32(struct intf_hdl *pintfhdl, u32 addr, u32 v, s32 *err);
 s32 _sd_write(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, void *pdata);
 s32 sd_write(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, void *pdata);

@@ -318,10 +318,6 @@ extern void _rtw_attrib_write(_adapter *adapter, u32 addr, u32 cnt, u8 *pmem);
 extern u8 _rtw_read8(_adapter *adapter, u32 addr);
 extern u16 _rtw_read16(_adapter *adapter, u32 addr);
 extern u32 _rtw_read32(_adapter *adapter, u32 addr);
-extern void _rtw_read_mem(_adapter *adapter, u32 addr, u32 cnt, u8 *pmem);
-extern void _rtw_read_port(_adapter *adapter, u32 addr, u32 cnt, u8 *pmem);
-extern void _rtw_read_port_cancel(_adapter *adapter);
-
 
 extern int _rtw_write8(_adapter *adapter, u32 addr, u8 val);
 extern int _rtw_write16(_adapter *adapter, u32 addr, u16 val);
@@ -334,9 +330,6 @@ extern u32 _rtw_write_port(_adapter *adapter, u32 addr, u32 cnt, u8 *pmem);
 #define rtw_read8(adapter, addr) _rtw_read8((adapter), (addr))
 #define rtw_read16(adapter, addr) _rtw_read16((adapter), (addr))
 #define rtw_read32(adapter, addr) _rtw_read32((adapter), (addr))
-#define rtw_read_mem(adapter, addr, cnt, mem) _rtw_read_mem((adapter), (addr), (cnt), (mem))
-#define rtw_read_port(adapter, addr, cnt, mem) _rtw_read_port((adapter), (addr), (cnt), (mem))
-#define rtw_read_port_cancel(adapter) _rtw_read_port_cancel((adapter))
 
 #define  rtw_write8(adapter, addr, val) _rtw_write8((adapter), (addr), (val))
 #define  rtw_write16(adapter, addr, val) _rtw_write16((adapter), (addr), (val))

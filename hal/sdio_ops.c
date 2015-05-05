@@ -1035,7 +1035,6 @@ static struct recv_buf* sd_recv_rxfifo(PADAPTER padapter, u32 size)
 
 	//3 3. read data from rxfifo
 	preadbuf = precvbuf->pskb->data;
-//	rtw_read_port(padapter, WLAN_RX0FF_DEVICE_ID, readsize, preadbuf);
 	ret = sdio_read_port(&padapter->iopriv.intf, WLAN_RX0FF_DEVICE_ID, readsize, preadbuf);
 	if (ret == _FAIL) {
 		RT_TRACE(_module_hci_ops_os_c_, _drv_err_, ("%s: read port FAIL!\n", __FUNCTION__));

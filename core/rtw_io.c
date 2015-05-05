@@ -160,66 +160,6 @@ u8 _rtw_sd_f0_read8(_adapter *adapter, u32 addr)
 	return r_val;
 }
 
-void _rtw_read_mem(_adapter *adapter, u32 addr, u32 cnt, u8 *pmem)
-{
-	void (*_read_mem)(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, u8 *pmem);
-	//struct	io_queue  	*pio_queue = (struct io_queue *)adapter->pio_queue;
-	struct io_priv *pio_priv = &adapter->iopriv;
-	struct	intf_hdl		*pintfhdl = &(pio_priv->intf);
-
-	_func_enter_;
-
-	if( (adapter->bDriverStopped ==true) || (adapter->bSurpriseRemoved == true))
-	{
-	     RT_TRACE(_module_rtl871x_io_c_, _drv_info_, ("rtw_read_mem:bDriverStopped(%d) OR bSurpriseRemoved(%d)", adapter->bDriverStopped, adapter->bSurpriseRemoved));	    
-	     return;
-	}
-
-	_read_mem = pintfhdl->io_ops._read_mem;
-
-	_read_mem(pintfhdl, addr, cnt, pmem);
-
-	_func_exit_;
-
-}
-
-void _rtw_read_port(_adapter *adapter, u32 addr, u32 cnt, u8 *pmem)
-{
-	u32 (*_read_port)(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, u8 *pmem);
-	//struct	io_queue  	*pio_queue = (struct io_queue *)adapter->pio_queue;
-	struct io_priv *pio_priv = &adapter->iopriv;
-	struct	intf_hdl		*pintfhdl = &(pio_priv->intf);
-
-	_func_enter_;
-
-	if( (adapter->bDriverStopped ==true) || (adapter->bSurpriseRemoved == true))
-	{
-	     RT_TRACE(_module_rtl871x_io_c_, _drv_info_, ("rtw_read_port:bDriverStopped(%d) OR bSurpriseRemoved(%d)", adapter->bDriverStopped, adapter->bSurpriseRemoved));	    
-	     return;
-	}
-
-	_read_port = pintfhdl->io_ops._read_port;
-
-	_read_port(pintfhdl, addr, cnt, pmem);
-
-	_func_exit_;
-
-}
-
-void _rtw_read_port_cancel(_adapter *adapter)
-{
-	void (*_read_port_cancel)(struct intf_hdl *pintfhdl);
-	struct io_priv *pio_priv = &adapter->iopriv;
-	struct intf_hdl *pintfhdl = &(pio_priv->intf);
-
-	_read_port_cancel = pintfhdl->io_ops._read_port_cancel;
-
-	RTW_DISABLE_FUNC(adapter, DF_RX_BIT);
-
-	if(_read_port_cancel)
-		_read_port_cancel(pintfhdl);
-}
-
 u32 _rtw_write_port(_adapter *adapter, u32 addr, u32 cnt, u8 *pmem)
 {
 	u32 (*_write_port)(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, u8 *pmem);
