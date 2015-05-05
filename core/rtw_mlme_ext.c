@@ -482,15 +482,6 @@ static u8 init_channel_set(_adapter* padapter, u8 ChannelPlan, RT_CHANNEL_INFO *
 			Index2G = RTW_ChannelPlanMap[ChannelPlan].Index2G;
 	}
 
-	if(IsSupported5G(padapter->registrypriv.wireless_mode))
-	{
-		b5GBand = true;
-		if(RT_CHANNEL_DOMAIN_REALTEK_DEFINE == ChannelPlan)
-			Index5G = RTW_CHANNEL_PLAN_MAP_REALTEK_DEFINE.Index5G;
-		else
-			Index5G = RTW_ChannelPlanMap[ChannelPlan].Index5G;
-	}
-
 	if(b2_4GBand)
 	{
 		for(index=0;index<RTW_ChannelPlan2G[Index2G].Len;index++)

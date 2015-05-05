@@ -284,15 +284,9 @@ _func_enter_;
 	registry_par->channel = (u8)rtw_channel;
 	registry_par->wireless_mode = (u8)rtw_wireless_mode;
 
-	if (IsSupported24G(registry_par->wireless_mode) && (!IsSupported5G(registry_par->wireless_mode))
-		&& (registry_par->channel > 14)) {
+	if (registry_par->channel > 14)
 		registry_par->channel = 1;
-	}
-	else if (IsSupported5G(registry_par->wireless_mode) && (!IsSupported24G(registry_par->wireless_mode))
-		&& (registry_par->channel <= 14)) {
-		registry_par->channel = 36;
-	}
-	
+
 	registry_par->vrtl_carrier_sense = (u8)rtw_vrtl_carrier_sense ;
 	registry_par->vcs_type = (u8)rtw_vcs_type;
 	registry_par->rts_thresh=(u16)rtw_rts_thresh;

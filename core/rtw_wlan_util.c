@@ -1047,8 +1047,7 @@ void WMMOnAssocRsp(_adapter *padapter)
 
 	acm_mask = 0;
 
-	if (IsSupported5G(pmlmeext->cur_wireless_mode) || 
-		(pmlmeext->cur_wireless_mode & WIRELESS_11_24N) )
+	if (pmlmeext->cur_wireless_mode & WIRELESS_11_24N)
 		aSifsTime = 16;
 	else
 		aSifsTime = 10;

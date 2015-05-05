@@ -165,10 +165,8 @@ HAL_IsLegalChannel(
 	bool bLegalChannel = true;
 
 	if (Channel > 14) {
-		if(IsSupported5G(Adapter->registrypriv.wireless_mode) == false) {
-			bLegalChannel = false;
-			DBG_871X("Channel > 14 but wireless_mode do not support 5G\n");
-		}
+		bLegalChannel = false;
+		DBG_871X("Channel > 14 but wireless_mode do not support 5G\n");
 	} else if ((Channel <= 14) && (Channel >=1)){
 		if(IsSupported24G(Adapter->registrypriv.wireless_mode) == false) {
 			bLegalChannel = false;
