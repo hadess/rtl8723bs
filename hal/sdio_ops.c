@@ -602,7 +602,7 @@ _func_exit_;
 /*
  * Todo: align address to 4 bytes.
  */
-s32 _sdio_local_read(
+static s32 _sdio_local_read(
 	PADAPTER	padapter,
 	u32			addr,
 	u32			cnt,
