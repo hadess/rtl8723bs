@@ -319,7 +319,7 @@ static ssize_t proc_set_cam(struct file *file, const char __user *buffer, size_t
 		/* c <id>: clear specific cam entry */
 		/* wfc <id>: write specific cam entry from cam cache */
 
-		int num = sscanf(tmp, "%s %hhu", cmd, &id);
+		int num = sscanf(tmp, "%4s %hhu", cmd, &id);
 
 		if (num < 2)
 			return count;
