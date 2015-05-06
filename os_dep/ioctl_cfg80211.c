@@ -267,7 +267,7 @@ struct cfg80211_bss *rtw_cfg80211_inform_bss(_adapter *padapter, struct wlan_net
 	u8 *notify_ie;
 	size_t notify_ielen;
 	s32 notify_signal;
-	u8 buf[MAX_BSSINFO_LEN], *pbuf;
+	u8 *buf = NULL, *pbuf;
 	size_t len,bssinf_len=0;
 	struct rtw_ieee80211_hdr *pwlanhdr;
 	unsigned short *fctrl;
@@ -360,6 +360,9 @@ struct cfg80211_bss *rtw_cfg80211_inform_bss(_adapter *padapter, struct wlan_net
 		notify_signal = 100*translate_percentage_to_dbm(pnetwork->network.PhyInfo.SignalStrength);//dbm
 	}
 		
+	buf = kzalloc(MAX_BSSINFO_LEN, GFP_ATOMIC);
+	if (!buf)
+		goto exit;
 	pbuf = buf;
 	
 	pwlanhdr = (struct rtw_ieee80211_hdr *)pbuf;	
@@ -398,6 +401,7 @@ struct cfg80211_bss *rtw_cfg80211_inform_bss(_adapter *padapter, struct wlan_net
 	}
 
 	cfg80211_put_bss(wiphy, bss);
+	kfree(buf);
 
 exit:	
 	return bss;
