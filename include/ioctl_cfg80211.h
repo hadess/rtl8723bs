@@ -22,8 +22,8 @@
 
 #include <linux/version.h>
 
-#if (LINUX_VERSION_CODE < KERNEL_VERSION(4, 0, 0))
-#error This driver only works with kernel 4.0
+#if (LINUX_VERSION_CODE < KERNEL_VERSION(3, 19, 0))
+#error This driver only works with kernel 3.19 and later
 #endif
 
 struct rtw_wdev_invit_info {
