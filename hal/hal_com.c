@@ -762,6 +762,11 @@ _func_enter_;
 		*/
 		odm->SupportAbility &= *((u32 *)val);
 		break;
+	case HW_VAR_AMPDU_MIN_SPACE:
+		/* TODO - Is something needed here? */
+		break;
+	case HW_VAR_MEDIA_STATUS:
+		break;
 	default:
 		DBG_871X_LEVEL(_drv_always_, FUNC_ADPT_FMT" variable(%d) not defined!\n",
 			FUNC_ADPT_ARG(adapter), variable);
