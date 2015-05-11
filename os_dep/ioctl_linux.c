@@ -492,18 +492,23 @@ static char *translate_scan(_adapter *padapter,
 }
 
 	{
-		u8 buf[MAX_WPA_IE_LEN];
-		u8 * p,*pos;
+		u8 *buf;
+		u8 *p, *pos;
 		int len;
+
+		buf = kzalloc(MAX_WPA_IE_LEN, GFP_KERNEL);
+		if (!buf)
+			goto exit;
 		p = buf;
 		pos = pnetwork->network.Reserved;
-		memset(buf, 0, MAX_WPA_IE_LEN);
 		p += sprintf(p, "fm=%02X%02X", pos[1], pos[0]);
 		memset(&iwe, 0, sizeof(iwe));
 		iwe.cmd = IWEVCUSTOM;
 		iwe.u.data.length = strlen(buf);
 		start = iwe_stream_add_point(info, start, stop, &iwe, buf);
+		kfree(buf);
 	}
+exit:
 	kfree(custom);
 
 	return start;	
