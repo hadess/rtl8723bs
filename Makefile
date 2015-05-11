@@ -16,9 +16,9 @@ EXTRA_CFLAGS += -Wno-unused
 
 #EXTRA_CFLAGS += -Wno-uninitialized
 
-EXTRA_CFLAGS += -I$(src)/include -I$(src)/hal
+EXTRA_CFLAGS += -I$(src)/include -I$(src)/hal -g
 
-EXTRA_LDFLAGS += --strip-debug
+#EXTRA_LDFLAGS += --strip-debug
 
 ########################## Features ###########################
 CONFIG_HW_PWRP_DETECTION = n
