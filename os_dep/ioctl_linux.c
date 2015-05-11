@@ -342,7 +342,7 @@ static char *translate_scan(_adapter *padapter,
 	//parsing WPA/WPA2 IE
 	if (pnetwork->network.Reserved[0] != 2) // Probe Request
 	{
-		u8 buf[MAX_WPA_IE_LEN*2];
+		u8 *buf;
 		u8 wpa_ie[255],rsn_ie[255];
 		u16 wpa_len=0,rsn_len=0;
 		u8 *p;
@@ -351,10 +351,11 @@ static char *translate_scan(_adapter *padapter,
 		RT_TRACE(_module_rtl871x_mlme_c_,_drv_info_,("rtw_wx_get_scan: ssid=%s\n",pnetwork->network.Ssid.Ssid));
 		RT_TRACE(_module_rtl871x_mlme_c_,_drv_info_,("rtw_wx_get_scan: wpa_len=%d rsn_len=%d\n",wpa_len,rsn_len));
 
-		if (wpa_len > 0)
-		{
+		buf = kzalloc(MAX_WPA_IE_LEN*2, GFP_KERNEL);
+		if (!buf)
+			return start;
+		if (wpa_len > 0) {
 			p=buf;
-			memset(buf, 0, MAX_WPA_IE_LEN*2);
 			p += sprintf(p, "wpa_ie=");
 			for (i = 0; i < wpa_len; i++) {
 				p += sprintf(p, "%02x", wpa_ie[i]);
@@ -379,14 +380,12 @@ static char *translate_scan(_adapter *padapter,
 			iwe.u.data.length = wpa_len;
 			start = iwe_stream_add_point(info, start, stop, &iwe, wpa_ie);			
 		}
-		if (rsn_len > 0)
-		{
+		if (rsn_len > 0) {
 			p = buf;
 			memset(buf, 0, MAX_WPA_IE_LEN*2);
 			p += sprintf(p, "rsn_ie=");
-			for (i = 0; i < rsn_len; i++) {
+			for (i = 0; i < rsn_len; i++)
 				p += sprintf(p, "%02x", rsn_ie[i]);
-			}
 			memset(&iwe, 0, sizeof(iwe));
 			iwe.cmd = IWEVCUSTOM;
 			iwe.u.data.length = strlen(buf);
@@ -397,6 +396,7 @@ static char *translate_scan(_adapter *padapter,
 			iwe.u.data.length = rsn_len;
 			start = iwe_stream_add_point(info, start, stop, &iwe, rsn_ie);		
 		}
+		kfree(buf);
 	}
 
 	{ //parsing WPS IE
