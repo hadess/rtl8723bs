@@ -239,6 +239,11 @@ config_r:
 	@echo "make config"
 	/bin/bash script/Configure script/config.in
 
+cppcheck: cppcheck.log
+
+cppcheck.log:
+	@echo "Creating cppcheck.log"
+	cppcheck -f --enable=all -Iinclude -Ihal -Ios_dep -DCONFIG_LITTLE_ENDIAN . 2> cppcheck.log
 
 .PHONY: modules clean
 
@@ -248,4 +253,5 @@ clean:
 		core/*.mod.c core/*.mod *.o core/.*.cmd core/*.ko \
 		os_dep/*.mod.c os_dep/*.mod os_dep/*.o os_dep/.*.cmd *.ko \
 		platform/*.mod.c platform/*.mod platform/*.o platform/.*.cmd platform/*.ko \
-		Module.symvers Module.markers modules.order *.mod.c *.mod *.o .*.cmd *.ko *~ .tmp_versions
+		Module.symvers Module.markers modules.order *.mod.c *.mod *.o .*.cmd *.ko *~ .tmp_versions \
+		cppcheck.log
