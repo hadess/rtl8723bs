@@ -46,7 +46,7 @@ static void process_rssi(_adapter *padapter,union recv_frame *prframe)
 static void process_link_qual(_adapter *padapter,union recv_frame *prframe)
 {
 	u32	last_evm=0, tmpVal;
- 	struct rx_pkt_attrib *pattrib;
+	struct rx_pkt_attrib *pattrib;
 	struct signal_stat * signal_stat;
 
 	if(prframe == NULL || padapter==NULL){

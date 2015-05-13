@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Copyright(c) 2007 - 2011 Realtek Corporation. All rights reserved.
- *                                        
+ *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of version 2 of the GNU General Public License as
  * published by the Free Software Foundation.
@@ -25,14 +25,14 @@
 #include "odm_precomp.h"
 
 
-void 
+void
 ODM_InitDebugSetting(
 	IN		PDM_ODM_T		pDM_Odm
 	)
 {
-pDM_Odm->DebugLevel				= 	ODM_DBG_LOUD;
+pDM_Odm->DebugLevel				=	ODM_DBG_LOUD;
 
-pDM_Odm->DebugComponents			= 
+pDM_Odm->DebugComponents			=
 \
 #if DBG
 //BB Functions
@@ -49,7 +49,7 @@ pDM_Odm->DebugComponents			=
 //									ODM_COMP_PATH_DIV				|
 //									ODM_COMP_DYNAMIC_PRICCA		|
 //									ODM_COMP_RXHP					|
-//									ODM_COMP_MP 					|
+//									ODM_COMP_MP					|
 //									ODM_COMP_CFO_TRACKING		|
 
 //MAC Functions

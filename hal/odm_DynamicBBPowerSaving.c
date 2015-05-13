@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Copyright(c) 2007 - 2011 Realtek Corporation. All rights reserved.
- *                                        
+ *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of version 2 of the GNU General Public License as
  * published by the Free Software Foundation.
@@ -43,7 +43,7 @@ odm_DynamicBBPowerSavingInit(
 void
 ODM_RF_Saving(
 	IN		void *					pDM_VOID,
-	IN	u1Byte		bForceInNormal 
+	IN	u1Byte		bForceInNormal
 	)
 {
 	PDM_ODM_T		pDM_Odm = (PDM_ODM_T)pDM_VOID;
@@ -56,7 +56,7 @@ ODM_RF_Saving(
 		Rssi_Low_bound = 45;
 	}
 	if(pDM_PSTable->initialize == 0){
-		
+
 		pDM_PSTable->Reg874 = (PHY_QueryBBReg(pDM_Odm->Adapter, 0x874, bMaskDWord)&0x1CC000)>>14;
 		pDM_PSTable->RegC70 = (PHY_QueryBBReg(pDM_Odm->Adapter, 0xc70, bMaskDWord)&BIT3)>>3;
 		pDM_PSTable->Reg85C = (PHY_QueryBBReg(pDM_Odm->Adapter, 0x85c, bMaskDWord)&0xFF000000)>>24;
@@ -68,7 +68,7 @@ ODM_RF_Saving(
 	if(!bForceInNormal)
 	{
 		if(pDM_Odm->RSSI_Min != 0xFF)
-		{			 
+		{
 			if(pDM_PSTable->PreRFState == RF_Normal)
 			{
 				if(pDM_Odm->RSSI_Min >= Rssi_Up_bound)
@@ -90,7 +90,7 @@ ODM_RF_Saving(
 	{
 		pDM_PSTable->CurRFState = RF_Normal;
 	}
-	
+
 	if(pDM_PSTable->PreRFState != pDM_PSTable->CurRFState)
 	{
 		if(pDM_PSTable->CurRFState == RF_Save)

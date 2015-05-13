@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Copyright(c) 2007 - 2011 Realtek Corporation. All rights reserved.
- *                                        
+ *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of version 2 of the GNU General Public License as
  * published by the Free Software Foundation.
@@ -32,7 +32,7 @@
 	//#include <drv_types.h>
 	//#include <rtw_byteorder.h>
 	//#include <hal_intf.h>
-#define BEAMFORMING_SUPPORT 0		
+#define BEAMFORMING_SUPPORT 0
 
 //2 Hardware Parameter Files
 
@@ -53,7 +53,7 @@
 
 	//#include "hal_com.h"
 	#include "HalPhyRf.h"
-	
+
 	#include "HalPhyRf_8723B.h"//for IQK,LCK,Power-tracking
 	#include "rtl8723b_hal.h"
 
@@ -69,4 +69,3 @@
 #include "odm_RegConfig8723B.h"
 
 #endif	// __ODM_PRECOMP_H__
-

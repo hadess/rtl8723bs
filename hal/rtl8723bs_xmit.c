@@ -26,28 +26,28 @@ static u8 rtw_sdio_wait_enough_TxOQT_space(PADAPTER padapter, u8 agg_num)
 	u32 n = 0;
 	HAL_DATA_TYPE *pHalData = GET_HAL_DATA(padapter);
 
-	while (pHalData->SdioTxOQTFreeSpace < agg_num) 
+	while (pHalData->SdioTxOQTFreeSpace < agg_num)
 	{
-		if ((padapter->bSurpriseRemoved == true) 
+		if ((padapter->bSurpriseRemoved == true)
 			|| (padapter->bDriverStopped == true)){
 			DBG_871X("%s: bSurpriseRemoved or bDriverStopped (wait TxOQT)\n", __func__);
 			return false;
 		}
 
 		HalQueryTxOQTBufferStatus8723BSdio(padapter);
-		
+
 		if ((++n % 60) == 0) {
-			if ((n % 300) == 0) {			
+			if ((n % 300) == 0) {
 				DBG_871X("%s(%d): QOT free space(%d), agg_num: %d\n",
- 				__func__, n, pHalData->SdioTxOQTFreeSpace, agg_num);
-			}	
+				__func__, n, pHalData->SdioTxOQTFreeSpace, agg_num);
+			}
 			msleep(1);
 			//yield();
 		}
 	}
 
 	pHalData->SdioTxOQTFreeSpace -= agg_num;
-	
+
 	//if (n > 1)
 	//	++priv->pshare->nr_out_of_txoqt_space;
 
@@ -109,14 +109,14 @@ query_free_page:
 		}
 	}
 
-	if ((padapter->bSurpriseRemoved == true) 
+	if ((padapter->bSurpriseRemoved == true)
 		|| (padapter->bDriverStopped == true)){
 		RT_TRACE(_module_hal_xmit_c_, _drv_notice_,
 			 ("%s: bSurpriseRemoved(wirte port)\n", __FUNCTION__));
 		goto free_xmitbuf;
 	}
 
-	if (rtw_sdio_wait_enough_TxOQT_space(padapter, pxmitbuf->agg_num) == false) 
+	if (rtw_sdio_wait_enough_TxOQT_space(padapter, pxmitbuf->agg_num) == false)
 	{
 		goto free_xmitbuf;
 	}
@@ -213,7 +213,7 @@ static s32 xmit_xmitframes(PADAPTER padapter, struct xmit_priv *pxmitpriv)
 	u32 txlen, max_xmit_len;
 	u8 txdesc_size = TXDESC_SIZE;
 	int inx[4];
-	
+
 	err = 0;
 	no_res = false;
 	hwxmits = pxmitpriv->hwxmits;
@@ -234,7 +234,7 @@ static s32 xmit_xmitframes(PADAPTER padapter, struct xmit_priv *pxmitpriv)
 	for (idx = 0; idx < hwentry; idx++)
 	{
 		phwxmit = hwxmits + inx[idx];
-	
+
 		if((check_pending_xmitbuf(pxmitpriv) == true) && (padapter->mlmepriv.LinkDetectInfo.bHigherBusyTxTraffic == true)) {
 			if ((phwxmit->accnt > 0) && (phwxmit->accnt < 5)) {
 				err = -2;
@@ -245,7 +245,7 @@ static s32 xmit_xmitframes(PADAPTER padapter, struct xmit_priv *pxmitpriv)
 		max_xmit_len = rtw_hal_get_sdio_tx_max_length(padapter, inx[idx]);
 
 		spin_lock_bh(&pxmitpriv->lock);
-		
+
 		sta_phead = get_list_head(phwxmit->sta_queue);
 		sta_plist = get_next(sta_phead);
 		//because stop_sta_xmit may delete sta_plist at any time
@@ -258,7 +258,7 @@ static s32 xmit_xmitframes(PADAPTER padapter, struct xmit_priv *pxmitpriv)
 #ifdef DBG_XMIT_BUF
 			DBG_871X("%s idx:%d hwxmit_pkt_num:%d ptxservq_pkt_num:%d\n", __func__, idx, phwxmit->accnt, ptxservq->qcnt);
 			DBG_871X("%s free_xmit_extbuf_cnt=%d free_xmitbuf_cnt=%d free_xmitframe_cnt=%d \n",
-				       	__func__, pxmitpriv->free_xmit_extbuf_cnt, pxmitpriv->free_xmitbuf_cnt,
+					__func__, pxmitpriv->free_xmit_extbuf_cnt, pxmitpriv->free_xmitbuf_cnt,
 					pxmitpriv->free_xmitframe_cnt);
 #endif
 			pframe_queue = &ptxservq->sta_pending;
@@ -269,7 +269,7 @@ static s32 xmit_xmitframes(PADAPTER padapter, struct xmit_priv *pxmitpriv)
 			{
 				frame_plist = get_next(frame_phead);
 				pxmitframe = LIST_CONTAINOR(frame_plist, struct xmit_frame, list);
-				
+
 				// check xmit_buf size enough or not
 				txlen = txdesc_size + rtw_wlan_pkt_size(pxmitframe);
 				if ((NULL == pxmitbuf) ||
@@ -362,7 +362,7 @@ static s32 xmit_xmitframes(PADAPTER padapter, struct xmit_priv *pxmitpriv)
 			if (err) break;
 		}
 		spin_unlock_bh(&pxmitpriv->lock);
-		
+
 		// dump xmit_buf to hw tx fifo
 		if (pxmitbuf)
 		{
@@ -383,7 +383,7 @@ static s32 xmit_xmitframes(PADAPTER padapter, struct xmit_priv *pxmitpriv)
 				rtw_free_xmitbuf(pxmitpriv, pxmitbuf);
 			pxmitbuf = NULL;
 		}
-		
+
 		if (err) break;
 	}
 
@@ -576,26 +576,26 @@ s32 rtl8723bs_hal_xmit(PADAPTER padapter, struct xmit_frame *pxmitframe)
 
 s32	rtl8723bs_hal_xmitframe_enqueue(_adapter *padapter, struct xmit_frame *pxmitframe)
 {
-	struct xmit_priv 	*pxmitpriv = &padapter->xmitpriv;
+	struct xmit_priv	*pxmitpriv = &padapter->xmitpriv;
 	s32 err;
-	
-	if ((err=rtw_xmitframe_enqueue(padapter, pxmitframe)) != _SUCCESS) 
+
+	if ((err=rtw_xmitframe_enqueue(padapter, pxmitframe)) != _SUCCESS)
 	{
 		rtw_free_xmitframe(pxmitpriv, pxmitframe);
 
-		pxmitpriv->tx_drop++;					
+		pxmitpriv->tx_drop++;
 	}
 	else
 	{
 #ifdef CONFIG_SDIO_TX_TASKLET
-		tasklet_hi_schedule(&pxmitpriv->xmit_tasklet);					
+		tasklet_hi_schedule(&pxmitpriv->xmit_tasklet);
 #else
 		up(&pxmitpriv->SdioXmitSema);
 #endif
 	}
-	
+
 	return err;
-	
+
 }
 
 /*
@@ -658,4 +658,3 @@ void rtl8723bs_free_xmit_priv(PADAPTER padapter)
 		rtw_free_xmitbuf(pxmitpriv, pxmitbuf);
 	}
 }
-

@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Copyright(c) 2007 - 2011 Realtek Corporation. All rights reserved.
- *                                        
+ *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of version 2 of the GNU General Public License as
  * published by the Free Software Foundation.
@@ -17,7 +17,7 @@
  *
  *
  ******************************************************************************/
- 
+
 #ifndef	__ODMDYNAMICTXPOWER_H__
 #define    __ODMDYNAMICTXPOWER_H__
 
@@ -26,7 +26,7 @@
 #define		TX_POWER_NEAR_FIELD_THRESH_AP		0x3F
 #define		TX_POWER_NEAR_FIELD_THRESH_8812	60
 
-#define		TxHighPwrLevel_Normal		0	
+#define		TxHighPwrLevel_Normal		0
 #define		TxHighPwrLevel_Level1		1
 #define		TxHighPwrLevel_Level2		2
 #define		TxHighPwrLevel_BT1			3

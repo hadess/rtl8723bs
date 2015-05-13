@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Copyright(c) 2007 - 2011 Realtek Corporation. All rights reserved.
- *                                        
+ *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of version 2 of the GNU General Public License as
  * published by the Free Software Foundation.
@@ -26,11 +26,11 @@
 
 void
 ODM_EdcaTurboInit(
-	IN 	void *	 	pDM_VOID)
+	IN	void *		pDM_VOID)
 {
 	PDM_ODM_T		pDM_Odm = (PDM_ODM_T)pDM_VOID;
-	PADAPTER	Adapter = pDM_Odm->Adapter;	
-	pDM_Odm->DM_EDCA_Table.bCurrentTurboEDCA = false;	
+	PADAPTER	Adapter = pDM_Odm->Adapter;
+	pDM_Odm->DM_EDCA_Table.bCurrentTurboEDCA = false;
 	pDM_Odm->DM_EDCA_Table.bIsCurRDLState = false;
 	Adapter->recvpriv.bIsAnyNonBEPkts =false;
 
@@ -39,12 +39,12 @@ ODM_EdcaTurboInit(
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_EDCA_TURBO,ODM_DBG_LOUD,("Orginial BE PARAM: 0x%x\n",rtw_read32(pDM_Odm->Adapter,ODM_EDCA_BE_PARAM)));
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_EDCA_TURBO,ODM_DBG_LOUD,("Orginial BK PARAM: 0x%x\n",rtw_read32(pDM_Odm->Adapter,ODM_EDCA_BK_PARAM)));
 
-	
+
 }	// ODM_InitEdcaTurbo
 
 void
 odm_EdcaTurboCheck(
-	IN 	void *	 	pDM_VOID
+	IN	void *		pDM_VOID
 	)
 {
 	//
@@ -54,7 +54,7 @@ odm_EdcaTurboCheck(
 	//
 	PDM_ODM_T		pDM_Odm = (PDM_ODM_T)pDM_VOID;
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_EDCA_TURBO,ODM_DBG_LOUD,("odm_EdcaTurboCheck========================>\n"));
-	
+
 	if(!(pDM_Odm->SupportAbility& ODM_MAC_EDCA_TURBO ))
 		return;
 
@@ -65,7 +65,7 @@ odm_EdcaTurboCheck(
 
 void
 odm_EdcaTurboCheckCE(
-	IN 	void *	 	pDM_VOID
+	IN	void *		pDM_VOID
 	)
 {
 	PDM_ODM_T		pDM_Odm = (PDM_ODM_T)pDM_VOID;
@@ -75,7 +75,7 @@ odm_EdcaTurboCheckCE(
 	u32	ICType=pDM_Odm->SupportICType;
 	u32	IOTPeer=0;
 	u8	WirelessMode=0xFF;                   //invalid value
-	u32 	trafficIndex;
+	u32	trafficIndex;
 	u32	edca_param;
 	u64	cur_tx_bytes = 0;
 	u64	cur_rx_bytes = 0;
@@ -123,7 +123,7 @@ odm_EdcaTurboCheckCE(
 		{
 			if (cur_tx_bytes > (cur_rx_bytes << 2))
 			{ // Uplink TP is present.
-				trafficIndex = UP_LINK; 
+				trafficIndex = UP_LINK;
 			}
 			else
 			{ // Balance TP is present.
@@ -150,7 +150,7 @@ odm_EdcaTurboCheckCE(
 				EDCA_BE_DL = edca_setting_DL[IOTPeer];
 				EDCA_BE_UL = edca_setting_UL[IOTPeer];
 			}
-			//merge from 92s_92c_merge temp brunch v2445    20120215 
+			//merge from 92s_92c_merge temp brunch v2445    20120215
 			else if((IOTPeer == HT_IOT_PEER_CISCO) &&((WirelessMode==ODM_WM_G)||(WirelessMode==(ODM_WM_B|ODM_WM_G))||(WirelessMode==ODM_WM_A)||(WirelessMode==ODM_WM_B)))
 			{
 				EDCA_BE_DL = edca_setting_DL_GMode[IOTPeer];
@@ -166,7 +166,7 @@ odm_EdcaTurboCheckCE(
 			}
 			else if(IOTPeer == HT_IOT_PEER_ATHEROS)
 			{
-				// Set DL EDCA for Atheros peer to 0x3ea42b. Suggested by SD3 Wilson for ASUS TP issue. 
+				// Set DL EDCA for Atheros peer to 0x3ea42b. Suggested by SD3 Wilson for ASUS TP issue.
 				EDCA_BE_DL = edca_setting_DL[IOTPeer];
 			}
 
@@ -179,7 +179,7 @@ odm_EdcaTurboCheckCE(
 
 			pDM_Odm->DM_EDCA_Table.prv_traffic_idx = trafficIndex;
 		}
-		
+
 		pDM_Odm->DM_EDCA_Table.bCurrentTurboEDCA = true;
 	}
 	else

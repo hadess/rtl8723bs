@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Copyright(c) 2007 - 2011 Realtek Corporation. All rights reserved.
- *                                        
+ *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of version 2 of the GNU General Public License as
  * published by the Free Software Foundation.
@@ -29,7 +29,7 @@ u8 rtw_hal_sdio_max_txoqt_free_space(_adapter *padapter)
 	if(pHalData->SdioTxOQTMaxFreeSpace < 8 )
 		pHalData->SdioTxOQTMaxFreeSpace = 8;
 
-	return pHalData->SdioTxOQTMaxFreeSpace;	
+	return pHalData->SdioTxOQTMaxFreeSpace;
 }
 
 u8 rtw_hal_sdio_query_tx_freepage(_adapter *padapter, u8 PageIdx, u8 RequiredPageNum)
@@ -85,7 +85,7 @@ u32 rtw_hal_get_sdio_tx_max_length(PADAPTER padapter, u8 queue_idx)
 	struct dvobj_priv	*pdvobjpriv = adapter_to_dvobj(padapter);
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
 	u32	deviceId, max_len;
-	
+
 
 	deviceId = ffaddr2deviceId(pdvobjpriv, queue_idx);
 	switch (deviceId) {
@@ -108,5 +108,3 @@ u32 rtw_hal_get_sdio_tx_max_length(PADAPTER padapter, u8 queue_idx)
 
 	return max_len;
 }
-
-

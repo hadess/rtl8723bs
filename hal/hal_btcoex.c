@@ -146,12 +146,12 @@ static void halbtcoutsrc_DbgInit(void)
 	for (i=0; i<BTC_MSG_MAX; i++)
 		GLBtcDbgType[i] = 0;
 
-	GLBtcDbgType[BTC_MSG_INTERFACE]			= 	\
+	GLBtcDbgType[BTC_MSG_INTERFACE]			=	\
 //			INTF_INIT								|
 //			INTF_NOTIFY							|
 			0;
 
-	GLBtcDbgType[BTC_MSG_ALGORITHM]			= 	\
+	GLBtcDbgType[BTC_MSG_ALGORITHM]			=	\
 //			ALGO_BT_RSSI_STATE					|
 //			ALGO_WIFI_RSSI_STATE					|
 //			ALGO_BT_MONITOR						|
@@ -382,7 +382,7 @@ static u32 halbtcoutsrc_GetWifiLinkStatus(PBTC_COEXIST pBtCoexist)
 	}
 
 	retVal = (numOfConnectedPort << 16) | portConnectedStatus;
-	
+
 	return retVal;
 }
 
@@ -469,7 +469,7 @@ static u8 halbtcoutsrc_Get(void *pBtcContext, u8 getType, void *pOutBuf)
 			break;
 
 		case BTC_GET_BL_WIFI_SCAN:
-			/* Use the value of the new variable GLBtcWiFiInScanState to judge whether WiFi is in scan state or not, since the originally used flag 
+			/* Use the value of the new variable GLBtcWiFiInScanState to judge whether WiFi is in scan state or not, since the originally used flag
 				WIFI_SITE_MONITOR in fwstate may not be cleared in time */
 			*pu8 = GLBtcWiFiInScanState;
 			break;
@@ -932,7 +932,7 @@ static void halbtcoutsrc_SetBtReg(void *pBtcContext, u8 RegType, u32 RegAddr, u3
 	u8 CmdBuffer1[4] = {0};
 	u8 CmdBuffer2[4] = {0};
 	u8* AddrToSet = (u8*)&RegAddr;
-	u8* ValueToSet = (u8*)&Data;	
+	u8* ValueToSet = (u8*)&Data;
 	u8 OperVer = 0;
 	u8 ReqNum = 0;
 
@@ -941,8 +941,8 @@ static void halbtcoutsrc_SetBtReg(void *pBtcContext, u8 RegType, u32 RegAddr, u3
 
 	CmdBuffer1[0] |= (OperVer & 0x0f);						/* Set OperVer */
 	CmdBuffer1[0] |= ((ReqNum << 4) & 0xf0);				/* Set ReqNum */
-	CmdBuffer1[1] = 0x0d; 									/* Set OpCode to BT_LO_OP_WRITE_REG_VALUE */
-	CmdBuffer1[2] = ValueToSet[0]; 							/* Set WriteRegValue */
+	CmdBuffer1[1] = 0x0d;									/* Set OpCode to BT_LO_OP_WRITE_REG_VALUE */
+	CmdBuffer1[2] = ValueToSet[0];							/* Set WriteRegValue */
 	rtw_hal_fill_h2c_cmd(padapter, 0x67, 4, &(CmdBuffer1[0]));
 
 	msleep(200);
@@ -950,7 +950,7 @@ static void halbtcoutsrc_SetBtReg(void *pBtcContext, u8 RegType, u32 RegAddr, u3
 
 	CmdBuffer2[0] |= (OperVer & 0x0f);						/* Set OperVer */
 	CmdBuffer2[0] |= ((ReqNum << 4) & 0xf0);				/* Set ReqNum */
-	CmdBuffer2[1] = 0x0c; 									/* Set OpCode of BT_LO_OP_WRITE_REG_ADDR */
+	CmdBuffer2[1] = 0x0c;									/* Set OpCode of BT_LO_OP_WRITE_REG_ADDR */
 	CmdBuffer2[3] = AddrToSet[0];							/* Set WriteRegAddr */
 	rtw_hal_fill_h2c_cmd(padapter, 0x67, 4, &(CmdBuffer2[0]));
 }
@@ -999,16 +999,16 @@ static void halbtcoutsrc_DisplayDbgMsg(void *pBtcContext, u8 dispType)
 static u8 EXhalbtcoutsrc_BindBtCoexWithAdapter(void *padapter)
 {
 	PBTC_COEXIST		pBtCoexist=&GLBtCoexist;
-	
+
 	if(pBtCoexist->bBinded)
 		return false;
 	else
 		pBtCoexist->bBinded = true;
 
 	pBtCoexist->statistics.cntBind++;
-	
+
 	pBtCoexist->Adapter = padapter;
-	
+
 	pBtCoexist->stackInfo.bProfileNotified = false;
 
 	pBtCoexist->btInfo.bBtCtrlAggBufSize = false;
@@ -1017,8 +1017,8 @@ static u8 EXhalbtcoutsrc_BindBtCoexWithAdapter(void *padapter)
 	pBtCoexist->btInfo.bIncreaseScanDevNum = false;
 
 	// set default antenna position to main  port
-	pBtCoexist->boardInfo.btdmAntPos = BTC_ANTENNA_AT_MAIN_PORT;	
-	
+	pBtCoexist->boardInfo.btdmAntPos = BTC_ANTENNA_AT_MAIN_PORT;
+
 	return true;
 }
 
@@ -1060,7 +1060,7 @@ u8 EXhalbtcoutsrc_InitlizeVariables(void *padapter)
 	pBtCoexist->cliBuf = &GLBtcDbgBuf[0];
 
 	pBtCoexist->boardInfo.singleAntPath = 0;
-	
+
 	GLBtcWiFiInScanState = false;
 
 	GLBtcWiFiInIQKState = false;
@@ -1356,7 +1356,7 @@ void EXhalbtcoutsrc_SetAntNum(u8 type, u8 antNum)
 	else if (BT_COEX_ANT_TYPE_ANTDIV == type)
 	{
 		GLBtCoexist.boardInfo.btdmAntNum = antNum;
-		//GLBtCoexist.boardInfo.btdmAntPos = BTC_ANTENNA_AT_MAIN_PORT;	
+		//GLBtCoexist.boardInfo.btdmAntPos = BTC_ANTENNA_AT_MAIN_PORT;
 	}
 	else if (BT_COEX_ANT_TYPE_DETECTED == type)
 	{
@@ -1523,7 +1523,7 @@ void hal_btcoex_BtInfoNotify(PADAPTER padapter, u8 length, u8 *tmpBuf)
 {
 	if (GLBtcWiFiInIQKState == true)
 		return;
-	
+
 	EXhalbtcoutsrc_BtInfoNotify(&GLBtCoexist, tmpBuf, length);
 }
 
@@ -1693,7 +1693,7 @@ u32 hal_btcoex_GetDBG(PADAPTER padapter, u8 *pStrBuf, u32 bufSize)
 		goto exit;
 	pstr += count;
 	leftSize -= count;
-	
+
 	count = rtw_sprintf(pstr, leftSize, "ALGORITHM Debug Setting Definition:\n");
 	if ((count < 0) || (count >= leftSize))
 		goto exit;

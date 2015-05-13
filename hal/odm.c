@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Copyright(c) 2007 - 2011 Realtek Corporation. All rights reserved.
- *                                        
+ *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of version 2 of the GNU General Public License as
  * published by the Free Software Foundation.
@@ -85,21 +85,21 @@ u1Byte	CCKSwingTable_Ch1_Ch13[CCK_TABLE_SIZE][8] = {
 	{0x33, 0x32, 0x2b, 0x23, 0x1a, 0x11, 0x08, 0x04},	// 1, -0.5dB
 	{0x30, 0x2f, 0x29, 0x21, 0x19, 0x10, 0x08, 0x03},	// 2, -1.0dB
 	{0x2d, 0x2d, 0x27, 0x1f, 0x18, 0x0f, 0x08, 0x03},	// 3, -1.5dB
-	{0x2b, 0x2a, 0x25, 0x1e, 0x16, 0x0e, 0x07, 0x03},	// 4, -2.0dB 
+	{0x2b, 0x2a, 0x25, 0x1e, 0x16, 0x0e, 0x07, 0x03},	// 4, -2.0dB
 	{0x28, 0x28, 0x22, 0x1c, 0x15, 0x0d, 0x07, 0x03},	// 5, -2.5dB
 	{0x26, 0x25, 0x21, 0x1b, 0x14, 0x0d, 0x06, 0x03},	// 6, -3.0dB
 	{0x24, 0x23, 0x1f, 0x19, 0x13, 0x0c, 0x06, 0x03},	// 7, -3.5dB
-	{0x22, 0x21, 0x1d, 0x18, 0x11, 0x0b, 0x06, 0x02},	// 8, -4.0dB 
+	{0x22, 0x21, 0x1d, 0x18, 0x11, 0x0b, 0x06, 0x02},	// 8, -4.0dB
 	{0x20, 0x20, 0x1b, 0x16, 0x11, 0x08, 0x05, 0x02},	// 9, -4.5dB
-	{0x1f, 0x1e, 0x1a, 0x15, 0x10, 0x0a, 0x05, 0x02},	// 10, -5.0dB 
+	{0x1f, 0x1e, 0x1a, 0x15, 0x10, 0x0a, 0x05, 0x02},	// 10, -5.0dB
 	{0x1d, 0x1c, 0x18, 0x14, 0x0f, 0x0a, 0x05, 0x02},	// 11, -5.5dB
 	{0x1b, 0x1a, 0x17, 0x13, 0x0e, 0x09, 0x04, 0x02},	// 12, -6.0dB <== default
 	{0x1a, 0x19, 0x16, 0x12, 0x0d, 0x09, 0x04, 0x02},	// 13, -6.5dB
-	{0x18, 0x17, 0x15, 0x11, 0x0c, 0x08, 0x04, 0x02},	// 14, -7.0dB 
+	{0x18, 0x17, 0x15, 0x11, 0x0c, 0x08, 0x04, 0x02},	// 14, -7.0dB
 	{0x17, 0x16, 0x13, 0x10, 0x0c, 0x08, 0x04, 0x02},	// 15, -7.5dB
-	{0x16, 0x15, 0x12, 0x0f, 0x0b, 0x07, 0x04, 0x01},	// 16, -8.0dB 
+	{0x16, 0x15, 0x12, 0x0f, 0x0b, 0x07, 0x04, 0x01},	// 16, -8.0dB
 	{0x14, 0x14, 0x11, 0x0e, 0x0b, 0x07, 0x03, 0x02},	// 17, -8.5dB
-	{0x13, 0x13, 0x10, 0x0d, 0x0a, 0x06, 0x03, 0x01},	// 18, -9.0dB 
+	{0x13, 0x13, 0x10, 0x0d, 0x0a, 0x06, 0x03, 0x01},	// 18, -9.0dB
 	{0x12, 0x12, 0x0f, 0x0c, 0x09, 0x06, 0x03, 0x01},	// 19, -9.5dB
 	{0x11, 0x11, 0x0f, 0x0c, 0x09, 0x06, 0x03, 0x01},	// 20, -10.0dB
 	{0x10, 0x10, 0x0e, 0x0b, 0x08, 0x05, 0x03, 0x01},	// 21, -10.5dB
@@ -118,25 +118,25 @@ u1Byte	CCKSwingTable_Ch1_Ch13[CCK_TABLE_SIZE][8] = {
 
 
 u1Byte	CCKSwingTable_Ch14[CCK_TABLE_SIZE][8] = {
-	{0x36, 0x35, 0x2e, 0x1b, 0x00, 0x00, 0x00, 0x00},	// 0, +0dB  
-	{0x33, 0x32, 0x2b, 0x19, 0x00, 0x00, 0x00, 0x00},	// 1, -0.5dB 
-	{0x30, 0x2f, 0x29, 0x18, 0x00, 0x00, 0x00, 0x00},	// 2, -1.0dB  
+	{0x36, 0x35, 0x2e, 0x1b, 0x00, 0x00, 0x00, 0x00},	// 0, +0dB
+	{0x33, 0x32, 0x2b, 0x19, 0x00, 0x00, 0x00, 0x00},	// 1, -0.5dB
+	{0x30, 0x2f, 0x29, 0x18, 0x00, 0x00, 0x00, 0x00},	// 2, -1.0dB
 	{0x2d, 0x2d, 0x17, 0x17, 0x00, 0x00, 0x00, 0x00},	// 3, -1.5dB
-	{0x2b, 0x2a, 0x25, 0x15, 0x00, 0x00, 0x00, 0x00},	// 4, -2.0dB  
+	{0x2b, 0x2a, 0x25, 0x15, 0x00, 0x00, 0x00, 0x00},	// 4, -2.0dB
 	{0x28, 0x28, 0x24, 0x14, 0x00, 0x00, 0x00, 0x00},	// 5, -2.5dB
-	{0x26, 0x25, 0x21, 0x13, 0x00, 0x00, 0x00, 0x00},	// 6, -3.0dB  
-	{0x24, 0x23, 0x1f, 0x12, 0x00, 0x00, 0x00, 0x00},	// 7, -3.5dB  
-	{0x22, 0x21, 0x1d, 0x11, 0x00, 0x00, 0x00, 0x00},	// 8, -4.0dB  
+	{0x26, 0x25, 0x21, 0x13, 0x00, 0x00, 0x00, 0x00},	// 6, -3.0dB
+	{0x24, 0x23, 0x1f, 0x12, 0x00, 0x00, 0x00, 0x00},	// 7, -3.5dB
+	{0x22, 0x21, 0x1d, 0x11, 0x00, 0x00, 0x00, 0x00},	// 8, -4.0dB
 	{0x20, 0x20, 0x1b, 0x10, 0x00, 0x00, 0x00, 0x00},	// 9, -4.5dB
-	{0x1f, 0x1e, 0x1a, 0x0f, 0x00, 0x00, 0x00, 0x00},	// 10, -5.0dB  
+	{0x1f, 0x1e, 0x1a, 0x0f, 0x00, 0x00, 0x00, 0x00},	// 10, -5.0dB
 	{0x1d, 0x1c, 0x18, 0x0e, 0x00, 0x00, 0x00, 0x00},	// 11, -5.5dB
 	{0x1b, 0x1a, 0x17, 0x0e, 0x00, 0x00, 0x00, 0x00},	// 12, -6.0dB  <== default
-	{0x1a, 0x19, 0x16, 0x0d, 0x00, 0x00, 0x00, 0x00},	// 13, -6.5dB 
-	{0x18, 0x17, 0x15, 0x0c, 0x00, 0x00, 0x00, 0x00},	// 14, -7.0dB  
+	{0x1a, 0x19, 0x16, 0x0d, 0x00, 0x00, 0x00, 0x00},	// 13, -6.5dB
+	{0x18, 0x17, 0x15, 0x0c, 0x00, 0x00, 0x00, 0x00},	// 14, -7.0dB
 	{0x17, 0x16, 0x13, 0x0b, 0x00, 0x00, 0x00, 0x00},	// 15, -7.5dB
-	{0x16, 0x15, 0x12, 0x0b, 0x00, 0x00, 0x00, 0x00},	// 16, -8.0dB  
+	{0x16, 0x15, 0x12, 0x0b, 0x00, 0x00, 0x00, 0x00},	// 16, -8.0dB
 	{0x14, 0x14, 0x11, 0x0a, 0x00, 0x00, 0x00, 0x00},	// 17, -8.5dB
-	{0x13, 0x13, 0x10, 0x0a, 0x00, 0x00, 0x00, 0x00},	// 18, -9.0dB  
+	{0x13, 0x13, 0x10, 0x0a, 0x00, 0x00, 0x00, 0x00},	// 18, -9.0dB
 	{0x12, 0x12, 0x0f, 0x09, 0x00, 0x00, 0x00, 0x00},	// 19, -9.5dB
 	{0x11, 0x11, 0x0f, 0x09, 0x00, 0x00, 0x00, 0x00},	// 20, -10.0dB
 	{0x10, 0x10, 0x0e, 0x08, 0x00, 0x00, 0x00, 0x00},	// 21, -10.5dB
@@ -155,11 +155,11 @@ u1Byte	CCKSwingTable_Ch14[CCK_TABLE_SIZE][8] = {
 
 
 u4Byte OFDMSwingTable_New[OFDM_TABLE_SIZE] = {
-	0x0b40002d, // 0,  -15.0dB	
+	0x0b40002d, // 0,  -15.0dB
 	0x0c000030, // 1,  -14.5dB
 	0x0cc00033, // 2,  -14.0dB
 	0x0d800036, // 3,  -13.5dB
-	0x0e400039, // 4,  -13.0dB    
+	0x0e400039, // 4,  -13.0dB
 	0x0f00003c, // 5,  -12.5dB
 	0x10000040, // 6,  -12.0dB
 	0x11000044, // 7,  -11.5dB
@@ -198,7 +198,7 @@ u4Byte OFDMSwingTable_New[OFDM_TABLE_SIZE] = {
 	0x71c001c7, // 40, +5.0dB
 	0x788001e2, // 41, +5.5dB
 	0x7f8001fe  // 42, +6.0dB
-};               
+};
 
 
 u1Byte CCKSwingTable_Ch1_Ch13_New[CCK_TABLE_SIZE][8] = {
@@ -216,26 +216,26 @@ u1Byte CCKSwingTable_Ch1_Ch13_New[CCK_TABLE_SIZE][8] = {
 	{0x10, 0x10, 0x0e, 0x0b, 0x08, 0x05, 0x03, 0x01},	// 11, -10.5dB
 	{0x11, 0x11, 0x0f, 0x0c, 0x09, 0x06, 0x03, 0x01},	// 12, -10.0dB
 	{0x12, 0x12, 0x0f, 0x0c, 0x09, 0x06, 0x03, 0x01},	// 13, -9.5dB
-	{0x13, 0x13, 0x10, 0x0d, 0x0a, 0x06, 0x03, 0x01},	// 14, -9.0dB 
+	{0x13, 0x13, 0x10, 0x0d, 0x0a, 0x06, 0x03, 0x01},	// 14, -9.0dB
 	{0x14, 0x14, 0x11, 0x0e, 0x0b, 0x07, 0x03, 0x02},	// 15, -8.5dB
-	{0x16, 0x15, 0x12, 0x0f, 0x0b, 0x07, 0x04, 0x01},	// 16, -8.0dB 
+	{0x16, 0x15, 0x12, 0x0f, 0x0b, 0x07, 0x04, 0x01},	// 16, -8.0dB
 	{0x17, 0x16, 0x13, 0x10, 0x0c, 0x08, 0x04, 0x02},	// 17, -7.5dB
-	{0x18, 0x17, 0x15, 0x11, 0x0c, 0x08, 0x04, 0x02},	// 18, -7.0dB 
+	{0x18, 0x17, 0x15, 0x11, 0x0c, 0x08, 0x04, 0x02},	// 18, -7.0dB
 	{0x1a, 0x19, 0x16, 0x12, 0x0d, 0x09, 0x04, 0x02},	// 19, -6.5dB
-    {0x1b, 0x1a, 0x17, 0x13, 0x0e, 0x09, 0x04, 0x02},	// 20, -6.0dB 
+    {0x1b, 0x1a, 0x17, 0x13, 0x0e, 0x09, 0x04, 0x02},	// 20, -6.0dB
 	{0x1d, 0x1c, 0x18, 0x14, 0x0f, 0x0a, 0x05, 0x02},	// 21, -5.5dB
-	{0x1f, 0x1e, 0x1a, 0x15, 0x10, 0x0a, 0x05, 0x02},	// 22, -5.0dB 
+	{0x1f, 0x1e, 0x1a, 0x15, 0x10, 0x0a, 0x05, 0x02},	// 22, -5.0dB
 	{0x20, 0x20, 0x1b, 0x16, 0x11, 0x08, 0x05, 0x02},	// 23, -4.5dB
-	{0x22, 0x21, 0x1d, 0x18, 0x11, 0x0b, 0x06, 0x02},	// 24, -4.0dB 
+	{0x22, 0x21, 0x1d, 0x18, 0x11, 0x0b, 0x06, 0x02},	// 24, -4.0dB
 	{0x24, 0x23, 0x1f, 0x19, 0x13, 0x0c, 0x06, 0x03},	// 25, -3.5dB
 	{0x26, 0x25, 0x21, 0x1b, 0x14, 0x0d, 0x06, 0x03},	// 26, -3.0dB
 	{0x28, 0x28, 0x22, 0x1c, 0x15, 0x0d, 0x07, 0x03},	// 27, -2.5dB
-	{0x2b, 0x2a, 0x25, 0x1e, 0x16, 0x0e, 0x07, 0x03},	// 28, -2.0dB 
+	{0x2b, 0x2a, 0x25, 0x1e, 0x16, 0x0e, 0x07, 0x03},	// 28, -2.0dB
 	{0x2d, 0x2d, 0x27, 0x1f, 0x18, 0x0f, 0x08, 0x03},	// 29, -1.5dB
 	{0x30, 0x2f, 0x29, 0x21, 0x19, 0x10, 0x08, 0x03},	// 30, -1.0dB
 	{0x33, 0x32, 0x2b, 0x23, 0x1a, 0x11, 0x08, 0x04},	// 31, -0.5dB
-	{0x36, 0x35, 0x2e, 0x25, 0x1c, 0x12, 0x09, 0x04} 	// 32, +0dB
-};                                                                  
+	{0x36, 0x35, 0x2e, 0x25, 0x1c, 0x12, 0x09, 0x04}	// 32, +0dB
+};
 
 
 u1Byte CCKSwingTable_Ch14_New[CCK_TABLE_SIZE][8]= {
@@ -253,25 +253,25 @@ u1Byte CCKSwingTable_Ch14_New[CCK_TABLE_SIZE][8]= {
 	{0x10, 0x10, 0x0e, 0x08, 0x00, 0x00, 0x00, 0x00},	// 11, -10.5dB
 	{0x11, 0x11, 0x0f, 0x09, 0x00, 0x00, 0x00, 0x00},	// 12, -10.0dB
 	{0x12, 0x12, 0x0f, 0x09, 0x00, 0x00, 0x00, 0x00},	// 13, -9.5dB
-	{0x13, 0x13, 0x10, 0x0a, 0x00, 0x00, 0x00, 0x00},	// 14, -9.0dB  
+	{0x13, 0x13, 0x10, 0x0a, 0x00, 0x00, 0x00, 0x00},	// 14, -9.0dB
 	{0x14, 0x14, 0x11, 0x0a, 0x00, 0x00, 0x00, 0x00},	// 15, -8.5dB
-	{0x16, 0x15, 0x12, 0x0b, 0x00, 0x00, 0x00, 0x00},	// 16, -8.0dB  
+	{0x16, 0x15, 0x12, 0x0b, 0x00, 0x00, 0x00, 0x00},	// 16, -8.0dB
 	{0x17, 0x16, 0x13, 0x0b, 0x00, 0x00, 0x00, 0x00},	// 17, -7.5dB
-	{0x18, 0x17, 0x15, 0x0c, 0x00, 0x00, 0x00, 0x00},	// 18, -7.0dB  
-	{0x1a, 0x19, 0x16, 0x0d, 0x00, 0x00, 0x00, 0x00},	// 19, -6.5dB 
-	{0x1b, 0x1a, 0x17, 0x0e, 0x00, 0x00, 0x00, 0x00},	// 20, -6.0dB  
+	{0x18, 0x17, 0x15, 0x0c, 0x00, 0x00, 0x00, 0x00},	// 18, -7.0dB
+	{0x1a, 0x19, 0x16, 0x0d, 0x00, 0x00, 0x00, 0x00},	// 19, -6.5dB
+	{0x1b, 0x1a, 0x17, 0x0e, 0x00, 0x00, 0x00, 0x00},	// 20, -6.0dB
 	{0x1d, 0x1c, 0x18, 0x0e, 0x00, 0x00, 0x00, 0x00},	// 21, -5.5dB
-	{0x1f, 0x1e, 0x1a, 0x0f, 0x00, 0x00, 0x00, 0x00},	// 22, -5.0dB  
+	{0x1f, 0x1e, 0x1a, 0x0f, 0x00, 0x00, 0x00, 0x00},	// 22, -5.0dB
 	{0x20, 0x20, 0x1b, 0x10, 0x00, 0x00, 0x00, 0x00},	// 23, -4.5dB
-	{0x22, 0x21, 0x1d, 0x11, 0x00, 0x00, 0x00, 0x00},	// 24, -4.0dB  
-	{0x24, 0x23, 0x1f, 0x12, 0x00, 0x00, 0x00, 0x00},	// 25, -3.5dB  
-	{0x26, 0x25, 0x21, 0x13, 0x00, 0x00, 0x00, 0x00},	// 26, -3.0dB  
+	{0x22, 0x21, 0x1d, 0x11, 0x00, 0x00, 0x00, 0x00},	// 24, -4.0dB
+	{0x24, 0x23, 0x1f, 0x12, 0x00, 0x00, 0x00, 0x00},	// 25, -3.5dB
+	{0x26, 0x25, 0x21, 0x13, 0x00, 0x00, 0x00, 0x00},	// 26, -3.0dB
 	{0x28, 0x28, 0x24, 0x14, 0x00, 0x00, 0x00, 0x00},	// 27, -2.5dB
-	{0x2b, 0x2a, 0x25, 0x15, 0x00, 0x00, 0x00, 0x00},	// 28, -2.0dB  
+	{0x2b, 0x2a, 0x25, 0x15, 0x00, 0x00, 0x00, 0x00},	// 28, -2.0dB
 	{0x2d, 0x2d, 0x17, 0x17, 0x00, 0x00, 0x00, 0x00},	// 29, -1.5dB
-	{0x30, 0x2f, 0x29, 0x18, 0x00, 0x00, 0x00, 0x00},	// 30, -1.0dB  
-	{0x33, 0x32, 0x2b, 0x19, 0x00, 0x00, 0x00, 0x00},	// 31, -0.5dB 
-	{0x36, 0x35, 0x2e, 0x1b, 0x00, 0x00, 0x00, 0x00} 	// 32, +0dB	
+	{0x30, 0x2f, 0x29, 0x18, 0x00, 0x00, 0x00, 0x00},	// 30, -1.0dB
+	{0x33, 0x32, 0x2b, 0x19, 0x00, 0x00, 0x00, 0x00},	// 31, -0.5dB
+	{0x36, 0x35, 0x2e, 0x1b, 0x00, 0x00, 0x00, 0x00}	// 32, +0dB
 };
 
 u4Byte TxScalingTable_Jaguar[TXSCALE_TABLE_SIZE] =
@@ -312,7 +312,7 @@ u4Byte TxScalingTable_Jaguar[TXSCALE_TABLE_SIZE] =
 	0x35C, // 33, +4.5dB
 	0x38E, // 34, +5.0dB
 	0x3C4, // 35, +5.5dB
-	0x3FE  // 36, +6.0dB	
+	0x3FE  // 36, +6.0dB
 };
 
 //============================================================
@@ -365,7 +365,7 @@ odm_RSSIMonitorInit(
 	IN	PDM_ODM_T	pDM_Odm
 	);
 
-void 
+void
 odm_RSSIMonitorCheckCE(
 	IN		PDM_ODM_T		pDM_Odm
 	);
@@ -377,7 +377,7 @@ odm_RSSIMonitorCheck(
 
 void
 odm_SwAntDetectInit(
-	IN 		PDM_ODM_T 		pDM_Odm
+	IN		PDM_ODM_T		pDM_Odm
 	);
 
 void odm_SwAntDivChkAntSwitchCallback(void *FunctionContext);
@@ -423,12 +423,12 @@ odm_TXPowerTrackingCheckCE(
 //Remove Edca by Yu Chen
 
 
-#define 	RxDefaultAnt1		0x65a9
+#define		RxDefaultAnt1		0x65a9
 #define	RxDefaultAnt2		0x569a
 
 void
 odm_InitHybridAntDiv(
-	IN PDM_ODM_T	pDM_Odm 
+	IN PDM_ODM_T	pDM_Odm
 	);
 
 bool
@@ -438,14 +438,14 @@ odm_StaDefAntSel(
 	IN u4Byte		OFDM_Ant2_Cnt,
 	IN u4Byte		CCK_Ant1_Cnt,
 	IN u4Byte		CCK_Ant2_Cnt,
-	OUT u1Byte		*pDefAnt 
+	OUT u1Byte		*pDefAnt
 	);
 
 void
 odm_SetRxIdleAnt(
 	IN	PDM_ODM_T	pDM_Odm,
 	IN	u1Byte	Ant,
-	IN   bool   bDualPath                     
+	IN   bool   bDualPath
 );
 
 
@@ -500,7 +500,7 @@ void
 ODM_DMWatchdog(
 	IN		PDM_ODM_T		pDM_Odm
 	)
-{	
+{
 	odm_CommonInfoSelfUpdate(pDM_Odm);
 	odm_BasicDbgMessage(pDM_Odm);
 	odm_FalseAlarmCounterStatistics(pDM_Odm);
@@ -513,18 +513,18 @@ ODM_DMWatchdog(
 	//8723A or 8189ES platform
 	//NeilChen--2012--08--24--
 	//Fix Leave LPS issue
-	if( 	(adapter_to_pwrctl(pDM_Odm->Adapter)->pwr_mode != PS_MODE_ACTIVE) // in LPS mode
-		//&&( 			
+	if(	(adapter_to_pwrctl(pDM_Odm->Adapter)->pwr_mode != PS_MODE_ACTIVE) // in LPS mode
+		//&&(
 		//	(pDM_Odm->SupportICType & (ODM_RTL8723A ) )||
-		//   	(pDM_Odm->SupportICType & (ODM_RTL8188E) &&((pDM_Odm->SupportInterface  == ODM_ITRF_SDIO)) ) 
-	  	//)	
+		//	(pDM_Odm->SupportICType & (ODM_RTL8188E) &&((pDM_Odm->SupportInterface  == ODM_ITRF_SDIO)) )
+		//)
 	)
 	{
-			ODM_RT_TRACE(pDM_Odm,ODM_COMP_DIG, ODM_DBG_LOUD, ("----Step1: odm_DIG is in LPS mode\n"));				
+			ODM_RT_TRACE(pDM_Odm,ODM_COMP_DIG, ODM_DBG_LOUD, ("----Step1: odm_DIG is in LPS mode\n"));
 			ODM_RT_TRACE(pDM_Odm,ODM_COMP_DIG, ODM_DBG_LOUD, ("---Step2: 8723AS is in LPS mode\n"));
 			odm_DIGbyRSSI_LPS(pDM_Odm);
-	}		
-	else				
+	}
+	else
 	{
 		odm_DIG(pDM_Odm);
 	}
@@ -538,7 +538,7 @@ ODM_DMWatchdog(
 	if(*(pDM_Odm->pbPowerSaving)==true)
 		return;
 
-	
+
 	odm_RefreshRateAdaptiveMask(pDM_Odm);
 	odm_EdcaTurboCheck(pDM_Odm);
 	odm_PathDiversity(pDM_Odm);
@@ -561,7 +561,7 @@ void
 ODM_CmnInfoInit(
 	IN		PDM_ODM_T		pDM_Odm,
 	IN		ODM_CMNINFO_E	CmnInfo,
-	IN		u4Byte			Value	
+	IN		u4Byte			Value
 	)
 {
 	//
@@ -591,7 +591,7 @@ ODM_CmnInfoInit(
 		case	ODM_CMNINFO_MP_TEST_CHIP:
 			pDM_Odm->bIsMPChip= (u1Byte)Value;
 			break;
-            
+
 		case	ODM_CMNINFO_IC_TYPE:
 			pDM_Odm->SupportICType = Value;
 			break;
@@ -652,25 +652,25 @@ ODM_CmnInfoInit(
 		case	ODM_CMNINFO_EXT_TRSW:
 			pDM_Odm->ExtTRSW = (u1Byte)Value;
 			break;
-		case 	ODM_CMNINFO_PATCH_ID:
+		case	ODM_CMNINFO_PATCH_ID:
 			pDM_Odm->PatchID = (u1Byte)Value;
 			break;
-		case 	ODM_CMNINFO_BINHCT_TEST:
+		case	ODM_CMNINFO_BINHCT_TEST:
 			pDM_Odm->bInHctTest = (bool)Value;
 			break;
-		case 	ODM_CMNINFO_BWIFI_TEST:
+		case	ODM_CMNINFO_BWIFI_TEST:
 			pDM_Odm->bWIFITest = (bool)Value;
-			break;	
+			break;
 
 		case	ODM_CMNINFO_SMART_CONCURRENT:
 			pDM_Odm->bDualMacSmartConcurrent = (bool )Value;
 			break;
-		
-		//To remove the compiler warning, must add an empty default statement to handle the other values.	
+
+		//To remove the compiler warning, must add an empty default statement to handle the other values.
 		default:
 			//do nothing
-			break;	
-		
+			break;
+
 	}
 
 }
@@ -680,7 +680,7 @@ void
 ODM_CmnInfoHook(
 	IN		PDM_ODM_T		pDM_Odm,
 	IN		ODM_CMNINFO_E	CmnInfo,
-	IN		void *			pValue	
+	IN		void *			pValue
 	)
 {
 	//
@@ -694,7 +694,7 @@ ODM_CmnInfoHook(
 		case	ODM_CMNINFO_MAC_PHY_MODE:
 			pDM_Odm->pMacPhyMode = (u1Byte *)pValue;
 			break;
-		
+
 		case	ODM_CMNINFO_TX_UNI:
 			pDM_Odm->pNumTxBytesUnicast = (u8Byte *)pValue;
 			break;
@@ -726,7 +726,7 @@ ODM_CmnInfoHook(
 		case	ODM_CMNINFO_CHNL:
 			pDM_Odm->pChannel = (u1Byte *)pValue;
 			break;
-		
+
 		case	ODM_CMNINFO_DMSP_GET_VALUE:
 			pDM_Odm->pbGetValueFromOtherMac = (bool *)pValue;
 			break;
@@ -771,7 +771,7 @@ ODM_CmnInfoHook(
 			pDM_Odm->pbNet_closed = (bool *)pValue;
 			break;
 
-		case 	ODM_CMNINFO_FORCED_RATE:
+		case	ODM_CMNINFO_FORCED_RATE:
 			pDM_Odm->pForcedDataRate = (pu2Byte)pValue;
 			break;
 
@@ -788,7 +788,7 @@ ODM_CmnInfoHook(
 		//	break;
 
 		//case	ODM_CMNINFO_BT_COEXIST:
-		//	pDM_Odm->BTCoexist = (bool *)pValue;		
+		//	pDM_Odm->BTCoexist = (bool *)pValue;
 
 		//case	ODM_CMNINFO_STA_STATUS:
 			//pDM_Odm->pODM_StaInfo[] = (PSTA_INFO_T)pValue;
@@ -801,7 +801,7 @@ ODM_CmnInfoHook(
 		//case	ODM_CMNINFO_MAC_STATUS:
 		//	pDM_Odm->pMacInfo = (ODM_MAC_INFO *)pValue;
 		//	break;
-		//To remove the compiler warning, must add an empty default statement to handle the other values.				
+		//To remove the compiler warning, must add an empty default statement to handle the other values.
 		default:
 			//do nothing
 			break;
@@ -816,7 +816,7 @@ ODM_CmnInfoPtrArrayHook(
 	IN		PDM_ODM_T		pDM_Odm,
 	IN		ODM_CMNINFO_E	CmnInfo,
 	IN		u2Byte			Index,
-	IN		void *			pValue	
+	IN		void *			pValue
 	)
 {
 	//
@@ -826,16 +826,16 @@ ODM_CmnInfoPtrArrayHook(
 	{
 		//
 		// Dynamic call by reference pointer.
-		//		
+		//
 		case	ODM_CMNINFO_STA_STATUS:
 			pDM_Odm->pODM_StaInfo[Index] = (PSTA_INFO_T)pValue;
-			break;		
-		//To remove the compiler warning, must add an empty default statement to handle the other values.				
+			break;
+		//To remove the compiler warning, must add an empty default statement to handle the other values.
 		default:
 			//do nothing
 			break;
 	}
-	
+
 }
 
 
@@ -846,7 +846,7 @@ void
 ODM_CmnInfoUpdate(
 	IN		PDM_ODM_T		pDM_Odm,
 	IN		u4Byte			CmnInfo,
-	IN		u8Byte			Value	
+	IN		u8Byte			Value
 	)
 {
 	//
@@ -857,7 +857,7 @@ ODM_CmnInfoUpdate(
 		case ODM_CMNINFO_LINK_IN_PROGRESS:
 			pDM_Odm->bLinkInProcess = (bool)Value;
 			break;
-		
+
 		case	ODM_CMNINFO_ABILITY:
 			pDM_Odm->SupportAbility = (u4Byte)Value;
 			break;
@@ -877,11 +877,11 @@ ODM_CmnInfoUpdate(
 		case	ODM_CMNINFO_LINK:
 			pDM_Odm->bLinked = (bool)Value;
 			break;
-			
+
 		case	ODM_CMNINFO_STATION_STATE:
 			pDM_Odm->bsta_state = (bool)Value;
 			break;
-			
+
 		case	ODM_CMNINFO_RSSI_MIN:
 			pDM_Odm->RSSI_Min= (u1Byte)Value;
 			break;
@@ -904,27 +904,27 @@ ODM_CmnInfoUpdate(
 		case ODM_CMNINFO_BT_ENABLED:
 			pDM_Odm->bBtEnabled = (bool)Value;
 			break;
-			
+
 		case ODM_CMNINFO_BT_HS_CONNECT_PROCESS:
 			pDM_Odm->bBtConnectProcess = (bool)Value;
 			break;
-		
+
 		case ODM_CMNINFO_BT_HS_RSSI:
 			pDM_Odm->btHsRssi = (u1Byte)Value;
 			break;
-			
+
 		case	ODM_CMNINFO_BT_OPERATION:
 			pDM_Odm->bBtHsOperation = (bool)Value;
 			break;
 
 		case	ODM_CMNINFO_BT_LIMITED_DIG:
 			pDM_Odm->bBtLimitedDig = (bool)Value;
-			break;	
+			break;
 
 		case	ODM_CMNINFO_BT_DISABLE_EDCA:
 			pDM_Odm->bBtDisableEdcaTurbo = (bool)Value;
 			break;
-			
+
 /*
 		case	ODM_CMNINFO_OP_MODE:
 			pDM_Odm->OPMode = (u1Byte)Value;
@@ -952,14 +952,14 @@ ODM_CmnInfoUpdate(
 
 		case	ODM_CMNINFO_CHNL:
 			pDM_Odm->Channel = (u1Byte)Value;
-			break;			
-*/	
+			break;
+*/
                 default:
 			//do nothing
 			break;
 	}
 
-	
+
 }
 
 void
@@ -983,7 +983,7 @@ odm_CommonInfoSelfUpdate(
 {
 	u1Byte	EntryCnt=0;
 	u1Byte	i;
-	PSTA_INFO_T   	pEntry;
+	PSTA_INFO_T	pEntry;
 
 	if(*(pDM_Odm->pBandWidth) == ODM_BW40M)
 	{
@@ -1039,13 +1039,13 @@ odm_BasicDbgMessage
 {
 	Pfalse_ALARM_STATISTICS FalseAlmCnt = &(pDM_Odm->FalseAlmCnt);
 	pDIG_T	pDM_DigTable = &pDM_Odm->DM_DigTable;
-	
+
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_COMMON, ODM_DBG_LOUD, ("odm_BasicDbgMsg==>\n"));
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_COMMON, ODM_DBG_LOUD, ("bLinked = %d, RSSI_Min = %d, CurrentIGI = 0x%x \n",
 		pDM_Odm->bLinked, pDM_Odm->RSSI_Min, pDM_DigTable->CurIGValue) );
-	ODM_RT_TRACE(pDM_Odm,ODM_COMP_COMMON, ODM_DBG_LOUD, ("Cnt_Cck_fail = %d, Cnt_Ofdm_fail = %d, Total False Alarm = %d\n",	
+	ODM_RT_TRACE(pDM_Odm,ODM_COMP_COMMON, ODM_DBG_LOUD, ("Cnt_Cck_fail = %d, Cnt_Ofdm_fail = %d, Total False Alarm = %d\n",
 		FalseAlmCnt->Cnt_Cck_fail, FalseAlmCnt->Cnt_Ofdm_fail, FalseAlmCnt->Cnt_all));
-	ODM_RT_TRACE(pDM_Odm,ODM_COMP_COMMON, ODM_DBG_LOUD, ("RxRate = 0x%x, RSSI_A = %d, RSSI_B = %d\n", 
+	ODM_RT_TRACE(pDM_Odm,ODM_COMP_COMMON, ODM_DBG_LOUD, ("RxRate = 0x%x, RSSI_A = %d, RSSI_B = %d\n",
 		pDM_Odm->RxRate, pDM_Odm->RSSI_A, pDM_Odm->RSSI_B));
 	//ODM_RT_TRACE(pDM_Odm,ODM_COMP_COMMON, ODM_DBG_LOUD, ("RSSI_C = %d, RSSI_D = %d\n", pDM_Odm->RSSI_C, pDM_Odm->RSSI_D));
 
@@ -1083,15 +1083,15 @@ odm_IsLinked(
 {
 	u4Byte i;
 	bool Linked = false;
-	
+
 	for(i=0; i<ODM_ASSOCIATE_ENTRY_NUM; i++)
 	{
 			if(IS_STA_VALID(pDM_Odm->pODM_StaInfo[i]) )
-			{			
+			{
 				Linked = true;
 				break;
 			}
-		
+
 	}
 
 	pDM_Odm->bLinked = Linked;
@@ -1138,7 +1138,7 @@ odm_IsLinked(
 
 void
 odm_RateAdaptiveMaskInit(
-	IN 	PDM_ODM_T	pDM_Odm
+	IN	PDM_ODM_T	pDM_Odm
 	)
 {
 	PODM_RATE_ADAPTIVE	pOdmRA = &pDM_Odm->RateAdaptive;
@@ -1147,7 +1147,7 @@ odm_RateAdaptiveMaskInit(
 	if (pOdmRA->Type == DM_Type_ByDriver)
 		pDM_Odm->bUseRAMask = true;
 	else
-		pDM_Odm->bUseRAMask = false;	
+		pDM_Odm->bUseRAMask = false;
 
 	pOdmRA->RATRState = DM_RATR_STA_INIT;
 	pOdmRA->LdpcThres = 35;
@@ -1157,32 +1157,32 @@ odm_RateAdaptiveMaskInit(
 }
 
 u4Byte ODM_Get_Rate_Bitmap(
-	IN	PDM_ODM_T	pDM_Odm,	
+	IN	PDM_ODM_T	pDM_Odm,
 	IN	u4Byte		macid,
-	IN	u4Byte 		ra_mask,	
-	IN	u1Byte 		rssi_level)
+	IN	u4Byte		ra_mask,
+	IN	u1Byte		rssi_level)
 {
-	PSTA_INFO_T   	pEntry;
-	u4Byte 	rate_bitmap = 0;
-	u1Byte 	WirelessMode;
-	//u1Byte 	WirelessMode =*(pDM_Odm->pWirelessMode);
-	
-	
+	PSTA_INFO_T	pEntry;
+	u4Byte	rate_bitmap = 0;
+	u1Byte	WirelessMode;
+	//u1Byte	WirelessMode =*(pDM_Odm->pWirelessMode);
+
+
 	pEntry = pDM_Odm->pODM_StaInfo[macid];
 	if(!IS_STA_VALID(pEntry))
 		return ra_mask;
 
 	WirelessMode = pEntry->wireless_mode;
-	
+
 	switch(WirelessMode)
 	{
 		case ODM_WM_B:
-			if(ra_mask & 0x0000000c)		//11M or 5.5M enable				
+			if(ra_mask & 0x0000000c)		//11M or 5.5M enable
 				rate_bitmap = 0x0000000d;
 			else
 				rate_bitmap = 0x0000000f;
 			break;
-			
+
 		case (ODM_WM_G):
 		case (ODM_WM_A):
 			if(rssi_level == DM_RATR_STA_HIGH)
@@ -1190,7 +1190,7 @@ u4Byte ODM_Get_Rate_Bitmap(
 			else
 				rate_bitmap = 0x00000ff0;
 			break;
-			
+
 		case (ODM_WM_B|ODM_WM_G):
 			if(rssi_level == DM_RATR_STA_HIGH)
 				rate_bitmap = 0x00000f00;
@@ -1198,13 +1198,13 @@ u4Byte ODM_Get_Rate_Bitmap(
 				rate_bitmap = 0x00000ff0;
 			else
 				rate_bitmap = 0x00000ff5;
-			break;		
+			break;
 
 		case (ODM_WM_B|ODM_WM_G|ODM_WM_N24G)	:
 		case (ODM_WM_B|ODM_WM_N24G)	:
 		case (ODM_WM_G|ODM_WM_N24G)	:
 		case (ODM_WM_A|ODM_WM_N5G)	:
-			{					
+			{
 				if (	pDM_Odm->RFType == ODM_1T2R ||pDM_Odm->RFType == ODM_1T1R)
 				{
 					if(rssi_level == DM_RATR_STA_HIGH)
@@ -1220,12 +1220,12 @@ u4Byte ODM_Get_Rate_Bitmap(
 							rate_bitmap = 0x000ff015;
 						else
 							rate_bitmap = 0x000ff005;
-					}				
+					}
 				}
 				else
 				{
 					if(rssi_level == DM_RATR_STA_HIGH)
-					{		
+					{
 						rate_bitmap = 0x0f8f0000;
 					}
 					else if(rssi_level == DM_RATR_STA_MIDDLE)
@@ -1238,7 +1238,7 @@ u4Byte ODM_Get_Rate_Bitmap(
 							rate_bitmap = 0x0f8ff015;
 						else
 							rate_bitmap = 0x0f8ff005;
-					}					
+					}
 				}
 			}
 			break;
@@ -1273,13 +1273,13 @@ u4Byte ODM_Get_Rate_Bitmap(
 					rate_bitmap = 0xfffff010;       // All
 			}
 			break;
-			
+
 		default:
 			if(pDM_Odm->RFType == RF_1T2R)
 				rate_bitmap = 0x000fffff;
 			else
 				rate_bitmap = 0x0fffffff;
-			break;	
+			break;
 
 	}
 
@@ -1287,8 +1287,8 @@ u4Byte ODM_Get_Rate_Bitmap(
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_RA_MASK, ODM_DBG_LOUD, (" ==> rssi_level:0x%02x, WirelessMode:0x%02x, rate_bitmap:0x%08x \n",rssi_level,WirelessMode,rate_bitmap));
 
 	return (ra_mask&rate_bitmap);
-	
-}	
+
+}
 
 /*-----------------------------------------------------------------------------
  * Function:	odm_RefreshRateAdaptiveMask()
@@ -1303,7 +1303,7 @@ u4Byte ODM_Get_Rate_Bitmap(
  *
  * Revised History:
  *	When		Who		Remark
- *	05/27/2009	hpfan	Create Version 0.  
+ *	05/27/2009	hpfan	Create Version 0.
  *
  *---------------------------------------------------------------------------*/
 void
@@ -1312,18 +1312,18 @@ odm_RefreshRateAdaptiveMask(
 	)
 {
 
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_RA_MASK, ODM_DBG_TRACE, ("odm_RefreshRateAdaptiveMask()---------->\n"));	
+	ODM_RT_TRACE(pDM_Odm, ODM_COMP_RA_MASK, ODM_DBG_TRACE, ("odm_RefreshRateAdaptiveMask()---------->\n"));
 	if (!(pDM_Odm->SupportAbility & ODM_BB_RA_MASK))
 	{
 		ODM_RT_TRACE(pDM_Odm, ODM_COMP_RA_MASK, ODM_DBG_TRACE, ("odm_RefreshRateAdaptiveMask(): Return cos not supported\n"));
-		return;	
+		return;
 	}
 	odm_RefreshRateAdaptiveMaskCE(pDM_Odm);
 }
 
 void
 odm_RefreshRateAdaptiveMaskCE(
-	IN		PDM_ODM_T		pDM_Odm	
+	IN		PDM_ODM_T		pDM_Odm
 	)
 {
 	u1Byte	i;
@@ -1358,14 +1358,14 @@ odm_RefreshRateAdaptiveMaskCE(
 				//printk("RSSI:%d, RSSI_LEVEL:%d\n", pstat->rssi_stat.UndecoratedSmoothedPWDB, pstat->rssi_level);
 				rtw_hal_update_ra_mask(pstat, pstat->rssi_level);
 			}
-		
+
 		}
-	}			
+	}
 }
 
 // Return Value: bool
 // - true: RATRState is changed.
-bool 
+bool
 ODM_RAStateCheck(
 	IN		PDM_ODM_T		pDM_Odm,
 	IN		s4Byte			RSSI,
@@ -1379,7 +1379,7 @@ ODM_RAStateCheck(
 	u1Byte LowRSSIThreshForRA = pRA->LowRSSIThresh;
 	u1Byte RATRState;
 
-	// Threshold Adjustment: 
+	// Threshold Adjustment:
 	// when RSSI state trends to go up one or two levels, make sure RSSI is high enough.
 	// Here GoUpGap is added to solve the boundary's level alternation issue.
 	switch (*pRATRState)
@@ -1397,7 +1397,7 @@ ODM_RAStateCheck(
 			LowRSSIThreshForRA += GoUpGap;
 			break;
 
-		default: 
+		default:
 			ODM_RT_ASSERT(pDM_Odm, false, ("wrong rssi level setting %d !", *pRATRState) );
 			break;
 	}
@@ -1441,7 +1441,7 @@ odm_RSSIMonitorInit(
 {
 	pRA_T		pRA_Table = &pDM_Odm->DM_RA_Table;
 
-   	pRA_Table->firstconnect = false;
+	pRA_Table->firstconnect = false;
 
 }
 
@@ -1461,12 +1461,12 @@ static void
 FindMinimumRSSI(
 IN	PADAPTER	pAdapter
 	)
-{	
+{
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
-	struct dm_priv	*pdmpriv = &pHalData->dmpriv;	
+	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
 	PDM_ODM_T		pDM_Odm = &(pHalData->odmpriv);
 
-	//1 1.Determine the minimum RSSI 
+	//1 1.Determine the minimum RSSI
 
 	if((pDM_Odm->bLinked != true) &&
 		(pdmpriv->EntryMinUndecoratedSmoothedPWDB == 0))
@@ -1494,7 +1494,7 @@ odm_RSSIMonitorCheckCE(
 	struct dvobj_priv	*pdvobjpriv = adapter_to_dvobj(Adapter);
 	int	i;
 	int	tmpEntryMaxPWDB=0, tmpEntryMinPWDB=0xff;
-	u8 	sta_cnt=0;
+	u8	sta_cnt=0;
 	u32	UL_DL_STATE = 0, STBC_TX = 0, TxBF_EN = 0;
 	u32	PWDB_rssi[NUM_STA]={0};//[0~15]:MACID, [16~31]:PWDB_rssi
 	bool			FirstConnect = false;
@@ -1503,22 +1503,22 @@ odm_RSSIMonitorCheckCE(
 	if(pDM_Odm->bLinked != true)
 		return;
 
-       FirstConnect = (pDM_Odm->bLinked) && (pRA_Table->firstconnect == false);    
+       FirstConnect = (pDM_Odm->bLinked) && (pRA_Table->firstconnect == false);
 	pRA_Table->firstconnect = pDM_Odm->bLinked;
 
 	//if(check_fwstate(&Adapter->mlmepriv, WIFI_AP_STATE|WIFI_ADHOC_STATE|WIFI_ADHOC_MASTER_STATE) == true)
 	{
 		struct sta_info *psta;
-		
+
 		for(i=0; i<ODM_ASSOCIATE_ENTRY_NUM; i++) {
 			if (IS_STA_VALID(psta = pDM_Odm->pODM_StaInfo[i]))
 			{
-                        		if(IS_MCAST( psta->hwaddr))  //if(psta->mac_id ==1)
+					if(IS_MCAST( psta->hwaddr))  //if(psta->mac_id ==1)
 						 continue;
-								
+
 					if(psta->rssi_stat.UndecoratedSmoothedPWDB == (-1))
 						 continue;
-								
+
 					if(psta->rssi_stat.UndecoratedSmoothedPWDB < tmpEntryMinPWDB)
 						tmpEntryMinPWDB = psta->rssi_stat.UndecoratedSmoothedPWDB;
 
@@ -1541,14 +1541,14 @@ odm_RSSIMonitorCheckCE(
 					rtl8723b_set_rssi_cmd(Adapter, (u8 *)(&PWDB_rssi[i]));
 				}
 			}
-		}		
+		}
 	}
 
 
 
 	if(tmpEntryMaxPWDB != 0)	// If associated entry is found
 	{
-		pdmpriv->EntryMaxUndecoratedSmoothedPWDB = tmpEntryMaxPWDB;		
+		pdmpriv->EntryMaxUndecoratedSmoothedPWDB = tmpEntryMaxPWDB;
 	}
 	else
 	{
@@ -1557,7 +1557,7 @@ odm_RSSIMonitorCheckCE(
 
 	if(tmpEntryMinPWDB != 0xff) // If associated entry is found
 	{
-		pdmpriv->EntryMinUndecoratedSmoothedPWDB = tmpEntryMinPWDB;		
+		pdmpriv->EntryMinUndecoratedSmoothedPWDB = tmpEntryMinPWDB;
 	}
 	else
 	{
@@ -1576,23 +1576,23 @@ odm_RSSIMonitorCheckCE(
 
 void
 odm_TXPowerTrackingInit(
-	IN	PDM_ODM_T	pDM_Odm 
+	IN	PDM_ODM_T	pDM_Odm
 	)
 {
 	odm_TXPowerTrackingThermalMeterInit(pDM_Odm);
-}	
+}
 
 static u1Byte
 getSwingIndex(
-	IN	PDM_ODM_T	pDM_Odm 
+	IN	PDM_ODM_T	pDM_Odm
 	)
 {
 	PADAPTER		Adapter = pDM_Odm->Adapter;
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
-	u1Byte 			i = 0;
-	u4Byte 			bbSwing;
-	u4Byte 			swingTableSize;
-	pu4Byte 			pSwingTable;
+	u1Byte			i = 0;
+	u4Byte			bbSwing;
+	u4Byte			swingTableSize;
+	pu4Byte				pSwingTable;
 
 	bbSwing = PHY_QueryBBReg(Adapter, rOFDM0_XATxIQImbalance, 0xFFC00000);
 
@@ -1601,7 +1601,7 @@ getSwingIndex(
 
 	for (i = 0; i < swingTableSize; ++i) {
 		u4Byte tableValue = pSwingTable[i];
-		
+
 		if (tableValue >= 0x100000 )
 			tableValue >>= 22;
 		if (bbSwing == tableValue)
@@ -1612,11 +1612,11 @@ getSwingIndex(
 
 void
 odm_TXPowerTrackingThermalMeterInit(
-	IN	PDM_ODM_T	pDM_Odm 
+	IN	PDM_ODM_T	pDM_Odm
 	)
 {
 	u1Byte defaultSwingIndex = getSwingIndex(pDM_Odm);
-	u1Byte 			p = 0;
+	u1Byte			p = 0;
 	PADAPTER			Adapter = pDM_Odm->Adapter;
 	HAL_DATA_TYPE		*pHalData = GET_HAL_DATA(Adapter);
 
@@ -1639,19 +1639,19 @@ odm_TXPowerTrackingThermalMeterInit(
 	//pDM_Odm->RFCalibrateInfo.TxPowerTrackControl = true;
 	pDM_Odm->RFCalibrateInfo.ThermalValue = pHalData->EEPROMThermalMeter;
 	pDM_Odm->RFCalibrateInfo.ThermalValue_IQK = pHalData->EEPROMThermalMeter;
-	pDM_Odm->RFCalibrateInfo.ThermalValue_LCK = pHalData->EEPROMThermalMeter;	
+	pDM_Odm->RFCalibrateInfo.ThermalValue_LCK = pHalData->EEPROMThermalMeter;
 
 	// The index of "0 dB" in SwingTable.
 	pDM_Odm->DefaultOfdmIndex = (defaultSwingIndex >= OFDM_TABLE_SIZE) ? 30 : defaultSwingIndex;
-	pDM_Odm->DefaultCckIndex = 20;	
+	pDM_Odm->DefaultCckIndex = 20;
 
 	pDM_Odm->BbSwingIdxCckBase = pDM_Odm->DefaultCckIndex;
 	pDM_Odm->RFCalibrateInfo.CCK_index = pDM_Odm->DefaultCckIndex;
-	
+
 	for (p = ODM_RF_PATH_A; p < MAX_RF_PATH; ++p)
 	{
-		pDM_Odm->BbSwingIdxOfdmBase[p] = pDM_Odm->DefaultOfdmIndex;		
-	   	pDM_Odm->RFCalibrateInfo.OFDM_index[p] = pDM_Odm->DefaultOfdmIndex;		
+		pDM_Odm->BbSwingIdxOfdmBase[p] = pDM_Odm->DefaultOfdmIndex;
+		pDM_Odm->RFCalibrateInfo.OFDM_index[p] = pDM_Odm->DefaultOfdmIndex;
 		pDM_Odm->RFCalibrateInfo.DeltaPowerIndex[p] = 0;
 		pDM_Odm->RFCalibrateInfo.DeltaPowerIndexLast[p] = 0;
 		pDM_Odm->RFCalibrateInfo.PowerIndexOffset[p] = 0;
@@ -1670,7 +1670,7 @@ ODM_TXPowerTrackingCheck(
 
 void
 odm_TXPowerTrackingCheckCE(
-	IN		PDM_ODM_T		pDM_Odm 
+	IN		PDM_ODM_T		pDM_Odm
 	)
 {
 	PADAPTER	Adapter = pDM_Odm->Adapter;
@@ -1686,7 +1686,7 @@ odm_TXPowerTrackingCheckCE(
 		PHY_SetRFReg(pDM_Odm->Adapter, ODM_RF_PATH_A, RF_T_METER_NEW, (BIT17 | BIT16), 0x03);
 
 		//DBG_871X("Trigger Thermal Meter!!\n");
-		
+
 		pDM_Odm->RFCalibrateInfo.TM_Trigger = 1;
 		return;
 	}

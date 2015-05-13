@@ -40,14 +40,14 @@ static void update_recvframe_attrib(
 	struct rx_pkt_attrib	*pattrib;
 	struct recv_stat	report;
 	PRXREPORT prxreport = (PRXREPORT)&report;
-	
+
 	report.rxdw0 = le32_to_cpu(prxstat->rxdw0);
 	report.rxdw1 = le32_to_cpu(prxstat->rxdw1);
 	report.rxdw2 = le32_to_cpu(prxstat->rxdw2);
 	report.rxdw3 = le32_to_cpu(prxstat->rxdw3);
 	report.rxdw4 = le32_to_cpu(prxstat->rxdw4);
 	report.rxdw5 = le32_to_cpu(prxstat->rxdw5);
-	
+
 	pattrib = &precvframe->u.hdr.attrib;
 	memset(pattrib, 0, sizeof(struct rx_pkt_attrib));
 
@@ -96,10 +96,10 @@ static void update_recvframe_phyinfo(
 	union recv_frame	*precvframe,
 	struct phy_stat *pphy_status)
 {
-	PADAPTER 			padapter= precvframe->u.hdr.adapter;
+	PADAPTER			padapter= precvframe->u.hdr.adapter;
 	struct rx_pkt_attrib	*pattrib = &precvframe->u.hdr.attrib;
 	HAL_DATA_TYPE		*pHalData = GET_HAL_DATA(padapter);
-	PODM_PHY_INFO_T 	pPHYInfo = (PODM_PHY_INFO_T)(&pattrib->phy_info);
+	PODM_PHY_INFO_T		pPHYInfo = (PODM_PHY_INFO_T)(&pattrib->phy_info);
 
 	u8			*wlanhdr;
 	ODM_PACKET_INFO_T	pkt_info;
@@ -131,7 +131,7 @@ static void update_recvframe_phyinfo(
 	psta = rtw_get_stainfo(pstapriv, sa);
 	if (psta)
 	{
-      		pkt_info.StationID = psta->mac_id;
+		pkt_info.StationID = psta->mac_id;
 		//DBG_8192C("%s ==> StationID(%d)\n",__FUNCTION__,pkt_info.StationID);
 	}
 	pkt_info.DataRate = pattrib->data_rate;
@@ -171,7 +171,7 @@ static void rtl8723bs_c2h_packet_handler(PADAPTER padapter, u8 *pbuf, u16 length
 
 	if(length == 0)
 		return;
-	
+
 	//DBG_871X("+%s() length=%d\n", __func__, length);
 
 	tmpBuf = rtw_zmalloc(length);
@@ -195,13 +195,13 @@ static void rtl8723bs_recv_tasklet(void *priv)
 	PADAPTER			padapter;
 	PHAL_DATA_TYPE		pHalData;
 	struct recv_priv		*precvpriv;
-	struct recv_buf 	*precvbuf;
+	struct recv_buf		*precvbuf;
 	union recv_frame		*precvframe;
 	struct recv_frame_hdr	*phdr;
 	struct rx_pkt_attrib	*pattrib;
 	_irqL	irql;
 	u8		*ptr;
-	u32 	pkt_len, pkt_offset, skb_len, alloc_sz;
+	u32	pkt_len, pkt_offset, skb_len, alloc_sz;
 	_pkt		*pkt_copy = NULL;
 	u8		shift_sz = 0, rx_report_sz = 0;
 
@@ -358,11 +358,11 @@ static void rtl8723bs_recv_tasklet(void *priv)
 				}
 				else if(pattrib->pkt_rpt_type == C2H_PACKET)
 				{
-					C2H_EVT_HDR 	C2hEvent;
-					
+					C2H_EVT_HDR	C2hEvent;
+
 					u16 len_c2h = pattrib->pkt_len;
 					u8 *pbuf_c2h = precvframe->u.hdr.rx_data;
-					u8 *pdata_c2h;				
+					u8 *pdata_c2h;
 
 					C2hEvent.CmdID = pbuf_c2h[0];
 					C2hEvent.CmdSeq = pbuf_c2h[1];
@@ -377,9 +377,9 @@ static void rtl8723bs_recv_tasklet(void *priv)
 					{
 						rtl8723bs_c2h_packet_handler(padapter, precvframe->u.hdr.rx_data, pattrib->pkt_len);
 					}
-					
+
 					rtw_free_recvframe(precvframe, &precvpriv->free_recv_queue);
-					
+
 				}
 			}
 
@@ -532,4 +532,3 @@ void rtl8723bs_free_recv_priv(PADAPTER padapter)
 		precvpriv->pallocated_recv_buf = NULL;
 	}
 }
-

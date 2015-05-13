@@ -66,9 +66,9 @@ typedef enum _BTC_CHIP_TYPE{
 	BTC_CHIP_UNDEF		= 0,
 	BTC_CHIP_CSR_BC4		= 1,
 	BTC_CHIP_CSR_BC8		= 2,
-	BTC_CHIP_RTL8723A 	= 3,
+	BTC_CHIP_RTL8723A	= 3,
 	BTC_CHIP_RTL8821	= 4,
-	BTC_CHIP_RTL8723B 	= 5,
+	BTC_CHIP_RTL8723B	= 5,
 	BTC_CHIP_MAX
 } BTC_CHIP_TYPE, *PBTC_CHIP_TYPE;
 
@@ -139,7 +139,7 @@ extern u4Byte					GLBtcDbgType[];
 	}\
 }
 
-#define 	BTC_PRINT_DATA(dbgtype, dbgflag, _TitleString, _HexData, _HexDataLen)\
+#define		BTC_PRINT_DATA(dbgtype, dbgflag, _TitleString, _HexData, _HexDataLen)\
 {\
 	if (GLBtcDbgType[dbgtype] & dbgflag)\
 	{\
@@ -159,7 +159,7 @@ extern u4Byte					GLBtcDbgType[];
 #define	BTC_PRINT(dbgtype, dbgflag, printstr)
 #define	BTC_PRINT_F(dbgtype, dbgflag, printstr)
 #define	BTC_PRINT_ADDR(dbgtype, dbgflag, printstr, _Ptr)
-#define 	BTC_PRINT_DATA(dbgtype, dbgflag, _TitleString, _HexData, _HexDataLen)
+#define		BTC_PRINT_DATA(dbgtype, dbgflag, _TitleString, _HexData, _HexDataLen)
 #endif
 
 typedef struct _BTC_BOARD_INFO{
@@ -207,13 +207,13 @@ typedef enum _BTC_WIFI_BW_MODE{
 	BTC_WIFI_BW_LEGACY					= 0x0,
 	BTC_WIFI_BW_HT20					= 0x1,
 	BTC_WIFI_BW_HT40					= 0x2,
-	BTC_WIFI_BW_MAX	
+	BTC_WIFI_BW_MAX
 }BTC_WIFI_BW_MODE,*PBTC_WIFI_BW_MODE;
 
 typedef enum _BTC_WIFI_TRAFFIC_DIR{
 	BTC_WIFI_TRAFFIC_TX					= 0x0,
 	BTC_WIFI_TRAFFIC_RX					= 0x1,
-	BTC_WIFI_TRAFFIC_MAX	
+	BTC_WIFI_TRAFFIC_MAX
 }BTC_WIFI_TRAFFIC_DIR,*PBTC_WIFI_TRAFFIC_DIR;
 
 typedef enum _BTC_WIFI_PNP{
@@ -254,7 +254,7 @@ typedef enum _BTC_GET_TYPE{
 	// type s4Byte
 	BTC_GET_S4_WIFI_RSSI,
 	BTC_GET_S4_HS_RSSI,
-	
+
 	// type u4Byte
 	BTC_GET_U4_WIFI_BW,
 	BTC_GET_U4_WIFI_TRAFFIC_DIRECTION,
@@ -370,83 +370,83 @@ typedef enum _BTC_ANTENNA_POS{
 
 typedef u1Byte
 (*BFP_BTC_R1)(
-	IN 	void *			pBtcContext,
+	IN	void *			pBtcContext,
 	IN	u4Byte			RegAddr
 	);
 typedef u2Byte
 (*BFP_BTC_R2)(
-	IN 	void *			pBtcContext,
+	IN	void *			pBtcContext,
 	IN	u4Byte			RegAddr
 	);
 typedef u4Byte
 (*BFP_BTC_R4)(
-	IN 	void *			pBtcContext,
+	IN	void *			pBtcContext,
 	IN	u4Byte			RegAddr
 	);
 typedef void
 (*BFP_BTC_W1)(
-	IN 	void *			pBtcContext,
+	IN	void *			pBtcContext,
 	IN	u4Byte			RegAddr,
 	IN	u1Byte			Data
 	);
 typedef void
 (*BFP_BTC_W1_BIT_MASK)(
-	IN 	void *			pBtcContext,
+	IN	void *			pBtcContext,
 	IN	u4Byte			regAddr,
 	IN	u1Byte			bitMask,
 	IN	u1Byte			data1b
 	);
 typedef void
 (*BFP_BTC_W2)(
-	IN 	void *			pBtcContext,
+	IN	void *			pBtcContext,
 	IN	u4Byte			RegAddr,
 	IN	u2Byte			Data
 	);
 typedef void
 (*BFP_BTC_W4)(
-	IN 	void *			pBtcContext,
+	IN	void *			pBtcContext,
 	IN	u4Byte			RegAddr,
 	IN	u4Byte			Data
 	);
 typedef void
 (*BFP_BTC_LOCAL_REG_W1)(
-	IN 	void *			pBtcContext,
+	IN	void *			pBtcContext,
 	IN	u4Byte			RegAddr,
 	IN	u1Byte			Data
 	);
 typedef void
 (*BFP_BTC_SET_BB_REG)(
-	IN 	void *			pBtcContext,
+	IN	void *			pBtcContext,
 	IN	u4Byte			RegAddr,
 	IN	u4Byte			BitMask,
 	IN	u4Byte			Data
 	);
-typedef u4Byte 
+typedef u4Byte
 (*BFP_BTC_GET_BB_REG)(
-	IN 	void *			pBtcContext,
+	IN	void *			pBtcContext,
 	IN	u4Byte			RegAddr,
 	IN	u4Byte			BitMask
 	);
 typedef void
-(*BFP_BTC_SET_RF_REG)(	
-	IN 	void *			pBtcContext,
+(*BFP_BTC_SET_RF_REG)(
+	IN	void *			pBtcContext,
 	IN	u1Byte			eRFPath,
 	IN	u4Byte			RegAddr,
 	IN	u4Byte			BitMask,
 	IN	u4Byte			Data
 	);
-typedef u4Byte 
+typedef u4Byte
 (*BFP_BTC_GET_RF_REG)(
-	IN 	void *			pBtcContext,
+	IN	void *			pBtcContext,
 	IN	u1Byte			eRFPath,
 	IN	u4Byte			RegAddr,
 	IN	u4Byte			BitMask
 	);
 typedef void
 (*BFP_BTC_FILL_H2C)(
-	IN 	void *			pBtcContext,
-	IN	u1Byte 			elementId,
-	IN	u4Byte 			cmdLen,
+	IN	void *			pBtcContext,
+	IN	u1Byte			elementId,
+	IN	u4Byte			cmdLen,
 	IN	pu1Byte			pCmdBuffer
 	);
 
@@ -465,14 +465,14 @@ typedef	u8
 	);
 typedef void
 (*BFP_BTC_SET_BT_REG)(
-	IN 	void *			pBtcContext,
+	IN	void *			pBtcContext,
 	IN	u1Byte			regType,
 	IN	u4Byte			offset,
 	IN	u4Byte			value
 	);
-typedef u4Byte 
+typedef u4Byte
 (*BFP_BTC_GET_BT_REG)(
-	IN 	void *			pBtcContext,
+	IN	void *			pBtcContext,
 	IN	u1Byte			regType,
 	IN	u4Byte			offset
 	);
@@ -572,7 +572,7 @@ typedef struct _BTC_COEXIST{
 	pu1Byte				cliBuf;
 	BTC_STATISTICS		statistics;
 	u1Byte				pwrModeVal[10];
-		
+
 	// function pointers
 	// io related
 	BFP_BTC_R1			fBtcRead1Byte;
@@ -590,7 +590,7 @@ typedef struct _BTC_COEXIST{
 	// read/write rf related
 	BFP_BTC_SET_RF_REG	fBtcSetRfReg;
 	BFP_BTC_GET_RF_REG	fBtcGetRfReg;
-	
+
 	// fill h2c related
 	BFP_BTC_FILL_H2C		fBtcFillH2c;
 	// other
@@ -607,7 +607,7 @@ extern BTC_COEXIST				GLBtCoexist;
 
 u8
 EXhalbtcoutsrc_InitlizeVariables(
-	IN	void *		Adapter	
+	IN	void *		Adapter
 	);
 void
 EXhalbtcoutsrc_PowerOnSetting(

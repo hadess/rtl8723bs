@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Copyright(c) 2007 - 2011 Realtek Corporation. All rights reserved.
- *                                        
+ *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of version 2 of the GNU General Public License as
  * published by the Free Software Foundation.
@@ -28,7 +28,7 @@ odm_SetCrystalCap(
 {
 	PDM_ODM_T					pDM_Odm = (PDM_ODM_T)pDM_VOID;
 	PCFO_TRACKING				pCfoTrack = &pDM_Odm->DM_CfoTrack;
-	bool 					bEEPROMCheck;
+	bool					bEEPROMCheck;
 	PADAPTER					Adapter = pDM_Odm->Adapter;
 	HAL_DATA_TYPE				*pHalData = GET_HAL_DATA(Adapter);
 
@@ -75,7 +75,7 @@ odm_SetATCStatus(
 
 	if(pCfoTrack->bATCStatus == ATCStatus)
 		return;
-	
+
 	PHY_SetBBReg(pDM_Odm->Adapter, ODM_REG(BB_ATC,pDM_Odm), ODM_BIT(BB_ATC,pDM_Odm), ATCStatus);
 	pCfoTrack->bATCStatus = ATCStatus;
 }
@@ -115,7 +115,7 @@ ODM_CfoTrackingInit(
 {
 	PDM_ODM_T					pDM_Odm = (PDM_ODM_T)pDM_VOID;
 	PCFO_TRACKING				pCfoTrack = &pDM_Odm->DM_CfoTrack;
-      
+
 	pCfoTrack->DefXCap = pCfoTrack->CrystalCap = odm_GetDefaultCrytaltalCap(pDM_Odm);
 	pCfoTrack->bATCStatus = odm_GetATCStatus(pDM_Odm);
 	pCfoTrack->bAdjust = true;
@@ -145,10 +145,10 @@ ODM_CfoTracking(
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CFO_TRACKING, ODM_DBG_LOUD, ("ODM_CfoTracking()=========> \n"));
 
 	if(!pDM_Odm->bLinked || !pDM_Odm->bOneEntryOnly)
-	{	
+	{
 		//4 No link or more than one entry
 		ODM_CfoTrackingReset(pDM_Odm);
-		ODM_RT_TRACE(pDM_Odm, ODM_COMP_CFO_TRACKING, ODM_DBG_LOUD, ("ODM_CfoTracking(): Reset: bLinked = %d, bOneEntryOnly = %d\n", 
+		ODM_RT_TRACE(pDM_Odm, ODM_COMP_CFO_TRACKING, ODM_DBG_LOUD, ("ODM_CfoTracking(): Reset: bLinked = %d, bOneEntryOnly = %d\n",
 			pDM_Odm->bLinked, pDM_Odm->bOneEntryOnly));
 	}
 	else
@@ -161,16 +161,16 @@ ODM_CfoTracking(
 			return;
 		}
 		pCfoTrack->packetCount_pre = pCfoTrack->packetCount;
-	
+
 		//4 1.2 Calculate CFO
 		CFO_kHz_A =  (int)(pCfoTrack->CFO_tail[0] * 3125)  / 1280;
 		CFO_kHz_B =  (int)(pCfoTrack->CFO_tail[1] * 3125)  / 1280;
-		
+
 		if(pDM_Odm->RFType < ODM_2T2R)
 			CFO_ave = CFO_kHz_A;
 		else
 			CFO_ave = (int)(CFO_kHz_A + CFO_kHz_B) >> 1;
-		ODM_RT_TRACE(pDM_Odm, ODM_COMP_CFO_TRACKING, ODM_DBG_LOUD, ("ODM_CfoTracking(): CFO_kHz_A = %dkHz, CFO_kHz_B = %dkHz, CFO_ave = %dkHz\n", 
+		ODM_RT_TRACE(pDM_Odm, ODM_COMP_CFO_TRACKING, ODM_DBG_LOUD, ("ODM_CfoTracking(): CFO_kHz_A = %dkHz, CFO_kHz_B = %dkHz, CFO_ave = %dkHz\n",
 						CFO_kHz_A, CFO_kHz_B, CFO_ave));
 
 		//4 1.3 Avoid abnormal large CFO
@@ -204,8 +204,8 @@ ODM_CfoTracking(
 			odm_SetCrystalCap(pDM_Odm, pCfoTrack->DefXCap);
 			ODM_RT_TRACE(pDM_Odm, ODM_COMP_CFO_TRACKING, ODM_DBG_LOUD, ("ODM_CfoTracking(): Disable CFO tracking for BT!!\n"));
 		}
-		
-		//4 1.6 Big jump 
+
+		//4 1.6 Big jump
 		if(pCfoTrack->bAdjust)
 		{
 			if(CFO_ave > CFO_TH_XTAL_LOW)
@@ -231,7 +231,7 @@ ODM_CfoTracking(
 
 			odm_SetCrystalCap(pDM_Odm, (u1Byte)CrystalCap);
 		}
-		ODM_RT_TRACE(pDM_Odm, ODM_COMP_CFO_TRACKING, ODM_DBG_LOUD, ("ODM_CfoTracking(): Crystal cap = 0x%x, Default Crystal cap = 0x%x\n", 
+		ODM_RT_TRACE(pDM_Odm, ODM_COMP_CFO_TRACKING, ODM_DBG_LOUD, ("ODM_CfoTracking(): Crystal cap = 0x%x, Default Crystal cap = 0x%x\n",
 			pCfoTrack->CrystalCap, pCfoTrack->DefXCap));
 
 		//3 2. Dynamic ATC switch
@@ -252,7 +252,7 @@ void
 ODM_ParsingCFO(
 	IN		void *			pDM_VOID,
 	IN		void *			pPktinfo_VOID,
-	IN		s8* 			pcfotail
+	IN		s8*			pcfotail
 	)
 {
 	PDM_ODM_T		pDM_Odm = (PDM_ODM_T)pDM_VOID;
@@ -264,19 +264,18 @@ ODM_ParsingCFO(
 		return;
 
 	if(pPktinfo->StationID != 0)
-	{				
+	{
 		//3 Update CFO report for path-A & path-B
 		// Only paht-A and path-B have CFO tail and short CFO
-		for(i = ODM_RF_PATH_A; i <= ODM_RF_PATH_B; i++)   
+		for(i = ODM_RF_PATH_A; i <= ODM_RF_PATH_B; i++)
 		{
 			pCfoTrack->CFO_tail[i] = (int)pcfotail[i];
-	 	}
+		}
 
 		//3 Update packet counter
 		if(pCfoTrack->packetCount == 0xffffffff)
 			pCfoTrack->packetCount = 0;
 		else
-	 		pCfoTrack->packetCount++;
+			pCfoTrack->packetCount++;
 	}
 }
-

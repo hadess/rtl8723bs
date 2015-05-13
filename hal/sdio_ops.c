@@ -31,7 +31,7 @@
 //
 static void HalSdioGetCmdAddr8723BSdio(
 	IN	PADAPTER			padapter,
-	IN 	u8				DeviceID,
+	IN	u8				DeviceID,
 	IN	u32				Addr,
 	OUT	u32*				pCmdAddr
 	)
@@ -174,7 +174,7 @@ _func_exit_;
 static u16 sdio_read16(struct intf_hdl *pintfhdl, u32 addr)
 {
 	u32 ftaddr;
-	u16 val;	
+	u16 val;
 
 _func_enter_;
 	ftaddr = _cvrt2ftaddr(addr, NULL, NULL);
@@ -729,7 +729,7 @@ s32 sdio_local_write(
 }
 
 u8 SdioLocalCmd52Read1Byte(PADAPTER padapter, u32 addr)
-{	
+{
 	u8 val = 0;
 	struct intf_hdl * pintfhdl=&padapter->iopriv.intf;
 
@@ -740,7 +740,7 @@ u8 SdioLocalCmd52Read1Byte(PADAPTER padapter, u32 addr)
 }
 
 static u16 SdioLocalCmd52Read2Byte(PADAPTER padapter, u32 addr)
-{	
+{
 	u16 val = 0;
 	struct intf_hdl * pintfhdl=&padapter->iopriv.intf;
 
@@ -754,7 +754,7 @@ static u16 SdioLocalCmd52Read2Byte(PADAPTER padapter, u32 addr)
 
 static u32 SdioLocalCmd53Read4Byte(PADAPTER padapter, u32 addr)
 {
-	
+
 	u8 bMacPwrCtrlOn;
 	u32 val = 0;
 	struct intf_hdl * pintfhdl=&padapter->iopriv.intf;
@@ -983,7 +983,7 @@ u8 CheckIPSStatus(PADAPTER padapter)
 {
 	DBG_871X("%s(): Read 0x100=0x%02x 0x86=0x%02x\n", __func__,
 		rtw_read8(padapter, 0x100),rtw_read8(padapter, 0x86));
-	
+
 	if (rtw_read8(padapter, 0x100) == 0xEA)
 		return true;
 	else
@@ -1160,7 +1160,7 @@ void sd_int_dpc(PADAPTER padapter)
 			_set_workitem(&padapter->evtpriv.c2h_wk);
 		}
 	}
-#endif	
+#endif
 
 	if (phal->sdio_hisr & SDIO_HISR_RXFOVW)
 	{
@@ -1185,7 +1185,7 @@ void sd_int_dpc(PADAPTER padapter)
 			{
 				precvbuf = sd_recv_rxfifo(padapter, phal->SdioRxFIFOSize);
 				if (precvbuf)
-				     	sd_rxhandler(padapter, precvbuf);
+					sd_rxhandler(padapter, precvbuf);
 				else
 				{
 					alloc_fail_time++;
@@ -1291,7 +1291,7 @@ u8 HalQueryTxOQTBufferStatus8723BSdio(PADAPTER padapter)
 	return true;
 }
 
-#if defined(CONFIG_WOWLAN) || defined(CONFIG_AP_WOWLAN) 
+#if defined(CONFIG_WOWLAN) || defined(CONFIG_AP_WOWLAN)
 u8 RecvOnePkt(PADAPTER padapter, u32 size)
 {
 	struct recv_buf *precvbuf;
@@ -1329,4 +1329,3 @@ u8 RecvOnePkt(PADAPTER padapter, u32 size)
 	return res;
 }
 #endif //CONFIG_WOWLAN
-
