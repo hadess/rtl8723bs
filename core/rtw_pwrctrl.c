@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Copyright(c) 2007 - 2012 Realtek Corporation. All rights reserved.
- *                                        
+ *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of version 2 of the GNU General Public License as
  * published by the Free Software Foundation.
@@ -28,27 +28,27 @@ void _ips_enter(_adapter * padapter)
 {
 	struct pwrctrl_priv *pwrpriv = adapter_to_pwrctl(padapter);
 
-	pwrpriv->bips_processing = true;	
+	pwrpriv->bips_processing = true;
 
 	// syn ips_mode with request
 	pwrpriv->ips_mode = pwrpriv->ips_mode_req;
-	
-	pwrpriv->ips_enter_cnts++;	
+
+	pwrpriv->ips_enter_cnts++;
 	DBG_871X("==>ips_enter cnts:%d\n",pwrpriv->ips_enter_cnts);
 
 	if(rf_off == pwrpriv->change_rfpwrstate )
-	{	
+	{
 		pwrpriv->bpower_saving = true;
 		DBG_871X_LEVEL(_drv_always_, "nolinked power save enter\n");
 
 		if(pwrpriv->ips_mode == IPS_LEVEL_2)
 			pwrpriv->bkeepfwalive = true;
-		
+
 		rtw_ips_pwr_down(padapter);
 		pwrpriv->rf_pwrstate = rf_off;
-	}	
-	pwrpriv->bips_processing = false;	
-	
+	}
+	pwrpriv->bips_processing = false;
+
 }
 
 void ips_enter(_adapter * padapter)
@@ -79,7 +79,7 @@ int _ips_leave(_adapter * padapter)
 			pwrpriv->rf_pwrstate = rf_on;
 		}
 		DBG_871X_LEVEL(_drv_always_, "nolinked power save leave\n");
-		
+
 		DBG_871X("==> ips_leave.....LED(0x%08x)...\n",rtw_read32(padapter,0x4c));
 		pwrpriv->bips_processing = false;
 
@@ -152,8 +152,8 @@ static bool rtw_pwr_unassociated_idle(_adapter *adapter)
 	if (pxmit_priv->free_xmitbuf_cnt != NR_XMITBUFF ||
 		pxmit_priv->free_xmit_extbuf_cnt != NR_XMIT_EXTBUFF) {
 		DBG_871X_LEVEL(_drv_always_, "There are some pkts to transmit\n");
-		DBG_871X_LEVEL(_drv_always_, "free_xmitbuf_cnt: %d, free_xmit_extbuf_cnt: %d\n", 
-			pxmit_priv->free_xmitbuf_cnt, pxmit_priv->free_xmit_extbuf_cnt);	
+		DBG_871X_LEVEL(_drv_always_, "free_xmitbuf_cnt: %d, free_xmit_extbuf_cnt: %d\n",
+			pxmit_priv->free_xmitbuf_cnt, pxmit_priv->free_xmit_extbuf_cnt);
 		goto exit;
 	}
 
@@ -190,7 +190,7 @@ void rtw_ps_processor(_adapter*padapter)
 		pdbgpriv->dbg_ps_insuspend_cnt++;
 		DBG_871X("%s, pwrpriv->bInSuspend == true ignore this process\n",__FUNCTION__);
 		return;
-	}	
+	}
 
 	pwrpriv->ps_processing = true;
 
@@ -205,7 +205,7 @@ void rtw_ps_processor(_adapter*padapter)
 		DBG_871X("==>%s .fw_state(%x)\n",__FUNCTION__,get_fwstate(pmlmepriv));
 		pwrpriv->change_rfpwrstate = rf_off;
 		{
-			ips_enter(padapter);			
+			ips_enter(padapter);
 		}
 	}
 exit:
@@ -227,7 +227,7 @@ void	traffic_check_for_leave_lps(PADAPTER padapter, u8 tx, u32 tx_packets)
 	u8	bLeaveLPS = false;
 	struct mlme_priv	*pmlmepriv = &padapter->mlmepriv;
 
-	
+
 
 	if(tx) //from tx
 	{
@@ -237,15 +237,15 @@ void	traffic_check_for_leave_lps(PADAPTER padapter, u8 tx, u32 tx_packets)
 			start_time= jiffies;
 
 		if (jiffies_to_msecs(jiffies - start_time) > 2000) // 2 sec == watch dog timer
-		{		
+		{
 			if(xmit_cnt > 8)
 			{
-				if ((adapter_to_pwrctl(padapter)->bLeisurePs) 
+				if ((adapter_to_pwrctl(padapter)->bLeisurePs)
 					&& (adapter_to_pwrctl(padapter)->pwr_mode != PS_MODE_ACTIVE)
 					&& (rtw_btcoex_IsBtControlLps(padapter) == false)
 					)
 				{
-					DBG_871X("leave lps via Tx = %d\n", xmit_cnt);			
+					DBG_871X("leave lps via Tx = %d\n", xmit_cnt);
 					bLeaveLPS = true;
 				}
 			}
@@ -263,20 +263,20 @@ void	traffic_check_for_leave_lps(PADAPTER padapter, u8 tx, u32 tx_packets)
 				&& (adapter_to_pwrctl(padapter)->pwr_mode != PS_MODE_ACTIVE)
 				&& (rtw_btcoex_IsBtControlLps(padapter) == false)
 				)
-			{	
-				DBG_871X("leave lps via Rx = %d\n", pmlmepriv->LinkDetectInfo.NumRxUnicastOkInPeriod);	
+			{
+				DBG_871X("leave lps via Rx = %d\n", pmlmepriv->LinkDetectInfo.NumRxUnicastOkInPeriod);
 				bLeaveLPS = true;
 			}
-		}	
-	}	
+		}
+	}
 
 	if(bLeaveLPS)
 	{
-		//DBG_871X("leave lps via %s, Tx = %d, Rx = %d \n", tx?"Tx":"Rx", pmlmepriv->LinkDetectInfo.NumTxOkInPeriod,pmlmepriv->LinkDetectInfo.NumRxUnicastOkInPeriod);	
+		//DBG_871X("leave lps via %s, Tx = %d, Rx = %d \n", tx?"Tx":"Rx", pmlmepriv->LinkDetectInfo.NumTxOkInPeriod,pmlmepriv->LinkDetectInfo.NumRxUnicastOkInPeriod);
 		//rtw_lps_ctrl_wk_cmd(padapter, LPS_CTRL_LEAVE, 1);
 		rtw_lps_ctrl_wk_cmd(padapter, LPS_CTRL_LEAVE, tx?0:1);
 	}
-}		
+}
 
 /*
  * Description:
@@ -418,7 +418,7 @@ static u8 PS_RDY_CHECK(_adapter * padapter)
 	delta_time = curr_time -pwrpriv->DelayLPSLastTimeStamp;
 
 	if(delta_time < LPS_DELAY_TIME)
-	{		
+	{
 		return false;
 	}
 
@@ -482,7 +482,7 @@ _func_enter_;
 
 			pwrpriv->pwr_mode = ps_mode;
 			rtw_set_rpwm(padapter, PS_STATE_S4);
-			
+
 #if defined(CONFIG_WOWLAN) || defined(CONFIG_AP_WOWLAN)
 			if (pwrpriv->wowlan_mode == true ||
 					pwrpriv->wowlan_ap_mode == true)
@@ -492,7 +492,7 @@ _func_enter_;
 				u8 val8;
 				delay_ms = 20;
 				start_time = jiffies;
-				do { 
+				do {
 					rtw_hal_get_hwreg(padapter, HW_VAR_SYS_CLKR, &val8);
 					if (!(val8 & BIT(4))){ //0x08 bit4 =1 --> in 32k, bit4 = 0 --> leave 32k
 						pwrpriv->cpwm = PS_STATE_S4;
@@ -500,13 +500,13 @@ _func_enter_;
 					}
 					if (jiffies_to_msecs(jiffies - start_time) > delay_ms)
 					{
-						DBG_871X("%s: Wait for FW 32K leave more than %u ms!!!\n", 
+						DBG_871X("%s: Wait for FW 32K leave more than %u ms!!!\n",
 								__FUNCTION__, delay_ms);
 						pdbgpriv->dbg_wow_leave_ps_fail_cnt++;
 						break;
 					}
 					msleep(1);
-				} while (1); 
+				} while (1);
 			}
 #endif
 			rtw_hal_set_hwreg(padapter, HW_VAR_H2C_FW_PWRMODE, (u8 *)(&ps_mode));
@@ -749,7 +749,7 @@ _func_exit_;
 
 //
 // Description: Leave all power save mode: LPS, FwLPS, IPS if needed.
-// Move code to function by tynli. 2010.03.26. 
+// Move code to function by tynli. 2010.03.26.
 //
 void LeaveAllPowerSaveMode(IN PADAPTER Adapter)
 {
@@ -798,7 +798,7 @@ _func_enter_;
 			{
 				DBG_871X("======> ips_leave fail.............\n");
 			}
-		}	
+		}
 	}
 
 _func_exit_;
@@ -819,7 +819,7 @@ _func_enter_;
 	start_time = jiffies;
 
 	yield();
-	
+
 	while(1)
 	{
 		down(&pwrpriv->lock);
@@ -997,7 +997,7 @@ __inline static void unregister_task_alive(struct pwrctrl_priv *pwrctrl, u32 tag
  *
  *	Constraint:
  *		1. this function will request pwrctrl->lock
- * 
+ *
  * Return Value:
  *	_SUCCESS	hardware is ready for I/O
  *	_FAIL		can't I/O right now
@@ -1043,7 +1043,7 @@ _func_enter_;
 
 _func_exit_;
 
-	return res;	
+	return res;
 }
 
 /*
@@ -1101,13 +1101,13 @@ _func_exit_;
 
 /*
  * Caller: rtw_xmit_thread
- * 
+ *
  * Check if the fw_pwrstate is okay for xmit.
  * If not (cpwm is less than S3), then the sub-routine
- * will raise the cpwm to be greater than or equal to S3. 
+ * will raise the cpwm to be greater than or equal to S3.
  *
  * Calling Context: Passive
- * 
+ *
  * Return Value:
  *	 _SUCCESS	rtw_xmit_thread can write fifo/txcmd afterwards.
  *	 _FAIL		rtw_xmit_thread can not do anything.
@@ -1153,7 +1153,7 @@ _func_enter_;
 
 _func_exit_;
 
-	return res;	
+	return res;
 }
 
 /*
@@ -1339,7 +1339,7 @@ _func_enter_;
 	//pwrctrlpriv->FWCtrlPSMode =padapter->registrypriv.power_mgnt;// PS_MODE_MIN;
 	if (padapter->registrypriv.mp_mode == 1)
 		pwrctrlpriv->power_mgnt =PS_MODE_ACTIVE ;
-	else	
+	else
 		pwrctrlpriv->power_mgnt =padapter->registrypriv.power_mgnt;// PS_MODE_MIN;
 	pwrctrlpriv->bLeisurePs = (PS_MODE_ACTIVE != pwrctrlpriv->power_mgnt)?true:false;
 
@@ -1449,7 +1449,7 @@ int _rtw_pwr_wakeup(_adapter *padapter, u32 ips_deffer_ms, const char *caller)
 
 	if (pwrpriv->bInternalAutoSuspend == false && pwrpriv->bInSuspend) {
 		DBG_871X("%s wait bInSuspend...\n", __func__);
-		while (pwrpriv->bInSuspend 
+		while (pwrpriv->bInSuspend
 			&& jiffies_to_msecs(jiffies - start) <= 3000
 		) {
 			msleep(10);
@@ -1477,10 +1477,10 @@ int _rtw_pwr_wakeup(_adapter *padapter, u32 ips_deffer_ms, const char *caller)
 	{
 		ret = _SUCCESS;
 		goto exit;
-	}	
+	}
 
 	if(rf_off == pwrpriv->rf_pwrstate )
-	{		
+	{
 		{
 			DBG_8192C("%s call ips_leave....\n",__FUNCTION__);
 			if(_FAIL ==  ips_leave(padapter))
@@ -1499,9 +1499,9 @@ int _rtw_pwr_wakeup(_adapter *padapter, u32 ips_deffer_ms, const char *caller)
 	){
 		DBG_8192C("%s: bDriverStopped=%d, bup=%d, hw_init_completed=%u\n"
 			, caller
-		   	, padapter->bDriverStopped
-		   	, padapter->bup
-		   	, padapter->hw_init_completed);
+			, padapter->bDriverStopped
+			, padapter->bup
+			, padapter->hw_init_completed);
 		ret= false;
 		goto exit;
 	}
@@ -1516,9 +1516,9 @@ exit:
 
 int rtw_pm_set_lps(_adapter *padapter, u8 mode)
 {
-	int	ret = 0;	
+	int	ret = 0;
 	struct pwrctrl_priv *pwrctrlpriv = adapter_to_pwrctl(padapter);
-	
+
 	if ( mode < PS_MODE_NUM )
 	{
 		if(pwrctrlpriv->power_mgnt !=mode)
@@ -1551,7 +1551,7 @@ int rtw_pm_set_ips(_adapter *padapter, u8 mode)
 		rtw_ips_mode_req(pwrctrlpriv, mode);
 		DBG_871X("%s %s\n", __FUNCTION__, mode == IPS_NORMAL?"IPS_NORMAL":"IPS_LEVEL_2");
 		return 0;
-	} 
+	}
 	else if(mode ==IPS_NONE){
 		rtw_ips_mode_req(pwrctrlpriv, mode);
 		DBG_871X("%s %s\n", __FUNCTION__, "IPS_NONE");
@@ -1633,4 +1633,3 @@ u32 rtw_ps_deny_get(PADAPTER padapter)
 
 	return deny;
 }
-

@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Copyright(c) 2007 - 2011 Realtek Corporation. All rights reserved.
- *                                        
+ *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of version 2 of the GNU General Public License as
  * published by the Free Software Foundation.
@@ -74,12 +74,12 @@ bool
 Efuse_Write1ByteToFakeContent(
 	IN		PADAPTER	pAdapter,
 	IN		u16		Offset,
-	IN 		u8		Value	);
+	IN		u8		Value	);
 bool
 Efuse_Write1ByteToFakeContent(
 	IN		PADAPTER	pAdapter,
 	IN		u16		Offset,
-	IN 		u8		Value	)
+	IN		u8		Value	)
 {
 	if(Offset >= EFUSE_MAX_HW_SIZE)
 	{
@@ -97,7 +97,7 @@ Efuse_Write1ByteToFakeContent(
 /*-----------------------------------------------------------------------------
  * Function:	Efuse_PowerSwitch
  *
- * Overview:	When we want to enable write operation, we should change to 
+ * Overview:	When we want to enable write operation, we should change to
  *				pwr on state. When we stop write, we should switch to 500k mode
  *				and disable LDO 2.5V.
  *
@@ -109,7 +109,7 @@ Efuse_Write1ByteToFakeContent(
  *
  * Revised History:
  * When			Who		Remark
- * 11/17/2008 	MHC		Create Version 0.
+ * 11/17/2008	MHC		Create Version 0.
  *
  *---------------------------------------------------------------------------*/
 void
@@ -134,7 +134,7 @@ Efuse_PowerSwitch(
  *
  * Revised History:
  * When			Who		Remark
- * 11/16/2008 	MHC		Create Version 0.
+ * 11/16/2008	MHC		Create Version 0.
  *
  *---------------------------------------------------------------------------*/
 u16
@@ -164,7 +164,7 @@ Efuse_CalculateWordCnts(IN u8	word_en)
 
 //
 //	Description:
-//		1. Execute E-Fuse read byte operation according as map offset and 
+//		1. Execute E-Fuse read byte operation according as map offset and
 //		    save to E-Fuse table.
 //		2. Refered from SD1 Richard.
 //
@@ -174,7 +174,7 @@ Efuse_CalculateWordCnts(IN u8	word_en)
 //
 //	Created by Roger, 2008.10.21.
 //
-//	2008/12/12 MH 	1. Reorganize code flow and reserve bytes. and add description.
+//	2008/12/12 MH	1. Reorganize code flow and reserve bytes. and add description.
 //					2. Add efuse utilization collect.
 //	2008/12/22 MH	Read Efuse must check if we write section 1 data again!!! Sec1
 //					write addr must be after sec5.
@@ -185,8 +185,8 @@ efuse_ReadEFuse(
 	PADAPTER	Adapter,
 	u8		efuseType,
 	u16		_offset,
-	u16 		_size_byte,
-	u8      	*pbuf,
+	u16		_size_byte,
+	u8		*pbuf,
 	IN	bool	bPseudoTest
 	);
 void
@@ -194,8 +194,8 @@ efuse_ReadEFuse(
 	PADAPTER	Adapter,
 	u8		efuseType,
 	u16		_offset,
-	u16 		_size_byte,
-	u8      	*pbuf,
+	u16		_size_byte,
+	u8		*pbuf,
 	IN	bool	bPseudoTest
 	)
 {
@@ -227,12 +227,12 @@ EFUSE_GetEfuseDefinition(
  *
  * Revised History:
  * When			Who		Remark
- * 09/23/2008 	MHC		Copy from WMAC.
+ * 09/23/2008	MHC		Copy from WMAC.
  *
  *---------------------------------------------------------------------------*/
 u8
-EFUSE_Read1Byte(	
-	IN	PADAPTER	Adapter, 
+EFUSE_Read1Byte(
+	IN	PADAPTER	Adapter,
 	IN	u16		Address)
 {
 	u8	data;
@@ -246,12 +246,12 @@ EFUSE_Read1Byte(
 	if (Address < contentLen)	//E-fuse 512Byte
 	{
 		//Write E-fuse Register address bit0~7
-		temp = Address & 0xFF;	
-		rtw_write8(Adapter, EFUSE_CTRL+1, temp);	
-		Bytetemp = rtw_read8(Adapter, EFUSE_CTRL+2);	
+		temp = Address & 0xFF;
+		rtw_write8(Adapter, EFUSE_CTRL+1, temp);
+		Bytetemp = rtw_read8(Adapter, EFUSE_CTRL+2);
 		//Write E-fuse Register address bit8~9
-		temp = ((Address >> 8) & 0x03) | (Bytetemp & 0xFC);	
-		rtw_write8(Adapter, EFUSE_CTRL+2, temp);	
+		temp = ((Address >> 8) & 0x03) | (Bytetemp & 0xFC);
+		rtw_write8(Adapter, EFUSE_CTRL+2, temp);
 
 		//Write 0x30[31]=0
 		Bytetemp = rtw_read8(Adapter, EFUSE_CTRL+3);
@@ -261,7 +261,7 @@ EFUSE_Read1Byte(
 		//Wait Write-ready (0x30[31]=1)
 		Bytetemp = rtw_read8(Adapter, EFUSE_CTRL+3);
 		while(!(Bytetemp & 0x80))
-		{				
+		{
 			Bytetemp = rtw_read8(Adapter, EFUSE_CTRL+3);
 			k++;
 			if(k==1000)
@@ -275,13 +275,13 @@ EFUSE_Read1Byte(
 	}
 	else
 		return 0xFF;
-	
+
 }/* EFUSE_Read1Byte */
 
 /*  11/16/2008 MH Read one byte from real Efuse. */
 u8
 efuse_OneByteRead(
-	IN	PADAPTER	pAdapter, 
+	IN	PADAPTER	pAdapter,
 	IN	u16			addr,
 	IN	u8			*data,
 	IN	bool		bPseudoTest)
@@ -300,19 +300,19 @@ efuse_OneByteRead(
 	}
 
 	// <20130121, Kordan> For SMIC EFUSE specificatoin.
-	//0x34[11]: SW force PGMEN input of efuse to high. (for the bank selected by 0x34[9:8])	
+	//0x34[11]: SW force PGMEN input of efuse to high. (for the bank selected by 0x34[9:8])
 	//PHY_SetMacReg(pAdapter, 0x34, BIT11, 0);
-	rtw_write16(pAdapter, 0x34, rtw_read16(pAdapter,0x34)& (~BIT11) ); 
+	rtw_write16(pAdapter, 0x34, rtw_read16(pAdapter,0x34)& (~BIT11) );
 
 	// -----------------e-fuse reg ctrl ---------------------------------
-	//address			
-	rtw_write8(pAdapter, EFUSE_CTRL+1, (u8)(addr&0xff));		
+	//address
+	rtw_write8(pAdapter, EFUSE_CTRL+1, (u8)(addr&0xff));
 	rtw_write8(pAdapter, EFUSE_CTRL+2, ((u8)((addr>>8) &0x03) ) |
-	(rtw_read8(pAdapter, EFUSE_CTRL+2)&0xFC ));	
+	(rtw_read8(pAdapter, EFUSE_CTRL+2)&0xFC ));
 
-	//rtw_write8(pAdapter, EFUSE_CTRL+3,  0x72);//read cmd	
+	//rtw_write8(pAdapter, EFUSE_CTRL+3,  0x72);//read cmd
 	//Write bit 32 0
-	readbyte = rtw_read8(pAdapter, EFUSE_CTRL+3);		
+	readbyte = rtw_read8(pAdapter, EFUSE_CTRL+3);
 	rtw_write8(pAdapter, EFUSE_CTRL+3, (readbyte & 0x7f));
 
 	while(!(0x80 &rtw_read8(pAdapter, EFUSE_CTRL+3))&&(tmpidx<1000))
@@ -321,13 +321,13 @@ efuse_OneByteRead(
 		tmpidx++;
 	}
 	if(tmpidx<100)
-	{			
-		*data=rtw_read8(pAdapter, EFUSE_CTRL);		
+	{
+		*data=rtw_read8(pAdapter, EFUSE_CTRL);
 		bResult = true;
 	}
 	else
 	{
-		*data = 0xff;	
+		*data = 0xff;
 		bResult = false;
 		DBG_871X("%s: [ERROR] addr=0x%x bResult=%d time out 1s !!!\n", __FUNCTION__, addr, bResult);
 		DBG_871X("%s: [ERROR] EFUSE_CTRL =0x%08x !!!\n", __FUNCTION__, rtw_read32(pAdapter, EFUSE_CTRL));
@@ -335,12 +335,12 @@ efuse_OneByteRead(
 
 	return bResult;
 }
-		
+
 /*  11/16/2008 MH Write one byte to reald Efuse. */
 u8
 efuse_OneByteWrite(
-	IN	PADAPTER	pAdapter,  
-	IN	u16			addr, 
+	IN	PADAPTER	pAdapter,
+	IN	u16			addr,
 	IN	u8			data,
 	IN	bool		bPseudoTest)
 {
@@ -358,10 +358,10 @@ efuse_OneByteWrite(
 	}
 
 
-	// -----------------e-fuse reg ctrl ---------------------------------	
-	//address			
+	// -----------------e-fuse reg ctrl ---------------------------------
+	//address
 
-	
+
 	efuseValue = rtw_read32(pAdapter, EFUSE_CTRL);
 	efuseValue |= (BIT21|BIT31);
 	efuseValue &= ~(0x3FFFF);
@@ -412,9 +412,9 @@ Efuse_PgPacketRead(	IN	PADAPTER	pAdapter,
 	return ret;
 }
 
-int 
-Efuse_PgPacketWrite(IN	PADAPTER	pAdapter, 
-					IN	u8 			offset,
+int
+Efuse_PgPacketWrite(IN	PADAPTER	pAdapter,
+					IN	u8			offset,
 					IN	u8			word_en,
 					IN	u8			*data,
 					IN	bool		bPseudoTest)
@@ -427,9 +427,9 @@ Efuse_PgPacketWrite(IN	PADAPTER	pAdapter,
 }
 
 
-static int 
-Efuse_PgPacketWrite_BT(IN	PADAPTER	pAdapter, 
-					IN	u8 			offset,
+static int
+Efuse_PgPacketWrite_BT(IN	PADAPTER	pAdapter,
+					IN	u8			offset,
 					IN	u8			word_en,
 					IN	u8			*data,
 					IN	bool		bPseudoTest)
@@ -454,15 +454,15 @@ Efuse_PgPacketWrite_BT(IN	PADAPTER	pAdapter,
  *
  * Revised History:
  * When			Who		Remark
- * 11/16/2008 	MHC		Create Version 0.
- * 11/21/2008 	MHC		Fix Write bug when we only enable late word.
+ * 11/16/2008	MHC		Create Version 0.
+ * 11/21/2008	MHC		Fix Write bug when we only enable late word.
  *
  *---------------------------------------------------------------------------*/
 void
 efuse_WordEnableDataRead(IN	u8	word_en,
 							IN	u8	*sourdata,
 							IN	u8	*targetdata)
-{	
+{
 	if (!(word_en&BIT(0)))
 	{
 		targetdata[0] = sourdata[0];
@@ -489,14 +489,14 @@ efuse_WordEnableDataRead(IN	u8	word_en,
 u8
 Efuse_WordEnableDataWrite(	IN	PADAPTER	pAdapter,
 							IN	u16		efuse_addr,
-							IN	u8		word_en, 
+							IN	u8		word_en,
 							IN	u8		*data,
 							IN	bool		bPseudoTest)
 {
 	u8	ret=0;
 
 	ret =  pAdapter->HalFunc.Efuse_WordEnableDataWrite(pAdapter, efuse_addr, word_en, data, bPseudoTest);
-	
+
 	return ret;
 }
 
@@ -513,18 +513,18 @@ Efuse_WordEnableDataWrite(	IN	PADAPTER	pAdapter,
  *
  * Revised History:
  * When			Who		Remark
- * 11/11/2008 	MHC		Create Version 0.
+ * 11/11/2008	MHC		Create Version 0.
  *
  *---------------------------------------------------------------------------*/
-void 
+void
 Efuse_ReadAllMap(
-	IN		PADAPTER	pAdapter, 
+	IN		PADAPTER	pAdapter,
 	IN		u8		efuseType,
 	IN OUT	u8		*Efuse,
 	IN		bool		bPseudoTest);
-void 
+void
 Efuse_ReadAllMap(
-	IN		PADAPTER	pAdapter, 
+	IN		PADAPTER	pAdapter,
 	IN		u8		efuseType,
 	IN OUT	u8		*Efuse,
 	IN		bool		bPseudoTest)
@@ -555,7 +555,7 @@ Efuse_ReadAllMap(
  *
  * Revised History:
  * When			Who		Remark
- * 11/12/2008 	MHC		Create Version 0.
+ * 11/12/2008	MHC		Create Version 0.
  *
  *---------------------------------------------------------------------------*/
 static void
@@ -613,7 +613,7 @@ efuse_ShadowRead4Byte(
  *
  * Revised History:
  * When			Who		Remark
- * 11/13/2008 	MHC		Create Version 0.
+ * 11/13/2008	MHC		Create Version 0.
  *
  *---------------------------------------------------------------------------*/
 void EFUSE_ShadowMapUpdate(
@@ -635,7 +635,7 @@ void EFUSE_ShadowMapUpdate(
 		Efuse_ReadAllMap(pAdapter, efuseType, pEEPROM->efuse_eeprom_data, bPseudoTest);
 	}
 
-	//PlatformMoveMemory((void *)&pHalData->EfuseMap[EFUSE_MODIFY_MAP][0], 
+	//PlatformMoveMemory((void *)&pHalData->EfuseMap[EFUSE_MODIFY_MAP][0],
 	//(void *)&pHalData->EfuseMap[EFUSE_INIT_MAP][0], mapLen);
 }// EFUSE_ShadowMapUpdate
 
@@ -653,7 +653,7 @@ void EFUSE_ShadowMapUpdate(
  *
  * Revised History:
  * When			Who		Remark
- * 11/12/2008 	MHC		Create Version 0.
+ * 11/12/2008	MHC		Create Version 0.
  *
  *---------------------------------------------------------------------------*/
 void
@@ -669,5 +669,5 @@ EFUSE_ShadowRead(
 		efuse_ShadowRead2Byte(pAdapter, Offset, (u16 *)Value);
 	else if (Type == 4)
 		efuse_ShadowRead4Byte(pAdapter, Offset, (u32 *)Value);
-	
+
 }	// EFUSE_ShadowRead
