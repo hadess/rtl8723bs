@@ -81,7 +81,7 @@ void
 PHY_SetTxPowerIndex_8723B(
 	IN	PADAPTER			Adapter,
 	IN	u32					PowerIndex,
-	IN	u8					RFPath,	
+	IN	u8					RFPath,
 	IN	u8					Rate
 	);
 
@@ -89,15 +89,15 @@ u8
 PHY_GetTxPowerIndex_8723B(
 	IN	PADAPTER			pAdapter,
 	IN	u8					RFPath,
-	IN	u8					Rate,	
-	IN	CHANNEL_WIDTH		BandWidth,	
+	IN	u8					Rate,
+	IN	CHANNEL_WIDTH		BandWidth,
 	IN	u8					Channel
 	);
 
-void	
-PHY_GetTxPowerLevel8723B(			
+void
+PHY_GetTxPowerLevel8723B(
 	IN	PADAPTER		Adapter,
-	OUT s32*		    		powerlevel	
+	OUT s32*				powerlevel
 	);
 
 void
@@ -131,4 +131,3 @@ PHY_SetSwChnlBWMode8723B(
 /*--------------------------Exported Function prototype End---------------------*/
 
 #endif
-

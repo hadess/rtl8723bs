@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Copyright(c) 2007 - 2011 Realtek Corporation. All rights reserved.
- *                                        
+ *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of version 2 of the GNU General Public License as
  * published by the Free Software Foundation.
@@ -25,7 +25,7 @@ extern sint _rtw_init_recv_priv(struct recv_priv *precvpriv, _adapter *padapter)
 extern void _rtw_free_recv_priv (struct recv_priv *precvpriv);
 
 
-extern s32  rtw_recv_entry(union recv_frame *precv_frame);	
+extern s32  rtw_recv_entry(union recv_frame *precv_frame);
 extern int rtw_recv_indicatepkt(_adapter *adapter, union recv_frame *precv_frame);
 extern void rtw_recv_returnpacket(IN _nic_hdl cnxt, IN _pkt *preturnedpkt);
 
@@ -51,4 +51,3 @@ void rtw_init_recv_timer(struct recv_reorder_ctrl *preorder_ctrl);
 
 
 #endif //
-

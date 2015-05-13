@@ -82,7 +82,7 @@ typedef struct rxreport_8723b
 	u32 patternmatch:1;
 	u32 unicastwake:1;
 	u32 magicwake:1;
-	
+
 	//DWORD 4
 	u32 splcp:1;	//Ofdm sgi or cck_splcp
 	u32 ldpc:1;
@@ -147,4 +147,3 @@ void rtl8723b_query_rx_phy_status(union recv_frame *prframe, struct phy_stat *pp
 void rtl8723b_process_phy_info(PADAPTER padapter, void *prframe);
 
 #endif
-

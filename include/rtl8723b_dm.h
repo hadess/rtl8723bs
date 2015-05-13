@@ -44,4 +44,3 @@ void rtl8723b_hal_dm_in_lps(PADAPTER padapter);
 
 
 #endif
-

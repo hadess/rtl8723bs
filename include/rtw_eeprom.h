@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Copyright(c) 2007 - 2011 Realtek Corporation. All rights reserved.
- *                                        
+ *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of version 2 of the GNU General Public License as
  * published by the Free Software Foundation.
@@ -30,7 +30,7 @@
 
 #define	EEPROM_MAX_SIZE			HWSET_MAX_SIZE_512
 
-#define	CLOCK_RATE					50			//100us		
+#define	CLOCK_RATE					50			//100us
 
 //- EEPROM opcodes
 #define EEPROM_READ_OPCODE		06
@@ -41,16 +41,16 @@
 
 //Country codes
 #define USA							0x555320
-#define EUROPE						0x1 //temp, should be provided later	
+#define EUROPE						0x1 //temp, should be provided later
 #define JAPAN						0x2 //temp, should be provided later
 
 #define eeprom_cis0_sz	17
 #define eeprom_cis1_sz	50
 
 //
-// Customer ID, note that: 
-// This variable is initiailzed through EEPROM or registry, 
-// however, its definition may be different with that in EEPROM for 
+// Customer ID, note that:
+// This variable is initiailzed through EEPROM or registry,
+// however, its definition may be different with that in EEPROM for
 // EEPROM size consideration. So, we have to perform proper translation between them.
 // Besides, CustomerID of registry has precedence of that of EEPROM.
 // defined below. 060703, by rcnjko.
@@ -106,8 +106,8 @@ typedef enum _RT_CUSTOMER_ID
 	RT_CID_DNI_BUFFALO = 46,//add by page for NEC
 }RT_CUSTOMER_ID, *PRT_CUSTOMER_ID;
 
-struct eeprom_priv 
-{    
+struct eeprom_priv
+{
 	u8		bautoload_fail_flag;
 	u8		bloadfile_fail_flag;
 	u8		bloadmac_fail_flag;
@@ -124,11 +124,10 @@ struct eeprom_priv
 	u8		EEPROMRFGainOffset;
 	u8		EEPROMRFGainVal;
 
-	u8		sdio_setting;	
+	u8		sdio_setting;
 	u32		ocr;
 	u8		cis0[eeprom_cis0_sz];
-	u8		cis1[eeprom_cis1_sz];	
+	u8		cis1[eeprom_cis1_sz];
 };
 
 #endif  //__RTL871X_EEPROM_H__
-

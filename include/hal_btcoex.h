@@ -71,4 +71,3 @@ void hal_btcoex_SetDBG(PADAPTER, u32 *pDbgModule);
 u32 hal_btcoex_GetDBG(PADAPTER, u8 *pStrBuf, u32 bufSize);
 
 #endif // !__HAL_BTCOEX_H__
-

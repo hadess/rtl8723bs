@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Copyright(c) 2007 - 2011 Realtek Corporation. All rights reserved.
- *                                        
+ *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of version 2 of the GNU General Public License as
  * published by the Free Software Foundation.
@@ -18,7 +18,7 @@
  *
  ******************************************************************************/
 #ifndef __IOCTL_CFG80211_H__
-#define __IOCTL_CFG80211_H__ 
+#define __IOCTL_CFG80211_H__
 
 #include <linux/version.h>
 
@@ -79,9 +79,9 @@ struct rtw_wdev_nego_info {
 	} while (0)
 
 struct rtw_wdev_priv
-{	
+{
 	struct wireless_dev *rtw_wdev;
-	
+
 	_adapter *padapter;
 
 	struct cfg80211_scan_request *scan_request;
@@ -135,4 +135,3 @@ bool rtw_cfg80211_pwr_mgmt(_adapter *adapter);
 #define rtw_cfg80211_remain_on_channel_expired(adapter, cookie, chan, chan_type, gfp) cfg80211_remain_on_channel_expired((adapter)->rtw_wdev, cookie, chan, gfp)
 
 #endif //__IOCTL_CFG80211_H__
-

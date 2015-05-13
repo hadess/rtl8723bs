@@ -294,7 +294,7 @@
 #ifdef CONFIG_DBG_COUNTER
 #define DBG_COUNTER(counter) counter++
 #else
-#define DBG_COUNTER(counter) 
+#define DBG_COUNTER(counter)
 #endif
 
 void dump_drv_version(void *sel);
@@ -384,4 +384,3 @@ int proc_get_int_logs(struct seq_file *m, void *v);
 #endif /* CONFIG_PROC_DEBUG */
 
 #endif	//__RTW_DEBUG_H__
-

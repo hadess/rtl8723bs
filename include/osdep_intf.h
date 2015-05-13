@@ -25,7 +25,7 @@
 struct intf_priv {
 
 	u8 *intf_dev;
-	u32	max_iosz; 	//USB2.0: 128, USB1.1: 64, SDIO:64
+	u32	max_iosz;	//USB2.0: 128, USB1.1: 64, SDIO:64
 	u32	max_xmitsz; //USB2.0: unlimited, SDIO:512
 	u32	max_recvsz; //USB2.0: unlimited, SDIO:512
 
@@ -91,4 +91,3 @@ int rtw_suspend_common(_adapter *padapter);
 int rtw_resume_common(_adapter *padapter);
 
 #endif	//_OSDEP_INTF_H_
-

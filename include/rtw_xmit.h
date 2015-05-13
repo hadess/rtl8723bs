@@ -97,7 +97,7 @@ do{\
 
 enum TXDESC_SC{
 	SC_DONT_CARE = 0x00,
-	SC_UPPER= 0x01,	
+	SC_UPPER= 0x01,
 	SC_LOWER=0x02,
 	SC_DUPLICATE=0x03
 };
@@ -172,10 +172,10 @@ struct pkt_attrib
 	u8	ack_policy;
 	u8	mac_id;
 	u8	vcs_mode;	//virtual carrier sense method
-	u8 	dst[ETH_ALEN];
+	u8	dst[ETH_ALEN];
 	u8	src[ETH_ALEN];
 	u8	ta[ETH_ALEN];
-	u8 	ra[ETH_ALEN];
+	u8	ra[ETH_ALEN];
 	u8	key_idx;
 	u8	qos_en;
 	u8	ht_en;
@@ -193,7 +193,7 @@ struct pkt_attrib
 	u8	eosp;
 	u8	rate;
 	u8	intel_proxim;
-	u8 	retry_ctrl;
+	u8	retry_ctrl;
 	u8   mbssid;
 	u8	ldpc;
 	u8	stbc;
@@ -206,7 +206,7 @@ struct pkt_attrib
 	union Keytype	dot118021x_UncstKey;
 
 	u8 icmp_pkt;
-	
+
 };
 
 #define WLANHDR_OFFSET	64
@@ -222,7 +222,7 @@ struct pkt_attrib
 
 #define MP_FRAMETAG		0x07
 
-#define TXAGG_FRAMETAG 	0x08
+#define TXAGG_FRAMETAG	0x08
 
 enum {
 	XMITBUF_DATA = 0,
@@ -284,7 +284,7 @@ struct xmit_buf
 	u8 *ptail;
 	u8 *pend;
 	u32 ff_hwaddr;
-	u8	pg_num;	
+	u8	pg_num;
 	u8	agg_num;
 
 #if defined(DBG_XMIT_BUF )|| defined(DBG_XMIT_BUF_EXT)
@@ -339,7 +339,7 @@ struct sta_xmit_priv
 	struct tx_servq	bk_q;			//priority == 1,2
 	struct tx_servq	vi_q;			//priority == 4,5
 	struct tx_servq	vo_q;			//priority == 6,7
-	_list 	legacy_dz;
+	_list	legacy_dz;
 	_list  apsd;
 
 	u16 txseq_tid[16];
@@ -355,7 +355,7 @@ struct sta_xmit_priv
 struct	hw_txqueue	{
 	volatile sint	head;
 	volatile sint	tail;
-	volatile sint 	free_sz;	//in units of 64 bytes
+	volatile sint	free_sz;	//in units of 64 bytes
 	volatile sint      free_cmdsz;
 	volatile sint	 txsz[8];
 	uint	ff_hwaddr;
@@ -532,4 +532,3 @@ void rtw_ack_tx_done(struct xmit_priv *pxmitpriv, int status);
 #include <xmit_osdep.h>
 
 #endif	//_RTL871X_XMIT_H_
-
