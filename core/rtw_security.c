@@ -2010,7 +2010,6 @@ u32	rtw_aes_decrypt(_adapter *padapter, u8 *precvframe)
 
 
 	sint		length;
-	u32	prwskeylen;
 	u8	*pframe,*prwskey;	//, *payload,*iv
 	struct	sta_info		*stainfo;
 	struct	rx_pkt_attrib	 *prxattrib = &((union recv_frame *)precvframe)->u.hdr.attrib;

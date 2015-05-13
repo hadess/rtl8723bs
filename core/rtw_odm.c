@@ -103,9 +103,6 @@ static const char *odm_dbg_level_str[] = {
 
 void rtw_odm_dbg_comp_msg(void *sel, _adapter *adapter)
 {
-	HAL_DATA_TYPE *pHalData = GET_HAL_DATA(adapter);
-	DM_ODM_T *odm = &pHalData->odmpriv;
-	int cnt = 0;
 	u64 dbg_comp;
 	int i;
 
@@ -125,9 +122,6 @@ inline void rtw_odm_dbg_comp_set(_adapter *adapter, u64 comps)
 
 void rtw_odm_dbg_level_msg(void *sel, _adapter *adapter)
 {
-	HAL_DATA_TYPE *pHalData = GET_HAL_DATA(adapter);
-	DM_ODM_T *odm = &pHalData->odmpriv;
-	int cnt = 0;
 	u32 dbg_level;
 	int i;
 
@@ -146,9 +140,6 @@ inline void rtw_odm_dbg_level_set(_adapter *adapter, u32 level)
 
 void rtw_odm_ability_msg(void *sel, _adapter *adapter)
 {
-	HAL_DATA_TYPE *pHalData = GET_HAL_DATA(adapter);
-	DM_ODM_T *odm = &pHalData->odmpriv;
-	int cnt = 0;
 	u32 ability = 0;
 	int i;
 

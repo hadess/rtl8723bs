@@ -152,7 +152,6 @@ inline struct sta_info *rtw_get_stainfo_by_offset(struct sta_priv *stapriv, int 
 void kfree_all_stainfo(struct sta_priv *pstapriv );
 void kfree_all_stainfo(struct sta_priv *pstapriv )
 {
-	_irqL	 irqL;
 	_list	*plist, *phead;
 	struct sta_info *psta = NULL;
 
@@ -175,17 +174,13 @@ _func_exit_;
 
 }
 
-void kfree_sta_priv_lock(struct	sta_priv *pstapriv);
 void kfree_sta_priv_lock(struct	sta_priv *pstapriv)
 {
-	struct wlan_acl_pool *pacl_list = &pstapriv->acl_list;
-
 	 kfree_all_stainfo(pstapriv); //be done before free sta_hash_lock
 }
 
 u32	_rtw_free_sta_priv(struct	sta_priv *pstapriv)
 {
-	_irqL	irqL;
 	_list	*phead, *plist;
 	struct sta_info *psta = NULL;
 	struct recv_reorder_ctrl *preorder_ctrl;
@@ -232,7 +227,6 @@ _func_exit_;
 //struct	sta_info *rtw_alloc_stainfo(_queue *pfree_sta_queue, unsigned char *hwaddr)
 struct	sta_info *rtw_alloc_stainfo(struct	sta_priv *pstapriv, u8 *hwaddr)
 {
-	_irqL irqL, irqL2;
 	uint tmp_aid;
 	s32	index;
 	_list	*phash_list;
@@ -357,7 +351,6 @@ _func_exit_;
 u32	rtw_free_stainfo(_adapter *padapter , struct sta_info *psta)
 {
 	int i;
-	_irqL irqL0;
 	_queue *pfree_sta_queue;
 	struct recv_reorder_ctrl *preorder_ctrl;
 	struct	sta_xmit_priv	*pstaxmitpriv;
@@ -442,7 +435,6 @@ _func_enter_;
 	//for A-MPDU Rx reordering buffer control, cancel reordering_ctrl_timer
 	for(i=0; i < 16 ; i++)
 	{
-		_irqL irqL;
 		_list	*phead, *plist;
 		union recv_frame *prframe;
 		_queue *ppending_recvframe_queue;
@@ -532,7 +524,6 @@ _func_exit_;
 // free all stainfo which in sta_hash[all]
 void rtw_free_all_stainfo(_adapter *padapter)
 {
-	_irqL	 irqL;
 	_list	*plist, *phead;
 	s32	index;
 	struct sta_info *psta = NULL;
@@ -575,16 +566,10 @@ _func_exit_;
 struct sta_info *rtw_get_stainfo(struct sta_priv *pstapriv, u8 *hwaddr)
 {
 
-	_irqL	 irqL;
-
 	_list	*plist, *phead;
-
 	struct sta_info *psta = NULL;
-
 	u32	index;
-
 	u8 *addr;
-
 	u8 bc_addr[ETH_ALEN] = {0xff,0xff,0xff,0xff,0xff,0xff};
 
 _func_enter_;
@@ -654,15 +639,6 @@ _func_enter_;
 
 	ptxservq= &(psta->sta_xmitpriv.be_q);
 
-/* DEADCODE
-	spin_lock_irqsave(&pstapending->lock, irqL0);
-
-	if (rtw_is_list_empty(&ptxservq->tx_pending))
-		list_add_tail(&ptxservq->tx_pending, get_list_head(pstapending));
-
-	spin_unlock_irqrestore(&pstapending->lock, irqL0);
-*/
-
 exit:
 _func_exit_;
 	return _SUCCESS;
@@ -685,7 +661,6 @@ _func_exit_;
 u8 rtw_access_ctrl(_adapter *padapter, u8 *mac_addr)
 {
 	u8 res = true;
-	_irqL irqL;
 	_list	*plist, *phead;
 	struct rtw_wlan_acl_node *paclnode;
 	u8 match = false;

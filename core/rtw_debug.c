@@ -450,7 +450,6 @@ int proc_get_rf_info(struct seq_file *m, void *v)
 
 int proc_get_survey_info(struct seq_file *m, void *v)
 {
-	_irqL irqL;
 	struct net_device *dev = m->private;
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
 	struct mlme_priv	*pmlmepriv = &(padapter->mlmepriv);
@@ -1327,7 +1326,6 @@ ssize_t proc_set_rssi_disp(struct file *file, const char __user *buffer, size_t 
 int proc_get_all_sta_info(struct seq_file *m, void *v)
 {
 	struct net_device *dev = m->private;
-	_irqL irqL;
 	struct sta_info *psta;
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
 	struct sta_priv *pstapriv = &padapter->stapriv;

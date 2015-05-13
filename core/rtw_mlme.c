@@ -144,39 +144,8 @@ _func_enter_;
 _func_exit_;
 }
 
-/*
-struct	wlan_network *_rtw_dequeue_network(_queue *queue)
-{
-	_irqL irqL;
-
-	struct wlan_network *pnetwork;
-
-_func_enter_;
-
-	spin_lock_bh(&queue->lock);
-
-	if (list_empty(&queue->queue))
-
-		pnetwork = NULL;
-
-	else
-	{
-		pnetwork = LIST_CONTAINOR(get_next(&queue->queue), struct wlan_network, list);
-
-		list_del_init(&(pnetwork->list));
-	}
-
-	spin_unlock_bh(&queue->lock);
-
-_func_exit_;
-
-	return pnetwork;
-}
-*/
-
 struct	wlan_network *_rtw_alloc_network(struct	mlme_priv *pmlmepriv )//(_queue *free_queue)
 {
-	_irqL	irqL;
 	struct	wlan_network	*pnetwork;
 	_queue *free_queue = &pmlmepriv->free_bss_pool;
 	_list* plist = NULL;
@@ -216,7 +185,6 @@ void _rtw_free_network(struct	mlme_priv *pmlmepriv ,struct wlan_network *pnetwor
 {
 	unsigned int delta_time;
 	u32 lifetime = SCANQUEUE_LIFETIME;
-	_irqL irqL;
 	_queue *free_queue = &(pmlmepriv->free_bss_pool);
 
 _func_enter_;
@@ -270,15 +238,11 @@ _func_enter_;
 	if (pnetwork->fixed == true)
 		goto exit;
 
-	//spin_lock_irqsave(&free_queue->lock, irqL);
-
 	list_del_init(&(pnetwork->list));
 
 	list_add_tail(&(pnetwork->list), get_list_head(free_queue));
 
 	pmlmepriv->num_of_scanned --;
-
-	//spin_unlock_irqrestore(&free_queue->lock, irqL);
 
 exit:
 
@@ -295,7 +259,6 @@ _func_exit_;
 struct wlan_network *_rtw_find_network(_queue *scanned_queue, u8 *addr)
 {
 
-	//_irqL irqL;
 	_list	*phead, *plist;
 	struct	wlan_network *pnetwork = NULL;
 	u8 zero_addr[ETH_ALEN] = {0,0,0,0,0,0};
@@ -338,7 +301,6 @@ _func_exit_;
 
 void _rtw_free_network_queue(_adapter *padapter, u8 isfreeall)
 {
-	_irqL irqL;
 	_list *phead, *plist;
 	struct wlan_network *pnetwork;
 	struct mlme_priv* pmlmepriv = &padapter->mlmepriv;
@@ -719,7 +681,6 @@ Caller must hold pmlmepriv->lock first.
 */
 void rtw_update_scanned_network(_adapter *adapter, WLAN_BSSID_EX *target)
 {
-	_irqL irqL;
 	_list	*plist, *phead;
 	u32	bssid_ex_sz;
 	struct mlme_priv	*pmlmepriv = &(adapter->mlmepriv);
@@ -941,7 +902,6 @@ _func_exit_;
 
 void rtw_survey_event_callback(_adapter	*adapter, u8 *pbuf)
 {
-	_irqL  irqL;
 	u32 len;
 	WLAN_BSSID_EX *pnetwork;
 	struct	mlme_priv	*pmlmepriv = &(adapter->mlmepriv);
@@ -969,7 +929,6 @@ _func_enter_;
 		if(!memcmp(&(pmlmepriv->cur_network.network.MacAddress), pnetwork->MacAddress, ETH_ALEN))
 		{
 			struct wlan_network* ibss_wlan = NULL;
-			_irqL	irqL;
 
 			memcpy(pmlmepriv->cur_network.network.IEs, pnetwork->IEs, 8);
 			spin_lock_bh(&(pmlmepriv->scanned_queue.lock));
@@ -1007,7 +966,6 @@ _func_exit_;
 
 void rtw_surveydone_event_callback(_adapter	*adapter, u8 *pbuf)
 {
-	_irqL  irqL;
 	u8 timer_cancelled = false;
 	struct	mlme_priv	*pmlmepriv = &(adapter->mlmepriv);
 
@@ -1016,7 +974,6 @@ _func_enter_;
 	spin_lock_bh(&pmlmepriv->lock);
 	if(pmlmepriv->wps_probe_req_ie)
 	{
-		u32 free_len = pmlmepriv->wps_probe_req_ie_len;
 		pmlmepriv->wps_probe_req_ie_len = 0;
 		kfree(pmlmepriv->wps_probe_req_ie);
 		pmlmepriv->wps_probe_req_ie = NULL;
@@ -1169,7 +1126,6 @@ void rtw_fwdbg_event_callback(_adapter *adapter , u8 *pbuf)
 
 static void free_scanqueue(struct	mlme_priv *pmlmepriv)
 {
-	_irqL irqL, irqL0;
 	_queue *free_queue = &pmlmepriv->free_bss_pool;
 	_queue *scan_queue = &pmlmepriv->scanned_queue;
 	_list	*plist, *phead, *ptemp;
@@ -1211,7 +1167,6 @@ void rtw_reset_rx_info(struct debug_priv *pdbgpriv){
 */
 void rtw_free_assoc_resources(_adapter *adapter, int lock_scanned_queue)
 {
-	_irqL irqL;
 	struct wlan_network* pwlan = NULL;
 	struct	mlme_priv *pmlmepriv = &adapter->mlmepriv;
 	struct	sta_priv *pstapriv = &adapter->stapriv;
@@ -1585,7 +1540,6 @@ static void rtw_joinbss_update_network(_adapter *padapter, struct wlan_network *
 //#define REJOIN
 void rtw_joinbss_event_prehandle(_adapter *adapter, u8 *pbuf)
 {
-	_irqL irqL,irqL2;
 	static u8 retry=0;
 	u8 timer_cancelled;
 	struct sta_info *ptarget_sta= NULL, *pcur_sta = NULL;
@@ -1804,7 +1758,6 @@ void rtw_sta_media_status_rpt(_adapter *adapter,struct sta_info *psta, u32 mstat
 
 void rtw_stassoc_event_callback(_adapter *adapter, u8 *pbuf)
 {
-	_irqL irqL;
 	struct sta_info *psta;
 	struct mlme_priv *pmlmepriv = &(adapter->mlmepriv);
 	struct stassoc_event	*pstassoc	= (struct stassoc_event*)pbuf;
@@ -1922,7 +1875,6 @@ _func_exit_;
 
 void rtw_stadel_event_callback(_adapter *adapter, u8 *pbuf)
 {
-	_irqL irqL,irqL2;
 	int mac_id = (-1);
 	struct sta_info *psta;
 	struct wlan_network* pwlan = NULL;
@@ -2105,7 +2057,6 @@ _func_exit_;
 */
 void _rtw_join_timeout_handler (_adapter *adapter)
 {
-	_irqL irqL;
 	struct	mlme_priv *pmlmepriv = &adapter->mlmepriv;
 
 _func_enter_;
@@ -2167,7 +2118,6 @@ _func_exit_;
 */
 void rtw_scan_timeout_handler (_adapter *adapter)
 {
-	_irqL irqL;
 	struct	mlme_priv *pmlmepriv = &adapter->mlmepriv;
 
 	DBG_871X(FUNC_ADPT_FMT" fw_state=%x\n", FUNC_ADPT_ARG(adapter), get_fwstate(pmlmepriv));
@@ -2367,7 +2317,6 @@ exit:
 
 int rtw_select_roaming_candidate(struct mlme_priv *mlme)
 {
-	_irqL	irqL;
 	int ret = _FAIL;
 	_list	*phead;
 	_adapter *adapter;
@@ -2504,7 +2453,6 @@ pmlmepriv->lock
 
 int rtw_select_and_join_from_scanned_queue(struct mlme_priv *pmlmepriv )
 {
-	_irqL	irqL;
 	int ret;
 	_list	*phead;
 	_adapter *adapter;
@@ -3525,7 +3473,6 @@ inline u8 rtw_to_roam(_adapter *adapter)
 
 void rtw_roaming(_adapter *padapter, struct wlan_network *tgt_network)
 {
-	_irqL irqL;
 	struct mlme_priv	*pmlmepriv = &padapter->mlmepriv;
 
 	spin_lock_bh(&pmlmepriv->lock);

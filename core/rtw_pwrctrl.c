@@ -93,8 +93,6 @@ int _ips_leave(_adapter * padapter)
 int ips_leave(_adapter * padapter)
 {
 	struct pwrctrl_priv *pwrpriv = adapter_to_pwrctl(padapter);
-	struct dvobj_priv *psdpriv = padapter->dvobj;
-	struct debug_priv *pdbgpriv = &psdpriv->drv_dbg;
 	int ret;
 
 	if(!is_primary_adapter(padapter))
@@ -171,7 +169,6 @@ exit:
 void rtw_ps_processor(_adapter*padapter)
 {
 	struct pwrctrl_priv *pwrpriv = adapter_to_pwrctl(padapter);
-	struct mlme_priv *pmlmepriv = &(padapter->mlmepriv);
 	struct dvobj_priv *psdpriv = padapter->dvobj;
 	struct debug_priv *pdbgpriv = &psdpriv->drv_dbg;
 	u32 ps_deny = 0;
@@ -292,8 +289,6 @@ void rtw_set_rpwm(PADAPTER padapter, u8 pslv)
 	u8	rpwm;
 	struct pwrctrl_priv *pwrpriv = adapter_to_pwrctl(padapter);
 	u8 cpwm_orig;
-	struct dvobj_priv *psdpriv = padapter->dvobj;
-	struct debug_priv *pdbgpriv = &psdpriv->drv_dbg;
 _func_enter_;
 
 	pslv = PS_STATE(pslv);
@@ -445,8 +440,6 @@ static u8 PS_RDY_CHECK(_adapter * padapter)
 void rtw_set_ps_mode(PADAPTER padapter, u8 ps_mode, u8 smart_ps, u8 bcn_ant_mode, const char *msg)
 {
 	struct pwrctrl_priv *pwrpriv = adapter_to_pwrctl(padapter);
-	struct dvobj_priv *psdpriv = padapter->dvobj;
-	struct debug_priv *pdbgpriv = &psdpriv->drv_dbg;
 
 _func_enter_;
 
@@ -605,8 +598,6 @@ void LPS_Enter(PADAPTER padapter, const char *msg)
 {
 	struct dvobj_priv *dvobj = adapter_to_dvobj(padapter);
 	struct pwrctrl_priv	*pwrpriv = dvobj_to_pwrctl(dvobj);
-	struct mlme_priv	*pmlmepriv = &(padapter->mlmepriv);
-	_adapter *buddy = padapter->pbuddy_adapter;
 	int n_assoc_iface = 0;
 	int i;
 	char buf[32] = {0};
@@ -666,10 +657,7 @@ void LPS_Leave(PADAPTER padapter, const char *msg)
 
 	struct dvobj_priv *dvobj = adapter_to_dvobj(padapter);
 	struct pwrctrl_priv	*pwrpriv = dvobj_to_pwrctl(dvobj);
-	u32 start_time;
-	u8 bAwake = false;
 	char buf[32] = {0};
-	struct debug_priv *pdbgpriv = &dvobj->drv_dbg;
 
 _func_enter_;
 
@@ -701,10 +689,6 @@ void LeaveAllPowerSaveModeDirect(PADAPTER Adapter)
 	PADAPTER pri_padapter = GET_PRIMARY_ADAPTER(Adapter);
 	struct mlme_priv	*pmlmepriv = &(Adapter->mlmepriv);
 	struct pwrctrl_priv *pwrpriv = adapter_to_pwrctl(Adapter);
-	struct dvobj_priv *psdpriv = Adapter->dvobj;
-	struct debug_priv *pdbgpriv = &psdpriv->drv_dbg;
-	u8 cpwm_orig, cpwm_now;
-	unsigned long start_time;
 
 _func_enter_;
 
@@ -754,7 +738,6 @@ _func_exit_;
 void LeaveAllPowerSaveMode(IN PADAPTER Adapter)
 {
 	struct dvobj_priv *dvobj = adapter_to_dvobj(Adapter);
-	struct mlme_priv	*pmlmepriv = &(Adapter->mlmepriv);
 	u8	enqueue = 0;
 	int n_assoc_iface = 0;
 	int i;
@@ -1383,11 +1366,7 @@ _func_exit_;
 
 void rtw_free_pwrctrl_priv(PADAPTER adapter)
 {
-	struct pwrctrl_priv *pwrctrlpriv = adapter_to_pwrctl(adapter);
-
 _func_enter_;
-
-	//memset((unsigned char *)pwrctrlpriv, 0, sizeof(struct pwrctrl_priv));
 
 #ifdef CONFIG_PNO_SUPPORT
 	if (pwrctrlpriv->pnlo_info != NULL)
@@ -1422,7 +1401,6 @@ int _rtw_pwr_wakeup(_adapter *padapter, u32 ips_deffer_ms, const char *caller)
 	struct pwrctrl_priv *pwrpriv = dvobj_to_pwrctl(dvobj);
 	struct mlme_priv *pmlmepriv;
 	int ret = _SUCCESS;
-	int i;
 	unsigned long start = jiffies;
 	unsigned long deny_time = jiffies + msecs_to_jiffies(ips_deffer_ms);
 
@@ -1571,11 +1549,6 @@ int rtw_pm_set_ips(_adapter *padapter, u8 mode)
 void rtw_ps_deny(PADAPTER padapter, PS_DENY_REASON reason)
 {
 	struct pwrctrl_priv *pwrpriv;
-	s32 ret;
-
-
-//	DBG_871X("+" FUNC_ADPT_FMT ": Request PS deny for %d (0x%08X)\n",
-//		FUNC_ADPT_ARG(padapter), reason, BIT(reason));
 
 	pwrpriv = adapter_to_pwrctl(padapter);
 
@@ -1587,9 +1560,6 @@ void rtw_ps_deny(PADAPTER padapter, PS_DENY_REASON reason)
 	}
 	pwrpriv->ps_deny |= BIT(reason);
 	up(&pwrpriv->lock);
-
-//	DBG_871X("-" FUNC_ADPT_FMT ": Now PS deny for 0x%08X\n",
-//		FUNC_ADPT_ARG(padapter), pwrpriv->ps_deny);
 }
 
 /*
