@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Copyright(c) 2007 - 2012 Realtek Corporation. All rights reserved.
- *                                        
+ *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of version 2 of the GNU General Public License as
  * published by the Free Software Foundation.
@@ -36,28 +36,28 @@ _func_enter_;
 	pfile->pkt_len = pfile->buf_len = pktptr->len;
 
 	pfile->cur_buffer = pfile->buf_start ;
-	
+
 _func_exit_;
 }
 
 uint _rtw_pktfile_read (struct pkt_file *pfile, u8 *rmem, uint rlen)
-{	
+{
 	uint	len = 0;
-	
+
 _func_enter_;
 
        len =  rtw_remainder_len(pfile);
-      	len = (rlen > len)? len: rlen;
+	len = (rlen > len)? len: rlen;
 
        if(rmem)
 	  skb_copy_bits(pfile->pkt, pfile->buf_len-pfile->pkt_len, rmem, len);
 
        pfile->cur_addr += len;
        pfile->pkt_len -= len;
-	   
-_func_exit_;	       		
 
-	return len;	
+_func_exit_;
+
+	return len;
 }
 
 sint rtw_endofpktfile(struct pkt_file *pfile)
@@ -91,7 +91,7 @@ int rtw_os_xmit_resource_alloc(_adapter *padapter, struct xmit_buf *pxmitbuf, u3
 		pxmitbuf->pbuf = (u8 *)N_BYTE_ALIGMENT((SIZE_PTR)(pxmitbuf->pallocated_buf), XMITBUF_ALIGN_SZ);
 	}
 
-	return _SUCCESS;	
+	return _SUCCESS;
 }
 
 void rtw_os_xmit_resource_free(_adapter *padapter, struct xmit_buf *pxmitbuf,u32 free_sz, u8 flag)
@@ -184,7 +184,7 @@ static int rtw_mlcst2unicst(_adapter *padapter, struct sk_buff *skb)
 	spin_lock_bh(&pstapriv->asoc_list_lock);
 	phead = &pstapriv->asoc_list;
 	plist = get_next(phead);
-	
+
 	//free sta asoc_queue
 	while (phead != plist) {
 		int stainfo_offset;
@@ -203,10 +203,10 @@ static int rtw_mlcst2unicst(_adapter *padapter, struct sk_buff *skb)
 		if(!(psta->state &_FW_LINKED))
 		{
 			DBG_COUNTER(padapter->tx_logs.os_tx_m2u_ignore_fw_linked);
-			continue;		
+			continue;
 		}
-		
-		/* avoid come from STA1 and send back STA1 */ 
+
+		/* avoid come from STA1 and send back STA1 */
 		if (!memcmp(psta->hwaddr, &skb->data[6], 6)
 			|| !memcmp(psta->hwaddr, null_addr, 6)
 			|| !memcmp(psta->hwaddr, bc_addr, 6)
@@ -329,4 +329,3 @@ int rtw_xmit_entry(_pkt *pkt, _nic_hdl pnetdev)
 
 	return ret;
 }
-

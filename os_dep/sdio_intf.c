@@ -53,7 +53,7 @@ static const struct dev_pm_ops rtw_sdio_pm_ops = {
 	.suspend	= rtw_sdio_suspend,
 	.resume	= rtw_sdio_resume,
 };
-	
+
 struct sdio_drv_priv {
 	struct sdio_driver r871xs_drv;
 	int drv_registered;
@@ -133,7 +133,7 @@ static void sdio_free_irq(struct dvobj_priv *dvobj)
 				DBG_871X_LEVEL(_drv_err_,"%s: sdio_release_irq FAIL(%d)!\n", __func__, err);
             }
             else
-            	dvobj->drv_dbg.dbg_sdio_free_irq_cnt++;
+		dvobj->drv_dbg.dbg_sdio_free_irq_cnt++;
             sdio_release_host(func);
         }
         dvobj->irq_alloc = 0;
@@ -287,9 +287,9 @@ _func_enter_;
 free_dvobj:
 	if (status != _SUCCESS && dvobj) {
 		sdio_set_drvdata(func, NULL);
-		
+
 		devobj_deinit(dvobj);
-		
+
 		dvobj = NULL;
 	}
 exit:
@@ -348,7 +348,7 @@ static _adapter *rtw_sdio_if1_init(struct dvobj_priv *dvobj, const struct sdio_d
 	int status = _FAIL;
 	struct net_device *pnetdev;
 	PADAPTER padapter = NULL;
-	
+
 	if ((padapter = (_adapter *)vzalloc(sizeof(*padapter))) == NULL) {
 		goto exit;
 	}
@@ -365,7 +365,7 @@ static _adapter *rtw_sdio_if1_init(struct dvobj_priv *dvobj, const struct sdio_d
 	pnetdev = rtw_init_netdev(padapter);
 	if (!pnetdev)
 		goto free_adapter;
-	
+
 	SET_NETDEV_DEV(pnetdev, dvobj_to_dev(dvobj));
 
 	padapter = rtw_netdev_priv(pnetdev);
@@ -422,9 +422,9 @@ static _adapter *rtw_sdio_if1_init(struct dvobj_priv *dvobj, const struct sdio_d
 		,padapter->bup
 		,padapter->hw_init_completed
 	);
-	
+
 	status = _SUCCESS;
-	
+
 free_hal_data:
 	if(status != _SUCCESS && padapter->HalData)
 		kfree(padapter->HalData);
@@ -469,7 +469,7 @@ static void rtw_sdio_if1_deinit(_adapter *if1)
 
 	rtw_dev_unload(if1);
 	DBG_871X("+r871xu_dev_remove, hw_init_completed=%d\n", if1->hw_init_completed);
-	
+
 	if (if1->rtw_wdev) {
 		rtw_wdev_free(if1->rtw_wdev);
 	}
@@ -608,10 +608,10 @@ static int rtw_sdio_suspend(struct device *dev)
 		goto exit;
 	}
 
-	ret = rtw_suspend_common(padapter);		
+	ret = rtw_suspend_common(padapter);
 
 exit:
-#ifdef CONFIG_RTW_SDIO_PM_KEEP_POWER 
+#ifdef CONFIG_RTW_SDIO_PM_KEEP_POWER
 	//Android 4.0 don't support WIFI close power
 	//or power down or clock will close after wifi resume,
 	//this is sprd's bug in Android 4.0, but sprd don't
@@ -638,14 +638,14 @@ static int rtw_resume_process(_adapter *padapter)
 	struct pwrctrl_priv *pwrpriv = adapter_to_pwrctl(padapter);
 	struct dvobj_priv *psdpriv = padapter->dvobj;
 	struct debug_priv *pdbgpriv = &psdpriv->drv_dbg;
-		
+
 	if (pwrpriv->bInSuspend == false)
 	{
 		pdbgpriv->dbg_resume_error_cnt++;
 		DBG_871X("%s bInSuspend = %d\n", __FUNCTION__, pwrpriv->bInSuspend);
 		return -1;
 	}
-	
+
 	return rtw_resume_common(padapter);
 }
 
@@ -665,7 +665,7 @@ static int rtw_sdio_resume(struct device *dev)
 
 	if(pwrpriv->bInternalAutoSuspend)
 	{
- 		ret = rtw_resume_process(padapter);
+		ret = rtw_resume_process(padapter);
 	}
 	else
 	{
@@ -734,4 +734,3 @@ static void __exit rtw_drv_halt(void)
 
 module_init(rtw_drv_entry);
 module_exit(rtw_drv_halt);
-

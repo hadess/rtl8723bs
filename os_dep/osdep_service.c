@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Copyright(c) 2007 - 2012 Realtek Corporation. All rights reserved.
- *                                        
+ *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of version 2 of the GNU General Public License as
  * published by the Free Software Foundation.
@@ -36,22 +36,22 @@ inline int RTW_STATUS_CODE(int error_code)
 
 u8* _rtw_malloc(u32 sz)
 {
-	u8 	*pbuf=NULL;
+	u8	*pbuf=NULL;
 
-	pbuf = kmalloc(sz,in_interrupt() ? GFP_ATOMIC : GFP_KERNEL); 		
+	pbuf = kmalloc(sz,in_interrupt() ? GFP_ATOMIC : GFP_KERNEL);
 
-	return pbuf;	
+	return pbuf;
 }
 
 u8* _rtw_zmalloc(u32 sz)
 {
-	u8 	*pbuf = _rtw_malloc(sz);
+	u8	*pbuf = _rtw_malloc(sz);
 
 	if (pbuf != NULL) {
 		memset(pbuf, 0, sz);
 	}
 
-	return pbuf;	
+	return pbuf;
 }
 
 inline struct sk_buff *_rtw_skb_alloc(u32 sz)
@@ -77,7 +77,7 @@ inline int _rtw_netif_rx(_nic_hdl ndev, struct sk_buff *skb)
 
 void rtw_init_timer(_timer *ptimer, void *padapter, void *pfunc)
 {
-	_adapter *adapter = (_adapter *)padapter;	
+	_adapter *adapter = (_adapter *)padapter;
 
 	_init_timer(ptimer, adapter->pnetdev, pfunc, adapter);
 }
@@ -97,19 +97,19 @@ void	_rtw_init_queue(_queue	*pqueue)
 * @param mode please refer to linux document
 * @return Linux specific error code
 */
-static int openFile(struct file **fpp, char *path, int flag, int mode) 
-{ 
-	struct file *fp; 
- 
-	fp=filp_open(path, flag, mode); 
+static int openFile(struct file **fpp, char *path, int flag, int mode)
+{
+	struct file *fp;
+
+	fp=filp_open(path, flag, mode);
 	if(IS_ERR(fp)) {
 		*fpp=NULL;
 		return PTR_ERR(fp);
 	}
 	else {
-		*fpp=fp; 
+		*fpp=fp;
 		return 0;
-	}	
+	}
 }
 
 /*
@@ -117,17 +117,17 @@ static int openFile(struct file **fpp, char *path, int flag, int mode)
 * @param fp the pointer of struct file to close
 * @return always 0
 */
-static int closeFile(struct file *fp) 
-{ 
+static int closeFile(struct file *fp)
+{
 	filp_close(fp,NULL);
-	return 0; 
+	return 0;
 }
 
-static int readFile(struct file *fp,char *buf,int len) 
-{ 
+static int readFile(struct file *fp,char *buf,int len)
+{
 	int rlen=0, sum=0;
-	
-	if (!fp->f_op || !fp->f_op->read) 
+
+	if (!fp->f_op || !fp->f_op->read)
 		return -EPERM;
 
 	while(sum<len) {
@@ -139,7 +139,7 @@ static int readFile(struct file *fp,char *buf,int len)
 		else
 			break;
 	}
-	
+
 	return  sum;
 
 }
@@ -150,25 +150,25 @@ static int readFile(struct file *fp,char *buf,int len)
 * @return Linux specific error code
 */
 static int isFileReadable(char *path)
-{ 
+{
 	struct file *fp;
 	int ret = 0;
 	mm_segment_t oldfs;
 	char buf;
- 
-	fp=filp_open(path, O_RDONLY, 0); 
+
+	fp=filp_open(path, O_RDONLY, 0);
 	if(IS_ERR(fp)) {
 		ret = PTR_ERR(fp);
 	}
 	else {
 		oldfs = get_fs(); set_fs(get_ds());
-		
+
 		if(1!=readFile(fp, &buf, 1))
 			ret = PTR_ERR(fp);
-		
+
 		set_fs(oldfs);
 		filp_close(fp,NULL);
-	}	
+	}
 	return ret;
 }
 
@@ -193,9 +193,9 @@ static int retriveFromFile(char *path, u8* buf, u32 sz)
 			ret=readFile(fp, buf, sz);
 			set_fs(oldfs);
 			closeFile(fp);
-			
+
 			DBG_871X("%s readFile, ret:%d\n",__FUNCTION__, ret);
-			
+
 		} else {
 			DBG_871X("%s openFile path:%s Fail, ret:%d\n",__FUNCTION__, path, ret);
 		}
@@ -240,7 +240,7 @@ struct net_device *rtw_alloc_etherdev_with_old_priv(int sizeof_priv, void *old_p
 	pnetdev = alloc_etherdev_mq(sizeof(struct rtw_netdev_priv_indicator), 4);
 	if (!pnetdev)
 		goto RETURN;
-	
+
 	pnpi = netdev_priv(pnetdev);
 	pnpi->priv=old_priv;
 	pnpi->sizeof_priv=sizeof_priv;
@@ -257,16 +257,16 @@ struct net_device *rtw_alloc_etherdev(int sizeof_priv)
 	pnetdev = alloc_etherdev_mq(sizeof(struct rtw_netdev_priv_indicator), 4);
 	if (!pnetdev)
 		goto RETURN;
-	
+
 	pnpi = netdev_priv(pnetdev);
-	
+
 	pnpi->priv = vzalloc(sizeof_priv);
 	if (!pnpi->priv) {
 		free_netdev(pnetdev);
 		pnetdev = NULL;
 		goto RETURN;
 	}
-	
+
 	pnpi->sizeof_priv=sizeof_priv;
 RETURN:
 	return pnetdev;
@@ -275,10 +275,10 @@ RETURN:
 void rtw_free_netdev(struct net_device * netdev)
 {
 	struct rtw_netdev_priv_indicator *pnpi;
-	
+
 	if(!netdev)
 		goto RETURN;
-	
+
 	pnpi = netdev_priv(netdev);
 
 	if(!pnpi->priv)
@@ -303,7 +303,7 @@ int rtw_change_ifname(_adapter *padapter, const char *ifname)
 
 	cur_pnetdev = padapter->pnetdev;
 	rereg_priv = &padapter->rereg_nd_name_priv;
-	
+
 	//free the old_pnetdev
 	if(rereg_priv->old_pnetdev) {
 		free_netdev(rereg_priv->old_pnetdev);
@@ -342,9 +342,9 @@ int rtw_change_ifname(_adapter *padapter, const char *ifname)
 	return 0;
 
 error:
-	
+
 	return -1;
-	
+
 }
 
 u64 rtw_modular64(u64 x, u64 y)

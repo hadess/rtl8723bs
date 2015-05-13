@@ -36,7 +36,7 @@ void rtw_os_free_recvframe(union recv_frame *precvframe)
 int rtw_os_recv_resource_alloc(_adapter *padapter, union recv_frame *precvframe)
 {
 	int	res=_SUCCESS;
-	
+
 	precvframe->u.hdr.pkt_newalloc = precvframe->u.hdr.pkt = NULL;
 
 	return res;
@@ -136,9 +136,9 @@ void rtw_os_recv_indicate_pkt(_adapter *padapter, _pkt *pkt, struct rx_pkt_attri
 	if (pkt) {
 		if(check_fwstate(pmlmepriv, WIFI_AP_STATE) == true)
 		{
-		 	_pkt *pskb2=NULL;
-		 	struct sta_info *psta = NULL;
-		 	struct sta_priv *pstapriv = &padapter->stapriv;
+			_pkt *pskb2=NULL;
+			struct sta_info *psta = NULL;
+			struct sta_priv *pstapriv = &padapter->stapriv;
 			int bmcast = IS_MCAST(pattrib->dst);
 
 			//DBG_871X("bmcast=%d\n", bmcast);
@@ -157,12 +157,12 @@ void rtw_os_recv_indicate_pkt(_adapter *padapter, _pkt *pkt, struct rx_pkt_attri
 
 				if(psta)
 				{
-					struct net_device *pnetdev= (struct net_device*)padapter->pnetdev;			
+					struct net_device *pnetdev= (struct net_device*)padapter->pnetdev;
 
 					//DBG_871X("directly forwarding to the rtw_xmit_entry\n");
 
 					//skb->ip_summed = CHECKSUM_NONE;
-					pkt->dev = pnetdev;				
+					pkt->dev = pnetdev;
 					skb_set_queue_mapping(pkt, rtw_recv_select_queue(pkt));
 
 					_rtw_xmit_entry(pkt, pnetdev);
@@ -210,7 +210,7 @@ void rtw_handle_tkip_mic_err(_adapter *padapter,u8 bgroup)
 	union iwreq_data wrqu;
 	struct iw_michaelmicfailure    ev;
 	struct mlme_priv*              pmlmepriv  = &padapter->mlmepriv;
-	struct security_priv	*psecuritypriv = &padapter->securitypriv;	
+	struct security_priv	*psecuritypriv = &padapter->securitypriv;
 	unsigned long cur_time = 0;
 
 	if( psecuritypriv->last_mic_err_time == 0 )
@@ -264,20 +264,20 @@ void rtw_handle_tkip_mic_err(_adapter *padapter,u8 bgroup)
 
 #ifdef CONFIG_AUTO_AP_MODE
 static void rtw_os_ksocket_send(_adapter *padapter, union recv_frame *precv_frame)
-{	
-	_pkt *skb = precv_frame->u.hdr.pkt;	
+{
+	_pkt *skb = precv_frame->u.hdr.pkt;
 	struct rx_pkt_attrib *pattrib = &precv_frame->u.hdr.attrib;
 	struct sta_info *psta = precv_frame->u.hdr.psta;
-		
-	DBG_871X("eth rx: got eth_type=0x%x\n", pattrib->eth_type);					
-		
+
+	DBG_871X("eth rx: got eth_type=0x%x\n", pattrib->eth_type);
+
 	if (psta && psta->isrc && psta->pid>0)
 	{
 		u16 rx_pid;
 
 		rx_pid = *(u16*)(skb->data+ETH_HLEN);
-			
-		DBG_871X("eth rx(pid=0x%x): sta("MAC_FMT") pid=0x%x\n", 
+
+		DBG_871X("eth rx(pid=0x%x): sta("MAC_FMT") pid=0x%x\n",
 			rx_pid, MAC_ARG(psta->hwaddr), psta->pid);
 
 		if(rx_pid == psta->pid)
@@ -286,17 +286,17 @@ static void rtw_os_ksocket_send(_adapter *padapter, union recv_frame *precv_fram
 			u16 len = *(u16*)(skb->data+ETH_HLEN+2);
 			//u16 ctrl_type = *(u16*)(skb->data+ETH_HLEN+4);
 
-			//DBG_871X("eth, RC: len=0x%x, ctrl_type=0x%x\n", len, ctrl_type); 
+			//DBG_871X("eth, RC: len=0x%x, ctrl_type=0x%x\n", len, ctrl_type);
 			DBG_871X("eth, RC: len=0x%x\n", len);
 
 			for(i=0;i<len;i++)
 				DBG_871X("0x%x\n", *(skb->data+ETH_HLEN+4+i));
 				//DBG_871X("0x%x\n", *(skb->data+ETH_HLEN+6+i));
 
-			DBG_871X("eth, RC-end\n"); 
+			DBG_871X("eth, RC-end\n");
 		}
-		
-	}		
+
+	}
 
 }
 #endif //CONFIG_AUTO_AP_MODE
@@ -323,7 +323,7 @@ _func_enter_;
 		goto _recv_indicatepkt_drop;
 	}
 
-	RT_TRACE(_module_recv_osdep_c_,_drv_info_,("rtw_recv_indicatepkt():skb != NULL !!!\n"));		
+	RT_TRACE(_module_recv_osdep_c_,_drv_info_,("rtw_recv_indicatepkt():skb != NULL !!!\n"));
 	RT_TRACE(_module_recv_osdep_c_,_drv_info_,("rtw_recv_indicatepkt():precv_frame->u.hdr.rx_head=%p  precv_frame->hdr.rx_data=%p\n", precv_frame->u.hdr.rx_head, precv_frame->u.hdr.rx_data));
 	RT_TRACE(_module_recv_osdep_c_,_drv_info_,("precv_frame->hdr.rx_tail=%p precv_frame->u.hdr.rx_end=%p precv_frame->hdr.len=%d \n", precv_frame->u.hdr.rx_tail, precv_frame->u.hdr.rx_end, precv_frame->u.hdr.len));
 
@@ -335,7 +335,7 @@ _func_enter_;
 
 	RT_TRACE(_module_recv_osdep_c_,_drv_info_,("\n skb->head=%p skb->data=%p skb->tail=%p skb->end=%p skb->len=%d\n", skb->head, skb->data, skb_tail_pointer(skb), skb_end_pointer(skb), skb->len));
 
-#ifdef CONFIG_AUTO_AP_MODE	
+#ifdef CONFIG_AUTO_AP_MODE
 	if (0x8899 == pattrib->eth_type)
 	{
 		rtw_os_ksocket_send(padapter, precv_frame);
@@ -376,4 +376,3 @@ void rtw_init_recv_timer(struct recv_reorder_ctrl *preorder_ctrl)
 	_init_timer(&(preorder_ctrl->reordering_ctrl_timer), padapter->pnetdev, rtw_reordering_ctrl_timeout_handler, preorder_ctrl);
 
 }
-

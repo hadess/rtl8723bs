@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Copyright(c) 2007 - 2011 Realtek Corporation. All rights reserved.
- *                                        
+ *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of version 2 of the GNU General Public License as
  * published by the Free Software Foundation.
@@ -28,13 +28,13 @@ static void _dynamic_check_timer_handlder (void *FunctionContext)
 	_adapter *adapter = (_adapter *)FunctionContext;
 
 	rtw_dynamic_check_timer_handlder(adapter);
-	
+
 	_set_timer(&adapter->mlmepriv.dynamic_chk_timer, 2000);
 }
 
 static void _rtw_set_scan_deny_timer_hdl(void *FunctionContext)
 {
-	_adapter *adapter = (_adapter *)FunctionContext;	 
+	_adapter *adapter = (_adapter *)FunctionContext;
 	rtw_set_scan_deny_timer_hdl(adapter);
 }
 
@@ -57,9 +57,9 @@ extern void rtw_indicate_wx_disassoc_event(_adapter *padapter);
 void rtw_os_indicate_connect(_adapter *adapter)
 {
 	struct mlme_priv *pmlmepriv = &(adapter->mlmepriv);
-_func_enter_;	
+_func_enter_;
 
-	if ( (check_fwstate(pmlmepriv, WIFI_ADHOC_MASTER_STATE)==true ) || 
+	if ( (check_fwstate(pmlmepriv, WIFI_ADHOC_MASTER_STATE)==true ) ||
 		(check_fwstate(pmlmepriv, WIFI_ADHOC_STATE)==true ) )
 	{
 		rtw_cfg80211_ibss_indicate_connect(adapter);
@@ -73,7 +73,7 @@ _func_enter_;
 	if(adapter->pid[2] !=0)
 		rtw_signal_process(adapter->pid[2], SIGALRM);
 
-_func_exit_;	
+_func_exit_;
 
 }
 
@@ -93,11 +93,11 @@ void rtw_reset_securitypriv( _adapter *adapter )
 	// add for CONFIG_IEEE80211W, none 11w also can use
 	_irqL irqL;
 	struct mlme_ext_priv	*pmlmeext = &adapter->mlmeextpriv;
-	
+
 	spin_lock_bh(&adapter->security_key_mutex);
-	
+
 	if(adapter->securitypriv.dot11AuthAlgrthm == dot11AuthAlgrthm_8021X)//802.1x
-	{		 
+	{
 		// Added by Albert 2009/02/18
 		// We have to backup the PMK information for WiFi PMK Caching test item.
 		//
@@ -109,7 +109,7 @@ void rtw_reset_securitypriv( _adapter *adapter )
 		memcpy( &backupPMKIDList[ 0 ], &adapter->securitypriv.PMKIDList[ 0 ], sizeof( RT_PMKID_LIST ) * NUM_PMKID_CACHE );
 		backupPMKIDIndex = adapter->securitypriv.PMKIDIndex;
 		backupTKIPCountermeasure = adapter->securitypriv.btkip_countermeasure;
-		backupTKIPcountermeasure_time = adapter->securitypriv.btkip_countermeasure_time;		
+		backupTKIPcountermeasure_time = adapter->securitypriv.btkip_countermeasure_time;
 
 		//reset RX BIP packet number
 		pmlmeext->mgnt_80211w_IPN_rx = 0;
@@ -121,13 +121,13 @@ void rtw_reset_securitypriv( _adapter *adapter )
 		memcpy( &adapter->securitypriv.PMKIDList[ 0 ], &backupPMKIDList[ 0 ], sizeof( RT_PMKID_LIST ) * NUM_PMKID_CACHE );
 		adapter->securitypriv.PMKIDIndex = backupPMKIDIndex;
 		adapter->securitypriv.btkip_countermeasure = backupTKIPCountermeasure;
-		adapter->securitypriv.btkip_countermeasure_time = backupTKIPcountermeasure_time;		
+		adapter->securitypriv.btkip_countermeasure_time = backupTKIPcountermeasure_time;
 
 		adapter->securitypriv.ndisauthtype = Ndis802_11AuthModeOpen;
 		adapter->securitypriv.ndisencryptstatus = Ndis802_11WEPDisabled;
 
 	}
-	else //reset values in securitypriv 
+	else //reset values in securitypriv
 	{
 		//if(adapter->mlmepriv.fw_state & WIFI_STATION_STATE)
 		//{
@@ -194,7 +194,7 @@ _func_enter_;
 
 		len = sec_ie[1]+2;
 		len = (len < IW_CUSTOM_MAX) ? len:IW_CUSTOM_MAX;
-			
+
 		for(i=0;i<len;i++){
 			p+=sprintf(p,"%02x",sec_ie[i]);
 		}
@@ -219,7 +219,7 @@ void init_addba_retry_timer(_adapter *padapter, struct sta_info *psta)
 }
 
 void init_mlme_ext_timer(_adapter *padapter)
-{	
+{
 	struct	mlme_ext_priv *pmlmeext = &padapter->mlmeextpriv;
 
 	_init_timer(&pmlmeext->survey_timer, padapter->pnetdev, survey_timer_hdl, padapter);
