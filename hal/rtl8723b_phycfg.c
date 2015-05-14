@@ -97,7 +97,6 @@ PHY_QueryBBReg_8723B(
 	)
 {
 	u32	ReturnValue = 0, OriginalValue, BitShift;
-	u16	BBWaitCounter = 0;
 
 #if (DISABLE_BB_RF == 1)
 	return 0;
@@ -140,7 +139,6 @@ PHY_SetBBReg_8723B(
 	IN	u32		Data
 	)
 {
-	HAL_DATA_TYPE	*pHalData		= GET_HAL_DATA(Adapter);
 	//u16			BBWaitCounter	= 0;
 	u32			OriginalValue, BitShift;
 
@@ -176,7 +174,7 @@ phy_RFSerialRead_8723B(
 	HAL_DATA_TYPE				*pHalData = GET_HAL_DATA(Adapter);
 	BB_REGISTER_DEFINITION_T	*pPhyReg = &pHalData->PHYRegDef[eRFPath];
 	u32						NewOffset;
-	u32						tmplong,tmplong2;
+	u32 tmplong2;
 	u8					RfPiEnable=0;
 	u4Byte						MaskforPhySet=0;
 	int i = 0;
@@ -594,8 +592,7 @@ PHY_BBConfig8723B(
 	int	rtStatus = _SUCCESS;
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
 	u32	RegVal;
-	u8	TmpU1B=0;
-	u8	value8, CrystalCap;
+	u8	CrystalCap;
 
 	phy_InitBBRFRegisterDefinition(Adapter);
 
@@ -642,7 +639,6 @@ PHY_RFConfig8723B(
 	IN	PADAPTER	Adapter
 	)
 {
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
 	int		rtStatus = _SUCCESS;
 
 	//
@@ -774,8 +770,6 @@ PHY_GetTxPowerLevel8723B(
 	OUT s32*				powerlevel
 	)
 {
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
-	s32				TxPwrDbm = 13;
 }
 
 static void
@@ -994,7 +988,6 @@ PHY_HandleSwChnlAndSetBW8723B(
 	u8					tmpnCur40MhzPrimeSC = pHalData->nCur40MhzPrimeSC;
 	u8					tmpnCur80MhzPrimeSC = pHalData->nCur80MhzPrimeSC;
 	u8					tmpCenterFrequencyIndex1 =pHalData->CurrentCenterFrequencyIndex1;
-	struct mlme_ext_priv	*pmlmeext = &Adapter->mlmeextpriv;
 
 	//DBG_871X("=> PHY_HandleSwChnlAndSetBW8812: bSwitchChannel %d, bSetBandWidth %d \n",bSwitchChannel,bSetBandWidth);
 

@@ -105,7 +105,6 @@ odm_NHMBB(
 )
 {
 	PDM_ODM_T	pDM_Odm = (PDM_ODM_T)pDM_VOID;
-	u4Byte		value32;
 	//u1Byte	test_status;
 	//Pfalse_ALARM_STATISTICS pFalseAlmCnt = &(pDM_Odm->FalseAlmCnt);
 
@@ -176,7 +175,7 @@ odm_SearchPwdBLowerBound(
 	u1Byte			cnt, IGI;
 	bool			bAdjust=true;
 	s8			TH_L2H_dmc, TH_H2L_dmc;
-	s8			TH_L2H, TH_H2L, Diff;
+	s8 Diff;
 
 	IGI = 0x50; // find H2L, L2H lower bound
 	ODM_Write_DIG(pDM_Odm, IGI);
@@ -524,7 +523,6 @@ odm_DIGInit(
 {
 	PDM_ODM_T					pDM_Odm = (PDM_ODM_T)pDM_VOID;
 	pDIG_T						pDM_DigTable = &pDM_Odm->DM_DigTable;
-	Pfalse_ALARM_STATISTICS		FalseAlmCnt = &(pDM_Odm->FalseAlmCnt);
 
 	pDM_DigTable->bStopDIG = false;
 	pDM_DigTable->bPSDInProgress = false;
@@ -578,7 +576,7 @@ odm_DIG(
 	pDIG_T						pDM_DigTable = &pDM_Odm->DM_DigTable;
 	Pfalse_ALARM_STATISTICS		pFalseAlmCnt = &pDM_Odm->FalseAlmCnt;
 	bool						FirstConnect,FirstDisConnect;
-	u1Byte						DIG_MaxOfMin, DIG_Dynamic_MIN, i;
+	u1Byte						DIG_MaxOfMin, DIG_Dynamic_MIN;
 	u1Byte						dm_dig_max, dm_dig_min;
 	u1Byte						CurrentIGI = pDM_DigTable->CurIGValue;
 	u1Byte						offset;

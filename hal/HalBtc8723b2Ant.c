@@ -276,7 +276,6 @@ halbtc8723b2ant_MonitorBtCtr(
 {
 	u4Byte			regHPTxRx, regLPTxRx, u4Tmp;
 	u4Byte			regHPTx=0, regHPRx=0, regLPTx=0, regLPRx=0;
-	u1Byte			u1Tmp;
 
 	regHPTxRx = 0x770;
 	regLPTxRx = 0x774;
@@ -361,7 +360,6 @@ halbtc8723b2ant_UpdateBtLinkInfo(
 	IN	PBTC_COEXIST		pBtCoexist
 	)
 {
-	PBTC_STACK_INFO		pStackInfo=&pBtCoexist->stackInfo;
 	PBTC_BT_LINK_INFO	pBtLinkInfo=&pBtCoexist->btLinkInfo;
 	bool				bBtHsOn=false;
 
@@ -1311,9 +1309,6 @@ halbtc8723b2ant_PsTdma(
 	IN	u1Byte			type
 	)
 {
-	bool			bTurnOnByCnt=false;
-	u1Byte			psTdmaTypeByCnt=0;
-
 	BTC_PRINT(BTC_MSG_ALGORITHM, ALGO_TRACE_FW, ("[BTCoex], %s turn %s PS TDMA, type=%d\n",
 		(bForceExec? "force to":""), (bTurnOn? "ON":"OFF"), type));
 	pCoexDm->bCurPsTdmaOn = bTurnOn;
@@ -3246,8 +3241,6 @@ halbtc8723b2ant_RunCoexistMechanism(
 	IN	PBTC_COEXIST		pBtCoexist
 	)
 {
-	bool				bWifiUnder5G=false, bBtHsOn=false;
-	u1Byte				btInfoOriginal=0, btRetryCnt=0;
 	u1Byte				algorithm=0;
 
 	BTC_PRINT(BTC_MSG_ALGORITHM, ALGO_TRACE, ("[BTCoex], RunCoexistMechanism()===>\n"));
@@ -3385,12 +3378,7 @@ halbtc8723b2ant_InitHwConfig(
 	IN	bool				bBackUp
 	)
 {
-	PBTC_BOARD_INFO		pBoardInfo=&pBtCoexist->boardInfo;
-	u4Byte	u4Tmp=0, fwVer;
-	u2Byte				u2Tmp=0;
 	u1Byte	u1Tmp=0;
-	u1Byte				H2C_Parameter[2] ={0};
-
 
 	BTC_PRINT(BTC_MSG_INTERFACE, INTF_INIT, ("[BTCoex], 2Ant Init HW Config!!\n"));
 
@@ -3875,13 +3863,10 @@ EXhalbtc8723b2ant_BtInfoNotify(
 	IN	u1Byte			length
 	)
 {
-	PBTC_BT_LINK_INFO	pBtLinkInfo=&pBtCoexist->btLinkInfo;
 	u1Byte			btInfo=0;
 	u1Byte			i, rspSource=0;
 	bool			bBtBusy=false, bLimitedDig=false;
 	bool			bWifiConnected=false;
-	static bool		bPreScoExist=false;
-	u4Byte				raMask=0x0;
 
 	pCoexSta->bC2hBtInfoReqSent = false;
 
@@ -4087,8 +4072,6 @@ EXhalbtc8723b2ant_Periodical(
 {
 	static u1Byte		disVerInfoCnt=0;
 	u4Byte				fwVer=0, btPatchVer=0;
-	PBTC_BOARD_INFO		pBoardInfo=&pBtCoexist->boardInfo;
-	PBTC_STACK_INFO		pStackInfo=&pBtCoexist->stackInfo;
 
 	BTC_PRINT(BTC_MSG_ALGORITHM, ALGO_TRACE, ("[BTCoex], ==========================Periodical===========================\n"));
 

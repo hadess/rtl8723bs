@@ -72,7 +72,6 @@ odm_EdcaTurboCheckCE(
 	PADAPTER		       Adapter = pDM_Odm->Adapter;
 	u32	EDCA_BE_UL = 0x5ea42b;//Parameter suggested by Scott  //edca_setting_UL[pMgntInfo->IOTPeer];
 	u32	EDCA_BE_DL = 0x5ea42b;//Parameter suggested by Scott  //edca_setting_DL[pMgntInfo->IOTPeer];
-	u32	ICType=pDM_Odm->SupportICType;
 	u32	IOTPeer=0;
 	u8	WirelessMode=0xFF;                   //invalid value
 	u32	trafficIndex;
@@ -83,7 +82,6 @@ odm_EdcaTurboCheckCE(
 	u8	bBiasOnRx = false;
 	HAL_DATA_TYPE		*pHalData = GET_HAL_DATA(Adapter);
 	struct dvobj_priv		*pdvobjpriv = adapter_to_dvobj(Adapter);
-	struct xmit_priv		*pxmitpriv = &(Adapter->xmitpriv);
 	struct recv_priv		*precvpriv = &(Adapter->recvpriv);
 	struct registry_priv	*pregpriv = &Adapter->registrypriv;
 	struct mlme_ext_priv	*pmlmeext = &(Adapter->mlmeextpriv);

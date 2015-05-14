@@ -120,9 +120,7 @@ hal_com_config_channel_plan(
 	)
 {
 	PHAL_DATA_TYPE	pHalData;
-	u8 hwConfig;
 	u8 chnlPlan;
-
 
 	pHalData = GET_HAL_DATA(padapter);
 	pHalData->bDisableSWChannelPlan = false;
@@ -699,13 +697,7 @@ _func_enter_;
 		hw_var_port_switch(adapter);
 		break;
 	case HW_VAR_INIT_RTS_RATE:
-	{
-		u16 brate_cfg = *((u16*)val);
-		u8 rate_index = 0;
-		HAL_VERSION *hal_ver = &hal_data->VersionID;
-
 		rtw_warn_on(1);
-	}
 		break;
 	case HW_VAR_SEC_CFG:
 	{
@@ -822,24 +814,19 @@ SetHalDefVar(_adapter *adapter, HAL_DEF_VARIABLE variable, void *value)
 			odm->DebugComponents &= ~(ODM_COMP_DIG |ODM_COMP_FA_CNT);
 		break;
 	case HAL_DEF_DBG_RX_INFO_DUMP:
-		{
-			Pfalse_ALARM_STATISTICS FalseAlmCnt = &(odm->FalseAlmCnt);
-			pDIG_T	pDM_DigTable = &odm->DM_DigTable;
+		DBG_871X("============ Rx Info dump ===================\n");
+		DBG_871X("bLinked = %d, RSSI_Min = %d(%%), CurrentIGI = 0x%x \n",
+			odm->bLinked, odm->RSSI_Min, pDM_DigTable->CurIGValue);
+		DBG_871X("Cnt_Cck_fail = %d, Cnt_Ofdm_fail = %d, Total False Alarm = %d\n",
+			FalseAlmCnt->Cnt_Cck_fail, FalseAlmCnt->Cnt_Ofdm_fail, FalseAlmCnt->Cnt_all);
 
-			DBG_871X("============ Rx Info dump ===================\n");
-			DBG_871X("bLinked = %d, RSSI_Min = %d(%%), CurrentIGI = 0x%x \n",
-				odm->bLinked, odm->RSSI_Min, pDM_DigTable->CurIGValue);
-			DBG_871X("Cnt_Cck_fail = %d, Cnt_Ofdm_fail = %d, Total False Alarm = %d\n",
-				FalseAlmCnt->Cnt_Cck_fail, FalseAlmCnt->Cnt_Ofdm_fail, FalseAlmCnt->Cnt_all);
+		if(odm->bLinked){
+			DBG_871X("RxRate = %s, RSSI_A = %d(%%), RSSI_B = %d(%%)\n",
+				HDATA_RATE(odm->RxRate), odm->RSSI_A, odm->RSSI_B);
 
-			if(odm->bLinked){
-				DBG_871X("RxRate = %s, RSSI_A = %d(%%), RSSI_B = %d(%%)\n",
-					HDATA_RATE(odm->RxRate), odm->RSSI_A, odm->RSSI_B);
-
-				#ifdef DBG_RX_SIGNAL_DISPLAY_RAW_DATA
-				rtw_dump_raw_rssi_info(adapter);
-				#endif
-			}
+			#ifdef DBG_RX_SIGNAL_DISPLAY_RAW_DATA
+			rtw_dump_raw_rssi_info(adapter);
+			#endif
 		}
 		break;
 	case HW_DEF_ODM_DBG_FLAG:
@@ -962,27 +949,26 @@ GetHalDefVar(_adapter *adapter, HAL_DEF_VARIABLE variable, void *value)
 void GetHalODMVar(
 	PADAPTER				Adapter,
 	HAL_ODM_VARIABLE		eVariable,
-	void *					pValue1,
-	void *					pValue2)
+	void *pValue1,
+	void *pValue2)
 {
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
-	PDM_ODM_T podmpriv = &pHalData->odmpriv;
 	switch(eVariable){
 #if defined(CONFIG_SIGNAL_DISPLAY_DBM) && defined(CONFIG_BACKGROUND_NOISE_MONITOR)
-		case HAL_ODM_NOISE_MONITOR:
-			{
-				u8 chan = *(u8*)pValue1;
-				*(s16 *)pValue2 = pHalData->noise[chan];
-				#ifdef DBG_NOISE_MONITOR
-				DBG_8192C("### Noise monitor chan(%d)-noise:%d (dBm) ###\n",
-					chan,pHalData->noise[chan]);
-				#endif
+	case HAL_ODM_NOISE_MONITOR:
+		{
+			HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
+			u8 chan = *(u8*)pValue1;
+			*(s16 *)pValue2 = pHalData->noise[chan];
+			#ifdef DBG_NOISE_MONITOR
+			DBG_8192C("### Noise monitor chan(%d)-noise:%d (dBm) ###\n",
+				chan,pHalData->noise[chan]);
+			#endif
 
-			}
-			break;
+		}
+		break;
 #endif//#ifdef CONFIG_BACKGROUND_NOISE_MONITOR
-		default:
-			break;
+	default:
+		break;
 	}
 }
 
@@ -1312,7 +1298,6 @@ void rtw_hal_check_rxfifo_full(_adapter *adapter)
 {
 	struct dvobj_priv *psdpriv = adapter->dvobj;
 	struct debug_priv *pdbgpriv = &psdpriv->drv_dbg;
-	HAL_DATA_TYPE		*pHalData = GET_HAL_DATA(adapter);
 	int save_cnt=false;
 
 	//switch counter to RX fifo
@@ -1451,7 +1436,6 @@ static u32 Array_kfreemap[] = {
 void rtw_bb_rf_gain_offset(_adapter *padapter)
 {
 	u8		value = padapter->eeprompriv.EEPROMRFGainOffset;
-	u8		tmp = 0x3e;
 	u32	res,i=0;
 	u4Byte	   ArrayLen    = sizeof(Array_kfreemap)/sizeof(u32);
 	pu4Byte    Array	   = Array_kfreemap;

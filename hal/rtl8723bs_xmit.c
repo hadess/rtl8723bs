@@ -204,7 +204,6 @@ static s32 xmit_xmitframes(PADAPTER padapter, struct xmit_priv *pxmitpriv)
 	u32 k=0;
 	struct hw_xmit *hwxmits, *phwxmit;
 	u8 no_res, idx, hwentry;
-	_irqL irql;
 	struct tx_servq *ptxservq;
 	_list *sta_plist, *sta_phead, *frame_plist, *frame_phead;
 	struct xmit_frame *pxmitframe;
@@ -402,7 +401,6 @@ static s32 rtl8723bs_xmit_handler(PADAPTER padapter)
 {
 	struct xmit_priv *pxmitpriv;
 	s32 ret;
-	_irqL irql;
 
 
 	pxmitpriv = &padapter->xmitpriv;
@@ -542,7 +540,6 @@ s32 rtl8723bs_mgnt_xmit(PADAPTER padapter, struct xmit_frame *pmgntframe)
 s32 rtl8723bs_hal_xmit(PADAPTER padapter, struct xmit_frame *pxmitframe)
 {
 	struct xmit_priv *pxmitpriv;
-	_irqL irql;
 	s32 err;
 
 
@@ -627,7 +624,6 @@ void rtl8723bs_free_xmit_priv(PADAPTER padapter)
 	_queue *pqueue;
 	_list *plist, *phead;
 	_list tmplist;
-	_irqL irql;
 
 
 	phal = GET_HAL_DATA(padapter);

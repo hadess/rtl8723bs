@@ -224,7 +224,6 @@ static void _InitQueueReservedPage(PADAPTER padapter)
 {
 	HAL_DATA_TYPE		*pHalData = GET_HAL_DATA(padapter);
 	struct registry_priv	*pregistrypriv = &padapter->registrypriv;
-	u32			outEPNum	= (u32)pHalData->OutEpNumber;
 	u32			numHQ		= 0;
 	u32			numLQ		= 0;
 	u32			numNQ		= 0;
@@ -643,8 +642,6 @@ static void _InitOperationMode(PADAPTER padapter)
 	struct mlme_ext_priv *pmlmeext;
 	u8				regBwOpMode = 0;
 	u32				regRATR = 0, regRRSR = 0;
-	u8				MinSpaceCfg = 0;
-
 
 	pHalData = GET_HAL_DATA(padapter);
 	pmlmeext = &padapter->mlmeextpriv;
@@ -716,7 +713,6 @@ static void _InitInterrupt(PADAPTER padapter)
 
 static void _InitRFType(PADAPTER padapter)
 {
-	struct registry_priv *pregpriv = &padapter->registrypriv;
 	HAL_DATA_TYPE *pHalData = GET_HAL_DATA(padapter);
 
 #if	DISABLE_BB_RF
@@ -768,14 +764,8 @@ static u32 rtl8723bs_hal_init(PADAPTER padapter)
 	PHAL_DATA_TYPE pHalData;
 	struct pwrctrl_priv *pwrctrlpriv;
 	struct registry_priv *pregistrypriv;
-	struct dvobj_priv *psdpriv = padapter->dvobj;
-	struct debug_priv *pdbgpriv = &psdpriv->drv_dbg;
-	rt_rf_power_state eRfPowerStateToSet;
 	u32 NavUpper = WiFiNavUpperUs;
 	u8 u1bTmp;
-	u16 value16;
-	u8 typeid;
-	u32 u4Tmp;
 
 	pHalData = GET_HAL_DATA(padapter);
 	pwrctrlpriv = adapter_to_pwrctl(padapter);
@@ -1091,8 +1081,6 @@ static u32 rtl8723bs_hal_init(PADAPTER padapter)
 static void CardDisableRTL8723BSdio(PADAPTER padapter)
 {
 	u8		u1bTmp;
-	u16		u2bTmp;
-	u32		u4bTmp;
 	u8		bMacPwrCtrlOn;
 	u8		ret = _FAIL;
 
@@ -1138,7 +1126,6 @@ static void CardDisableRTL8723BSdio(PADAPTER padapter)
 
 static u32 rtl8723bs_hal_deinit(PADAPTER padapter)
 {
-	PHAL_DATA_TYPE pHalData = GET_HAL_DATA(padapter);
         struct dvobj_priv *psdpriv = padapter->dvobj;
 	struct debug_priv *pdbgpriv = &psdpriv->drv_dbg;
 
@@ -1297,16 +1284,11 @@ _EfuseCellSel(
 	IN	PADAPTER	padapter
 	)
 {
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
-
 	u32			value32;
 
-	//if(INCLUDE_MULTI_FUNC_BT(padapter))
-	{
-		value32 = rtw_read32(padapter, EFUSE_TEST);
-		value32 = (value32 & ~EFUSE_SEL_MASK) | EFUSE_SEL(EFUSE_WIFI_SEL_0);
-		rtw_write32(padapter, EFUSE_TEST, value32);
-	}
+	value32 = rtw_read32(padapter, EFUSE_TEST);
+	value32 = (value32 & ~EFUSE_SEL_MASK) | EFUSE_SEL(EFUSE_WIFI_SEL_0);
+	rtw_write32(padapter, EFUSE_TEST, value32);
 }
 
 static void
@@ -1331,7 +1313,7 @@ Hal_EfuseParseMACAddr_8723BS(
 	IN	bool			AutoLoadFail
 	)
 {
-	u16			i, usValue;
+	u16			i;
 	u8			sMacAddr[6] = {0x00, 0xE0, 0x4C, 0xb7, 0x23, 0x00};
 	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(padapter);
 
@@ -1454,18 +1436,6 @@ _InitOtherVariable(
 	IN PADAPTER		Adapter
 	)
 {
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
-
-
-	//if(Adapter->bInHctTest){
-	//	pMgntInfo->PowerSaveControl.bInactivePs = false;
-	//	pMgntInfo->PowerSaveControl.bIPSModeBackup = false;
-	//	pMgntInfo->PowerSaveControl.bLeisurePs = false;
-	//	pMgntInfo->keepAliveLevel = 0;
-	//}
-
-
-
 }
 
 //
@@ -1892,25 +1862,22 @@ _func_exit_;
  */
 static void GetHwReg8723BS(PADAPTER padapter, u8 variable, u8 *val)
 {
-	PHAL_DATA_TYPE pHalData = GET_HAL_DATA(padapter);
-
 _func_enter_;
 
-	switch (variable)
-	{
-		case HW_VAR_CPWM:
-			*val = rtw_read8(padapter, SDIO_LOCAL_BASE|SDIO_REG_HCPWM1_8723B);
-			break;
+	switch (variable) {
+	case HW_VAR_CPWM:
+		*val = rtw_read8(padapter, SDIO_LOCAL_BASE|SDIO_REG_HCPWM1_8723B);
+		break;
 
-		case HW_VAR_FW_PS_STATE:
-			{
-				//3. read dword 0x88               //driver read fw ps state
-				*((u16*)val) = rtw_read16(padapter, 0x88);
-			}
-			break;
-		default:
-			GetHwReg8723B(padapter, variable, val);
-			break;
+	case HW_VAR_FW_PS_STATE:
+		{
+			//3. read dword 0x88               //driver read fw ps state
+			*((u16*)val) = rtw_read16(padapter, 0x88);
+		}
+		break;
+	default:
+		GetHwReg8723B(padapter, variable, val);
+		break;
 	}
 
 _func_exit_;
@@ -1918,19 +1885,17 @@ _func_exit_;
 
 static void SetHwRegWithBuf8723B(PADAPTER padapter, u8 variable, u8 *pbuf, int len)
 {
-	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(padapter);
 
 _func_enter_;
 
-	switch (variable)
-	{
-		case HW_VAR_C2H_HANDLE:
-			//DBG_8192C("%s len=%d \n",__func__,len);
-			C2HPacketHandler_8723B(padapter, pbuf, len);
-			break;
+	switch (variable) {
+	case HW_VAR_C2H_HANDLE:
+		//DBG_8192C("%s len=%d \n",__func__,len);
+		C2HPacketHandler_8723B(padapter, pbuf, len);
+		break;
 
-		default:
-			break;
+	default:
+		break;
 	}
 _func_exit_;
 }
@@ -1946,7 +1911,6 @@ GetHalDefVar8723BSDIO(
 	IN	void *					pValue
 	)
 {
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
 	u8			bResult = _SUCCESS;
 
 	switch(eVariable)
@@ -1979,17 +1943,7 @@ SetHalDefVar8723BSDIO(
 	IN	void *					pValue
 	)
 {
-	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(Adapter);
-	u8			bResult = _SUCCESS;
-
-	switch(eVariable)
-	{
-		default:
-			bResult = SetHalDefVar8723B(Adapter, eVariable, pValue);
-			break;
-	}
-
-	return bResult;
+	return SetHalDefVar8723B(Adapter, eVariable, pValue);
 }
 
 void rtl8723bs_set_hal_ops(PADAPTER padapter)

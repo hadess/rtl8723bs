@@ -156,7 +156,6 @@ odm_RxPhyStatus92CSeries_Parsing(
 	IN		PODM_PACKET_INFO_T			pPktinfo
 	)
 {
-	SWAT_T				*pDM_SWAT_Table = &pDM_Odm->DM_SWAT_Table;
 	u1Byte				i, Max_spatial_stream;
 	s8				rx_pwr[4], rx_pwr_all=0;
 	u1Byte				EVM, PWDB_ALL = 0, PWDB_ALL_BT;
@@ -172,9 +171,7 @@ odm_RxPhyStatus92CSeries_Parsing(
 	pPhyInfo->RxMIMOSignalQuality[ODM_RF_PATH_B] = -1;
 
 
-	if(isCCKrate)
-	{
-		u1Byte report;
+	if(isCCKrate) {
 		u1Byte cck_agc_rpt;
 
 		pDM_Odm->PhyDbgInfo.NumQryPhyStatusCCK++;
@@ -568,11 +565,9 @@ ODM_ConfigRFWithHeaderFile(
 	IN	ODM_RF_RADIO_PATH_E	eRFPath
     )
 {
-	PADAPTER		Adapter = pDM_Odm->Adapter;
-
-   ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_LOUD,
+	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_LOUD,
 				("===>ODM_ConfigRFWithHeaderFile (%s)\n", (pDM_Odm->bIsMPChip) ? "MPChip" : "TestChip"));
-    ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_LOUD,
+	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_LOUD,
 				("pDM_Odm->SupportPlatform: 0x%X, pDM_Odm->SupportInterface: 0x%X, pDM_Odm->BoardType: 0x%X\n",
 				pDM_Odm->SupportPlatform, pDM_Odm->SupportInterface, pDM_Odm->BoardType));
 
@@ -609,26 +604,18 @@ ODM_ConfigBBWithHeaderFile(
 	IN	ODM_BB_Config_Type		ConfigType
 	)
 {
-	PADAPTER		Adapter = pDM_Odm->Adapter;
-
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_LOUD,
 				("===>ODM_ConfigBBWithHeaderFile (%s)\n", (pDM_Odm->bIsMPChip) ? "MPChip" : "TestChip"));
-    ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_LOUD,
+	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_LOUD,
 				("pDM_Odm->SupportPlatform: 0x%X, pDM_Odm->SupportInterface: 0x%X, pDM_Odm->BoardType: 0x%X\n",
 				pDM_Odm->SupportPlatform, pDM_Odm->SupportInterface, pDM_Odm->BoardType));
 
 	if(ConfigType == CONFIG_BB_PHY_REG)
-	{
 		READ_AND_CONFIG(8723B,_PHY_REG);
-	}
 	else if(ConfigType == CONFIG_BB_AGC_TAB)
-	{
 		READ_AND_CONFIG(8723B,_AGC_TAB);
-	}
 	else if(ConfigType == CONFIG_BB_PHY_REG_PG)
-	{
 		READ_AND_CONFIG(8723B,_PHY_REG_PG);
-	}
 
 	return HAL_STATUS_SUCCESS;
 }
@@ -638,8 +625,6 @@ ODM_ConfigMACWithHeaderFile(
 	IN	PDM_ODM_T	pDM_Odm
 	)
 {
-	PADAPTER		Adapter = pDM_Odm->Adapter;
-
 	u1Byte result = HAL_STATUS_SUCCESS;
 
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_LOUD,
