@@ -197,11 +197,9 @@ static void rtl8723bs_recv_tasklet(void *priv)
 	struct recv_priv		*precvpriv;
 	struct recv_buf		*precvbuf;
 	union recv_frame		*precvframe;
-	struct recv_frame_hdr	*phdr;
 	struct rx_pkt_attrib	*pattrib;
-	_irqL	irql;
 	u8		*ptr;
-	u32	pkt_len, pkt_offset, skb_len, alloc_sz;
+	u32	pkt_offset, skb_len, alloc_sz;
 	_pkt		*pkt_copy = NULL;
 	u8		shift_sz = 0, rx_report_sz = 0;
 

@@ -212,7 +212,6 @@ ODM_TxPwrTrackSetPwr_8723B(
 	u1Byte		TxRate = 0xFF;
 	u1Byte		Final_OFDM_Swing_Index = 0;
 	u1Byte		Final_CCK_Swing_Index = 0;
-	u1Byte		i = 0;
 
 	{
 		u2Byte	rate	 = *(pDM_Odm->pForcedDataRate);
@@ -254,27 +253,20 @@ ODM_TxPwrTrackSetPwr_8723B(
 	}
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD,("TxRate=0x%x, PwrTrackingLimit=%d\n", TxRate, PwrTrackingLimit_OFDM));
 
-	if (Method == TXAGC)
-	{
-		u1Byte	rf = 0;
-		u4Byte	pwr = 0, TxAGC = 0;
+	if (Method == TXAGC) {
 		PADAPTER Adapter = pDM_Odm->Adapter;
 
 		ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("odm_TxPwrTrackSetPwr8723B CH=%d\n", *(pDM_Odm->pChannel)));
 
 		pDM_Odm->Remnant_OFDMSwingIdx[RFPath] = pDM_Odm->Absolute_OFDMSwingIdx[RFPath];
 
-		{
-		        pDM_Odm->Modify_TxAGC_Flag_PathA = true;
-		        pDM_Odm->Modify_TxAGC_Flag_PathA_CCK = true;
+	        pDM_Odm->Modify_TxAGC_Flag_PathA = true;
+	        pDM_Odm->Modify_TxAGC_Flag_PathA_CCK = true;
 
-		        PHY_SetTxPowerIndexByRateSection(Adapter, RFPath, pHalData->CurrentChannel, CCK );
-		        PHY_SetTxPowerIndexByRateSection(Adapter, RFPath, pHalData->CurrentChannel, OFDM );
-		        PHY_SetTxPowerIndexByRateSection(Adapter, RFPath, pHalData->CurrentChannel, HT_MCS0_MCS7 );
-		}
-	}
-	else if (Method == BBSWING)
-	{
+	        PHY_SetTxPowerIndexByRateSection(Adapter, RFPath, pHalData->CurrentChannel, CCK );
+	        PHY_SetTxPowerIndexByRateSection(Adapter, RFPath, pHalData->CurrentChannel, OFDM );
+	        PHY_SetTxPowerIndexByRateSection(Adapter, RFPath, pHalData->CurrentChannel, HT_MCS0_MCS7 );
+	} else if (Method == BBSWING) {
 		Final_OFDM_Swing_Index = pDM_Odm->DefaultOfdmIndex + pDM_Odm->Absolute_OFDMSwingIdx[RFPath];
 		Final_CCK_Swing_Index = pDM_Odm->DefaultCckIndex + pDM_Odm->Absolute_OFDMSwingIdx[RFPath];
 
@@ -1451,8 +1443,6 @@ _PHY_ReloadMACRegisters8723B(
 	)
 {
 	u4Byte	i;
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
-	PDM_ODM_T		pDM_Odm = &pHalData->odmpriv;
 
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_CALIBRATION, ODM_DBG_LOUD,  ("Reload MAC parameters !\n"));
 	for(i = 0 ; i < (IQK_MAC_REG_NUM - 1); i++){
@@ -1523,13 +1513,9 @@ phy_SimularityCompare_8723B(
 	)
 {
 	u4Byte		i, j, diff, SimularityBitMap, bound = 0;
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
-	PDM_ODM_T		pDM_Odm = &pHalData->odmpriv;
-
 	u1Byte		final_candidate[2] = {0xFF, 0xFF};	//for path A and path B
 	bool	bResult = true;
 	bool	is2T = true;
-
 	s4Byte tmp1 = 0,tmp2 = 0;
 
 	if(is2T)
@@ -1667,10 +1653,6 @@ phy_IQCalibrate_8723B(
 							rFPGA0_XAB_RFInterfaceSW,	rFPGA0_XA_RFInterfaceOE,
 							rFPGA0_XB_RFInterfaceOE, rCCK0_AFESetting
 							};
-
-	u4Byte Path_SEL_BB;
-//	  u4Byte Path_SEL_BB, Path_SEL_RF;
-
 	const u4Byte	retryCount = 2;
 
 	// Note: IQ calibration must be performed after loading
@@ -1956,7 +1938,7 @@ PHY_IQCalibrate_8723B(
 	bool		bPathAOK, bPathBOK;
 	s4Byte			RegE94, RegE9C, RegEA4, RegEAC, RegEB4, RegEBC, RegEC4, RegECC, RegTmp = 0;
 	bool		is12simular, is13simular, is23simular;
-	bool		bStartContTx = false, bSingleTone = false, bCarrierSuppression = false;
+	bool		bSingleTone = false, bCarrierSuppression = false;
 	u4Byte			IQK_BB_REG_92C[IQK_BB_REG_NUM] = {
 					rOFDM0_XARxIQImbalance,		rOFDM0_XBRxIQImbalance,
 					rOFDM0_ECCAThreshold,	rOFDM0_AGCRSSITable,
@@ -2220,11 +2202,10 @@ PHY_LCCalibrate_8723B(
 	IN PDM_ODM_T		pDM_Odm
 	)
 {
-	bool		bStartContTx = false, bSingleTone = false, bCarrierSuppression = false;
+	bool		bSingleTone = false, bCarrierSuppression = false;
 	u4Byte			timeout = 2000, timecount = 0;
 	u4Byte			StartTime;
 	s4Byte			ProgressingTime;
-	PADAPTER	pAdapter = pDM_Odm->Adapter;
 
 #if DISABLE_BB_RF
 	return;

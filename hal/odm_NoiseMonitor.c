@@ -180,7 +180,5 @@ static s16 odm_InbandNoise_Monitor_NSeries(PDM_ODM_T	pDM_Odm,u8 bPauseDIG,u8 IGI
 }
 s16 ODM_InbandNoise_Monitor(void * pDM_VOID,u8 bPauseDIG,u8 IGIValue,u32 max_time)
 {
-
-	PDM_ODM_T	pDM_Odm = (PDM_ODM_T)pDM_VOID;
 	return odm_InbandNoise_Monitor_NSeries(pDM_VOID,bPauseDIG,IGIValue,max_time);
 }

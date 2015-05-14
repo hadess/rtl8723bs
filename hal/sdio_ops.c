@@ -313,7 +313,6 @@ _func_exit_;
 static s32 sdio_write16(struct intf_hdl *pintfhdl, u32 addr, u16 val)
 {
 	u32 ftaddr;
-	u8 shift;
 	s32 err;
 
 _func_enter_;
@@ -424,7 +423,6 @@ _func_exit_;
 
 static u8 sdio_f0_read8(struct intf_hdl *pintfhdl, u32 addr)
 {
-	u32 ftaddr;
 	u8 val;
 
 _func_enter_;

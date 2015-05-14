@@ -70,8 +70,6 @@ s32 FillH2CCmd8723B(PADAPTER padapter, u8 ElementID, u32 CmdLen, u8 *pCmdBuffer)
 	u32	h2c_cmd = 0;
 	u32	h2c_cmd_ex = 0;
 	s32 ret = _FAIL;
-	struct dvobj_priv *psdpriv = padapter->dvobj;
-	struct debug_priv *pdbgpriv = &psdpriv->drv_dbg;
 _func_enter_;
 
 	padapter = GET_PRIMARY_ADAPTER(padapter);
@@ -244,7 +242,6 @@ static void ConstructPSPoll(_adapter *padapter, u8 *pframe, u32 *pLength)
 {
 	struct rtw_ieee80211_hdr	*pwlanhdr;
 	u16					*fctrl;
-	u32					pktlen;
 	struct mlme_ext_priv	*pmlmeext = &(padapter->mlmeextpriv);
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 
@@ -882,17 +879,6 @@ CheckFwRsvdPageContent(
 	IN	PADAPTER		Adapter
 )
 {
-	HAL_DATA_TYPE*	pHalData = GET_HAL_DATA(Adapter);
-	u32	MaxBcnPageNum;
-
-	if(pHalData->FwRsvdPageStartOffset != 0)
-	{
-		/*MaxBcnPageNum = PageNum_128(pMgntInfo->MaxBeaconSize);
-		RT_ASSERT((MaxBcnPageNum <= pHalData->FwRsvdPageStartOffset),
-			("CheckFwRsvdPageContent(): The reserved page content has been"\
-			"destroyed by beacon!!! MaxBcnPageNum(%d) FwRsvdPageStartOffset(%d)\n!",
-			MaxBcnPageNum, pHalData->FwRsvdPageStartOffset));*/
-	}
 }
 
 static void rtl8723b_set_FwRsvdPage_cmd(PADAPTER padapter, PRSVDPAGE_LOC rsvdpageloc)
@@ -916,9 +902,6 @@ static void rtl8723b_set_FwRsvdPage_cmd(PADAPTER padapter, PRSVDPAGE_LOC rsvdpag
 
 static void rtl8723b_set_FwAoacRsvdPage_cmd(PADAPTER padapter, PRSVDPAGE_LOC rsvdpageloc)
 {
-	struct pwrctrl_priv *pwrpriv = adapter_to_pwrctl(padapter);
-	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
-	u8	res = 0, count = 0;
 #ifdef CONFIG_WOWLAN
 	u8 u1H2CAoacRsvdPageParm[H2C_AOAC_RSVDPAGE_LOC_LEN]={0};
 
@@ -1232,7 +1215,6 @@ _func_exit_;
 
 void rtl8723b_set_FwPsTuneParam_cmd(PADAPTER padapter)
 {
-	struct pwrctrl_priv *pwrpriv = adapter_to_pwrctl(padapter);
 	u8 u1H2CPsTuneParm[H2C_PSTUNEPARAM_LEN]={0};
 	u8 bcn_to_limit = 10; //10 * 100 * awakeinterval (ms)
 	u8 dtim_timeout = 5; //ms //wait broadcast data timer
@@ -1557,9 +1539,8 @@ static void rtl8723b_set_FwRsvdPagePkt(PADAPTER padapter, bool bDLFinished)
 	struct mlme_ext_info	*pmlmeinfo;
 	struct pwrctrl_priv *pwrctl;
 	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
-	u32	BeaconLength=0, ProbeRspLength=0, PSPollLength=0;
+	u32	BeaconLength=0, PSPollLength=0;
 	u32	NullDataLength=0, QosNullLength=0, BTQosNullLength=0;
-	u32	ProbeReqLength=0;
 	u8	*ReservedPagePacket;
 	u8	TxDescLen = TXDESC_SIZE, TxDescOffset = TXDESC_OFFSET;
 	u8	TotalPageNum=0, CurtPktPageNum=0, RsvdPageNum=0;
@@ -2053,7 +2034,6 @@ void rtl8723b_download_rsvd_page(PADAPTER padapter, u8 mstatus)
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
 	struct mlme_ext_priv	*pmlmeext = &(padapter->mlmeextpriv);
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
-	struct pwrctrl_priv *pwrpriv = adapter_to_pwrctl(padapter);
 	bool		bcn_valid = false;
 	u8	DLBcnCount=0;
 	u32 poll = 0;
@@ -2169,10 +2149,6 @@ void rtl8723b_set_rssi_cmd(_adapter*padapter, u8 *param)
 
 void rtl8723b_set_FwJoinBssRpt_cmd(PADAPTER padapter, u8 mstatus)
 {
-	struct sta_info *psta = NULL;
-	struct pwrctrl_priv *ppwrpriv = adapter_to_pwrctl(padapter);
-	struct mlme_priv	*pmlmepriv = &padapter->mlmepriv;
-
 	if(mstatus == 1)
 		rtl8723b_download_rsvd_page(padapter, RT_MEDIA_CONNECT);
 }

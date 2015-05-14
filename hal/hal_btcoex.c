@@ -406,7 +406,6 @@ static s32 halbtcoutsrc_GetWifiRssi(PADAPTER padapter)
 
 static u8 halbtcoutsrc_GetWifiScanAPNum(PADAPTER padapter)
 {
-	struct mlme_priv *pmlmepriv;
 	struct mlme_ext_priv *pmlmeext;
 	static u8 scan_AP_num = 0;
 

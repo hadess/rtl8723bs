@@ -257,8 +257,6 @@ s32	rtw_hal_xmit(_adapter *padapter, struct xmit_frame *pxmitframe)
 s32	rtw_hal_mgnt_xmit(_adapter *padapter, struct xmit_frame *pmgntframe)
 {
 	s32 ret = _FAIL;
-	unsigned char	*pframe;
-	struct rtw_ieee80211_hdr	*pwlanhdr;
 	update_mgntframe_attrib_addr(padapter, pmgntframe);
 	//pframe = (u8 *)(pmgntframe->buf_addr) + TXDESC_OFFSET;
 	//pwlanhdr = (struct rtw_ieee80211_hdr *)pframe;
@@ -436,17 +434,11 @@ void rtw_hal_reset_security_engine(_adapter * adapter)
 
 bool rtw_hal_c2h_valid(_adapter *adapter, u8 *buf)
 {
-	HAL_DATA_TYPE *HalData = GET_HAL_DATA(adapter);
-	HAL_VERSION *hal_ver = &HalData->VersionID;
-
 	return c2h_evt_valid((struct c2h_evt_hdr_88xx*)buf);
 }
 
 s32 rtw_hal_c2h_evt_read(_adapter *adapter, u8 *buf)
 {
-	HAL_DATA_TYPE *HalData = GET_HAL_DATA(adapter);
-	HAL_VERSION *hal_ver = &HalData->VersionID;
-
 	return c2h_evt_read_88xx(adapter, buf);
 }
 

@@ -176,8 +176,6 @@ rtl8723b_InitHalDm(
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
 	PDM_ODM_T		pDM_Odm = &(pHalData->odmpriv);
 
-	u8	i;
-
 	pdmpriv->DM_Type = DM_Type_ByDriver;
 	pdmpriv->DMFlag = DYNAMIC_FUNC_DISABLE;
 
@@ -201,7 +199,6 @@ rtl8723b_HalDmWatchDog(
 	bool		bFwPSAwake = true;
 	u8 hw_init_completed = false;
 	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(Adapter);
-	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
 
 	hw_init_completed = Adapter->hw_init_completed;
 
@@ -256,7 +253,6 @@ void rtl8723b_hal_dm_in_lps(PADAPTER padapter)
 	struct mlme_priv	*pmlmepriv = &padapter->mlmepriv;
 	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(padapter);
 	PDM_ODM_T		pDM_Odm = &pHalData->odmpriv;
-	pDIG_T	pDM_DigTable = &pDM_Odm->DM_DigTable;
 	struct sta_priv *pstapriv = &padapter->stapriv;
 	struct sta_info *psta = NULL;
 
@@ -342,7 +338,6 @@ void rtl8723b_init_dm_priv(IN PADAPTER Adapter)
 {
 	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(Adapter);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
-	PDM_ODM_T		podmpriv = &pHalData->odmpriv;
 	memset(pdmpriv, 0, sizeof(struct dm_priv));
 	Init_ODM_ComInfo_8723b(Adapter);
 }

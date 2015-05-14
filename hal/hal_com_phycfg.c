@@ -354,7 +354,6 @@ PHY_GetRateValuesOfTxPowerByRate(
 	OUT	u8*			RateNum
 	)
 {
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA( pAdapter );
 	u8 i = 0;
 
 	switch ( RegAddr )
@@ -2673,7 +2672,7 @@ phy_ParseBBPgParaFile(
 			}
 			else if ( pHalData->odmpriv.PhyRegPgVersion > 0 )
 			{
-				u32	index = 0, cnt = 0;
+				u32	index = 0;
 
 				if ( eqNByte( szLine, "0xffff", 6 ) )
 					break;
@@ -3164,12 +3163,9 @@ PHY_ConfigRFWithTxPwrTrackParaFile(
 )
 {
 	HAL_DATA_TYPE		*pHalData = GET_HAL_DATA(Adapter);
-	PDM_ODM_T			pDM_Odm = &pHalData->odmpriv;
-	PODM_RF_CAL_T		pRFCalibrateInfo = &(pDM_Odm->RFCalibrateInfo);
 	int	rlen = 0, rtStatus = _FAIL;
 	char	*szLine, *ptmp;
-	u32	i = 0, j = 0;
-	char	c = 0;
+	u32	i = 0;
 
 	if(!(Adapter->registrypriv.load_phy_file & LOAD_RF_TXPWR_TRACK_PARA_FILE))
 		return rtStatus;
@@ -3259,7 +3255,6 @@ phy_ParsePowerLimitTableFile(
   char*			buffer
 )
 {
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
 	u32	i = 0, forCnt = 0;
 	u8	loadingStage = 0, limitValue = 0, fraction = 0;
 	char	*szLine, *ptmp;

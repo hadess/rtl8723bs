@@ -967,7 +967,6 @@ odm_CommonInfoSelfInit(
 	IN		PDM_ODM_T		pDM_Odm
 	)
 {
-	pFAT_T			pDM_FatTable = &pDM_Odm->DM_FatTable;
 	pDM_Odm->bCckHighPower = (bool) PHY_QueryBBReg(pDM_Odm->Adapter, ODM_REG(CCK_RPT_FORMAT,pDM_Odm), ODM_BIT(CCK_RPT_FORMAT,pDM_Odm));
 	pDM_Odm->RFPathRxEnable = (u1Byte) PHY_QueryBBReg(pDM_Odm->Adapter, ODM_REG(BB_RX_PATH,pDM_Odm), ODM_BIT(BB_RX_PATH,pDM_Odm));
 
@@ -1037,9 +1036,6 @@ odm_BasicDbgMessage
 	IN		PDM_ODM_T		pDM_Odm
 	)
 {
-	Pfalse_ALARM_STATISTICS FalseAlmCnt = &(pDM_Odm->FalseAlmCnt);
-	pDIG_T	pDM_DigTable = &pDM_Odm->DM_DigTable;
-
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_COMMON, ODM_DBG_LOUD, ("odm_BasicDbgMsg==>\n"));
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_COMMON, ODM_DBG_LOUD, ("bLinked = %d, RSSI_Min = %d, CurrentIGI = 0x%x \n",
 		pDM_Odm->bLinked, pDM_Odm->RSSI_Min, pDM_DigTable->CurIGValue) );
@@ -1328,7 +1324,6 @@ odm_RefreshRateAdaptiveMaskCE(
 {
 	u1Byte	i;
 	PADAPTER	pAdapter	 =  pDM_Odm->Adapter;
-	PODM_RATE_ADAPTIVE		pRA = &pDM_Odm->RateAdaptive;
 
 	if(pAdapter->bDriverStopped)
 	{
@@ -1491,11 +1486,9 @@ odm_RSSIMonitorCheckCE(
 	PADAPTER	Adapter = pDM_Odm->Adapter;
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
-	struct dvobj_priv	*pdvobjpriv = adapter_to_dvobj(Adapter);
 	int	i;
 	int	tmpEntryMaxPWDB=0, tmpEntryMinPWDB=0xff;
 	u8	sta_cnt=0;
-	u32	UL_DL_STATE = 0, STBC_TX = 0, TxBF_EN = 0;
 	u32	PWDB_rssi[NUM_STA]={0};//[0~15]:MACID, [16~31]:PWDB_rssi
 	bool			FirstConnect = false;
 	pRA_T			pRA_Table = &pDM_Odm->DM_RA_Table;
@@ -1588,7 +1581,6 @@ getSwingIndex(
 	)
 {
 	PADAPTER		Adapter = pDM_Odm->Adapter;
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
 	u1Byte			i = 0;
 	u4Byte			bbSwing;
 	u4Byte			swingTableSize;
