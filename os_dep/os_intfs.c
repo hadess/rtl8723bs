@@ -568,15 +568,10 @@ static const struct net_device_ops rtw_netdev_ops = {
 
 int rtw_init_netdev_name(struct net_device *pnetdev, const char *ifname)
 {
-	_adapter *padapter = rtw_netdev_priv(pnetdev);
-
 	if(dev_alloc_name(pnetdev, ifname) < 0)
-	{
 		RT_TRACE(_module_os_intfs_c_,_drv_err_,("dev_alloc_name, fail! \n"));
-	}
 
 	netif_carrier_off(pnetdev);
-	//rtw_netif_stop_queue(pnetdev);
 
 	return 0;
 }
@@ -957,8 +952,6 @@ void rtw_cancel_all_timer(_adapter *padapter)
 
 u8 rtw_free_drv_sw(_adapter *padapter)
 {
-	struct net_device *pnetdev = (struct net_device*)padapter->pnetdev;
-
 	RT_TRACE(_module_os_intfs_c_,_drv_info_,("==>rtw_free_drv_sw"));
 
 #ifdef CONFIG_INTEL_WIDI
@@ -1212,8 +1205,6 @@ netdev_open_error:
 int rtw_ips_pwr_up(_adapter *padapter)
 {
 	int result;
-	PHAL_DATA_TYPE pHalData = GET_HAL_DATA(padapter);
-	unsigned long start_time = jiffies;
 	DBG_871X("===>  rtw_ips_pwr_up..............\n");
 
 	result = ips_netdrv_open(padapter);
@@ -1225,7 +1216,6 @@ int rtw_ips_pwr_up(_adapter *padapter)
 
 void rtw_ips_pwr_down(_adapter *padapter)
 {
-	unsigned long start_time = jiffies;
 	DBG_871X("===> rtw_ips_pwr_down...................\n");
 
 	padapter->bCardDisableWOHSM = true;
@@ -1238,9 +1228,6 @@ void rtw_ips_pwr_down(_adapter *padapter)
 
 void rtw_ips_dev_unload(_adapter *padapter)
 {
-	struct net_device *pnetdev= (struct net_device*)padapter->pnetdev;
-	struct xmit_priv	*pxmitpriv = &(padapter->xmitpriv);
-	PHAL_DATA_TYPE pHalData = GET_HAL_DATA(padapter);
 	DBG_871X("====> %s...\n",__FUNCTION__);
 
 
@@ -1340,7 +1327,6 @@ void rtw_ndev_destructor(struct net_device *ndev)
 
 void rtw_dev_unload(PADAPTER padapter)
 {
-	struct net_device *pnetdev = (struct net_device*)padapter->pnetdev;
 	struct pwrctrl_priv *pwrctl = adapter_to_pwrctl(padapter);
 	struct dvobj_priv *pobjpriv = padapter->dvobj;
 	struct debug_priv *pdbgpriv = &pobjpriv->drv_dbg;
@@ -1420,7 +1406,6 @@ void rtw_dev_unload(PADAPTER padapter)
 static int rtw_suspend_free_assoc_resource(_adapter *padapter)
 {
 	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
-	struct net_device *pnetdev = padapter->pnetdev;
 
 	DBG_871X("==> "FUNC_ADPT_FMT" entry....\n", FUNC_ADPT_ARG(padapter));
 
@@ -1614,9 +1599,7 @@ int rtw_suspend_ap_wow(_adapter *padapter)
 
 static int rtw_suspend_normal(_adapter *padapter)
 {
-	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
 	struct net_device *pnetdev = padapter->pnetdev;
-	struct pwrctrl_priv *pwrpriv = adapter_to_pwrctl(padapter);
 	int ret = _SUCCESS;
 
 	DBG_871X("==> "FUNC_ADPT_FMT" entry....\n", FUNC_ADPT_ARG(padapter));

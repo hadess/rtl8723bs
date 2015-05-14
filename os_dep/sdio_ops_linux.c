@@ -124,7 +124,7 @@ s32 sd_cmd52_read(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, u8 *pdata)
 	struct dvobj_priv *psdiodev;
 	PSDIO_DATA psdio;
 
-	int err=0, i;
+	int err=0;
 	struct sdio_func *func;
 	bool claim_needed;
 
@@ -202,7 +202,7 @@ s32 sd_cmd52_write(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, u8 *pdata)
 	struct dvobj_priv *psdiodev;
 	PSDIO_DATA psdio;
 
-	int err=0, i;
+	int err=0;
 	struct sdio_func *func;
 	bool claim_needed;
 

@@ -167,7 +167,6 @@ static int rtw_mlcst2unicst(_adapter *padapter, struct sk_buff *skb)
 {
 	struct	sta_priv *pstapriv = &padapter->stapriv;
 	struct xmit_priv *pxmitpriv = &padapter->xmitpriv;
-	_irqL	irqL;
 	_list	*phead, *plist;
 	struct sk_buff *newskb;
 	struct sta_info *psta = NULL;
@@ -249,7 +248,6 @@ int _rtw_xmit_entry(_pkt *pkt, _nic_hdl pnetdev)
 	struct mlme_priv	*pmlmepriv = &padapter->mlmepriv;
 	extern int rtw_mc2u_disable;
 	s32 res = 0;
-	u16 queue;
 
 _func_enter_;
 
