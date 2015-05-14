@@ -275,7 +275,7 @@ _func_enter_;
 		&& ( IP_MCAST_MAC(pkt->data)
 			|| ICMPV6_MCAST_MAC(pkt->data)
 			#ifdef CONFIG_TX_BCAST2UNI
-			|| is_broadcast_mac_addr(pkt->data)
+			|| is_broadcast_ether_addr(pkt->data)
 			#endif
 			)
 		&& (padapter->registrypriv.wifi_spec == 0)

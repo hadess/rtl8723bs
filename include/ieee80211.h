@@ -1058,12 +1058,6 @@ enum ieee80211_state {
 #define IP_FMT "%d.%d.%d.%d"
 #define IP_ARG(x) ((u8*)(x))[0],((u8*)(x))[1],((u8*)(x))[2],((u8*)(x))[3]
 
-extern __inline int is_broadcast_mac_addr(const u8 *addr)
-{
-	return ((addr[0] == 0xff) && (addr[1] == 0xff) && (addr[2] == 0xff) &&   \
-		(addr[3] == 0xff) && (addr[4] == 0xff) && (addr[5] == 0xff));
-}
-
 #define CFG_IEEE80211_RESERVE_FCS (1<<0)
 #define CFG_IEEE80211_COMPUTE_FCS (1<<1)
 

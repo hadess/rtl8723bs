@@ -1429,7 +1429,7 @@ sint validate_recv_mgnt_frame(PADAPTER padapter, union recv_frame *precv_frame)
 			else if (GetFrameSubType(precv_frame->u.hdr.rx_data) == WIFI_PROBERSP) {
 				if (!memcmp(padapter->eeprompriv.mac_addr, GetAddr1Ptr(precv_frame->u.hdr.rx_data), ETH_ALEN))
 					psta->sta_stats.rx_probersp_pkts++;
-				else if (is_broadcast_mac_addr(GetAddr1Ptr(precv_frame->u.hdr.rx_data))
+				else if (is_broadcast_ether_addr(GetAddr1Ptr(precv_frame->u.hdr.rx_data))
 					|| is_multicast_ether_addr(GetAddr1Ptr(precv_frame->u.hdr.rx_data)))
 					psta->sta_stats.rx_probersp_bm_pkts++;
 				else

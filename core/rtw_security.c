@@ -42,7 +42,7 @@ const char *security_type_str(u8 value)
 
 #ifdef DBG_SW_SEC_CNT
 #define WEP_SW_ENC_CNT_INC(sec, ra) \
-	if (is_broadcast_mac_addr(ra)) \
+	if (is_broadcast_ether_addr(ra)) \
 		sec->wep_sw_enc_cnt_bc++; \
 	else if (is_multicast_ether_addr(ra)) \
 		sec->wep_sw_enc_cnt_mc++; \
@@ -50,7 +50,7 @@ const char *security_type_str(u8 value)
 		sec->wep_sw_enc_cnt_uc++;
 
 #define WEP_SW_DEC_CNT_INC(sec, ra) \
-	if (is_broadcast_mac_addr(ra)) \
+	if (is_broadcast_ether_addr(ra)) \
 		sec->wep_sw_dec_cnt_bc++; \
 	else if (is_multicast_ether_addr(ra)) \
 		sec->wep_sw_dec_cnt_mc++; \
@@ -58,7 +58,7 @@ const char *security_type_str(u8 value)
 		sec->wep_sw_dec_cnt_uc++;
 
 #define TKIP_SW_ENC_CNT_INC(sec, ra) \
-	if (is_broadcast_mac_addr(ra)) \
+	if (is_broadcast_ether_addr(ra)) \
 		sec->tkip_sw_enc_cnt_bc++; \
 	else if (is_multicast_ether_addr(ra)) \
 		sec->tkip_sw_enc_cnt_mc++; \
@@ -66,7 +66,7 @@ const char *security_type_str(u8 value)
 		sec->tkip_sw_enc_cnt_uc++;
 
 #define TKIP_SW_DEC_CNT_INC(sec, ra) \
-	if (is_broadcast_mac_addr(ra)) \
+	if (is_broadcast_ether_addr(ra)) \
 		sec->tkip_sw_dec_cnt_bc++; \
 	else if (is_multicast_ether_addr(ra)) \
 		sec->tkip_sw_dec_cnt_mc++; \
@@ -74,7 +74,7 @@ const char *security_type_str(u8 value)
 		sec->tkip_sw_dec_cnt_uc++;
 
 #define AES_SW_ENC_CNT_INC(sec, ra) \
-	if (is_broadcast_mac_addr(ra)) \
+	if (is_broadcast_ether_addr(ra)) \
 		sec->aes_sw_enc_cnt_bc++; \
 	else if (is_multicast_ether_addr(ra)) \
 		sec->aes_sw_enc_cnt_mc++; \
@@ -82,7 +82,7 @@ const char *security_type_str(u8 value)
 		sec->aes_sw_enc_cnt_uc++;
 
 #define AES_SW_DEC_CNT_INC(sec, ra) \
-	if (is_broadcast_mac_addr(ra)) \
+	if (is_broadcast_ether_addr(ra)) \
 		sec->aes_sw_dec_cnt_bc++; \
 	else if (is_multicast_ether_addr(ra)) \
 		sec->aes_sw_dec_cnt_mc++; \
@@ -871,7 +871,7 @@ _func_enter_;
 					if (start == 0)
 						start = jiffies;
 
-					if (is_broadcast_mac_addr(prxattrib->ra))
+					if (is_broadcast_ether_addr(prxattrib->ra))
 						no_gkey_bc_cnt++;
 					else
 						no_gkey_mc_cnt++;
@@ -2040,7 +2040,7 @@ _func_enter_;
 					if (start == 0)
 						start = jiffies;
 
-					if (is_broadcast_mac_addr(prxattrib->ra))
+					if (is_broadcast_ether_addr(prxattrib->ra))
 						no_gkey_bc_cnt++;
 					else
 						no_gkey_mc_cnt++;

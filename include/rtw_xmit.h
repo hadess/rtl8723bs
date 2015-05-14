@@ -175,7 +175,7 @@ struct pkt_attrib
 	u8	dst[ETH_ALEN];
 	u8	src[ETH_ALEN];
 	u8	ta[ETH_ALEN];
-	u8	ra[ETH_ALEN];
+	u8	ra[ETH_ALEN] __aligned(sizeof(u16));
 	u8	key_idx;
 	u8	qos_en;
 	u8	ht_en;

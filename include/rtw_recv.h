@@ -415,7 +415,7 @@ struct recv_frame_hdr
 
 	uint  len;
 	u8 *rx_head;
-	u8 *rx_data;
+	u8 *rx_data; __aligned(sizeof(u16))
 	u8 *rx_tail;
 	u8 *rx_end;
 
