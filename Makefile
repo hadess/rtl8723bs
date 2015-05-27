@@ -9,6 +9,8 @@ EXTRA_CFLAGS += -Wall
 
 EXTRA_CFLAGS += -I$(src)/include -I$(src)/hal -g
 
+ccflags-y += -D__CHECK_ENDIAN__
+
 #EXTRA_LDFLAGS += --strip-debug
 
 ########################## Features ###########################
