@@ -273,7 +273,7 @@ _func_enter_;
 
 				length=pattrib->last_txcmdsz-pattrib->hdrlen-pattrib->iv_len- pattrib->icv_len;
 
-				*((u32 *)crc)=cpu_to_le32(getcrc32(payload,length));
+				*((__le32 *)crc)=cpu_to_le32(getcrc32(payload,length));
 
 				arcfour_init(&mycontext, wepkey,3+keylength);
 				arcfour_encrypt(&mycontext, payload, payload, length);
@@ -283,7 +283,7 @@ _func_enter_;
 			else
 			{
 			length=pxmitpriv->frag_len-pattrib->hdrlen-pattrib->iv_len-pattrib->icv_len ;
-				*((u32 *)crc)=cpu_to_le32(getcrc32(payload,length));
+				*((__le32 *)crc)=cpu_to_le32(getcrc32(payload,length));
 				arcfour_init(&mycontext, wepkey,3+keylength);
 				arcfour_encrypt(&mycontext, payload, payload, length);
 				arcfour_encrypt(&mycontext, payload+length, crc, 4);
@@ -337,7 +337,7 @@ _func_enter_;
 		arcfour_encrypt(&mycontext, payload, payload,  length);
 
 		//calculate icv and compare the icv
-		*((u32 *)crc)=le32_to_cpu(getcrc32(payload,length-4));
+		*((__le32 *)crc) = cpu_to_le32(getcrc32(payload, length-4));
 
 		if(crc[3]!=payload[length-1] || crc[2]!=payload[length-2] || crc[1]!=payload[length-3] || crc[0]!=payload[length-4])
 		{
@@ -791,7 +791,7 @@ _func_enter_;
 				if((curfragnum+1)==pattrib->nr_frags){	//4 the last fragment
 					length=pattrib->last_txcmdsz-pattrib->hdrlen-pattrib->iv_len- pattrib->icv_len;
 					RT_TRACE(_module_rtl871x_security_c_,_drv_info_,("pattrib->iv_len =%x, pattrib->icv_len =%x\n", pattrib->iv_len,pattrib->icv_len));
-					*((u32 *)crc)=cpu_to_le32(getcrc32(payload,length));/* modified by Amy*/
+					*((__le32 *)crc)=cpu_to_le32(getcrc32(payload,length));/* modified by Amy*/
 
 					arcfour_init(&mycontext, rc4key,16);
 					arcfour_encrypt(&mycontext, payload, payload, length);
@@ -800,7 +800,7 @@ _func_enter_;
 				}
 				else{
 					length=pxmitpriv->frag_len-pattrib->hdrlen-pattrib->iv_len-pattrib->icv_len ;
-					*((u32 *)crc)=cpu_to_le32(getcrc32(payload,length));/* modified by Amy*/
+					*((__le32 *)crc)=cpu_to_le32(getcrc32(payload,length));/* modified by Amy*/
 					arcfour_init(&mycontext,rc4key,16);
 					arcfour_encrypt(&mycontext, payload, payload, length);
 					arcfour_encrypt(&mycontext, payload+length, crc, 4);
@@ -924,7 +924,7 @@ _func_enter_;
 			arcfour_init(&mycontext, rc4key,16);
 			arcfour_encrypt(&mycontext, payload, payload, length);
 
-			*((u32 *)crc)=le32_to_cpu(getcrc32(payload,length-4));
+			*((__le32 *)crc)=cpu_to_le32(getcrc32(payload,length-4));
 
 			if(crc[3]!=payload[length-1] || crc[2]!=payload[length-2] || crc[1]!=payload[length-3] || crc[0]!=payload[length-4])
 			{
@@ -1016,14 +1016,6 @@ static void construct_mic_header2(
                     u8 *mpdu,
                     sint a4_exists,
                     sint qc_exists);
-static void construct_ctr_preload(
-                        u8 *ctr_preload,
-                        sint a4_exists,
-                        sint qc_exists,
-                        u8 *mpdu,
-                        u8 *pn_vector,
-                        sint c,
-                        uint frtype);// add for CONFIG_IEEE80211W, none 11w also can use
 static void xor_128(u8 *a, u8 *b, u8 *out);
 static void xor_32(u8 *a, u8 *b, u8 *out);
 static u8 sbox(u8 a);
@@ -1445,8 +1437,8 @@ static sint aes_cipher(u8 *key, uint	hdrlen,
 	u8 padded_buffer[16];
 	u8 mic[8];
 //	uint	offset = 0;
-	uint	frtype  = GetFrameType(pframe);
-	uint	frsubtype  = GetFrameSubType(pframe);
+	u16 frtype  = GetFrameType(pframe);
+	u16 frsubtype  = GetFrameSubType(pframe);
 
 _func_enter_;
 	frsubtype=frsubtype>>4;
@@ -1736,20 +1728,16 @@ static sint aes_decipher(u8 *key, uint	hdrlen,
 	u8 mic_header1[16];
 	u8 mic_header2[16];
 	u8 ctr_preload[16];
-
     /* Intermediate Buffers */
 	u8 chain_buffer[16];
 	u8 aes_out[16];
 	u8 padded_buffer[16];
 	u8 mic[8];
+	u16 frtype  = GetFrameType(pframe);
+	u16 frsubtype  = GetFrameSubType(pframe);
 
-
-//	uint	offset = 0;
-	uint	frtype  = GetFrameType(pframe);
-	uint	frsubtype  = GetFrameSubType(pframe);
 _func_enter_;
 	frsubtype=frsubtype>>4;
-
 
 	memset((void *)mic_iv, 0, 16);
 	memset((void *)mic_header1, 0, 16);
@@ -2129,6 +2117,8 @@ u32	rtw_BIP_verify(_adapter *padapter, u8 *precvframe)
 	struct rtw_ieee80211_hdr *pwlanhdr;
 	u8 mic[16];
 	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
+	__le16 le_tmp;
+
 	ori_len = pattrib->pkt_len-WLAN_HDR_A3_LEN+BIP_AAD_SIZE;
 	BIP_AAD = rtw_zmalloc(ori_len);
 
@@ -2150,9 +2140,11 @@ u32	rtw_BIP_verify(_adapter *padapter, u8 *precvframe)
 	{
 		u16 keyid=0;
 		u64 temp_ipn=0;
+		__le64 le_tmp64;
+
 		//save packet number
-		memcpy(&temp_ipn, p+4, 6);
-		temp_ipn = le64_to_cpu(temp_ipn);
+		memcpy(&le_tmp64, p+4, 6);
+		temp_ipn = le64_to_cpu(le_tmp64);
 		//BIP packet number should bigger than previous BIP packet
 		if(temp_ipn <= pmlmeext->mgnt_80211w_IPN_rx)
 		{
@@ -2160,10 +2152,9 @@ u32	rtw_BIP_verify(_adapter *padapter, u8 *precvframe)
 			goto BIP_exit;
 		}
 		//copy key index
-		memcpy(&keyid, p+2, 2);
-		keyid = le16_to_cpu(keyid);
-		if(keyid != padapter->securitypriv.dot11wBIPKeyid)
-		{
+		memcpy(&le_tmp, p+2, 2);
+		keyid = le16_to_cpu(le_tmp);
+		if (keyid != padapter->securitypriv.dot11wBIPKeyid) {
 			DBG_871X("BIP key index error!\n");
 			goto BIP_exit;
 		}
