@@ -39,8 +39,6 @@ static unsigned char RALINK_OUI[] = {0x00, 0x0c, 0x43};
 static unsigned char REALTEK_OUI[] = {0x00, 0xe0, 0x4c};
 static unsigned char AIRGOCAP_OUI[] = {0x00, 0x0a, 0xf5};
 
-unsigned char REALTEK_96B_IE[] = {0x00, 0xe0, 0x4c, 0x02, 0x01, 0x20};
-
 extern unsigned char RTW_WPA_OUI[];
 extern unsigned char WPA_TKIP_CIPHER[4];
 extern unsigned char RSN_TKIP_CIPHER[4];
@@ -533,7 +531,7 @@ __inline u8 *get_my_bssid(WLAN_BSSID_EX *pnetwork)
 
 u16 get_beacon_interval(WLAN_BSSID_EX *bss)
 {
-	unsigned short val;
+	__le16 val;
 	memcpy((unsigned char *)&val, rtw_get_beacon_interval_from_ie(bss->IEs), 2);
 
 	return le16_to_cpu(val);
@@ -1267,23 +1265,14 @@ void HT_caps_handler(_adapter *padapter, PNDIS_802_11_VARIABLE_IEs pIE)
 			pmlmeinfo->HT_caps.u.HT_cap_element.AMPDU_para = max_AMPDU_len | min_MPDU_spacing;
 		}
 	}
-
-	//	Commented by Albert 2010/07/12
-	//	Have to handle the endian issue after copying.
-	//	HT_ext_caps didn't be used yet.
-	pmlmeinfo->HT_caps.u.HT_cap_element.HT_caps_info = le16_to_cpu( pmlmeinfo->HT_caps.u.HT_cap_element.HT_caps_info );
-	pmlmeinfo->HT_caps.u.HT_cap_element.HT_ext_caps = le16_to_cpu( pmlmeinfo->HT_caps.u.HT_cap_element.HT_ext_caps );
-
 	rtw_hal_get_hwreg(padapter, HW_VAR_RF_TYPE, (u8 *)(&rf_type));
-
 
 	//update the MCS set
 	for (i = 0; i < 16; i++)
 		pmlmeinfo->HT_caps.u.HT_cap_element.MCS_rate[i] &= pmlmeext->default_supported_mcs_set[i];
 
 	//update the MCS rates
-	switch(rf_type)
-	{
+	switch(rf_type) {
 		case RF_1T1R:
 		case RF_1T2R:
 			set_mcs_rate_by_mask(pmlmeinfo->HT_caps.u.HT_cap_element.MCS_rate, MCS_RATE_1R);
@@ -1525,7 +1514,7 @@ int rtw_check_bcn_info(ADAPTER *Adapter, u8 *pframe, u32 packet_len)
 	p = rtw_get_ie(bssid->IEs + _FIXED_IE_LENGTH_, _HT_CAPABILITY_IE_, &len, bssid->IELength - _FIXED_IE_LENGTH_);
 	if(p && len>0) {
 			pht_cap = (struct rtw_ieee80211_ht_cap *)(p + 2);
-			ht_cap_info = pht_cap->cap_info;
+			ht_cap_info = le16_to_cpu(pht_cap->cap_info);
 	} else {
 			ht_cap_info = 0;
 	}
@@ -1793,14 +1782,9 @@ int support_short_GI(_adapter *padapter, struct HT_caps_element *pHT_caps, u8 bw
 
 	bit_offset = (bwmode & CHANNEL_WIDTH_40)? 6: 5;
 
-	if (pHT_caps->u.HT_cap_element.HT_caps_info & (0x1 << bit_offset))
-	{
+	if (le16_to_cpu(pHT_caps->u.HT_cap_element.HT_caps_info) & (0x1 << bit_offset))
 		return _SUCCESS;
-	}
-	else
-	{
-		return _FAIL;
-	}
+	return _FAIL;
 }
 
 unsigned char get_highest_rate_idx(u32 mask)
@@ -2178,10 +2162,10 @@ void process_addba_req(_adapter *padapter, u8 *paddba_req, u8 *addr)
 void update_TSF(struct mlme_ext_priv *pmlmeext, u8 *pframe, uint len)
 {
 	u8* pIE;
-	u32 *pbuf;
+	__le32 *pbuf;
 
 	pIE = pframe + sizeof(struct rtw_ieee80211_hdr_3addr);
-	pbuf = (u32*)pIE;
+	pbuf = (__le32 *)pIE;
 
 	pmlmeext->TSFValue = le32_to_cpu(*(pbuf+1));
 
@@ -2199,7 +2183,7 @@ void adaptive_early_32k(struct mlme_ext_priv *pmlmeext, u8 *pframe, uint len)
 {
 	int i;
 	u8* pIE;
-	u32 *pbuf;
+	__le32 *pbuf;
 	u64 tsf=0;
 	u32 delay_ms;
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
@@ -2208,7 +2192,7 @@ void adaptive_early_32k(struct mlme_ext_priv *pmlmeext, u8 *pframe, uint len)
 	pmlmeext->bcn_cnt++;
 
 	pIE = pframe + sizeof(struct rtw_ieee80211_hdr_3addr);
-	pbuf = (u32*)pIE;
+	pbuf = (__le32 *)pIE;
 
 	tsf = le32_to_cpu(*(pbuf+1));
 	tsf = tsf << 32;

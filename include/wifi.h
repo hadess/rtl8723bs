@@ -412,7 +412,7 @@ __inline static unsigned char * get_ta(unsigned char *pframe)
 __inline static unsigned char * get_da(unsigned char *pframe)
 {
 	unsigned char	*da;
-	unsigned int	to_fr_ds	= (GetToDs(pframe) << 1) | GetFrDs(pframe);
+	unsigned int	to_fr_ds = (GetToDs(pframe) << 1) | GetFrDs(pframe);
 
 	switch (to_fr_ds) {
 		case 0x00:	// ToDs=0, FromDs=0
