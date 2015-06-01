@@ -332,10 +332,10 @@ enum WIFI_REG_DOMAIN {
 
 #define SetSeqNum(pbuf, num) \
 	do {    \
-		*(__le16 *)((unsigned long)(pbuf) + 22) = \
-			((*(__le16 *)((unsigned long)(pbuf) + 22)) & le16_to_cpu((__le16)0x000f)) | \
-			le16_to_cpu((__le16)(0xfff0 & (num << 4))); \
-	} while(0)
+		*(__le16 *)((size_t)(pbuf) + 22) = \
+			((*(__le16 *)((size_t)(pbuf) + 22)) & cpu_to_le16((unsigned short)0x000f)) | \
+			cpu_to_le16((unsigned short)(0xfff0 & (num << 4))); \
+	} while (0)
 
 #define SetDuration(pbuf, dur) \
 	do {    \
