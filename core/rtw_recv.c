@@ -1639,7 +1639,7 @@ static sint validate_80211w_mgmt(_adapter *adapter, union recv_frame *precv_fram
 
 			pattrib->bdecrypted = 0;
 			pattrib->encrypt = _AES_;
-			pattrib->hdrlen = sizeof(struct rtw_ieee80211_hdr_3addr);
+			pattrib->hdrlen = sizeof(struct ieee80211_hdr_3addr);
 			//set iv and icv length
 			SET_ICE_IV_LEN(pattrib->iv_len, pattrib->icv_len, pattrib->encrypt);
 			memcpy(pattrib->ra, GetAddr1Ptr(ptr), ETH_ALEN);

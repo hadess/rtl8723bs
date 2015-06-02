@@ -20,6 +20,7 @@
 #ifndef __IEEE80211_H
 #define __IEEE80211_H
 
+#include <linux/ieee80211.h>
 
 #define MGMT_QUEUE_NUM 5
 
@@ -305,47 +306,6 @@ struct ieee_ibss_seq {
 	_list	list;
 };
 
-struct rtw_ieee80211_hdr {
-	u16 frame_ctl;
-	u16 duration_id;
-	u8 addr1[ETH_ALEN];
-	u8 addr2[ETH_ALEN];
-	u8 addr3[ETH_ALEN];
-	u16 seq_ctl;
-	u8 addr4[ETH_ALEN];
-} __attribute__ ((packed));
-
-struct rtw_ieee80211_hdr_3addr {
-	u16 frame_ctl;
-	u16 duration_id;
-	u8 addr1[ETH_ALEN];
-	u8 addr2[ETH_ALEN];
-	u8 addr3[ETH_ALEN];
-	u16 seq_ctl;
-} __attribute__ ((packed));
-
-
-struct rtw_ieee80211_hdr_qos {
-	u16 frame_ctl;
-	u16 duration_id;
-	u8 addr1[ETH_ALEN];
-	u8 addr2[ETH_ALEN];
-	u8 addr3[ETH_ALEN];
-	u16 seq_ctl;
-	u8 addr4[ETH_ALEN];
-	u16	qc;
-}  __attribute__ ((packed));
-
-struct rtw_ieee80211_hdr_3addr_qos {
-        u16 frame_ctl;
-	u16 duration_id;
-	u8 addr1[ETH_ALEN];
-	u8 addr2[ETH_ALEN];
-	u8 addr3[ETH_ALEN];
-	u16 seq_ctl;
-       u16     qc;
-}  __attribute__ ((packed));
-
 struct eapol {
 	u8 snap[6];
 	u16 ethertype;
@@ -463,12 +423,10 @@ enum eap_type {
 #define P80211_OUI_LEN 3
 
 struct ieee80211_snap_hdr {
-
         u8    dsap;   /* always 0xAA */
         u8    ssap;   /* always 0xAA */
         u8    ctrl;   /* always 0x03 */
         u8    oui[P80211_OUI_LEN];    /* organizational universal id */
-
 } __attribute__ ((packed));
 
 #define SNAP_SIZE sizeof(struct ieee80211_snap_hdr)
@@ -743,13 +701,11 @@ enum MGN_RATE{
  *       information for frames received.  Not setting these will not cause
  *       any adverse affects. */
 struct ieee80211_rx_stats {
-	//u32 mac_time[2];
 	s8 rssi;
 	u8 signal;
 	u8 noise;
 	u8 received_channel;
 	u16 rate; /* in 100 kbps */
-	//u8 control;
 	u8 mask;
 	u8 freq;
 	u16 len;
@@ -796,7 +752,7 @@ struct ieee80211_stats {
 	uint rx_message_in_bad_msg_fragments;
 };
 
-struct ieee80211_softmac_stats{
+struct ieee80211_softmac_stats {
 	uint rx_ass_ok;
 	uint rx_ass_err;
 	uint rx_probe_rq;
@@ -945,7 +901,7 @@ struct ieee80211_probe_request {
 } __attribute__ ((packed));
 
 struct ieee80211_assoc_request_frame {
-	struct rtw_ieee80211_hdr_3addr header;
+	struct ieee80211_hdr_3addr header;
 	u16 capability;
 	u16 listen_interval;
 	//u8 current_ap[ETH_ALEN];
@@ -953,7 +909,7 @@ struct ieee80211_assoc_request_frame {
 } __attribute__ ((packed));
 
 struct ieee80211_assoc_response_frame {
-	struct rtw_ieee80211_hdr_3addr header;
+	struct ieee80211_hdr_3addr header;
 	u16 capability;
 	u16 status;
 	u16 aid;
