@@ -1170,12 +1170,12 @@ s32 rtw_make_wlanhdr (_adapter *padapter , u8 *hdr, struct pkt_attrib *pattrib)
 {
 	u16 *qc;
 
-	struct rtw_ieee80211_hdr *pwlanhdr = (struct rtw_ieee80211_hdr *)hdr;
+	struct ieee80211_hdr *pwlanhdr = (struct ieee80211_hdr *)hdr;
 	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
 	struct qos_priv *pqospriv = &pmlmepriv->qospriv;
 	u8 qos_option = false;
 	sint res = _SUCCESS;
-	u16 *fctrl = &pwlanhdr->frame_ctl;
+	u16 *fctrl = &pwlanhdr->frame_control;
 
 	//struct sta_info *psta;
 
@@ -1602,12 +1602,12 @@ s32 rtw_mgmt_xmitframe_coalesce(_adapter *padapter, _pkt *pkt, struct xmit_frame
 
 	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
 	struct mlme_priv	*pmlmepriv = &padapter->mlmepriv;
-	struct rtw_ieee80211_hdr	*pwlanhdr;
+	struct ieee80211_hdr	*pwlanhdr;
 	u8 MME[_MME_IE_LENGTH_];
 	u32	ori_len;
 
 	mem_start = pframe = (u8 *)(pxmitframe->buf_addr) + TXDESC_OFFSET;
-	pwlanhdr = (struct rtw_ieee80211_hdr *)pframe;
+	pwlanhdr = (struct ieee80211_hdr *)pframe;
 
 _func_enter_;
 	ori_len = BIP_AAD_SIZE+pattrib->pktlen;
@@ -1641,7 +1641,7 @@ _func_enter_;
 		if(GetFrameSubType(pframe) != WIFI_DEAUTH && GetFrameSubType(pframe) != WIFI_DISASSOC)
 			goto xmitframe_coalesce_fail;
 
-		MGMT_body = pframe + sizeof(struct rtw_ieee80211_hdr_3addr);
+		MGMT_body = pframe + sizeof(struct ieee80211_hdr_3addr);
 		pframe += pattrib->pktlen;
 
 		//octent 0 and 1 is key index ,BIP keyid is 4 or 5, LSB only need octent 0
@@ -1655,10 +1655,10 @@ _func_enter_;
 		pframe = rtw_set_ie(pframe, _MME_IE_ , 16 , MME, &(pattrib->pktlen));
 		pattrib->last_txcmdsz = pattrib->pktlen;
 		// total frame length - header length
-		frame_body_len = pattrib->pktlen - sizeof(struct rtw_ieee80211_hdr_3addr);
+		frame_body_len = pattrib->pktlen - sizeof(struct ieee80211_hdr_3addr);
 
 		//conscruct AAD, copy frame control field
-		memcpy(BIP_AAD, &pwlanhdr->frame_ctl, 2);
+		memcpy(BIP_AAD, &pwlanhdr->frame_control, 2);
 		ClearRetry(BIP_AAD);
 		ClearPwrMgt(BIP_AAD);
 		ClearMData(BIP_AAD);

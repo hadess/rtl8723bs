@@ -1339,7 +1339,7 @@ void rtw_get_bcn_info(struct wlan_network *pnetwork)
 	//u8 wpa_ie[255],rsn_ie[255];
 	u16 wpa_len=0,rsn_len=0;
 	struct HT_info_element *pht_info = NULL;
-	struct rtw_ieee80211_ht_cap *pht_cap = NULL;
+	struct ieee80211_ht_cap *pht_cap = NULL;
 	unsigned int		len;
 	unsigned char		*p;
 	__le16 le_tmp;
@@ -1376,7 +1376,7 @@ void rtw_get_bcn_info(struct wlan_network *pnetwork)
 	/* parsing HT_CAP_IE */
 	p = rtw_get_ie(pnetwork->network.IEs + _FIXED_IE_LENGTH_, _HT_CAPABILITY_IE_, &len, pnetwork->network.IELength - _FIXED_IE_LENGTH_);
 	if(p && len>0) {
-			pht_cap = (struct rtw_ieee80211_ht_cap *)(p + 2);
+			pht_cap = (struct ieee80211_ht_cap *)(p + 2);
 			pnetwork->BcnInfo.ht_cap_info = le16_to_cpu(pht_cap->cap_info);
 	} else {
 			pnetwork->BcnInfo.ht_cap_info = 0;
@@ -1461,12 +1461,12 @@ u16 rtw_mcs_rate(u8 rf_type, u8 bw_40MHz, u8 short_GI, unsigned char * MCS_rate)
 
 int rtw_action_frame_parse(const u8 *frame, u32 frame_len, u8* category, u8 *action)
 {
-	const u8 *frame_body = frame + sizeof(struct rtw_ieee80211_hdr_3addr);
+	const u8 *frame_body = frame + sizeof(struct ieee80211_hdr_3addr);
 	u16 fc;
 	u8 c;
 	u8 a = ACT_PUBLIC_MAX;
 
-	fc = le16_to_cpu(((struct rtw_ieee80211_hdr_3addr *)frame)->frame_ctl);
+	fc = le16_to_cpu(((struct ieee80211_hdr_3addr *)frame)->frame_control);
 
 	if ((fc & (RTW_IEEE80211_FCTL_FTYPE|RTW_IEEE80211_FCTL_STYPE))
 		!= (RTW_IEEE80211_FTYPE_MGMT|RTW_IEEE80211_STYPE_ACTION)
