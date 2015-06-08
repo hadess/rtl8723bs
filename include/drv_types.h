@@ -727,4 +727,11 @@ __inline static u8 *myid(struct eeprom_priv *peepriv)
 
 #include <rtw_btcoex.h>
 
+u8 rtw_do_join(_adapter * padapter);
+void indicate_wx_scan_complete_event(_adapter *padapter);
+void rtw_indicate_wx_assoc_event(_adapter *padapter);
+void rtw_indicate_wx_disassoc_event(_adapter *padapter);
+
+extern int rtw_ht_enable;
+
 #endif //__DRV_TYPES_H__

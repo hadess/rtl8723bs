@@ -23,8 +23,6 @@
 #include <rtw_mp.h>
 #include <linux/jiffies.h>
 
-extern int rtw_ht_enable;
-
 #define RTL_IOCTL_WPA_SUPPLICANT	SIOCIWFIRSTPRIV+30
 
 #define SCAN_ITEM_SIZE 768

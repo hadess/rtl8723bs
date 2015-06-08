@@ -21,7 +21,6 @@
 
 #include <rtl8723b_hal.h>
 
-
 static s32 initrecvbuf(struct recv_buf *precvbuf, PADAPTER padapter)
 {
 	INIT_LIST_HEAD(&precvbuf->list);
@@ -41,22 +40,20 @@ static void update_recvframe_attrib(
 	struct recv_stat	report;
 	PRXREPORT prxreport = (PRXREPORT)&report;
 
-	report.rxdw0 = le32_to_cpu(prxstat->rxdw0);
-	report.rxdw1 = le32_to_cpu(prxstat->rxdw1);
-	report.rxdw2 = le32_to_cpu(prxstat->rxdw2);
-	report.rxdw3 = le32_to_cpu(prxstat->rxdw3);
-	report.rxdw4 = le32_to_cpu(prxstat->rxdw4);
-	report.rxdw5 = le32_to_cpu(prxstat->rxdw5);
+	report.rxdw0 = prxstat->rxdw0;
+	report.rxdw1 = prxstat->rxdw1;
+	report.rxdw2 = prxstat->rxdw2;
+	report.rxdw3 = prxstat->rxdw3;
+	report.rxdw4 = prxstat->rxdw4;
+	report.rxdw5 = prxstat->rxdw5;
 
 	pattrib = &precvframe->u.hdr.attrib;
 	memset(pattrib, 0, sizeof(struct rx_pkt_attrib));
 
 	// update rx report to recv_frame attribute
 	pattrib->pkt_rpt_type = prxreport->c2h_ind?C2H_PACKET:NORMAL_RX;
-//	DBG_871X("%s: pkt_rpt_type=%d\n", __func__, pattrib->pkt_rpt_type);
 
-	if (pattrib->pkt_rpt_type == NORMAL_RX)
-	{
+	if (pattrib->pkt_rpt_type == NORMAL_RX) {
 		// Normal rx packet
 		// update rx report to recv_frame attribute
 		pattrib->pkt_len = (u16)prxreport->pktlen;
@@ -80,9 +77,7 @@ static void update_recvframe_attrib(
 		pattrib->mdata = (u8)prxreport->md;
 
 		pattrib->data_rate = (u8)prxreport->rx_rate;
-	}
-	else
-	{
+	} else {
 		pattrib->pkt_len = (u16)prxreport->pktlen;
 	}
 }

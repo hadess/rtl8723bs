@@ -174,7 +174,7 @@ _func_exit_;
 
 }
 
-void kfree_sta_priv_lock(struct	sta_priv *pstapriv)
+static void kfree_sta_priv_lock(struct	sta_priv *pstapriv)
 {
 	 kfree_all_stainfo(pstapriv); //be done before free sta_hash_lock
 }

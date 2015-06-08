@@ -175,11 +175,12 @@ static u16 sdio_read16(struct intf_hdl *pintfhdl, u32 addr)
 {
 	u32 ftaddr;
 	u16 val;
+	__le16 le_tmp;
 
 _func_enter_;
 	ftaddr = _cvrt2ftaddr(addr, NULL, NULL);
-	sd_cmd52_read(pintfhdl, ftaddr, 2, (u8*)&val);
-	val = le16_to_cpu(val);
+	sd_cmd52_read(pintfhdl, ftaddr, 2, (u8*)&le_tmp);
+	val = le16_to_cpu(le_tmp);
 
 _func_exit_;
 
@@ -196,6 +197,7 @@ static u32 sdio_read32(struct intf_hdl *pintfhdl, u32 addr)
 	u8 shift;
 	u32 val;
 	s32 err;
+	__le32 le_tmp;
 
 _func_enter_;
 
@@ -207,11 +209,11 @@ _func_enter_;
 		|| (false == bMacPwrCtrlOn)
 		|| (true == adapter_to_pwrctl(padapter)->bFwCurrentInPSMode))
 	{
-		err = sd_cmd52_read(pintfhdl, ftaddr, 4, (u8*)&val);
+		err = sd_cmd52_read(pintfhdl, ftaddr, 4, (u8*)&le_tmp);
 #ifdef SDIO_DEBUG_IO
 		if (!err) {
 #endif
-			val = le32_to_cpu(val);
+			val = le32_to_cpu(le_tmp);
 			return val;
 #ifdef SDIO_DEBUG_IO
 		}
@@ -236,8 +238,8 @@ _func_enter_;
 
 		ftaddr &= ~(u16)0x3;
 		sd_read(pintfhdl, ftaddr, 8, ptmpbuf);
-		memcpy(&val, ptmpbuf+shift, 4);
-		val = le32_to_cpu(val);
+		memcpy(&le_tmp, ptmpbuf+shift, 4);
+		val = le32_to_cpu(le_tmp);
 
 		kfree(ptmpbuf);
 	}
@@ -314,11 +316,12 @@ static s32 sdio_write16(struct intf_hdl *pintfhdl, u32 addr, u16 val)
 {
 	u32 ftaddr;
 	s32 err;
+	__le16 le_tmp;
 
 _func_enter_;
 	ftaddr = _cvrt2ftaddr(addr, NULL, NULL);
-	val = cpu_to_le16(val);
-	err = sd_cmd52_write(pintfhdl, ftaddr, 2, (u8*)&val);
+	le_tmp = cpu_to_le16(val);
+	err = sd_cmd52_write(pintfhdl, ftaddr, 2, (u8*)&le_tmp);
 
 _func_exit_;
 
@@ -334,6 +337,7 @@ static s32 sdio_write32(struct intf_hdl *pintfhdl, u32 addr, u32 val)
 	u32 ftaddr;
 	u8 shift;
 	s32 err;
+	__le32 le_tmp;
 
 _func_enter_;
 
@@ -343,25 +347,20 @@ _func_enter_;
 	ftaddr = _cvrt2ftaddr(addr, &deviceId, &offset);
 
 	rtw_hal_get_hwreg(padapter, HW_VAR_APFM_ON_MAC, &bMacPwrCtrlOn);
-	if (((deviceId == WLAN_IOREG_DEVICE_ID) && (offset < 0x100))
-		|| (false == bMacPwrCtrlOn)
-		|| (true == adapter_to_pwrctl(padapter)->bFwCurrentInPSMode))
-	{
-		val = cpu_to_le32(val);
-		err = sd_cmd52_write(pintfhdl, ftaddr, 4, (u8*)&val);
+	if (((deviceId == WLAN_IOREG_DEVICE_ID) && (offset < 0x100)) ||
+	    (!bMacPwrCtrlOn) || (adapter_to_pwrctl(padapter)->bFwCurrentInPSMode)) {
+		le_tmp = cpu_to_le32(val);
+		err = sd_cmd52_write(pintfhdl, ftaddr, 4, (u8*)&le_tmp);
 		return err;
 	}
 
 	// 4 bytes alignment
 	shift = ftaddr & 0x3;
-	if (shift == 0)
-	{
+	if (shift == 0) {
 		sd_write32(pintfhdl, ftaddr, val, &err);
-	}
-	else
-	{
-		val = cpu_to_le32(val);
-		err = sd_cmd52_write(pintfhdl, ftaddr, 4, (u8*)&val);
+	} else {
+		le_tmp = cpu_to_le32(val);
+		err = sd_cmd52_write(pintfhdl, ftaddr, 4, (u8*)&le_tmp);
 	}
 
 _func_exit_;
@@ -739,15 +738,13 @@ u8 SdioLocalCmd52Read1Byte(PADAPTER padapter, u32 addr)
 
 static u16 SdioLocalCmd52Read2Byte(PADAPTER padapter, u32 addr)
 {
-	u16 val = 0;
+	__le16 val;
 	struct intf_hdl * pintfhdl=&padapter->iopriv.intf;
 
 	HalSdioGetCmdAddr8723BSdio(padapter, SDIO_LOCAL_DEVICE_ID, addr, &addr);
 	sd_cmd52_read(pintfhdl, addr, 2, (u8*)&val);
 
-	val = le16_to_cpu(val);
-
-	return val;
+	return le16_to_cpu(val);
 }
 
 static u32 SdioLocalCmd53Read4Byte(PADAPTER padapter, u32 addr)
@@ -756,18 +753,16 @@ static u32 SdioLocalCmd53Read4Byte(PADAPTER padapter, u32 addr)
 	u8 bMacPwrCtrlOn;
 	u32 val = 0;
 	struct intf_hdl * pintfhdl=&padapter->iopriv.intf;
+	__le32 le_tmp;
 
 	HalSdioGetCmdAddr8723BSdio(padapter, SDIO_LOCAL_DEVICE_ID, addr, &addr);
 	rtw_hal_get_hwreg(padapter, HW_VAR_APFM_ON_MAC, &bMacPwrCtrlOn);
-	if ((false == bMacPwrCtrlOn)
-		|| (true == adapter_to_pwrctl(padapter)->bFwCurrentInPSMode))
-	{
-		sd_cmd52_read(pintfhdl, addr, 4, (u8*)&val);
-		val = le32_to_cpu(val);
-	}
-	else
+	if (!bMacPwrCtrlOn || adapter_to_pwrctl(padapter)->bFwCurrentInPSMode) {
+		sd_cmd52_read(pintfhdl, addr, 4, (u8*)&le_tmp);
+		val = le32_to_cpu(le_tmp);
+	} else {
 		val = sd_read32(pintfhdl, addr, NULL);
-
+	}
 	return val;
 }
 
@@ -782,9 +777,11 @@ void SdioLocalCmd52Write1Byte(PADAPTER padapter, u32 addr, u8 v)
 static void SdioLocalCmd52Write4Byte(PADAPTER padapter, u32 addr, u32 v)
 {
 	struct intf_hdl * pintfhdl=&padapter->iopriv.intf;
+	__le32 le_tmp;
+
 	HalSdioGetCmdAddr8723BSdio(padapter, SDIO_LOCAL_DEVICE_ID, addr, &addr);
-	v = cpu_to_le32(v);
-	sd_cmd52_write(pintfhdl, addr, 4, (u8*)&v);
+	le_tmp = cpu_to_le32(v);
+	sd_cmd52_write(pintfhdl, addr, 4, (u8*)&le_tmp);
 }
 
 static s32 ReadInterrupt8723BSdio(PADAPTER padapter, u32 *phisr)
@@ -901,9 +898,8 @@ void ClearInterrupt8723BSdio(PADAPTER padapter)
 	clear = rtw_zmalloc(4);
 
 	// Clear corresponding HISR Content if needed
-	*(u32*)clear = cpu_to_le32(pHalData->sdio_hisr & MASK_SDIO_HISR_CLEAR);
-	if (*(u32*)clear)
-	{
+	*(__le32*)clear = cpu_to_le32(pHalData->sdio_hisr & MASK_SDIO_HISR_CLEAR);
+	if (*(__le32*)clear) {
 		// Perform write one clear operation
 		sdio_local_write(padapter, SDIO_REG_HISR, 4, clear);
 	}
@@ -925,7 +921,8 @@ void ClearInterrupt8723BSdio(PADAPTER padapter)
 void EnableInterrupt8723BSdio(PADAPTER padapter)
 {
 	PHAL_DATA_TYPE pHalData;
-	u32 himr;
+	__le32 himr;
+	u32 tmp;
 
 	pHalData = GET_HAL_DATA(padapter);
 
@@ -936,8 +933,8 @@ void EnableInterrupt8723BSdio(PADAPTER padapter)
 		("%s: enable SDIO HIMR=0x%08X\n", __FUNCTION__, pHalData->sdio_himr));
 
 	// Update current system IMR settings
-	himr = rtw_read32(padapter, REG_HSIMR);
-	rtw_write32(padapter, REG_HSIMR, himr|pHalData->SysIntrMask);
+	tmp = rtw_read32(padapter, REG_HSIMR);
+	rtw_write32(padapter, REG_HSIMR, tmp | pHalData->SysIntrMask);
 
 	RT_TRACE(_module_hci_ops_c_, _drv_notice_,
 		("%s: enable HSIMR=0x%08X\n", __FUNCTION__, pHalData->SysIntrMask));
@@ -961,7 +958,7 @@ void EnableInterrupt8723BSdio(PADAPTER padapter)
 //
 void DisableInterrupt8723BSdio(PADAPTER padapter)
 {
-	u32 himr;
+	__le32 himr;
 
 	himr = cpu_to_le32(SDIO_HIMR_DISABLED);
 	sdio_local_write(padapter, SDIO_REG_HIMR, 4, (u8*)&himr);

@@ -636,6 +636,7 @@ union recv_frame * portctrl(_adapter *adapter,union recv_frame * precv_frame)
 	u16	ether_type=0;
 	u16  eapol_type = 0x888e;//for Funia BD's WPA issue
 	struct rx_pkt_attrib *pattrib;
+	__be16 be_tmp;
 
 _func_enter_;
 
@@ -654,10 +655,8 @@ _func_enter_;
 
 	RT_TRACE(_module_rtl871x_recv_c_,_drv_info_,("########portctrl:adapter->securitypriv.dot11AuthAlgrthm=%d\n",adapter->securitypriv.dot11AuthAlgrthm));
 
-	if(auth_alg==2)
-	{
-		if ((psta!=NULL) && (psta->ieee8021x_blocked))
-		{
+	if (auth_alg == 2) {
+		if ((psta!=NULL) && (psta->ieee8021x_blocked)) {
 			//blocked
 			//only accept EAPOL frame
 			RT_TRACE(_module_rtl871x_recv_c_,_drv_info_,("########portctrl:psta->ieee8021x_blocked==1\n"));
@@ -666,13 +665,12 @@ _func_enter_;
 
 			//get ether_type
 			ptr=ptr+pfhdr->attrib.hdrlen+pfhdr->attrib.iv_len+LLC_HEADER_SIZE;
-			memcpy(&ether_type,ptr, 2);
-			ether_type= ntohs((unsigned short )ether_type);
+			memcpy(&be_tmp, ptr, 2);
+			ether_type= ntohs(be_tmp);
 
 		        if (ether_type == eapol_type) {
 				prtnframe=precv_frame;
-			}
-			else {
+			} else {
 				//free this frame
 				rtw_free_recvframe(precv_frame, &adapter->recvpriv.free_recv_queue);
 				prtnframe=NULL;
@@ -1284,10 +1282,8 @@ sint validate_recv_ctrl_frame(_adapter *padapter, union recv_frame *precv_frame)
 		u8 wmmps_ac=0;
 
 		aid = GetAid(pframe);
-		if(psta->aid!=aid)
-		{
+		if (psta->aid != aid)
 			return _FAIL;
-		}
 
 		switch(pattrib->priority)
 		{
@@ -1861,6 +1857,7 @@ sint wlanhdr_to_ethhdr ( union recv_frame *precvframe)
 {
 	sint	rmv_len;
 	u16	eth_type, len;
+	__be16 be_tmp;
 	u8	bsnaphdr;
 	u8	*psnap_type;
 	struct ieee80211_snap_hdr	*psnap;
@@ -1900,8 +1897,8 @@ _func_enter_;
 
 	RT_TRACE(_module_rtl871x_recv_c_,_drv_info_,("\n===pattrib->hdrlen: %x,  pattrib->iv_len:%x ===\n\n", pattrib->hdrlen,  pattrib->iv_len));
 
-	memcpy(&eth_type, ptr+rmv_len, 2);
-	eth_type= ntohs((unsigned short )eth_type); //pattrib->ether_type
+	memcpy(&be_tmp, ptr+rmv_len, 2);
+	eth_type= ntohs(be_tmp);
 	pattrib->eth_type = eth_type;
 
 #ifdef CONFIG_AUTO_AP_MODE
@@ -1959,18 +1956,17 @@ _func_enter_;
 	memcpy(ptr+ETH_ALEN, pattrib->src, ETH_ALEN);
 
 	if(!bsnaphdr) {
-		len = htons(len);
-		memcpy(ptr+12, &len, 2);
+		__be16 be_len = htons(len);
+
+		memcpy(ptr+12, &be_len, 2);
 	}
 
 _func_exit_;
 	return ret;
-
 }
 
 //perform defrag
-union recv_frame * recvframe_defrag(_adapter *adapter,_queue *defrag_q);
-union recv_frame * recvframe_defrag(_adapter *adapter,_queue *defrag_q)
+static union recv_frame * recvframe_defrag(_adapter *adapter,_queue *defrag_q)
 {
 	_list	 *plist, *phead;
 	u8	*data,wlanhdr_offset;

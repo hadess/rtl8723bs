@@ -21,6 +21,7 @@
 
 #include <drv_types.h>
 #include <linux/jiffies.h>
+#include <hal_com_h2c.h>
 
 static struct _cmd_callback rtw_cmd_callback[] =
 {
@@ -1995,8 +1996,6 @@ _func_exit_;
 	return res;
 
 }
-
-extern u32 g_wait_hiq_empty;
 
 static void rtw_chk_hi_queue_hdl(_adapter *padapter)
 {
