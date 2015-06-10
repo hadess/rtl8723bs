@@ -216,7 +216,7 @@ enum WIFI_REG_DOMAIN {
 		*(unsigned short *)(pbuf) |= cpu_to_le16(_TO_DS_); \
 	} while(0)
 
-#define GetToDs(pbuf)	(((*(unsigned short *)(pbuf)) & le16_to_cpu(_TO_DS_)) != 0)
+#define GetToDs(pbuf)	(((*(unsigned short *)(pbuf)) & cpu_to_le16(_TO_DS_)) != 0)
 
 #define ClearToDs(pbuf)	\
 	do	{	\
@@ -228,7 +228,7 @@ enum WIFI_REG_DOMAIN {
 		*(unsigned short *)(pbuf) |= cpu_to_le16(_FROM_DS_); \
 	} while(0)
 
-#define GetFrDs(pbuf)	(((*(unsigned short *)(pbuf)) & le16_to_cpu(_FROM_DS_)) != 0)
+#define GetFrDs(pbuf)	(((*(unsigned short *)(pbuf)) & cpu_to_le16(_FROM_DS_)) != 0)
 
 #define ClearFrDs(pbuf)	\
 	do	{	\
@@ -243,7 +243,7 @@ enum WIFI_REG_DOMAIN {
 		*(unsigned short *)(pbuf) |= cpu_to_le16(_MORE_FRAG_); \
 	} while(0)
 
-#define GetMFrag(pbuf)	(((*(unsigned short *)(pbuf)) & le16_to_cpu(_MORE_FRAG_)) != 0)
+#define GetMFrag(pbuf)	(((*(unsigned short *)(pbuf)) & cpu_to_le16(_MORE_FRAG_)) != 0)
 
 #define ClearMFrag(pbuf)	\
 	do	{	\
@@ -255,7 +255,7 @@ enum WIFI_REG_DOMAIN {
 		*(unsigned short *)(pbuf) |= cpu_to_le16(_RETRY_); \
 	} while(0)
 
-#define GetRetry(pbuf)	(((*(unsigned short *)(pbuf)) & le16_to_cpu(_RETRY_)) != 0)
+#define GetRetry(pbuf)	(((*(unsigned short *)(pbuf)) & cpu_to_le16(_RETRY_)) != 0)
 
 #define ClearRetry(pbuf)	\
 	do	{	\
@@ -267,7 +267,7 @@ enum WIFI_REG_DOMAIN {
 		*(unsigned short *)(pbuf) |= cpu_to_le16(_PWRMGT_); \
 	} while(0)
 
-#define GetPwrMgt(pbuf)	(((*(unsigned short *)(pbuf)) & le16_to_cpu(_PWRMGT_)) != 0)
+#define GetPwrMgt(pbuf)	(((*(unsigned short *)(pbuf)) & cpu_to_le16(_PWRMGT_)) != 0)
 
 #define ClearPwrMgt(pbuf)	\
 	do	{	\
@@ -279,7 +279,7 @@ enum WIFI_REG_DOMAIN {
 		*(unsigned short *)(pbuf) |= cpu_to_le16(_MORE_DATA_); \
 	} while(0)
 
-#define GetMData(pbuf)	(((*(unsigned short *)(pbuf)) & le16_to_cpu(_MORE_DATA_)) != 0)
+#define GetMData(pbuf)	(((*(unsigned short *)(pbuf)) & cpu_to_le16(_MORE_DATA_)) != 0)
 
 #define ClearMData(pbuf)	\
 	do	{	\
@@ -291,7 +291,8 @@ enum WIFI_REG_DOMAIN {
 		*(unsigned short *)(pbuf) |= cpu_to_le16(_PRIVACY_); \
 	} while(0)
 
-#define GetPrivacy(pbuf)	(((*(unsigned short *)(pbuf)) & le16_to_cpu(_PRIVACY_)) != 0)
+#define GetPrivacy(pbuf)					\
+	(((*(unsigned short *)(pbuf)) & cpu_to_le16(_PRIVACY_)) != 0)
 
 #define ClearPrivacy(pbuf)	\
 	do	{	\
@@ -299,7 +300,7 @@ enum WIFI_REG_DOMAIN {
 	} while(0)
 
 
-#define GetOrder(pbuf)	(((*(unsigned short *)(pbuf)) & le16_to_cpu(_ORDER_)) != 0)
+#define GetOrder(pbuf)	(((*(unsigned short *)(pbuf)) & cpu_to_le16(_ORDER_)) != 0)
 
 #define GetFrameType(pbuf)	(le16_to_cpu(*(unsigned short *)(pbuf)) & (BIT(3) | BIT(2)))
 
@@ -317,18 +318,20 @@ enum WIFI_REG_DOMAIN {
 		*(unsigned short *)(pbuf) |= cpu_to_le16(type); \
 	} while(0)
 
-#define GetSequence(pbuf)	(cpu_to_le16(*(unsigned short *)((SIZE_PTR)(pbuf) + 22)) >> 4)
+#define GetSequence(pbuf)	(le16_to_cpu(*(unsigned short *)((SIZE_PTR)(pbuf) + 22)) >> 4)
 
-#define GetFragNum(pbuf)	(cpu_to_le16(*(unsigned short *)((SIZE_PTR)(pbuf) + 22)) & 0x0f)
+#define GetFragNum(pbuf)			\
+	(le16_to_cpu(*(unsigned short *)((size_t)(pbuf) + 22)) & 0x0f)
 
 #define GetTupleCache(pbuf)	(cpu_to_le16(*(unsigned short *)((SIZE_PTR)(pbuf) + 22)))
 
 #define SetFragNum(pbuf, num) \
 	do {    \
-		*(unsigned short *)((SIZE_PTR)(pbuf) + 22) = \
-			((*(unsigned short *)((SIZE_PTR)(pbuf) + 22)) & le16_to_cpu(~(0x000f))) | \
+		*(unsigned short *)((size_t)(pbuf) + 22) = \
+			((*(unsigned short *)((size_t)(pbuf) + 22)) &	\
+			cpu_to_le16(~(0x000f))) | \
 			cpu_to_le16(0x0f & (num));     \
-	} while(0)
+	} while (0)
 
 #define SetSeqNum(pbuf, num) \
 	do {    \
@@ -369,9 +372,9 @@ enum WIFI_REG_DOMAIN {
 		*(unsigned short *)(pbuf) |= cpu_to_le16( (amsdu & 1) << 7); \
 	} while(0)
 
-#define GetAid(pbuf)	(cpu_to_le16(*(unsigned short *)((SIZE_PTR)(pbuf) + 2)) & 0x3fff)
+#define GetAid(pbuf)	(le16_to_cpu(*(unsigned short *)((SIZE_PTR)(pbuf) + 2)) & 0x3fff)
 
-#define GetTid(pbuf)	(cpu_to_le16(*(unsigned short *)((SIZE_PTR)(pbuf) + (((GetToDs(pbuf)<<1)|GetFrDs(pbuf))==3?30:24))) & 0x000f)
+#define GetTid(pbuf)	(ile16_to_cpu(*(unsigned short *)((SIZE_PTR)(pbuf) + (((GetToDs(pbuf)<<1)|GetFrDs(pbuf))==3?30:24))) & 0x000f)
 
 #define GetAddr1Ptr(pbuf)	((unsigned char *)((SIZE_PTR)(pbuf) + 4))
 
@@ -692,7 +695,7 @@ typedef	enum _ELEMENT_ID{
 		*(unsigned short *)(pbuf) |= cpu_to_le16(_ORDER_); \
 	} while(0)
 
-#define GetOrderBit(pbuf)	(((*(unsigned short *)(pbuf)) & le16_to_cpu(_ORDER_)) != 0)
+#define GetOrderBit(pbuf)	(((*(unsigned short *)(pbuf)) & cpu_to_le16(_ORDER_)) != 0)
 
 #define ACT_CAT_VENDOR				0x7F/* 127 */
 
