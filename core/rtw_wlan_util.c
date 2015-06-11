@@ -64,14 +64,6 @@ static u8 rtw_basic_rate_ofdm[3] = {
 	IEEE80211_OFDM_RATE_24MB|IEEE80211_BASIC_RATE_MASK
 };
 
-static u8 rtw_basic_rate_mix[7] = {
-	IEEE80211_CCK_RATE_1MB|IEEE80211_BASIC_RATE_MASK, IEEE80211_CCK_RATE_2MB|IEEE80211_BASIC_RATE_MASK,
-	IEEE80211_CCK_RATE_5MB|IEEE80211_BASIC_RATE_MASK, IEEE80211_CCK_RATE_11MB|IEEE80211_BASIC_RATE_MASK,
-	IEEE80211_OFDM_RATE_6MB|IEEE80211_BASIC_RATE_MASK, IEEE80211_OFDM_RATE_12MB|IEEE80211_BASIC_RATE_MASK,
-	IEEE80211_OFDM_RATE_24MB|IEEE80211_BASIC_RATE_MASK
-};
-
-
 int cckrates_included(unsigned char *rate, int ratelen)
 {
 	int	i;
@@ -103,7 +95,6 @@ int cckratesonly_included(unsigned char *rate, int ratelen)
 
 u8 networktype_to_raid_ex(_adapter *adapter, struct sta_info *psta)
 {
-	struct mlme_ext_priv	*pmlmeext = &adapter->mlmeextpriv;
 	u8 raid, cur_rf_type, rf_type= RF_1T1R;
 
 	rtw_hal_get_hwreg(adapter, HW_VAR_RF_TYPE, (u8 *)(&cur_rf_type));
@@ -489,8 +480,6 @@ inline unsigned long rtw_get_on_cur_ch_time(_adapter *adapter)
 
 void SelectChannel(_adapter *padapter, unsigned char channel)
 {
-	struct mlme_ext_priv *pmlmeext = &padapter->mlmeextpriv;
-
 	if (mutex_lock_interruptible(&(adapter_to_dvobj(padapter)->setch_mutex)))
 		return;
 
@@ -505,7 +494,6 @@ void SelectChannel(_adapter *padapter, unsigned char channel)
 void set_channel_bwmode(_adapter *padapter, unsigned char channel, unsigned char channel_offset, unsigned short bwmode)
 {
 	u8 center_ch, chnl_offset80 = HAL_PRIME_CHNL_OFFSET_DONT_CARE;
-	struct mlme_ext_priv *pmlmeext = &padapter->mlmeextpriv;
 
 	if ( padapter->bNotifyChannelChange )
 	{
@@ -626,7 +614,6 @@ void invalidate_cam_all(_adapter *padapter)
 {
 	struct dvobj_priv *dvobj = adapter_to_dvobj(padapter);
 	struct cam_ctl_t *cam_ctl = &dvobj->cam_ctl;
-	_irqL irqL;
 
 	rtw_hal_set_hwreg(padapter, HW_VAR_CAM_INVALID_ALL, NULL);
 
@@ -652,7 +639,7 @@ static u32 _ReadCAM(_adapter *padapter ,u32 addr)
 }
 void read_cam(_adapter *padapter ,u8 entry, u8 *get_key)
 {
-	u32	j,count = 0, addr, cmd;
+	u32	j, addr, cmd;
 	addr = entry << 3;
 
 	//DBG_8192C("********* DUMP CAM Entry_#%02d***************\n",entry);
@@ -719,7 +706,6 @@ inline void write_cam_from_cache(_adapter *adapter, u8 id)
 {
 	struct dvobj_priv *dvobj = adapter_to_dvobj(adapter);
 	struct cam_ctl_t *cam_ctl = &dvobj->cam_ctl;
-	_irqL irqL;
 	struct cam_entry_cache cache;
 
 	spin_lock_bh(&cam_ctl->lock);
@@ -733,7 +719,6 @@ void write_cam_cache(_adapter *adapter, u8 id, u16 ctrl, u8 *mac, u8 *key)
 {
 	struct dvobj_priv *dvobj = adapter_to_dvobj(adapter);
 	struct cam_ctl_t *cam_ctl = &dvobj->cam_ctl;
-	_irqL irqL;
 
 	spin_lock_bh(&cam_ctl->lock);
 
@@ -748,7 +733,6 @@ void clear_cam_cache(_adapter *adapter, u8 id)
 {
 	struct dvobj_priv *dvobj = adapter_to_dvobj(adapter);
 	struct cam_ctl_t *cam_ctl = &dvobj->cam_ctl;
-	_irqL irqL;
 
 	spin_lock_bh(&cam_ctl->lock);
 
@@ -778,7 +762,6 @@ exit:
 static s16 _rtw_camid_search(_adapter *adapter, u8 *addr, s16 kid)
 {
 	struct dvobj_priv *dvobj = adapter_to_dvobj(adapter);
-	struct cam_ctl_t *cam_ctl = &dvobj->cam_ctl;
 	int i;
 	s16 cam_id = -1;
 
@@ -806,7 +789,6 @@ s16 rtw_camid_search(_adapter *adapter, u8 *addr, s16 kid)
 {
 	struct dvobj_priv *dvobj = adapter_to_dvobj(adapter);
 	struct cam_ctl_t *cam_ctl = &dvobj->cam_ctl;
-	_irqL irqL;
 	s16 cam_id = -1;
 
 	spin_lock_bh(&cam_ctl->lock);
@@ -820,7 +802,6 @@ s16 rtw_camid_alloc(_adapter *adapter, struct sta_info *sta, u8 kid)
 {
 	struct dvobj_priv *dvobj = adapter_to_dvobj(adapter);
 	struct cam_ctl_t *cam_ctl = &dvobj->cam_ctl;
-	_irqL irqL;
 	s16 cam_id = -1;
 	struct mlme_ext_info *mlmeinfo;
 
@@ -894,7 +875,6 @@ void rtw_camid_free(_adapter *adapter, u8 cam_id)
 {
 	struct dvobj_priv *dvobj = adapter_to_dvobj(adapter);
 	struct cam_ctl_t *cam_ctl = &dvobj->cam_ctl;
-	_irqL irqL;
 
 	spin_lock_bh(&cam_ctl->lock);
 
@@ -927,7 +907,6 @@ void flush_all_cam_entry(_adapter *padapter)
 {
 	struct mlme_ext_priv *pmlmeext = &padapter->mlmeextpriv;
 	struct mlme_ext_info *pmlmeinfo = &(pmlmeext->mlmext_info);
-	struct mlme_priv *pmlmepriv = &(padapter->mlmepriv);
 
 	invalidate_cam_all(padapter);
 	/* clear default key related key search setting */
@@ -1244,12 +1223,11 @@ void HT_caps_handler(_adapter *padapter, PNDIS_802_11_VARIABLE_IEs pIE)
 	unsigned int	i;
 	u8	rf_type;
 	u8	max_AMPDU_len, min_MPDU_spacing;
-	u8	cur_ldpc_cap=0, cur_stbc_cap=0, cur_beamform_cap=0;
+	u8	cur_ldpc_cap=0, cur_stbc_cap=0;
 	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 	struct mlme_priv		*pmlmepriv = &padapter->mlmepriv;
 	struct ht_priv			*phtpriv = &pmlmepriv->htpriv;
-	struct registry_priv	*pregistrypriv = &padapter->registrypriv;
 
 	if(pIE==NULL) return;
 
@@ -1496,7 +1474,6 @@ int rtw_check_bcn_info(ADAPTER *Adapter, u8 *pframe, u32 packet_len)
 	u32 wpa_ielen = 0;
 	u8 *pbssid = GetAddr3Ptr(pframe);
 	u32 hidden_ssid = 0;
-	u8 cur_network_type, network_type=0;
 	struct HT_info_element *pht_info = NULL;
 	struct rtw_ieee80211_ht_cap *pht_cap = NULL;
 	u32 bcn_channel;
@@ -2324,7 +2301,6 @@ void beacon_timing_control(_adapter *padapter)
 void rtw_alloc_macid(_adapter *padapter, struct sta_info *psta)
 {
 	int i;
-	_irqL	irqL;
 	u8 bc_addr[ETH_ALEN] = {0xff,0xff,0xff,0xff,0xff,0xff};
 	struct dvobj_priv *pdvobj = adapter_to_dvobj(padapter);
 
@@ -2364,8 +2340,6 @@ void rtw_alloc_macid(_adapter *padapter, struct sta_info *psta)
 
 void rtw_release_macid(_adapter *padapter, struct sta_info *psta)
 {
-	int i;
-	_irqL	irqL;
 	u8 bc_addr[ETH_ALEN] = {0xff,0xff,0xff,0xff,0xff,0xff};
 	struct dvobj_priv *pdvobj = adapter_to_dvobj(padapter);
 
@@ -2398,7 +2372,6 @@ u8 rtw_search_max_mac_id(_adapter *padapter)
 	u8 max_mac_id=0;
 	struct dvobj_priv *pdvobj = adapter_to_dvobj(padapter);
 	int i;
-	_irqL	irqL;
 	spin_lock_bh(&pdvobj->lock);
 	for(i=(NUM_STA-1); i>=0 ; i--)
 	{
@@ -2413,8 +2386,6 @@ u8 rtw_search_max_mac_id(_adapter *padapter)
 	return max_mac_id;
 
 }
-
-static _adapter *pbuddy_padapter = NULL;
 
 _adapter *dvobj_get_port0_adapter(struct dvobj_priv *dvobj)
 {

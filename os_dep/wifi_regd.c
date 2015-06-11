@@ -8,10 +8,6 @@
 
 #include <rtw_wifi_regd.h>
 
-static struct country_code_to_enum_rd allCountries[] = {
-	{COUNTRY_CODE_USER, "RD"},
-};
-
 /*
  * REG_RULE(freq start, freq end, bandwidth, max gain, eirp, reg_flags)
  */
@@ -120,7 +116,6 @@ static int rtw_ieee80211_channel_to_frequency(int chan, int band)
 static void _rtw_reg_apply_flags(struct wiphy *wiphy)
 {
 	_adapter *padapter = wiphy_to_adapter(wiphy);
-	u8 channel_plan = padapter->mlmepriv.ChannelPlan;
 	struct mlme_ext_priv *pmlmeext = &padapter->mlmeextpriv;
 	RT_CHANNEL_INFO *channel_set = pmlmeext->channel_set;
 	u8 max_chan_nums = pmlmeext->max_chan_nums;

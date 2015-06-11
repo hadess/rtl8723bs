@@ -21,6 +21,16 @@
 
 #include <drv_types.h>
 #include <linux/jiffies.h>
+#include <rtw_recv.h>
+
+static u8 SNAP_ETH_TYPE_IPX[2] = {0x81, 0x37};
+static u8 SNAP_ETH_TYPE_APPLETALK_AARP[2] = {0x80, 0xf3};
+
+u8 rtw_rfc1042_header[] =
+{ 0xaa, 0xaa, 0x03, 0x00, 0x00, 0x00 };
+/* Bridge-Tunnel header (for EtherTypes ETH_P_AARP and ETH_P_IPX) */
+u8 rtw_bridge_tunnel_header[] =
+{ 0xaa, 0xaa, 0x03, 0x00, 0x00, 0xf8 };
 
 void rtw_signal_stat_timer_hdl(RTW_TIMER_HDL_ARGS);
 
@@ -171,7 +181,6 @@ _func_exit_;
 
 union recv_frame *rtw_alloc_recvframe (_queue *pfree_recv_queue)
 {
-	_irqL irqL;
 	union recv_frame  *precvframe;
 
 	spin_lock_bh(&pfree_recv_queue->lock);
@@ -185,7 +194,6 @@ union recv_frame *rtw_alloc_recvframe (_queue *pfree_recv_queue)
 
 int rtw_free_recvframe(union recv_frame *precvframe, _queue *pfree_recv_queue)
 {
-	_irqL irqL;
 	_adapter *padapter=precvframe->u.hdr.adapter;
 	struct recv_priv *precvpriv = &padapter->recvpriv;
 
@@ -245,7 +253,6 @@ _func_exit_;
 sint rtw_enqueue_recvframe(union recv_frame *precvframe, _queue *queue)
 {
 	sint ret;
-	_irqL irqL;
 
 	//_spinlock(&pfree_recv_queue->lock);
 	spin_lock_bh(&queue->lock);
@@ -320,8 +327,6 @@ u32 rtw_free_uc_swdec_pending_queue(_adapter *adapter)
 
 sint rtw_enqueue_recvbuf_to_head(struct recv_buf *precvbuf, _queue *queue)
 {
-	_irqL irqL;
-
 	spin_lock_bh(&queue->lock);
 
 	list_del_init(&precvbuf->list);
@@ -334,7 +339,6 @@ sint rtw_enqueue_recvbuf_to_head(struct recv_buf *precvbuf, _queue *queue)
 
 sint rtw_enqueue_recvbuf(struct recv_buf *precvbuf, _queue *queue)
 {
-	_irqL irqL;
 	spin_lock_bh(&queue->lock);
 
 	list_del_init(&precvbuf->list);
@@ -347,7 +351,6 @@ sint rtw_enqueue_recvbuf(struct recv_buf *precvbuf, _queue *queue)
 
 struct recv_buf *rtw_dequeue_recvbuf (_queue *queue)
 {
-	_irqL irqL;
 	struct recv_buf *precvbuf;
 	_list	*plist, *phead;
 
@@ -1337,7 +1340,6 @@ sint validate_recv_ctrl_frame(_adapter *padapter, union recv_frame *precv_frame)
 
 		if((psta->state&WIFI_SLEEP_STATE) && (pstapriv->sta_dz_bitmap&BIT(psta->aid)))
 		{
-			_irqL irqL;
 			_list	*xmitframe_plist, *xmitframe_phead;
 			struct xmit_frame *pxmitframe=NULL;
 			struct xmit_priv *pxmitpriv = &padapter->xmitpriv;
@@ -1468,7 +1470,6 @@ sint validate_recv_data_frame(_adapter *adapter, union recv_frame *precv_frame)
 	struct sta_info *psta = NULL;
 	u8 *ptr = precv_frame->u.hdr.rx_data;
 	struct rx_pkt_attrib	*pattrib = & precv_frame->u.hdr.attrib;
-	struct sta_priv		*pstapriv = &adapter->stapriv;
 	struct security_priv	*psecuritypriv = &adapter->securitypriv;
 	sint ret = _SUCCESS;
 
@@ -2437,8 +2438,6 @@ void recv_indicatepkts_pkt_loss_cnt(struct debug_priv *pdbgpriv, u64 prev_seq, u
 int recv_indicatepkts_in_order(_adapter *padapter, struct recv_reorder_ctrl *preorder_ctrl, int bforced);
 int recv_indicatepkts_in_order(_adapter *padapter, struct recv_reorder_ctrl *preorder_ctrl, int bforced)
 {
-	//_irqL irql;
-	//u8 bcancelled;
 	_list	*phead, *plist;
 	union recv_frame *prframe;
 	struct rx_pkt_attrib *pattrib;
@@ -2584,7 +2583,6 @@ int recv_indicatepkts_in_order(_adapter *padapter, struct recv_reorder_ctrl *pre
 int recv_indicatepkt_reorder(_adapter *padapter, union recv_frame *prframe);
 int recv_indicatepkt_reorder(_adapter *padapter, union recv_frame *prframe)
 {
-	_irqL irql;
 	int retval = _SUCCESS;
 	struct rx_pkt_attrib *pattrib = &prframe->u.hdr.attrib;
 	struct recv_reorder_ctrl *preorder_ctrl = prframe->u.hdr.preorder_ctrl;
@@ -2739,7 +2737,6 @@ _err_exit:
 
 void rtw_reordering_ctrl_timeout_handler(void *pcontext)
 {
-	_irqL irql;
 	struct recv_reorder_ctrl *preorder_ctrl = (struct recv_reorder_ctrl *)pcontext;
 	_adapter *padapter = preorder_ctrl->padapter;
 	_queue *ppending_recvframe_queue = &preorder_ctrl->pending_recvframe_queue;
@@ -2830,8 +2827,6 @@ int process_recv_indicatepkts(_adapter *padapter, union recv_frame *prframe)
 static int recv_func_prehandle(_adapter *padapter, union recv_frame *rframe)
 {
 	int ret = _SUCCESS;
-	struct rx_pkt_attrib *pattrib = &rframe->u.hdr.attrib;
-	struct recv_priv *precvpriv = &padapter->recvpriv;
 	_queue *pfree_recv_queue = &padapter->recvpriv.free_recv_queue;
 
 	DBG_COUNTER(padapter->rx_logs.core_rx_pre);
@@ -2853,7 +2848,6 @@ static int recv_func_posthandle(_adapter *padapter, union recv_frame *prframe)
 {
 	int ret = _SUCCESS;
 	union recv_frame *orig_prframe = prframe;
-	struct rx_pkt_attrib *pattrib = &prframe->u.hdr.attrib;
 	struct recv_priv *precvpriv = &padapter->recvpriv;
 	_queue *pfree_recv_queue = &padapter->recvpriv.free_recv_queue;
 

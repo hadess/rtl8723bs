@@ -362,7 +362,6 @@ void rtw_buf_free(u8 **buf, u32 *buf_len)
 	ori_len = *buf_len;
 
 	if (*buf) {
-		u32 tmp_buf_len = *buf_len;
 		*buf_len = 0;
 		kfree(*buf);
 		*buf = NULL;

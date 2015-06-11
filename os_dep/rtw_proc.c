@@ -74,9 +74,7 @@ static ssize_t proc_set_log_level(struct file *file, const char __user *buffer, 
 		return -EINVAL;
 
 	if (buffer && !copy_from_user(tmp, buffer, sizeof(tmp))) {
-
-		int num = sscanf(tmp, "%d ", &log_level);
-
+		sscanf(tmp, "%d ", &log_level);
 		if( log_level >= _drv_always_ && log_level <= _drv_debug_ )
 		{
 			GlobalDebugLevel= log_level;
@@ -237,9 +235,6 @@ static ssize_t proc_set_linked_info_dump(struct file *file, const char __user *b
 		return -EFAULT;
 
 	if (buffer && !copy_from_user(tmp, buffer, sizeof(tmp))) {
-
-		int num = sscanf(tmp, "%d ", &mode);
-
 		if( padapter )
 		{
 			//padapter->bLinkInfoDump = mode;
@@ -294,10 +289,6 @@ static ssize_t proc_reset_rx_info(struct file *file, const char __user *buffer, 
 
 static int proc_get_cam(struct seq_file *m, void *v)
 {
-	struct net_device *dev = m->private;
-	_adapter *adapter = (_adapter *)rtw_netdev_priv(dev);
-	u8 i;
-
 	return 0;
 }
 
@@ -711,7 +702,6 @@ struct proc_dir_entry *rtw_adapter_proc_init(struct net_device *dev)
 	struct proc_dir_entry *dir_dev = NULL;
 	struct proc_dir_entry *entry = NULL;
 	_adapter *adapter = rtw_netdev_priv(dev);
-	u8 rf_type;
 	ssize_t i;
 
 	if (drv_proc == NULL) {

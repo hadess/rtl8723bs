@@ -491,7 +491,6 @@ static int rtw_drv_init(
 	const struct sdio_device_id *id)
 {
 	int status = _FAIL;
-	struct net_device *pnetdev;
 	PADAPTER if1 = NULL, if2 = NULL;
 	struct dvobj_priv *dvobj;
 
@@ -541,7 +540,6 @@ exit:
 static void rtw_dev_remove(struct sdio_func *func)
 {
 	struct dvobj_priv *dvobj = sdio_get_drvdata(func);
-	struct pwrctrl_priv *pwrctl = dvobj_to_pwrctl(dvobj);
 	PADAPTER padapter = dvobj->if1;
 
 _func_enter_;
@@ -593,7 +591,6 @@ static int rtw_sdio_suspend(struct device *dev)
 	_adapter *padapter = psdpriv->if1;
 	struct debug_priv *pdbgpriv = &psdpriv->drv_dbg;
 	int ret = 0;
-	u8 ch, bw, offset;
 
 	if(padapter->bDriverStopped == true)
 	{

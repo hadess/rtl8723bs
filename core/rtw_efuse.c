@@ -426,21 +426,6 @@ Efuse_PgPacketWrite(IN	PADAPTER	pAdapter,
 	return ret;
 }
 
-
-static int
-Efuse_PgPacketWrite_BT(IN	PADAPTER	pAdapter,
-					IN	u8			offset,
-					IN	u8			word_en,
-					IN	u8			*data,
-					IN	bool		bPseudoTest)
-{
-	int ret;
-
-	ret =  pAdapter->HalFunc.Efuse_PgPacketWrite_BT(pAdapter, offset, word_en, data, bPseudoTest);
-
-	return ret;
-}
-
 /*-----------------------------------------------------------------------------
  * Function:	efuse_WordEnableDataRead
  *

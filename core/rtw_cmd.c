@@ -602,12 +602,10 @@ post_process:
 		if((cmd_process_time = jiffies_to_msecs(jiffies - cmd_start_time)) > 1000)
 		{
 			if (pcmd->cmdcode == GEN_CMD_CODE(_Set_Drv_Extra)) {
-				struct drvextra_cmd_parm *drvextra_parm = (struct drvextra_cmd_parm *)pcmdbuf;
 				DBG_871X(ADPT_FMT" cmd=%d,%d,%d process_time=%lu > 1 sec\n",
 					ADPT_ARG(pcmd->padapter), pcmd->cmdcode, drvextra_parm->ec_id, drvextra_parm->type, cmd_process_time);
 				//rtw_warn_on(1);
 			} else if(pcmd->cmdcode == GEN_CMD_CODE(_Set_MLME_EVT)){
-				struct C2HEvent_Header *pc2h_evt_hdr = (struct C2HEvent_Header *)pcmdbuf;
 				DBG_871X(ADPT_FMT" cmd=%d,%d, process_time=%lu > 1 sec\n",
 					ADPT_ARG(pcmd->padapter), pcmd->cmdcode, pc2h_evt_hdr->ID, cmd_process_time);
 				//rtw_warn_on(1);
@@ -1216,8 +1214,6 @@ u8 rtw_clearstakey_cmd(_adapter *padapter, struct sta_info *sta, u8 enqueue)
 	struct set_stakey_parm	*psetstakey_para;
 	struct cmd_priv				*pcmdpriv=&padapter->cmdpriv;
 	struct set_stakey_rsp		*psetstakey_rsp = NULL;
-	struct mlme_priv			*pmlmepriv = &padapter->mlmepriv;
-	struct security_priv		*psecuritypriv = &padapter->securitypriv;
 	s16 cam_id = 0;
 	u8	res=_SUCCESS;
 
@@ -2342,7 +2338,6 @@ _func_exit_;
 }
 void rtw_disassoc_cmd_callback(_adapter*	padapter,  struct cmd_obj *pcmd)
 {
-	_irqL	irqL;
 	struct	mlme_priv *pmlmepriv = &padapter->mlmepriv;
 
 _func_enter_;
@@ -2390,7 +2385,6 @@ _func_exit_;
 
 void rtw_createbss_cmd_callback(_adapter *padapter, struct cmd_obj *pcmd)
 {
-	_irqL irqL;
 	u8 timer_cancelled;
 	struct sta_info *psta = NULL;
 	struct wlan_network *pwlan = NULL;
@@ -2431,8 +2425,6 @@ _func_enter_;
 	}
 	else
 	{
-		_irqL	irqL;
-
 		pwlan = _rtw_alloc_network(pmlmepriv);
 		spin_lock_bh(&(pmlmepriv->scanned_queue.lock));
 		if ( pwlan == NULL)
@@ -2508,7 +2500,6 @@ _func_exit_;
 }
 void rtw_setassocsta_cmdrsp_callback(_adapter*	padapter,  struct cmd_obj *pcmd)
 {
-	_irqL	irqL;
 	struct sta_priv * pstapriv = &padapter->stapriv;
 	struct mlme_priv	*pmlmepriv = &padapter->mlmepriv;
 	struct set_assocsta_parm* passocsta_parm = (struct set_assocsta_parm*)(pcmd->parmbuf);
