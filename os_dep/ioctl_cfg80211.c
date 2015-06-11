@@ -593,7 +593,7 @@ void rtw_cfg80211_indicate_disconnect(_adapter *padapter)
 		if(check_fwstate(&padapter->mlmepriv, _FW_LINKED)) {
 			/* call needed for 4.2 */
 //			cfg80211_disconnected(padapter->pnetdev, 0,
-					      NULL, 0, true, GFP_ATOMIC);
+//					      NULL, 0, true, GFP_ATOMIC);
 			cfg80211_disconnected(padapter->pnetdev, 0, NULL, 0, GFP_ATOMIC);
 		} else {
 			cfg80211_connect_result(padapter->pnetdev, NULL, NULL, 0, NULL, 0,
