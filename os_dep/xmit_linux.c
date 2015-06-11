@@ -246,7 +246,6 @@ int _rtw_xmit_entry(_pkt *pkt, _nic_hdl pnetdev)
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(pnetdev);
 	struct xmit_priv *pxmitpriv = &padapter->xmitpriv;
 	struct mlme_priv	*pmlmepriv = &padapter->mlmepriv;
-	extern int rtw_mc2u_disable;
 	s32 res = 0;
 
 _func_enter_;

@@ -23,8 +23,6 @@
 #include <rtw_mp.h>
 #include <linux/jiffies.h>
 
-extern int rtw_ht_enable;
-
 #define RTL_IOCTL_WPA_SUPPLICANT	SIOCIWFIRSTPRIV+30
 
 #define SCAN_ITEM_SIZE 768
@@ -3134,7 +3132,6 @@ static int rtw_p2p_get2(struct net_device *dev,
 
 }
 
-extern int rtw_change_ifname(_adapter *padapter, const char *ifname);
 static int rtw_rereg_nd_name(struct net_device *dev,
                                struct iw_request_info *info,
                                union iwreq_data *wrqu, char *extra)

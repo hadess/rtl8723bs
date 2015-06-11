@@ -1996,8 +1996,6 @@ _func_exit_;
 
 }
 
-extern u32 g_wait_hiq_empty;
-
 static void rtw_chk_hi_queue_hdl(_adapter *padapter)
 {
 	struct sta_info *psta_bmc;

@@ -22,10 +22,7 @@
 #include <drv_types.h>
 #include <linux/jiffies.h>
 
-
-extern void indicate_wx_scan_complete_event(_adapter *padapter);
 extern u8 rtw_do_join(_adapter * padapter);
-
 
 sint	_rtw_init_mlme_priv (_adapter* padapter)
 {
@@ -1188,7 +1185,8 @@ _func_enter_;
 _func_exit_;
 }
 
-void rtw_reset_rx_info(struct debug_priv *pdbgpriv){
+static void rtw_reset_rx_info(struct debug_priv *pdbgpriv)
+{
 	pdbgpriv->dbg_rx_ampdu_drop_count = 0;
 	pdbgpriv->dbg_rx_ampdu_forced_indicate_count = 0;
 	pdbgpriv->dbg_rx_ampdu_loss_count = 0;
@@ -1196,15 +1194,32 @@ void rtw_reset_rx_info(struct debug_priv *pdbgpriv){
 	pdbgpriv->dbg_rx_ampdu_window_shift_cnt = 0;
 }
 
+static void find_network(_adapter *adapter)
+{
+	struct wlan_network* pwlan = NULL;
+	struct	mlme_priv *pmlmepriv = &adapter->mlmepriv;
+	struct wlan_network *tgt_network = &pmlmepriv->cur_network;
+
+	pwlan = rtw_find_network(&pmlmepriv->scanned_queue, tgt_network->network.MacAddress);
+	if (pwlan)
+		pwlan->fixed = false;
+	else
+		RT_TRACE(_module_rtl871x_mlme_c_,_drv_err_,("rtw_free_assoc_resources : pwlan== NULL \n\n"));
+
+
+	if (check_fwstate(pmlmepriv, WIFI_ADHOC_MASTER_STATE) &&
+	    (adapter->stapriv.asoc_sta_count== 1))
+		rtw_free_network_nolock(adapter, pwlan);
+}
+
 /*
 *rtw_free_assoc_resources: the caller has to lock pmlmepriv->lock
 */
 void rtw_free_assoc_resources(_adapter *adapter, int lock_scanned_queue)
 {
-	struct wlan_network* pwlan = NULL;
 	struct	mlme_priv *pmlmepriv = &adapter->mlmepriv;
-	struct	sta_priv *pstapriv = &adapter->stapriv;
 	struct wlan_network *tgt_network = &pmlmepriv->cur_network;
+	struct	sta_priv *pstapriv = &adapter->stapriv;
 	struct dvobj_priv *psdpriv = adapter->dvobj;
 	struct debug_priv *pdbgpriv = &psdpriv->drv_dbg;
 
@@ -1241,28 +1256,15 @@ _func_enter_;
 		rtw_init_bcmc_stainfo(adapter);
 	}
 
-	if(lock_scanned_queue)
+	if(lock_scanned_queue) {
 		spin_lock_bh(&(pmlmepriv->scanned_queue.lock));
-
-	pwlan = rtw_find_network(&pmlmepriv->scanned_queue, tgt_network->network.MacAddress);
-	if(pwlan)
-	{
-		pwlan->fixed = false;
-	}
-	else
-	{
-		RT_TRACE(_module_rtl871x_mlme_c_,_drv_err_,("rtw_free_assoc_resources : pwlan== NULL \n\n"));
-	}
-
-
-	if((check_fwstate(pmlmepriv, WIFI_ADHOC_MASTER_STATE) && (adapter->stapriv.asoc_sta_count== 1))
-		/*||check_fwstate(pmlmepriv, WIFI_STATION_STATE)*/)
-	{
-		rtw_free_network_nolock(adapter, pwlan);
+		find_network(adapter);
+		spin_unlock_bh(&(pmlmepriv->scanned_queue.lock));
+	} else {
+		find_network(adapter);
 	}
 
 	if(lock_scanned_queue)
-		spin_unlock_bh(&(pmlmepriv->scanned_queue.lock));
 
 	adapter->securitypriv.key_mask = 0;
 
@@ -1606,7 +1608,7 @@ _func_enter_;
 	if(pnetwork->network.Length > sizeof(WLAN_BSSID_EX))
 	{
 		RT_TRACE(_module_rtl871x_mlme_c_,_drv_err_,("\n\n ***joinbss_evt_callback return a wrong bss ***\n\n"));
-		goto ignore_joinbss_callback;
+		return;
 	}
 
 	spin_lock_bh(&pmlmepriv->lock);
@@ -2362,7 +2364,7 @@ _func_enter_;
 
 	if (mlme->cur_network_scanned == NULL) {
 		rtw_warn_on(1);
-		goto exit;
+		return ret;
 	}
 
 	spin_lock_bh(&(mlme->scanned_queue.lock));

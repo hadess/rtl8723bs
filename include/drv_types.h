@@ -727,4 +727,18 @@ __inline static u8 *myid(struct eeprom_priv *peepriv)
 
 #include <rtw_btcoex.h>
 
+void rtw_indicate_wx_disassoc_event(_adapter *padapter);
+void rtw_indicate_wx_assoc_event(_adapter *padapter);
+void rtw_indicate_wx_disassoc_event(_adapter *padapter);
+void indicate_wx_scan_complete_event(_adapter *padapter);
+int rtw_change_ifname(_adapter *padapter, const char *ifname);
+
+extern char *rtw_phy_file_path;
+extern char *rtw_initmac;
+extern int rtw_mc2u_disable;
+extern int rtw_ht_enable;
+extern u32 g_wait_hiq_empty;
+extern u8 g_fwdl_wintint_rdy_fail;
+extern u8 g_fwdl_chksum_fail;
+
 #endif //__DRV_TYPES_H__
