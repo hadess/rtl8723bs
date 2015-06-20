@@ -2162,7 +2162,7 @@ halbtc8723b1ant_ActionWifiNotConnectedScan(
 		}
 		else
 		{
-		halbtc8723b1ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 20);
+			halbtc8723b1ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 20);
 			halbtc8723b1ant_CoexTableWithType(pBtCoexist, NORMAL_EXEC, 4);
 		}
 	}
@@ -2231,9 +2231,9 @@ halbtc8723b1ant_ActionWifiConnectedScan(
 		}
 		else
 		{
-		halbtc8723b1ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 20);
+			halbtc8723b1ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 20);
 			halbtc8723b1ant_CoexTableWithType(pBtCoexist, NORMAL_EXEC, 4);
-	}
+		}
 	}
 	else if( (BT_8723B_1ANT_BT_STATUS_SCO_BUSY == pCoexDm->btStatus) ||
 			(BT_8723B_1ANT_BT_STATUS_ACL_SCO_BUSY == pCoexDm->btStatus) )
@@ -2357,7 +2357,7 @@ halbtc8723b1ant_ActionWifiConnected(
 			halbtc8723b1ant_PsTdma(pBtCoexist, NORMAL_EXEC, false, 8);
 
 			if ( (pCoexSta->highPriorityTx) + (pCoexSta->highPriorityRx) <= 60 )
-			halbtc8723b1ant_CoexTableWithType(pBtCoexist, NORMAL_EXEC, 2);
+				halbtc8723b1ant_CoexTableWithType(pBtCoexist, NORMAL_EXEC, 2);
 			else
 				halbtc8723b1ant_CoexTableWithType(pBtCoexist, NORMAL_EXEC, 7);
 		}
@@ -2380,7 +2380,7 @@ halbtc8723b1ant_ActionWifiConnected(
 			halbtc8723b1ant_PsTdma(pBtCoexist, NORMAL_EXEC, false, 8);
 
 			if ( (pCoexSta->highPriorityTx) + (pCoexSta->highPriorityRx) <= 60 )
-			halbtc8723b1ant_CoexTableWithType(pBtCoexist, NORMAL_EXEC, 2);
+				halbtc8723b1ant_CoexTableWithType(pBtCoexist, NORMAL_EXEC, 2);
 			else
 				halbtc8723b1ant_CoexTableWithType(pBtCoexist, NORMAL_EXEC, 7);
 		}
