@@ -1747,7 +1747,7 @@ PHY_GetTxPowerLimit(
 
 	if ( Band == BAND_ON_2_4G ) {
 		s8 limits[10] = {0}; u8 i = 0;
-		for (i = 0; i < MAX_REGULATION_NUM; ++i)
+		for (i = 0; i < MAX_REGULATION_NUM; i++)
 			limits[i] = pHalData->TxPwrLimit_2_4G[i][bandwidth][rateSection][channel][RfPath];
 
 		powerLimit = (regulation == TXPWR_LMT_WW) ? phy_GetWorldWideLimit(limits) :

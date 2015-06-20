@@ -88,7 +88,7 @@ typedef enum _RT_AMPDU_BRUST_MODE{
 // Tx Power Limit Table Size
 #define MAX_REGULATION_NUM						4
 #define MAX_RF_PATH_NUM_IN_POWER_LIMIT_TABLE	4
-#define MAX_2_4G_BANDWITH_NUM					2
+#define MAX_2_4G_BANDWITH_NUM					4
 #define MAX_RATE_SECTION_NUM						10
 #define MAX_5G_BANDWITH_NUM						4
 
