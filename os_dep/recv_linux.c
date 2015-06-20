@@ -116,7 +116,7 @@ _pkt *rtw_os_alloc_msdu_pkt(union recv_frame *prframe, u16 nSubframe_Length, u8 
 		memcpy(skb_push(sub_skb, ETH_ALEN), pattrib->src, ETH_ALEN);
 		memcpy(skb_push(sub_skb, ETH_ALEN), pattrib->dst, ETH_ALEN);
 	} else {
-		u16 len;
+		__be16 len;
 		/* Leave Ethernet header part of hdr and full payload */
 		len = htons(sub_skb->len);
 		memcpy(skb_push(sub_skb, 2), &len, 2);
