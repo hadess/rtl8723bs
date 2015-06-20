@@ -406,7 +406,7 @@ u8 *rtw_get_capability_from_ie(u8 *ie)
 
 u16 rtw_get_capability(WLAN_BSSID_EX *bss)
 {
-	u16	val;
+	__le16	val;
 _func_enter_;
 
 	memcpy((u8 *)&val, rtw_get_capability_from_ie(bss->IEs), 2);
@@ -523,19 +523,20 @@ inline int is_same_ess(WLAN_BSSID_EX *a, WLAN_BSSID_EX *b)
 
 int is_same_network(WLAN_BSSID_EX *src, WLAN_BSSID_EX *dst, u8 feature)
 {
-	 u16 s_cap, d_cap;
+	u16 s_cap, d_cap;
+	__le16 tmps, tmpd;
 
 _func_enter_;
 
 	if(rtw_bug_check(dst, src, &s_cap, &d_cap)==false)
 			return false;
 
-	memcpy((u8 *)&s_cap, rtw_get_capability_from_ie(src->IEs), 2);
-	memcpy((u8 *)&d_cap, rtw_get_capability_from_ie(dst->IEs), 2);
+	memcpy((u8 *)&tmps, rtw_get_capability_from_ie(src->IEs), 2);
+	memcpy((u8 *)&tmpd, rtw_get_capability_from_ie(dst->IEs), 2);
 
 
-	s_cap = le16_to_cpu(s_cap);
-	d_cap = le16_to_cpu(d_cap);
+	s_cap = le16_to_cpu(tmps);
+	d_cap = le16_to_cpu(tmpd);
 
 _func_exit_;
 
@@ -3352,9 +3353,8 @@ void rtw_update_ht_cap(_adapter *padapter, u8 *pie, uint ie_len, u8 channel)
 
 	//update cur_bwmode & cur_ch_offset
 	if ((cbw40_enable) &&
-		(pmlmeinfo->HT_caps.u.HT_cap_element.HT_caps_info & BIT(1)) &&
-		(pmlmeinfo->HT_info.infos[0] & BIT(2)))
-	{
+	    (le16_to_cpu(pmlmeinfo->HT_caps.u.HT_cap_element.HT_caps_info) &
+	      BIT(1)) && (pmlmeinfo->HT_info.infos[0] & BIT(2))) {
 		int i;
 		u8	rf_type;
 
@@ -3404,7 +3404,9 @@ void rtw_update_ht_cap(_adapter *padapter, u8 *pie, uint ie_len, u8 channel)
 	//
 	// Config SM Power Save setting
 	//
-	pmlmeinfo->SM_PS = (pmlmeinfo->HT_caps.u.HT_cap_element.HT_caps_info & 0x0C) >> 2;
+	pmlmeinfo->SM_PS =
+		(le16_to_cpu(pmlmeinfo->HT_caps.u.HT_cap_element.HT_caps_info) &
+		 0x0C) >> 2;
 	if(pmlmeinfo->SM_PS == WLAN_HT_CAP_SM_PS_STATIC)
 	{
 		/*u8 i;
