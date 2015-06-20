@@ -181,7 +181,7 @@ odm_RxPhyStatus92CSeries_Parsing(
 		//
 
 		//if(pHalData->eRFPowerState == eRfOn)
-			cck_highpwr = pDM_Odm->bCckHighPower;
+		cck_highpwr = pDM_Odm->bCckHighPower;
 		//else
 		//	cck_highpwr = false;
 
@@ -236,8 +236,7 @@ odm_RxPhyStatus92CSeries_Parsing(
 		// (1)Get RSSI for HT rate
 		//
 
-	 for(i = ODM_RF_PATH_A; i < ODM_RF_PATH_MAX; i++)
-		{
+		for(i = ODM_RF_PATH_A; i < ODM_RF_PATH_MAX; i++) {
 			// 2008/01/30 MH we will judge RF RX path now.
 			if (pDM_Odm->RFPathRxEnable & BIT(i))
 				rf_rx_num++;
