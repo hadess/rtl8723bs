@@ -1535,7 +1535,7 @@ halbtc8723b2ant_IsCommonAction(
 			halbtc8723b2ant_FwDacSwingLvl(pBtCoexist, NORMAL_EXEC, 0xb);
 			halbtc8723b2ant_DecBtPwr(pBtCoexist, NORMAL_EXEC, 0);
 
-		halbtc8723b2ant_SwMechanism1(pBtCoexist,false,false,false,false);
+			halbtc8723b2ant_SwMechanism1(pBtCoexist,false,false,false,false);
 			halbtc8723b2ant_SwMechanism2(pBtCoexist,false,false,false,0x18);
 
 			bCommon = true;
