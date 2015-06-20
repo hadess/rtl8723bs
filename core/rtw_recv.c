@@ -676,6 +676,8 @@ _func_enter_;
 	{
 		if ((psta!=NULL) && (psta->ieee8021x_blocked))
 		{
+			__be16 be_tmp;
+
 			//blocked
 			//only accept EAPOL frame
 			RT_TRACE(_module_rtl871x_recv_c_,_drv_info_,("########portctrl:psta->ieee8021x_blocked==1\n"));
@@ -684,8 +686,8 @@ _func_enter_;
 
 			//get ether_type
 			ptr=ptr+pfhdr->attrib.hdrlen+pfhdr->attrib.iv_len+LLC_HEADER_SIZE;
-			memcpy(&ether_type,ptr, 2);
-			ether_type= ntohs((unsigned short )ether_type);
+			memcpy(&be_tmp, ptr, 2);
+			ether_type= ntohs(be_tmp);
 
 		        if (ether_type == eapol_type) {
 				prtnframe=precv_frame;
@@ -1882,11 +1884,10 @@ sint wlanhdr_to_ethhdr ( union recv_frame *precvframe)
 	u8	bsnaphdr;
 	u8	*psnap_type;
 	struct ieee80211_snap_hdr	*psnap;
-
+	__be16 be_tmp;
 	sint ret=_SUCCESS;
 	_adapter			*adapter =precvframe->u.hdr.adapter;
 	struct mlme_priv	*pmlmepriv = &adapter->mlmepriv;
-
 	u8	*ptr = get_recvframe_data(precvframe) ; // point to frame_ctrl field
 	struct rx_pkt_attrib *pattrib = & precvframe->u.hdr.attrib;
 
@@ -1918,8 +1919,8 @@ _func_enter_;
 
 	RT_TRACE(_module_rtl871x_recv_c_,_drv_info_,("\n===pattrib->hdrlen: %x,  pattrib->iv_len:%x ===\n\n", pattrib->hdrlen,  pattrib->iv_len));
 
-	memcpy(&eth_type, ptr+rmv_len, 2);
-	eth_type= ntohs((unsigned short )eth_type); //pattrib->ether_type
+	memcpy(&be_tmp, ptr+rmv_len, 2);
+	eth_type= ntohs(be_tmp); //pattrib->ether_type
 	pattrib->eth_type = eth_type;
 
 #ifdef CONFIG_AUTO_AP_MODE
@@ -1977,8 +1978,8 @@ _func_enter_;
 	memcpy(ptr+ETH_ALEN, pattrib->src, ETH_ALEN);
 
 	if(!bsnaphdr) {
-		len = htons(len);
-		memcpy(ptr+12, &len, 2);
+		be_tmp = htons(len);
+		memcpy(ptr+12, &be_tmp, 2);
 	}
 
 _func_exit_;
