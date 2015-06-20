@@ -1177,7 +1177,7 @@ s32 rtw_make_wlanhdr (_adapter *padapter , u8 *hdr, struct pkt_attrib *pattrib)
 	struct qos_priv *pqospriv = &pmlmepriv->qospriv;
 	u8 qos_option = false;
 	sint res = _SUCCESS;
-	u16 *fctrl = &pwlanhdr->frame_control;
+	__le16 *fctrl = &pwlanhdr->frame_control;
 
 	//struct sta_info *psta;
 
@@ -1847,7 +1847,7 @@ _func_enter_;
 	snap->oui[1] = oui[1];
 	snap->oui[2] = oui[2];
 
-	*(u16 *)(data + SNAP_SIZE) = htons(h_proto);
+	*(__be16 *)(data + SNAP_SIZE) = htons(h_proto);
 
 _func_exit_;
 
