@@ -484,8 +484,8 @@ u16 rtw_recv_select_queue(struct sk_buff *skb)
 
 	memcpy(&eth_type, pdata+(ETH_ALEN<<1), 2);
 
-	switch (eth_type) {
-		case htons(ETH_P_IP):
+	switch (be16_to_cpu(eth_type)) {
+		case ETH_P_IP:
 
 			piphdr = (struct iphdr *)(pdata+ETH_HLEN);
 
