@@ -210,7 +210,7 @@ exit:
 _func_exit_;
 }
 
-static u32 getcrc32(u8 *buf, sint len)
+static __le32 getcrc32(u8 *buf, sint len)
 {
 	u8 *p;
 	u32  crc;
@@ -224,7 +224,7 @@ _func_enter_;
 		crc = crc32_table[ (crc ^ *p) & 0xff] ^ (crc >> 8);
 	}
 _func_exit_;
-	return ~crc;    /* transmit complement, per CRC-32 spec */
+	return cpu_to_le32(~crc);    /* transmit complement, per CRC-32 spec */
 }
 
 
@@ -273,7 +273,7 @@ _func_enter_;
 
 				length=pattrib->last_txcmdsz-pattrib->hdrlen-pattrib->iv_len- pattrib->icv_len;
 
-				*((u32 *)crc)=cpu_to_le32(getcrc32(payload,length));
+				*((__le32 *)crc) = getcrc32(payload,length);
 
 				arcfour_init(&mycontext, wepkey,3+keylength);
 				arcfour_encrypt(&mycontext, payload, payload, length);
@@ -283,7 +283,7 @@ _func_enter_;
 			else
 			{
 			length=pxmitpriv->frag_len-pattrib->hdrlen-pattrib->iv_len-pattrib->icv_len ;
-				*((u32 *)crc)=cpu_to_le32(getcrc32(payload,length));
+				*((__le32 *)crc) = getcrc32(payload,length);
 				arcfour_init(&mycontext, wepkey,3+keylength);
 				arcfour_encrypt(&mycontext, payload, payload, length);
 				arcfour_encrypt(&mycontext, payload+length, crc, 4);
@@ -791,7 +791,7 @@ _func_enter_;
 				if((curfragnum+1)==pattrib->nr_frags){	//4 the last fragment
 					length=pattrib->last_txcmdsz-pattrib->hdrlen-pattrib->iv_len- pattrib->icv_len;
 					RT_TRACE(_module_rtl871x_security_c_,_drv_info_,("pattrib->iv_len =%x, pattrib->icv_len =%x\n", pattrib->iv_len,pattrib->icv_len));
-					*((u32 *)crc)=cpu_to_le32(getcrc32(payload,length));/* modified by Amy*/
+					*((__le32 *)crc) = getcrc32(payload,length);/* modified by Amy*/
 
 					arcfour_init(&mycontext, rc4key,16);
 					arcfour_encrypt(&mycontext, payload, payload, length);
@@ -800,7 +800,7 @@ _func_enter_;
 				}
 				else{
 					length=pxmitpriv->frag_len-pattrib->hdrlen-pattrib->iv_len-pattrib->icv_len ;
-					*((u32 *)crc)=cpu_to_le32(getcrc32(payload,length));/* modified by Amy*/
+					*((__le32 *)crc) = getcrc32(payload,length);/* modified by Amy*/
 					arcfour_init(&mycontext,rc4key,16);
 					arcfour_encrypt(&mycontext, payload, payload, length);
 					arcfour_encrypt(&mycontext, payload+length, crc, 4);
@@ -2129,6 +2129,9 @@ u32	rtw_BIP_verify(_adapter *padapter, u8 *precvframe)
 	struct ieee80211_hdr *pwlanhdr;
 	u8 mic[16];
 	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
+	__le16 le_tmp;
+	__le64 le_tmp64;
+
 	ori_len = pattrib->pkt_len-WLAN_HDR_A3_LEN+BIP_AAD_SIZE;
 	BIP_AAD = rtw_zmalloc(ori_len);
 
@@ -2151,8 +2154,8 @@ u32	rtw_BIP_verify(_adapter *padapter, u8 *precvframe)
 		u16 keyid=0;
 		u64 temp_ipn=0;
 		//save packet number
-		memcpy(&temp_ipn, p+4, 6);
-		temp_ipn = le64_to_cpu(temp_ipn);
+		memcpy(&le_tmp64, p+4, 6);
+		temp_ipn = le64_to_cpu(le_tmp64);
 		//BIP packet number should bigger than previous BIP packet
 		if(temp_ipn <= pmlmeext->mgnt_80211w_IPN_rx)
 		{
@@ -2160,8 +2163,8 @@ u32	rtw_BIP_verify(_adapter *padapter, u8 *precvframe)
 			goto BIP_exit;
 		}
 		//copy key index
-		memcpy(&keyid, p+2, 2);
-		keyid = le16_to_cpu(keyid);
+		memcpy(&le_tmp, p+2, 2);
+		keyid = le16_to_cpu(le_tmp);
 		if(keyid != padapter->securitypriv.dot11wBIPKeyid)
 		{
 			DBG_871X("BIP key index error!\n");
