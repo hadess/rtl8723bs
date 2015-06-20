@@ -2211,7 +2211,7 @@ void adaptive_early_32k(struct mlme_ext_priv *pmlmeext, u8 *pframe, uint len)
 
 	tsf = le32_to_cpu(*(pbuf+1));
 	tsf = tsf << 32;
-	tsf |= le32_to_cpu(*pbuf);
+	tsf |= le32_to_cpu((__le32 *)*pbuf);
 
 	//DBG_871X("%s(): tsf_upper= 0x%08x, tsf_lower=0x%08x\n", __func__, (u32)(tsf>>32), (u32)tsf);
 

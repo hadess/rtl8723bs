@@ -589,7 +589,7 @@ void rtw_cfg80211_indicate_disconnect(_adapter *padapter)
 
 	if (!padapter->mlmepriv.not_indic_disco) {
 		if(check_fwstate(&padapter->mlmepriv, _FW_LINKED)) {
-#if 0
+#if 1
 			/* call needed for 4.2 */
 			cfg80211_disconnected(padapter->pnetdev, 0,
 					      NULL, 0, true, GFP_ATOMIC);

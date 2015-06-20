@@ -242,21 +242,14 @@ struct rx_pkt_attrib	{
 #define RXDESC_SIZE	24
 #define RXDESC_OFFSET RXDESC_SIZE
 
-struct recv_stat
-{
-	unsigned int rxdw0;
-
-	unsigned int rxdw1;
-
-	unsigned int rxdw2;
-
-	unsigned int rxdw3;
-
+struct recv_stat {
+	__le32 rxdw0;
+	__le32 rxdw1;
+	__le32 rxdw2;
+	__le32 rxdw3;
 #ifndef BUF_DESC_ARCH
-	unsigned int rxdw4;
-
-	unsigned int rxdw5;
-
+	__le32 rxdw4;
+	__le32 rxdw5;
 #endif //if BUF_DESC_ARCH is defined, rx_buf_desc occupy 4 double words
 };
 

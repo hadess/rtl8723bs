@@ -89,8 +89,7 @@ struct intf_priv;
 struct intf_hdl;
 struct io_queue;
 
-struct _io_ops
-{
+struct _io_ops {
 		u8 (*_read8)(struct intf_hdl *pintfhdl, u32 addr);
 		u16 (*_read16)(struct intf_hdl *pintfhdl, u32 addr);
 		u32 (*_read32)(struct intf_hdl *pintfhdl, u32 addr);

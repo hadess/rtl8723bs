@@ -70,6 +70,8 @@ s32 FillH2CCmd8723B(PADAPTER padapter, u8 ElementID, u32 CmdLen, u8 *pCmdBuffer)
 	u32	h2c_cmd = 0;
 	u32	h2c_cmd_ex = 0;
 	s32 ret = _FAIL;
+	__le32 le_tmp;
+
 _func_enter_;
 
 	padapter = GET_PRIMARY_ADAPTER(padapter);
@@ -111,12 +113,12 @@ _func_enter_;
 
 		if(CmdLen>3){
 			msgbox_ex_addr = REG_HMEBOX_EXT0_8723B + (h2c_box_num *RTL8723B_EX_MESSAGE_BOX_SIZE);
-			h2c_cmd_ex = le32_to_cpu( h2c_cmd_ex );
-			rtw_write32(padapter, msgbox_ex_addr, h2c_cmd_ex);
+			le_tmp = cpu_to_le32(h2c_cmd_ex);
+			rtw_write32(padapter, msgbox_ex_addr, le_tmp);
 		}
 		msgbox_addr =REG_HMEBOX_0 + (h2c_box_num *MESSAGE_BOX_SIZE);
-		h2c_cmd = le32_to_cpu( h2c_cmd );
-		rtw_write32(padapter,msgbox_addr, h2c_cmd);
+		le_tmp = cpu_to_le32(h2c_cmd);
+		rtw_write32(padapter,msgbox_addr, le_tmp);
 
 		//DBG_8192C("MSG_BOX:%d, CmdLen(%d), CmdID(0x%x), reg:0x%x =>h2c_cmd:0x%.8x, reg:0x%x =>h2c_cmd_ex:0x%.8x\n"
 		//	,pHalData->LastHMEBoxNum , CmdLen, ElementID, msgbox_addr, h2c_cmd, msgbox_ex_addr, h2c_cmd_ex);

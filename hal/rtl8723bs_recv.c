@@ -41,12 +41,12 @@ static void update_recvframe_attrib(
 	struct recv_stat	report;
 	PRXREPORT prxreport = (PRXREPORT)&report;
 
-	report.rxdw0 = le32_to_cpu(prxstat->rxdw0);
-	report.rxdw1 = le32_to_cpu(prxstat->rxdw1);
-	report.rxdw2 = le32_to_cpu(prxstat->rxdw2);
-	report.rxdw3 = le32_to_cpu(prxstat->rxdw3);
-	report.rxdw4 = le32_to_cpu(prxstat->rxdw4);
-	report.rxdw5 = le32_to_cpu(prxstat->rxdw5);
+	report.rxdw0 = prxstat->rxdw0;
+	report.rxdw1 = prxstat->rxdw1;
+	report.rxdw2 = prxstat->rxdw2;
+	report.rxdw3 = prxstat->rxdw3;
+	report.rxdw4 = prxstat->rxdw4;
+	report.rxdw5 = prxstat->rxdw5;
 
 	pattrib = &precvframe->u.hdr.attrib;
 	memset(pattrib, 0, sizeof(struct rx_pkt_attrib));
