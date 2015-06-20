@@ -478,7 +478,7 @@ u16 rtw_recv_select_queue(struct sk_buff *skb)
 {
 	struct iphdr *piphdr;
 	unsigned int dscp;
-	u16	eth_type;
+	__be16	eth_type;
 	u32 priority;
 	u8 *pdata = skb->data;
 
