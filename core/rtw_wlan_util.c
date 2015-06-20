@@ -532,7 +532,7 @@ __inline u8 *get_my_bssid(WLAN_BSSID_EX *pnetwork)
 
 u16 get_beacon_interval(WLAN_BSSID_EX *bss)
 {
-	unsigned short val;
+	__le16 val;
 	memcpy((unsigned char *)&val, rtw_get_beacon_interval_from_ie(bss->IEs), 2);
 
 	return le16_to_cpu(val);
@@ -1266,15 +1266,7 @@ void HT_caps_handler(_adapter *padapter, PNDIS_802_11_VARIABLE_IEs pIE)
 			pmlmeinfo->HT_caps.u.HT_cap_element.AMPDU_para = max_AMPDU_len | min_MPDU_spacing;
 		}
 	}
-
-	//	Commented by Albert 2010/07/12
-	//	Have to handle the endian issue after copying.
-	//	HT_ext_caps didn't be used yet.
-	pmlmeinfo->HT_caps.u.HT_cap_element.HT_caps_info = le16_to_cpu( pmlmeinfo->HT_caps.u.HT_cap_element.HT_caps_info );
-	pmlmeinfo->HT_caps.u.HT_cap_element.HT_ext_caps = le16_to_cpu( pmlmeinfo->HT_caps.u.HT_cap_element.HT_ext_caps );
-
 	rtw_hal_get_hwreg(padapter, HW_VAR_RF_TYPE, (u8 *)(&rf_type));
-
 
 	//update the MCS set
 	for (i = 0; i < 16; i++)
@@ -1792,7 +1784,7 @@ int support_short_GI(_adapter *padapter, struct HT_caps_element *pHT_caps, u8 bw
 
 	bit_offset = (bwmode & CHANNEL_WIDTH_40)? 6: 5;
 
-	if (pHT_caps->u.HT_cap_element.HT_caps_info & (0x1 << bit_offset))
+	if (le16_to_cpu(pHT_caps->u.HT_cap_element.HT_caps_info) & (0x1 << bit_offset))
 	{
 		return _SUCCESS;
 	}
@@ -2177,7 +2169,7 @@ void process_addba_req(_adapter *padapter, u8 *paddba_req, u8 *addr)
 void update_TSF(struct mlme_ext_priv *pmlmeext, u8 *pframe, uint len)
 {
 	u8* pIE;
-	u32 *pbuf;
+	__le32 *pbuf;
 
 	pIE = pframe + sizeof(struct ieee80211_hdr_3addr);
 	pbuf = (__le32 *)pIE;
@@ -2198,7 +2190,7 @@ void adaptive_early_32k(struct mlme_ext_priv *pmlmeext, u8 *pframe, uint len)
 {
 	int i;
 	u8* pIE;
-	u32 *pbuf;
+	__le32 *pbuf;
 	u64 tsf=0;
 	u32 delay_ms;
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
@@ -2211,7 +2203,7 @@ void adaptive_early_32k(struct mlme_ext_priv *pmlmeext, u8 *pframe, uint len)
 
 	tsf = le32_to_cpu(*(pbuf+1));
 	tsf = tsf << 32;
-	tsf |= *pbuf;
+	tsf |= le32_to_cpu(*pbuf);
 
 	//DBG_871X("%s(): tsf_upper= 0x%08x, tsf_lower=0x%08x\n", __func__, (u32)(tsf>>32), (u32)tsf);
 
