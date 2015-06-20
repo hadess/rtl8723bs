@@ -368,7 +368,7 @@ odm_Process_RSSIForDM(
 	if(pPktinfo->bPacketBeacon)
 		pDM_Odm->PhyDbgInfo.NumQryBeaconPkt++;
 
-	isCCKrate = ((pPktinfo->DataRate >= DESC_RATE1M ) && (pPktinfo->DataRate <= DESC_RATE11M ))?true :false;
+	isCCKrate = ((pPktinfo->DataRate <= DESC_RATE11M )) ? true : false;
 	pDM_Odm->RxRate = pPktinfo->DataRate;
 	/*
 	if(!isCCKrate)
