@@ -3124,10 +3124,10 @@ unsigned int rtw_restructure_ht_ie(_adapter *padapter, u8 *in_ie, u8 *out_ie, ui
 
 	memset(&ht_capie, 0, sizeof(struct rtw_ieee80211_ht_cap));
 
-	ht_capie.cap_info = IEEE80211_HT_CAP_DSSSCCK40;
+	ht_capie.cap_info = cpu_to_le16(IEEE80211_HT_CAP_DSSSCCK40);
 
 	if (phtpriv->sgi_20m)
-		ht_capie.cap_info |= IEEE80211_HT_CAP_SGI_20;
+		ht_capie.cap_info |= cpu_to_le16(IEEE80211_HT_CAP_SGI_20);
 
 	/* Get HT BW */
 	if (in_ie == NULL) {
@@ -3169,16 +3169,16 @@ unsigned int rtw_restructure_ht_ie(_adapter *padapter, u8 *in_ie, u8 *out_ie, ui
 	}
 
 	if ((cbw40_enable == 1) && (operation_bw == CHANNEL_WIDTH_40)) {
-		ht_capie.cap_info |= IEEE80211_HT_CAP_SUP_WIDTH;
+		ht_capie.cap_info |= cpu_to_le16(IEEE80211_HT_CAP_SUP_WIDTH);
 		if (phtpriv->sgi_40m)
-			ht_capie.cap_info |= IEEE80211_HT_CAP_SGI_40;
+			ht_capie.cap_info |= cpu_to_le16(IEEE80211_HT_CAP_SGI_40);
 	}
 
 	if (TEST_FLAG(phtpriv->stbc_cap, STBC_HT_ENABLE_TX))
-		ht_capie.cap_info |= IEEE80211_HT_CAP_TX_STBC;
+		ht_capie.cap_info |= cpu_to_le16(IEEE80211_HT_CAP_TX_STBC);
 
 	/* todo: disable SM power save mode */
-	ht_capie.cap_info |= IEEE80211_HT_CAP_SM_PS;
+	ht_capie.cap_info |= cpu_to_le16(IEEE80211_HT_CAP_SM_PS);
 
 	if (TEST_FLAG(phtpriv->stbc_cap, STBC_HT_ENABLE_RX)) {
 		if((channel <= 14 && pregistrypriv->rx_stbc == 0x1) ||	/* enable for 2.4GHz */
@@ -3199,7 +3199,7 @@ unsigned int rtw_restructure_ht_ie(_adapter *padapter, u8 *in_ie, u8 *out_ie, ui
 	case RF_1T1R:
 
 		if (stbc_rx_enable)
-			ht_capie.cap_info |= IEEE80211_HT_CAP_RX_STBC_1R;//RX STBC One spatial stream
+			ht_capie.cap_info |= cpu_to_le16(IEEE80211_HT_CAP_RX_STBC_1R);//RX STBC One spatial stream
 
 	                set_mcs_rate_by_mask(ht_capie.supp_mcs_set, MCS_RATE_1R);
 			break;
@@ -3209,7 +3209,7 @@ unsigned int rtw_restructure_ht_ie(_adapter *padapter, u8 *in_ie, u8 *out_ie, ui
 	default:
 
 		if (stbc_rx_enable)
-			ht_capie.cap_info |= IEEE80211_HT_CAP_RX_STBC_2R;//RX STBC two spatial stream
+			ht_capie.cap_info |= cpu_to_le16(IEEE80211_HT_CAP_RX_STBC_2R);//RX STBC two spatial stream
 
 		#ifdef CONFIG_DISABLE_MCS13TO15
 		if(((cbw40_enable == 1) && (operation_bw == CHANNEL_WIDTH_40)) && (pregistrypriv->wifi_spec!=1))
