@@ -206,8 +206,8 @@ static char *translate_scan(_adapter *padapter,
 		ht_cap = true;
 		pht_capie = (struct rtw_ieee80211_ht_cap *)(p+2);
 		memcpy(&mcs_rate , pht_capie->supp_mcs_set, 2);
-		bw_40MHz = (pht_capie->cap_info&IEEE80211_HT_CAP_SUP_WIDTH) ? 1:0;
-		short_GI = (pht_capie->cap_info&(IEEE80211_HT_CAP_SGI_20|IEEE80211_HT_CAP_SGI_40)) ? 1:0;
+		bw_40MHz = (le16_to_cpu(pht_capie->cap_info) & IEEE80211_HT_CAP_SUP_WIDTH) ? 1 : 0;
+		short_GI = (le16_to_cpu(pht_capie->cap_info) & (IEEE80211_HT_CAP_SGI_20 | IEEE80211_HT_CAP_SGI_40)) ? 1 : 0;
 	}
 
 	/* Add the protocol name */
@@ -255,9 +255,11 @@ static char *translate_scan(_adapter *padapter,
 	}
 	else
 	{
-        iwe.cmd = SIOCGIWMODE;
-		memcpy((u8 *)&cap, rtw_get_capability_from_ie(pnetwork->network.IEs), 2);
-		cap = le16_to_cpu(cap);
+		__le16 le_tmp;
+
+	        iwe.cmd = SIOCGIWMODE;
+		memcpy((u8 *)&le_tmp, rtw_get_capability_from_ie(pnetwork->network.IEs), 2);
+		cap = le16_to_cpu(le_tmp);
 	}
 
 	if(cap & (WLAN_CAPABILITY_IBSS |WLAN_CAPABILITY_BSS)){
@@ -1532,11 +1534,9 @@ static int rtw_wx_set_mlme(struct net_device *dev,
 
 	DBG_871X("%s\n", __FUNCTION__);
 
-	reason = cpu_to_le16(mlme->reason_code);
-
+	reason = mlme->reason_code;
 
 	DBG_871X("%s, cmd=%d, reason=%d\n", __FUNCTION__, mlme->cmd, reason);
-
 
 	switch (mlme->cmd)
 	{
