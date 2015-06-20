@@ -482,8 +482,8 @@ ODM_DMInit(
 
 	ODM_ClearTxPowerTrackingState(pDM_Odm);
 
-	if ( *(pDM_Odm->mp_mode) != 1)
-	odm_PathDiversityInit(pDM_Odm);
+	if (*(pDM_Odm->mp_mode) != 1)
+		odm_PathDiversityInit(pDM_Odm);
 
 	odm_DynamicBBPowerSavingInit(pDM_Odm);
 	odm_DynamicTxPowerInit(pDM_Odm);
@@ -1496,7 +1496,7 @@ odm_RSSIMonitorCheckCE(
 	if(pDM_Odm->bLinked != true)
 		return;
 
-       FirstConnect = (pDM_Odm->bLinked) && (pRA_Table->firstconnect == false);
+	FirstConnect = (pDM_Odm->bLinked) && (pRA_Table->firstconnect == false);
 	pRA_Table->firstconnect = pDM_Odm->bLinked;
 
 	//if(check_fwstate(&Adapter->mlmepriv, WIFI_AP_STATE|WIFI_ADHOC_STATE|WIFI_ADHOC_MASTER_STATE) == true)
