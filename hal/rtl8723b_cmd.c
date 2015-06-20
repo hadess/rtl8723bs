@@ -70,7 +70,6 @@ s32 FillH2CCmd8723B(PADAPTER padapter, u8 ElementID, u32 CmdLen, u8 *pCmdBuffer)
 	u32	h2c_cmd = 0;
 	u32	h2c_cmd_ex = 0;
 	s32 ret = _FAIL;
-	__le32 le_tmp;
 
 _func_enter_;
 
@@ -113,12 +112,10 @@ _func_enter_;
 
 		if(CmdLen>3){
 			msgbox_ex_addr = REG_HMEBOX_EXT0_8723B + (h2c_box_num *RTL8723B_EX_MESSAGE_BOX_SIZE);
-			le_tmp = cpu_to_le32(h2c_cmd_ex);
-			rtw_write32(padapter, msgbox_ex_addr, le_tmp);
+			rtw_write32(padapter, msgbox_ex_addr, h2c_cmd_ex);
 		}
 		msgbox_addr =REG_HMEBOX_0 + (h2c_box_num *MESSAGE_BOX_SIZE);
-		le_tmp = cpu_to_le32(h2c_cmd);
-		rtw_write32(padapter,msgbox_addr, le_tmp);
+		rtw_write32(padapter,msgbox_addr, h2c_cmd);
 
 		//DBG_8192C("MSG_BOX:%d, CmdLen(%d), CmdID(0x%x), reg:0x%x =>h2c_cmd:0x%.8x, reg:0x%x =>h2c_cmd_ex:0x%.8x\n"
 		//	,pHalData->LastHMEBoxNum , CmdLen, ElementID, msgbox_addr, h2c_cmd, msgbox_ex_addr, h2c_cmd_ex);
@@ -141,7 +138,7 @@ _func_exit_;
 static void ConstructBeacon(_adapter *padapter, u8 *pframe, u32 *pLength)
 {
 	struct ieee80211_hdr	*pwlanhdr;
-	u16					*fctrl;
+	__le16 *fctrl;
 	u32					rate_len, pktlen;
 	struct mlme_ext_priv	*pmlmeext = &(padapter->mlmeextpriv);
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
@@ -243,7 +240,7 @@ _ConstructBeacon:
 static void ConstructPSPoll(_adapter *padapter, u8 *pframe, u32 *pLength)
 {
 	struct ieee80211_hdr	*pwlanhdr;
-	u16					*fctrl;
+	__le16 *fctrl;
 	struct mlme_ext_priv	*pmlmeext = &(padapter->mlmeextpriv);
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 
@@ -280,7 +277,7 @@ static void ConstructNullFunctionData(
 	u8		bForcePowerSave)
 {
 	struct ieee80211_hdr	*pwlanhdr;
-	u16						*fctrl;
+	__le16 *fctrl;
 	u32						pktlen;
 	struct mlme_priv		*pmlmepriv = &padapter->mlmepriv;
 	struct wlan_network		*cur_network = &pmlmepriv->cur_network;
@@ -2197,7 +2194,7 @@ static void ConstructBtNullFunctionData(
 	u8 bForcePowerSave)
 {
 	struct ieee80211_hdr *pwlanhdr;
-	u16 *fctrl;
+	__le16 *fctrl;
 	u32 pktlen;
 	struct mlme_ext_priv *pmlmeext;
 	struct mlme_ext_info *pmlmeinfo;
