@@ -118,7 +118,6 @@ int _rtw_write16(_adapter *adapter, u32 addr, u16 val)
 	_func_enter_;
 	_write16 = pintfhdl->io_ops._write16;
 
-	val = rtw_cpu_to_le16(val);
 	ret = _write16(pintfhdl, addr, val);
 	_func_exit_;
 
@@ -131,12 +130,10 @@ int _rtw_write32(_adapter *adapter, u32 addr, u32 val)
 	struct	intf_hdl		*pintfhdl = &(pio_priv->intf);
 	int (*_write32)(struct intf_hdl *pintfhdl, u32 addr, u32 val);
 	int ret;
-	__le32 le_val;
 
 	_write32 = pintfhdl->io_ops._write32;
 
-	le_val = rtw_cpu_to_le32(val);
-	ret = _write32(pintfhdl, addr, le_val);
+	ret = _write32(pintfhdl, addr, val);
 
 	return RTW_STATUS_CODE(ret);
 }
