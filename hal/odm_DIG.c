@@ -183,69 +183,61 @@ odm_SearchPwdBLowerBound(
 
 	Diff = IGI_target -(s8)IGI;
 	TH_L2H_dmc = pDM_Odm->TH_L2H_ini + Diff;
-		if(TH_L2H_dmc > 10)
-			TH_L2H_dmc = 10;
+	if(TH_L2H_dmc > 10)
+		TH_L2H_dmc = 10;
 	TH_H2L_dmc = TH_L2H_dmc - pDM_Odm->TH_EDCCA_HL_diff;
 	PHY_SetBBReg(pDM_Odm->Adapter,rOFDM0_ECCAThreshold, bMaskByte0, (u1Byte)TH_L2H_dmc);
 	PHY_SetBBReg(pDM_Odm->Adapter,rOFDM0_ECCAThreshold, bMaskByte2, (u1Byte)TH_H2L_dmc);
 
 	mdelay(5);
 
-		while(bAdjust)
-			{
-			for(cnt=0; cnt<20; cnt ++)
-				{
-				value32 = PHY_QueryBBReg(pDM_Odm->Adapter,ODM_REG_RPT_11N, bMaskDWord);
+	while(bAdjust) {
+		for(cnt=0; cnt<20; cnt ++) {
+			value32 = PHY_QueryBBReg(pDM_Odm->Adapter,ODM_REG_RPT_11N, bMaskDWord);
 
-				if (value32 & BIT30)
-					pDM_Odm->txEdcca1 = pDM_Odm->txEdcca1 + 1;
-				else if(value32 & BIT29)
-					pDM_Odm->txEdcca1 = pDM_Odm->txEdcca1 + 1;
-				else
-					pDM_Odm->txEdcca0 = pDM_Odm->txEdcca0 + 1;
-				}
-			//DbgPrint("txEdcca1 = %d, txEdcca0 = %d\n", pDM_Odm->txEdcca1, pDM_Odm->txEdcca0);
+			if (value32 & BIT30)
+				pDM_Odm->txEdcca1 = pDM_Odm->txEdcca1 + 1;
+			else if(value32 & BIT29)
+				pDM_Odm->txEdcca1 = pDM_Odm->txEdcca1 + 1;
+			else
+				pDM_Odm->txEdcca0 = pDM_Odm->txEdcca0 + 1;
+		}
+		//DbgPrint("txEdcca1 = %d, txEdcca0 = %d\n", pDM_Odm->txEdcca1, pDM_Odm->txEdcca0);
 
-				if(pDM_Odm->txEdcca1 > 5 )
-				{
-					IGI = IGI -1;
-					TH_L2H_dmc = TH_L2H_dmc + 1;
-						if(TH_L2H_dmc > 10)
-							TH_L2H_dmc = 10;
-					TH_H2L_dmc = TH_L2H_dmc - pDM_Odm->TH_EDCCA_HL_diff;
-					PHY_SetBBReg(pDM_Odm->Adapter,rOFDM0_ECCAThreshold, bMaskByte0, (u1Byte)TH_L2H_dmc);
-					PHY_SetBBReg(pDM_Odm->Adapter,rOFDM0_ECCAThreshold, bMaskByte2, (u1Byte)TH_H2L_dmc);
+		if(pDM_Odm->txEdcca1 > 5 ) {
+			IGI = IGI -1;
+			TH_L2H_dmc = TH_L2H_dmc + 1;
+			if(TH_L2H_dmc > 10)
+				TH_L2H_dmc = 10;
+			TH_H2L_dmc = TH_L2H_dmc - pDM_Odm->TH_EDCCA_HL_diff;
+			PHY_SetBBReg(pDM_Odm->Adapter,rOFDM0_ECCAThreshold, bMaskByte0, (u1Byte)TH_L2H_dmc);
+			PHY_SetBBReg(pDM_Odm->Adapter,rOFDM0_ECCAThreshold, bMaskByte2, (u1Byte)TH_H2L_dmc);
 
-					pDM_Odm->TxHangFlg = true;
-					pDM_Odm->txEdcca1 = 0;
-					pDM_Odm->txEdcca0 = 0;
+			pDM_Odm->TxHangFlg = true;
+			pDM_Odm->txEdcca1 = 0;
+			pDM_Odm->txEdcca0 = 0;
 
-					if(TH_L2H_dmc == 10)
-						{
-						bAdjust = false;
-						pDM_Odm->TxHangFlg = false;
-						pDM_Odm->txEdcca1 = 0;
-						pDM_Odm->txEdcca0 = 0;
-						pDM_Odm->H2L_lb = TH_H2L_dmc;
-						pDM_Odm->L2H_lb = TH_L2H_dmc;
-						pDM_Odm->Adaptivity_IGI_upper = IGI;
-						}
-					}
-				else
-				{
-					bAdjust = false;
-					pDM_Odm->TxHangFlg = false;
-					pDM_Odm->txEdcca1 = 0;
-					pDM_Odm->txEdcca0 = 0;
-					pDM_Odm->H2L_lb = TH_H2L_dmc;
-					pDM_Odm->L2H_lb = TH_L2H_dmc;
-					pDM_Odm->Adaptivity_IGI_upper = IGI;
-				}
+			if(TH_L2H_dmc == 10) {
+				bAdjust = false;
+				pDM_Odm->TxHangFlg = false;
+				pDM_Odm->txEdcca1 = 0;
+				pDM_Odm->txEdcca0 = 0;
+				pDM_Odm->H2L_lb = TH_H2L_dmc;
+				pDM_Odm->L2H_lb = TH_L2H_dmc;
+				pDM_Odm->Adaptivity_IGI_upper = IGI;
 			}
+		} else {
+			bAdjust = false;
+			pDM_Odm->TxHangFlg = false;
+			pDM_Odm->txEdcca1 = 0;
+			pDM_Odm->txEdcca0 = 0;
+			pDM_Odm->H2L_lb = TH_H2L_dmc;
+			pDM_Odm->L2H_lb = TH_L2H_dmc;
+			pDM_Odm->Adaptivity_IGI_upper = IGI;
+		}
+	}
 
-
-ODM_RT_TRACE(pDM_Odm,ODM_COMP_DIG, ODM_DBG_LOUD, ("IGI = 0x%x, H2L_lb = 0x%x, L2H_lb = 0x%x\n", IGI, pDM_Odm->H2L_lb , pDM_Odm->L2H_lb));
-
+	ODM_RT_TRACE(pDM_Odm,ODM_COMP_DIG, ODM_DBG_LOUD, ("IGI = 0x%x, H2L_lb = 0x%x, L2H_lb = 0x%x\n", IGI, pDM_Odm->H2L_lb , pDM_Odm->L2H_lb));
 }
 
 void
@@ -350,11 +342,11 @@ odm_Adaptivity(
 
 		TH_H2L_dmc = TH_L2H_dmc - pDM_Odm->TH_EDCCA_HL_diff;
 
-		//replace lower bound to prevent EDCCA always equal 1
-			if(TH_H2L_dmc < pDM_Odm->H2L_lb)
-				TH_H2L_dmc = pDM_Odm->H2L_lb;
-			if(TH_L2H_dmc < pDM_Odm->L2H_lb)
-				TH_L2H_dmc = pDM_Odm->L2H_lb;
+		//replace lower bound to prevent EDCCA always equal 
+		if(TH_H2L_dmc < pDM_Odm->H2L_lb)
+			TH_H2L_dmc = pDM_Odm->H2L_lb;
+		if(TH_L2H_dmc < pDM_Odm->L2H_lb)
+			TH_L2H_dmc = pDM_Odm->L2H_lb;
 	}
 	else
 	{
@@ -856,9 +848,9 @@ odm_DIGbyRSSI_LPS(
 		RSSI_Lower =DM_DIG_MIN_NIC;
 
 	//Upper and Lower Bound checking
-	 if(CurrentIGI > DM_DIG_MAX_NIC)
+	if(CurrentIGI > DM_DIG_MAX_NIC)
 		CurrentIGI=DM_DIG_MAX_NIC;
-	 else if(CurrentIGI < RSSI_Lower)
+	else if(CurrentIGI < RSSI_Lower)
 		CurrentIGI =RSSI_Lower;
 
 
