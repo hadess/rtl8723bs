@@ -589,8 +589,7 @@ void rtw_cfg80211_indicate_disconnect(_adapter *padapter)
 
 	if (!padapter->mlmepriv.not_indic_disco) {
 		if(check_fwstate(&padapter->mlmepriv, _FW_LINKED)) {
-#if 1
-			/* call needed for 4.2 */
+#if LINUX_VERSION_CODE >= KERNEL_VERSION(4, 2, 0)
 			cfg80211_disconnected(padapter->pnetdev, 0,
 					      NULL, 0, true, GFP_ATOMIC);
 #else
