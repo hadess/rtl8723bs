@@ -163,16 +163,14 @@ static void update_BCNTIM(_adapter *padapter)
 
 		if(tim_ielen==4)
 		{
-			u8 pvb=0;
+			__le16 pvb;
 
-			if(pstapriv->tim_bitmap&0x00fe)
-				pvb = (u8)tim_bitmap_le;
-			else if(pstapriv->tim_bitmap&0xff00)
-				pvb = (u8)(tim_bitmap_le>>8);
+			if(pstapriv->tim_bitmap&0xff00)
+				pvb = cpu_to_le16(pstapriv->tim_bitmap >> 8);
 			else
-				pvb = (u8)tim_bitmap_le;
+				pvb = tim_bitmap_le;
 
-			*dst_ie++ = pvb;
+			*dst_ie++ = le16_to_cpu(pvb);
 
 		}
 		else if(tim_ielen==5)
@@ -1188,10 +1186,10 @@ int rtw_check_beacon_data(_adapter *padapter, u8 *pbuf,  int len)
 		rtw_ht_use_default_setting(padapter);
 
 		if (pmlmepriv->htpriv.sgi_20m == false)
-			pht_cap->cap_info &= ~(IEEE80211_HT_CAP_SGI_20);
+			pht_cap->cap_info &= cpu_to_le16(~(IEEE80211_HT_CAP_SGI_20));
 
 		if (pmlmepriv->htpriv.sgi_40m == false)
-			pht_cap->cap_info &= ~(IEEE80211_HT_CAP_SGI_40);
+			pht_cap->cap_info &= cpu_to_le16(~(IEEE80211_HT_CAP_SGI_40));
 
 		if (!TEST_FLAG(pmlmepriv->htpriv.ldpc_cap, LDPC_HT_ENABLE_RX))
 		{
