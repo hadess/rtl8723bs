@@ -92,7 +92,7 @@ _BlockWrite(
 
 	for (i = 0; i < blockCount_p1; i++)
 	{
-		ret = rtw_write32(padapter, (FW_8723B_START_ADDRESS + i * blockSize_p1), le32_to_cpu(*((u32*)(bufferPtr + i * blockSize_p1))));
+		ret = rtw_write32(padapter, (FW_8723B_START_ADDRESS + i * blockSize_p1), *((u32*)(bufferPtr + i * blockSize_p1)));
 		if(ret == _FAIL) {
 			printk("====>%s %d i:%d\n", __func__, __LINE__, i);
 			goto exit;
@@ -2661,7 +2661,7 @@ Hal_EfuseParseIDCode(
 
 
 	// Checl 0x8129 again for making sure autoload status!!
-	EEPROMId = le16_to_cpu(*((u16*)hwinfo));
+	EEPROMId = le16_to_cpu(*((__le16*)hwinfo));
 	if (EEPROMId != RTL_EEPROM_ID)
 	{
 		DBG_8192C("EEPROM ID(%#x) is invalid!!\n", EEPROMId);
@@ -3278,7 +3278,7 @@ static void rtl8723b_cal_txdesc_chksum(struct tx_desc *ptxdesc)
 	count = 16;
 
 	for (index = 0; index < count; index++) {
-		checksum ^= le16_to_cpu(*(usPtr + index));
+		checksum |= le16_to_cpu(*(__le16 *)(usPtr + index));
 	}
 
 	ptxdesc->txdw7 |= cpu_to_le32(checksum & 0x0000ffff);
@@ -3550,16 +3550,16 @@ void rtl8723b_update_txdesc(struct xmit_frame *pxmitframe, u8 *pbuf)
 	rtl8723b_fill_default_txdesc(pxmitframe, pbuf);
 
 	pdesc = (struct tx_desc*)pbuf;
-	pdesc->txdw0 = cpu_to_le32(pdesc->txdw0);
-	pdesc->txdw1 = cpu_to_le32(pdesc->txdw1);
-	pdesc->txdw2 = cpu_to_le32(pdesc->txdw2);
-	pdesc->txdw3 = cpu_to_le32(pdesc->txdw3);
-	pdesc->txdw4 = cpu_to_le32(pdesc->txdw4);
-	pdesc->txdw5 = cpu_to_le32(pdesc->txdw5);
-	pdesc->txdw6 = cpu_to_le32(pdesc->txdw6);
-	pdesc->txdw7 = cpu_to_le32(pdesc->txdw7);
-	pdesc->txdw8 = cpu_to_le32(pdesc->txdw8);
-	pdesc->txdw9 = cpu_to_le32(pdesc->txdw9);
+	pdesc->txdw0 = pdesc->txdw0;
+	pdesc->txdw1 = pdesc->txdw1;
+	pdesc->txdw2 = pdesc->txdw2;
+	pdesc->txdw3 = pdesc->txdw3;
+	pdesc->txdw4 = pdesc->txdw4;
+	pdesc->txdw5 = pdesc->txdw5;
+	pdesc->txdw6 = pdesc->txdw6;
+	pdesc->txdw7 = pdesc->txdw7;
+	pdesc->txdw8 = pdesc->txdw8;
+	pdesc->txdw9 = pdesc->txdw9;
 
 	rtl8723b_cal_txdesc_chksum(pdesc);
 }
