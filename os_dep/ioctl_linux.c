@@ -1756,14 +1756,11 @@ static int rtw_wx_get_scan(struct net_device *dev, struct iw_request_info *a,
 		goto exit;
 	}
 
-	wait_status = _FW_UNDER_SURVEY
-		| _FW_UNDER_LINKING
-	;
+	wait_status = _FW_UNDER_SURVEY | _FW_UNDER_LINKING;
 
-	while (check_fwstate(pmlmepriv, wait_status) == true)
-	{
+	if (check_fwstate(pmlmepriv, wait_status))
 		return -EAGAIN;
-	}
+
 	spin_lock_bh(&(pmlmepriv->scanned_queue.lock));
 
 	phead = get_list_head(queue);
