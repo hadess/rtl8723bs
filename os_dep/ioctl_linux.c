@@ -579,10 +579,8 @@ _func_enter_;
 	    param->sta_addr[4] == 0xff && param->sta_addr[5] == 0xff)
 	{
 
-		if (param->u.crypt.idx >= WEP_KEYS
-			&& param->u.crypt.idx > BIP_MAX_KEYID
-			)
-		{
+		if (param->u.crypt.idx >= WEP_KEYS &&
+		    param->u.crypt.idx >= BIP_MAX_KEYID) {
 			ret = -EINVAL;
 			goto exit;
 		}

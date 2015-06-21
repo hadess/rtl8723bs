@@ -121,15 +121,15 @@ struct security_priv
 
 	/* WEP */
 	u32	  dot11PrivacyKeyIndex;	// this is only valid for legendary wep, 0~3 for key id. (tx key index)
-	union Keytype dot11DefKey[4];			// this is only valid for def. key
+	union Keytype dot11DefKey[4];	// this is only valid for def. key
 	u32	dot11DefKeylen[4];
 	u8	key_mask; /* use to restore wep key after hal_init */
 
 	u32 dot118021XGrpPrivacy;	// This specify the privacy algthm. used for Grp key
 	u32	dot118021XGrpKeyid;		// key id used for Grp Key ( tx key index)
-	union Keytype	dot118021XGrpKey[4];	// 802.1x Group Key, for inx0 and inx1
-	union Keytype	dot118021XGrptxmickey[4];
-	union Keytype	dot118021XGrprxmickey[4];
+	union Keytype	dot118021XGrpKey[BIP_MAX_KEYID];	// 802.1x Group Key, for inx0 and inx1
+	union Keytype	dot118021XGrptxmickey[BIP_MAX_KEYID];
+	union Keytype	dot118021XGrprxmickey[BIP_MAX_KEYID];
 	union pn48		dot11Grptxpn;			// PN48 used for Grp Key xmit.
 	union pn48		dot11Grprxpn;			// PN48 used for Grp Key recv.
 	u32	dot11wBIPKeyid;						// key id used for BIP Key ( tx key index)
