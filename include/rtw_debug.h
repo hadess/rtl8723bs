@@ -164,7 +164,7 @@
 #define _dbgdump printk
 #define _seqdump seq_printf
 
-#define DRIVER_PREFIX "RTL871X: "
+#define DRIVER_PREFIX "RTL8723BS: "
 
 #if defined(_dbgdump)
 
