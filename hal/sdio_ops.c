@@ -162,12 +162,8 @@ static u8 sdio_read8(struct intf_hdl *pintfhdl, u32 addr)
 	u32 ftaddr;
 	u8 val;
 
-_func_enter_;
 	ftaddr = _cvrt2ftaddr(addr, NULL, NULL);
 	val = sd_read8(pintfhdl, ftaddr, NULL);
-
-_func_exit_;
-
 	return val;
 }
 
@@ -177,13 +173,9 @@ static u16 sdio_read16(struct intf_hdl *pintfhdl, u32 addr)
 	u16 val;
 	__le16 le_tmp;
 
-_func_enter_;
 	ftaddr = _cvrt2ftaddr(addr, NULL, NULL);
 	sd_cmd52_read(pintfhdl, ftaddr, 2, (u8*)&le_tmp);
 	val = le16_to_cpu(le_tmp);
-
-_func_exit_;
-
 	return val;
 }
 
@@ -198,8 +190,6 @@ static u32 sdio_read32(struct intf_hdl *pintfhdl, u32 addr)
 	u32 val;
 	s32 err;
 	__le32 le_tmp;
-
-_func_enter_;
 
 	padapter = pintfhdl->padapter;
 	ftaddr = _cvrt2ftaddr(addr, &deviceId, &offset);
@@ -243,9 +233,6 @@ _func_enter_;
 
 		kfree(ptmpbuf);
 	}
-
-_func_exit_;
-
 	return val;
 }
 
@@ -258,8 +245,6 @@ static s32 sdio_readN(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, u8 *pbuf)
 	u32 ftaddr;
 	u8 shift;
 	s32 err;
-
-_func_enter_;
 
 	padapter = pintfhdl->padapter;
 	err = 0;
@@ -292,9 +277,6 @@ _func_enter_;
 			memcpy(pbuf, ptmpbuf+shift, cnt);
 		kfree(ptmpbuf);
 	}
-
-_func_exit_;
-
 	return err;
 }
 
@@ -303,11 +285,8 @@ static s32 sdio_write8(struct intf_hdl *pintfhdl, u32 addr, u8 val)
 	u32 ftaddr;
 	s32 err;
 
-_func_enter_;
 	ftaddr = _cvrt2ftaddr(addr, NULL, NULL);
 	sd_write8(pintfhdl, ftaddr, val, &err);
-
-_func_exit_;
 
 	return err;
 }
@@ -318,12 +297,9 @@ static s32 sdio_write16(struct intf_hdl *pintfhdl, u32 addr, u16 val)
 	s32 err;
 	__le16 le_tmp;
 
-_func_enter_;
 	ftaddr = _cvrt2ftaddr(addr, NULL, NULL);
 	le_tmp = cpu_to_le16(val);
 	err = sd_cmd52_write(pintfhdl, ftaddr, 2, (u8*)&le_tmp);
-
-_func_exit_;
 
 	return err;
 }
@@ -338,8 +314,6 @@ static s32 sdio_write32(struct intf_hdl *pintfhdl, u32 addr, u32 val)
 	u8 shift;
 	s32 err;
 	__le32 le_tmp;
-
-_func_enter_;
 
 	padapter = pintfhdl->padapter;
 	err = 0;
@@ -363,9 +337,6 @@ _func_enter_;
 		le_tmp = cpu_to_le32(val);
 		err = sd_cmd52_write(pintfhdl, ftaddr, 4, (u8*)&le_tmp);
 	}
-
-_func_exit_;
-
 	return err;
 }
 
@@ -378,8 +349,6 @@ static s32 sdio_writeN(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, u8* pbuf)
 	u32 ftaddr;
 	u8 shift;
 	s32 err;
-
-_func_enter_;
 
 	padapter = pintfhdl->padapter;
 	err = 0;
@@ -415,42 +384,25 @@ _func_enter_;
 		err = sd_write(pintfhdl, ftaddr, n, ptmpbuf);
 		kfree(ptmpbuf);
 	}
-
-_func_exit_;
-
 	return err;
 }
 
 static u8 sdio_f0_read8(struct intf_hdl *pintfhdl, u32 addr)
 {
-	u8 val;
-
-_func_enter_;
-	val = sd_f0_read8(pintfhdl, addr, NULL);
-
-_func_exit_;
-
-	return val;
+	return sd_f0_read8(pintfhdl, addr, NULL);
 }
 
 static void sdio_read_mem(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, u8 *rmem)
 {
 	s32 err;
 
-_func_enter_;
-
 	err = sdio_readN(pintfhdl, addr, cnt, rmem);
-
-_func_exit_;
+	/* TODO: Report error is err not zero */
 }
 
 static void sdio_write_mem(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, u8 *wmem)
 {
-_func_enter_;
-
 	sdio_writeN(pintfhdl, addr, cnt, wmem);
-
-_func_exit_;
 }
 
 /*
@@ -577,8 +529,6 @@ static u32 sdio_write_port(
 
 void sdio_set_intf_ops(_adapter *padapter, struct _io_ops *pops)
 {
-_func_enter_;
-
 	pops->_read8 = &sdio_read8;
 	pops->_read16 = &sdio_read16;
 	pops->_read32 = &sdio_read32;
@@ -593,8 +543,6 @@ _func_enter_;
 	pops->_write_port = &sdio_write_port;
 
 	pops->_sd_f0_read8 = sdio_f0_read8;
-
-_func_exit_;
 }
 
 /*
