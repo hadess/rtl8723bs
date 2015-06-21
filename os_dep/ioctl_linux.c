@@ -177,6 +177,8 @@ static char *translate_scan(_adapter *padapter,
 	u8 bw_40MHz=0, short_GI=0;
 	u16 mcs_rate=0, vht_data_rate=0;
 	u8 ie_offset = (pnetwork->network.Reserved[0] == 2? 0:12);
+	struct mlme_priv *pmlmepriv = &(padapter->mlmepriv);
+	u8 ss, sq;
 
 	/*  AP MAC address  */
 	iwe.cmd = SIOCGIWAP;
@@ -427,10 +429,6 @@ static char *translate_scan(_adapter *padapter,
 		}
 	}
 
-{
-	struct mlme_priv *pmlmepriv = &(padapter->mlmepriv);
-	u8 ss, sq;
-
 	/* Add quality statistics */
 	iwe.cmd = IWEVQUAL;
 	iwe.u.qual.updated = IW_QUAL_QUAL_UPDATED | IW_QUAL_LEVEL_UPDATED
@@ -485,7 +483,6 @@ static char *translate_scan(_adapter *padapter,
 	//DBG_871X("iqual=%d, ilevel=%d, inoise=%d, iupdated=%d\n", iwe.u.qual.qual, iwe.u.qual.level , iwe.u.qual.noise, iwe.u.qual.updated);
 
 	start = iwe_stream_add_event(info, start, stop, &iwe, IW_EV_QUAL_LEN);
-}
 
 	{
 		u8 *buf;
@@ -562,8 +559,6 @@ static int wpa_set_encryption(struct net_device *dev, struct ieee_param *param, 
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
 	struct mlme_priv	*pmlmepriv = &padapter->mlmepriv;
 	struct security_priv *psecuritypriv = &padapter->securitypriv;
-
-_func_enter_;
 
 	param->u.crypt.err = 0;
 	param->u.crypt.alg[IEEE_CRYPT_ALG_NAME_LEN - 1] = '\0';
@@ -665,7 +660,7 @@ _func_enter_;
 				goto exit;
 			}
 
-		      memcpy(&(psecuritypriv->dot11DefKey[wep_key_idx].skey[0]), pwep->KeyMaterial, pwep->KeyLength);
+			memcpy(&(psecuritypriv->dot11DefKey[wep_key_idx].skey[0]), pwep->KeyMaterial, pwep->KeyLength);
 			psecuritypriv->dot11DefKeylen[wep_key_idx]=pwep->KeyLength;
 			rtw_set_key(padapter, psecuritypriv, wep_key_idx, 0, true);
 		}
@@ -778,9 +773,6 @@ exit:
 	if (pwep) {
 		kfree((u8 *)pwep);
 	}
-
-_func_exit_;
-
 	return ret;
 }
 
@@ -1256,7 +1248,7 @@ static int rtw_wx_set_pmkid(struct net_device *dev,
             psecuritypriv->PMKIDIndex = 0;
             intReturn = true;
         }
-    return( intReturn );
+	return intReturn;
 }
 
 static int rtw_wx_get_sens(struct net_device *dev,
@@ -1435,11 +1427,10 @@ static int rtw_wx_set_wap(struct net_device *dev,
 
 	authmode = padapter->securitypriv.ndisauthtype;
 	spin_lock_bh(&queue->lock);
-       phead = get_list_head(queue);
-       pmlmepriv->pscanned = get_next(phead);
+	phead = get_list_head(queue);
+	pmlmepriv->pscanned = get_next(phead);
 
-	while (1)
-	 {
+	while (1) {
 		if (phead == pmlmepriv->pscanned)
 			break;
 
@@ -1538,19 +1529,16 @@ static int rtw_wx_set_mlme(struct net_device *dev,
 
 	switch (mlme->cmd)
 	{
-		case IW_MLME_DEAUTH:
-				if(!rtw_set_802_11_disassociate(padapter))
-				ret = -1;
-				break;
-
-		case IW_MLME_DISASSOC:
-				if(!rtw_set_802_11_disassociate(padapter))
-						ret = -1;
-
-				break;
-
-		default:
-			return -EOPNOTSUPP;
+	case IW_MLME_DEAUTH:
+		if(!rtw_set_802_11_disassociate(padapter))
+			ret = -1;
+		break;
+	case IW_MLME_DISASSOC:
+		if(!rtw_set_802_11_disassociate(padapter))
+			ret = -1;
+		break;
+	default:
+		return -EOPNOTSUPP;
 	}
 
 	return ret;
@@ -1566,8 +1554,6 @@ static int rtw_wx_set_scan(struct net_device *dev, struct iw_request_info *a,
 	NDIS_802_11_SSID ssid[RTW_SSID_SCAN_AMOUNT];
 	RT_TRACE(_module_rtl871x_mlme_c_,_drv_info_,("rtw_wx_set_scan\n"));
 
-_func_enter_;
-
 	#ifdef DBG_IOCTL
 	DBG_871X("DBG_IOCTL %s:%d\n",__FUNCTION__, __LINE__);
 	#endif
@@ -1580,7 +1566,7 @@ _func_enter_;
 	}
 
 	if(padapter->bDriverStopped){
-           DBG_871X("bDriverStopped=%d\n", padapter->bDriverStopped);
+		DBG_871X("bDriverStopped=%d\n", padapter->bDriverStopped);
 		ret= -1;
 		goto exit;
 	}
@@ -1723,8 +1709,6 @@ exit:
 	DBG_871X("DBG_IOCTL %s:%d return %d\n",__FUNCTION__, __LINE__, ret);
 	#endif
 
-_func_exit_;
-
 	return ret;
 }
 
@@ -1793,7 +1777,7 @@ static int rtw_wx_get_scan(struct net_device *dev, struct iw_request_info *a,
 
 	spin_unlock_bh(&(pmlmepriv->scanned_queue.lock));
 
-       wrqu->data.length = ev-extra;
+	wrqu->data.length = ev-extra;
 	wrqu->data.flags = 0;
 
 exit:
@@ -1875,11 +1859,10 @@ static int rtw_wx_set_essid(struct net_device *dev,
 
 		RT_TRACE(_module_rtl871x_ioctl_os_c, _drv_info_, ("rtw_wx_set_essid: ssid=[%s]\n", src_ssid));
 		spin_lock_bh(&queue->lock);
-	       phead = get_list_head(queue);
-              pmlmepriv->pscanned = get_next(phead);
+		phead = get_list_head(queue);
+		pmlmepriv->pscanned = get_next(phead);
 
-		while (1)
-		{
+		while (1) {
 			if (phead == pmlmepriv->pscanned)
 			{
 			        RT_TRACE(_module_rtl871x_ioctl_os_c, _drv_warning_,
@@ -1994,9 +1977,7 @@ static int rtw_wx_set_rate(struct net_device *dev,
 	u32	target_rate = wrqu->bitrate.value;
 	u32	fixed = wrqu->bitrate.fixed;
 	u32	ratevalue = 0;
-	 u8 mpdatarate[NumRates]={11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, 0xff};
-
-_func_enter_;
+	u8 mpdatarate[NumRates]={11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, 0xff};
 
 	RT_TRACE(_module_rtl871x_mlme_c_,_drv_info_,(" rtw_wx_set_rate \n"));
 	RT_TRACE(_module_rtl871x_ioctl_os_c,_drv_info_,("target_rate = %d, fixed = %d\n",target_rate,fixed));
@@ -2070,9 +2051,6 @@ set_rate:
 		RT_TRACE(_module_rtl871x_ioctl_os_c,_drv_err_,("rtw_wx_set_rate Fail!!!\n"));
 		ret = -1;
 	}
-
-_func_exit_;
-
 	return ret;
 }
 
@@ -2377,23 +2355,19 @@ static int rtw_wx_get_enc(struct net_device *dev,
 
 	switch(padapter->securitypriv.ndisencryptstatus)
 	{
-		case Ndis802_11EncryptionNotSupported:
-		case Ndis802_11EncryptionDisabled:
-
+	case Ndis802_11EncryptionNotSupported:
+	case Ndis802_11EncryptionDisabled:
 		erq->length = 0;
 		erq->flags |= IW_ENCODE_DISABLED;
-
 		break;
-
-		case Ndis802_11Encryption1Enabled:
-
+	case Ndis802_11Encryption1Enabled:
 		erq->length = padapter->securitypriv.dot11DefKeylen[key];
 
 		if(erq->length)
 		{
 			memcpy(keybuf, padapter->securitypriv.dot11DefKey[key].skey, padapter->securitypriv.dot11DefKeylen[key]);
 
-		erq->flags |= IW_ENCODE_ENABLED;
+			erq->flags |= IW_ENCODE_ENABLED;
 
 			if(padapter->securitypriv.ndisauthtype == Ndis802_11AuthModeOpen)
 			{
@@ -2409,23 +2383,16 @@ static int rtw_wx_get_enc(struct net_device *dev,
 			erq->length = 0;
 			erq->flags |= IW_ENCODE_DISABLED;
 		}
-
 		break;
-
-		case Ndis802_11Encryption2Enabled:
-		case Ndis802_11Encryption3Enabled:
-
+	case Ndis802_11Encryption2Enabled:
+	case Ndis802_11Encryption3Enabled:
 		erq->length = 16;
 		erq->flags |= (IW_ENCODE_ENABLED | IW_ENCODE_OPEN | IW_ENCODE_NOKEY);
-
 		break;
-
-		default:
+	default:
 		erq->length = 0;
 		erq->flags |= IW_ENCODE_DISABLED;
-
 		break;
-
 	}
 
 	_func_exit_;
@@ -2445,7 +2412,6 @@ static int rtw_wx_get_power(struct net_device *dev,
 	wrqu->power.disabled = 1;
 
 	return 0;
-
 }
 
 static int rtw_wx_set_gen_ie(struct net_device *dev,
@@ -2455,7 +2421,7 @@ static int rtw_wx_set_gen_ie(struct net_device *dev,
 	int ret;
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
 
-       ret = rtw_set_wpa_ie(padapter, extra, wrqu->data.length);
+	ret = rtw_set_wpa_ie(padapter, extra, wrqu->data.length);
 
 	return ret;
 }
@@ -3832,14 +3798,14 @@ static int wpa_set_param(struct net_device *dev, u8 name, u32 value)
 
 		switch((value)&0xff)
 		{
-			case 1 : //WPA
+		case 1 : //WPA
 			padapter->securitypriv.ndisauthtype = Ndis802_11AuthModeWPAPSK; //WPA_PSK
 			padapter->securitypriv.ndisencryptstatus = Ndis802_11Encryption2Enabled;
-				break;
-			case 2: //WPA2
+			break;
+		case 2: //WPA2
 			padapter->securitypriv.ndisauthtype = Ndis802_11AuthModeWPA2PSK; //WPA2_PSK
 			padapter->securitypriv.ndisencryptstatus = Ndis802_11Encryption3Enabled;
-				break;
+			break;
 		}
 
 		RT_TRACE(_module_rtl871x_ioctl_os_c,_drv_info_,("wpa_set_param:padapter->securitypriv.ndisauthtype=%d\n", padapter->securitypriv.ndisauthtype));
@@ -4135,7 +4101,7 @@ static int rtw_set_encryption(struct net_device *dev, struct ieee_param *param, 
 			//don't update "psecuritypriv->dot11PrivacyAlgrthm" and
 			//"psecuritypriv->dot11PrivacyKeyIndex=keyid", but can rtw_set_key to cam
 
-		      memcpy(&(psecuritypriv->dot11DefKey[wep_key_idx].skey[0]), pwep->KeyMaterial, pwep->KeyLength);
+			memcpy(&(psecuritypriv->dot11DefKey[wep_key_idx].skey[0]), pwep->KeyMaterial, pwep->KeyLength);
 
 			psecuritypriv->dot11DefKeylen[wep_key_idx] = pwep->KeyLength;
 
@@ -4798,21 +4764,21 @@ static int rtw_set_hidden_ssid(struct net_device *dev, struct ieee_param *param,
 		memcpy(ssid, ssid_ie+2, ssid_len);
 		ssid[ssid_len] = 0x0;
 
-		if(0)
-		DBG_871X(FUNC_ADPT_FMT" ssid:(%s,%d), from ie:(%s,%d), (%s,%d)\n", FUNC_ADPT_ARG(adapter),
-			ssid, ssid_len,
-			pbss_network->Ssid.Ssid, pbss_network->Ssid.SsidLength,
-			pbss_network_ext->Ssid.Ssid, pbss_network_ext->Ssid.SsidLength);
+		if (0)
+			DBG_871X(FUNC_ADPT_FMT" ssid:(%s,%d), from ie:(%s,%d), (%s,%d)\n", FUNC_ADPT_ARG(adapter),
+				 ssid, ssid_len,
+				 pbss_network->Ssid.Ssid, pbss_network->Ssid.SsidLength,
+				 pbss_network_ext->Ssid.Ssid, pbss_network_ext->Ssid.SsidLength);
 
 		memcpy(pbss_network->Ssid.Ssid, (void *)ssid, ssid_len);
 		pbss_network->Ssid.SsidLength = ssid_len;
 		memcpy(pbss_network_ext->Ssid.Ssid, (void *)ssid, ssid_len);
 		pbss_network_ext->Ssid.SsidLength = ssid_len;
 
-		if(0)
-		DBG_871X(FUNC_ADPT_FMT" after ssid:(%s,%d), (%s,%d)\n", FUNC_ADPT_ARG(adapter),
-			pbss_network->Ssid.Ssid, pbss_network->Ssid.SsidLength,
-			pbss_network_ext->Ssid.Ssid, pbss_network_ext->Ssid.SsidLength);
+		if (0)
+			DBG_871X(FUNC_ADPT_FMT" after ssid:(%s,%d), (%s,%d)\n", FUNC_ADPT_ARG(adapter),
+				 pbss_network->Ssid.Ssid, pbss_network->Ssid.SsidLength,
+				 pbss_network_ext->Ssid.Ssid, pbss_network_ext->Ssid.SsidLength);
 	}
 
 	DBG_871X(FUNC_ADPT_FMT" ignore_broadcast_ssid:%d, %s,%d\n", FUNC_ADPT_ARG(adapter),
@@ -5544,8 +5510,8 @@ static iw_handler rtw_private_handler[] =
 
 static struct iw_statistics *rtw_get_wireless_stats(struct net_device *dev)
 {
-       _adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
-	   struct iw_statistics *piwstats=&padapter->iwstats;
+	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
+	struct iw_statistics *piwstats=&padapter->iwstats;
 	int tmp_level = 0;
 	int tmp_qual = 0;
 	int tmp_noise = 0;
