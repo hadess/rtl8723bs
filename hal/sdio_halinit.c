@@ -856,17 +856,17 @@ static u32 rtl8723bs_hal_init(PADAPTER padapter)
 
 	rtw_write8(padapter, REG_EARLY_MODE_CONTROL, 0);
 
-		ret = rtl8723b_FirmwareDownload(padapter, false);
-		if (ret != _SUCCESS) {
-			RT_TRACE(_module_hci_hal_init_c_, _drv_err_, ("%s: Download Firmware failed!!\n", __FUNCTION__));
-			padapter->bFWReady = false;
-			pHalData->fw_ractrl = false;
-			return ret;
-		} else {
-			RT_TRACE(_module_hci_hal_init_c_, _drv_notice_, ("rtl8723bs_hal_init(): Download Firmware Success!!\n"));
-			padapter->bFWReady = true;
-			pHalData->fw_ractrl = true;
-		}
+	ret = rtl8723b_FirmwareDownload(padapter, false);
+	if (ret != _SUCCESS) {
+		RT_TRACE(_module_hci_hal_init_c_, _drv_err_, ("%s: Download Firmware failed!!\n", __FUNCTION__));
+		padapter->bFWReady = false;
+		pHalData->fw_ractrl = false;
+		return ret;
+	} else {
+		RT_TRACE(_module_hci_hal_init_c_, _drv_notice_, ("rtl8723bs_hal_init(): Download Firmware Success!!\n"));
+		padapter->bFWReady = true;
+		pHalData->fw_ractrl = true;
+	}
 
 	rtl8723b_InitializeFirmwareVars(padapter);
 
@@ -926,16 +926,15 @@ static u32 rtl8723bs_hal_init(PADAPTER padapter)
 
 
 	//if (!pHalData->bMACFuncEnable) {
-		_InitQueueReservedPage(padapter);
-		_InitTxBufferBoundary(padapter);
+	_InitQueueReservedPage(padapter);
+	_InitTxBufferBoundary(padapter);
 
-		// init LLT after tx buffer boundary is defined
-		ret = rtl8723b_InitLLTTable(padapter);
-		if (_SUCCESS != ret)
-		{
-			DBG_8192C("%s: Failed to init LLT Table!\n", __FUNCTION__);
-			return _FAIL;
-		}
+	// init LLT after tx buffer boundary is defined
+	ret = rtl8723b_InitLLTTable(padapter);
+	if (_SUCCESS != ret) {
+		DBG_8192C("%s: Failed to init LLT Table!\n", __FUNCTION__);
+		return _FAIL;
+	}
 	//}
 	_InitQueuePriority(padapter);
 	_InitPageBoundary(padapter);
@@ -1203,15 +1202,7 @@ static u32 rtl8723bs_hal_deinit(PADAPTER padapter)
 
 static u32 rtl8723bs_inirp_init(PADAPTER padapter)
 {
-	u32 status;
-
-_func_enter_;
-
-	status = _SUCCESS;
-
-_func_exit_;
-
-	return status;
+	return _SUCCESS;
 }
 
 static u32 rtl8723bs_inirp_deinit(PADAPTER padapter)
@@ -1448,7 +1439,7 @@ _InitOtherVariable(
 //
 static s32 _ReadAdapterInfo8723BS(PADAPTER padapter)
 {
-    u8 val8;
+	u8 val8;
 	unsigned long start;
 
 	RT_TRACE(_module_hci_hal_init_c_, _drv_info_, ("+_ReadAdapterInfo8723BS\n"));
@@ -1517,8 +1508,6 @@ static void SetHwReg8723BS(PADAPTER padapter, u8 variable, u8 *val)
 	u8 trycnt = 100;
 	u8 data[4];
 #endif
-
-_func_enter_;
 
 	pHalData = GET_HAL_DATA(padapter);
 
@@ -1852,8 +1841,6 @@ _func_enter_;
 			SetHwReg8723B(padapter, variable, val);
 			break;
 	}
-
-_func_exit_;
 }
 
 /*
@@ -1862,8 +1849,6 @@ _func_exit_;
  */
 static void GetHwReg8723BS(PADAPTER padapter, u8 variable, u8 *val)
 {
-_func_enter_;
-
 	switch (variable) {
 	case HW_VAR_CPWM:
 		*val = rtw_read8(padapter, SDIO_LOCAL_BASE|SDIO_REG_HCPWM1_8723B);
@@ -1879,25 +1864,18 @@ _func_enter_;
 		GetHwReg8723B(padapter, variable, val);
 		break;
 	}
-
-_func_exit_;
 }
 
 static void SetHwRegWithBuf8723B(PADAPTER padapter, u8 variable, u8 *pbuf, int len)
 {
-
-_func_enter_;
-
 	switch (variable) {
 	case HW_VAR_C2H_HANDLE:
 		//DBG_8192C("%s len=%d \n",__func__,len);
 		C2HPacketHandler_8723B(padapter, pbuf, len);
 		break;
-
 	default:
 		break;
 	}
-_func_exit_;
 }
 
 //
@@ -1950,8 +1928,6 @@ void rtl8723bs_set_hal_ops(PADAPTER padapter)
 {
 	struct hal_ops *pHalFunc = &padapter->HalFunc;
 
-_func_enter_;
-
 	rtl8723b_set_hal_ops(pHalFunc);
 
 	pHalFunc->hal_init = &rtl8723bs_hal_init;
@@ -1992,6 +1968,4 @@ _func_enter_;
 	pHalFunc->hal_cancle_checkbthang_workqueue = &rtl8723bs_cancle_checkbthang_workqueue;
 	pHalFunc->hal_checke_bt_hang = &rtl8723bs_hal_check_bt_hang;
 #endif
-
-_func_exit_;
 }
