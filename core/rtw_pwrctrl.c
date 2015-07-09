@@ -199,7 +199,7 @@ void rtw_ps_processor(_adapter*padapter)
 
 	if((pwrpriv->rf_pwrstate == rf_on) && ((pwrpriv->pwr_state_check_cnts%4)==0))
 	{
-		DBG_871X("==>%s .fw_state(%x)\n",__FUNCTION__,get_fwstate(pmlmepriv));
+		DBG_871X("==>%s\n",__FUNCTION__);
 		pwrpriv->change_rfpwrstate = rf_off;
 		{
 			ips_enter(padapter);

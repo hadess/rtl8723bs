@@ -1176,7 +1176,7 @@ static int cfg80211_rtw_add_key(struct wiphy *wiphy, struct net_device *ndev,
         }
 	else
 	{
-		DBG_8192C("error! fw_state=0x%x, iftype=%d\n", pmlmepriv->fw_state, rtw_wdev->iftype);
+		DBG_8192C("error!\n");
 
 	}
 
@@ -3222,8 +3222,8 @@ static int cfg80211_rtw_mgmt_tx(struct wiphy *wiphy,
 	} while (dump_cnt < dump_limit && tx_ret != _SUCCESS);
 
 	if (tx_ret != _SUCCESS || dump_cnt > 1) {
-		DBG_871X(FUNC_ADPT_FMT" %s (%d/%d) in %d ms\n", FUNC_ADPT_ARG(padapter),
-			tx_ret==_SUCCESS?"OK":"FAIL", dump_cnt, dump_limit, jiffies_to_msecs(jiffies - start));
+		DBG_871X(FUNC_ADPT_FMT" %s (%d/%d)\n", FUNC_ADPT_ARG(padapter),
+			tx_ret==_SUCCESS?"OK":"FAIL", dump_cnt, dump_limit);
 	}
 
 	switch (type) {

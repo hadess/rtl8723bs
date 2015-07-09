@@ -1423,7 +1423,6 @@ _PHY_ReloadMACRegisters8723B(
 {
 	u4Byte	i;
 
-	ODM_RT_TRACE(pDM_Odm,ODM_COMP_CALIBRATION, ODM_DBG_LOUD,  ("Reload MAC parameters !\n"));
 	for(i = 0 ; i < (IQK_MAC_REG_NUM - 1); i++){
 		rtw_write8(pAdapter, MACReg[i], (u1Byte)MACBackup[i]);
 	}
@@ -1502,9 +1501,6 @@ phy_SimularityCompare_8723B(
 	else
 		bound = 4;
 
-	ODM_RT_TRACE(pDM_Odm,ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("===> IQK:phy_SimularityCompare_8192E c1 %d c2 %d!!!\n", c1, c2));
-
-
 	SimularityBitMap = 0;
 
 	for( i = 0; i < bound; i++ )
@@ -1532,8 +1528,6 @@ phy_SimularityCompare_8723B(
 
 		if (diff > MAX_TOLERANCE)
 		{
-			ODM_RT_TRACE(pDM_Odm,ODM_COMP_CALIBRATION, ODM_DBG_LOUD,  ("IQK:differnece overflow %d index %d compare1 0x%x compare2 0x%x!!!\n",	diff, i, result[c1][i], result[c2][i]));
-
 			if((i == 2 || i == 6) && !SimularityBitMap)
 			{
 				if(result[c1][i]+result[c1][i+1] == 0)
@@ -1547,8 +1541,6 @@ phy_SimularityCompare_8723B(
 				SimularityBitMap = SimularityBitMap|(1<<i);
 		}
 	}
-
-	ODM_RT_TRACE(pDM_Odm,ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("IQK:phy_SimularityCompare_8192E SimularityBitMap   %x !!!\n", SimularityBitMap));
 
 	if ( SimularityBitMap == 0)
 	{

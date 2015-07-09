@@ -815,10 +815,8 @@ SetHalDefVar(_adapter *adapter, HAL_DEF_VARIABLE variable, void *value)
 		break;
 	case HAL_DEF_DBG_RX_INFO_DUMP:
 		DBG_871X("============ Rx Info dump ===================\n");
-		DBG_871X("bLinked = %d, RSSI_Min = %d(%%), CurrentIGI = 0x%x \n",
-			odm->bLinked, odm->RSSI_Min, pDM_DigTable->CurIGValue);
-		DBG_871X("Cnt_Cck_fail = %d, Cnt_Ofdm_fail = %d, Total False Alarm = %d\n",
-			FalseAlmCnt->Cnt_Cck_fail, FalseAlmCnt->Cnt_Ofdm_fail, FalseAlmCnt->Cnt_all);
+		DBG_871X("bLinked = %d, RSSI_Min = %d(%%)\n",
+			odm->bLinked, odm->RSSI_Min);
 
 		if(odm->bLinked){
 			DBG_871X("RxRate = %s, RSSI_A = %d(%%), RSSI_B = %d(%%)\n",

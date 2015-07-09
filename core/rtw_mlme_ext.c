@@ -3206,11 +3206,11 @@ int issue_probereq_ex(_adapter *padapter, NDIS_802_11_SSID *pssid, u8 *da, u8 ch
 		if (da)
 			DBG_871X(FUNC_ADPT_FMT" to "MAC_FMT", ch:%u%s, %d/%d in %u ms\n",
 				FUNC_ADPT_ARG(padapter), MAC_ARG(da), rtw_get_oper_ch(padapter),
-				ret==_SUCCESS?", acked":"", i, try_cnt, jiffies_to_msecs(jiffies - start));
+				ret==_SUCCESS?", acked":"", i, try_cnt, (i + 1) * wait_ms);
 		else
 			DBG_871X(FUNC_ADPT_FMT", ch:%u%s, %d/%d in %u ms\n",
 				FUNC_ADPT_ARG(padapter), rtw_get_oper_ch(padapter),
-				ret==_SUCCESS?", acked":"", i, try_cnt, jiffies_to_msecs(jiffies - start));
+				ret==_SUCCESS?", acked":"", i, try_cnt, (i + 1) * wait_ms);
 	}
 exit:
 	return ret;
@@ -3839,11 +3839,11 @@ int issue_nulldata(_adapter *padapter, unsigned char *da, unsigned int power_mod
 		if (da)
 			DBG_871X(FUNC_ADPT_FMT" to "MAC_FMT", ch:%u%s, %d/%d in %u ms\n",
 				FUNC_ADPT_ARG(padapter), MAC_ARG(da), rtw_get_oper_ch(padapter),
-				ret==_SUCCESS?", acked":"", i, try_cnt, jiffies_to_msecs(jiffies - start));
+				ret==_SUCCESS?", acked":"", i, try_cnt, (i + 1) * wait_ms);
 		else
 			DBG_871X(FUNC_ADPT_FMT", ch:%u%s, %d/%d in %u ms\n",
 				FUNC_ADPT_ARG(padapter), rtw_get_oper_ch(padapter),
-				ret==_SUCCESS?", acked":"", i, try_cnt, jiffies_to_msecs(jiffies - start));
+				ret==_SUCCESS?", acked":"", i, try_cnt, (i + 1) * wait_ms);
 	}
 exit:
 	return ret;
@@ -3998,11 +3998,11 @@ int issue_qos_nulldata(_adapter *padapter, unsigned char *da, u16 tid, int try_c
 		if (da)
 			DBG_871X(FUNC_ADPT_FMT" to "MAC_FMT", ch:%u%s, %d/%d in %u ms\n",
 				FUNC_ADPT_ARG(padapter), MAC_ARG(da), rtw_get_oper_ch(padapter),
-				ret==_SUCCESS?", acked":"", i, try_cnt, jiffies_to_msecs(jiffies - start));
+				ret==_SUCCESS?", acked":"", i, try_cnt, (i + 1) * wait_ms);
 		else
 			DBG_871X(FUNC_ADPT_FMT", ch:%u%s, %d/%d in %u ms\n",
 				FUNC_ADPT_ARG(padapter), rtw_get_oper_ch(padapter),
-				ret==_SUCCESS?", acked":"", i, try_cnt, jiffies_to_msecs(jiffies - start));
+				ret==_SUCCESS?", acked":"", i, try_cnt, (i + 1) * wait_ms);
 	}
 exit:
 	return ret;
@@ -4109,11 +4109,11 @@ int issue_deauth_ex(_adapter *padapter, u8 *da, unsigned short reason, int try_c
 		if (da)
 			DBG_871X(FUNC_ADPT_FMT" to "MAC_FMT", ch:%u%s, %d/%d in %u ms\n",
 				FUNC_ADPT_ARG(padapter), MAC_ARG(da), rtw_get_oper_ch(padapter),
-				ret==_SUCCESS?", acked":"", i, try_cnt, jiffies_to_msecs(jiffies - start));
+				ret==_SUCCESS?", acked":"", i, try_cnt, (i + 1) * wait_ms);
 		else
 			DBG_871X(FUNC_ADPT_FMT", ch:%u%s, %d/%d in %u ms\n",
 				FUNC_ADPT_ARG(padapter), rtw_get_oper_ch(padapter),
-				ret==_SUCCESS?", acked":"", i, try_cnt, jiffies_to_msecs(jiffies - start));
+				ret==_SUCCESS?", acked":"", i, try_cnt, (i + 1) * wait_ms);
 	}
 exit:
 	return ret;

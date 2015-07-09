@@ -602,12 +602,12 @@ post_process:
 		if((cmd_process_time = jiffies_to_msecs(jiffies - cmd_start_time)) > 1000)
 		{
 			if (pcmd->cmdcode == GEN_CMD_CODE(_Set_Drv_Extra)) {
-				DBG_871X(ADPT_FMT" cmd=%d,%d,%d process_time=%lu > 1 sec\n",
-					ADPT_ARG(pcmd->padapter), pcmd->cmdcode, drvextra_parm->ec_id, drvextra_parm->type, cmd_process_time);
+				DBG_871X(ADPT_FMT" cmd=%d process_time=%lu > 1 sec\n",
+					ADPT_ARG(pcmd->padapter), pcmd->cmdcode, cmd_process_time);
 				//rtw_warn_on(1);
 			} else if(pcmd->cmdcode == GEN_CMD_CODE(_Set_MLME_EVT)){
-				DBG_871X(ADPT_FMT" cmd=%d,%d, process_time=%lu > 1 sec\n",
-					ADPT_ARG(pcmd->padapter), pcmd->cmdcode, pc2h_evt_hdr->ID, cmd_process_time);
+				DBG_871X(ADPT_FMT" cmd=%d, process_time=%lu > 1 sec\n",
+					ADPT_ARG(pcmd->padapter), pcmd->cmdcode, cmd_process_time);
 				//rtw_warn_on(1);
 			} else {
 				DBG_871X(ADPT_FMT" cmd=%d, process_time=%lu > 1 sec\n",

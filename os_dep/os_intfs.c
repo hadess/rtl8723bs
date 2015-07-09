@@ -1212,7 +1212,7 @@ int rtw_ips_pwr_up(_adapter *padapter)
 
 	result = ips_netdrv_open(padapter);
 
-	DBG_871X("<===  rtw_ips_pwr_up.............. in %dms\n", jiffies_to_msecs(jiffies - start_time));
+	DBG_871X("<===  rtw_ips_pwr_up..............\n");
 	return result;
 
 }
@@ -1226,7 +1226,7 @@ void rtw_ips_pwr_down(_adapter *padapter)
 
 	rtw_ips_dev_unload(padapter);
 	padapter->bCardDisableWOHSM = false;
-	DBG_871X("<=== rtw_ips_pwr_down..................... in %dms\n", jiffies_to_msecs(jiffies - start_time));
+	DBG_871X("<=== rtw_ips_pwr_down.....................\n");
 }
 
 void rtw_ips_dev_unload(_adapter *padapter)

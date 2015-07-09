@@ -2834,7 +2834,7 @@ static int rtw_wx_set_channel_plan(struct net_device *dev,
 	u8 channel_plan_req = (u8) (*((int *)wrqu));
 
 	if (_SUCCESS == rtw_set_chplan_cmd(padapter, channel_plan_req, 1, 1)) {
-		DBG_871X("%s set channel_plan = 0x%02X\n", __func__, pmlmepriv->ChannelPlan);
+		DBG_871X("%s set channel_plan = 0x%02X\n", __func__, channel_plan_req);
 	} else
 		return -EPERM;
 
@@ -3264,9 +3264,7 @@ static int rtw_dbg_port(struct net_device *dev,
 					DBG_871X("fwstate=0x%x\n", get_fwstate(pmlmepriv));
 					break;
 				case 0x01:
-					DBG_871X("auth_alg=0x%x, enc_alg=0x%x, auth_type=0x%x, enc_type=0x%x\n",
-						psecuritypriv->dot11AuthAlgrthm, psecuritypriv->dot11PrivacyAlgrthm,
-						psecuritypriv->ndisauthtype, psecuritypriv->ndisencryptstatus);
+					DBG_871X("minor_cmd 0x%x\n", minor_cmd);
 					break;
 				case 0x02:
 					DBG_871X("pmlmeinfo->state=0x%x\n", pmlmeinfo->state);
@@ -3335,12 +3333,7 @@ static int rtw_dbg_port(struct net_device *dev,
 					break;
 				case 0x08:
 					{
-						DBG_871X("free_xmitbuf_cnt=%d, free_xmitframe_cnt=%d"
-							", free_xmit_extbuf_cnt=%d, free_xframe_ext_cnt=%d"
-							", free_recvframe_cnt=%d\n",
-							pxmitpriv->free_xmitbuf_cnt, pxmitpriv->free_xmitframe_cnt,
-							pxmitpriv->free_xmit_extbuf_cnt, pxmitpriv->free_xframe_ext_cnt,
-							precvpriv->free_recvframe_cnt);
+						DBG_871X("minor_cmd 0x%x\n", minor_cmd);
 					}
 					break;
 				case 0x09:
@@ -3496,9 +3489,9 @@ static int rtw_dbg_port(struct net_device *dev,
 
 				}
 				break;
-				case 0x14: //get wifi_spec
+				case 0x14:
 				{
-					DBG_871X("get wifi_spec=%d\n",pregpriv->wifi_spec);
+					DBG_871X("minor_cmd 0x%x\n", minor_cmd);
 				}
 				break;
 				case 0x16:
