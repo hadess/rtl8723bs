@@ -612,9 +612,6 @@ SetFwRelatedForWoWLAN8723b(
 
 static void rtl8723b_free_hal_data(PADAPTER padapter)
 {
-_func_enter_;
-
-_func_exit_;
 }
 
 //===========================================================
@@ -4152,8 +4149,6 @@ void SetHwReg8723B(PADAPTER padapter, u8 variable, u8 *val)
 	u8 val8;
 	u32 val32;
 
-_func_enter_;
-
 	switch (variable) {
 	case HW_VAR_MEDIA_STATUS:
 		val8 = rtw_read8(padapter, MSR) & 0x0c;
@@ -4628,8 +4623,6 @@ _func_enter_;
 		SetHwReg(padapter, variable, val);
 		break;
 	}
-
-_func_exit_;
 }
 
 void GetHwReg8723B(PADAPTER padapter, u8 variable, u8 *val)
