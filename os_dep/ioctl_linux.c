@@ -949,10 +949,7 @@ static int rtw_wx_get_name(struct net_device *dev,
 
 	RT_TRACE(_module_rtl871x_mlme_c_,_drv_info_,("cmd_code=%x\n", info->cmd));
 
-	_func_enter_;
-
-	if (check_fwstate(pmlmepriv, _FW_LINKED|WIFI_ADHOC_MASTER_STATE) == true)
-	{
+	if (check_fwstate(pmlmepriv, _FW_LINKED|WIFI_ADHOC_MASTER_STATE) == true) {
 		//parsing HT_CAP_IE
 		p = rtw_get_ie(&pcur_bss->IEs[12], _HT_CAPABILITY_IE_, &ht_ielen, pcur_bss->IELength-12);
 		if(p && ht_ielen>0)
@@ -1002,9 +999,6 @@ static int rtw_wx_get_name(struct net_device *dev,
 		//snprintf(wrqu->name, IFNAMSIZ, "IEEE 802.11g");
 		snprintf(wrqu->name, IFNAMSIZ, "unassociated");
 	}
-
-	_func_exit_;
-
 	return 0;
 }
 
@@ -1012,11 +1006,7 @@ static int rtw_wx_set_freq(struct net_device *dev,
 			     struct iw_request_info *info,
 			     union iwreq_data *wrqu, char *extra)
 {
-	_func_enter_;
-
 	RT_TRACE(_module_rtl871x_mlme_c_, _drv_notice_, ("+rtw_wx_set_freq\n"));
-
-	_func_exit_;
 
 	return 0;
 }
@@ -1052,8 +1042,6 @@ static int rtw_wx_set_mode(struct net_device *dev, struct iw_request_info *a,
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
 	NDIS_802_11_NETWORK_INFRASTRUCTURE networkType ;
 	int ret = 0;
-
-	_func_enter_;
 
 	if(_FAIL == rtw_pwr_wakeup(padapter)) {
 		ret= -EPERM;
@@ -1112,11 +1100,7 @@ static int rtw_wx_set_mode(struct net_device *dev, struct iw_request_info *a,
 	rtw_setopmode_cmd(padapter, networkType,true);
 
 exit:
-
-	_func_exit_;
-
 	return ret;
-
 }
 
 static int rtw_wx_get_mode(struct net_device *dev, struct iw_request_info *a,
@@ -1126,8 +1110,6 @@ static int rtw_wx_get_mode(struct net_device *dev, struct iw_request_info *a,
 	struct	mlme_priv	*pmlmepriv = &(padapter->mlmepriv);
 
 	RT_TRACE(_module_rtl871x_mlme_c_,_drv_info_,(" rtw_wx_get_mode \n"));
-
-	_func_enter_;
 
 	if (check_fwstate(pmlmepriv, WIFI_STATION_STATE) == true)
 	{
@@ -1147,11 +1129,7 @@ static int rtw_wx_get_mode(struct net_device *dev, struct iw_request_info *a,
 	{
 		wrqu->mode = IW_MODE_AUTO;
 	}
-
-	_func_exit_;
-
 	return 0;
-
 }
 
 
@@ -1274,8 +1252,6 @@ static int rtw_wx_get_range(struct net_device *dev,
 	u16 val;
 	int i;
 
-	_func_enter_;
-
 	RT_TRACE(_module_rtl871x_mlme_c_,_drv_info_,("rtw_wx_get_range. cmd_code=%x\n", info->cmd));
 
 	wrqu->data.length = sizeof(*range);
@@ -1379,10 +1355,7 @@ static int rtw_wx_get_range(struct net_device *dev,
 	range->scan_capa = IW_SCAN_CAPA_ESSID | IW_SCAN_CAPA_TYPE |IW_SCAN_CAPA_BSSID|
 					IW_SCAN_CAPA_CHANNEL|IW_SCAN_CAPA_MODE|IW_SCAN_CAPA_RATE;
 
-	_func_exit_;
-
 	return 0;
-
 }
 
 //set bssid flow
@@ -1404,8 +1377,6 @@ static int rtw_wx_set_wap(struct net_device *dev,
 	_queue	*queue	= &(pmlmepriv->scanned_queue);
 	struct	wlan_network	*pnetwork = NULL;
 	NDIS_802_11_AUTHENTICATION_MODE	authmode;
-
-	_func_enter_;
 
 	rtw_ps_deny(padapter, PS_DENY_JOIN);
 	if(_FAIL == rtw_pwr_wakeup(padapter))
@@ -1468,8 +1439,6 @@ exit:
 
 	rtw_ps_deny_cancel(padapter, PS_DENY_JOIN);
 
-	_func_exit_;
-
 	return ret;
 }
 
@@ -1488,8 +1457,6 @@ static int rtw_wx_get_wap(struct net_device *dev,
 
 	RT_TRACE(_module_rtl871x_mlme_c_,_drv_info_,("rtw_wx_get_wap\n"));
 
-	_func_enter_;
-
 	if  ( ((check_fwstate(pmlmepriv, _FW_LINKED)) == true) ||
 			((check_fwstate(pmlmepriv, WIFI_ADHOC_MASTER_STATE)) == true) ||
 			((check_fwstate(pmlmepriv, WIFI_AP_STATE)) == true) )
@@ -1502,10 +1469,7 @@ static int rtw_wx_get_wap(struct net_device *dev,
 		memset(wrqu->ap_addr.sa_data, 0, ETH_ALEN);
 	}
 
-	_func_exit_;
-
 	return 0;
-
 }
 
 static int rtw_wx_set_mlme(struct net_device *dev,
@@ -1728,8 +1692,6 @@ static int rtw_wx_get_scan(struct net_device *dev, struct iw_request_info *a,
 	RT_TRACE(_module_rtl871x_mlme_c_,_drv_info_,("rtw_wx_get_scan\n"));
 	RT_TRACE(_module_rtl871x_ioctl_os_c,_drv_info_, (" Start of Query SIOCGIWSCAN .\n"));
 
-	_func_enter_;
-
 	#ifdef DBG_IOCTL
 	DBG_871X("DBG_IOCTL %s:%d\n",__FUNCTION__, __LINE__);
 	#endif
@@ -1782,8 +1744,6 @@ static int rtw_wx_get_scan(struct net_device *dev, struct iw_request_info *a,
 
 exit:
 
-	_func_exit_;
-
 	#ifdef DBG_IOCTL
 	DBG_871X("DBG_IOCTL %s:%d return %d\n",__FUNCTION__, __LINE__, ret);
 	#endif
@@ -1811,8 +1771,6 @@ static int rtw_wx_set_essid(struct net_device *dev,
 	u8 *dst_ssid, *src_ssid;
 
 	uint ret = 0, len;
-
-	_func_enter_;
 
 	#ifdef DBG_IOCTL
 	DBG_871X("DBG_IOCTL %s:%d\n",__FUNCTION__, __LINE__);
@@ -1924,8 +1882,6 @@ exit:
 	DBG_871X("DBG_IOCTL %s:%d return %d\n",__FUNCTION__, __LINE__, ret);
 	#endif
 
-	_func_exit_;
-
 	return ret;
 }
 
@@ -1939,8 +1895,6 @@ static int rtw_wx_get_essid(struct net_device *dev,
 	WLAN_BSSID_EX  *pcur_bss = &pmlmepriv->cur_network.network;
 
 	RT_TRACE(_module_rtl871x_mlme_c_,_drv_info_,("rtw_wx_get_essid\n"));
-
-	_func_enter_;
 
 	if ( (check_fwstate(pmlmepriv, _FW_LINKED) == true) ||
 	      (check_fwstate(pmlmepriv, WIFI_ADHOC_MASTER_STATE) == true))
@@ -1960,11 +1914,7 @@ static int rtw_wx_get_essid(struct net_device *dev,
 	}
 
 exit:
-
-	_func_exit_;
-
 	return ret;
-
 }
 
 static int rtw_wx_set_rate(struct net_device *dev,
@@ -2077,8 +2027,6 @@ static int rtw_wx_set_rts(struct net_device *dev,
 {
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
 
-	_func_enter_;
-
 	if (wrqu->rts.disabled)
 		padapter->registrypriv.rts_thresh = 2347;
 	else {
@@ -2091,10 +2039,7 @@ static int rtw_wx_set_rts(struct net_device *dev,
 
 	DBG_871X("%s, rts_thresh=%d\n", __func__, padapter->registrypriv.rts_thresh);
 
-	_func_exit_;
-
 	return 0;
-
 }
 
 static int rtw_wx_get_rts(struct net_device *dev,
@@ -2103,15 +2048,11 @@ static int rtw_wx_get_rts(struct net_device *dev,
 {
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
 
-	_func_enter_;
-
 	DBG_871X("%s, rts_thresh=%d\n", __func__, padapter->registrypriv.rts_thresh);
 
 	wrqu->rts.value = padapter->registrypriv.rts_thresh;
 	wrqu->rts.fixed = 0;	/* no auto select */
 	//wrqu->rts.disabled = (wrqu->rts.value == DEFAULT_RTS_THRESHOLD);
-
-	_func_exit_;
 
 	return 0;
 }
@@ -2121,8 +2062,6 @@ static int rtw_wx_set_frag(struct net_device *dev,
 			     union iwreq_data *wrqu, char *extra)
 {
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
-
-	_func_enter_;
 
 	if (wrqu->frag.disabled)
 		padapter->xmitpriv.frag_len = MAX_FRAG_THRESHOLD;
@@ -2136,8 +2075,6 @@ static int rtw_wx_set_frag(struct net_device *dev,
 
 	DBG_871X("%s, frag_len=%d\n", __func__, padapter->xmitpriv.frag_len);
 
-	_func_exit_;
-
 	return 0;
 
 }
@@ -2148,15 +2085,11 @@ static int rtw_wx_get_frag(struct net_device *dev,
 {
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
 
-	_func_enter_;
-
 	DBG_871X("%s, frag_len=%d\n", __func__, padapter->xmitpriv.frag_len);
 
 	wrqu->frag.value = padapter->xmitpriv.frag_len;
 	wrqu->frag.fixed = 0;	/* no auto select */
 	//wrqu->frag.disabled = (wrqu->frag.value == DEFAULT_FRAG_THRESHOLD);
-
-	_func_exit_;
 
 	return 0;
 }
@@ -2193,8 +2126,6 @@ static int rtw_wx_set_enc(struct net_device *dev,
 	memset(&wep, 0, sizeof(NDIS_802_11_WEP));
 
 	key = erq->flags & IW_ENCODE_INDEX;
-
-	_func_enter_;
 
 	if (erq->flags & IW_ENCODE_DISABLED)
 	{
@@ -2306,11 +2237,7 @@ static int rtw_wx_set_enc(struct net_device *dev,
 	}
 
 exit:
-
-	_func_exit_;
-
 	return ret;
-
 }
 
 static int rtw_wx_get_enc(struct net_device *dev,
@@ -2321,8 +2248,6 @@ static int rtw_wx_get_enc(struct net_device *dev,
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
 	struct iw_point *erq = &(wrqu->encoding);
 	struct	mlme_priv	*pmlmepriv = &(padapter->mlmepriv);
-
-	_func_enter_;
 
 	if(check_fwstate(pmlmepriv, _FW_LINKED) != true)
 	{
@@ -2394,11 +2319,7 @@ static int rtw_wx_get_enc(struct net_device *dev,
 		erq->flags |= IW_ENCODE_DISABLED;
 		break;
 	}
-
-	_func_exit_;
-
 	return ret;
-
 }
 
 static int rtw_wx_get_power(struct net_device *dev,

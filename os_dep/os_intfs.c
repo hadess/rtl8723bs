@@ -272,8 +272,6 @@ static uint loadparam( _adapter *padapter,  _nic_hdl	pnetdev)
 	uint status = _SUCCESS;
 	struct registry_priv  *registry_par = &padapter->registrypriv;
 
-_func_enter_;
-
 	registry_par->chip_version = (u8)rtw_chip_version;
 	registry_par->rfintfs = (u8)rtw_rfintfs;
 	registry_par->lbkmode = (u8)rtw_lbkmode;
@@ -383,8 +381,6 @@ _func_enter_;
 	registry_par->qos_opt_enable = (u8)rtw_qos_opt_enable;
 
 	registry_par->hiq_filter = (u8)rtw_hiq_filter;
-_func_exit_;
-
 	return status;
 }
 
@@ -830,8 +826,6 @@ u8 rtw_init_drv_sw(_adapter *padapter)
 
 	u8	ret8=_SUCCESS;
 
-_func_enter_;
-
 	RT_TRACE(_module_os_intfs_c_,_drv_info_,("+rtw_init_drv_sw\n"));
 
 	ret8 = rtw_init_default_value(padapter);
@@ -919,10 +913,7 @@ exit:
 
 	RT_TRACE(_module_os_intfs_c_,_drv_info_,("-rtw_init_drv_sw\n"));
 
-	_func_exit_;
-
 	return ret8;
-
 }
 
 void rtw_cancel_all_timer(_adapter *padapter)
@@ -1724,7 +1715,6 @@ int rtw_resume_process_wow(_adapter *padapter)
 	struct wowlan_ioctl_param poidparam;
 	struct sta_info	*psta = NULL;
 	int ret = _SUCCESS;
-_func_enter_;
 
 	DBG_871X("==> "FUNC_ADPT_FMT" entry....\n", FUNC_ADPT_ARG(padapter));
 
@@ -1838,7 +1828,6 @@ _func_enter_;
 	pwrpriv->wowlan_wake_reason = 0;
 exit:
 	DBG_871X("<== "FUNC_ADPT_FMT" exit....\n", FUNC_ADPT_ARG(padapter));
-_func_exit_;
 	return ret;
 }
 #endif //#ifdef CONFIG_WOWLAN
@@ -1855,7 +1844,6 @@ int rtw_resume_process_ap_wow(_adapter *padapter)
 	struct sta_info	*psta = NULL;
 	int ret = _SUCCESS;
 	u8 ch, bw, offset;
-_func_enter_;
 
 	DBG_871X("==> "FUNC_ADPT_FMT" entry....\n", FUNC_ADPT_ARG(padapter));
 
@@ -1918,7 +1906,6 @@ _func_enter_;
 	pwrpriv->wowlan_wake_reason = 0;
 exit:
 	DBG_871X("<== "FUNC_ADPT_FMT" exit....\n", FUNC_ADPT_ARG(padapter));
-_func_exit_;
 	return ret;
 }
 #endif //#ifdef CONFIG_APWOWLAN
@@ -1932,7 +1919,6 @@ static int rtw_resume_process_normal(_adapter *padapter)
 	struct debug_priv *pdbgpriv;
 
 	int ret = _SUCCESS;
-_func_enter_;
 
 	if (!padapter) {
 		ret = -1;
@@ -2000,7 +1986,6 @@ _func_enter_;
 	DBG_871X("<== "FUNC_ADPT_FMT" exit....\n", FUNC_ADPT_ARG(padapter));
 
 exit:
-_func_exit_;
 	return ret;
 }
 
@@ -2010,8 +1995,6 @@ int rtw_resume_common(_adapter *padapter)
 	unsigned long start_time = jiffies;
 	struct pwrctrl_priv *pwrpriv = adapter_to_pwrctl(padapter);
 	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
-
-	_func_enter_;
 
 	DBG_871X_LEVEL(_drv_always_, "resume start\n");
 	DBG_871X("==> %s (%s:%d)\n",__FUNCTION__, current->comm, current->pid);
@@ -2046,8 +2029,6 @@ int rtw_resume_common(_adapter *padapter)
 	}
 	DBG_871X_LEVEL(_drv_always_, "%s:%d in %d ms\n", __FUNCTION__ ,ret,
 		jiffies_to_msecs(jiffies - start_time));
-
-	_func_exit_;
 
 	return ret;
 }

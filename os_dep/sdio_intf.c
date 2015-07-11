@@ -194,8 +194,6 @@ static u32 sdio_init(struct dvobj_priv *dvobj)
 	struct sdio_func *func;
 	int err;
 
-_func_enter_;
-
 	psdio_data = &dvobj->intf_data;
 	func = psdio_data->func;
 
@@ -222,9 +220,8 @@ _func_enter_;
 release:
 	sdio_release_host(func);
 
-_func_exit_;
-
-	if (err) return _FAIL;
+	if (err)
+		return _FAIL;
 	return _SUCCESS;
 }
 
@@ -266,7 +263,6 @@ static struct dvobj_priv *sdio_dvobj_init(struct sdio_func *func)
 	int status = _FAIL;
 	struct dvobj_priv *dvobj = NULL;
 	PSDIO_DATA psdio;
-_func_enter_;
 
 	if((dvobj = devobj_init()) == NULL) {
 		goto exit;
@@ -293,22 +289,18 @@ free_dvobj:
 		dvobj = NULL;
 	}
 exit:
-_func_exit_;
 	return dvobj;
 }
 
 static void sdio_dvobj_deinit(struct sdio_func *func)
 {
 	struct dvobj_priv *dvobj = sdio_get_drvdata(func);
-_func_enter_;
 
 	sdio_set_drvdata(func, NULL);
 	if (dvobj) {
 		sdio_deinit(dvobj);
 		devobj_deinit(dvobj);
 	}
-
-_func_exit_;
 	return;
 }
 
@@ -542,8 +534,6 @@ static void rtw_dev_remove(struct sdio_func *func)
 	struct dvobj_priv *dvobj = sdio_get_drvdata(func);
 	PADAPTER padapter = dvobj->if1;
 
-_func_enter_;
-
 	RT_TRACE(_module_hci_intfs_c_, _drv_notice_, ("+rtw_dev_remove\n"));
 
 	dvobj->processing_dev_remove = true;
@@ -577,9 +567,8 @@ _func_enter_;
 	sdio_dvobj_deinit(func);
 
 	RT_TRACE(_module_hci_intfs_c_, _drv_notice_, ("-rtw_dev_remove\n"));
-
-_func_exit_;
 }
+
 extern int pm_netdev_open(struct net_device *pnetdev,u8 bnormal);
 extern int pm_netdev_close(struct net_device *pnetdev,u8 bnormal);
 

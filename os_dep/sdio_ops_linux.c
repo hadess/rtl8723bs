@@ -47,8 +47,6 @@ u8 sd_f0_read8(struct intf_hdl *pintfhdl,u32 addr, s32 *err)
 	struct sdio_func *func;
 	bool claim_needed;
 
-_func_enter_;
-
 	padapter = pintfhdl->padapter;
 	psdiodev = pintfhdl->pintf_dev;
 	psdio = &psdiodev->intf_data;
@@ -68,9 +66,6 @@ _func_enter_;
 		sdio_release_host(func);
 	if (err && *err)
 		DBG_871X(KERN_ERR "%s: FAIL!(%d) addr=0x%05x\n", __func__, *err, addr);
-
-_func_exit_;
-
 	return v;
 }
 
@@ -88,7 +83,6 @@ s32 _sd_cmd52_read(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, u8 *pdata)
 	int err=0, i;
 	struct sdio_func *func;
 
-_func_enter_;
 	padapter = pintfhdl->padapter;
 	psdiodev = pintfhdl->pintf_dev;
 	psdio = &psdiodev->intf_data;
@@ -107,9 +101,6 @@ _func_enter_;
 			break;
 		}
 	}
-
-_func_exit_;
-
 	return err;
 }
 
@@ -128,7 +119,6 @@ s32 sd_cmd52_read(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, u8 *pdata)
 	struct sdio_func *func;
 	bool claim_needed;
 
-_func_enter_;
 	padapter = pintfhdl->padapter;
 	psdiodev = pintfhdl->pintf_dev;
 	psdio = &psdiodev->intf_data;
@@ -146,9 +136,6 @@ _func_enter_;
 	err = _sd_cmd52_read(pintfhdl, addr, cnt, pdata);
 	if (claim_needed)
 		sdio_release_host(func);
-
-_func_exit_;
-
 	return err;
 }
 
@@ -166,7 +153,6 @@ s32 _sd_cmd52_write(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, u8 *pdata)
 	int err=0, i;
 	struct sdio_func *func;
 
-_func_enter_;
 	padapter = pintfhdl->padapter;
 	psdiodev = pintfhdl->pintf_dev;
 	psdio = &psdiodev->intf_data;
@@ -185,9 +171,6 @@ _func_enter_;
 			break;
 		}
 	}
-
-_func_exit_;
-
 	return err;
 }
 
@@ -206,7 +189,6 @@ s32 sd_cmd52_write(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, u8 *pdata)
 	struct sdio_func *func;
 	bool claim_needed;
 
-_func_enter_;
 	padapter = pintfhdl->padapter;
 	psdiodev = pintfhdl->pintf_dev;
 	psdio = &psdiodev->intf_data;
@@ -224,9 +206,6 @@ _func_enter_;
 	err = _sd_cmd52_write(pintfhdl, addr, cnt, pdata);
 	if (claim_needed)
 		sdio_release_host(func);
-
-_func_exit_;
-
 	return err;
 }
 
@@ -240,7 +219,6 @@ u8 sd_read8(struct intf_hdl *pintfhdl, u32 addr, s32 *err)
 	struct sdio_func *func;
 	bool claim_needed;
 
-_func_enter_;
 	padapter = pintfhdl->padapter;
 	psdiodev = pintfhdl->pintf_dev;
 	psdio = &psdiodev->intf_data;
@@ -260,9 +238,6 @@ _func_enter_;
 		sdio_release_host(func);
 	if (err && *err)
 		DBG_871X(KERN_ERR "%s: FAIL!(%d) addr=0x%05x\n", __func__, *err, addr);
-
-_func_exit_;
-
 	return v;
 }
 
@@ -271,12 +246,10 @@ u32 sd_read32(struct intf_hdl *pintfhdl, u32 addr, s32 *err)
 	PADAPTER padapter;
 	struct dvobj_priv *psdiodev;
 	PSDIO_DATA psdio;
-
 	u32 v=0;
 	struct sdio_func *func;
 	bool claim_needed;
 
-_func_enter_;
 	padapter = pintfhdl->padapter;
 	psdiodev = pintfhdl->pintf_dev;
 	psdio = &psdiodev->intf_data;
@@ -330,9 +303,6 @@ _func_enter_;
 			DBG_871X(KERN_ERR "%s: (%d) addr=0x%05x, val=0x%x, try_cnt=%d\n", __func__, *err, addr, v, i);
 
 	}
-
-_func_exit_;
-
 	return  v;
 }
 
@@ -341,11 +311,8 @@ void sd_write8(struct intf_hdl *pintfhdl, u32 addr, u8 v, s32 *err)
 	PADAPTER padapter;
 	struct dvobj_priv *psdiodev;
 	PSDIO_DATA psdio;
-
 	struct sdio_func *func;
 	bool claim_needed;
-
-_func_enter_;
 
 	padapter = pintfhdl->padapter;
 	psdiodev = pintfhdl->pintf_dev;
@@ -366,8 +333,6 @@ _func_enter_;
 		sdio_release_host(func);
 	if (err && *err)
 		DBG_871X(KERN_ERR "%s: FAIL!(%d) addr=0x%05x val=0x%02x\n", __func__, *err, addr, v);
-
-_func_exit_;
 }
 
 void sd_write32(struct intf_hdl *pintfhdl, u32 addr, u32 v, s32 *err)
@@ -378,7 +343,6 @@ void sd_write32(struct intf_hdl *pintfhdl, u32 addr, u32 v, s32 *err)
 	struct sdio_func *func;
 	bool claim_needed;
 
-_func_enter_;
 	padapter = pintfhdl->padapter;
 	psdiodev = pintfhdl->pintf_dev;
 	psdio = &psdiodev->intf_data;
@@ -430,8 +394,6 @@ _func_enter_;
 		else
 			DBG_871X(KERN_ERR "%s: (%d) addr=0x%05x val=0x%08x, try_cnt=%d\n", __func__, *err, addr, v, i);
 	}
-
-_func_exit_;
 }
 
 /*
@@ -458,7 +420,6 @@ s32 _sd_read(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, void *pdata)
 	int err= -EPERM;
 	struct sdio_func *func;
 
-_func_enter_;
 	padapter = pintfhdl->padapter;
 	psdiodev = pintfhdl->pintf_dev;
 	psdio = &psdiodev->intf_data;
@@ -491,9 +452,6 @@ _func_enter_;
 	if (err) {
 		DBG_871X(KERN_ERR "%s: FAIL(%d)! ADDR=%#x Size=%d\n", __func__, err, addr, cnt);
 	}
-
-_func_exit_;
-
 	return err;
 }
 
@@ -520,7 +478,6 @@ s32 sd_read(struct intf_hdl * pintfhdl, u32 addr, u32 cnt, void *pdata)
 	bool claim_needed;
 	s32 err= -EPERM;
 
-_func_enter_;
 	padapter = pintfhdl->padapter;
 	psdiodev = pintfhdl->pintf_dev;
 	psdio = &psdiodev->intf_data;
@@ -537,7 +494,6 @@ _func_enter_;
 	err = _sd_read(pintfhdl, addr, cnt, pdata);
 	if (claim_needed)
 		sdio_release_host(func);
-_func_exit_;
 	return err;
 }
 
@@ -566,7 +522,6 @@ s32 _sd_write(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, void *pdata)
 	u32 size;
 	s32 err=-EPERM;
 
-_func_enter_;
 	padapter = pintfhdl->padapter;
 	psdiodev = pintfhdl->pintf_dev;
 	psdio = &psdiodev->intf_data;
@@ -601,9 +556,6 @@ _func_enter_;
 	if (err) {
 		DBG_871X(KERN_ERR "%s: FAIL(%d)! ADDR=%#x Size=%d(%d)\n", __func__, err, addr, cnt, size);
 	}
-
-_func_exit_;
-
 	return err;
 }
 
@@ -625,11 +577,10 @@ s32 sd_write(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, void *pdata)
 	PADAPTER padapter;
 	struct dvobj_priv *psdiodev;
 	PSDIO_DATA psdio;
-
 	struct sdio_func *func;
 	bool claim_needed;
 	s32 err=-EPERM;
-_func_enter_;
+
 	padapter = pintfhdl->padapter;
 	psdiodev = pintfhdl->pintf_dev;
 	psdio = &psdiodev->intf_data;
@@ -647,6 +598,5 @@ _func_enter_;
 	err = _sd_write(pintfhdl, addr, cnt, pdata);
 	if (claim_needed)
 		sdio_release_host(func);
-_func_exit_;
 	return err;
 }
