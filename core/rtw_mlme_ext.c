@@ -3301,9 +3301,9 @@ void issue_auth(_adapter *padapter, struct sta_info *psta, unsigned short status
 		// setting auth algo number
 		val16 = (pmlmeinfo->auth_algo == dot11AuthAlgrthm_Shared)? 1: 0;// 0:OPEN System, 1:Shared key
 		if (val16)	{
-			le_tmp = cpu_to_le16(val16);
 			use_shared_key = 1;
 		}
+		le_tmp = cpu_to_le16(val16);
 		//DBG_871X("%s auth_algo= %s auth_seq=%d\n",__FUNCTION__,(pmlmeinfo->auth_algo==0)?"OPEN":"SHARED",pmlmeinfo->auth_seq);
 
 		//setting IV for auth seq #3
