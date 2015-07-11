@@ -54,11 +54,10 @@ u8 _rtw_read8(_adapter *adapter, u32 addr)
 	struct io_priv *pio_priv = &adapter->iopriv;
 	struct	intf_hdl		*pintfhdl = &(pio_priv->intf);
 	u8 (*_read8)(struct intf_hdl *pintfhdl, u32 addr);
-	_func_enter_;
+
 	_read8 = pintfhdl->io_ops._read8;
 
 	r_val = _read8(pintfhdl, addr);
-	_func_exit_;
 	return r_val;
 }
 
@@ -69,11 +68,10 @@ u16 _rtw_read16(_adapter *adapter, u32 addr)
 	struct io_priv *pio_priv = &adapter->iopriv;
 	struct	intf_hdl		*pintfhdl = &(pio_priv->intf);
 	u16	(*_read16)(struct intf_hdl *pintfhdl, u32 addr);
-	_func_enter_;
+
 	_read16 = pintfhdl->io_ops._read16;
 
 	r_val = _read16(pintfhdl, addr);
-	_func_exit_;
 	return rtw_le16_to_cpu(r_val);
 }
 
@@ -84,11 +82,10 @@ u32 _rtw_read32(_adapter *adapter, u32 addr)
 	struct io_priv *pio_priv = &adapter->iopriv;
 	struct	intf_hdl		*pintfhdl = &(pio_priv->intf);
 	u32	(*_read32)(struct intf_hdl *pintfhdl, u32 addr);
-	_func_enter_;
+
 	_read32 = pintfhdl->io_ops._read32;
 
 	r_val = _read32(pintfhdl, addr);
-	_func_exit_;
 	return rtw_le32_to_cpu(r_val);
 
 }
@@ -100,11 +97,10 @@ int _rtw_write8(_adapter *adapter, u32 addr, u8 val)
 	struct	intf_hdl		*pintfhdl = &(pio_priv->intf);
 	int (*_write8)(struct intf_hdl *pintfhdl, u32 addr, u8 val);
 	int ret;
-	_func_enter_;
+
 	_write8 = pintfhdl->io_ops._write8;
 
 	ret = _write8(pintfhdl, addr, val);
-	_func_exit_;
 
 	return RTW_STATUS_CODE(ret);
 }
@@ -115,12 +111,10 @@ int _rtw_write16(_adapter *adapter, u32 addr, u16 val)
 	struct	intf_hdl		*pintfhdl = &(pio_priv->intf);
 	int (*_write16)(struct intf_hdl *pintfhdl, u32 addr, u16 val);
 	int ret;
-	_func_enter_;
+
 	_write16 = pintfhdl->io_ops._write16;
 
 	ret = _write16(pintfhdl, addr, val);
-	_func_exit_;
-
 	return RTW_STATUS_CODE(ret);
 }
 int _rtw_write32(_adapter *adapter, u32 addr, u32 val)
@@ -145,7 +139,6 @@ u8 _rtw_sd_f0_read8(_adapter *adapter, u32 addr)
 	struct intf_hdl *pintfhdl = &(pio_priv->intf);
 	u8 (*_sd_f0_read8)(struct intf_hdl *pintfhdl, u32 addr);
 
-	_func_enter_;
 	_sd_f0_read8 = pintfhdl->io_ops._sd_f0_read8;
 
 	if (_sd_f0_read8)
@@ -153,7 +146,6 @@ u8 _rtw_sd_f0_read8(_adapter *adapter, u32 addr)
 	else
 		DBG_871X_LEVEL(_drv_warning_, FUNC_ADPT_FMT" _sd_f0_read8 callback is NULL\n", FUNC_ADPT_ARG(adapter));
 
-	_func_exit_;
 	return r_val;
 }
 
@@ -165,13 +157,9 @@ u32 _rtw_write_port(_adapter *adapter, u32 addr, u32 cnt, u8 *pmem)
 	struct	intf_hdl		*pintfhdl = &(pio_priv->intf);
 	u32 ret = _SUCCESS;
 
-	_func_enter_;
-
 	_write_port = pintfhdl->io_ops._write_port;
 
 	ret = _write_port(pintfhdl, addr, cnt, pmem);
-
-	 _func_exit_;
 
 	return ret;
 }

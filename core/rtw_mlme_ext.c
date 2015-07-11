@@ -7094,8 +7094,6 @@ u8 chk_bmc_sleepq_cmd(_adapter* padapter)
 	struct cmd_priv *pcmdpriv = &(padapter->cmdpriv);
 	u8 res = _SUCCESS;
 
-_func_enter_;
-
 	if ((ph2c = (struct cmd_obj*)rtw_zmalloc(sizeof(struct cmd_obj))) == NULL)
 	{
 		res= _FAIL;
@@ -7107,9 +7105,6 @@ _func_enter_;
 	res = rtw_enqueue_cmd(pcmdpriv, ph2c);
 
 exit:
-
-_func_exit_;
-
 	return res;
 }
 
@@ -7122,8 +7117,6 @@ u8 set_tx_beacon_cmd(_adapter* padapter)
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 	u8	res = _SUCCESS;
 	int len_diff = 0;
-
-_func_enter_;
 
 	if ((ph2c = (struct cmd_obj*)rtw_zmalloc(sizeof(struct cmd_obj))) == NULL)
 	{
@@ -7151,11 +7144,7 @@ _func_enter_;
 
 	res = rtw_enqueue_cmd(pcmdpriv, ph2c);
 
-
 exit:
-
-_func_exit_;
-
 	return res;
 }
 

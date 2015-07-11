@@ -24,9 +24,6 @@
 void _rtw_init_stainfo(struct sta_info *psta);
 void _rtw_init_stainfo(struct sta_info *psta)
 {
-
-_func_enter_;
-
 	memset((u8 *)psta, 0, sizeof (struct sta_info));
 
 	 spin_lock_init(&psta->lock);
@@ -64,17 +61,12 @@ _func_enter_;
 	psta->under_exist_checking = 0;
 
 	psta->keep_alive_trycnt = 0;
-
-_func_exit_;
-
 }
 
 u32	_rtw_init_sta_priv(struct	sta_priv *pstapriv)
 {
 	struct sta_info *psta;
 	s32 i;
-
-_func_enter_;
 
 	pstapriv->pallocated_stainfo_buf = vzalloc (sizeof(struct sta_info) * NUM_STA+ 4);
 
@@ -123,11 +115,7 @@ _func_enter_;
 	//pstapriv->expire_to = 30;// 30*2 = 60 sec = 1 min, expire after no any traffic.
 	pstapriv->expire_to = 3; // 3*2 = 6 sec
 	pstapriv->max_num_sta = NUM_STA;
-
-_func_exit_;
-
 	return _SUCCESS;
-
 }
 
 inline int rtw_stainfo_offset(struct sta_priv *stapriv, struct sta_info *sta)
@@ -155,8 +143,6 @@ void kfree_all_stainfo(struct sta_priv *pstapriv )
 	_list	*plist, *phead;
 	struct sta_info *psta = NULL;
 
-_func_enter_;
-
 	spin_lock_bh(&pstapriv->sta_hash_lock);
 
 	phead = get_list_head(&pstapriv->free_sta_queue);
@@ -169,9 +155,6 @@ _func_enter_;
 	}
 
 	spin_unlock_bh(&pstapriv->sta_hash_lock);
-
-_func_exit_;
-
 }
 
 void kfree_sta_priv_lock(struct	sta_priv *pstapriv);
@@ -187,7 +170,6 @@ u32	_rtw_free_sta_priv(struct	sta_priv *pstapriv)
 	struct recv_reorder_ctrl *preorder_ctrl;
 	int	index;
 
-_func_enter_;
 	if(pstapriv){
 
 		/*	delete all reordering_ctrl_timer		*/
@@ -219,11 +201,8 @@ _func_enter_;
 			vfree(pstapriv->pallocated_stainfo_buf);
 		}
 	}
-
-_func_exit_;
 	return _SUCCESS;
 }
-
 
 //struct	sta_info *rtw_alloc_stainfo(_queue *pfree_sta_queue, unsigned char *hwaddr)
 struct	sta_info *rtw_alloc_stainfo(struct	sta_priv *pstapriv, u8 *hwaddr)
@@ -236,8 +215,6 @@ struct	sta_info *rtw_alloc_stainfo(struct	sta_priv *pstapriv, u8 *hwaddr)
 	struct recv_reorder_ctrl *preorder_ctrl;
 	int i = 0;
 	u16  wRxSeqInitialValue = 0xffff;
-
-_func_enter_;
 
 	pfree_sta_queue = &pstapriv->free_sta_queue;
 
@@ -340,13 +317,8 @@ exit:
 
 	spin_unlock_bh(&(pstapriv->sta_hash_lock));
 
-_func_exit_;
-
 	return psta;
-
-
 }
-
 
 // using pstapriv->sta_hash_lock to protect
 u32	rtw_free_stainfo(_adapter *padapter , struct sta_info *psta)
@@ -358,9 +330,6 @@ u32	rtw_free_stainfo(_adapter *padapter , struct sta_info *psta)
 	struct	xmit_priv	*pxmitpriv= &padapter->xmitpriv;
 	struct	sta_priv *pstapriv = &padapter->stapriv;
 	struct hw_xmit *phwxmit;
-
-
-_func_enter_;
 
 	if (psta == NULL)
 		goto exit;
@@ -515,11 +484,7 @@ _func_enter_;
 	//spin_unlock_bh(&(pfree_sta_queue->lock));
 
 exit:
-
-_func_exit_;
-
 	return _SUCCESS;
-
 }
 
 // free all stainfo which in sta_hash[all]
@@ -531,10 +496,8 @@ void rtw_free_all_stainfo(_adapter *padapter)
 	struct	sta_priv *pstapriv = &padapter->stapriv;
 	struct sta_info* pbcmc_stainfo =rtw_get_bcmc_stainfo( padapter);
 
-_func_enter_;
-
 	if(pstapriv->asoc_sta_count==1)
-		goto exit;
+		return;
 
 	spin_lock_bh(&pstapriv->sta_hash_lock);
 
@@ -556,11 +519,6 @@ _func_enter_;
 	}
 
 	spin_unlock_bh(&pstapriv->sta_hash_lock);
-
-exit:
-
-_func_exit_;
-
 }
 
 /* any station allocated can be searched by hash list */
@@ -571,8 +529,6 @@ struct sta_info *rtw_get_stainfo(struct sta_priv *pstapriv, u8 *hwaddr)
 	u32	index;
 	u8 *addr;
 	u8 bc_addr[ETH_ALEN] = {0xff,0xff,0xff,0xff,0xff,0xff};
-
-_func_enter_;
 
 	if(hwaddr==NULL)
 		return NULL;
@@ -608,9 +564,7 @@ _func_enter_;
 	}
 
 	spin_unlock_bh(&pstapriv->sta_hash_lock);
-_func_exit_;
 	return psta;
-
 }
 
 u32 rtw_init_bcmc_stainfo(_adapter* padapter)
@@ -623,8 +577,6 @@ u32 rtw_init_bcmc_stainfo(_adapter* padapter)
 
 	struct	sta_priv *pstapriv = &padapter->stapriv;
 	//_queue	*pstapending = &padapter->xmitpriv.bm_pending;
-
-_func_enter_;
 
 	psta = rtw_alloc_stainfo(pstapriv, bcast_addr);
 
@@ -649,9 +601,7 @@ _func_enter_;
 */
 
 exit:
-_func_exit_;
 	return _SUCCESS;
-
 }
 
 
@@ -660,11 +610,9 @@ struct sta_info* rtw_get_bcmc_stainfo(_adapter* padapter)
 	struct sta_info		*psta;
 	struct sta_priv		*pstapriv = &padapter->stapriv;
 	u8 bc_addr[ETH_ALEN] = {0xff,0xff,0xff,0xff,0xff,0xff};
-_func_enter_;
-	 psta = rtw_get_stainfo(pstapriv, bc_addr);
-_func_exit_;
-	return psta;
 
+	psta = rtw_get_stainfo(pstapriv, bc_addr);
+	return psta;
 }
 
 u8 rtw_access_ctrl(_adapter *padapter, u8 *mac_addr)

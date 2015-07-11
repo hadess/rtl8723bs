@@ -150,7 +150,6 @@ u8 *rtw_set_ie
 	uint *frlen //frame length
 )
 {
-_func_enter_;
 	*pbuf = (u8)index;
 
 	*(pbuf + 1) = (u8)len;
@@ -159,8 +158,6 @@ _func_enter_;
 		memcpy((void *)(pbuf + 2), (void *)source, len);
 
 	*frlen = *frlen + (len + 2);
-
-	_func_exit_;
 
 	return (pbuf + len + 2);
 }
@@ -172,9 +169,8 @@ u8 *rtw_get_ie(u8 *pbuf, sint index, sint *len, sint limit)
 {
 	sint tmp,i;
 	u8 *p;
-_func_enter_;
+
 	if (limit < 1){
-		_func_exit_;
 		return NULL;
 	}
 
@@ -197,7 +193,6 @@ _func_enter_;
 		if (i >= limit)
 			break;
 	}
-_func_exit_;
 	return NULL;
 }
 
@@ -301,8 +296,6 @@ exit:
 
 void rtw_set_supported_rate(u8* SupportedRates, uint mode)
 {
-_func_enter_;
-
 	memset(SupportedRates, 0, NDIS_802_11_LENGTH_RATES_EX);
 
 	switch (mode)
@@ -328,13 +321,12 @@ _func_enter_;
 			break;
 
 	}
-_func_exit_;
 }
 
 uint	rtw_get_rateset_len(u8	*rateset)
 {
 	uint i = 0;
-_func_enter_;
+
 	while(1)
 	{
 		if ((rateset[i]) == 0)
@@ -345,7 +337,6 @@ _func_enter_;
 
 		i++;
 	}
-_func_exit_;
 	return i;
 }
 
@@ -355,8 +346,6 @@ int rtw_generate_ie(struct registry_priv *pregistrypriv)
 	int	sz = 0, rateLen;
 	WLAN_BSSID_EX*	pdev_network = &pregistrypriv->dev_network;
 	u8*	ie = pdev_network->IEs;
-
-_func_enter_;
 
 	//timestamp will be inserted by hardware
 	sz += 8;
@@ -433,12 +422,9 @@ _func_enter_;
 
 	//pdev_network->IELength =  sz; //update IELength
 
-_func_exit_;
-
 	//return _SUCCESS;
 
 	return sz;
-
 }
 
 unsigned char *rtw_get_wpa_ie(unsigned char *pie, int *wpa_ie_len, int limit)
@@ -710,8 +696,6 @@ int rtw_get_wapi_ie(u8 *in_ie,uint in_len,u8 *wapi_ie,u16 *wapi_len)
 	u8 wapi_oui1[4]={0x0,0x14,0x72,0x01};
 	u8 wapi_oui2[4]={0x0,0x14,0x72,0x02};
 
-_func_enter_;
-
 	if(wapi_len)
 		*wapi_len = 0;
 
@@ -752,10 +736,7 @@ _func_enter_;
 	if(wapi_len)
 		len = *wapi_len;
 
-_func_exit_;
-
 	return len;
-
 }
 //#endif
 
@@ -764,8 +745,6 @@ int rtw_get_sec_ie(u8 *in_ie,uint in_len,u8 *rsn_ie,u16 *rsn_len,u8 *wpa_ie,u16 
 	u8 authmode, sec_idx, i;
 	u8 wpa_oui[4]={0x0,0x50,0xf2,0x01};
 	uint	cnt;
-
-_func_enter_;
 
 	//Search required WPA or WPA2 IE and copy to sec_ie[ ]
 
@@ -821,10 +800,7 @@ _func_enter_;
 
 	}
 
-_func_exit_;
-
 	return (*rsn_len+*wpa_len);
-
 }
 
 u8 rtw_is_wps_ie(u8 *ie_ptr, uint *wps_ielen)

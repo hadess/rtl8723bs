@@ -46,8 +46,6 @@ u8 rtw_validate_ssid(NDIS_802_11_SSID *ssid)
 {
 	u8	ret=true;
 
-_func_enter_;
-
 	if (ssid->SsidLength > 32) {
 		RT_TRACE(_module_rtl871x_ioctl_set_c_, _drv_err_, ("ssid length >32\n"));
 		ret= false;
@@ -67,9 +65,6 @@ _func_enter_;
 #endif /* CONFIG_VALIDATE_SSID */
 
 exit:
-
-_func_exit_;
-
 	return ret;
 }
 
@@ -81,8 +76,6 @@ u8 rtw_do_join(_adapter * padapter)
 	struct	mlme_priv	*pmlmepriv = &(padapter->mlmepriv);
 	_queue	*queue	= &(pmlmepriv->scanned_queue);
 	u8 ret=_SUCCESS;
-
-_func_enter_;
 
 	spin_lock_bh(&(pmlmepriv->scanned_queue.lock));
 	phead = get_list_head(queue);
@@ -195,9 +188,6 @@ _func_enter_;
 	}
 
 exit:
-
-_func_exit_;
-
 	return ret;
 }
 
@@ -206,8 +196,6 @@ u8 rtw_set_802_11_bssid(_adapter* padapter, u8 *bssid)
 	u8 status=_SUCCESS;
 
 	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
-
-_func_enter_;
 
 	DBG_871X_LEVEL(_drv_always_, "set bssid:%pM\n", bssid);
 
@@ -279,8 +267,6 @@ exit:
 	RT_TRACE(_module_rtl871x_ioctl_set_c_, _drv_err_,
 		("rtw_set_802_11_bssid: status=%d\n", status));
 
-_func_exit_;
-
 	return status;
 }
 
@@ -290,8 +276,6 @@ u8 rtw_set_802_11_ssid(_adapter* padapter, NDIS_802_11_SSID *ssid)
 
 	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
 	struct wlan_network *pnetwork = &pmlmepriv->cur_network;
-
-_func_enter_;
 
 	DBG_871X_LEVEL(_drv_always_, "set ssid [%s] fw_state=0x%08x\n",
 			ssid->Ssid, get_fwstate(pmlmepriv));
@@ -398,10 +382,7 @@ exit:
 	RT_TRACE(_module_rtl871x_ioctl_set_c_, _drv_err_,
 		("-rtw_set_802_11_ssid: status=%d\n", status));
 
-_func_exit_;
-
 	return status;
-
 }
 
 u8 rtw_set_802_11_connect(_adapter* padapter, u8 *bssid, NDIS_802_11_SSID *ssid)
@@ -410,8 +391,6 @@ u8 rtw_set_802_11_connect(_adapter* padapter, u8 *bssid, NDIS_802_11_SSID *ssid)
 	bool bssid_valid = true;
 	bool ssid_valid = true;
 	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
-
-_func_enter_;
 
 	if (!ssid || rtw_validate_ssid(ssid) == false)
 		ssid_valid = false;
@@ -473,9 +452,6 @@ release_mlme_lock:
 	spin_unlock_bh(&pmlmepriv->lock);
 
 exit:
-
-_func_exit_;
-
 	return status;
 }
 
@@ -485,8 +461,6 @@ u8 rtw_set_802_11_infrastructure_mode(_adapter* padapter,
 	struct	mlme_priv	*pmlmepriv = &padapter->mlmepriv;
 	struct	wlan_network	*cur_network = &pmlmepriv->cur_network;
 	NDIS_802_11_NETWORK_INFRASTRUCTURE* pold_state = &(cur_network->network.InfrastructureMode);
-
-_func_enter_;
 
 	RT_TRACE(_module_rtl871x_ioctl_set_c_,_drv_notice_,
 		 ("+rtw_set_802_11_infrastructure_mode: old=%d new=%d fw_state=0x%08x\n",
@@ -555,9 +529,6 @@ _func_enter_;
 
 		spin_unlock_bh(&pmlmepriv->lock);
 	}
-
-_func_exit_;
-
 	return true;
 }
 
@@ -565,8 +536,6 @@ _func_exit_;
 u8 rtw_set_802_11_disassociate(_adapter *padapter)
 {
 	struct mlme_priv * pmlmepriv = &padapter->mlmepriv;
-
-_func_enter_;
 
 	spin_lock_bh(&pmlmepriv->lock);
 
@@ -584,8 +553,6 @@ _func_enter_;
 
 	spin_unlock_bh(&pmlmepriv->lock);
 
-_func_exit_;
-
 	return true;
 }
 
@@ -593,8 +560,6 @@ u8 rtw_set_802_11_bssid_list_scan(_adapter* padapter, NDIS_802_11_SSID *pssid, i
 {
 	struct	mlme_priv		*pmlmepriv= &padapter->mlmepriv;
 	u8	res=true;
-
-_func_enter_;
 
 	RT_TRACE(_module_rtl871x_ioctl_set_c_,_drv_err_,("+rtw_set_802_11_bssid_list_scan(), fw_state=%x\n", get_fwstate(pmlmepriv)));
 
@@ -635,8 +600,6 @@ _func_enter_;
 	}
 exit:
 
-_func_exit_;
-
 	return res;
 }
 
@@ -645,8 +608,6 @@ u8 rtw_set_802_11_authentication_mode(_adapter* padapter, NDIS_802_11_AUTHENTICA
 	struct security_priv *psecuritypriv = &padapter->securitypriv;
 	int res;
 	u8 ret;
-
-_func_enter_;
 
 	RT_TRACE(_module_rtl871x_ioctl_set_c_,_drv_info_,("set_802_11_auth.mode(): mode=%x\n", authmode));
 
@@ -664,8 +625,6 @@ _func_enter_;
 	else
 		ret=false;
 
-_func_exit_;
-
 	return ret;
 }
 
@@ -676,8 +635,6 @@ u8 rtw_set_802_11_add_wep(_adapter* padapter, NDIS_802_11_WEP *wep){
 	sint		keyid,res;
 	struct security_priv* psecuritypriv=&(padapter->securitypriv);
 	u8		ret=_SUCCESS;
-
-_func_enter_;
 
 	bdefaultkey=(wep->KeyIndex & 0x40000000) > 0 ? false : true;   //for ???
 	btransmitkey= (wep->KeyIndex & 0x80000000) > 0 ? true  : false;	//for ???
@@ -727,10 +684,7 @@ _func_enter_;
 		ret= false;
 exit:
 
-_func_exit_;
-
 	return ret;
-
 }
 
 /*
