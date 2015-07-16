@@ -1,8 +1,3 @@
-config RTL8723AS
-	tristate "Realtek 8723A SDIO or SPI WiFi"
-	---help---
-	  Help message of RTL8723AS
-
 config RTL8723BS
 	tristate "Realtek 8723B SDIO or SPI WiFi"
 	---help---
