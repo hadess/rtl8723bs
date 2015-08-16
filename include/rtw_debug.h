@@ -152,7 +152,6 @@
 #define DBG_871X_LEVEL(x,...) do {} while(0)
 
 #undef _dbgdump
-#undef _seqdump
 
 #ifndef _RTL871X_DEBUG_C_
 	extern u32 GlobalDebugLevel;
@@ -160,7 +159,6 @@
 #endif
 
 #define _dbgdump printk
-#define _seqdump seq_printf
 
 #define DRIVER_PREFIX "RTL8723BS: "
 
@@ -190,7 +188,6 @@
 		}\
 	}while(0)
 
-#if defined(_seqdump)
 #define RTW_DBGDUMP NULL /* 'stream' for _dbgdump */
 
 /* dump message to selected 'stream' */
@@ -199,7 +196,7 @@
 		if (sel == RTW_DBGDUMP)\
 			_DBG_871X_LEVEL(_drv_always_, fmt, ##arg); \
 		else {\
-			if(_seqdump(sel, fmt, ##arg)) /*rtw_warn_on(1)*/; \
+			if(seq_printf(sel, fmt, ##arg)) /*rtw_warn_on(1)*/; \
 		} \
 	}while(0)
 
@@ -209,11 +206,9 @@
 		if (sel == RTW_DBGDUMP)\
 			DBG_871X_LEVEL(_drv_always_, fmt, ##arg); \
 		else {\
-			if(_seqdump(sel, fmt, ##arg)) /*rtw_warn_on(1)*/; \
+			if(seq_printf(sel, fmt, ##arg)) /*rtw_warn_on(1)*/; \
 		} \
 	}while(0)
-
-#endif /* defined(_seqdump) */
 
 #endif /* defined(_dbgdump) */
 
