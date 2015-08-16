@@ -1,16 +1,17 @@
-//============================================================
-// Description:
-//
-// This file is for RTL8723B Co-exist mechanism
-//
-// History
-// 2012/11/15 Cosa first check in.
-//
-//============================================================
-
-//============================================================
-// include files
-//============================================================
+/******************************************************************************
+ *
+ * Copyright(c) 2007 - 2012 Realtek Corporation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of version 2 of the GNU General Public License as
+ * published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+ * more details.
+ *
+ ******************************************************************************/
 #include "Mp_Precomp.h"
 
 //============================================================

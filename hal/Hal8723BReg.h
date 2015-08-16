@@ -1,20 +1,17 @@
-/*****************************************************************************
- *	Copyright(c) 2009,  RealTEK Technology Inc. All Right Reserved.
+/******************************************************************************
  *
- * Module:	__INC_HAL8723BREG_H
+ * Copyright(c) 2007 - 2012 Realtek Corporation. All rights reserved.
  *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of version 2 of the GNU General Public License as
+ * published by the Free Software Foundation.
  *
- * Note:	1. Define Mac register address and corresponding bit mask map
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+ * more details.
  *
- *
- * Export:	Constants, macro, functions(API), global variables(None).
- *
- * Abbrev:
- *
- * History:
- *		Data		Who		Remark
- *
- *****************************************************************************/
+ ******************************************************************************/
 #ifndef __INC_HAL8723BREG_H
 #define __INC_HAL8723BREG_H
 
