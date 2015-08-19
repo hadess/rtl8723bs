@@ -383,7 +383,7 @@ void	HalSetBrateCfg(
 {
 	u8	i, is_brate, brate;
 
-	for(i=0;i<NDIS_802_11_LENGTH_RATES_EX;i++)
+	for (i=0;i<NDIS_802_11_LENGTH_RATES_EX;i++)
 	{
 		is_brate = mBratesOS[i] & IEEE80211_BASIC_RATE_MASK;
 		brate = mBratesOS[i] & 0x7f;
@@ -1343,7 +1343,7 @@ void rtw_get_raw_rssi_info(void *sel, _adapter *padapter)
 	if (isCCKrate)
 		psample_pkt_rssi->mimo_singal_strength[0] = psample_pkt_rssi->pwdball;
 
-	for(rf_path = 0;rf_path<pHalData->NumTotalRFPath;rf_path++)
+	for (rf_path = 0;rf_path<pHalData->NumTotalRFPath;rf_path++)
 	{
 		DBG_871X_SEL_NL(sel,"RF_PATH_%d=>singal_strength:%d(%%),singal_quality:%d(%%)\n"
 			,rf_path,psample_pkt_rssi->mimo_singal_strength[rf_path],psample_pkt_rssi->mimo_singal_quality[rf_path]);
@@ -1369,7 +1369,7 @@ void rtw_dump_raw_rssi_info(_adapter *padapter)
 	if (isCCKrate)
 		psample_pkt_rssi->mimo_singal_strength[0] = psample_pkt_rssi->pwdball;
 
-	for(rf_path = 0;rf_path<pHalData->NumTotalRFPath;rf_path++)
+	for (rf_path = 0;rf_path<pHalData->NumTotalRFPath;rf_path++)
 	{
 		DBG_871X("RF_PATH_%d=>singal_strength:%d(%%),singal_quality:%d(%%)"
 			,rf_path,psample_pkt_rssi->mimo_singal_strength[rf_path],psample_pkt_rssi->mimo_singal_quality[rf_path]);
@@ -1398,7 +1398,7 @@ void rtw_store_phy_info(_adapter *padapter, union recv_frame *prframe)
 	psample_pkt_rssi->pwdball = pPhyInfo->RxPWDBAll;
 	psample_pkt_rssi->pwr_all = pPhyInfo->RecvSignalPower;
 
-	for(rf_path = 0;rf_path<pHalData->NumTotalRFPath;rf_path++)
+	for (rf_path = 0;rf_path<pHalData->NumTotalRFPath;rf_path++)
 	{
 		psample_pkt_rssi->mimo_singal_strength[rf_path] = pPhyInfo->RxMIMOSignalStrength[rf_path];
 		psample_pkt_rssi->mimo_singal_quality[rf_path] = pPhyInfo->RxMIMOSignalQuality[rf_path];

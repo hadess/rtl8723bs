@@ -24,7 +24,7 @@
 
 #define		CALCULATE_SWINGTALBE_OFFSET(_offset, _direction, _size, _deltaThermal) \
 					do {\
-						for(_offset = 0; _offset < _size; _offset++)\
+						for (_offset = 0; _offset < _size; _offset++)\
 						{\
 							if (_deltaThermal < thermalThreshold[_direction][_offset])\
 							{\
@@ -146,7 +146,7 @@ ODM_TXPowerTrackingCallback_ThermalMeter(
 	if (pDM_Odm->RFCalibrateInfo.ThermalValue_AVG_index == c.AverageThermalNum)   //Average times =  c.AverageThermalNum
 		pDM_Odm->RFCalibrateInfo.ThermalValue_AVG_index = 0;
 
-	for(i = 0; i < c.AverageThermalNum; i++) {
+	for (i = 0; i < c.AverageThermalNum; i++) {
 		if (pDM_Odm->RFCalibrateInfo.ThermalValue_AVG[i]) {
 			ThermalValue_AVG += pDM_Odm->RFCalibrateInfo.ThermalValue_AVG[i];
 			ThermalValue_AVG_count++;
@@ -386,7 +386,7 @@ u1Byte ODM_GetRightChnlPlaceforIQK(u1Byte chnl)
 
 	if (chnl > 14)
 	{
-		for(place = 14; place<sizeof(channel_all); place++)
+		for (place = 14; place<sizeof(channel_all); place++)
 		{
 			if (channel_all[place] == chnl)
 			{

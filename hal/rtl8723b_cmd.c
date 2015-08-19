@@ -539,7 +539,7 @@ static void ConstructSSIDList(
 
 	pSSIDListPkt =  (u8*)(pframe+ *pLength);
 
-	for(i = 0; i < pwrctl->pnlo_info->ssid_num ; i++) {
+	for (i = 0; i < pwrctl->pnlo_info->ssid_num ; i++) {
 		memcpy(pSSIDListPkt, &pwrctl->pno_ssid_list->node[i].SSID,
 			pwrctl->pnlo_info->ssid_length[i]);
 
@@ -599,7 +599,7 @@ static void ConstructScanInfo(
 	*pLength+=8;
 	pScanInfoPkt += 8;
 
-	for(i = 0 ; i < MAX_SCAN_LIST_COUNT ; i ++) {
+	for (i = 0 ; i < MAX_SCAN_LIST_COUNT ; i ++) {
 		memcpy(pScanInfoPkt,
 			&pwrctl->pscan_info->ssid_channel_info[i], 4);
 		*pLength+=4;
@@ -1142,7 +1142,7 @@ void rtl8723b_set_FwPwrMode_cmd(PADAPTER padapter, u8 psmode)
 
 			DBG_871X("%s(): bcn_cnt = %d\n", __func__, pmlmeext->bcn_cnt);
 
-			for(i=0; i<9; i++)
+			for (i=0; i<9; i++)
 			{
 				pmlmeext->bcn_delay_ratio[i] = (pmlmeext->bcn_delay_cnt[i] * 100) /pmlmeext->bcn_cnt;
 
@@ -1763,7 +1763,7 @@ static void rtl8723b_set_FwRsvdPagePkt(PADAPTER padapter, bool bDLFinished)
 	{
 			int gj;
 			printk("probe req pkt=> \n");
-			for(gj=0; gj < ProbeReqLength + TxDescLen; gj++) {
+			for (gj=0; gj < ProbeReqLength + TxDescLen; gj++) {
 				printk(" %02x ",ReservedPagePacket[BufIndex- TxDescLen + gj]);
 				if ((gj + 1)%8==0)
 					printk("\n");
@@ -1785,7 +1785,7 @@ static void rtl8723b_set_FwRsvdPagePkt(PADAPTER padapter, bool bDLFinished)
 	{
 			int gj;
 			printk("PNO pkt=> \n");
-			for(gj=0; gj < PNOLength; gj++) {
+			for (gj=0; gj < PNOLength; gj++) {
 				printk(" %02x ", ReservedPagePacket[BufIndex-TxDescLen +gj]);
 				if ((gj + 1)%8==0)
 					printk("\n");
@@ -1805,7 +1805,7 @@ static void rtl8723b_set_FwRsvdPagePkt(PADAPTER padapter, bool bDLFinished)
 	{
 			int gj;
 			printk("SSID list pkt=> \n");
-			for(gj=0; gj < SSIDLegnth; gj++) {
+			for (gj=0; gj < SSIDLegnth; gj++) {
 				printk(" %02x ", ReservedPagePacket[BufIndex-TxDescLen+gj]);
 				if ((gj + 1)%8==0)
 					printk("\n");
@@ -1824,7 +1824,7 @@ static void rtl8723b_set_FwRsvdPagePkt(PADAPTER padapter, bool bDLFinished)
 	{
 			int gj;
 			printk("Scan info pkt=> \n");
-			for(gj=0; gj < ScanInfoLength; gj++) {
+			for (gj=0; gj < ScanInfoLength; gj++) {
 				printk(" %02x ", ReservedPagePacket[BufIndex-TxDescLen+gj]);
 				if ((gj + 1)%8==0)
 					printk("\n");

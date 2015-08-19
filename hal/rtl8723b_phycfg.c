@@ -65,7 +65,7 @@ phy_CalculateBitShift(
 {
 	u32 i;
 
-	for(i=0; i<=31; i++)
+	for (i=0; i<=31; i++)
 	{
 		if ( ((BitMask>>i) &  0x1 ) == 1)
 			break;
@@ -205,7 +205,7 @@ phy_RFSerialRead_8723B(
 
 	udelay(10);
 
-	for(i=0;i<2;i++)
+	for (i=0;i<2;i++)
 		udelay(MAX_STALL_TIME);
 	udelay(10);
 

@@ -2961,13 +2961,13 @@ PHY_ConfigRFWithParaFile(
 					else if (u4bRegOffset == 0xfd)
 					{
 						//mdelay(5);
-						for(i=0;i<100;i++)
+						for (i=0;i<100;i++)
 							udelay(MAX_STALL_TIME);
 					}
 					else if (u4bRegOffset == 0xfc)
 					{
 						//mdelay(1);
-						for(i=0;i<20;i++)
+						for (i=0;i<20;i++)
 							udelay(MAX_STALL_TIME);
 					}
 					else if (u4bRegOffset == 0xfb)
@@ -3036,7 +3036,7 @@ initDeltaSwingIndexTables(
 	)
 
 	#define STORE_SWING_TABLE(_array, _iteratedIdx) \
-		for(token = strsep(&Data, delim); token != NULL; token = strsep(&Data, delim))\
+		for (token = strsep(&Data, delim); token != NULL; token = strsep(&Data, delim))\
 		{\
 			sscanf(token, "%d", &idx);\
 			_array[_iteratedIdx++] = (u8)idx;\

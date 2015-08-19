@@ -40,7 +40,7 @@ void _rtw_init_sta_recv_priv(struct sta_recv_priv *psta_recvpriv)
 
 	spin_lock_init(&psta_recvpriv->lock);
 
-	//for(i=0; i<MAX_RX_NUMBLKS; i++)
+	//for (i=0; i<MAX_RX_NUMBLKS; i++)
 	//	_rtw_init_queue(&psta_recvpriv->blk_strms[i]);
 
 	_rtw_init_queue(&psta_recvpriv->defrag_q);
@@ -80,7 +80,7 @@ sint _rtw_init_recv_priv(struct recv_priv *precvpriv, _adapter *padapter)
 	precvframe = (union recv_frame*) precvpriv->precv_frame_buf;
 
 
-	for(i=0; i < NR_RECVFRAME ; i++)
+	for (i=0; i < NR_RECVFRAME ; i++)
 	{
 		INIT_LIST_HEAD(&(precvframe->u.list));
 
@@ -403,7 +403,7 @@ sint recvframe_chkmic(_adapter *adapter,  union recv_frame *precvframe){
 
 			bmic_err=false;
 
-			for(i=0;i<8;i++){
+			for (i=0;i<8;i++){
 				if (miccode[i] != *(pframemic+i)){
 					RT_TRACE(_module_rtl871x_recv_c_,_drv_err_,("recvframe_chkmic:miccode[%d](%02x) != *(pframemic+%d)(%02x) ",i,miccode[i],i,*(pframemic+i)));
 					bmic_err=true;
@@ -421,7 +421,7 @@ sint recvframe_chkmic(_adapter *adapter,  union recv_frame *precvframe){
 				{
 					uint i;
 					RT_TRACE(_module_rtl871x_recv_c_,_drv_err_,("\n ======demp packet (len=%d)======\n",precvframe->u.hdr.len));
-					for(i=0;i<precvframe->u.hdr.len;i=i+8){
+					for (i=0;i<precvframe->u.hdr.len;i=i+8){
 						RT_TRACE(_module_rtl871x_recv_c_,_drv_err_,("0x%02x:0x%02x:0x%02x:0x%02x:0x%02x:0x%02x:0x%02x:0x%02x",
 							*(precvframe->u.hdr.rx_data+i),*(precvframe->u.hdr.rx_data+i+1),
 							*(precvframe->u.hdr.rx_data+i+2),*(precvframe->u.hdr.rx_data+i+3),
@@ -1578,7 +1578,7 @@ static sint validate_80211w_mgmt(_adapter *adapter, union recv_frame *precv_fram
 			{
 				int pp;
 				printk("pattrib->pktlen = %d =>", pattrib->pkt_len);
-				for(pp=0;pp< pattrib->pkt_len; pp++)
+				for (pp=0;pp< pattrib->pkt_len; pp++)
 					printk(" %02x ", ptr[pp]);
 				printk("\n");
 			}*/
@@ -1595,7 +1595,7 @@ static sint validate_80211w_mgmt(_adapter *adapter, union recv_frame *precv_fram
 			{
 				int pp;
 				printk("after decryption pattrib->pktlen = %d @@=>", pattrib->pkt_len);
-				for(pp=0;pp< pattrib->pkt_len; pp++)
+				for (pp=0;pp< pattrib->pkt_len; pp++)
 					printk(" %02x ", ptr[pp]);
 				printk("\n");
 			}*/
@@ -1660,7 +1660,7 @@ static inline void dump_rx_packet(u8 *ptr)
 	int i;
 
 	DBG_871X("############################# \n");
-	for(i=0; i<64;i=i+8)
+	for (i=0; i<64;i=i+8)
 		DBG_871X("%02X:%02X:%02X:%02X:%02X:%02X:%02X:%02X:\n", *(ptr+i),
 		*(ptr+i+1), *(ptr+i+2) ,*(ptr+i+3) ,*(ptr+i+4),*(ptr+i+5), *(ptr+i+6), *(ptr+i+7));
 	DBG_871X("############################# \n");
@@ -1861,7 +1861,7 @@ sint wlanhdr_to_ethhdr ( union recv_frame *precvframe)
 				//DBG_871X("RC: len=0x%x, ctrl_type=0x%x\n", len, ctrl_type);
 				DBG_871X("RC: len=0x%x\n", len);
 
-				for(i=0;i<len;i++)
+				for (i=0;i<len;i++)
 					DBG_871X("0x%x\n", *(ptr+rmv_len+6+i));
 					//DBG_871X("0x%x\n", *(ptr+rmv_len+8+i));
 
@@ -2173,7 +2173,7 @@ static int amsdu_to_msdu(_adapter *padapter, union recv_frame *prframe)
 		}
 	}
 
-	for(i=0; i<nr_subframes; i++){
+	for (i=0; i<nr_subframes; i++){
 		sub_pkt = subframes[i];
 
 		/* Indicat the packets to upper layer */

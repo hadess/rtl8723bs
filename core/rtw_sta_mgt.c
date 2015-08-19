@@ -88,7 +88,7 @@ u32	_rtw_init_sta_priv(struct	sta_priv *pstapriv)
 	psta = (struct sta_info *)(pstapriv->pstainfo_buf);
 
 
-	for(i = 0; i < NUM_STA; i++)
+	for (i = 0; i < NUM_STA; i++)
 	{
 		_rtw_init_stainfo(psta);
 
@@ -174,7 +174,7 @@ u32	_rtw_free_sta_priv(struct	sta_priv *pstapriv)
 
 		/*	delete all reordering_ctrl_timer		*/
 		spin_lock_bh(&pstapriv->sta_hash_lock);
-		for(index = 0; index < NUM_STA; index++)
+		for (index = 0; index < NUM_STA; index++)
 		{
 			phead = &(pstapriv->sta_hash[index]);
 			plist = get_next(phead);
@@ -185,7 +185,7 @@ u32	_rtw_free_sta_priv(struct	sta_priv *pstapriv)
 				psta = LIST_CONTAINOR(plist, struct sta_info ,hash_list);
 				plist = get_next(plist);
 
-				for(i=0; i < 16 ; i++)
+				for (i=0; i < 16 ; i++)
 				{
 					preorder_ctrl = &psta->recvreorder_ctrl[i];
 					_cancel_timer_ex(&preorder_ctrl->reordering_ctrl_timer);
@@ -267,7 +267,7 @@ struct	sta_info *rtw_alloc_stainfo(struct	sta_priv *pstapriv, u8 *hwaddr)
 // In this case, this packet will be dropped by recv_decache function if we use the 0x00 as the default value for tid_rxseq variable.
 // So, we initialize the tid_rxseq variable as the 0xffff.
 
-		for( i = 0; i < 16; i++ )
+		for ( i = 0; i < 16; i++ )
 		{
                      memcpy( &psta->sta_recvpriv.rxcache.tid_rxseq[ i ], &wRxSeqInitialValue, 2 );
 		}
@@ -278,7 +278,7 @@ struct	sta_info *rtw_alloc_stainfo(struct	sta_priv *pstapriv, u8 *hwaddr)
 		init_addba_retry_timer(pstapriv->padapter, psta);
 
 		//for A-MPDU Rx reordering buffer control
-		for(i=0; i < 16 ; i++)
+		for (i=0; i < 16 ; i++)
 		{
 			preorder_ctrl = &psta->recvreorder_ctrl[i];
 
@@ -403,7 +403,7 @@ u32	rtw_free_stainfo(_adapter *padapter , struct sta_info *psta)
 	_cancel_timer_ex(&psta->addba_retry_timer);
 
 	//for A-MPDU Rx reordering buffer control, cancel reordering_ctrl_timer
-	for(i=0; i < 16 ; i++)
+	for (i=0; i < 16 ; i++)
 	{
 		_list	*phead, *plist;
 		union recv_frame *prframe;
@@ -501,7 +501,7 @@ void rtw_free_all_stainfo(_adapter *padapter)
 
 	spin_lock_bh(&pstapriv->sta_hash_lock);
 
-	for(index=0; index< NUM_STA; index++)
+	for (index=0; index< NUM_STA; index++)
 	{
 		phead = &(pstapriv->sta_hash[index]);
 		plist = get_next(phead);

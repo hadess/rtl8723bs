@@ -266,7 +266,7 @@ ODM_ParsingCFO(
 	{
 		//3 Update CFO report for path-A & path-B
 		// Only paht-A and path-B have CFO tail and short CFO
-		for(i = ODM_RF_PATH_A; i <= ODM_RF_PATH_B; i++)
+		for (i = ODM_RF_PATH_A; i <= ODM_RF_PATH_B; i++)
 		{
 			pCfoTrack->CFO_tail[i] = (int)pcfotail[i];
 		}

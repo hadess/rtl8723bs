@@ -126,7 +126,7 @@ _BlockWrite(
 				("_BlockWrite: [P3] buffSize_p3(%d) blockSize_p3(%d) blockCount_p3(%d)\n",
 				(buffSize-offset), blockSize_p3, blockCount_p3));
 
-		for(i = 0 ; i < blockCount_p3 ; i++){
+		for (i = 0 ; i < blockCount_p3 ; i++){
 			ret = rtw_write8(padapter, (FW_8723B_START_ADDRESS + offset + i), *(bufferPtr + offset + i));
 
 			if (ret == _FAIL) {
@@ -959,10 +959,10 @@ hal_ReadEFuse_WiFi(
 #ifdef CONFIG_DEBUG
 if (0)
 {
-	for(i=0; i<256; i++)
+	for (i=0; i<256; i++)
 		efuse_OneByteRead(padapter, i, &efuseTbl[i], false);
 	DBG_871X("Efuse Content:\n");
-	for(i=0; i<256; i++)
+	for (i=0; i<256; i++)
 	{
 		if (i % 16 == 0)
 			printk("\n");
@@ -1047,7 +1047,7 @@ if (0)
 if (1)
 {
 	DBG_871X("Efuse Realmap:\n");
-	for(i=0; i<_size_byte; i++)
+	for (i=0; i<_size_byte; i++)
 	{
 		if (i % 16 == 0)
 			printk("\n");
@@ -2691,15 +2691,15 @@ Hal_ReadPowerValueFromPROM_8723B(
 	if (AutoLoadFail)
 	{
 		DBG_871X("%s(): Use Default value!\n", __func__);
-		for(rfPath = 0 ; rfPath < MAX_RF_PATH ; rfPath++)
+		for (rfPath = 0 ; rfPath < MAX_RF_PATH ; rfPath++)
 		{
 			//2.4G default value
-			for(group = 0 ; group < MAX_CHNL_GROUP_24G; group++)
+			for (group = 0 ; group < MAX_CHNL_GROUP_24G; group++)
 			{
 				pwrInfo24G->IndexCCK_Base[rfPath][group] =	EEPROM_DEFAULT_24G_INDEX;
 				pwrInfo24G->IndexBW40_Base[rfPath][group] =	EEPROM_DEFAULT_24G_INDEX;
 			}
-			for(TxCount=0;TxCount<MAX_TX_COUNT;TxCount++)
+			for (TxCount=0;TxCount<MAX_TX_COUNT;TxCount++)
 			{
 				if (TxCount==0)
 				{
@@ -2721,10 +2721,10 @@ Hal_ReadPowerValueFromPROM_8723B(
 
 	pHalData->bTXPowerDataReadFromEEPORM = true;		//YJ,move,120316
 
-	for(rfPath = 0 ; rfPath < MAX_RF_PATH ; rfPath++)
+	for (rfPath = 0 ; rfPath < MAX_RF_PATH ; rfPath++)
 	{
 		//2 2.4G default value
-		for(group = 0 ; group < MAX_CHNL_GROUP_24G; group++)
+		for (group = 0 ; group < MAX_CHNL_GROUP_24G; group++)
 		{
 			pwrInfo24G->IndexCCK_Base[rfPath][group] =	PROMContent[eeAddr++];
 			if (pwrInfo24G->IndexCCK_Base[rfPath][group] == 0xFF)
@@ -2732,13 +2732,13 @@ Hal_ReadPowerValueFromPROM_8723B(
 				pwrInfo24G->IndexCCK_Base[rfPath][group] = EEPROM_DEFAULT_24G_INDEX;
 			}
 		}
-		for(group = 0 ; group < MAX_CHNL_GROUP_24G-1; group++)
+		for (group = 0 ; group < MAX_CHNL_GROUP_24G-1; group++)
 		{
 			pwrInfo24G->IndexBW40_Base[rfPath][group] =	PROMContent[eeAddr++];
 			if (pwrInfo24G->IndexBW40_Base[rfPath][group] == 0xFF)
 				pwrInfo24G->IndexBW40_Base[rfPath][group] =	EEPROM_DEFAULT_24G_INDEX;
 		}
-		for(TxCount=0;TxCount<MAX_TX_COUNT;TxCount++)
+		for (TxCount=0;TxCount<MAX_TX_COUNT;TxCount++)
 		{
 			if (TxCount==0)
 			{
@@ -2821,9 +2821,9 @@ Hal_EfuseParseTxPowerInfo_8723B(
 
 //	RT_TRACE(_module_hci_hal_init_c_, _drv_notice_, ("%s(): AutoLoadFail = %d\n", __func__, AutoLoadFail));
 	Hal_ReadPowerValueFromPROM_8723B(padapter, &pwrInfo24G, PROMContent, AutoLoadFail);
-	for(rfPath = 0 ; rfPath < MAX_RF_PATH ; rfPath++)
+	for (rfPath = 0 ; rfPath < MAX_RF_PATH ; rfPath++)
 	{
-		for(ch = 0 ; ch < CHANNEL_MAX_NUMBER; ch++)
+		for (ch = 0 ; ch < CHANNEL_MAX_NUMBER; ch++)
 		{
 			u8 group = 0;
 
@@ -2846,7 +2846,7 @@ Hal_EfuseParseTxPowerInfo_8723B(
 #endif
 		}
 
-		for(TxCount=0;TxCount<MAX_TX_COUNT;TxCount++)
+		for (TxCount=0;TxCount<MAX_TX_COUNT;TxCount++)
 		{
 			pHalData->CCK_24G_Diff[rfPath][TxCount]=pwrInfo24G.CCK_Diff[rfPath][TxCount];
 			pHalData->OFDM_24G_Diff[rfPath][TxCount]=pwrInfo24G.OFDM_Diff[rfPath][TxCount];

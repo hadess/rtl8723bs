@@ -49,7 +49,7 @@ void rtw_os_recv_resource_free(struct recv_priv *precvpriv)
 	union recv_frame *precvframe;
 	precvframe = (union recv_frame*) precvpriv->precv_frame_buf;
 
-	for(i=0; i < NR_RECVFRAME; i++)
+	for (i=0; i < NR_RECVFRAME; i++)
 	{
 		if (precvframe->u.hdr.pkt)
 		{
@@ -289,7 +289,7 @@ static void rtw_os_ksocket_send(_adapter *padapter, union recv_frame *precv_fram
 			//DBG_871X("eth, RC: len=0x%x, ctrl_type=0x%x\n", len, ctrl_type);
 			DBG_871X("eth, RC: len=0x%x\n", len);
 
-			for(i=0;i<len;i++)
+			for (i=0;i<len;i++)
 				DBG_871X("0x%x\n", *(skb->data+ETH_HLEN+4+i));
 				//DBG_871X("0x%x\n", *(skb->data+ETH_HLEN+6+i));
 

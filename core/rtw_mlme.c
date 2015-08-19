@@ -61,7 +61,7 @@ sint	_rtw_init_mlme_priv (_adapter* padapter)
 
 	pnetwork = (struct wlan_network *)pbuf;
 
-	for(i = 0; i < MAX_BSS_CNT; i++)
+	for (i = 0; i < MAX_BSS_CNT; i++)
 	{
 		INIT_LIST_HEAD(&(pnetwork->list));
 
@@ -1347,7 +1347,7 @@ static struct sta_info *rtw_joinbss_update_stainfo(_adapter *padapter, struct wl
 		//for A-MPDU Rx reordering buffer control for bmc_sta & sta_info
 		//if A-MPDU Rx is enabled, reseting  rx_ordering_ctrl wstart_b(indicate_seq) to default value=0xffff
 		//todo: check if AP can send A-MPDU packets
-		for(i=0; i < 16 ; i++)
+		for (i=0; i < 16 ; i++)
 		{
 			//preorder_ctrl = &precvpriv->recvreorder_ctrl[i];
 			preorder_ctrl = &psta->recvreorder_ctrl[i];
@@ -1365,7 +1365,7 @@ static struct sta_info *rtw_joinbss_update_stainfo(_adapter *padapter, struct wl
 		bmc_sta = rtw_get_bcmc_stainfo(padapter);
 		if (bmc_sta)
 		{
-			for(i=0; i < 16 ; i++)
+			for (i=0; i < 16 ; i++)
 			{
 				//preorder_ctrl = &precvpriv->recvreorder_ctrl[i];
 				preorder_ctrl = &bmc_sta->recvreorder_ctrl[i];
@@ -2554,7 +2554,7 @@ int rtw_restruct_wmm_ie(_adapter *adapter, u8 *in_ie, u8 *out_ie, uint in_len, u
 
 			//Append WMM IE to the last index of out_ie
 			/*
-			for(j=i; j< i+(in_ie[i+1]+2); j++)
+			for (j=i; j< i+(in_ie[i+1]+2); j++)
 			{
 				out_ie[ielength] = in_ie[j];
 				ielength++;
@@ -2689,7 +2689,7 @@ sint rtw_restruct_sec_ie(_adapter *adapter,u8 *in_ie, u8 *out_ie, uint in_len)
 		{
 			int jj;
 			printk("supplicant_ie_length=%d &&&&&&&&&&&&&&&&&&&\n", psecuritypriv->supplicant_ie[1]+2);
-			for(jj=0; jj < psecuritypriv->supplicant_ie[1]+2; jj++)
+			for (jj=0; jj < psecuritypriv->supplicant_ie[1]+2; jj++)
 				printk(" %02x ", psecuritypriv->supplicant_ie[jj]);
 			printk("\n");
 		}*/

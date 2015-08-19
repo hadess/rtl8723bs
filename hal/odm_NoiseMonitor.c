@@ -98,7 +98,7 @@ static s16 odm_InbandNoise_Monitor_NSeries(PDM_ODM_T	pDM_Odm,u8 bPauseDIG,u8 IGI
 		ODM_RT_TRACE(pDM_Odm,ODM_COMP_COMMON, ODM_DBG_LOUD, ("value_a = 0x%x(%d), value_b = 0x%x(%d)\n",
 			noise_data.value[ODM_RF_PATH_A], noise_data.value[ODM_RF_PATH_A], noise_data.value[ODM_RF_PATH_B], noise_data.value[ODM_RF_PATH_B]));
 
-		 for(rf_path = ODM_RF_PATH_A; rf_path < max_rf_path; rf_path++)
+		 for (rf_path = ODM_RF_PATH_A; rf_path < max_rf_path; rf_path++)
 		 {
 			noise_data.sval[rf_path] = (s8)noise_data.value[rf_path];
 			noise_data.sval[rf_path] /= 2;
@@ -110,7 +110,7 @@ static s16 odm_InbandNoise_Monitor_NSeries(PDM_ODM_T	pDM_Odm,u8 bPauseDIG,u8 IGI
 		//mdelay(10);
 		//msleep(10);
 
-		for(rf_path = ODM_RF_PATH_A; rf_path < max_rf_path; rf_path++)
+		for (rf_path = ODM_RF_PATH_A; rf_path < max_rf_path; rf_path++)
 		{
 			if ( (noise_data.valid_cnt[rf_path] < ValidCnt) && (noise_data.sval[rf_path] < Valid_Max && noise_data.sval[rf_path] >= Valid_Min))
 			{
@@ -131,7 +131,7 @@ static s16 odm_InbandNoise_Monitor_NSeries(PDM_ODM_T	pDM_Odm,u8 bPauseDIG,u8 IGI
 		//printk("####### valid_done:%d #############\n",valid_done);
 		if ((valid_done==max_rf_path) || (jiffies_to_msecs(jiffies - start) > max_time))
 		{
-			for(rf_path = ODM_RF_PATH_A; rf_path < max_rf_path; rf_path++)
+			for (rf_path = ODM_RF_PATH_A; rf_path < max_rf_path; rf_path++)
 			{
 				//printk("%s PATH_%d - sum = %d, valid_cnt = %d \n",__FUNCTION__,rf_path,noise_data.sum[rf_path], noise_data.valid_cnt[rf_path]);
 				if (noise_data.valid_cnt[rf_path])

@@ -1369,7 +1369,7 @@ _PHY_SaveADDARegisters8723B(
 		return;
 
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("Save ADDA parameters.\n"));
-	for( i = 0 ; i < RegisterNum ; i++){
+	for ( i = 0 ; i < RegisterNum ; i++){
 		ADDABackup[i] = PHY_QueryBBReg(pDM_Odm->Adapter, ADDAReg[i], bMaskDWord);
 	}
 }
@@ -1387,7 +1387,7 @@ _PHY_SaveMACRegisters8723B(
 	PDM_ODM_T		pDM_Odm = &pHalData->odmpriv;
 
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("Save MAC parameters.\n"));
-	for( i = 0 ; i < (IQK_MAC_REG_NUM - 1); i++){
+	for ( i = 0 ; i < (IQK_MAC_REG_NUM - 1); i++){
 		MACBackup[i] = rtw_read8(pDM_Odm->Adapter, MACReg[i]);
 	}
 	MACBackup[i] = rtw_read32(pDM_Odm->Adapter, MACReg[i]);
@@ -1408,7 +1408,7 @@ _PHY_ReloadADDARegisters8723B(
 	PDM_ODM_T		pDM_Odm = &pHalData->odmpriv;
 
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("Reload ADDA power saving parameters !\n"));
-	for(i = 0 ; i < RegiesterNum; i++)
+	for (i = 0 ; i < RegiesterNum; i++)
 	{
 		PHY_SetBBReg(pDM_Odm->Adapter, ADDAReg[i], bMaskDWord, ADDABackup[i]);
 	}
@@ -1423,7 +1423,7 @@ _PHY_ReloadMACRegisters8723B(
 {
 	u4Byte	i;
 
-	for(i = 0 ; i < (IQK_MAC_REG_NUM - 1); i++){
+	for (i = 0 ; i < (IQK_MAC_REG_NUM - 1); i++){
 		rtw_write8(pAdapter, MACReg[i], (u1Byte)MACBackup[i]);
 	}
 	rtw_write32(pAdapter, MACReg[i], MACBackup[i]);
@@ -1454,7 +1454,7 @@ _PHY_PathADDAOn8723B(
 		PHY_SetBBReg(pDM_Odm->Adapter,ADDAReg[0], bMaskDWord, pathOn);
 	}
 
-	for( i = 1 ; i < IQK_ADDA_REG_NUM ; i++){
+	for ( i = 1 ; i < IQK_ADDA_REG_NUM ; i++){
 		PHY_SetBBReg(pDM_Odm->Adapter,ADDAReg[i], bMaskDWord, pathOn);
 	}
 
@@ -1475,7 +1475,7 @@ _PHY_MACSettingCalibration8723B(
 
 	rtw_write8(pDM_Odm->Adapter, MACReg[i], 0x3F);
 
-	for(i = 1 ; i < (IQK_MAC_REG_NUM - 1); i++){
+	for (i = 1 ; i < (IQK_MAC_REG_NUM - 1); i++){
 		rtw_write8(pDM_Odm->Adapter, MACReg[i], (u1Byte)(MACBackup[i]&(~BIT3)));
 	}
 	rtw_write8(pDM_Odm->Adapter, MACReg[i], (u1Byte)(MACBackup[i]&(~BIT5)));
@@ -1503,7 +1503,7 @@ phy_SimularityCompare_8723B(
 
 	SimularityBitMap = 0;
 
-	for( i = 0; i < bound; i++ )
+	for ( i = 0; i < bound; i++ )
 	{
 
 		if ((i==1) || (i==3) || (i==5) || (i==7))
@@ -1544,11 +1544,11 @@ phy_SimularityCompare_8723B(
 
 	if ( SimularityBitMap == 0)
 	{
-		for( i = 0; i < (bound/4); i++ )
+		for ( i = 0; i < (bound/4); i++ )
 		{
 			if (final_candidate[i] != 0xFF)
 			{
-				for( j = i*4; j < (i+1)*4-2; j++)
+				for ( j = i*4; j < (i+1)*4-2; j++)
 					result[3][j] = result[final_candidate[i]][j];
 				bResult = false;
 			}
@@ -1560,25 +1560,25 @@ phy_SimularityCompare_8723B(
 
 		if (!(SimularityBitMap & 0x03))			//path A TX OK
 		{
-			for(i = 0; i < 2; i++)
+			for (i = 0; i < 2; i++)
 				result[3][i] = result[c1][i];
 		}
 
 		if (!(SimularityBitMap & 0x0c))			//path A RX OK
 		{
-			for(i = 2; i < 4; i++)
+			for (i = 2; i < 4; i++)
 				result[3][i] = result[c1][i];
 		}
 
 		if (!(SimularityBitMap & 0x30)) //path B TX OK
 		{
-			for(i = 4; i < 6; i++)
+			for (i = 4; i < 6; i++)
 				result[3][i] = result[c1][i];
 		}
 
 		if (!(SimularityBitMap & 0xc0)) //path B RX OK
 		{
-			for(i = 6; i < 8; i++)
+			for (i = 6; i < 8; i++)
 				result[3][i] = result[c1][i];
 		}
 		return false;
@@ -1688,7 +1688,7 @@ phy_IQCalibrate_8723B(
 
 
 //path A TX IQK
-	for(i = 0 ; i < retryCount ; i++){
+	for (i = 0 ; i < retryCount ; i++){
 		PathAOK = phy_PathA_IQK_8723B(pAdapter, is2T, RF_Path);
 //		if (PathAOK == 0x03){
 		if (PathAOK == 0x01){
@@ -1704,7 +1704,7 @@ phy_IQCalibrate_8723B(
 	}
 
 //path A RXIQK
-	for(i = 0 ; i < retryCount ; i++){
+	for (i = 0 ; i < retryCount ; i++){
 		PathAOK = phy_PathA_RxIQK8723B(pAdapter, is2T, RF_Path);
 		if (PathAOK == 0x03){
 			ODM_RT_TRACE(pDM_Odm,ODM_COMP_CALIBRATION, ODM_DBG_LOUD,  ("Path A Rx IQK Success!!\n"));
@@ -1728,7 +1728,7 @@ phy_IQCalibrate_8723B(
 	if (is2T){
 
 		//path B TX IQK
-		for(i = 0 ; i < retryCount ; i++){
+		for (i = 0 ; i < retryCount ; i++){
 			PathBOK = phy_PathB_IQK_8723B(pAdapter);
 			if (PathBOK == 0x01){
 				// Path B Tx IQK Success
@@ -1743,7 +1743,7 @@ phy_IQCalibrate_8723B(
 		}
 
 //path B RX IQK
-		for(i = 0 ; i < retryCount ; i++){
+		for (i = 0 ; i < retryCount ; i++){
 			PathBOK = phy_PathB_RxIQK8723B(pAdapter, is2T);
 			if (PathBOK == 0x03){
 				ODM_RT_TRACE(pDM_Odm,ODM_COMP_CALIBRATION, ODM_DBG_LOUD,  ("Path B Rx IQK Success!!\n"));
@@ -2006,7 +2006,7 @@ PHY_IQCalibrate_8723B(
 //	PHY_SetBBReg(pDM_Odm->Adapter, 0x764, BIT11, 0x1);
 
 
-	for(i = 0; i < 8; i++)
+	for (i = 0; i < 8; i++)
 	{
 		result[0][i] = 0;
 		result[1][i] = 0;
@@ -2054,7 +2054,7 @@ PHY_IQCalibrate_8723B(
 			}
 			else
 			{
-				for(i = 0; i < 8; i++)
+				for (i = 0; i < 8; i++)
 					RegTmp += result[3][i];
 
 				if (RegTmp != 0)
@@ -2120,7 +2120,7 @@ PHY_IQCalibrate_8723B(
 //by sherry 20120321
 	if (final_candidate < 4)
 	{
-		for(i = 0; i < IQK_Matrix_REG_NUM; i++)
+		for (i = 0; i < IQK_Matrix_REG_NUM; i++)
 			pDM_Odm->RFCalibrateInfo.IQKMatrixRegSetting[Indexforchannel].Value[0][i] = result[final_candidate][i];
 		pDM_Odm->RFCalibrateInfo.IQKMatrixRegSetting[Indexforchannel].bIQKDone = true;
 	}

@@ -223,7 +223,7 @@ static s32 xmit_xmitframes(PADAPTER padapter, struct xmit_priv *pxmitpriv)
 	pxmitbuf = NULL;
 
 	if (padapter->registrypriv.wifi_spec == 1) {
-		for(idx=0; idx<4; idx++)
+		for (idx=0; idx<4; idx++)
 			inx[idx] = pxmitpriv->wmm_para_seq[idx];
 	} else {
 		inx[0] = 0; inx[1] = 1; inx[2] = 2; inx[3] = 3;

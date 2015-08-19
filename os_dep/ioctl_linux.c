@@ -735,7 +735,7 @@ static int wpa_set_encryption(struct net_device *dev, struct ieee_param *param, 
 						//save the IGTK key, length 16 bytes
 						memcpy(padapter->securitypriv.dot11wBIPKey[param->u.crypt.idx].skey,  param->u.crypt.key,(param->u.crypt.key_len>16 ?16:param->u.crypt.key_len));
 						/*printk("IGTK key below:\n");
-						for(no=0;no<16;no++)
+						for (no=0;no<16;no++)
 							printk(" %02x ", padapter->securitypriv.dot11wBIPKey[param->u.crypt.idx].skey[no]);
 						printk("\n");*/
 						padapter->securitypriv.dot11wBIPKeyid = param->u.crypt.idx;
@@ -805,7 +805,7 @@ static int rtw_set_wpa_ie(_adapter *padapter, char *pie, unsigned short ielen)
 		{
 			int i;
 			DBG_871X("\n wpa_ie(length:%d):\n", ielen);
-			for(i=0;i<ielen;i=i+8)
+			for (i=0;i<ielen;i=i+8)
 				DBG_871X("0x%.2x 0x%.2x 0x%.2x 0x%.2x 0x%.2x 0x%.2x 0x%.2x 0x%.2x \n",buf[i],buf[i+1],buf[i+2],buf[i+3],buf[i+4],buf[i+5],buf[i+6],buf[i+7]);
 		}
 
@@ -1173,7 +1173,7 @@ static int rtw_wx_set_pmkid(struct net_device *dev,
 		blInserted = false;
 
 		//overwrite PMKID
-		for(j=0 ; j<NUM_PMKID_CACHE; j++)
+		for (j=0 ; j<NUM_PMKID_CACHE; j++)
 		{
 			if ( !memcmp( psecuritypriv->PMKIDList[j].Bssid, strIssueBssid, ETH_ALEN))
 			{ // BSSID is matched, the same AP => rewrite with new PMKID.
@@ -1209,7 +1209,7 @@ static int rtw_wx_set_pmkid(struct net_device *dev,
         {
                 DBG_871X( "[rtw_wx_set_pmkid] IW_PMKSA_REMOVE!\n" );
                 intReturn = true;
-		for(j=0 ; j<NUM_PMKID_CACHE; j++)
+		for (j=0 ; j<NUM_PMKID_CACHE; j++)
 		{
 			if ( !memcmp( psecuritypriv->PMKIDList[j].Bssid, strIssueBssid, ETH_ALEN))
 			{ // BSSID is matched, the same AP => Remove this PMKID information and reset it.
@@ -1982,7 +1982,7 @@ static int rtw_wx_set_rate(struct net_device *dev,
 
 set_rate:
 
-	for(i=0; i<NumRates; i++)
+	for (i=0; i<NumRates; i++)
 	{
 		if (ratevalue==mpdatarate[i])
 		{
@@ -3223,7 +3223,7 @@ static int rtw_dbg_port(struct net_device *dev,
 						DBG_871X("ampdu_enable = %d\n", psta->htpriv.ampdu_enable);
 						DBG_871X("agg_enable_bitmap=%x, candidate_tid_bitmap=%x\n", psta->htpriv.agg_enable_bitmap, psta->htpriv.candidate_tid_bitmap);
 
-						for(i=0;i<16;i++)
+						for (i=0;i<16;i++)
 						{
 							preorder_ctrl = &psta->recvreorder_ctrl[i];
 							if (preorder_ctrl->enable)
@@ -3267,7 +3267,7 @@ static int rtw_dbg_port(struct net_device *dev,
 
 						spin_lock_bh(&pstapriv->sta_hash_lock);
 
-						for(i=0; i< NUM_STA; i++)
+						for (i=0; i< NUM_STA; i++)
 						{
 							phead = &(pstapriv->sta_hash[i]);
 							plist = get_next(phead);
@@ -3297,7 +3297,7 @@ static int rtw_dbg_port(struct net_device *dev,
 
 
 
-									for(j=0;j<16;j++)
+									for (j=0;j<16;j++)
 									{
 										preorder_ctrl = &psta->recvreorder_ctrl[j];
 										if (preorder_ctrl->enable)
@@ -3495,7 +3495,7 @@ static int rtw_dbg_port(struct net_device *dev,
 							if (max_rx_rate < 0xc) // max_rx_rate < MSC0 -> B or G -> disable HT
 							{
 								pregistrypriv->ht_enable = 0;
-								for(i=0; i<NumRates; i++)
+								for (i=0; i<NumRates; i++)
 								{
 									if (pmlmeext->datarate[i] > max_rx_rate)
 										pmlmeext->datarate[i] = 0xff;
@@ -3506,7 +3506,7 @@ static int rtw_dbg_port(struct net_device *dev,
 							{
 								u32 mcs_bitmap=0x0;
 
-								for(i=0; i<((max_rx_rate+1)-0xc); i++)
+								for (i=0; i<((max_rx_rate+1)-0xc); i++)
 									mcs_bitmap |= BIT(i);
 
 								set_mcs_rate_by_mask(pmlmeext->default_supported_mcs_set, mcs_bitmap);

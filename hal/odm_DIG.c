@@ -192,7 +192,7 @@ odm_SearchPwdBLowerBound(
 	mdelay(5);
 
 	while(bAdjust) {
-		for(cnt=0; cnt<20; cnt ++) {
+		for (cnt=0; cnt<20; cnt ++) {
 			value32 = PHY_QueryBBReg(pDM_Odm->Adapter,ODM_REG_RPT_11N, bMaskDWord);
 
 			if (value32 & BIT30)

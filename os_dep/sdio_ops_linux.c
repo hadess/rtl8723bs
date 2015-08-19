@@ -275,7 +275,7 @@ u32 sd_read32(struct intf_hdl *pintfhdl, u32 addr, s32 *err)
 		DBG_871X(KERN_ERR "%s: (%d) addr=0x%05x, val=0x%x\n", __func__, *err, addr, v);
 
 		*err = 0;
-		for(i=0; i<SD_IO_TRY_CNT; i++)
+		for (i=0; i<SD_IO_TRY_CNT; i++)
 		{
 			if (claim_needed) sdio_claim_host(func);
 			v = sdio_readl(func, addr, err);
@@ -368,7 +368,7 @@ void sd_write32(struct intf_hdl *pintfhdl, u32 addr, u32 v, s32 *err)
 		DBG_871X(KERN_ERR "%s: (%d) addr=0x%05x val=0x%08x\n", __func__, *err, addr, v);
 
 		*err = 0;
-		for(i=0; i<SD_IO_TRY_CNT; i++)
+		for (i=0; i<SD_IO_TRY_CNT; i++)
 		{
 			if (claim_needed) sdio_claim_host(func);
 			sdio_writel(func, v, addr, err);

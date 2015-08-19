@@ -74,7 +74,7 @@ void sd_f0_reg_dump(void *sel, _adapter *adapter)
 {
 	int i;
 
-	for(i=0x0;i<=0xff;i++)
+	for (i=0x0;i<=0xff;i++)
 	{
 		if (i%16==0)
 			DBG_871X_SEL_NL(sel, "0x%02x ",i);
@@ -94,7 +94,7 @@ void mac_reg_dump(void *sel, _adapter *adapter)
 
 	DBG_871X_SEL_NL(sel, "======= MAC REG =======\n");
 
-	for(i=0x0;i<0x800;i+=4)
+	for (i=0x0;i<0x800;i+=4)
 	{
 		if (j%4==1)
 			DBG_871X_SEL_NL(sel, "0x%03x",i);
@@ -109,7 +109,7 @@ void bb_reg_dump(void *sel, _adapter *adapter)
 	int i, j = 1;
 
 	DBG_871X_SEL_NL(sel, "======= BB REG =======\n");
-	for(i=0x800;i<0x1000;i+=4)
+	for (i=0x800;i<0x1000;i+=4)
 	{
 		if (j%4==1)
 			DBG_871X_SEL_NL(sel, "0x%03x",i);
@@ -534,7 +534,7 @@ int proc_get_ap_info(struct seq_file *m, void *v)
 		DBG_871X_SEL_NL(m, "agg_enable_bitmap=%x, candidate_tid_bitmap=%x\n", psta->htpriv.agg_enable_bitmap, psta->htpriv.candidate_tid_bitmap);
 		DBG_871X_SEL_NL(m, "ldpc_cap=0x%x, stbc_cap=0x%x, beamform_cap=0x%x\n", psta->htpriv.ldpc_cap, psta->htpriv.stbc_cap, psta->htpriv.beamform_cap);
 
-		for(i=0;i<16;i++)
+		for (i=0;i<16;i++)
 		{
 			preorder_ctrl = &psta->recvreorder_ctrl[i];
 			if (preorder_ctrl->enable)
@@ -579,7 +579,7 @@ int proc_get_trx_info(struct seq_file *m, void *v)
 	DBG_871X_SEL_NL(m, "free_recvframe_cnt=%d\n"
 		, precvpriv->free_recvframe_cnt);
 
-	for(i = 0; i < 4; i++)
+	for (i = 0; i < 4; i++)
 	{
 		phwxmit = pxmitpriv->hwxmits + i;
 		DBG_871X_SEL_NL(m, "%d, hwq.accnt=%d\n", i, phwxmit->accnt);
@@ -1337,7 +1337,7 @@ int proc_get_all_sta_info(struct seq_file *m, void *v)
 
 	spin_lock_bh(&pstapriv->sta_hash_lock);
 
-	for(i=0; i< NUM_STA; i++)
+	for (i=0; i< NUM_STA; i++)
 	{
 		phead = &(pstapriv->sta_hash[i]);
 		plist = get_next(phead);
@@ -1372,7 +1372,7 @@ int proc_get_all_sta_info(struct seq_file *m, void *v)
 				DBG_871X_SEL_NL(m, "qos_info=0x%x\n", psta->qos_info);
 				DBG_871X_SEL_NL(m, "dot118021XPrivacy=0x%x\n", psta->dot118021XPrivacy);
 
-				for(j=0;j<16;j++)
+				for (j=0;j<16;j++)
 				{
 					preorder_ctrl = &psta->recvreorder_ctrl[j];
 					if (preorder_ctrl->enable)

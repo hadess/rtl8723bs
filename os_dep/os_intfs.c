@@ -614,7 +614,7 @@ void rtw_unregister_netdevs(struct dvobj_priv *dvobj)
 	int i;
 	_adapter *padapter = NULL;
 
-	for(i=0;i<dvobj->iface_nums;i++)
+	for (i=0;i<dvobj->iface_nums;i++)
 	{
 		struct net_device *pnetdev = NULL;
 
@@ -1033,7 +1033,7 @@ int rtw_drv_register_netdev(_adapter *if1)
 
 	if (dvobj->iface_nums < IFACE_ID_MAX)
 	{
-		for(i=0; i<dvobj->iface_nums; i++)
+		for (i=0; i<dvobj->iface_nums; i++)
 		{
 			_adapter *padapter = dvobj->padapters[i];
 

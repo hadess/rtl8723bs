@@ -1052,7 +1052,7 @@ odm_FindMinimumRSSI(
 	u4Byte	i;
 	u1Byte	RSSI_Min = 0xFF;
 
-	for(i=0; i<ODM_ASSOCIATE_ENTRY_NUM; i++)
+	for (i=0; i<ODM_ASSOCIATE_ENTRY_NUM; i++)
 	{
 //		if (pDM_Odm->pODM_StaInfo[i] != NULL)
 		if (IS_STA_VALID(pDM_Odm->pODM_StaInfo[i]) )
@@ -1076,7 +1076,7 @@ odm_IsLinked(
 	u4Byte i;
 	bool Linked = false;
 
-	for(i=0; i<ODM_ASSOCIATE_ENTRY_NUM; i++)
+	for (i=0; i<ODM_ASSOCIATE_ENTRY_NUM; i++)
 	{
 			if (IS_STA_VALID(pDM_Odm->pODM_StaInfo[i]) )
 			{
@@ -1335,7 +1335,7 @@ odm_RefreshRateAdaptiveMaskCE(
 
 	//printk("==> %s \n",__FUNCTION__);
 
-	for(i=0; i<ODM_ASSOCIATE_ENTRY_NUM; i++){
+	for (i=0; i<ODM_ASSOCIATE_ENTRY_NUM; i++){
 		PSTA_INFO_T pstat = pDM_Odm->pODM_StaInfo[i];
 		if (IS_STA_VALID(pstat) ) {
 			if (IS_MCAST( pstat->hwaddr))  //if (psta->mac_id ==1)
@@ -1499,7 +1499,7 @@ odm_RSSIMonitorCheckCE(
 	{
 		struct sta_info *psta;
 
-		for(i=0; i<ODM_ASSOCIATE_ENTRY_NUM; i++) {
+		for (i=0; i<ODM_ASSOCIATE_ENTRY_NUM; i++) {
 			if (IS_STA_VALID(psta = pDM_Odm->pODM_StaInfo[i]))
 			{
 					if (IS_MCAST( psta->hwaddr))  //if (psta->mac_id ==1)
@@ -1522,7 +1522,7 @@ odm_RSSIMonitorCheckCE(
 
 		//printk("%s==> sta_cnt(%d)\n",__FUNCTION__,sta_cnt);
 
-		for(i=0; i< sta_cnt; i++)
+		for (i=0; i< sta_cnt; i++)
 		{
 			if (PWDB_rssi[i] != (0)){
 				if (pHalData->fw_ractrl == true)// Report every sta's RSSI to FW

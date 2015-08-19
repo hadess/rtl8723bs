@@ -3590,7 +3590,7 @@ EXhalbtc8723b2ant_DisplayCoexInfo(
 		(btInfoExt&BIT0)? "Basic rate":"EDR rate");
 	CL_PRINTF(cliBuf);
 
-	for(i=0; i<BT_INFO_SRC_8723B_2ANT_MAX; i++)
+	for (i=0; i<BT_INFO_SRC_8723B_2ANT_MAX; i++)
 	{
 		if (pCoexSta->btInfoC2hCnt[i])
 		{
@@ -3876,7 +3876,7 @@ EXhalbtc8723b2ant_BtInfoNotify(
 	pCoexSta->btInfoC2hCnt[rspSource]++;
 
 	BTC_PRINT(BTC_MSG_INTERFACE, INTF_NOTIFY, ("[BTCoex], Bt info[%d], length=%d, hex data=[", rspSource, length));
-	for(i=0; i<length; i++)
+	for (i=0; i<length; i++)
 	{
 		pCoexSta->btInfoC2h[rspSource][i] = tmpBuf[i];
 		if (i == 1)

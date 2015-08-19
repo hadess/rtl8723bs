@@ -67,7 +67,7 @@ int cckrates_included(unsigned char *rate, int ratelen)
 {
 	int	i;
 
-	for(i = 0; i < ratelen; i++)
+	for (i = 0; i < ratelen; i++)
 	{
 		if  (  (((rate[i]) & 0x7f) == 2)	|| (((rate[i]) & 0x7f) == 4) ||
 			   (((rate[i]) & 0x7f) == 11)  || (((rate[i]) & 0x7f) == 22) )
@@ -82,7 +82,7 @@ int cckratesonly_included(unsigned char *rate, int ratelen)
 {
 	int	i;
 
-	for(i = 0; i < ratelen; i++)
+	for (i = 0; i < ratelen; i++)
 	{
 		if  ( (((rate[i]) & 0x7f) != 2) && (((rate[i]) & 0x7f) != 4) &&
 			   (((rate[i]) & 0x7f) != 11)  && (((rate[i]) & 0x7f) != 22) )
@@ -222,7 +222,7 @@ int is_basicrate(_adapter *padapter, unsigned char rate)
 	unsigned char val;
 	struct mlme_ext_priv *pmlmeext = &padapter->mlmeextpriv;
 
-	for(i = 0; i < NumRates; i++)
+	for (i = 0; i < NumRates; i++)
 	{
 		val = pmlmeext->basicrate[i];
 
@@ -305,7 +305,7 @@ void UpdateBrateTbl(
 	u8	rate;
 
 	// 1M, 2M, 5.5M, 11M, 6M, 12M, 24M are mandatory.
-	for(i=0;i<NDIS_802_11_LENGTH_RATES_EX;i++)
+	for (i=0;i<NDIS_802_11_LENGTH_RATES_EX;i++)
 	{
 		rate = mBratesOS[i] & 0x7f;
 		switch(rate)
@@ -329,7 +329,7 @@ void UpdateBrateTblForSoftAP(u8 *bssrateset, u32 bssratelen)
 	u8	i;
 	u8	rate;
 
-	for(i=0;i<bssratelen;i++)
+	for (i=0;i<bssratelen;i++)
 	{
 		rate = bssrateset[i] & 0x7f;
 		switch(rate)
@@ -1069,9 +1069,9 @@ void WMMOnAssocRsp(_adapter *padapter)
 			u32	j, tmp, change_inx=false;
 
 			//entry indx: 0->vo, 1->vi, 2->be, 3->bk.
-			for(i=0; i<4; i++)
+			for (i=0; i<4; i++)
 			{
-				for(j=i+1; j<4; j++)
+				for (j=i+1; j<4; j++)
 				{
 					//compare CW and AIFS
 					if ((edca[j] & 0xFFFF) < (edca[i] & 0xFFFF))
@@ -1101,7 +1101,7 @@ void WMMOnAssocRsp(_adapter *padapter)
 			}
 		}
 
-		for(i=0; i<4; i++) {
+		for (i=0; i<4; i++) {
 			pxmitpriv->wmm_para_seq[i] = inx[i];
 			DBG_871X("wmm_para_seq(%d): %d\n", i, pxmitpriv->wmm_para_seq[i]);
 		}
@@ -1799,7 +1799,7 @@ unsigned char get_highest_rate_idx(u32 mask)
 	int i;
 	unsigned char rate_idx=0;
 
-	for(i=31; i>=0; i--)
+	for (i=31; i>=0; i--)
 	{
 		if (mask & BIT(i))
 		{
@@ -2227,7 +2227,7 @@ void adaptive_early_32k(struct mlme_ext_priv *pmlmeext, u8 *pframe, uint len)
 	DBG_871X("%s(): (a)bcn_cnt = %d\n", __func__, pmlmeext->bcn_cnt);
 
 
-	for(i=0; i<9; i++)
+	for (i=0; i<9; i++)
 	{
 		DBG_871X("%s():bcn_delay_cnt[%d]=%d,  bcn_delay_ratio[%d]=%d\n", __func__, i,
 			pmlmeext->bcn_delay_cnt[i] , i, pmlmeext->bcn_delay_ratio[i]);
@@ -2247,7 +2247,7 @@ void adaptive_early_32k(struct mlme_ext_priv *pmlmeext, u8 *pframe, uint len)
 
 		DBG_871X("%s(): bcn_cnt = %d\n", __func__, pmlmeext->bcn_cnt);
 
-		for(i=0; i<9; i++)
+		for (i=0; i<9; i++)
 		{
 			pmlmeext->bcn_delay_ratio[i] = (pmlmeext->bcn_delay_cnt[i] * 100) /pmlmeext->bcn_cnt;
 
@@ -2306,7 +2306,7 @@ void rtw_alloc_macid(_adapter *padapter, struct sta_info *psta)
 	}
 
 	spin_lock_bh(&pdvobj->lock);
-	for(i=0; i<NUM_STA; i++)
+	for (i=0; i<NUM_STA; i++)
 	{
 		if (pdvobj->macid[i] == false)
 		{
@@ -2364,7 +2364,7 @@ u8 rtw_search_max_mac_id(_adapter *padapter)
 	struct dvobj_priv *pdvobj = adapter_to_dvobj(padapter);
 	int i;
 	spin_lock_bh(&pdvobj->lock);
-	for(i=(NUM_STA-1); i>=0 ; i--)
+	for (i=(NUM_STA-1); i>=0 ; i--)
 	{
 		if (pdvobj->macid[i] == true)
 		{
