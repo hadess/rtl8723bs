@@ -29,7 +29,7 @@ odm_ConfigRFReg_8723B(
 	IN	u4Byte				    RegAddr
 	)
 {
-    if(Addr == 0xfe || Addr == 0xffe)
+    if (Addr == 0xfe || Addr == 0xffe)
 	{
 		msleep(50);
 	}
@@ -40,7 +40,7 @@ odm_ConfigRFReg_8723B(
 		udelay(1);
 
 		//For disable/enable test in high temperature, the B6 value will fail to fill. Suggestion by BB Stanley, 2013.06.25.
-		if(Addr == 0xb6)
+		if (Addr == 0xb6)
 		{
 			u4Byte getvalue=0;
 			u1Byte	count =0;
@@ -55,12 +55,12 @@ odm_ConfigRFReg_8723B(
 				udelay(1);
 				getvalue = PHY_QueryRFReg(pDM_Odm->Adapter, RF_PATH, Addr, bMaskDWord);
 				ODM_RT_TRACE(pDM_Odm,ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ConfigRFWithHeaderFile: [B6] getvalue 0x%x, Data 0x%x, count %d\n", getvalue, Data,count));
-				if(count>5)
+				if (count>5)
 					break;
 			}
 		}
 
-		if(Addr == 0xb2)
+		if (Addr == 0xb2)
 		{
 			u4Byte getvalue=0;
 			u1Byte	count =0;
@@ -78,7 +78,7 @@ odm_ConfigRFReg_8723B(
 				udelay(1);
 				getvalue = PHY_QueryRFReg(pDM_Odm->Adapter, RF_PATH, Addr, bMaskDWord);
 				ODM_RT_TRACE(pDM_Odm,ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ConfigRFWithHeaderFile: [B2] getvalue 0x%x, Data 0x%x, count %d\n", getvalue, Data,count));
-				if(count>5)
+				if (count>5)
 					break;
 			}
 		}

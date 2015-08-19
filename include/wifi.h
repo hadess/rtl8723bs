@@ -454,7 +454,7 @@ __inline static unsigned char * get_hdr_bssid(unsigned char *pframe)
 
 __inline static int IsFrameTypeCtrl(unsigned char *pframe)
 {
-	if(WIFI_CTRL_TYPE == GetFrameType(pframe))
+	if (WIFI_CTRL_TYPE == GetFrameType(pframe))
 		return true;
 	else
 		return false;

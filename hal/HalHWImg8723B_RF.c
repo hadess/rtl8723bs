@@ -59,9 +59,9 @@ CheckPositive(
 	//============== Value Defined Check ===============//
 	//QFN Type [15:12] and Cut Version [27:24] need to do value check
 
-	if(((cond1 & 0x0000F000) != 0) &&((cond1 & 0x0000F000) != (driver1 & 0x0000F000)))
+	if (((cond1 & 0x0000F000) != 0) &&((cond1 & 0x0000F000) != (driver1 & 0x0000F000)))
 		return false;
-	if(((cond1 & 0x0F000000) != 0) &&((cond1 & 0x0F000000) != (driver1 & 0x0F000000)))
+	if (((cond1 & 0x0F000000) != 0) &&((cond1 & 0x0F000000) != (driver1 & 0x0F000000)))
 		return false;
 
 	//=============== Bit Defined Check ================//

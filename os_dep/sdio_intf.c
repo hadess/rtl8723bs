@@ -264,7 +264,7 @@ static struct dvobj_priv *sdio_dvobj_init(struct sdio_func *func)
 	struct dvobj_priv *dvobj = NULL;
 	PSDIO_DATA psdio;
 
-	if((dvobj = devobj_init()) == NULL) {
+	if ((dvobj = devobj_init()) == NULL) {
 		goto exit;
 	}
 
@@ -418,10 +418,10 @@ static _adapter *rtw_sdio_if1_init(struct dvobj_priv *dvobj, const struct sdio_d
 	status = _SUCCESS;
 
 free_hal_data:
-	if(status != _SUCCESS && padapter->HalData)
+	if (status != _SUCCESS && padapter->HalData)
 		kfree(padapter->HalData);
 
-	if(status != _SUCCESS) {
+	if (status != _SUCCESS) {
 		rtw_wdev_unregister(padapter->rtw_wdev);
 		rtw_wdev_free(padapter->rtw_wdev);
 	}
@@ -443,7 +443,7 @@ static void rtw_sdio_if1_deinit(_adapter *if1)
 	struct net_device *pnetdev = if1->pnetdev;
 	struct mlme_priv *pmlmepriv= &if1->mlmepriv;
 
-	if(check_fwstate(pmlmepriv, _FW_LINKED))
+	if (check_fwstate(pmlmepriv, _FW_LINKED))
 		rtw_disassoc_cmd(if1, 0, false);
 
 	free_mlme_ap_info(if1);
@@ -468,7 +468,7 @@ static void rtw_sdio_if1_deinit(_adapter *if1)
 
 	rtw_free_drv_sw(if1);
 
-	if(pnetdev)
+	if (pnetdev)
 		rtw_free_netdev(pnetdev);
 }
 
@@ -501,7 +501,7 @@ static int rtw_drv_init(
 	}
 
 	//dev_alloc_name && register_netdev
-	if((status = rtw_drv_register_netdev(if1)) != _SUCCESS) {
+	if ((status = rtw_drv_register_netdev(if1)) != _SUCCESS) {
 		goto free_if2;
 	}
 
@@ -517,7 +517,7 @@ static int rtw_drv_init(
 	status = _SUCCESS;
 
 free_if2:
-	if(status != _SUCCESS && if2) {
+	if (status != _SUCCESS && if2) {
 	}
 	if (status != _SUCCESS && if1) {
 		rtw_sdio_if1_deinit(if1);
@@ -581,7 +581,7 @@ static int rtw_sdio_suspend(struct device *dev)
 	struct debug_priv *pdbgpriv = &psdpriv->drv_dbg;
 	int ret = 0;
 
-	if(padapter->bDriverStopped == true)
+	if (padapter->bDriverStopped == true)
 	{
 		DBG_871X("%s bDriverStopped = %d\n", __FUNCTION__, padapter->bDriverStopped);
 		goto exit;
@@ -649,13 +649,13 @@ static int rtw_sdio_resume(struct device *dev)
 
 	pdbgpriv->dbg_resume_cnt++;
 
-	if(pwrpriv->bInternalAutoSuspend)
+	if (pwrpriv->bInternalAutoSuspend)
 	{
 		ret = rtw_resume_process(padapter);
 	}
 	else
 	{
-		if(pwrpriv->wowlan_mode || pwrpriv->wowlan_ap_mode)
+		if (pwrpriv->wowlan_mode || pwrpriv->wowlan_ap_mode)
 		{
 			ret = rtw_resume_process(padapter);
 		}

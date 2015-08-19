@@ -139,7 +139,7 @@ static void update_recvframe_phyinfo(
 	//rtl8723b_query_rx_phy_status(precvframe, pphy_status);
 	//spin_lock_bh(&pHalData->odm_stainfo_lock);
 	ODM_PhyStatusQuery(&pHalData->odmpriv,pPHYInfo,(u8 *)pphy_status,&(pkt_info));
-	if(psta) psta->rssi = pattrib->phy_info.RecvSignalPower;
+	if (psta) psta->rssi = pattrib->phy_info.RecvSignalPower;
 	//spin_unlock_bh(&pHalData->odm_stainfo_lock);
 	precvframe->u.hdr.psta = NULL;
 	if (pkt_info.bPacketMatchBSSID &&
@@ -169,7 +169,7 @@ static void rtl8723bs_c2h_packet_handler(PADAPTER padapter, u8 *pbuf, u16 length
 	u8 *tmpBuf=NULL;
 	u8 res = false;
 
-	if(length == 0)
+	if (length == 0)
 		return;
 
 	//DBG_871X("+%s() length=%d\n", __func__, length);
@@ -274,9 +274,9 @@ static void rtl8723bs_recv_tasklet(void *priv)
 
 				// for first fragment packet, driver need allocate 1536+drvinfo_sz+RXDESC_SIZE to defrag packet.
 				// modify alloc_sz for recvive crc error packet by thomas 2011-06-02
-				if((pattrib->mfrag == 1)&&(pattrib->frag_num == 0)){
+				if ((pattrib->mfrag == 1)&&(pattrib->frag_num == 0)){
 					//alloc_sz = 1664;	//1664 is 128 alignment.
-					if(skb_len <= 1650)
+					if (skb_len <= 1650)
 						alloc_sz = 1664;
 					else
 						alloc_sz = skb_len + 14;
@@ -290,7 +290,7 @@ static void rtl8723bs_recv_tasklet(void *priv)
 
 				pkt_copy = rtw_skb_alloc(alloc_sz);
 
-				if(pkt_copy)
+				if (pkt_copy)
 				{
 					pkt_copy->dev = padapter->pnetdev;
 					precvframe->u.hdr.pkt = pkt_copy;
@@ -303,7 +303,7 @@ static void rtl8723bs_recv_tasklet(void *priv)
 				}
 				else
 				{
-					if((pattrib->mfrag == 1)&&(pattrib->frag_num == 0))
+					if ((pattrib->mfrag == 1)&&(pattrib->frag_num == 0))
 					{
 						DBG_8192C("%s: alloc_skb fail, drop frag frame\n", __FUNCTION__);
 						rtw_free_recvframe(precvframe, &precvpriv->free_recv_queue);
@@ -311,7 +311,7 @@ static void rtl8723bs_recv_tasklet(void *priv)
 					}
 
 					precvframe->u.hdr.pkt = rtw_skb_clone(precvbuf->pskb);
-					if(precvframe->u.hdr.pkt)
+					if (precvframe->u.hdr.pkt)
 					{
 						_pkt	*pkt_clone = precvframe->u.hdr.pkt;
 
@@ -344,7 +344,7 @@ static void rtl8723bs_recv_tasklet(void *priv)
 					ptr += 4;
 				}
 
-				if(pattrib->pkt_rpt_type == NORMAL_RX)//Normal rx packet
+				if (pattrib->pkt_rpt_type == NORMAL_RX)//Normal rx packet
 				{
 					if (pattrib->physt)
 						update_recvframe_phyinfo(precvframe, (struct phy_stat*)ptr);
@@ -354,7 +354,7 @@ static void rtl8723bs_recv_tasklet(void *priv)
 						RT_TRACE(_module_rtl871x_recv_c_, _drv_dump_, ("%s: rtw_recv_entry(precvframe) != _SUCCESS\n",__FUNCTION__));
 					}
 				}
-				else if(pattrib->pkt_rpt_type == C2H_PACKET)
+				else if (pattrib->pkt_rpt_type == C2H_PACKET)
 				{
 					C2H_EVT_HDR	C2hEvent;
 
@@ -367,7 +367,7 @@ static void rtl8723bs_recv_tasklet(void *priv)
 					C2hEvent.CmdLen = (len_c2h -2);
 					pdata_c2h = pbuf_c2h+2;
 
-					if(C2hEvent.CmdID == C2H_CCX_TX_RPT)
+					if (C2hEvent.CmdID == C2H_CCX_TX_RPT)
 					{
 						CCX_FwC2HTxRpt_8723b(padapter, pdata_c2h, C2hEvent.CmdLen);
 					}
@@ -438,7 +438,7 @@ s32 rtl8723bs_init_recv_priv(PADAPTER padapter)
 
 			precvbuf->pskb = rtw_skb_alloc(MAX_RECVBUF_SZ + RECVBUFF_ALIGN_SZ);
 
-			if(precvbuf->pskb)
+			if (precvbuf->pskb)
 			{
 				precvbuf->pskb->dev = padapter->pnetdev;
 

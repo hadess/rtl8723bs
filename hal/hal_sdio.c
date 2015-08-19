@@ -26,7 +26,7 @@ u8 rtw_hal_sdio_max_txoqt_free_space(_adapter *padapter)
 {
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
 
-	if(pHalData->SdioTxOQTMaxFreeSpace < 8 )
+	if (pHalData->SdioTxOQTMaxFreeSpace < 8 )
 		pHalData->SdioTxOQTMaxFreeSpace = 8;
 
 	return pHalData->SdioTxOQTMaxFreeSpace;

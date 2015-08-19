@@ -27,9 +27,9 @@ static void process_rssi(_adapter *padapter,union recv_frame *prframe)
 	struct signal_stat * signal_stat = &padapter->recvpriv.signal_strength_data;
 
 	//DBG_8192C("process_rssi=> pattrib->rssil(%d) signal_strength(%d)\n ",pattrib->RecvSignalPower,pattrib->signal_strength);
-	//if(pRfd->Status.bPacketToSelf || pRfd->Status.bPacketBeacon)
+	//if (pRfd->Status.bPacketToSelf || pRfd->Status.bPacketBeacon)
 	{
-		if(signal_stat->update_req) {
+		if (signal_stat->update_req) {
 			signal_stat->total_num = 0;
 			signal_stat->total_val = 0;
 			signal_stat->update_req = 0;
@@ -47,7 +47,7 @@ static void process_link_qual(_adapter *padapter,union recv_frame *prframe)
 	struct rx_pkt_attrib *pattrib;
 	struct signal_stat * signal_stat;
 
-	if(prframe == NULL || padapter==NULL){
+	if (prframe == NULL || padapter==NULL){
 		return;
 	}
 
@@ -56,7 +56,7 @@ static void process_link_qual(_adapter *padapter,union recv_frame *prframe)
 
 	//DBG_8192C("process_link_qual=> pattrib->signal_qual(%d)\n ",pattrib->signal_qual);
 
-	if(signal_stat->update_req) {
+	if (signal_stat->update_req) {
 		signal_stat->total_num = 0;
 		signal_stat->total_val = 0;
 		signal_stat->update_req = 0;

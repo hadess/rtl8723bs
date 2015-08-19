@@ -513,7 +513,7 @@ ODM_DMWatchdog(
 	//8723A or 8189ES platform
 	//NeilChen--2012--08--24--
 	//Fix Leave LPS issue
-	if(	(adapter_to_pwrctl(pDM_Odm->Adapter)->pwr_mode != PS_MODE_ACTIVE) // in LPS mode
+	if (	(adapter_to_pwrctl(pDM_Odm->Adapter)->pwr_mode != PS_MODE_ACTIVE) // in LPS mode
 		//&&(
 		//	(pDM_Odm->SupportICType & (ODM_RTL8723A ) )||
 		//	(pDM_Odm->SupportICType & (ODM_RTL8188E) &&((pDM_Odm->SupportInterface  == ODM_ITRF_SDIO)) )
@@ -535,7 +535,7 @@ ODM_DMWatchdog(
 	}
 	odm_CCKPacketDetectionThresh(pDM_Odm);
 
-	if(*(pDM_Odm->pbPowerSaving)==true)
+	if (*(pDM_Odm->pbPowerSaving)==true)
 		return;
 
 
@@ -984,11 +984,11 @@ odm_CommonInfoSelfUpdate(
 	u1Byte	i;
 	PSTA_INFO_T	pEntry;
 
-	if(*(pDM_Odm->pBandWidth) == ODM_BW40M)
+	if (*(pDM_Odm->pBandWidth) == ODM_BW40M)
 	{
-		if(*(pDM_Odm->pSecChOffset) == 1)
+		if (*(pDM_Odm->pSecChOffset) == 1)
 			pDM_Odm->ControlChannel = *(pDM_Odm->pChannel) -2;
-		else if(*(pDM_Odm->pSecChOffset) == 2)
+		else if (*(pDM_Odm->pSecChOffset) == 2)
 			pDM_Odm->ControlChannel = *(pDM_Odm->pChannel) +2;
 	}
 	else
@@ -997,10 +997,10 @@ odm_CommonInfoSelfUpdate(
 	for (i=0; i<ODM_ASSOCIATE_ENTRY_NUM; i++)
 	{
 		pEntry = pDM_Odm->pODM_StaInfo[i];
-		if(IS_STA_VALID(pEntry))
+		if (IS_STA_VALID(pEntry))
 			EntryCnt++;
 	}
-	if(EntryCnt == 1)
+	if (EntryCnt == 1)
 		pDM_Odm->bOneEntryOnly = true;
 	else
 		pDM_Odm->bOneEntryOnly = false;
@@ -1054,10 +1054,10 @@ odm_FindMinimumRSSI(
 
 	for(i=0; i<ODM_ASSOCIATE_ENTRY_NUM; i++)
 	{
-//		if(pDM_Odm->pODM_StaInfo[i] != NULL)
-		if(IS_STA_VALID(pDM_Odm->pODM_StaInfo[i]) )
+//		if (pDM_Odm->pODM_StaInfo[i] != NULL)
+		if (IS_STA_VALID(pDM_Odm->pODM_StaInfo[i]) )
 		{
-			if(pDM_Odm->pODM_StaInfo[i]->RSSI_Ave < RSSI_Min)
+			if (pDM_Odm->pODM_StaInfo[i]->RSSI_Ave < RSSI_Min)
 			{
 				RSSI_Min = pDM_Odm->pODM_StaInfo[i]->RSSI_Ave;
 			}
@@ -1078,7 +1078,7 @@ odm_IsLinked(
 
 	for(i=0; i<ODM_ASSOCIATE_ENTRY_NUM; i++)
 	{
-			if(IS_STA_VALID(pDM_Odm->pODM_StaInfo[i]) )
+			if (IS_STA_VALID(pDM_Odm->pODM_StaInfo[i]) )
 			{
 				Linked = true;
 				break;
@@ -1161,7 +1161,7 @@ u4Byte ODM_Get_Rate_Bitmap(
 
 
 	pEntry = pDM_Odm->pODM_StaInfo[macid];
-	if(!IS_STA_VALID(pEntry))
+	if (!IS_STA_VALID(pEntry))
 		return ra_mask;
 
 	WirelessMode = pEntry->wireless_mode;
@@ -1169,7 +1169,7 @@ u4Byte ODM_Get_Rate_Bitmap(
 	switch(WirelessMode)
 	{
 		case ODM_WM_B:
-			if(ra_mask & 0x0000000c)		//11M or 5.5M enable
+			if (ra_mask & 0x0000000c)		//11M or 5.5M enable
 				rate_bitmap = 0x0000000d;
 			else
 				rate_bitmap = 0x0000000f;
@@ -1177,16 +1177,16 @@ u4Byte ODM_Get_Rate_Bitmap(
 
 		case (ODM_WM_G):
 		case (ODM_WM_A):
-			if(rssi_level == DM_RATR_STA_HIGH)
+			if (rssi_level == DM_RATR_STA_HIGH)
 				rate_bitmap = 0x00000f00;
 			else
 				rate_bitmap = 0x00000ff0;
 			break;
 
 		case (ODM_WM_B|ODM_WM_G):
-			if(rssi_level == DM_RATR_STA_HIGH)
+			if (rssi_level == DM_RATR_STA_HIGH)
 				rate_bitmap = 0x00000f00;
-			else if(rssi_level == DM_RATR_STA_MIDDLE)
+			else if (rssi_level == DM_RATR_STA_MIDDLE)
 				rate_bitmap = 0x00000ff0;
 			else
 				rate_bitmap = 0x00000ff5;
@@ -1199,11 +1199,11 @@ u4Byte ODM_Get_Rate_Bitmap(
 			{
 				if (	pDM_Odm->RFType == ODM_1T2R ||pDM_Odm->RFType == ODM_1T1R)
 				{
-					if(rssi_level == DM_RATR_STA_HIGH)
+					if (rssi_level == DM_RATR_STA_HIGH)
 					{
 						rate_bitmap = 0x000f0000;
 					}
-					else if(rssi_level == DM_RATR_STA_MIDDLE)
+					else if (rssi_level == DM_RATR_STA_MIDDLE)
 					{
 						rate_bitmap = 0x000ff000;
 					}
@@ -1216,11 +1216,11 @@ u4Byte ODM_Get_Rate_Bitmap(
 				}
 				else
 				{
-					if(rssi_level == DM_RATR_STA_HIGH)
+					if (rssi_level == DM_RATR_STA_HIGH)
 					{
 						rate_bitmap = 0x0f8f0000;
 					}
-					else if(rssi_level == DM_RATR_STA_MIDDLE)
+					else if (rssi_level == DM_RATR_STA_MIDDLE)
 					{
 						rate_bitmap = 0x0f8ff000;
 					}
@@ -1236,9 +1236,9 @@ u4Byte ODM_Get_Rate_Bitmap(
 			break;
 
 		case (ODM_WM_AC|ODM_WM_G):
-			if(rssi_level == 1)
+			if (rssi_level == 1)
 				rate_bitmap = 0xfc3f0000;
-			else if(rssi_level == 2)
+			else if (rssi_level == 2)
 				rate_bitmap = 0xfffff000;
 			else
 				rate_bitmap = 0xffffffff;
@@ -1248,7 +1248,7 @@ u4Byte ODM_Get_Rate_Bitmap(
 
 			if (pDM_Odm->RFType == RF_1T1R)
 			{
-				if(rssi_level == 1)				// add by Gary for ac-series
+				if (rssi_level == 1)				// add by Gary for ac-series
 					rate_bitmap = 0x003f8000;
 				else if (rssi_level == 2)
 					rate_bitmap = 0x003ff000;
@@ -1257,7 +1257,7 @@ u4Byte ODM_Get_Rate_Bitmap(
 			}
 			else
 			{
-				if(rssi_level == 1)				// add by Gary for ac-series
+				if (rssi_level == 1)				// add by Gary for ac-series
 					rate_bitmap = 0xfe3f8000;       // VHT 2SS MCS3~9
 				else if (rssi_level == 2)
 					rate_bitmap = 0xfffff000;       // VHT 2SS MCS0~9
@@ -1267,7 +1267,7 @@ u4Byte ODM_Get_Rate_Bitmap(
 			break;
 
 		default:
-			if(pDM_Odm->RFType == RF_1T2R)
+			if (pDM_Odm->RFType == RF_1T2R)
 				rate_bitmap = 0x000fffff;
 			else
 				rate_bitmap = 0x0fffffff;
@@ -1321,13 +1321,13 @@ odm_RefreshRateAdaptiveMaskCE(
 	u1Byte	i;
 	PADAPTER	pAdapter	 =  pDM_Odm->Adapter;
 
-	if(pAdapter->bDriverStopped)
+	if (pAdapter->bDriverStopped)
 	{
 		ODM_RT_TRACE(pDM_Odm, ODM_COMP_RA_MASK, ODM_DBG_TRACE, ("<---- odm_RefreshRateAdaptiveMask(): driver is going to unload\n"));
 		return;
 	}
 
-	if(!pDM_Odm->bUseRAMask)
+	if (!pDM_Odm->bUseRAMask)
 	{
 		ODM_RT_TRACE(pDM_Odm, ODM_COMP_RA_MASK, ODM_DBG_LOUD, ("<---- odm_RefreshRateAdaptiveMask(): driver does not control rate adaptive mask\n"));
 		return;
@@ -1337,13 +1337,13 @@ odm_RefreshRateAdaptiveMaskCE(
 
 	for(i=0; i<ODM_ASSOCIATE_ENTRY_NUM; i++){
 		PSTA_INFO_T pstat = pDM_Odm->pODM_StaInfo[i];
-		if(IS_STA_VALID(pstat) ) {
-			if(IS_MCAST( pstat->hwaddr))  //if(psta->mac_id ==1)
+		if (IS_STA_VALID(pstat) ) {
+			if (IS_MCAST( pstat->hwaddr))  //if (psta->mac_id ==1)
 				 continue;
-			if(IS_MCAST( pstat->hwaddr))
+			if (IS_MCAST( pstat->hwaddr))
 				continue;
 
-			if( true == ODM_RAStateCheck(pDM_Odm, pstat->rssi_stat.UndecoratedSmoothedPWDB, false , &pstat->rssi_level) )
+			if ( true == ODM_RAStateCheck(pDM_Odm, pstat->rssi_stat.UndecoratedSmoothedPWDB, false , &pstat->rssi_level) )
 			{
 				ODM_RT_TRACE(pDM_Odm, ODM_COMP_RA_MASK, ODM_DBG_LOUD, ("RSSI:%d, RSSI_LEVEL:%d\n", pstat->rssi_stat.UndecoratedSmoothedPWDB, pstat->rssi_level));
 				//printk("RSSI:%d, RSSI_LEVEL:%d\n", pstat->rssi_stat.UndecoratedSmoothedPWDB, pstat->rssi_level);
@@ -1394,15 +1394,15 @@ ODM_RAStateCheck(
 	}
 
 	// Decide RATRState by RSSI.
-	if(RSSI > HighRSSIThreshForRA)
+	if (RSSI > HighRSSIThreshForRA)
 		RATRState = DM_RATR_STA_HIGH;
-	else if(RSSI > LowRSSIThreshForRA)
+	else if (RSSI > LowRSSIThreshForRA)
 		RATRState = DM_RATR_STA_MIDDLE;
 	else
 		RATRState = DM_RATR_STA_LOW;
 	//printk("==>%s,RATRState:0x%02x ,RSSI:%d \n",__FUNCTION__,RATRState,RSSI);
 
-	if( *pRATRState!=RATRState || bForceUpdate)
+	if ( *pRATRState!=RATRState || bForceUpdate)
 	{
 		ODM_RT_TRACE( pDM_Odm, ODM_COMP_RA_MASK, ODM_DBG_LOUD, ("RSSI Level %d -> %d\n", *pRATRState, RATRState) );
 		*pRATRState = RATRState;
@@ -1459,7 +1459,7 @@ IN	PADAPTER	pAdapter
 
 	//1 1.Determine the minimum RSSI
 
-	if((pDM_Odm->bLinked != true) &&
+	if ((pDM_Odm->bLinked != true) &&
 		(pdmpriv->EntryMinUndecoratedSmoothedPWDB == 0))
 	{
 		pdmpriv->MinUndecoratedPWDBForDM = 0;
@@ -1489,32 +1489,32 @@ odm_RSSIMonitorCheckCE(
 	bool			FirstConnect = false;
 	pRA_T			pRA_Table = &pDM_Odm->DM_RA_Table;
 
-	if(pDM_Odm->bLinked != true)
+	if (pDM_Odm->bLinked != true)
 		return;
 
 	FirstConnect = (pDM_Odm->bLinked) && (pRA_Table->firstconnect == false);
 	pRA_Table->firstconnect = pDM_Odm->bLinked;
 
-	//if(check_fwstate(&Adapter->mlmepriv, WIFI_AP_STATE|WIFI_ADHOC_STATE|WIFI_ADHOC_MASTER_STATE) == true)
+	//if (check_fwstate(&Adapter->mlmepriv, WIFI_AP_STATE|WIFI_ADHOC_STATE|WIFI_ADHOC_MASTER_STATE) == true)
 	{
 		struct sta_info *psta;
 
 		for(i=0; i<ODM_ASSOCIATE_ENTRY_NUM; i++) {
 			if (IS_STA_VALID(psta = pDM_Odm->pODM_StaInfo[i]))
 			{
-					if(IS_MCAST( psta->hwaddr))  //if(psta->mac_id ==1)
+					if (IS_MCAST( psta->hwaddr))  //if (psta->mac_id ==1)
 						 continue;
 
-					if(psta->rssi_stat.UndecoratedSmoothedPWDB == (-1))
+					if (psta->rssi_stat.UndecoratedSmoothedPWDB == (-1))
 						 continue;
 
-					if(psta->rssi_stat.UndecoratedSmoothedPWDB < tmpEntryMinPWDB)
+					if (psta->rssi_stat.UndecoratedSmoothedPWDB < tmpEntryMinPWDB)
 						tmpEntryMinPWDB = psta->rssi_stat.UndecoratedSmoothedPWDB;
 
-					if(psta->rssi_stat.UndecoratedSmoothedPWDB > tmpEntryMaxPWDB)
+					if (psta->rssi_stat.UndecoratedSmoothedPWDB > tmpEntryMaxPWDB)
 						tmpEntryMaxPWDB = psta->rssi_stat.UndecoratedSmoothedPWDB;
 
-					if(psta->rssi_stat.UndecoratedSmoothedPWDB != (-1)) {
+					if (psta->rssi_stat.UndecoratedSmoothedPWDB != (-1)) {
 						PWDB_rssi[sta_cnt++] = (psta->mac_id | (psta->rssi_stat.UndecoratedSmoothedPWDB<<16) );
 					}
 			}
@@ -1524,8 +1524,8 @@ odm_RSSIMonitorCheckCE(
 
 		for(i=0; i< sta_cnt; i++)
 		{
-			if(PWDB_rssi[i] != (0)){
-				if(pHalData->fw_ractrl == true)// Report every sta's RSSI to FW
+			if (PWDB_rssi[i] != (0)){
+				if (pHalData->fw_ractrl == true)// Report every sta's RSSI to FW
 				{
 					rtl8723b_set_rssi_cmd(Adapter, (u8 *)(&PWDB_rssi[i]));
 				}
@@ -1535,7 +1535,7 @@ odm_RSSIMonitorCheckCE(
 
 
 
-	if(tmpEntryMaxPWDB != 0)	// If associated entry is found
+	if (tmpEntryMaxPWDB != 0)	// If associated entry is found
 	{
 		pdmpriv->EntryMaxUndecoratedSmoothedPWDB = tmpEntryMaxPWDB;
 	}
@@ -1544,7 +1544,7 @@ odm_RSSIMonitorCheckCE(
 		pdmpriv->EntryMaxUndecoratedSmoothedPWDB = 0;
 	}
 
-	if(tmpEntryMinPWDB != 0xff) // If associated entry is found
+	if (tmpEntryMinPWDB != 0xff) // If associated entry is found
 	{
 		pdmpriv->EntryMinUndecoratedSmoothedPWDB = tmpEntryMinPWDB;
 	}
@@ -1663,12 +1663,12 @@ odm_TXPowerTrackingCheckCE(
 {
 	PADAPTER	Adapter = pDM_Odm->Adapter;
 
-	if(!(pDM_Odm->SupportAbility & ODM_RF_TX_PWR_TRACK))
+	if (!(pDM_Odm->SupportAbility & ODM_RF_TX_PWR_TRACK))
 	{
 		return;
 	}
 
-	if(!pDM_Odm->RFCalibrateInfo.TM_Trigger)		//at least delay 1 sec
+	if (!pDM_Odm->RFCalibrateInfo.TM_Trigger)		//at least delay 1 sec
 	{
 		//pHalData->TxPowerCheckCnt++;	//cosa add for debug
 		PHY_SetRFReg(pDM_Odm->Adapter, ODM_RF_PATH_A, RF_T_METER_NEW, (BIT17 | BIT16), 0x03);

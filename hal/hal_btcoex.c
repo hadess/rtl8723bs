@@ -865,7 +865,7 @@ static void halbtcoutsrc_WriteLocalReg1Byte(void *pBtcContext, u32 RegAddr, u8 D
 	PBTC_COEXIST		pBtCoexist=(PBTC_COEXIST)pBtcContext;
 	PADAPTER			Adapter=pBtCoexist->Adapter;
 
-	if(BTC_INTF_SDIO == pBtCoexist->chipInterface)
+	if (BTC_INTF_SDIO == pBtCoexist->chipInterface)
 	{
 		rtw_write8(Adapter, SDIO_LOCAL_BASE | RegAddr, Data);
 	}
@@ -999,7 +999,7 @@ static u8 EXhalbtcoutsrc_BindBtCoexWithAdapter(void *padapter)
 {
 	PBTC_COEXIST		pBtCoexist=&GLBtCoexist;
 
-	if(pBtCoexist->bBinded)
+	if (pBtCoexist->bBinded)
 		return false;
 	else
 		pBtCoexist->bBinded = true;
@@ -1318,7 +1318,7 @@ void EXhalbtcoutsrc_PnpNotify(PBTC_COEXIST pBtCoexist, u8 pnpState)
 
 	if (pBtCoexist->boardInfo.btdmAntNum == 1)
 		EXhalbtc8723b1ant_PnpNotify(pBtCoexist,pnpState);
-	else if(pBtCoexist->boardInfo.btdmAntNum == 2)
+	else if (pBtCoexist->boardInfo.btdmAntNum == 2)
 		EXhalbtc8723b2ant_PnpNotify(pBtCoexist,pnpState);
 }
 

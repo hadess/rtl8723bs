@@ -24,7 +24,7 @@
 
 void rtw_os_free_recvframe(union recv_frame *precvframe)
 {
-	if(precvframe->u.hdr.pkt)
+	if (precvframe->u.hdr.pkt)
 	{
 		dev_kfree_skb_any(precvframe->u.hdr.pkt);//free skb by driver
 
@@ -51,7 +51,7 @@ void rtw_os_recv_resource_free(struct recv_priv *precvpriv)
 
 	for(i=0; i < NR_RECVFRAME; i++)
 	{
-		if(precvframe->u.hdr.pkt)
+		if (precvframe->u.hdr.pkt)
 		{
 			dev_kfree_skb_any(precvframe->u.hdr.pkt);//free skb by driver
 			precvframe->u.hdr.pkt = NULL;
@@ -65,7 +65,7 @@ int rtw_os_recvbuf_resource_free(_adapter *padapter, struct recv_buf *precvbuf)
 {
 	int ret = _SUCCESS;
 
-	if(precvbuf->pskb)
+	if (precvbuf->pskb)
 	{
 		dev_kfree_skb_any(precvbuf->pskb);
 	}
@@ -83,7 +83,7 @@ _pkt *rtw_os_alloc_msdu_pkt(union recv_frame *prframe, u16 nSubframe_Length, u8 
 	pattrib = &prframe->u.hdr.attrib;
 
 	sub_skb = rtw_skb_alloc(nSubframe_Length + 12);
-	if(sub_skb)
+	if (sub_skb)
 	{
 		skb_reserve(sub_skb, 12);
 		data_ptr = (u8 *)skb_put(sub_skb, nSubframe_Length);
@@ -92,7 +92,7 @@ _pkt *rtw_os_alloc_msdu_pkt(union recv_frame *prframe, u16 nSubframe_Length, u8 
 	else
 	{
 		sub_skb = rtw_skb_clone(prframe->u.hdr.pkt);
-		if(sub_skb)
+		if (sub_skb)
 		{
 			sub_skb->data = pdata + ETH_HLEN;
 			sub_skb->len = nSubframe_Length;
@@ -134,7 +134,7 @@ void rtw_os_recv_indicate_pkt(_adapter *padapter, _pkt *pkt, struct rx_pkt_attri
 
 	/* Indicat the packets to upper layer */
 	if (pkt) {
-		if(check_fwstate(pmlmepriv, WIFI_AP_STATE) == true)
+		if (check_fwstate(pmlmepriv, WIFI_AP_STATE) == true)
 		{
 			_pkt *pskb2=NULL;
 			struct sta_info *psta = NULL;
@@ -143,11 +143,11 @@ void rtw_os_recv_indicate_pkt(_adapter *padapter, _pkt *pkt, struct rx_pkt_attri
 
 			//DBG_871X("bmcast=%d\n", bmcast);
 
-			if(memcmp(pattrib->dst, myid(&padapter->eeprompriv), ETH_ALEN))
+			if (memcmp(pattrib->dst, myid(&padapter->eeprompriv), ETH_ALEN))
 			{
 				//DBG_871X("not ap psta=%p, addr=%pM\n", psta, pattrib->dst);
 
-				if(bmcast)
+				if (bmcast)
 				{
 					psta = rtw_get_bcmc_stainfo(padapter);
 					pskb2 = rtw_skb_clone(pkt);
@@ -155,7 +155,7 @@ void rtw_os_recv_indicate_pkt(_adapter *padapter, _pkt *pkt, struct rx_pkt_attri
 					psta = rtw_get_stainfo(pstapriv, pattrib->dst);
 				}
 
-				if(psta)
+				if (psta)
 				{
 					struct net_device *pnetdev= (struct net_device*)padapter->pnetdev;
 
@@ -167,7 +167,7 @@ void rtw_os_recv_indicate_pkt(_adapter *padapter, _pkt *pkt, struct rx_pkt_attri
 
 					_rtw_xmit_entry(pkt, pnetdev);
 
-					if(bmcast && (pskb2 != NULL) ) {
+					if (bmcast && (pskb2 != NULL) ) {
 						pkt = pskb2;
 						DBG_COUNTER(padapter->rx_logs.os_indicate_ap_mcast);
 					} else {
@@ -213,7 +213,7 @@ void rtw_handle_tkip_mic_err(_adapter *padapter,u8 bgroup)
 	struct security_priv	*psecuritypriv = &padapter->securitypriv;
 	unsigned long cur_time = 0;
 
-	if( psecuritypriv->last_mic_err_time == 0 )
+	if ( psecuritypriv->last_mic_err_time == 0 )
 	{
 		psecuritypriv->last_mic_err_time = jiffies;
 	}
@@ -221,7 +221,7 @@ void rtw_handle_tkip_mic_err(_adapter *padapter,u8 bgroup)
 	{
 		cur_time = jiffies;
 
-		if( cur_time - psecuritypriv->last_mic_err_time < 60*HZ )
+		if ( cur_time - psecuritypriv->last_mic_err_time < 60*HZ )
 		{
 			psecuritypriv->btkip_countermeasure = true;
 			psecuritypriv->last_mic_err_time = 0;
@@ -280,7 +280,7 @@ static void rtw_os_ksocket_send(_adapter *padapter, union recv_frame *precv_fram
 		DBG_871X("eth rx(pid=0x%x): sta("MAC_FMT") pid=0x%x\n",
 			rx_pid, MAC_ARG(psta->hwaddr), psta->pid);
 
-		if(rx_pid == psta->pid)
+		if (rx_pid == psta->pid)
 		{
 			int i;
 			u16 len = *(u16*)(skb->data+ETH_HLEN+2);
@@ -314,7 +314,7 @@ int rtw_recv_indicatepkt(_adapter *padapter, union recv_frame *precv_frame)
 	pfree_recv_queue = &(precvpriv->free_recv_queue);
 
 	skb = precv_frame->u.hdr.pkt;
-	if(skb == NULL)
+	if (skb == NULL)
 	{
 		RT_TRACE(_module_recv_osdep_c_,_drv_err_,("rtw_recv_indicatepkt():skb==NULL something wrong!!!!\n"));
 		goto _recv_indicatepkt_drop;
@@ -354,7 +354,7 @@ int rtw_recv_indicatepkt(_adapter *padapter, union recv_frame *precv_frame)
 _recv_indicatepkt_drop:
 
 	 //enqueue back to free_recv_queue
-	 if(precv_frame)
+	 if (precv_frame)
 		 rtw_free_recvframe(precv_frame, pfree_recv_queue);
 
 	 DBG_COUNTER(padapter->rx_logs.os_indicate_err);

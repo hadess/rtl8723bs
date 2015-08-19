@@ -30,7 +30,7 @@ _FWDownloadEnable(
 {
 	u8	tmp, count = 0;
 
-	if(enable)
+	if (enable)
 	{
 		// 8051 enable
 		tmp = rtw_read8(padapter, REG_SYS_FUNC_EN+1);
@@ -41,12 +41,12 @@ _FWDownloadEnable(
 
 		do{
 			tmp = rtw_read8(padapter, REG_MCUFWDL);
-			if(tmp & 0x01)
+			if (tmp & 0x01)
 				break;
 			rtw_write8(padapter, REG_MCUFWDL, tmp|0x01);
 			msleep(1);
 		}while(count++<100);
-		if(count > 0)
+		if (count > 0)
 			DBG_871X("%s: !!!!!!!!Write 0x80 Fail!: count = %d\n", __func__, count);
 
 		// 8051 reset
@@ -93,7 +93,7 @@ _BlockWrite(
 	for (i = 0; i < blockCount_p1; i++)
 	{
 		ret = rtw_write32(padapter, (FW_8723B_START_ADDRESS + i * blockSize_p1), *((u32*)(bufferPtr + i * blockSize_p1)));
-		if(ret == _FAIL) {
+		if (ret == _FAIL) {
 			printk("====>%s %d i:%d\n", __func__, __LINE__, i);
 			goto exit;
 		}
@@ -129,7 +129,7 @@ _BlockWrite(
 		for(i = 0 ; i < blockCount_p3 ; i++){
 			ret = rtw_write8(padapter, (FW_8723B_START_ADDRESS + offset + i), *(bufferPtr + offset + i));
 
-			if(ret == _FAIL) {
+			if (ret == _FAIL) {
 				printk("====>%s %d i:%d\n", __func__, __LINE__, i);
 				goto exit;
 			}
@@ -178,7 +178,7 @@ _WriteFW(
 		offset = page * MAX_DLFW_PAGE_SIZE;
 		ret = _PageWrite(padapter, page, bufferPtr+offset, MAX_DLFW_PAGE_SIZE);
 
-		if(ret == _FAIL) {
+		if (ret == _FAIL) {
 			printk("====>%s %d\n", __func__, __LINE__);
 			goto exit;
 		}
@@ -188,7 +188,7 @@ _WriteFW(
 		page = pageNums;
 		ret = _PageWrite(padapter, page, bufferPtr+offset, remainSize);
 
-		if(ret == _FAIL) {
+		if (ret == _FAIL) {
 			printk("====>%s %d\n", __func__, __LINE__);
 			goto exit;
 		}
@@ -326,7 +326,7 @@ void rtl8723b_FirmwareSelfReset(PADAPTER padapter)
 		while (u1bTmp & BIT2)
 		{
 			Delay--;
-			if(Delay == 0)
+			if (Delay == 0)
 				break;
 			udelay(50);
 			u1bTmp = rtw_read8(padapter, REG_SYS_FUNC_EN+1);
@@ -382,7 +382,7 @@ s32 rtl8723b_FirmwareDownload(PADAPTER padapter, bool  bUsedWoWLANFw)
 	pFirmware = (PRT_FIRMWARE_8723B)rtw_zmalloc(sizeof(RT_FIRMWARE_8723B));
 	pBTFirmware = (PRT_FIRMWARE_8723B)rtw_zmalloc(sizeof(RT_FIRMWARE_8723B));
 
-	if(!pFirmware||!pBTFirmware)
+	if (!pFirmware||!pBTFirmware)
 	{
 		rtStatus = _FAIL;
 		goto exit;
@@ -398,7 +398,7 @@ s32 rtl8723b_FirmwareDownload(PADAPTER padapter, bool  bUsedWoWLANFw)
 			//2. read power_state = 0xA0[1:0]
 			tmp_ps=rtw_read8(padapter,0xa0);
 			tmp_ps&=0x03;
-			if(tmp_ps != 0x01)
+			if (tmp_ps != 0x01)
 			{
 				DBG_871X(FUNC_ADPT_FMT" tmp_ps=%x \n",FUNC_ADPT_ARG(padapter), tmp_ps);
 				pdbgpriv->dbg_downloadfw_pwr_state_cnt++;
@@ -464,7 +464,7 @@ s32 rtl8723b_FirmwareDownload(PADAPTER padapter, bool  bUsedWoWLANFw)
 		} else
 #endif // CONFIG_WOWLAN
 			{
-				if(padapter->registrypriv.mp_mode ==0)
+				if (padapter->registrypriv.mp_mode ==0)
 				{
 					ODM_ConfigFWWithHeaderFile(&pHalData->odmpriv, CONFIG_FW_NIC,
 						(u8*)&pFirmware->szFwBuffer, &pFirmware->ulFwLength);
@@ -533,7 +533,7 @@ s32 rtl8723b_FirmwareDownload(PADAPTER padapter, bool  bUsedWoWLANFw)
 			break;
 	}
 	_FWDownloadEnable(padapter, false);
-	if(_SUCCESS != rtStatus)
+	if (_SUCCESS != rtStatus)
 		goto fwdl_stat;
 
 	rtStatus = _FWFreeToGo(padapter, 10, 200);
@@ -597,7 +597,7 @@ SetFwRelatedForWoWLAN8723b(
 	// 1. Before WoWLAN we need to re-download WoWLAN Fw.
 	//
 	status = rtl8723b_FirmwareDownload(padapter, bHostIsGoingtoSleep);
-	if(status != _SUCCESS) {
+	if (status != _SUCCESS) {
 		DBG_871X("SetFwRelatedForWoWLAN8723b(): Re-Download Firmware failed!!\n");
 		return;
 	} else {
@@ -957,7 +957,7 @@ hal_ReadEFuse_WiFi(
 
 
 #ifdef CONFIG_DEBUG
-if(0)
+if (0)
 {
 	for(i=0; i<256; i++)
 		efuse_OneByteRead(padapter, i, &efuseTbl[i], false);
@@ -1044,7 +1044,7 @@ if(0)
 		pbuf[i] = efuseTbl[_offset+i];
 
 #ifdef CONFIG_DEBUG
-if(1)
+if (1)
 {
 	DBG_871X("Efuse Realmap:\n");
 	for(i=0; i<_size_byte; i++)
@@ -1455,14 +1455,14 @@ hal_EfuseGetCurrentSize_BT(
 			efuse_OneByteRead(padapter, efuse_addr ,&efuse_data, bPseudoTest) &&
 			AVAILABLE_EFUSE_ADDR(efuse_addr))
 		{
-			if(efuse_data!=0xFF)
+			if (efuse_data!=0xFF)
 			{
-				if((efuse_data&0x1F) == 0x0F)		//extended header
+				if ((efuse_data&0x1F) == 0x0F)		//extended header
 				{
 					hoffset = efuse_data;
 					efuse_addr++;
 					efuse_OneByteRead(padapter, efuse_addr ,&efuse_data, bPseudoTest);
-					if((efuse_data & 0x0F) == 0x0F)
+					if ((efuse_data & 0x0F) == 0x0F)
 					{
 						efuse_addr++;
 						continue;
@@ -1498,7 +1498,7 @@ hal_EfuseGetCurrentSize_BT(
 	}
 
 	retU2 = ((bank-1)*EFUSE_BT_REAL_BANK_CONTENT_LEN)+efuse_addr;
-	if(bPseudoTest)
+	if (bPseudoTest)
 	{
 		pEfuseHal->fakeBTEfuseUsedBytes = retU2;
 		//RT_DISP(FEEPROM, EFUSE_PG, ("Hal_EfuseGetCurrentSize_BT92C(), already use %u bytes\n", pEfuseHal->fakeBTEfuseUsedBytes));
@@ -2061,18 +2061,18 @@ Hal_EfusePgPacketWrite_BT(
 	u16 startAddr=0;
 	u8 efuseType=EFUSE_BT;
 
-	if(!hal_EfusePgCheckAvailableAddr(pAdapter, efuseType, bPseudoTest))
+	if (!hal_EfusePgCheckAvailableAddr(pAdapter, efuseType, bPseudoTest))
 		return false;
 
 	hal_EfuseConstructPGPkt(offset, word_en, pData, &targetPkt);
 
-	if(!hal_EfusePartialWriteCheck(pAdapter, efuseType, &startAddr, &targetPkt, bPseudoTest))
+	if (!hal_EfusePartialWriteCheck(pAdapter, efuseType, &startAddr, &targetPkt, bPseudoTest))
 		return false;
 
-	if(!hal_EfusePgPacketWriteHeader(pAdapter, efuseType, &startAddr, &targetPkt, bPseudoTest))
+	if (!hal_EfusePgPacketWriteHeader(pAdapter, efuseType, &startAddr, &targetPkt, bPseudoTest))
 		return false;
 
-	if(!hal_EfusePgPacketWriteData(pAdapter, efuseType, &startAddr, &targetPkt, bPseudoTest))
+	if (!hal_EfusePgPacketWriteData(pAdapter, efuseType, &startAddr, &targetPkt, bPseudoTest))
 		return false;
 
 	return true;
@@ -2116,7 +2116,7 @@ ReadChipVersion8723B(
 #endif
 	pHalData->VersionID = ChipVersion;
 /*	// mark for chage to use efuse
-	if( IS_B_CUT(ChipVersion) || IS_C_CUT(ChipVersion))
+	if ( IS_B_CUT(ChipVersion) || IS_C_CUT(ChipVersion))
 	{
 		MSG_8192C(" IS_B/C_CUT SWR up 1 level !!!!!!!!!!!!!!!!!\n");
 		PHY_SetMacReg(padapter, 0x14, BIT23|BIT22|BIT21|BIT20, 0x5); //MAC reg 0x14[23:20] = 4b'0101 (SWR 1.220V)
@@ -2186,7 +2186,7 @@ void	_InitBurstPktLen_8723BS(PADAPTER Adapter)
 	rtw_write8(Adapter, REG_MAX_AGGR_NUM_8723B, 0x1F);
 	rtw_write8(Adapter, REG_PIFS_8723B, 0x00);
 	rtw_write8(Adapter, REG_FWHW_TXQ_CTRL_8723B, rtw_read8(Adapter, REG_FWHW_TXQ_CTRL)&(~BIT(7)));
-	if(pHalData->AMPDUBurstMode)
+	if (pHalData->AMPDUBurstMode)
 	{
 		rtw_write8(Adapter,REG_AMPDU_BURST_MODE_8723B,  0x5F);
 	}
@@ -2194,7 +2194,7 @@ void	_InitBurstPktLen_8723BS(PADAPTER Adapter)
 
 	// ARFB table 9 for 11ac 5G 2SS
 	rtw_write32(Adapter, REG_ARFR0_8723B, 0x00000010);
-	if(IS_NORMAL_CHIP(pHalData->VersionID))
+	if (IS_NORMAL_CHIP(pHalData->VersionID))
 		rtw_write32(Adapter, REG_ARFR0_8723B+4, 0xfffff000);
 	else
 		rtw_write32(Adapter, REG_ARFR0_8723B+4, 0x3e0ff000);
@@ -2355,7 +2355,7 @@ static void UpdateHalRAMask8723B(PADAPTER padapter, u32 mac_id, u8 rssi_level)
 	}
 
 	psta = pmlmeinfo->FW_sta_info[mac_id].psta;
-	if(psta == NULL)
+	if (psta == NULL)
 	{
 		return;
 	}
@@ -2375,7 +2375,7 @@ static void UpdateHalRAMask8723B(PADAPTER padapter, u32 mac_id, u8 rssi_level)
 	mask &= ~rate_bitmap;
 
 #ifdef CONFIG_CMCC_TEST
-	if(pmlmeext->cur_wireless_mode & WIRELESS_11G) {
+	if (pmlmeext->cur_wireless_mode & WIRELESS_11G) {
 		if (mac_id == 0) {
 			DBG_871X("CMCC_BT update raid entry, mask=0x%x\n", mask);
 			//mask &=0xffffffc0; //disable CCK & <12M OFDM rate for 11G mode for CMCC
@@ -2385,7 +2385,7 @@ static void UpdateHalRAMask8723B(PADAPTER padapter, u32 mac_id, u8 rssi_level)
 	}
 #endif
 
-	if(pHalData->fw_ractrl == true)
+	if (pHalData->fw_ractrl == true)
 	{
 		rtl8723b_set_FwMacIdConfig_cmd(padapter, mac_id, psta->raid, psta->bw_mode, shortGIrate, mask);
 	}
@@ -2581,7 +2581,7 @@ Hal_GetChnlGroup8723B(
 {
 	bool bIn24G=true;
 
-	if(Channel <= 14)
+	if (Channel <= 14)
 	{
 		bIn24G=true;
 
@@ -2631,7 +2631,7 @@ Hal_InitPGData(
 {
 	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(padapter);
 
-	if(false == pEEPROM->bautoload_fail_flag)
+	if (false == pEEPROM->bautoload_fail_flag)
 	{ // autoload OK.
 		if (!pEEPROM->EepromOrEfuse) {
 			// Read EFUSE real map to shadow.
@@ -2685,10 +2685,10 @@ Hal_ReadPowerValueFromPROM_8723B(
 
 	memset(pwrInfo24G, 0, sizeof(TxPowerInfo24G));
 
-	if(0xFF == PROMContent[eeAddr+1])
+	if (0xFF == PROMContent[eeAddr+1])
 		AutoLoadFail = true;
 
-	if(AutoLoadFail)
+	if (AutoLoadFail)
 	{
 		DBG_871X("%s(): Use Default value!\n", __func__);
 		for(rfPath = 0 ; rfPath < MAX_RF_PATH ; rfPath++)
@@ -2701,7 +2701,7 @@ Hal_ReadPowerValueFromPROM_8723B(
 			}
 			for(TxCount=0;TxCount<MAX_TX_COUNT;TxCount++)
 			{
-				if(TxCount==0)
+				if (TxCount==0)
 				{
 					pwrInfo24G->BW20_Diff[rfPath][0] =	EEPROM_DEFAULT_24G_HT20_DIFF;
 					pwrInfo24G->OFDM_Diff[rfPath][0] =	EEPROM_DEFAULT_24G_OFDM_DIFF;
@@ -2727,7 +2727,7 @@ Hal_ReadPowerValueFromPROM_8723B(
 		for(group = 0 ; group < MAX_CHNL_GROUP_24G; group++)
 		{
 			pwrInfo24G->IndexCCK_Base[rfPath][group] =	PROMContent[eeAddr++];
-			if(pwrInfo24G->IndexCCK_Base[rfPath][group] == 0xFF)
+			if (pwrInfo24G->IndexCCK_Base[rfPath][group] == 0xFF)
 			{
 				pwrInfo24G->IndexCCK_Base[rfPath][group] = EEPROM_DEFAULT_24G_INDEX;
 			}
@@ -2735,29 +2735,29 @@ Hal_ReadPowerValueFromPROM_8723B(
 		for(group = 0 ; group < MAX_CHNL_GROUP_24G-1; group++)
 		{
 			pwrInfo24G->IndexBW40_Base[rfPath][group] =	PROMContent[eeAddr++];
-			if(pwrInfo24G->IndexBW40_Base[rfPath][group] == 0xFF)
+			if (pwrInfo24G->IndexBW40_Base[rfPath][group] == 0xFF)
 				pwrInfo24G->IndexBW40_Base[rfPath][group] =	EEPROM_DEFAULT_24G_INDEX;
 		}
 		for(TxCount=0;TxCount<MAX_TX_COUNT;TxCount++)
 		{
-			if(TxCount==0)
+			if (TxCount==0)
 			{
 				pwrInfo24G->BW40_Diff[rfPath][TxCount] = 0;
-				if(PROMContent[eeAddr] == 0xFF)
+				if (PROMContent[eeAddr] == 0xFF)
 					pwrInfo24G->BW20_Diff[rfPath][TxCount] =	EEPROM_DEFAULT_24G_HT20_DIFF;
 				else
 				{
 					pwrInfo24G->BW20_Diff[rfPath][TxCount] =	(PROMContent[eeAddr]&0xf0)>>4;
-					if(pwrInfo24G->BW20_Diff[rfPath][TxCount] & BIT3)		//4bit sign number to 8 bit sign number
+					if (pwrInfo24G->BW20_Diff[rfPath][TxCount] & BIT3)		//4bit sign number to 8 bit sign number
 						pwrInfo24G->BW20_Diff[rfPath][TxCount] |= 0xF0;
 				}
 
-				if(PROMContent[eeAddr] == 0xFF)
+				if (PROMContent[eeAddr] == 0xFF)
 					pwrInfo24G->OFDM_Diff[rfPath][TxCount] =	EEPROM_DEFAULT_24G_OFDM_DIFF;
 				else
 				{
 					pwrInfo24G->OFDM_Diff[rfPath][TxCount] =	(PROMContent[eeAddr]&0x0f);
-					if(pwrInfo24G->OFDM_Diff[rfPath][TxCount] & BIT3)		//4bit sign number to 8 bit sign number
+					if (pwrInfo24G->OFDM_Diff[rfPath][TxCount] & BIT3)		//4bit sign number to 8 bit sign number
 						pwrInfo24G->OFDM_Diff[rfPath][TxCount] |= 0xF0;
 				}
 				pwrInfo24G->CCK_Diff[rfPath][TxCount] = 0;
@@ -2765,40 +2765,40 @@ Hal_ReadPowerValueFromPROM_8723B(
 			}
 			else
 			{
-				if(PROMContent[eeAddr] == 0xFF)
+				if (PROMContent[eeAddr] == 0xFF)
 					pwrInfo24G->BW40_Diff[rfPath][TxCount] =	EEPROM_DEFAULT_DIFF;
 				else
 				{
 					pwrInfo24G->BW40_Diff[rfPath][TxCount] =	(PROMContent[eeAddr]&0xf0)>>4;
-					if(pwrInfo24G->BW40_Diff[rfPath][TxCount] & BIT3)		//4bit sign number to 8 bit sign number
+					if (pwrInfo24G->BW40_Diff[rfPath][TxCount] & BIT3)		//4bit sign number to 8 bit sign number
 						pwrInfo24G->BW40_Diff[rfPath][TxCount] |= 0xF0;
 				}
 
-				if(PROMContent[eeAddr] == 0xFF)
+				if (PROMContent[eeAddr] == 0xFF)
 					pwrInfo24G->BW20_Diff[rfPath][TxCount] =	EEPROM_DEFAULT_DIFF;
 				else
 				{
 					pwrInfo24G->BW20_Diff[rfPath][TxCount] =	(PROMContent[eeAddr]&0x0f);
-					if(pwrInfo24G->BW20_Diff[rfPath][TxCount] & BIT3)		//4bit sign number to 8 bit sign number
+					if (pwrInfo24G->BW20_Diff[rfPath][TxCount] & BIT3)		//4bit sign number to 8 bit sign number
 						pwrInfo24G->BW20_Diff[rfPath][TxCount] |= 0xF0;
 				}
 				eeAddr++;
 
-				if(PROMContent[eeAddr] == 0xFF)
+				if (PROMContent[eeAddr] == 0xFF)
 					pwrInfo24G->OFDM_Diff[rfPath][TxCount] =	EEPROM_DEFAULT_DIFF;
 				else
 				{
 					pwrInfo24G->OFDM_Diff[rfPath][TxCount] =	(PROMContent[eeAddr]&0xf0)>>4;
-					if(pwrInfo24G->OFDM_Diff[rfPath][TxCount] & BIT3)		//4bit sign number to 8 bit sign number
+					if (pwrInfo24G->OFDM_Diff[rfPath][TxCount] & BIT3)		//4bit sign number to 8 bit sign number
 						pwrInfo24G->OFDM_Diff[rfPath][TxCount] |= 0xF0;
 				}
 
-				if(PROMContent[eeAddr] == 0xFF)
+				if (PROMContent[eeAddr] == 0xFF)
 					pwrInfo24G->CCK_Diff[rfPath][TxCount] =	EEPROM_DEFAULT_DIFF;
 				else
 				{
 					pwrInfo24G->CCK_Diff[rfPath][TxCount] =	(PROMContent[eeAddr]&0x0f);
-					if(pwrInfo24G->CCK_Diff[rfPath][TxCount] & BIT3)		//4bit sign number to 8 bit sign number
+					if (pwrInfo24G->CCK_Diff[rfPath][TxCount] & BIT3)		//4bit sign number to 8 bit sign number
 						pwrInfo24G->CCK_Diff[rfPath][TxCount] |= 0xF0;
 				}
 				eeAddr++;
@@ -2829,7 +2829,7 @@ Hal_EfuseParseTxPowerInfo_8723B(
 
 			Hal_GetChnlGroup8723B(ch+1, &group);
 
-			if(ch == 14-1)
+			if (ch == 14-1)
 			{
 				pHalData->Index24G_CCK_Base[rfPath][ch] = pwrInfo24G.IndexCCK_Base[rfPath][5];
 				pHalData->Index24G_BW40_Base[rfPath][ch] = pwrInfo24G.IndexBW40_Base[rfPath][group];
@@ -2864,10 +2864,10 @@ Hal_EfuseParseTxPowerInfo_8723B(
 	}
 
 	// 2010/10/19 MH Add Regulator recognize for CU.
-	if(!AutoLoadFail)
+	if (!AutoLoadFail)
 	{
 		pHalData->EEPROMRegulatory = (PROMContent[EEPROM_RF_BOARD_OPTION_8723B]&0x7);	//bit0~2
-		if(PROMContent[EEPROM_RF_BOARD_OPTION_8723B] == 0xFF)
+		if (PROMContent[EEPROM_RF_BOARD_OPTION_8723B] == 0xFF)
 			pHalData->EEPROMRegulatory = (EEPROM_DEFAULT_BOARD_OPTION&0x7);	//bit0~2
 	}
 	else
@@ -2900,7 +2900,7 @@ Hal_EfuseParseBTCoexistInfo_8723B(
 		pHalData->EEPROMBluetoothType = BT_RTL8723B;
 
 		tempval = hwinfo[EEPROM_RF_BT_SETTING_8723B];
-		if(tempval !=0xFF){
+		if (tempval !=0xFF){
 			pHalData->EEPROMBluetoothAntNum = tempval & BIT(0);
 			// EFUSE_0xC3[6] == 0, S1(Main)-ODM_RF_PATH_A;
 			// EFUSE_0xC3[6] == 1, S0(Aux)-ODM_RF_PATH_B
@@ -2963,7 +2963,7 @@ Hal_EfuseParseEEPROMVer_8723B(
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
 
 //	RT_TRACE(_module_hci_hal_init_c_, _drv_notice_, ("%s(): AutoLoadFail = %d\n", __func__, AutoLoadFail));
-	if(!AutoLoadFail)
+	if (!AutoLoadFail)
 		pHalData->EEPROMVersion = hwinfo[EEPROM_VERSION_8723B];
 	else
 		pHalData->EEPROMVersion = 1;
@@ -3089,10 +3089,10 @@ Hal_EfuseParseXtal_8723B(
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
 
 //	RT_TRACE(_module_hci_hal_init_c_, _drv_notice_, ("%s(): AutoLoadFail = %d\n", __func__, AutoLoadFail));
-	if(!AutoLoadFail)
+	if (!AutoLoadFail)
 	{
 		pHalData->CrystalCap = hwinfo[EEPROM_XTAL_8723B];
-		if(pHalData->CrystalCap == 0xFF)
+		if (pHalData->CrystalCap == 0xFF)
 			pHalData->CrystalCap = EEPROM_Default_CrystalCap_8723B;	   //what value should 8812 set?
 	}
 	else
@@ -3140,7 +3140,7 @@ void Hal_ReadRFGainOffset(
 	// BB_RF Gain Offset from EEPROM
 	//
 
-	if(!AutoloadFail ){
+	if (!AutoloadFail ){
 		Adapter->eeprompriv.EEPROMRFGainOffset =PROMContent[EEPROM_RF_GAIN_OFFSET];
 		DBG_871X("AutoloadFail =%x,\n", AutoloadFail);
 		Adapter->eeprompriv.EEPROMRFGainVal=EFUSE_Read1Byte(Adapter, EEPROM_RF_GAIN_VAL);
@@ -3165,18 +3165,18 @@ BWMapping_8723B(
 
 	//DBG_871X("BWMapping pHalData->CurrentChannelBW %d, pattrib->bwmode %d \n",pHalData->CurrentChannelBW,pattrib->bwmode);
 
-	if(pHalData->CurrentChannelBW== CHANNEL_WIDTH_80)
+	if (pHalData->CurrentChannelBW== CHANNEL_WIDTH_80)
 	{
-		if(pattrib->bwmode == CHANNEL_WIDTH_80)
+		if (pattrib->bwmode == CHANNEL_WIDTH_80)
 			BWSettingOfDesc= 2;
-		else if(pattrib->bwmode == CHANNEL_WIDTH_40)
+		else if (pattrib->bwmode == CHANNEL_WIDTH_40)
 			BWSettingOfDesc = 1;
 		else
 			BWSettingOfDesc = 0;
 	}
-	else if(pHalData->CurrentChannelBW== CHANNEL_WIDTH_40)
+	else if (pHalData->CurrentChannelBW== CHANNEL_WIDTH_40)
 	{
-		if((pattrib->bwmode == CHANNEL_WIDTH_40) || (pattrib->bwmode == CHANNEL_WIDTH_80))
+		if ((pattrib->bwmode == CHANNEL_WIDTH_40) || (pattrib->bwmode == CHANNEL_WIDTH_80))
 			BWSettingOfDesc = 1;
 		else
 			BWSettingOfDesc = 0;
@@ -3184,7 +3184,7 @@ BWMapping_8723B(
 	else
 		BWSettingOfDesc = 0;
 
-	//if(pTcb->bBTTxPacket)
+	//if (pTcb->bBTTxPacket)
 	//	BWSettingOfDesc = 0;
 
 	return BWSettingOfDesc;
@@ -3197,50 +3197,50 @@ u8	SCMapping_8723B(PADAPTER Adapter, struct pkt_attrib *pattrib)
 
 	//DBG_871X("SCMapping: pHalData->CurrentChannelBW %d, pHalData->nCur80MhzPrimeSC %d, pHalData->nCur40MhzPrimeSC %d \n",pHalData->CurrentChannelBW,pHalData->nCur80MhzPrimeSC,pHalData->nCur40MhzPrimeSC);
 
-	if(pHalData->CurrentChannelBW == CHANNEL_WIDTH_80)
+	if (pHalData->CurrentChannelBW == CHANNEL_WIDTH_80)
 	{
-		if(pattrib->bwmode == CHANNEL_WIDTH_80)
+		if (pattrib->bwmode == CHANNEL_WIDTH_80)
 		{
 			SCSettingOfDesc = VHT_DATA_SC_DONOT_CARE;
 		}
-		else if(pattrib->bwmode == CHANNEL_WIDTH_40)
+		else if (pattrib->bwmode == CHANNEL_WIDTH_40)
 		{
-			if(pHalData->nCur80MhzPrimeSC == HAL_PRIME_CHNL_OFFSET_LOWER)
+			if (pHalData->nCur80MhzPrimeSC == HAL_PRIME_CHNL_OFFSET_LOWER)
 				SCSettingOfDesc = VHT_DATA_SC_40_LOWER_OF_80MHZ;
-			else if(pHalData->nCur80MhzPrimeSC == HAL_PRIME_CHNL_OFFSET_UPPER)
+			else if (pHalData->nCur80MhzPrimeSC == HAL_PRIME_CHNL_OFFSET_UPPER)
 				SCSettingOfDesc = VHT_DATA_SC_40_UPPER_OF_80MHZ;
 			else
 				DBG_871X("SCMapping: Not Correct Primary40MHz Setting \n");
 		}
 		else
 		{
-			if((pHalData->nCur40MhzPrimeSC == HAL_PRIME_CHNL_OFFSET_LOWER) && (pHalData->nCur80MhzPrimeSC == HAL_PRIME_CHNL_OFFSET_LOWER))
+			if ((pHalData->nCur40MhzPrimeSC == HAL_PRIME_CHNL_OFFSET_LOWER) && (pHalData->nCur80MhzPrimeSC == HAL_PRIME_CHNL_OFFSET_LOWER))
 				SCSettingOfDesc = VHT_DATA_SC_20_LOWEST_OF_80MHZ;
-			else if((pHalData->nCur40MhzPrimeSC == HAL_PRIME_CHNL_OFFSET_UPPER) && (pHalData->nCur80MhzPrimeSC == HAL_PRIME_CHNL_OFFSET_LOWER))
+			else if ((pHalData->nCur40MhzPrimeSC == HAL_PRIME_CHNL_OFFSET_UPPER) && (pHalData->nCur80MhzPrimeSC == HAL_PRIME_CHNL_OFFSET_LOWER))
 				SCSettingOfDesc = VHT_DATA_SC_20_LOWER_OF_80MHZ;
-			else if((pHalData->nCur40MhzPrimeSC == HAL_PRIME_CHNL_OFFSET_LOWER) && (pHalData->nCur80MhzPrimeSC == HAL_PRIME_CHNL_OFFSET_UPPER))
+			else if ((pHalData->nCur40MhzPrimeSC == HAL_PRIME_CHNL_OFFSET_LOWER) && (pHalData->nCur80MhzPrimeSC == HAL_PRIME_CHNL_OFFSET_UPPER))
 				SCSettingOfDesc = VHT_DATA_SC_20_UPPER_OF_80MHZ;
-			else if((pHalData->nCur40MhzPrimeSC == HAL_PRIME_CHNL_OFFSET_UPPER) && (pHalData->nCur80MhzPrimeSC == HAL_PRIME_CHNL_OFFSET_UPPER))
+			else if ((pHalData->nCur40MhzPrimeSC == HAL_PRIME_CHNL_OFFSET_UPPER) && (pHalData->nCur80MhzPrimeSC == HAL_PRIME_CHNL_OFFSET_UPPER))
 				SCSettingOfDesc = VHT_DATA_SC_20_UPPERST_OF_80MHZ;
 			else
 				DBG_871X("SCMapping: Not Correct Primary40MHz Setting \n");
 		}
 	}
-	else if(pHalData->CurrentChannelBW== CHANNEL_WIDTH_40)
+	else if (pHalData->CurrentChannelBW== CHANNEL_WIDTH_40)
 	{
 		//DBG_871X("SCMapping: HT Case: pHalData->CurrentChannelBW %d, pHalData->nCur40MhzPrimeSC %d \n",pHalData->CurrentChannelBW,pHalData->nCur40MhzPrimeSC);
 
-		if(pattrib->bwmode == CHANNEL_WIDTH_40)
+		if (pattrib->bwmode == CHANNEL_WIDTH_40)
 		{
 			SCSettingOfDesc = VHT_DATA_SC_DONOT_CARE;
 		}
-		else if(pattrib->bwmode == CHANNEL_WIDTH_20)
+		else if (pattrib->bwmode == CHANNEL_WIDTH_20)
 		{
-			if(pHalData->nCur40MhzPrimeSC == HAL_PRIME_CHNL_OFFSET_UPPER)
+			if (pHalData->nCur40MhzPrimeSC == HAL_PRIME_CHNL_OFFSET_UPPER)
 			{
 				SCSettingOfDesc = VHT_DATA_SC_20_UPPER_OF_80MHZ;
 			}
-			else if(pHalData->nCur40MhzPrimeSC == HAL_PRIME_CHNL_OFFSET_LOWER)
+			else if (pHalData->nCur40MhzPrimeSC == HAL_PRIME_CHNL_OFFSET_LOWER)
 			{
 				SCSettingOfDesc = VHT_DATA_SC_20_LOWER_OF_80MHZ;
 			}
@@ -3395,7 +3395,7 @@ static void rtl8723b_fill_default_txdesc(
 		ptxdesc->sectype = fill_txdesc_sectype(pattrib);
 		fill_txdesc_vcs_8723b(padapter, pattrib, ptxdesc);
 
-		if(pattrib->icmp_pkt ==1 && padapter->registrypriv.wifi_spec==1)
+		if (pattrib->icmp_pkt ==1 && padapter->registrypriv.wifi_spec==1)
 			drv_userate = 1;
 
 		if ((pattrib->ether_type != 0x888e) &&
@@ -3435,7 +3435,7 @@ static void rtl8723b_fill_default_txdesc(
 
 			if (padapter->fix_rate != 0xFF) { // modify data rate by iwpriv
 				ptxdesc->userate = 1;
-				if(padapter->fix_rate & BIT(7))
+				if (padapter->fix_rate & BIT(7))
 					ptxdesc->data_short = 1;
 
 				ptxdesc->datarate = (padapter->fix_rate & 0x7F);
@@ -3997,7 +3997,7 @@ void CCX_FwC2HTxRpt_8723b(PADAPTER padapter, u8 *pdata, u8 len)
 		rtw_ack_tx_done(&padapter->xmitpriv, RTW_SCTX_DONE_CCX_PKT_FAIL);
 	}
 /*
-	else if(seq_no != padapter->xmitpriv.seq_no) {
+	else if (seq_no != padapter->xmitpriv.seq_no) {
 		DBG_871X("tx_seq_no=%d, rpt_seq_no=%d\n", padapter->xmitpriv.seq_no, seq_no);
 		rtw_ack_tx_done(&padapter->xmitpriv, RTW_SCTX_DONE_CCX_PKT_FAIL);
 	}
@@ -4123,7 +4123,7 @@ void C2HPacketHandler_8723B(PADAPTER padapter, u8 *pbuffer, u16 length)
 #ifdef CONFIG_WOWLAN
 	struct pwrctrl_priv *pwrpriv = adapter_to_pwrctl(padapter);
 
-	if(pwrpriv->wowlan_mode == true)
+	if (pwrpriv->wowlan_mode == true)
 	{
 		DBG_871X("%s(): return because wowolan_mode==true! CMDID=%d\n", __func__, pbuffer[0]);
 		return;
@@ -4197,7 +4197,7 @@ void SetHwReg8723B(PADAPTER padapter, u8 variable, u8 *val)
 		/* IOT consideration */
 		if (mlmext_info->assoc_AP_vendor == HT_IOT_PEER_CISCO) {
 			/* if peer is cisco and didn't use ofdm rate, we enable 6M ack */
-			if((BrateCfg & (RRSR_24M|RRSR_12M|RRSR_6M)) == 0)
+			if ((BrateCfg & (RRSR_24M|RRSR_12M|RRSR_6M)) == 0)
 				BrateCfg |= RRSR_6M;
 		}
 		ioted = BrateCfg;
@@ -4404,7 +4404,7 @@ void SetHwReg8723B(PADAPTER padapter, u8 variable, u8 *val)
 		{
 			u32	AMPDULen =  (*((u8 *)val));
 
-			if(AMPDULen < HT_AGG_SIZE_32K)
+			if (AMPDULen < HT_AGG_SIZE_32K)
 				AMPDULen = (0x2000 << (*((u8 *)val))) -1;
 			else
 				AMPDULen = 0x7fff;
@@ -4660,7 +4660,7 @@ void GetHwReg8723B(PADAPTER padapter, u8 variable, u8 *val)
 			{
 				valRCR = rtw_read32(padapter, REG_RCR);
 				valRCR &= 0x00070000;
-				if(valRCR)
+				if (valRCR)
 					*val = false;
 				else
 					*val = true;
@@ -4703,7 +4703,7 @@ void GetHwReg8723B(PADAPTER padapter, u8 variable, u8 *val)
 		break;
 	case HW_VAR_WAKEUP_REASON:
 		*val = rtw_read8(padapter, REG_WOWLAN_WAKE_REASON);
-		if(*val == 0xEA)
+		if (*val == 0xEA)
 			*val = 0;
 		break;
 	case HW_VAR_SYS_CLKR:

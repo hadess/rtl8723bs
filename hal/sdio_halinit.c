@@ -369,7 +369,7 @@ _InitNormalChipTwoOutEpPriority(
 			break;
 	}
 
-	if(!pregistrypriv->wifi_spec ){
+	if (!pregistrypriv->wifi_spec ){
 		beQ		= valueLow;
 		bkQ		= valueLow;
 		viQ		= valueHi;
@@ -744,7 +744,7 @@ static bool HalDetectPwrDownMode(PADAPTER Adapter)
 	EFUSE_ShadowRead(Adapter, 1, 0x7B/*EEPROM_RF_OPT3_92C*/, (u32 *)&tmpvalue);
 
 	// 2010/08/25 MH INF priority > PDN Efuse value.
-	if(tmpvalue & BIT4 && pwrctrlpriv->reg_pdnmode)
+	if (tmpvalue & BIT4 && pwrctrlpriv->reg_pdnmode)
 	{
 		pHalData->pwrdown = true;
 	}
@@ -822,7 +822,7 @@ static u32 rtl8723bs_hal_init(PADAPTER padapter)
 	}
 
 #ifdef CONFIG_WOWLAN
-	if(rtw_read8(padapter, REG_MCUFWDL)&BIT7) {
+	if (rtw_read8(padapter, REG_MCUFWDL)&BIT7) {
 		u8 reg_val=0;
 		DBG_871X("+Reset Entry+\n");
 		rtw_write8(padapter, REG_MCUFWDL, 0x00);
@@ -889,7 +889,7 @@ static u32 rtl8723bs_hal_init(PADAPTER padapter)
 
 #if (HAL_MAC_ENABLE == 1)
 	ret = PHY_MACConfig8723B(padapter);
-	if(ret != _SUCCESS){
+	if (ret != _SUCCESS){
 		RT_TRACE(_module_hci_hal_init_c_, _drv_info_, ("Initializepadapter8192CSdio(): Fail to configure MAC!!\n"));
 		return ret;
 	}
@@ -899,7 +899,7 @@ static u32 rtl8723bs_hal_init(PADAPTER padapter)
 	//
 #if (HAL_BB_ENABLE == 1)
 	ret = PHY_BBConfig8723B(padapter);
-	if(ret != _SUCCESS){
+	if (ret != _SUCCESS){
 		RT_TRACE(_module_hci_hal_init_c_, _drv_info_, ("Initializepadapter8192CSdio(): Fail to configure BB!!\n"));
 		return ret;
 	}
@@ -907,11 +907,11 @@ static u32 rtl8723bs_hal_init(PADAPTER padapter)
 
 	// If RF is on, we need to init RF. Otherwise, skip the procedure.
 	// We need to follow SU method to change the RF cfg.txt. Default disable RF TX/RX mode.
-	//if(pHalData->eRFPowerState == eRfOn)
+	//if (pHalData->eRFPowerState == eRfOn)
 	{
 #if (HAL_RF_ENABLE == 1)
 		ret = PHY_RFConfig8723B(padapter);
-		if(ret != _SUCCESS){
+		if (ret != _SUCCESS){
 			RT_TRACE(_module_hci_hal_init_c_, _drv_info_, ("Initializepadapter8192CSdio(): Fail to configure RF!!\n"));
 			return ret;
 		}
@@ -997,7 +997,7 @@ static u32 rtl8723bs_hal_init(PADAPTER padapter)
 
 	//DbgPrint("pHalData->DefaultTxPwrDbm = %d\n", pHalData->DefaultTxPwrDbm);
 
-//	if(pHalData->SwBeaconType < HAL92CSDIO_DEFAULT_BEACON_TYPE) // The lowest Beacon Type that HW can support
+//	if (pHalData->SwBeaconType < HAL92CSDIO_DEFAULT_BEACON_TYPE) // The lowest Beacon Type that HW can support
 //		pHalData->SwBeaconType = HAL92CSDIO_DEFAULT_BEACON_TYPE;
 
 	//
@@ -1022,7 +1022,7 @@ static u32 rtl8723bs_hal_init(PADAPTER padapter)
 	{
 		pwrctrlpriv->rf_pwrstate = rf_on;
 
-		if(pwrctrlpriv->rf_pwrstate == rf_on)
+		if (pwrctrlpriv->rf_pwrstate == rf_on)
 		{
 			struct pwrctrl_priv *pwrpriv;
 			unsigned long start_time;
@@ -1132,7 +1132,7 @@ static u32 rtl8723bs_hal_deinit(PADAPTER padapter)
 	{
 		if (adapter_to_pwrctl(padapter)->bips_processing == true)
 		{
-			if(padapter->netif_up == true)
+			if (padapter->netif_up == true)
 			{
 				int cnt=0;
 				u8 val8 = 0;
@@ -1148,7 +1148,7 @@ static u32 rtl8723bs_hal_deinit(PADAPTER padapter)
 					mdelay(10);
 				}while(cnt<100 && (val8!=0));
 				//H2C done, enter 32k
-				if(val8 == 0)
+				if (val8 == 0)
 				{
 					//ser rpwm to enter 32k
 					val8 = rtw_read8(padapter, SDIO_LOCAL_BASE|SDIO_REG_HRPWM1);
@@ -1340,7 +1340,7 @@ Hal_EfuseParseBoardType_8723BS(
 	if (!AutoLoadFail)
 	{
 		pHalData->BoardType = (hwinfo[EEPROM_RF_BOARD_OPTION_8723B] & 0xE0) >> 5;
-		if(pHalData->BoardType == 0xFF)
+		if (pHalData->BoardType == 0xFF)
 			pHalData->BoardType = (EEPROM_DEFAULT_BOARD_OPTION&0xE0)>>5;
 	}
 	else
@@ -1445,7 +1445,7 @@ static s32 _ReadAdapterInfo8723BS(PADAPTER padapter)
 	RT_TRACE(_module_hci_hal_init_c_, _drv_info_, ("+_ReadAdapterInfo8723BS\n"));
 
 	// before access eFuse, make sure card enable has been called
-	if(padapter->hw_init_completed == false)
+	if (padapter->hw_init_completed == false)
 		_InitPowerOn_8723BS(padapter);
 
 
@@ -1462,7 +1462,7 @@ static s32 _ReadAdapterInfo8723BS(PADAPTER padapter)
 	_ReadPROMContent(padapter);
 	_InitOtherVariable(padapter);
 
-	if(padapter->hw_init_completed == false)
+	if (padapter->hw_init_completed == false)
 	{
 		rtw_write8(padapter, 0x67, 0x00); // for BT, Switch Ant control to BT
 		CardDisableRTL8723BSdio(padapter);//for the power consumption issue,  wifi ko module is loaded during booting, but wifi GUI is off
@@ -1576,7 +1576,7 @@ static void SetHwReg8723BS(PADAPTER padapter, u8 variable, u8 *val)
 							DBG_871X_LEVEL(_drv_always_, "RecvOnePkt Result: %d\n", res);
                                                 }
 					}while(trycnt--);
-					if(trycnt ==0)
+					if (trycnt ==0)
 						DBG_871X_LEVEL(_drv_always_, "Stop RX DMA failed...... \n");
 
 					// 3. Clear IMR and ISR
@@ -1603,7 +1603,7 @@ static void SetHwReg8723BS(PADAPTER padapter, u8 variable, u8 *val)
 					rtl8723b_set_wowlan_cmd(padapter, 1);
 
 					// 6. Check EnableWoWlan CMD is ready
-					if(!pwrctl->wowlan_pno_enable) {
+					if (!pwrctl->wowlan_pno_enable) {
 						DBG_871X_LEVEL(_drv_always_, "Check EnableWoWlan CMD is ready\n");
 						mstatus = rtw_read8(padapter, REG_WOW_CTRL);
 						trycnt = 10;
@@ -1678,14 +1678,14 @@ static void SetHwReg8723BS(PADAPTER padapter, u8 variable, u8 *val)
 							rtw_set_sec_pn(padapter);
 
 						// 3.2 read GTK index and key
-						if(psecuritypriv->binstallKCK_KEK == true && psecuritypriv->dot11PrivacyAlgrthm == _AES_)
+						if (psecuritypriv->binstallKCK_KEK == true && psecuritypriv->dot11PrivacyAlgrthm == _AES_)
 						{
 							u8 gtk_keyindex=0;
 							u8 get_key[16];
 							//read gtk key index
 							gtk_keyindex = rtw_read8(padapter, 0x48c);
 
-							if(gtk_keyindex < 4)
+							if (gtk_keyindex < 4)
 							{
 								psecuritypriv->dot118021XGrpKeyid = gtk_keyindex;
 								read_cam(padapter ,gtk_keyindex, get_key);
@@ -1710,7 +1710,7 @@ static void SetHwReg8723BS(PADAPTER padapter, u8 variable, u8 *val)
 #endif
 
 					// 5. Download reserved pages and report media status if needed.
-					if((pwrctl->wowlan_wake_reason != FWDecisionDisconnect) &&
+					if ((pwrctl->wowlan_wake_reason != FWDecisionDisconnect) &&
 						(pwrctl->wowlan_wake_reason != Rx_Pairwisekey) &&
 						(pwrctl->wowlan_wake_reason != Rx_DisAssoc) &&
 						(pwrctl->wowlan_wake_reason != Rx_DeAuth))

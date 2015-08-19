@@ -197,7 +197,7 @@
 		if (sel == RTW_DBGDUMP)\
 			_DBG_871X_LEVEL(_drv_always_, fmt, ##arg); \
 		else {\
-			if(seq_printf(sel, fmt, ##arg)) /*rtw_warn_on(1)*/; \
+			if (seq_printf(sel, fmt, ##arg)) /*rtw_warn_on(1)*/; \
 		} \
 	}while(0)
 
@@ -207,7 +207,7 @@
 		if (sel == RTW_DBGDUMP)\
 			DBG_871X_LEVEL(_drv_always_, fmt, ##arg); \
 		else {\
-			if(seq_printf(sel, fmt, ##arg)) /*rtw_warn_on(1)*/; \
+			if (seq_printf(sel, fmt, ##arg)) /*rtw_warn_on(1)*/; \
 		} \
 	}while(0)
 
@@ -239,7 +239,7 @@
 	#undef RT_TRACE
 	#define RT_TRACE(_Comp, _Level, Fmt)\
 	do {\
-		if((_Comp & GlobalDebugComponents) && (_Level <= GlobalDebugLevel)) {\
+		if ((_Comp & GlobalDebugComponents) && (_Level <= GlobalDebugLevel)) {\
 			_dbgdump("%s [0x%08x,%d]", DRIVER_PREFIX, (unsigned int)_Comp, _Level);\
 			_dbgdump Fmt;\
 		}\
@@ -251,7 +251,7 @@
 #if	defined(_dbgdump)
 	#undef RT_PRINT_DATA
 	#define RT_PRINT_DATA(_Comp, _Level, _TitleString, _HexData, _HexDataLen)			\
-		if(((_Comp) & GlobalDebugComponents) && (_Level <= GlobalDebugLevel))	\
+		if (((_Comp) & GlobalDebugComponents) && (_Level <= GlobalDebugLevel))	\
 		{									\
 			int __i;								\
 			u8	*ptr = (u8 *)_HexData;				\

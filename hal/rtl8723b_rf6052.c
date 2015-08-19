@@ -161,7 +161,7 @@ phy_RF6052_Config_ParaFile(
 			if (PHY_ConfigRFWithParaFile(Adapter, pszRadioAFile, eRFPath) == _FAIL)
 #endif
 			{
-				if(HAL_STATUS_FAILURE ==ODM_ConfigRFWithHeaderFile(&pHalData->odmpriv,CONFIG_RF_RADIO, (ODM_RF_RADIO_PATH_E)eRFPath))
+				if (HAL_STATUS_FAILURE ==ODM_ConfigRFWithHeaderFile(&pHalData->odmpriv,CONFIG_RF_RADIO, (ODM_RF_RADIO_PATH_E)eRFPath))
 					rtStatus = _FAIL;
 			}
 			break;
@@ -170,7 +170,7 @@ phy_RF6052_Config_ParaFile(
 			if (PHY_ConfigRFWithParaFile(Adapter, pszRadioBFile, eRFPath) == _FAIL)
 #endif
 			{
-				if(HAL_STATUS_FAILURE ==ODM_ConfigRFWithHeaderFile(&pHalData->odmpriv,CONFIG_RF_RADIO, (ODM_RF_RADIO_PATH_E)eRFPath))
+				if (HAL_STATUS_FAILURE ==ODM_ConfigRFWithHeaderFile(&pHalData->odmpriv,CONFIG_RF_RADIO, (ODM_RF_RADIO_PATH_E)eRFPath))
 					rtStatus = _FAIL;
 			}
 			break;
@@ -193,7 +193,7 @@ phy_RF6052_Config_ParaFile(
 			break;
 		}
 
-		if(rtStatus != _SUCCESS){
+		if (rtStatus != _SUCCESS){
 			//RT_TRACE(COMP_FPGA, DBG_LOUD, ("phy_RF6052_Config_ParaFile():Radio[%d] Fail!!", eRFPath));
 			goto phy_RF6052_Config_ParaFile_Fail;
 		}
@@ -230,7 +230,7 @@ PHY_RF6052_Config8723B(
 	// Initialize general global value
 	//
 	// TODO: Extend RF_PATH_C and RF_PATH_D in the future
-	if(pHalData->rf_type == RF_1T1R)
+	if (pHalData->rf_type == RF_1T1R)
 		pHalData->NumTotalRFPath = 1;
 	else
 		pHalData->NumTotalRFPath = 2;

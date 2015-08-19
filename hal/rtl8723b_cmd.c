@@ -39,7 +39,7 @@ static u8 _is_fw_read_cmd_down(_adapter* padapter, u8 msgbox_num)
 
 	do{
 		valid = rtw_read8(padapter,REG_HMETFR) & BIT(msgbox_num);
-		if(0 == valid ){
+		if (0 == valid ){
 			read_down = true;
 		}
 #ifdef CONFIG_WOWLAN
@@ -79,7 +79,7 @@ s32 FillH2CCmd8723B(PADAPTER padapter, u8 ElementID, u32 CmdLen, u8 *pCmdBuffer)
 	if (!pCmdBuffer) {
 		goto exit;
 	}
-	if(CmdLen > RTL8723B_MAX_CMD_LEN) {
+	if (CmdLen > RTL8723B_MAX_CMD_LEN) {
 		goto exit;
 	}
 	if (padapter->bSurpriseRemoved == true)
@@ -89,14 +89,14 @@ s32 FillH2CCmd8723B(PADAPTER padapter, u8 ElementID, u32 CmdLen, u8 *pCmdBuffer)
 	do{
 		h2c_box_num = pHalData->LastHMEBoxNum;
 
-		if(!_is_fw_read_cmd_down(padapter, h2c_box_num)){
+		if (!_is_fw_read_cmd_down(padapter, h2c_box_num)){
 			DBG_8192C(" fw read cmd failed...\n");
 			//DBG_8192C(" 0x1c0: 0x%8x\n", rtw_read32(padapter, 0x1c0));
 			//DBG_8192C(" 0x1c4: 0x%8x\n", rtw_read32(padapter, 0x1c4));
 			goto exit;
 		}
 
-		if(CmdLen<=3)
+		if (CmdLen<=3)
 		{
 			memcpy((u8*)(&h2c_cmd)+1, pCmdBuffer, CmdLen );
 		}
@@ -108,7 +108,7 @@ s32 FillH2CCmd8723B(PADAPTER padapter, u8 ElementID, u32 CmdLen, u8 *pCmdBuffer)
 
 		*(u8*)(&h2c_cmd) |= ElementID;
 
-		if(CmdLen>3){
+		if (CmdLen>3){
 			msgbox_ex_addr = REG_HMEBOX_EXT0_8723B + (h2c_box_num *RTL8723B_EX_MESSAGE_BOX_SIZE);
 			rtw_write32(padapter, msgbox_ex_addr, h2c_cmd_ex);
 		}
@@ -175,7 +175,7 @@ static void ConstructBeacon(_adapter *padapter, u8 *pframe, u32 *pLength)
 	pframe += 2;
 	pktlen += 2;
 
-	if( (pmlmeinfo->state&0x03) == WIFI_FW_AP_STATE)
+	if ( (pmlmeinfo->state&0x03) == WIFI_FW_AP_STATE)
 	{
 		//DBG_871X("ie len=%d\n", cur_network->IELength);
 		pktlen += cur_network->IELength - sizeof(NDIS_802_11_FIXED_IEs);
@@ -196,7 +196,7 @@ static void ConstructBeacon(_adapter *padapter, u8 *pframe, u32 *pLength)
 	// DS parameter set
 	pframe = rtw_set_ie(pframe, _DSSET_IE_, 1, (unsigned char *)&(cur_network->Configuration.DSConfig), &pktlen);
 
-	if( (pmlmeinfo->state&0x03) == WIFI_FW_ADHOC_STATE)
+	if ( (pmlmeinfo->state&0x03) == WIFI_FW_ADHOC_STATE)
 	{
 		u32 ATIMWindow;
 		// IBSS Parameter Set...
@@ -410,7 +410,7 @@ static void ConstructARPResponse(
 			EncryptionHeadOverhead = 0;
 	}
 
-	if(EncryptionHeadOverhead > 0)
+	if (EncryptionHeadOverhead > 0)
 	{
 		memset(&(pframe[*pLength]), 0,EncryptionHeadOverhead);
 		*pLength += EncryptionHeadOverhead;
@@ -457,7 +457,7 @@ static void ConstructARPResponse(
 
 		psta = rtw_get_stainfo(&padapter->stapriv, get_my_bssid(&(pmlmeinfo->network)));
 		if (psta != NULL) {
-			if(!memcmp(&psta->dot11tkiptxmickey.skey[0],null_key, 16)){
+			if (!memcmp(&psta->dot11tkiptxmickey.skey[0],null_key, 16)){
 				DBG_871X("%s(): STA dot11tkiptxmickey==0\n",__FUNCTION__);
 			}
 			//start to calculate the mic code
@@ -669,7 +669,7 @@ static void ConstructGTKResponse(
 			EncryptionHeadOverhead = 0;
 	}
 
-	if(EncryptionHeadOverhead > 0)
+	if (EncryptionHeadOverhead > 0)
 	{
 		memset(&(pframe[*pLength]), 0,EncryptionHeadOverhead);
 		*pLength += EncryptionHeadOverhead;
@@ -789,7 +789,7 @@ static void ConstructProbeRsp(_adapter *padapter, u8 *pframe, u32 *pLength, u8 *
 	pktlen = sizeof(struct ieee80211_hdr_3addr);
 	pframe += pktlen;
 
-	if(cur_network->IELength>MAX_IE_SZ)
+	if (cur_network->IELength>MAX_IE_SZ)
 		return;
 
 	pwps_ie = rtw_get_wps_ie(cur_network->IEs+_FIXED_IE_LENGTH_,
@@ -918,7 +918,7 @@ static void rtl8723b_set_FwAoacRsvdPage_cmd(PADAPTER padapter, PRSVDPAGE_LOC rsv
 		FillH2CCmd8723B(padapter, H2C_8723B_AOAC_RSVD_PAGE, H2C_AOAC_RSVDPAGE_LOC_LEN, u1H2CAoacRsvdPageParm);
 	} else {
 #ifdef CONFIG_PNO_SUPPORT
-		if(!pwrpriv->pno_in_resume) {
+		if (!pwrpriv->pno_in_resume) {
 			DBG_871X("NLO_INFO=%d\n", rsvdpageloc->LocPNOInfo);
 			memset(&u1H2CAoacRsvdPageParm, 0, sizeof(u1H2CAoacRsvdPageParm));
 			SET_H2CCMD_AOAC_RSVDPAGE_LOC_NLO_INFO(u1H2CAoacRsvdPageParm, rsvdpageloc->LocPNOInfo);
@@ -1063,13 +1063,13 @@ void rtl8723b_set_FwPwrMode_cmd(PADAPTER padapter, u8 psmode)
 	u8 u1H2CPwrModeParm[H2C_PWRMODE_LEN]={0};
 	u8 PowerState=0, awake_intvl = 1, byte5 = 0, rlbm = 0;
 
-	if(pwrpriv->dtim > 0)
+	if (pwrpriv->dtim > 0)
 		DBG_871X("%s(): FW LPS mode = %d, SmartPS=%d, dtim=%d\n", __func__, psmode, pwrpriv->smart_ps, pwrpriv->dtim);
 	else
 		DBG_871X("%s(): FW LPS mode = %d, SmartPS=%d\n", __func__, psmode, pwrpriv->smart_ps);
 
 #ifdef CONFIG_WOWLAN
-	if(psmode == PS_MODE_DTIM)  //For WOWLAN LPS, DTIM = (awake_intvl - 1)
+	if (psmode == PS_MODE_DTIM)  //For WOWLAN LPS, DTIM = (awake_intvl - 1)
 	{
 		awake_intvl = 3;//DTIM=2
 		rlbm = 2;
@@ -1077,7 +1077,7 @@ void rtl8723b_set_FwPwrMode_cmd(PADAPTER padapter, u8 psmode)
 	else
 #endif //CONFIG_WOWLAN
 	{
-		if(pwrpriv->dtim > 0 && pwrpriv->dtim < 16)
+		if (pwrpriv->dtim > 0 && pwrpriv->dtim < 16)
 			awake_intvl = pwrpriv->dtim+1;//DTIM = (awake_intvl - 1)
 		else
 			awake_intvl = 3;//DTIM=2
@@ -1086,7 +1086,7 @@ void rtl8723b_set_FwPwrMode_cmd(PADAPTER padapter, u8 psmode)
 	}
 
 
-	if(padapter->registrypriv.wifi_spec==1)
+	if (padapter->registrypriv.wifi_spec==1)
 	{
 		awake_intvl = 2;
 		rlbm = 2;
@@ -1126,9 +1126,9 @@ void rtl8723b_set_FwPwrMode_cmd(PADAPTER padapter, u8 psmode)
 	SET_8723B_H2CCMD_PWRMODE_PARM_ALL_QUEUE_UAPSD(u1H2CPwrModeParm, padapter->registrypriv.uapsd_enable);
 	SET_8723B_H2CCMD_PWRMODE_PARM_PWR_STATE(u1H2CPwrModeParm, PowerState);
 	SET_8723B_H2CCMD_PWRMODE_PARM_BYTE5(u1H2CPwrModeParm, byte5);
-	if(psmode != PS_MODE_ACTIVE)
+	if (psmode != PS_MODE_ACTIVE)
 	{
-		if(pmlmeext ->adaptive_tsf_done == false && pmlmeext->bcn_cnt>0)
+		if (pmlmeext ->adaptive_tsf_done == false && pmlmeext->bcn_cnt>0)
 		{
 			u8 ratio_20_delay, ratio_80_delay;
 
@@ -1152,13 +1152,13 @@ void rtl8723b_set_FwPwrMode_cmd(PADAPTER padapter, u8 psmode)
 				ratio_20_delay += pmlmeext->bcn_delay_ratio[i];
 				ratio_80_delay += pmlmeext->bcn_delay_ratio[i];
 
-				if(ratio_20_delay > 20 && pmlmeext->DrvBcnEarly == 0xff)
+				if (ratio_20_delay > 20 && pmlmeext->DrvBcnEarly == 0xff)
 				{
 					pmlmeext->DrvBcnEarly = i;
 					DBG_871X("%s(): DrvBcnEarly = %d\n", __func__, pmlmeext->DrvBcnEarly);
 				}
 
-				if(ratio_80_delay > 80 && pmlmeext->DrvBcnTimeOut == 0xff)
+				if (ratio_80_delay > 80 && pmlmeext->DrvBcnTimeOut == 0xff)
 				{
 					pmlmeext->DrvBcnTimeOut = i;
 					DBG_871X("%s(): DrvBcnTimeOut = %d\n", __func__, pmlmeext->DrvBcnTimeOut);
@@ -1184,7 +1184,7 @@ void rtl8723b_set_FwPwrMode_cmd(PADAPTER padapter, u8 psmode)
 		pmlmeext->DrvBcnEarly=0;
 		pmlmeext->DrvBcnTimeOut=7;
 
-		if((pmlmeext->DrvBcnEarly!=0Xff) && (pmlmeext->DrvBcnTimeOut!=0xff))
+		if ((pmlmeext->DrvBcnEarly!=0Xff) && (pmlmeext->DrvBcnTimeOut!=0xff))
 			u1H2CPwrModeParm[H2C_PWRMODE_LEN-1] = BIT(0) | ((pmlmeext->DrvBcnEarly<<1)&0x0E) |((pmlmeext->DrvBcnTimeOut<<4)&0xf0) ;
 */
 
@@ -1374,12 +1374,12 @@ static void rtl8723b_set_FwWoWlanRelated_cmd(_adapter* padapter, u8 enable)
 	u8	pkt_type = 0;
 
 	DBG_871X_LEVEL(_drv_always_, "+%s()+: enable=%d\n", __func__, enable);
-	if(enable) {
+	if (enable) {
 		rtl8723b_set_FwAOACGlobalInfo_Cmd(padapter, psecpriv->dot118021XGrpPrivacy, psecpriv->dot11PrivacyAlgrthm);
 
 		rtl8723b_set_FwJoinBssRpt_cmd(padapter, RT_MEDIA_CONNECT);	//RT_MEDIA_CONNECT will confuse in the future
 
-		if(!(ppwrpriv->wowlan_pno_enable))
+		if (!(ppwrpriv->wowlan_pno_enable))
 		{
 			psta = rtw_get_stainfo(&padapter->stapriv, get_bssid(pmlmepriv));
 			if (psta != NULL)
@@ -1390,7 +1390,7 @@ static void rtl8723b_set_FwWoWlanRelated_cmd(_adapter* padapter, u8 enable)
 
 		msleep(2);
 
-		if(!(ppwrpriv->wowlan_pno_enable)) {
+		if (!(ppwrpriv->wowlan_pno_enable)) {
 		rtl8723b_set_FwDisconDecision_cmd(padapter, enable);
 		msleep(2);
 
@@ -1845,7 +1845,7 @@ static void rtl8723b_set_FwRsvdPagePkt(PADAPTER padapter, bool bDLFinished)
 #endif
 	}
 
-	if(TotalPacketLen > MaxRsvdPageBufSize)
+	if (TotalPacketLen > MaxRsvdPageBufSize)
 	{
 		DBG_871X("%s(): ERROR: The rsvd page size is not enough!!TotalPacketLen %d, MaxRsvdPageBufSize %d\n",__FUNCTION__,
 			TotalPacketLen,MaxRsvdPageBufSize);
@@ -1862,13 +1862,13 @@ static void rtl8723b_set_FwRsvdPagePkt(PADAPTER padapter, bool bDLFinished)
 	}
 
 	DBG_871X("%s: Set RSVD page location to Fw ,TotalPacketLen(%d), TotalPageNum(%d)\n", __FUNCTION__,TotalPacketLen,TotalPageNum);
-	if(check_fwstate(pmlmepriv, _FW_LINKED)) {
+	if (check_fwstate(pmlmepriv, _FW_LINKED)) {
 		rtl8723b_set_FwRsvdPage_cmd(padapter, &RsvdPageLoc);
 		rtl8723b_set_FwAoacRsvdPage_cmd(padapter, &RsvdPageLoc);
 	} else {
 		rtl8723b_set_FwAoacRsvdPage_cmd(padapter, &RsvdPageLoc);
 #ifdef CONFIG_PNO_SUPPORT
-		if(pwrctl->pno_in_resume)
+		if (pwrctl->pno_in_resume)
 			rtl8723b_set_FwScanOffloadInfo_cmd(padapter,
 					&RsvdPageLoc, 0);
 		else
@@ -2019,7 +2019,7 @@ void rtl8723b_download_rsvd_page(PADAPTER padapter, u8 mstatus)
 	DBG_8192C("+" FUNC_ADPT_FMT ": iface_type=%d mstatus(%x)\n",
 		FUNC_ADPT_ARG(padapter), get_iface_type(padapter), mstatus);
 
-	if(mstatus == RT_MEDIA_CONNECT)
+	if (mstatus == RT_MEDIA_CONNECT)
 	{
 		bool bRecover = false;
 		u8 v8;
@@ -2078,10 +2078,10 @@ void rtl8723b_download_rsvd_page(PADAPTER padapter, u8 mstatus)
 
 		}while(!bcn_valid && DLBcnCount<=100 && !padapter->bSurpriseRemoved && !padapter->bDriverStopped);
 
-		if(padapter->bSurpriseRemoved || padapter->bDriverStopped)
+		if (padapter->bSurpriseRemoved || padapter->bDriverStopped)
 		{
 		}
-		else if(!bcn_valid)
+		else if (!bcn_valid)
 			DBG_871X(ADPT_FMT": 1 DL RSVD page failed! DLBcnCount:%u, poll:%u\n",
 				ADPT_ARG(padapter) ,DLBcnCount, poll);
 		else {
@@ -2102,7 +2102,7 @@ void rtl8723b_download_rsvd_page(PADAPTER padapter, u8 mstatus)
 		// prevent from setting 0x422[6] to 0 after download reserved page, or it will cause
 		// the beacon cannot be sent by HW.
 		// 2010.06.23. Added by tynli.
-		if(bRecover)
+		if (bRecover)
 		{
 			rtw_write8(padapter, REG_FWHW_TXQ_CTRL+2, pHalData->RegFwHwTxQCtrl | BIT(6));
 			pHalData->RegFwHwTxQCtrl |= BIT(6);
@@ -2122,7 +2122,7 @@ void rtl8723b_set_rssi_cmd(_adapter*padapter, u8 *param)
 
 void rtl8723b_set_FwJoinBssRpt_cmd(PADAPTER padapter, u8 mstatus)
 {
-	if(mstatus == 1)
+	if (mstatus == 1)
 		rtl8723b_download_rsvd_page(padapter, RT_MEDIA_CONNECT);
 }
 
@@ -2143,14 +2143,14 @@ void rtl8723b_Add_RateATid(PADAPTER pAdapter, u32 bitmap, u8* arg, u8 rssi_level
 	u32 mask = bitmap&0x0FFFFFFF;
 
 	psta = pmlmeinfo->FW_sta_info[mac_id].psta;
-	if(psta == NULL)
+	if (psta == NULL)
 	{
 		return;
 	}
 
 	bw = psta->bw_mode;
 
-	if(rssi_level != DM_RATR_STA_INIT)
+	if (rssi_level != DM_RATR_STA_INIT)
 		mask = ODM_Get_Rate_Bitmap(&pHalData->odmpriv, mac_id, mask, rssi_level);
 
 	DBG_871X("%s(): mac_id=%d raid=0x%x bw=%d mask=0x%x\n", __func__, mac_id, raid, bw, mask);

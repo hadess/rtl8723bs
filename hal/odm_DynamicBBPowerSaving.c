@@ -50,12 +50,12 @@ ODM_RF_Saving(
 	pPS_T	pDM_PSTable = &pDM_Odm->DM_PSTable;
 	u1Byte	Rssi_Up_bound = 30 ;
 	u1Byte	Rssi_Low_bound = 25;
-	if(pDM_Odm->PatchID == 40 ) //RT_CID_819x_FUNAI_TV
+	if (pDM_Odm->PatchID == 40 ) //RT_CID_819x_FUNAI_TV
 	{
 		Rssi_Up_bound = 50 ;
 		Rssi_Low_bound = 45;
 	}
-	if(pDM_PSTable->initialize == 0){
+	if (pDM_PSTable->initialize == 0){
 
 		pDM_PSTable->Reg874 = (PHY_QueryBBReg(pDM_Odm->Adapter, 0x874, bMaskDWord)&0x1CC000)>>14;
 		pDM_PSTable->RegC70 = (PHY_QueryBBReg(pDM_Odm->Adapter, 0xc70, bMaskDWord)&BIT3)>>3;
@@ -65,19 +65,19 @@ ODM_RF_Saving(
 		pDM_PSTable->initialize = 1;
 	}
 
-	if(!bForceInNormal)
+	if (!bForceInNormal)
 	{
-		if(pDM_Odm->RSSI_Min != 0xFF)
+		if (pDM_Odm->RSSI_Min != 0xFF)
 		{
-			if(pDM_PSTable->PreRFState == RF_Normal)
+			if (pDM_PSTable->PreRFState == RF_Normal)
 			{
-				if(pDM_Odm->RSSI_Min >= Rssi_Up_bound)
+				if (pDM_Odm->RSSI_Min >= Rssi_Up_bound)
 					pDM_PSTable->CurRFState = RF_Save;
 				else
 					pDM_PSTable->CurRFState = RF_Normal;
 			}
 			else{
-				if(pDM_Odm->RSSI_Min <= Rssi_Low_bound)
+				if (pDM_Odm->RSSI_Min <= Rssi_Low_bound)
 					pDM_PSTable->CurRFState = RF_Normal;
 				else
 					pDM_PSTable->CurRFState = RF_Save;
@@ -91,9 +91,9 @@ ODM_RF_Saving(
 		pDM_PSTable->CurRFState = RF_Normal;
 	}
 
-	if(pDM_PSTable->PreRFState != pDM_PSTable->CurRFState)
+	if (pDM_PSTable->PreRFState != pDM_PSTable->CurRFState)
 	{
-		if(pDM_PSTable->CurRFState == RF_Save)
+		if (pDM_PSTable->CurRFState == RF_Save)
 		{
 			PHY_SetBBReg(pDM_Odm->Adapter, 0x874  , 0x1C0000, 0x2); //Reg874[20:18]=3'b010
 			PHY_SetBBReg(pDM_Odm->Adapter, 0xc70, BIT3, 0); //RegC70[3]=1'b0

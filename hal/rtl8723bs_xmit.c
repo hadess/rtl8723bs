@@ -95,7 +95,7 @@ static s32 rtl8723_dequeue_writeport(PADAPTER padapter)
 
 query_free_page:
 	// check if hardware tx fifo page is enough
-	if( false == rtw_hal_sdio_query_tx_freepage(pri_padapter, PageIdx, pxmitbuf->pg_num))
+	if ( false == rtw_hal_sdio_query_tx_freepage(pri_padapter, PageIdx, pxmitbuf->pg_num))
 	{
 		if (!bUpdatePageNum) {
 			// Total number of page is NOT available, so update current FIFO status
@@ -171,7 +171,7 @@ s32 rtl8723bs_xmit_buf_handler(PADAPTER padapter)
 
 	queue_pending = check_pending_xmitbuf(pxmitpriv);
 
-	if(queue_pending == false)
+	if (queue_pending == false)
 		return _SUCCESS;
 
 	ret = rtw_register_tx_alive(padapter);
@@ -234,7 +234,7 @@ static s32 xmit_xmitframes(PADAPTER padapter, struct xmit_priv *pxmitpriv)
 	{
 		phwxmit = hwxmits + inx[idx];
 
-		if((check_pending_xmitbuf(pxmitpriv) == true) && (padapter->mlmepriv.LinkDetectInfo.bHigherBusyTxTraffic == true)) {
+		if ((check_pending_xmitbuf(pxmitpriv) == true) && (padapter->mlmepriv.LinkDetectInfo.bHigherBusyTxTraffic == true)) {
 			if ((phwxmit->accnt > 0) && (phwxmit->accnt < 5)) {
 				err = -2;
 				break;
@@ -432,7 +432,7 @@ next:
 	if (ret == -2) {
 		//here sleep 1ms will cause big TP loss of TX
 		//from 50+ to 40+
-		if(padapter->registrypriv.wifi_spec)
+		if (padapter->registrypriv.wifi_spec)
 			msleep(1);
 		else
 			yield();
@@ -513,7 +513,7 @@ s32 rtl8723bs_mgnt_xmit(PADAPTER padapter, struct xmit_frame *pmgntframe)
 
 	pxmitbuf->priv_data = NULL;
 
-	if(GetFrameSubType(pframe)==WIFI_BEACON) //dump beacon directly
+	if (GetFrameSubType(pframe)==WIFI_BEACON) //dump beacon directly
 	{
 		ret = rtw_write_port(padapter, pdvobjpriv->Queue2Pipe[pxmitbuf->ff_hwaddr], pxmitbuf->len, (u8 *)pxmitbuf);
 		if (ret != _SUCCESS)

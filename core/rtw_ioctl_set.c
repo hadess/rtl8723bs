@@ -56,7 +56,7 @@ u8 rtw_validate_ssid(NDIS_802_11_SSID *ssid)
 	for(i = 0; i < ssid->SsidLength; i++)
 	{
 		//wifi, printable ascii code must be supported
-		if(!( (ssid->Ssid[i] >= 0x20) && (ssid->Ssid[i] <= 0x7e) )){
+		if (!( (ssid->Ssid[i] >= 0x20) && (ssid->Ssid[i] <= 0x7e) )){
 			RT_TRACE(_module_rtl871x_ioctl_set_c_, _drv_err_, ("ssid has nonprintabl ascii\n"));
 			ret= false;
 			break;
@@ -91,7 +91,7 @@ u8 rtw_do_join(_adapter * padapter)
 
 	pmlmepriv->to_join = true;
 
-	if(list_empty(&queue->queue))
+	if (list_empty(&queue->queue))
 	{
 		spin_unlock_bh(&(pmlmepriv->scanned_queue.lock));
 		_clr_fwstate_(pmlmepriv, _FW_UNDER_LINKING);
@@ -105,7 +105,7 @@ u8 rtw_do_join(_adapter * padapter)
 		{
 			RT_TRACE(_module_rtl871x_ioctl_set_c_,_drv_info_,("rtw_do_join(): site survey if scanned_queue is empty\n."));
 			// submit site_survey_cmd
-			if(_SUCCESS!=(ret=rtw_sitesurvey_cmd(padapter, &pmlmepriv->assoc_ssid, 1, NULL, 0)) ) {
+			if (_SUCCESS!=(ret=rtw_sitesurvey_cmd(padapter, &pmlmepriv->assoc_ssid, 1, NULL, 0)) ) {
 				pmlmepriv->to_join = false;
 				RT_TRACE(_module_rtl871x_ioctl_set_c_,_drv_err_,("rtw_do_join(): site survey return error\n."));
 			}
@@ -122,14 +122,14 @@ u8 rtw_do_join(_adapter * padapter)
 	{
 		int select_ret;
 		spin_unlock_bh(&(pmlmepriv->scanned_queue.lock));
-		if((select_ret=rtw_select_and_join_from_scanned_queue(pmlmepriv))==_SUCCESS)
+		if ((select_ret=rtw_select_and_join_from_scanned_queue(pmlmepriv))==_SUCCESS)
 		{
 			pmlmepriv->to_join = false;
 			_set_timer(&pmlmepriv->assoc_timer, MAX_JOIN_TIMEOUT);
 		}
 		else
 		{
-			if(check_fwstate(pmlmepriv, WIFI_ADHOC_STATE)==true)
+			if (check_fwstate(pmlmepriv, WIFI_ADHOC_STATE)==true)
 			{
 				// submit createbss_cmd to change to a ADHOC_MASTER
 
@@ -147,7 +147,7 @@ u8 rtw_do_join(_adapter * padapter)
 
 				rtw_generate_random_ibss(pibss);
 
-				if(rtw_createbss_cmd(padapter)!=_SUCCESS)
+				if (rtw_createbss_cmd(padapter)!=_SUCCESS)
 				{
 					RT_TRACE(_module_rtl871x_ioctl_set_c_,_drv_err_,("***Error=>do_goin: rtw_createbss_cmd status FAIL*** \n "));
 					ret =  false;
@@ -166,12 +166,12 @@ u8 rtw_do_join(_adapter * padapter)
 
 				//when set_ssid/set_bssid for rtw_do_join(), but there are no desired bss in scanning queue
 				//we try to issue sitesurvey firstly
-				if(pmlmepriv->LinkDetectInfo.bBusyTraffic==false
+				if (pmlmepriv->LinkDetectInfo.bBusyTraffic==false
 					|| rtw_to_roam(padapter) > 0
 				)
 				{
 					//DBG_871X("rtw_do_join() when   no desired bss in scanning queue \n");
-					if( _SUCCESS!=(ret=rtw_sitesurvey_cmd(padapter, &pmlmepriv->assoc_ssid, 1, NULL, 0)) ){
+					if ( _SUCCESS!=(ret=rtw_sitesurvey_cmd(padapter, &pmlmepriv->assoc_ssid, 1, NULL, 0)) ){
 						pmlmepriv->to_join = false;
 						RT_TRACE(_module_rtl871x_ioctl_set_c_,_drv_err_,("do_join(): site survey return error\n."));
 					}
@@ -280,7 +280,7 @@ u8 rtw_set_802_11_ssid(_adapter* padapter, NDIS_802_11_SSID *ssid)
 	DBG_871X_LEVEL(_drv_always_, "set ssid [%s] fw_state=0x%08x\n",
 			ssid->Ssid, get_fwstate(pmlmepriv));
 
-	if(padapter->hw_init_completed==false){
+	if (padapter->hw_init_completed==false){
 		RT_TRACE(_module_rtl871x_ioctl_set_c_, _drv_err_,
 			 ("set_ssid: hw_init_completed==false=>exit!!!\n"));
 		status = _FAIL;
@@ -304,13 +304,13 @@ u8 rtw_set_802_11_ssid(_adapter* padapter, NDIS_802_11_SSID *ssid)
 		if ((pmlmepriv->assoc_ssid.SsidLength == ssid->SsidLength) &&
 		    (!memcmp(&pmlmepriv->assoc_ssid.Ssid, ssid->Ssid, ssid->SsidLength)))
 		{
-			if((check_fwstate(pmlmepriv, WIFI_STATION_STATE) == false))
+			if ((check_fwstate(pmlmepriv, WIFI_STATION_STATE) == false))
 			{
 				RT_TRACE(_module_rtl871x_ioctl_set_c_, _drv_err_,
 					 ("Set SSID is the same ssid, fw_state=0x%08x\n",
 					  get_fwstate(pmlmepriv)));
 
-				if(rtw_is_same_ibss(padapter, pnetwork) == false)
+				if (rtw_is_same_ibss(padapter, pnetwork) == false)
 				{
 					//if in WIFI_ADHOC_MASTER_STATE | WIFI_ADHOC_STATE, create bss or rejoin again
 					rtw_disassoc_cmd(padapter, 0, true);
@@ -405,7 +405,7 @@ u8 rtw_set_802_11_connect(_adapter* padapter, u8 *bssid, NDIS_802_11_SSID *ssid)
 		goto exit;
 	}
 
-	if(padapter->hw_init_completed==false){
+	if (padapter->hw_init_completed==false){
 		RT_TRACE(_module_rtl871x_ioctl_set_c_, _drv_err_,
 			 ("set_ssid: hw_init_completed==false=>exit!!!\n"));
 		status = _FAIL;
@@ -466,12 +466,12 @@ u8 rtw_set_802_11_infrastructure_mode(_adapter* padapter,
 		 ("+rtw_set_802_11_infrastructure_mode: old=%d new=%d fw_state=0x%08x\n",
 		  *pold_state, networktype, get_fwstate(pmlmepriv)));
 
-	if(*pold_state != networktype)
+	if (*pold_state != networktype)
 	{
 		RT_TRACE(_module_rtl871x_ioctl_set_c_,_drv_info_,(" change mode!"));
 		//DBG_871X("change mode, old_mode=%d, new_mode=%d, fw_state=0x%x\n", *pold_state, networktype, get_fwstate(pmlmepriv));
 
-		if(*pold_state==Ndis802_11APMode)
+		if (*pold_state==Ndis802_11APMode)
 		{
 			//change to other mode from Ndis802_11APMode
 			cur_network->join_res = -1;
@@ -481,16 +481,16 @@ u8 rtw_set_802_11_infrastructure_mode(_adapter* padapter,
 
 		spin_lock_bh(&pmlmepriv->lock);
 
-		if((check_fwstate(pmlmepriv, _FW_LINKED)== true) ||(*pold_state==Ndis802_11IBSS))
+		if ((check_fwstate(pmlmepriv, _FW_LINKED)== true) ||(*pold_state==Ndis802_11IBSS))
 			rtw_disassoc_cmd(padapter, 0, true);
 
-		if((check_fwstate(pmlmepriv, _FW_LINKED)== true) ||
+		if ((check_fwstate(pmlmepriv, _FW_LINKED)== true) ||
 			(check_fwstate(pmlmepriv, WIFI_ADHOC_MASTER_STATE)== true) )
 			rtw_free_assoc_resources(padapter, 1);
 
-		if((*pold_state == Ndis802_11Infrastructure) ||(*pold_state == Ndis802_11IBSS))
+		if ((*pold_state == Ndis802_11Infrastructure) ||(*pold_state == Ndis802_11IBSS))
 	       {
-			if(check_fwstate(pmlmepriv, _FW_LINKED) == true)
+			if (check_fwstate(pmlmepriv, _FW_LINKED) == true)
 			{
 				rtw_indicate_disconnect(padapter); //will clr Linked_state; before this function, we must have chked whether  issue dis-assoc_cmd or not
 			}
@@ -580,7 +580,7 @@ u8 rtw_set_802_11_bssid_list_scan(_adapter* padapter, NDIS_802_11_SSID *pssid, i
 		RT_TRACE(_module_rtl871x_ioctl_set_c_,_drv_err_,("rtw_set_802_11_bssid_list_scan fail since fw_state = %x\n", get_fwstate(pmlmepriv)));
 		res = true;
 
-		if(check_fwstate(pmlmepriv, (_FW_UNDER_SURVEY|_FW_UNDER_LINKING))== true){
+		if (check_fwstate(pmlmepriv, (_FW_UNDER_SURVEY|_FW_UNDER_LINKING))== true){
 			RT_TRACE(_module_rtl871x_ioctl_set_c_,_drv_err_,("\n###_FW_UNDER_SURVEY|_FW_UNDER_LINKING\n\n"));
 		} else {
 			RT_TRACE(_module_rtl871x_ioctl_set_c_,_drv_err_,("\n###pmlmepriv->sitesurveyctrl.traffic_busy==true\n\n"));
@@ -615,12 +615,12 @@ u8 rtw_set_802_11_authentication_mode(_adapter* padapter, NDIS_802_11_AUTHENTICA
 
 	RT_TRACE(_module_rtl871x_ioctl_set_c_,_drv_info_,("rtw_set_802_11_authentication_mode:psecuritypriv->ndisauthtype=%d", psecuritypriv->ndisauthtype));
 
-	if(psecuritypriv->ndisauthtype>3)
+	if (psecuritypriv->ndisauthtype>3)
 		psecuritypriv->dot11AuthAlgrthm=dot11AuthAlgrthm_8021X;
 
 	res=rtw_set_auth(padapter,psecuritypriv);
 
-	if(res==_SUCCESS)
+	if (res==_SUCCESS)
 		ret=true;
 	else
 		ret=false;
@@ -640,7 +640,7 @@ u8 rtw_set_802_11_add_wep(_adapter* padapter, NDIS_802_11_WEP *wep){
 	btransmitkey= (wep->KeyIndex & 0x80000000) > 0 ? true  : false;	//for ???
 	keyid=wep->KeyIndex & 0x3fffffff;
 
-	if(keyid>=4)
+	if (keyid>=4)
 	{
 		RT_TRACE(_module_rtl871x_ioctl_set_c_,_drv_err_,("MgntActrtw_set_802_11_add_wep:keyid>4=>fail\n"));
 		ret=false;
@@ -680,7 +680,7 @@ u8 rtw_set_802_11_add_wep(_adapter* padapter, NDIS_802_11_WEP *wep){
 
 	res=rtw_set_key(padapter,psecuritypriv, keyid, 1, true);
 
-	if(res==_FAIL)
+	if (res==_FAIL)
 		ret= false;
 exit:
 
@@ -703,7 +703,7 @@ u16 rtw_get_cur_max_rate(_adapter *adapter)
 	u8	short_GI=0;
 	u8	rf_type = 0;
 
-	if((check_fwstate(pmlmepriv, _FW_LINKED) != true)
+	if ((check_fwstate(pmlmepriv, _FW_LINKED) != true)
 		&& (check_fwstate(pmlmepriv, WIFI_ADHOC_MASTER_STATE) != true))
 		return 0;
 
@@ -728,7 +728,7 @@ u16 rtw_get_cur_max_rate(_adapter *adapter)
 		while( (pcur_bss->SupportedRates[i]!=0) && (pcur_bss->SupportedRates[i]!=0xFF))
 		{
 			rate = pcur_bss->SupportedRates[i]&0x7F;
-			if(rate>max_rate)
+			if (rate>max_rate)
 				max_rate = rate;
 			i++;
 		}

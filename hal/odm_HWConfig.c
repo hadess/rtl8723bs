@@ -71,33 +71,33 @@ odm_SignalScaleMapping_92CSeries(
 {
 	s4Byte RetSig = 0;
 
-	if(pDM_Odm->SupportInterface  == ODM_ITRF_SDIO)
+	if (pDM_Odm->SupportInterface  == ODM_ITRF_SDIO)
 	{
-		if(CurrSig >= 51 && CurrSig <= 100)
+		if (CurrSig >= 51 && CurrSig <= 100)
 		{
 			RetSig = 100;
 		}
-		else if(CurrSig >= 41 && CurrSig <= 50)
+		else if (CurrSig >= 41 && CurrSig <= 50)
 		{
 			RetSig = 80 + ((CurrSig - 40)*2);
 		}
-		else if(CurrSig >= 31 && CurrSig <= 40)
+		else if (CurrSig >= 31 && CurrSig <= 40)
 		{
 			RetSig = 66 + (CurrSig - 30);
 		}
-		else if(CurrSig >= 21 && CurrSig <= 30)
+		else if (CurrSig >= 21 && CurrSig <= 30)
 		{
 			RetSig = 54 + (CurrSig - 20);
 		}
-		else if(CurrSig >= 10 && CurrSig <= 20)
+		else if (CurrSig >= 10 && CurrSig <= 20)
 		{
 			RetSig = 42 + (((CurrSig - 10) * 2) / 3);
 		}
-		else if(CurrSig >= 5 && CurrSig <= 9)
+		else if (CurrSig >= 5 && CurrSig <= 9)
 		{
 			RetSig = 22 + (((CurrSig - 5) * 3) / 2);
 		}
-		else if(CurrSig >= 1 && CurrSig <= 4)
+		else if (CurrSig >= 1 && CurrSig <= 4)
 		{
 			RetSig = 6 + (((CurrSig - 1) * 3) / 2);
 		}
@@ -134,15 +134,15 @@ odm_EVMdbToPercentage(
 	//DbgPrint("Value=%d\n", Value);
 	//ODM_RT_DISP(FRX, RX_PHY_SQ, ("EVMdbToPercentage92C Value=%d / %x \n", ret_val, ret_val));
 
-	if(ret_val >= 0)
+	if (ret_val >= 0)
 		ret_val = 0;
-	if(ret_val <= -33)
+	if (ret_val <= -33)
 		ret_val = -33;
 
 	ret_val = 0 - ret_val;
 	ret_val*=3;
 
-	if(ret_val == 99)
+	if (ret_val == 99)
 		ret_val = 100;
 
 	return(ret_val);
@@ -171,7 +171,7 @@ odm_RxPhyStatus92CSeries_Parsing(
 	pPhyInfo->RxMIMOSignalQuality[ODM_RF_PATH_B] = -1;
 
 
-	if(isCCKrate) {
+	if (isCCKrate) {
 		u1Byte cck_agc_rpt;
 
 		pDM_Odm->PhyDbgInfo.NumQryPhyStatusCCK++;
@@ -180,7 +180,7 @@ odm_RxPhyStatus92CSeries_Parsing(
 		// (2)PWDB, Average PWDB cacluated by hardware (for rate adaptive)
 		//
 
-		//if(pHalData->eRFPowerState == eRfOn)
+		//if (pHalData->eRFPowerState == eRfOn)
 		cck_highpwr = pDM_Odm->bCckHighPower;
 		//else
 		//	cck_highpwr = false;
@@ -194,7 +194,7 @@ odm_RxPhyStatus92CSeries_Parsing(
 		VGA_idx = (cck_agc_rpt & 0x1F);
 		rx_pwr_all = odm_CCKRSSI_8723B(LNA_idx,VGA_idx);
 		PWDB_ALL = odm_QueryRxPwrPercentage(rx_pwr_all);
-		if(PWDB_ALL>100)
+		if (PWDB_ALL>100)
 			PWDB_ALL = 100;
 
 		pPhyInfo->RxPWDBAll = PWDB_ALL;
@@ -203,17 +203,17 @@ odm_RxPhyStatus92CSeries_Parsing(
 		//
 		// (3) Get Signal Quality (EVM)
 		//
-		//if(pPktinfo->bPacketMatchBSSID)
+		//if (pPktinfo->bPacketMatchBSSID)
 		{
 			u1Byte	SQ,SQ_rpt;
 
-			if(pPhyInfo->RxPWDBAll > 40 && !pDM_Odm->bInHctTest){
+			if (pPhyInfo->RxPWDBAll > 40 && !pDM_Odm->bInHctTest){
 				SQ = 100;
 			}
 			else{
 				SQ_rpt = pPhyStaRpt->cck_sig_qual_ofdm_pwdb_all;
 
-				if(SQ_rpt > 64)
+				if (SQ_rpt > 64)
 					SQ = 0;
 				else if (SQ_rpt < 20)
 					SQ = 100;
@@ -278,7 +278,7 @@ odm_RxPhyStatus92CSeries_Parsing(
 			//
 			// (3)EVM of HT rate
 			//
-			if(pPktinfo->DataRate >=DESC_RATEMCS8 && pPktinfo->DataRate <=DESC_RATEMCS15)
+			if (pPktinfo->DataRate >=DESC_RATEMCS8 && pPktinfo->DataRate <=DESC_RATEMCS15)
 				Max_spatial_stream = 2; //both spatial stream make sense
 			else
 				Max_spatial_stream = 1; //only spatial stream 1 makes sense
@@ -293,9 +293,9 @@ odm_RxPhyStatus92CSeries_Parsing(
 				//RT_DISP(FRX, RX_PHY_SQ, ("RXRATE=%x RXEVM=%x EVM=%s%d\n",
 				//GET_RX_STATUS_DESC_RX_MCS(pDesc), pDrvInfo->rxevm[i], "%", EVM));
 
-				//if(pPktinfo->bPacketMatchBSSID)
+				//if (pPktinfo->bPacketMatchBSSID)
 				{
-					if(i==ODM_RF_PATH_A) // Fill value in RFD, Get the first spatial stream only
+					if (i==ODM_RF_PATH_A) // Fill value in RFD, Get the first spatial stream only
 					{
 						pPhyInfo->SignalQuality = (u1Byte)(EVM & 0xff);
 					}
@@ -310,7 +310,7 @@ odm_RxPhyStatus92CSeries_Parsing(
 
 	//UI BSS List signal strength(in percentage), make it good looking, from 0~100.
 	//It is assigned to the BSS List in GetValueFromBeaconOrProbeRsp().
-	if(isCCKrate)
+	if (isCCKrate)
 	{
 #ifdef CONFIG_SKIP_SIGNAL_SCALE_MAPPING
 		pPhyInfo->SignalStrength = (u1Byte)PWDB_ALL;
@@ -351,26 +351,26 @@ odm_Process_RSSIForDM(
 	PSTA_INFO_T		pEntry;
 
 
-	if(pPktinfo->StationID == 0xFF)
+	if (pPktinfo->StationID == 0xFF)
 		return;
 
 	pEntry = pDM_Odm->pODM_StaInfo[pPktinfo->StationID];
 
-	if(!IS_STA_VALID(pEntry) ){
+	if (!IS_STA_VALID(pEntry) ){
 		return;
 	}
-	if((!pPktinfo->bPacketMatchBSSID) )
+	if ((!pPktinfo->bPacketMatchBSSID) )
 	{
 		return;
 	}
 
-	if(pPktinfo->bPacketBeacon)
+	if (pPktinfo->bPacketBeacon)
 		pDM_Odm->PhyDbgInfo.NumQryBeaconPkt++;
 
 	isCCKrate = ((pPktinfo->DataRate <= DESC_RATE11M )) ? true : false;
 	pDM_Odm->RxRate = pPktinfo->DataRate;
 	/*
-	if(!isCCKrate)
+	if (!isCCKrate)
 	{
 		DbgPrint("OFDM: pPktinfo->StationID=%d, isCCKrate=%d, pPhyInfo->RxPWDBAll=%d\n",
 			pPktinfo->StationID, isCCKrate, pPhyInfo->RxPWDBAll);
@@ -378,7 +378,7 @@ odm_Process_RSSIForDM(
 	*/
 
 	//--------------Statistic for antenna/path diversity------------------
-	if(pDM_Odm->SupportAbility & ODM_BB_ANT_DIV)
+	if (pDM_Odm->SupportAbility & ODM_BB_ANT_DIV)
 	{
 	}
 
@@ -388,12 +388,12 @@ odm_Process_RSSIForDM(
 	UndecoratedSmoothedOFDM = pEntry->rssi_stat.UndecoratedSmoothedOFDM;
 	UndecoratedSmoothedPWDB = pEntry->rssi_stat.UndecoratedSmoothedPWDB;
 
-	if(pPktinfo->bPacketToSelf || pPktinfo->bPacketBeacon)
+	if (pPktinfo->bPacketToSelf || pPktinfo->bPacketBeacon)
 	{
 
-		if(!isCCKrate)//ofdm rate
+		if (!isCCKrate)//ofdm rate
 		{
-			if(pPhyInfo->RxMIMOSignalStrength[ODM_RF_PATH_B] == 0){
+			if (pPhyInfo->RxMIMOSignalStrength[ODM_RF_PATH_B] == 0){
 				RSSI_Ave = pPhyInfo->RxMIMOSignalStrength[ODM_RF_PATH_A];
 				pDM_Odm->RSSI_A = pPhyInfo->RxMIMOSignalStrength[ODM_RF_PATH_A];
 				pDM_Odm->RSSI_B = 0;
@@ -405,7 +405,7 @@ odm_Process_RSSIForDM(
 				pDM_Odm->RSSI_A =  pPhyInfo->RxMIMOSignalStrength[ODM_RF_PATH_A];
 				pDM_Odm->RSSI_B = pPhyInfo->RxMIMOSignalStrength[ODM_RF_PATH_B];
 
-				if(pPhyInfo->RxMIMOSignalStrength[ODM_RF_PATH_A] > pPhyInfo->RxMIMOSignalStrength[ODM_RF_PATH_B])
+				if (pPhyInfo->RxMIMOSignalStrength[ODM_RF_PATH_A] > pPhyInfo->RxMIMOSignalStrength[ODM_RF_PATH_B])
 				{
 					RSSI_max = pPhyInfo->RxMIMOSignalStrength[ODM_RF_PATH_A];
 					RSSI_min = pPhyInfo->RxMIMOSignalStrength[ODM_RF_PATH_B];
@@ -415,24 +415,24 @@ odm_Process_RSSIForDM(
 					RSSI_max = pPhyInfo->RxMIMOSignalStrength[ODM_RF_PATH_B];
 					RSSI_min = pPhyInfo->RxMIMOSignalStrength[ODM_RF_PATH_A];
 				}
-				if((RSSI_max -RSSI_min) < 3)
+				if ((RSSI_max -RSSI_min) < 3)
 					RSSI_Ave = RSSI_max;
-				else if((RSSI_max -RSSI_min) < 6)
+				else if ((RSSI_max -RSSI_min) < 6)
 					RSSI_Ave = RSSI_max - 1;
-				else if((RSSI_max -RSSI_min) < 10)
+				else if ((RSSI_max -RSSI_min) < 10)
 					RSSI_Ave = RSSI_max - 2;
 				else
 					RSSI_Ave = RSSI_max - 3;
 			}
 
 			//1 Process OFDM RSSI
-			if(UndecoratedSmoothedOFDM <= 0)	// initialize
+			if (UndecoratedSmoothedOFDM <= 0)	// initialize
 			{
 				UndecoratedSmoothedOFDM = pPhyInfo->RxPWDBAll;
 			}
 			else
 			{
-				if(pPhyInfo->RxPWDBAll > (u4Byte)UndecoratedSmoothedOFDM)
+				if (pPhyInfo->RxPWDBAll > (u4Byte)UndecoratedSmoothedOFDM)
 				{
 					UndecoratedSmoothedOFDM =
 							( ((UndecoratedSmoothedOFDM)*(Rx_Smooth_Factor-1)) +
@@ -457,13 +457,13 @@ odm_Process_RSSIForDM(
 			pDM_Odm->RSSI_B = 0;
 
 			//1 Process CCK RSSI
-			if(UndecoratedSmoothedCCK <= 0)	// initialize
+			if (UndecoratedSmoothedCCK <= 0)	// initialize
 			{
 				UndecoratedSmoothedCCK = pPhyInfo->RxPWDBAll;
 			}
 			else
 			{
-				if(pPhyInfo->RxPWDBAll > (u4Byte)UndecoratedSmoothedCCK)
+				if (pPhyInfo->RxPWDBAll > (u4Byte)UndecoratedSmoothedCCK)
 				{
 					UndecoratedSmoothedCCK =
 							( ((UndecoratedSmoothedCCK)*(Rx_Smooth_Factor-1)) +
@@ -480,10 +480,10 @@ odm_Process_RSSIForDM(
 			pEntry->rssi_stat.PacketMap = pEntry->rssi_stat.PacketMap<<1;
 		}
 
-		//if(pEntry)
+		//if (pEntry)
 		{
 			//2011.07.28 LukeLee: modified to prevent unstable CCK RSSI
-			if(pEntry->rssi_stat.ValidBit >= 64)
+			if (pEntry->rssi_stat.ValidBit >= 64)
 				pEntry->rssi_stat.ValidBit = 64;
 			else
 				pEntry->rssi_stat.ValidBit++;
@@ -491,14 +491,14 @@ odm_Process_RSSIForDM(
 			for(i=0; i<pEntry->rssi_stat.ValidBit; i++)
 				OFDM_pkt += (u1Byte)(pEntry->rssi_stat.PacketMap>>i)&BIT0;
 
-			if(pEntry->rssi_stat.ValidBit == 64)
+			if (pEntry->rssi_stat.ValidBit == 64)
 			{
 				Weighting = ((OFDM_pkt<<4) > 64)?64:(OFDM_pkt<<4);
 				UndecoratedSmoothedPWDB = (Weighting*UndecoratedSmoothedOFDM+(64-Weighting)*UndecoratedSmoothedCCK)>>6;
 			}
 			else
 			{
-				if(pEntry->rssi_stat.ValidBit != 0)
+				if (pEntry->rssi_stat.ValidBit != 0)
 					UndecoratedSmoothedPWDB = (OFDM_pkt*UndecoratedSmoothedOFDM+(pEntry->rssi_stat.ValidBit-OFDM_pkt)*UndecoratedSmoothedCCK)/pEntry->rssi_stat.ValidBit;
 				else
 					UndecoratedSmoothedPWDB = 0;
@@ -536,7 +536,7 @@ ODM_PhyStatusQuery_92CSeries(
 							pPhyStatus,
 							pPktinfo);
 
-	if(!pDM_Odm->RSSI_test)
+	if (!pDM_Odm->RSSI_test)
 		odm_Process_RSSIForDM(pDM_Odm,pPhyInfo,pPktinfo);
 }
 
@@ -570,10 +570,10 @@ ODM_ConfigRFWithHeaderFile(
 				("pDM_Odm->SupportPlatform: 0x%X, pDM_Odm->SupportInterface: 0x%X, pDM_Odm->BoardType: 0x%X\n",
 				pDM_Odm->SupportPlatform, pDM_Odm->SupportInterface, pDM_Odm->BoardType));
 
-	if(ConfigType == CONFIG_RF_RADIO) {
+	if (ConfigType == CONFIG_RF_RADIO) {
 		READ_AND_CONFIG(8723B,_RadioA);
 	}
-	else if(ConfigType == CONFIG_RF_TXPWR_LMT) {
+	else if (ConfigType == CONFIG_RF_TXPWR_LMT) {
 		READ_AND_CONFIG(8723B,_TXPWR_LMT);
 	}
 
@@ -609,11 +609,11 @@ ODM_ConfigBBWithHeaderFile(
 				("pDM_Odm->SupportPlatform: 0x%X, pDM_Odm->SupportInterface: 0x%X, pDM_Odm->BoardType: 0x%X\n",
 				pDM_Odm->SupportPlatform, pDM_Odm->SupportInterface, pDM_Odm->BoardType));
 
-	if(ConfigType == CONFIG_BB_PHY_REG)
+	if (ConfigType == CONFIG_BB_PHY_REG)
 		READ_AND_CONFIG(8723B,_PHY_REG);
-	else if(ConfigType == CONFIG_BB_AGC_TAB)
+	else if (ConfigType == CONFIG_BB_AGC_TAB)
 		READ_AND_CONFIG(8723B,_AGC_TAB);
-	else if(ConfigType == CONFIG_BB_PHY_REG_PG)
+	else if (ConfigType == CONFIG_BB_PHY_REG_PG)
 		READ_AND_CONFIG(8723B,_PHY_REG_PG);
 
 	return HAL_STATUS_SUCCESS;

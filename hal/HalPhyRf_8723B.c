@@ -78,7 +78,7 @@ static void setIqkMatrix_8723B(
 	ele_D = (OFDMSwingTable_New[OFDM_index] & 0xFFC00000)>>22;
 
 	//new element A = element D x X
-	if((IqkResult_X != 0) && (*(pDM_Odm->pBandType) == ODM_BAND_2_4G))
+	if ((IqkResult_X != 0) && (*(pDM_Odm->pBandType) == ODM_BAND_2_4G))
 	{
 		if ((IqkResult_X & 0x00000200) != 0)	//consider minus
 			IqkResult_X = IqkResult_X | 0xFFFFFC00;
@@ -151,7 +151,7 @@ setCCKFilterCoefficient(
 	u1Byte		CCKSwingIndex
 )
 {
-	if(!pDM_Odm->RFCalibrateInfo.bCCKinCH14)
+	if (!pDM_Odm->RFCalibrateInfo.bCCKinCH14)
 	{
 		rtw_write8(pDM_Odm->Adapter, 0xa22, CCKSwingTable_Ch1_Ch13_New[CCKSwingIndex][0]);
 		rtw_write8(pDM_Odm->Adapter, 0xa23, CCKSwingTable_Ch1_Ch13_New[CCKSwingIndex][1]);
@@ -220,9 +220,9 @@ ODM_TxPwrTrackSetPwr_8723B(
 	{
 		u2Byte	rate	 = *(pDM_Odm->pForcedDataRate);
 
-		if(!rate) //auto rate
+		if (!rate) //auto rate
 		{
-			if(pDM_Odm->TxRate != 0xFF)
+			if (pDM_Odm->TxRate != 0xFF)
 				TxRate = HwRateToMRate(pDM_Odm->TxRate);
 		}
 		else //force rate
@@ -233,23 +233,23 @@ ODM_TxPwrTrackSetPwr_8723B(
 
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD,("===>ODM_TxPwrTrackSetPwr8723B\n"));
 
-	if(TxRate != 0xFF)
+	if (TxRate != 0xFF)
 	{
 		//2 CCK
-		if((TxRate >= MGN_1M)&&(TxRate <= MGN_11M))
+		if ((TxRate >= MGN_1M)&&(TxRate <= MGN_11M))
 			PwrTrackingLimit_CCK = 28;	//-2dB
 		//2 OFDM
-		else if((TxRate >= MGN_6M)&&(TxRate <= MGN_48M))
+		else if ((TxRate >= MGN_6M)&&(TxRate <= MGN_48M))
 			PwrTrackingLimit_OFDM= 36; //+3dB
-		else if(TxRate == MGN_54M)
+		else if (TxRate == MGN_54M)
 			PwrTrackingLimit_OFDM= 34; //+2dB
 
 		//2 HT
-		else if((TxRate >= MGN_MCS0)&&(TxRate <= MGN_MCS2)) //QPSK/BPSK
+		else if ((TxRate >= MGN_MCS0)&&(TxRate <= MGN_MCS2)) //QPSK/BPSK
 			PwrTrackingLimit_OFDM= 38; //+4dB
-		else if((TxRate >= MGN_MCS3)&&(TxRate <= MGN_MCS4)) //16QAM
+		else if ((TxRate >= MGN_MCS3)&&(TxRate <= MGN_MCS4)) //16QAM
 			PwrTrackingLimit_OFDM= 36; //+3dB
-		else if((TxRate >= MGN_MCS5)&&(TxRate <= MGN_MCS7)) //64QAM
+		else if ((TxRate >= MGN_MCS5)&&(TxRate <= MGN_MCS7)) //64QAM
 			PwrTrackingLimit_OFDM= 34; //+2dB
 
 		else
@@ -301,7 +301,7 @@ ODM_TxPwrTrackSetPwr_8723B(
 		Final_OFDM_Swing_Index = pDM_Odm->DefaultOfdmIndex + pDM_Odm->Absolute_OFDMSwingIdx[RFPath];
 		Final_CCK_Swing_Index = pDM_Odm->DefaultCckIndex + pDM_Odm->Absolute_OFDMSwingIdx[RFPath];
 
-		if(Final_OFDM_Swing_Index > PwrTrackingLimit_OFDM )	//BBSwing higher then Limit
+		if (Final_OFDM_Swing_Index > PwrTrackingLimit_OFDM )	//BBSwing higher then Limit
 		{
 			pDM_Odm->Remnant_OFDMSwingIdx[RFPath] = Final_OFDM_Swing_Index - PwrTrackingLimit_OFDM;
 
@@ -342,7 +342,7 @@ ODM_TxPwrTrackSetPwr_8723B(
 			ODM_RT_TRACE(pDM_Odm,ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD,
 				("******Path_A Compensate with BBSwing , Final_OFDM_Swing_Index = %d \n", Final_OFDM_Swing_Index));
 
-			if(pDM_Odm->Modify_TxAGC_Flag_PathA)  //If TxAGC has changed, reset TxAGC again
+			if (pDM_Odm->Modify_TxAGC_Flag_PathA)  //If TxAGC has changed, reset TxAGC again
 			{
 				pDM_Odm->Remnant_OFDMSwingIdx[RFPath] = 0;
 				PHY_SetTxPowerIndexByRateSection(Adapter, RFPath, pHalData->CurrentChannel, OFDM );
@@ -354,7 +354,7 @@ ODM_TxPwrTrackSetPwr_8723B(
 			}
 		}
 
-		if(Final_CCK_Swing_Index > PwrTrackingLimit_CCK)
+		if (Final_CCK_Swing_Index > PwrTrackingLimit_CCK)
 		{
 			pDM_Odm->Remnant_CCKSwingIdx = Final_CCK_Swing_Index - PwrTrackingLimit_CCK;
 			setCCKFilterCoefficient(pDM_Odm, PwrTrackingLimit_CCK);
@@ -364,7 +364,7 @@ ODM_TxPwrTrackSetPwr_8723B(
 			ODM_RT_TRACE(pDM_Odm,ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD,
 				("******Path_A CCK Over Limit , PwrTrackingLimit_CCK = %d , pDM_Odm->Remnant_CCKSwingIdx  = %d \n", PwrTrackingLimit_CCK, pDM_Odm->Remnant_CCKSwingIdx));
 		}
-		else if(Final_CCK_Swing_Index <= 0)	  // Lowest CCK Index = 0
+		else if (Final_CCK_Swing_Index <= 0)	  // Lowest CCK Index = 0
 		{
 			pDM_Odm->Remnant_CCKSwingIdx = Final_CCK_Swing_Index;
 			setCCKFilterCoefficient(pDM_Odm, 0);
@@ -381,7 +381,7 @@ ODM_TxPwrTrackSetPwr_8723B(
 			ODM_RT_TRACE(pDM_Odm,ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD,
 				("******Path_A CCK Compensate with BBSwing , Final_CCK_Swing_Index = %d \n", Final_CCK_Swing_Index));
 
-			if(pDM_Odm->Modify_TxAGC_Flag_PathA_CCK)  //If TxAGC has changed, reset TxAGC again
+			if (pDM_Odm->Modify_TxAGC_Flag_PathA_CCK)  //If TxAGC has changed, reset TxAGC again
 			{
 				pDM_Odm->Remnant_CCKSwingIdx = 0;
 				PHY_SetTxPowerIndexByRateSection(Adapter, RFPath, pHalData->CurrentChannel, CCK );
@@ -1140,10 +1140,10 @@ _PHY_PathAFillIQKMatrix8723B(
 
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_CALIBRATION, ODM_DBG_LOUD,  ("Path A IQ Calibration %s !\n",(bIQKOK)?"Success":"Failed"));
 
-	if(final_candidate == 0xFF)
+	if (final_candidate == 0xFF)
 		return;
 
-	else if(bIQKOK)
+	else if (bIQKOK)
 	{
 		Oldval_0 = (PHY_QueryBBReg(pDM_Odm->Adapter, rOFDM0_XATxIQImbalance, bMaskDWord) >> 22) & 0x3FF;
 
@@ -1175,7 +1175,7 @@ _PHY_PathAFillIQKMatrix8723B(
 		pRFCalibrateInfo->TxIQC_8723B[PATH_S1][IDX_0xC4C][KEY] = rOFDM0_ECCAThreshold;
 		pRFCalibrateInfo->TxIQC_8723B[PATH_S1][IDX_0xC4C][VAL] = PHY_QueryBBReg(pDM_Odm->Adapter, rOFDM0_ECCAThreshold, bMaskDWord);
 
-		if(bTxOnly)
+		if (bTxOnly)
 		{
 			ODM_RT_TRACE(pDM_Odm,ODM_COMP_CALIBRATION, ODM_DBG_LOUD,  ("_PHY_PathAFillIQKMatrix8723B only Tx OK\n"));
 
@@ -1223,10 +1223,10 @@ _PHY_PathBFillIQKMatrix8723B(
 
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("Path B IQ Calibration %s !\n",(bIQKOK)?"Success":"Failed"));
 
-	if(final_candidate == 0xFF)
+	if (final_candidate == 0xFF)
 		return;
 
-	else if(bIQKOK)
+	else if (bIQKOK)
 	{
 		Oldval_1 = (PHY_QueryBBReg(pDM_Odm->Adapter, rOFDM0_XBTxIQImbalance, bMaskDWord) >> 22) & 0x3FF;
 
@@ -1262,7 +1262,7 @@ _PHY_PathBFillIQKMatrix8723B(
 		pRFCalibrateInfo->TxIQC_8723B[PATH_S0][IDX_0xC4C][KEY] = rOFDM0_ECCAThreshold;
 		pRFCalibrateInfo->TxIQC_8723B[PATH_S0][IDX_0xC4C][VAL] = PHY_QueryBBReg(pDM_Odm->Adapter, rOFDM0_ECCAThreshold, bMaskDWord);
 
-		if(bTxOnly) {
+		if (bTxOnly) {
 			ODM_RT_TRACE(pDM_Odm,ODM_COMP_CALIBRATION, ODM_DBG_LOUD,  ("_PHY_PathBFillIQKMatrix8723B only Tx OK\n"));
 
 			pRFCalibrateInfo->RxIQC_8723B[PATH_S0][IDX_0xC14][KEY] = rOFDM0_XARxIQImbalance;
@@ -1301,7 +1301,7 @@ ODM_SetIQCbyRFpath(PDM_ODM_T pDM_Odm, u4Byte RFpath)
 
 	if ((pRFCalibrateInfo->TxIQC_8723B[PATH_S0][IDX_0xC80][VAL] != 0x0) && (pRFCalibrateInfo->RxIQC_8723B[PATH_S0][IDX_0xC14][VAL] != 0x0)&&
 	    (pRFCalibrateInfo->TxIQC_8723B[PATH_S1][IDX_0xC80][VAL] != 0x0) && (pRFCalibrateInfo->RxIQC_8723B[PATH_S1][IDX_0xC14][VAL] != 0x0)) {
-		if(RFpath) //S1: RFpath = 0, S0:RFpath = 1
+		if (RFpath) //S1: RFpath = 0, S0:RFpath = 1
 		{
 			//S0 TX IQC
 			PHY_SetBBReg(pDM_Odm->Adapter, pRFCalibrateInfo->TxIQC_8723B[PATH_S0][IDX_0xC94][KEY], bMaskDWord, pRFCalibrateInfo->TxIQC_8723B[PATH_S0][IDX_0xC94][VAL]);
@@ -1343,7 +1343,7 @@ ODM_CheckPowerStatus(
 	//	2011/07/19 MH We can not execute tx pwoer tracking/ LLC calibrate or IQK.
 	//
 	Adapter->HalFunc.GetHwRegHandler(Adapter, HW_VAR_RF_STATE, (pu1Byte)(&rtState));
-	if(Adapter->bDriverStopped || Adapter->bDriverIsGoingToPnpSetPowerSleep || rtState == eRfOff)
+	if (Adapter->bDriverStopped || Adapter->bDriverIsGoingToPnpSetPowerSleep || rtState == eRfOff)
 	{
 		ODM_RT_TRACE(pDM_Odm,COMP_INIT, DBG_LOUD, ("ODM_CheckPowerStatus Return false, due to %d/%d/%d\n",
 		Adapter->bDriverStopped, Adapter->bDriverIsGoingToPnpSetPowerSleep, rtState));
@@ -1446,7 +1446,7 @@ _PHY_PathADDAOn8723B(
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("ADDA ON.\n"));
 
 	pathOn = isPathAOn ? 0x01c00014 : 0x01c00014;
-	if(false == is2T){
+	if (false == is2T){
 		pathOn = 0x01c00014;
 		PHY_SetBBReg(pDM_Odm->Adapter, ADDAReg[0], bMaskDWord, 0x01c00014);
 	}
@@ -1496,7 +1496,7 @@ phy_SimularityCompare_8723B(
 	bool	is2T = true;
 	s4Byte tmp1 = 0,tmp2 = 0;
 
-	if(is2T)
+	if (is2T)
 		bound = 8;
 	else
 		bound = 4;
@@ -1506,14 +1506,14 @@ phy_SimularityCompare_8723B(
 	for( i = 0; i < bound; i++ )
 	{
 
-		if((i==1) || (i==3) || (i==5) || (i==7))
+		if ((i==1) || (i==3) || (i==5) || (i==7))
 		{
-			if((result[c1][i]& 0x00000200) != 0)
+			if ((result[c1][i]& 0x00000200) != 0)
 				tmp1 = result[c1][i] | 0xFFFFFC00;
 			else
 				tmp1 = result[c1][i];
 
-			if((result[c2][i]& 0x00000200) != 0)
+			if ((result[c2][i]& 0x00000200) != 0)
 				tmp2 = result[c2][i] | 0xFFFFFC00;
 			else
 				tmp2 = result[c2][i];
@@ -1528,9 +1528,9 @@ phy_SimularityCompare_8723B(
 
 		if (diff > MAX_TOLERANCE)
 		{
-			if((i == 2 || i == 6) && !SimularityBitMap)
+			if ((i == 2 || i == 6) && !SimularityBitMap)
 			{
-				if(result[c1][i]+result[c1][i+1] == 0)
+				if (result[c1][i]+result[c1][i+1] == 0)
 					final_candidate[(i/4)] = c2;
 				else if (result[c2][i]+result[c2][i+1] == 0)
 					final_candidate[(i/4)] = c1;
@@ -1546,7 +1546,7 @@ phy_SimularityCompare_8723B(
 	{
 		for( i = 0; i < (bound/4); i++ )
 		{
-			if(final_candidate[i] != 0xFF)
+			if (final_candidate[i] != 0xFF)
 			{
 				for( j = i*4; j < (i+1)*4-2; j++)
 					result[3][j] = result[final_candidate[i]][j];
@@ -1630,7 +1630,7 @@ phy_IQCalibrate_8723B(
 
 	//u4Byte bbvalue;
 
-	if(t==0)
+	if (t==0)
 	{
 //		 bbvalue = PHY_QueryBBReg(pDM_Odm->Adapter, rFPGA0_RFMOD, bMaskDWord);
 //			RT_DISP(FINIT, INIT_IQK, ("phy_IQCalibrate_8188E()==>0x%08x\n",bbvalue));
@@ -1690,8 +1690,8 @@ phy_IQCalibrate_8723B(
 //path A TX IQK
 	for(i = 0 ; i < retryCount ; i++){
 		PathAOK = phy_PathA_IQK_8723B(pAdapter, is2T, RF_Path);
-//		if(PathAOK == 0x03){
-		if(PathAOK == 0x01){
+//		if (PathAOK == 0x03){
+		if (PathAOK == 0x01){
 			// Path A Tx IQK Success
 			PHY_SetBBReg(pDM_Odm->Adapter, rFPGA0_IQK, bMaskH3Bytes, 0x000000);
 			pDM_Odm->RFCalibrateInfo.TxLOK[ODM_RF_PATH_A] = PHY_QueryRFReg(pDM_Odm->Adapter, ODM_RF_PATH_A, 0x8, bRFRegOffsetMask);
@@ -1706,7 +1706,7 @@ phy_IQCalibrate_8723B(
 //path A RXIQK
 	for(i = 0 ; i < retryCount ; i++){
 		PathAOK = phy_PathA_RxIQK8723B(pAdapter, is2T, RF_Path);
-		if(PathAOK == 0x03){
+		if (PathAOK == 0x03){
 			ODM_RT_TRACE(pDM_Odm,ODM_COMP_CALIBRATION, ODM_DBG_LOUD,  ("Path A Rx IQK Success!!\n"));
 //				result[t][0] = (PHY_QueryBBReg(pDM_Odm->Adapter, rTx_Power_Before_IQK_A, bMaskDWord)&0x3FF0000)>>16;
 //				result[t][1] = (PHY_QueryBBReg(pDM_Odm->Adapter, rTx_Power_After_IQK_A, bMaskDWord)&0x3FF0000)>>16;
@@ -1720,17 +1720,17 @@ phy_IQCalibrate_8723B(
 		}
 	}
 
-	if(0x00 == PathAOK){
+	if (0x00 == PathAOK){
 		ODM_RT_TRACE(pDM_Odm,ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("Path A IQK failed!!\n"));
 	}
 
 //path B IQK
-	if(is2T){
+	if (is2T){
 
 		//path B TX IQK
 		for(i = 0 ; i < retryCount ; i++){
 			PathBOK = phy_PathB_IQK_8723B(pAdapter);
-			if(PathBOK == 0x01){
+			if (PathBOK == 0x01){
 				// Path B Tx IQK Success
 				PHY_SetBBReg(pDM_Odm->Adapter, rFPGA0_IQK, bMaskH3Bytes, 0x000000);
 				pDM_Odm->RFCalibrateInfo.TxLOK[ODM_RF_PATH_B] = PHY_QueryRFReg(pDM_Odm->Adapter, ODM_RF_PATH_B, 0x8, bRFRegOffsetMask);
@@ -1745,7 +1745,7 @@ phy_IQCalibrate_8723B(
 //path B RX IQK
 		for(i = 0 ; i < retryCount ; i++){
 			PathBOK = phy_PathB_RxIQK8723B(pAdapter, is2T);
-			if(PathBOK == 0x03){
+			if (PathBOK == 0x03){
 				ODM_RT_TRACE(pDM_Odm,ODM_COMP_CALIBRATION, ODM_DBG_LOUD,  ("Path B Rx IQK Success!!\n"));
 //				result[t][0] = (PHY_QueryBBReg(pDM_Odm->Adapter, rTx_Power_Before_IQK_A, bMaskDWord)&0x3FF0000)>>16;
 //				result[t][1] = (PHY_QueryBBReg(pDM_Odm->Adapter, rTx_Power_After_IQK_A, bMaskDWord)&0x3FF0000)>>16;
@@ -1758,7 +1758,7 @@ phy_IQCalibrate_8723B(
 		}
 
 ////////Allen end /////////
-		if(0x00 == PathBOK){
+		if (0x00 == PathBOK){
 			ODM_RT_TRACE(pDM_Odm,ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("Path B IQK failed!!\n"));
 		}
 	}
@@ -1767,7 +1767,7 @@ phy_IQCalibrate_8723B(
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("IQK:Back to BB mode, load original value!\n"));
 	PHY_SetBBReg(pDM_Odm->Adapter, rFPGA0_IQK, bMaskH3Bytes, 0);
 
-	if(t!=0)
+	if (t!=0)
 	{
 		// Reload ADDA power saving parameters
 		_PHY_ReloadADDARegisters8723B(pAdapter, ADDA_REG, pDM_Odm->RFCalibrateInfo.ADDA_backup, IQK_ADDA_REG_NUM);
@@ -1785,7 +1785,7 @@ phy_IQCalibrate_8723B(
 		// Restore RX initial gain
 		PHY_SetBBReg(pDM_Odm->Adapter, 0xc50, bMaskByte0, 0x50);
 		PHY_SetBBReg(pDM_Odm->Adapter, 0xc50, bMaskByte0, tmp0xc50);
-		if(is2T){
+		if (is2T){
 			PHY_SetBBReg(pDM_Odm->Adapter, 0xc58, bMaskByte0, 0x50);
 			PHY_SetBBReg(pDM_Odm->Adapter, 0xc58, bMaskByte0, tmp0xc58);
 		}
@@ -1813,19 +1813,19 @@ phy_LCCalibrate_8723B(
 	//Check continuous TX and Packet TX
 	tmpReg = rtw_read8(pDM_Odm->Adapter, 0xd03);
 
-	if((tmpReg&0x70) != 0)			//Deal with contisuous TX case
+	if ((tmpReg&0x70) != 0)			//Deal with contisuous TX case
 		rtw_write8(pDM_Odm->Adapter, 0xd03, tmpReg&0x8F);	//disable all continuous TX
 	else							// Deal with Packet TX case
 		rtw_write8(pDM_Odm->Adapter, REG_TXPAUSE, 0xFF);		// block all queues
 
-	if((tmpReg&0x70) != 0)
+	if ((tmpReg&0x70) != 0)
 	{
 		//1. Read original RF mode
 		//Path-A
 		RF_Amode = PHY_QueryRFReg(pAdapter, ODM_RF_PATH_A, RF_AC, bMask12Bits);
 
 		//Path-B
-		if(is2T)
+		if (is2T)
 			RF_Bmode = PHY_QueryRFReg(pAdapter, ODM_RF_PATH_B, RF_AC, bMask12Bits);
 
 		//2. Set RF mode = standby mode
@@ -1833,7 +1833,7 @@ phy_LCCalibrate_8723B(
 		PHY_SetRFReg(pDM_Odm->Adapter, ODM_RF_PATH_A, RF_AC, bMask12Bits, (RF_Amode&0x8FFFF)|0x10000);
 
 		//Path-B
-		if(is2T)
+		if (is2T)
 			PHY_SetRFReg(pDM_Odm->Adapter, ODM_RF_PATH_B, RF_AC, bMask12Bits, (RF_Bmode&0x8FFFF)|0x10000);
 	}
 
@@ -1849,20 +1849,20 @@ phy_LCCalibrate_8723B(
 	PHY_SetRFReg(pDM_Odm->Adapter, ODM_RF_PATH_A, 0xB0, bRFRegOffsetMask, 0xDFFE0); // LDO OFF
 
 	// Channel 10 LC calibration issue for 8723bs with 26M xtal
-	if(pDM_Odm->SupportInterface == ODM_ITRF_SDIO && pDM_Odm->PackageType >= 0x2)
+	if (pDM_Odm->SupportInterface == ODM_ITRF_SDIO && pDM_Odm->PackageType >= 0x2)
 	{
 		PHY_SetRFReg(pDM_Odm->Adapter, ODM_RF_PATH_A, RF_CHNLBW, bMask12Bits, LC_Cal);
 	}
 
 	//Restore original situation
-	if((tmpReg&0x70) != 0)	//Deal with contisuous TX case
+	if ((tmpReg&0x70) != 0)	//Deal with contisuous TX case
 	{
 		//Path-A
 		rtw_write8(pDM_Odm->Adapter, 0xd03, tmpReg);
 		PHY_SetRFReg(pDM_Odm->Adapter, ODM_RF_PATH_A, RF_AC, bMask12Bits, RF_Amode);
 
 		//Path-B
-		if(is2T)
+		if (is2T)
 			PHY_SetRFReg(pDM_Odm->Adapter, ODM_RF_PATH_B, RF_AC, bMask12Bits, RF_Bmode);
 	}
 	else // Deal with Packet TX case
@@ -1920,13 +1920,13 @@ PHY_IQCalibrate_8723B(
 	if (ODM_CheckPowerStatus(pAdapter) == false)
 		return;
 
-	if(!(pDM_Odm->SupportAbility & ODM_RF_CALIBRATION))
+	if (!(pDM_Odm->SupportAbility & ODM_RF_CALIBRATION))
 	{
 		return;
 	}
 
 	// 20120213<Kordan> Turn on when continuous Tx to pass lab testing. (required by Edlu)
-	if(bSingleTone || bCarrierSuppression)
+	if (bSingleTone || bCarrierSuppression)
 		return;
 
 #if DISABLE_BB_RF
@@ -1986,7 +1986,7 @@ PHY_IQCalibrate_8723B(
 			return;
 	}
 
-	if(bReCovery)
+	if (bReCovery)
 	{
 		ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_LOUD, ("PHY_IQCalibrate_8723B: Return due to bReCovery!\n"));
 		_PHY_ReloadADDARegisters8723B(pAdapter, IQK_BB_REG_92C, pDM_Odm->RFCalibrateInfo.IQK_BB_backup_recover, 9);
@@ -2025,10 +2025,10 @@ PHY_IQCalibrate_8723B(
 	{
 		phy_IQCalibrate_8723B(pAdapter, result, i, Is2ant, RF_Path);
 
-		if(i == 1)
+		if (i == 1)
 		{
 			is12simular = phy_SimularityCompare_8723B(pAdapter, result, 0, 1);
-			if(is12simular)
+			if (is12simular)
 			{
 				final_candidate = 0;
 				ODM_RT_TRACE(pDM_Odm,ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("IQK: is12simular final_candidate is %x\n",final_candidate));
@@ -2036,10 +2036,10 @@ PHY_IQCalibrate_8723B(
 			}
 		}
 
-		if(i == 2)
+		if (i == 2)
 		{
 			is13simular = phy_SimularityCompare_8723B(pAdapter, result, 0, 2);
-			if(is13simular)
+			if (is13simular)
 			{
 				final_candidate = 0;
 				ODM_RT_TRACE(pDM_Odm,ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("IQK: is13simular final_candidate is %x\n",final_candidate));
@@ -2047,7 +2047,7 @@ PHY_IQCalibrate_8723B(
 				break;
 			}
 			is23simular = phy_SimularityCompare_8723B(pAdapter, result, 1, 2);
-			if(is23simular)
+			if (is23simular)
 			{
 				final_candidate = 1;
 				ODM_RT_TRACE(pDM_Odm,ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("IQK: is23simular final_candidate is %x\n",final_candidate));
@@ -2057,7 +2057,7 @@ PHY_IQCalibrate_8723B(
 				for(i = 0; i < 8; i++)
 					RegTmp += result[3][i];
 
-				if(RegTmp != 0)
+				if (RegTmp != 0)
 					final_candidate = 3;
 				else
 					final_candidate = 0xFF;
@@ -2079,7 +2079,7 @@ PHY_IQCalibrate_8723B(
 		ODM_RT_TRACE(pDM_Odm,ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("IQK: RegE94=%x RegE9C=%x RegEA4=%x RegEAC=%x RegEB4=%x RegEBC=%x RegEC4=%x RegECC=%x\n ", RegE94, RegE9C, RegEA4, RegEAC, RegEB4, RegEBC, RegEC4, RegECC));
 	}
 
-	if(final_candidate != 0xff)
+	if (final_candidate != 0xff)
 	{
 		pDM_Odm->RFCalibrateInfo.RegE94 = RegE94 = result[final_candidate][0];
 		pDM_Odm->RFCalibrateInfo.RegE9C = RegE9C = result[final_candidate][1];
@@ -2118,7 +2118,7 @@ PHY_IQCalibrate_8723B(
 
 //To Fix BSOD when final_candidate is 0xff
 //by sherry 20120321
-	if(final_candidate < 4)
+	if (final_candidate < 4)
 	{
 		for(i = 0; i < IQK_Matrix_REG_NUM; i++)
 			pDM_Odm->RFCalibrateInfo.IQKMatrixRegSetting[Indexforchannel].Value[0][i] = result[final_candidate][i];
@@ -2178,13 +2178,13 @@ PHY_LCCalibrate_8723B(
 	return;
 #endif
 
-	if(!(pDM_Odm->SupportAbility & ODM_RF_CALIBRATION))
+	if (!(pDM_Odm->SupportAbility & ODM_RF_CALIBRATION))
 	{
 		return;
 	}
 
 	// 20120213<Kordan> Turn on when continuous Tx to pass lab testing. (required by Edlu)
-	if(bSingleTone || bCarrierSuppression)
+	if (bSingleTone || bCarrierSuppression)
 		return;
 
 	StartTime = jiffies;

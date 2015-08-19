@@ -130,7 +130,7 @@ static struct ieee80211_supported_band *rtw_spt_band_alloc(
 	struct ieee80211_supported_band *spt_band = NULL;
 	int n_channels, n_bitrates;
 
-	if(band == IEEE80211_BAND_2GHZ)
+	if (band == IEEE80211_BAND_2GHZ)
 	{
 		n_channels = RTW_2G_CHANNELS_NUM;
 		n_bitrates = RTW_G_RATES_NUM;
@@ -145,7 +145,7 @@ static struct ieee80211_supported_band *rtw_spt_band_alloc(
 		+ sizeof(struct ieee80211_channel)*n_channels
 		+ sizeof(struct ieee80211_rate)*n_bitrates
 	);
-	if(!spt_band)
+	if (!spt_band)
 		goto exit;
 
 	spt_band->channels = (struct ieee80211_channel*)(((u8*)spt_band)+sizeof(struct ieee80211_supported_band));
@@ -154,7 +154,7 @@ static struct ieee80211_supported_band *rtw_spt_band_alloc(
 	spt_band->n_channels = n_channels;
 	spt_band->n_bitrates = n_bitrates;
 
-	if(band == IEEE80211_BAND_2GHZ)
+	if (band == IEEE80211_BAND_2GHZ)
 	{
 		rtw_2g_channels_init(spt_band->channels);
 		rtw_2g_rates_init(spt_band->bitrates);
@@ -171,10 +171,10 @@ static void rtw_spt_band_free(struct ieee80211_supported_band *spt_band)
 {
 	u32 size = 0;
 
-	if(!spt_band)
+	if (!spt_band)
 		return;
 
-	if(spt_band->band == IEEE80211_BAND_2GHZ)
+	if (spt_band->band == IEEE80211_BAND_2GHZ)
 	{
 		size = sizeof(struct ieee80211_supported_band)
 			+ sizeof(struct ieee80211_channel)*RTW_2G_CHANNELS_NUM
@@ -281,7 +281,7 @@ struct cfg80211_bss *rtw_cfg80211_inform_bss(_adapter *padapter, struct wlan_net
 	//DBG_8192C("%s\n", __func__);
 
 	bssinf_len = pnetwork->network.IELength+sizeof (struct ieee80211_hdr_3addr);
-	if(bssinf_len > MAX_BSSINFO_LEN){
+	if (bssinf_len > MAX_BSSINFO_LEN){
 		DBG_871X("%s IE Length too long > %d byte \n",__FUNCTION__,MAX_BSSINFO_LEN);
 		goto exit;
 	}
@@ -289,9 +289,9 @@ struct cfg80211_bss *rtw_cfg80211_inform_bss(_adapter *padapter, struct wlan_net
 	{
 		u16 wapi_len = 0;
 
-		if(rtw_get_wapi_ie(pnetwork->network.IEs, pnetwork->network.IELength, NULL, &wapi_len)>0)
+		if (rtw_get_wapi_ie(pnetwork->network.IEs, pnetwork->network.IELength, NULL, &wapi_len)>0)
 		{
-			if(wapi_len > 0)
+			if (wapi_len > 0)
 			{
 				DBG_871X("%s, no support wapi!\n",__FUNCTION__);
 				goto exit;
@@ -301,7 +301,7 @@ struct cfg80211_bss *rtw_cfg80211_inform_bss(_adapter *padapter, struct wlan_net
 
 	//To reduce PBC Overlap rate
 	//spin_lock_bh(&pwdev_priv->scan_req_lock);
-	if(adapter_wdev_data(padapter)->scan_request != NULL)
+	if (adapter_wdev_data(padapter)->scan_request != NULL)
 	{
 		u8 *psr=NULL, sr = 0;
 		NDIS_802_11_SSID *pssid = &pnetwork->network.Ssid;
@@ -312,25 +312,25 @@ struct cfg80211_bss *rtw_cfg80211_inform_bss(_adapter *padapter, struct wlan_net
 
 		wpsie = rtw_get_wps_ie(pnetwork->network.IEs+_FIXED_IE_LENGTH_, pnetwork->network.IELength-_FIXED_IE_LENGTH_, NULL, &wpsielen);
 
-		if(wpsie && wpsielen>0)
+		if (wpsie && wpsielen>0)
 			psr = rtw_get_wps_attr_content(wpsie,  wpsielen, WPS_ATTR_SELECTED_REGISTRAR, (u8*)(&sr), NULL);
 
 		if (sr != 0)
 		{
-			if(request->n_ssids == 1 && request->n_channels == 1) // it means under processing WPS
+			if (request->n_ssids == 1 && request->n_channels == 1) // it means under processing WPS
 			{
 				DBG_8192C("ssid=%s, len=%d\n", pssid->Ssid, pssid->SsidLength);
 
 				if (ssids[0].ssid_len == 0) {
 				}
-				else if(pssid->SsidLength == ssids[0].ssid_len &&
+				else if (pssid->SsidLength == ssids[0].ssid_len &&
 					!memcmp(pssid->Ssid, ssids[0].ssid, ssids[0].ssid_len))
 				{
 					DBG_871X("%s, got sr and ssid match!\n", __func__);
 				}
 				else
 				{
-					if(psr !=NULL)
+					if (psr !=NULL)
 						*psr = 0; //clear sr
 				}
 			}
@@ -456,7 +456,7 @@ void rtw_cfg80211_ibss_indicate_connect(_adapter *padapter)
 		WLAN_BSSID_EX  *pnetwork = &(padapter->mlmeextpriv.mlmext_info.network);
 		struct wlan_network *scanned = pmlmepriv->cur_network_scanned;
 
-		if(check_fwstate(pmlmepriv, WIFI_ADHOC_MASTER_STATE)==true)
+		if (check_fwstate(pmlmepriv, WIFI_ADHOC_MASTER_STATE)==true)
 		{
 
 			memcpy(&cur_network->network, pnetwork, sizeof(WLAN_BSSID_EX));
@@ -467,7 +467,7 @@ void rtw_cfg80211_ibss_indicate_connect(_adapter *padapter)
 		}
 		else
 		{
-			if(scanned == NULL)
+			if (scanned == NULL)
 				rtw_warn_on(1);
 
 			if (!memcmp(&(scanned->network.Ssid), &(pnetwork->Ssid), sizeof(NDIS_802_11_SSID))
@@ -505,7 +505,7 @@ void rtw_cfg80211_indicate_connect(_adapter *padapter)
 		return;
 	}
 
-	if(check_fwstate(pmlmepriv, WIFI_AP_STATE) == true)
+	if (check_fwstate(pmlmepriv, WIFI_AP_STATE) == true)
 		return;
 
 	{
@@ -514,7 +514,7 @@ void rtw_cfg80211_indicate_connect(_adapter *padapter)
 
 		//DBG_871X(FUNC_ADPT_FMT" BSS not found\n", FUNC_ADPT_ARG(padapter));
 
-		if(scanned == NULL) {
+		if (scanned == NULL) {
 			rtw_warn_on(1);
 			goto check_bss;
 		}
@@ -584,11 +584,11 @@ void rtw_cfg80211_indicate_disconnect(_adapter *padapter)
 		return;
 	}
 
-	if(check_fwstate(pmlmepriv, WIFI_AP_STATE) == true)
+	if (check_fwstate(pmlmepriv, WIFI_AP_STATE) == true)
 		return;
 
 	if (!padapter->mlmepriv.not_indic_disco) {
-		if(check_fwstate(&padapter->mlmepriv, _FW_LINKED)) {
+		if (check_fwstate(&padapter->mlmepriv, _FW_LINKED)) {
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(4, 2, 0)
 			cfg80211_disconnected(padapter->pnetdev, 0,
 					      NULL, 0, true, GFP_ATOMIC);
@@ -637,7 +637,7 @@ static int rtw_cfg80211_ap_set_encryption(struct net_device *dev, struct ieee_pa
 	else
 	{
 		psta = rtw_get_stainfo(pstapriv, param->sta_addr);
-		if(!psta)
+		if (!psta)
 		{
 			//ret = -EINVAL;
 			DBG_8192C("rtw_set_encryption(), sta has already been removed or never been added\n");
@@ -664,7 +664,7 @@ static int rtw_cfg80211_ap_set_encryption(struct net_device *dev, struct ieee_pa
 
 		DBG_8192C("r871x_set_encryption, wep_key_idx=%d, len=%d\n", wep_key_idx, wep_key_len);
 
-		if((wep_key_idx >= WEP_KEYS) || (wep_key_len<=0))
+		if ((wep_key_idx >= WEP_KEYS) || (wep_key_len<=0))
 		{
 			ret = -EINVAL;
 			goto exit;
@@ -684,7 +684,7 @@ static int rtw_cfg80211_ap_set_encryption(struct net_device *dev, struct ieee_pa
 			psecuritypriv->dot11PrivacyAlgrthm=_WEP40_;
 			psecuritypriv->dot118021XGrpPrivacy=_WEP40_;
 
-			if(wep_key_len == 13)
+			if (wep_key_len == 13)
 			{
 				psecuritypriv->dot11PrivacyAlgrthm=_WEP104_;
 				psecuritypriv->dot118021XGrpPrivacy=_WEP104_;
@@ -704,24 +704,24 @@ static int rtw_cfg80211_ap_set_encryption(struct net_device *dev, struct ieee_pa
 	}
 
 
-	if(!psta && check_fwstate(pmlmepriv, WIFI_AP_STATE)) // //group key
+	if (!psta && check_fwstate(pmlmepriv, WIFI_AP_STATE)) // //group key
 	{
-		if(param->u.crypt.set_tx == 0) //group key
+		if (param->u.crypt.set_tx == 0) //group key
 		{
-			if(strcmp(param->u.crypt.alg, "WEP") == 0)
+			if (strcmp(param->u.crypt.alg, "WEP") == 0)
 			{
 				DBG_8192C("%s, set group_key, WEP\n", __FUNCTION__);
 
 				memcpy(psecuritypriv->dot118021XGrpKey[param->u.crypt.idx].skey,  param->u.crypt.key, (param->u.crypt.key_len>16 ?16:param->u.crypt.key_len));
 
 				psecuritypriv->dot118021XGrpPrivacy = _WEP40_;
-				if(param->u.crypt.key_len==13)
+				if (param->u.crypt.key_len==13)
 				{
 						psecuritypriv->dot118021XGrpPrivacy = _WEP104_;
 				}
 
 			}
-			else if(strcmp(param->u.crypt.alg, "TKIP") == 0)
+			else if (strcmp(param->u.crypt.alg, "TKIP") == 0)
 			{
 				DBG_8192C("%s, set group_key, TKIP\n", __FUNCTION__);
 
@@ -737,7 +737,7 @@ static int rtw_cfg80211_ap_set_encryption(struct net_device *dev, struct ieee_pa
 				psecuritypriv->busetkipkey = true;
 
 			}
-			else if(strcmp(param->u.crypt.alg, "CCMP") == 0)
+			else if (strcmp(param->u.crypt.alg, "CCMP") == 0)
 			{
 				DBG_8192C("%s, set group_key, CCMP\n", __FUNCTION__);
 
@@ -761,7 +761,7 @@ static int rtw_cfg80211_ap_set_encryption(struct net_device *dev, struct ieee_pa
 			rtw_ap_set_group_key(padapter, param->u.crypt.key, psecuritypriv->dot118021XGrpPrivacy, param->u.crypt.idx);
 
 			pbcmc_sta=rtw_get_bcmc_stainfo(padapter);
-			if(pbcmc_sta)
+			if (pbcmc_sta)
 			{
 				pbcmc_sta->ieee8021x_blocked = false;
 				pbcmc_sta->dot118021XPrivacy= psecuritypriv->dot118021XGrpPrivacy;//rx will use bmc_sta's dot118021XPrivacy
@@ -773,25 +773,25 @@ static int rtw_cfg80211_ap_set_encryption(struct net_device *dev, struct ieee_pa
 
 	}
 
-	if(psecuritypriv->dot11AuthAlgrthm == dot11AuthAlgrthm_8021X && psta) // psk/802_1x
+	if (psecuritypriv->dot11AuthAlgrthm == dot11AuthAlgrthm_8021X && psta) // psk/802_1x
 	{
-		if(check_fwstate(pmlmepriv, WIFI_AP_STATE))
+		if (check_fwstate(pmlmepriv, WIFI_AP_STATE))
 		{
-			if(param->u.crypt.set_tx ==1) //pairwise key
+			if (param->u.crypt.set_tx ==1) //pairwise key
 			{
 				memcpy(psta->dot118021x_UncstKey.skey,  param->u.crypt.key, (param->u.crypt.key_len>16 ?16:param->u.crypt.key_len));
 
-				if(strcmp(param->u.crypt.alg, "WEP") == 0)
+				if (strcmp(param->u.crypt.alg, "WEP") == 0)
 				{
 					DBG_8192C("%s, set pairwise key, WEP\n", __FUNCTION__);
 
 					psta->dot118021XPrivacy = _WEP40_;
-					if(param->u.crypt.key_len==13)
+					if (param->u.crypt.key_len==13)
 					{
 						psta->dot118021XPrivacy = _WEP104_;
 					}
 				}
-				else if(strcmp(param->u.crypt.alg, "TKIP") == 0)
+				else if (strcmp(param->u.crypt.alg, "TKIP") == 0)
 				{
 					DBG_8192C("%s, set pairwise key, TKIP\n", __FUNCTION__);
 
@@ -805,7 +805,7 @@ static int rtw_cfg80211_ap_set_encryption(struct net_device *dev, struct ieee_pa
 					psecuritypriv->busetkipkey = true;
 
 				}
-				else if(strcmp(param->u.crypt.alg, "CCMP") == 0)
+				else if (strcmp(param->u.crypt.alg, "CCMP") == 0)
 				{
 
 					DBG_8192C("%s, set pairwise key, CCMP\n", __FUNCTION__);
@@ -828,17 +828,17 @@ static int rtw_cfg80211_ap_set_encryption(struct net_device *dev, struct ieee_pa
 			}
 			else//group key???
 			{
-				if(strcmp(param->u.crypt.alg, "WEP") == 0)
+				if (strcmp(param->u.crypt.alg, "WEP") == 0)
 				{
 					memcpy(psecuritypriv->dot118021XGrpKey[param->u.crypt.idx].skey,  param->u.crypt.key, (param->u.crypt.key_len>16 ?16:param->u.crypt.key_len));
 
 					psecuritypriv->dot118021XGrpPrivacy = _WEP40_;
-					if(param->u.crypt.key_len==13)
+					if (param->u.crypt.key_len==13)
 					{
 						psecuritypriv->dot118021XGrpPrivacy = _WEP104_;
 					}
 				}
-				else if(strcmp(param->u.crypt.alg, "TKIP") == 0)
+				else if (strcmp(param->u.crypt.alg, "TKIP") == 0)
 				{
 					psecuritypriv->dot118021XGrpPrivacy = _TKIP_;
 
@@ -852,7 +852,7 @@ static int rtw_cfg80211_ap_set_encryption(struct net_device *dev, struct ieee_pa
 					psecuritypriv->busetkipkey = true;
 
 				}
-				else if(strcmp(param->u.crypt.alg, "CCMP") == 0)
+				else if (strcmp(param->u.crypt.alg, "CCMP") == 0)
 				{
 					psecuritypriv->dot118021XGrpPrivacy = _AES_;
 
@@ -872,7 +872,7 @@ static int rtw_cfg80211_ap_set_encryption(struct net_device *dev, struct ieee_pa
 				rtw_ap_set_group_key(padapter, param->u.crypt.key, psecuritypriv->dot118021XGrpPrivacy, param->u.crypt.idx);
 
 				pbcmc_sta=rtw_get_bcmc_stainfo(padapter);
-				if(pbcmc_sta)
+				if (pbcmc_sta)
 				{
 					pbcmc_sta->ieee8021x_blocked = false;
 					pbcmc_sta->dot118021XPrivacy= psecuritypriv->dot118021XGrpPrivacy;//rx will use bmc_sta's dot118021XPrivacy
@@ -951,7 +951,7 @@ static int rtw_cfg80211_set_encryption(struct net_device *dev, struct ieee_param
 			psecuritypriv->dot11PrivacyAlgrthm = _WEP40_;
 			psecuritypriv->dot118021XGrpPrivacy = _WEP40_;
 
-			if(wep_key_len==13)
+			if (wep_key_len==13)
 			{
 				psecuritypriv->dot11PrivacyAlgrthm = _WEP104_;
 				psecuritypriv->dot118021XGrpPrivacy = _WEP104_;
@@ -969,7 +969,7 @@ static int rtw_cfg80211_set_encryption(struct net_device *dev, struct ieee_param
 		goto exit;
 	}
 
-	if(padapter->securitypriv.dot11AuthAlgrthm == dot11AuthAlgrthm_8021X) // 802_1x
+	if (padapter->securitypriv.dot11AuthAlgrthm == dot11AuthAlgrthm_8021X) // 802_1x
 	{
 		struct sta_info * psta,*pbcmc_sta;
 		struct sta_priv * pstapriv = &padapter->stapriv;
@@ -990,20 +990,20 @@ static int rtw_cfg80211_set_encryption(struct net_device *dev, struct ieee_param
 					psta->ieee8021x_blocked = false;
 
 
-				if((padapter->securitypriv.ndisencryptstatus == Ndis802_11Encryption2Enabled)||
+				if ((padapter->securitypriv.ndisencryptstatus == Ndis802_11Encryption2Enabled)||
 						(padapter->securitypriv.ndisencryptstatus ==  Ndis802_11Encryption3Enabled))
 				{
 					psta->dot118021XPrivacy = padapter->securitypriv.dot11PrivacyAlgrthm;
 				}
 
-				if(param->u.crypt.set_tx ==1)//pairwise key
+				if (param->u.crypt.set_tx ==1)//pairwise key
 				{
 
 					DBG_8192C("%s, : param->u.crypt.set_tx ==1 \n", __func__);
 
 					memcpy(psta->dot118021x_UncstKey.skey,  param->u.crypt.key, (param->u.crypt.key_len>16 ?16:param->u.crypt.key_len));
 
-					if(strcmp(param->u.crypt.alg, "TKIP") == 0)//set mic key
+					if (strcmp(param->u.crypt.alg, "TKIP") == 0)//set mic key
 					{
 						//DEBUG_ERR(("\nset key length :param->u.crypt.key_len=%d\n", param->u.crypt.key_len));
 						memcpy(psta->dot11tkiptxmickey.skey, &(param->u.crypt.key[16]), 8);
@@ -1020,7 +1020,7 @@ static int rtw_cfg80211_set_encryption(struct net_device *dev, struct ieee_param
 				}
 				else//group key
 				{
-					if(strcmp(param->u.crypt.alg, "TKIP") == 0 || strcmp(param->u.crypt.alg, "CCMP") == 0)
+					if (strcmp(param->u.crypt.alg, "TKIP") == 0 || strcmp(param->u.crypt.alg, "CCMP") == 0)
 					{
 						memcpy(padapter->securitypriv.dot118021XGrpKey[param->u.crypt.idx].skey,  param->u.crypt.key,(param->u.crypt.key_len>16 ?16:param->u.crypt.key_len));
 						memcpy(padapter->securitypriv.dot118021XGrptxmickey[param->u.crypt.idx].skey,&(param->u.crypt.key[16]),8);
@@ -1032,7 +1032,7 @@ static int rtw_cfg80211_set_encryption(struct net_device *dev, struct ieee_param
 						padapter->securitypriv.dot118021XGrpKeyid = param->u.crypt.idx;
 						rtw_set_key(padapter,&padapter->securitypriv,param->u.crypt.idx, 1, true);
 					}
-					else if(strcmp(param->u.crypt.alg, "BIP") == 0)
+					else if (strcmp(param->u.crypt.alg, "BIP") == 0)
 					{
 						//DBG_871X("BIP key_len=%d , index=%d @@@@@@@@@@@@@@@@@@\n", param->u.crypt.key_len, param->u.crypt.idx);
 						//save the IGTK key, length 16 bytes
@@ -1049,7 +1049,7 @@ static int rtw_cfg80211_set_encryption(struct net_device *dev, struct ieee_param
 			}
 
 			pbcmc_sta=rtw_get_bcmc_stainfo(padapter);
-			if(pbcmc_sta==NULL)
+			if (pbcmc_sta==NULL)
 			{
 				//DEBUG_ERR( ("Set OID_802_11_ADD_KEY: bcmc stainfo is null \n"));
 			}
@@ -1059,14 +1059,14 @@ static int rtw_cfg80211_set_encryption(struct net_device *dev, struct ieee_param
 				if (strcmp(param->u.crypt.alg, "none") != 0)
 					pbcmc_sta->ieee8021x_blocked = false;
 
-				if((padapter->securitypriv.ndisencryptstatus == Ndis802_11Encryption2Enabled)||
+				if ((padapter->securitypriv.ndisencryptstatus == Ndis802_11Encryption2Enabled)||
 						(padapter->securitypriv.ndisencryptstatus ==  Ndis802_11Encryption3Enabled))
 				{
 					pbcmc_sta->dot118021XPrivacy = padapter->securitypriv.dot11PrivacyAlgrthm;
 				}
 			}
 		}
-		else if(check_fwstate(pmlmepriv, WIFI_ADHOC_STATE)) //adhoc mode
+		else if (check_fwstate(pmlmepriv, WIFI_ADHOC_STATE)) //adhoc mode
 		{
 		}
 	}
@@ -1147,24 +1147,24 @@ static int cfg80211_rtw_add_key(struct wiphy *wiphy, struct net_device *ndev,
 		memcpy(param->u.crypt.seq, (u8 *)params->seq, params->seq_len);
 	}
 
-	if(params->key_len && params->key)
+	if (params->key_len && params->key)
 	{
 		param->u.crypt.key_len = params->key_len;
 		memcpy(param->u.crypt.key, (u8 *)params->key, params->key_len);
 	}
 
-	if(check_fwstate(pmlmepriv, WIFI_STATION_STATE) == true)
+	if (check_fwstate(pmlmepriv, WIFI_STATION_STATE) == true)
 	{
 		ret =  rtw_cfg80211_set_encryption(ndev, param, param_len);
 	}
-	else if(check_fwstate(pmlmepriv, WIFI_AP_STATE) == true)
+	else if (check_fwstate(pmlmepriv, WIFI_AP_STATE) == true)
 	{
-		if(mac_addr)
+		if (mac_addr)
 			memcpy(param->sta_addr, (void*)mac_addr, ETH_ALEN);
 
 		ret = rtw_cfg80211_ap_set_encryption(ndev, param, param_len);
 	}
-        else if(check_fwstate(pmlmepriv, WIFI_ADHOC_STATE) == true
+        else if (check_fwstate(pmlmepriv, WIFI_ADHOC_STATE) == true
                 || check_fwstate(pmlmepriv, WIFI_ADHOC_MASTER_STATE) == true)
         {
                 //DBG_8192C("@@@@@@@@@@ fw_state=0x%x, iftype=%d\n", pmlmepriv->fw_state, rtw_wdev->iftype);
@@ -1177,7 +1177,7 @@ static int cfg80211_rtw_add_key(struct wiphy *wiphy, struct net_device *ndev,
 	}
 
 addkey_end:
-	if(param)
+	if (param)
 	{
 		kfree((u8*)param);
 	}
@@ -1279,7 +1279,7 @@ static int cfg80211_rtw_get_station(struct wiphy *wiphy,
 #endif
 
 	//for infra./P2PClient mode
-	if(	check_fwstate(pmlmepriv, WIFI_STATION_STATE)
+	if (	check_fwstate(pmlmepriv, WIFI_STATION_STATE)
 		&& check_fwstate(pmlmepriv, _FW_LINKED)
 	)
 	{
@@ -1336,7 +1336,7 @@ static int cfg80211_rtw_change_iface(struct wiphy *wiphy,
 
 	DBG_871X(FUNC_NDEV_FMT" type=%d\n", FUNC_NDEV_ARG(ndev), type);
 
-	if(adapter_to_dvobj(padapter)->processing_dev_remove == true)
+	if (adapter_to_dvobj(padapter)->processing_dev_remove == true)
 	{
 		ret= -EPERM;
 		goto exit;
@@ -1344,14 +1344,14 @@ static int cfg80211_rtw_change_iface(struct wiphy *wiphy,
 
 	{
 		DBG_871X(FUNC_NDEV_FMT" call netdev_open\n", FUNC_NDEV_ARG(ndev));
-		if(netdev_open(ndev) != 0) {
+		if (netdev_open(ndev) != 0) {
 			DBG_871X(FUNC_NDEV_FMT" call netdev_open fail\n", FUNC_NDEV_ARG(ndev));
 			ret= -EPERM;
 			goto exit;
 		}
 	}
 
-	if(_FAIL == rtw_pwr_wakeup(padapter)) {
+	if (_FAIL == rtw_pwr_wakeup(padapter)) {
 		DBG_871X(FUNC_NDEV_FMT" call rtw_pwr_wakeup fail\n", FUNC_NDEV_ARG(ndev));
 		ret= -EPERM;
 		goto exit;
@@ -1361,7 +1361,7 @@ static int cfg80211_rtw_change_iface(struct wiphy *wiphy,
 	DBG_871X(FUNC_NDEV_FMT" old_iftype=%d, new_iftype=%d\n",
 		FUNC_NDEV_ARG(ndev), old_type, type);
 
-	if(old_type != type)
+	if (old_type != type)
 	{
 		change = true;
 		pmlmeext->action_public_rxseq = 0xffff;
@@ -1411,7 +1411,7 @@ void rtw_cfg80211_indicate_scan_done(_adapter *adapter, bool aborted)
 		#endif
 
 		/* avoid WARN_ON(request != wiphy_to_dev(request->wiphy)->scan_req); */
-		if(pwdev_priv->scan_request->wiphy != pwdev_priv->rtw_wdev->wiphy)
+		if (pwdev_priv->scan_request->wiphy != pwdev_priv->rtw_wdev->wiphy)
 		{
 			DBG_8192C("error wiphy compare\n");
 		}
@@ -1473,7 +1473,7 @@ void rtw_cfg80211_surveydone_event_callback(_adapter *padapter)
 		pnetwork = LIST_CONTAINOR(plist, struct wlan_network, list);
 
 		//report network only if the current channel set contains the channel to which this network belongs
-		if(rtw_ch_set_search_ch(padapter->mlmeextpriv.channel_set, pnetwork->network.Configuration.DSConfig) >= 0
+		if (rtw_ch_set_search_ch(padapter->mlmeextpriv.channel_set, pnetwork->network.Configuration.DSConfig) >= 0
 			&& rtw_mlme_band_check(padapter, pnetwork->network.Configuration.DSConfig) == true
 			&& true == rtw_validate_ssid(&(pnetwork->network.Ssid))
 		)
@@ -1500,15 +1500,15 @@ static int rtw_cfg80211_set_probe_req_wpsp2pie(_adapter *padapter, char *buf, in
 	DBG_8192C("%s, ielen=%d\n", __func__, len);
 #endif
 
-	if(len>0)
+	if (len>0)
 	{
-		if((wps_ie = rtw_get_wps_ie(buf, len, NULL, &wps_ielen)))
+		if ((wps_ie = rtw_get_wps_ie(buf, len, NULL, &wps_ielen)))
 		{
 			#ifdef CONFIG_DEBUG_CFG80211
 			DBG_8192C("probe_req_wps_ielen=%d\n", wps_ielen);
 			#endif
 
-			if(pmlmepriv->wps_probe_req_ie)
+			if (pmlmepriv->wps_probe_req_ie)
 			{
 				pmlmepriv->wps_probe_req_ie_len = 0;
 				kfree(pmlmepriv->wps_probe_req_ie);
@@ -1576,7 +1576,7 @@ static int cfg80211_rtw_scan(struct wiphy *wiphy
 		{
 			DBG_8192C("%s, fwstate=0x%x\n", __func__, pmlmepriv->fw_state);
 
-			if(check_fwstate(pmlmepriv, WIFI_UNDER_WPS))
+			if (check_fwstate(pmlmepriv, WIFI_UNDER_WPS))
 			{
 				DBG_8192C("AP mode process WPS \n");
 			}
@@ -1587,12 +1587,12 @@ static int cfg80211_rtw_scan(struct wiphy *wiphy
 	}
 
 	rtw_ps_deny(padapter, PS_DENY_SCAN);
-	if(_FAIL == rtw_pwr_wakeup(padapter)) {
+	if (_FAIL == rtw_pwr_wakeup(padapter)) {
 		need_indicate_scan_done = true;
 		goto check_need_indicate_scan_done;
 	}
 
-	if(request->ie && request->ie_len>0)
+	if (request->ie && request->ie_len>0)
 	{
 		rtw_cfg80211_set_probe_req_wpsp2pie(padapter, (u8 *)request->ie, request->ie_len );
 	}
@@ -1666,7 +1666,7 @@ static int cfg80211_rtw_scan(struct wiphy *wiphy
 	spin_unlock_bh(&pmlmepriv->lock);
 
 
-	if(_status == false)
+	if (_status == false)
 	{
 		ret = -1;
 	}
@@ -1728,7 +1728,7 @@ static int rtw_cfg80211_set_auth_type(struct security_priv *psecuritypriv,
 
 		psecuritypriv->dot11AuthAlgrthm = dot11AuthAlgrthm_Open;
 
-		if(psecuritypriv->ndisauthtype>Ndis802_11AuthModeWPA)
+		if (psecuritypriv->ndisauthtype>Ndis802_11AuthModeWPA)
 			psecuritypriv->dot11AuthAlgrthm = dot11AuthAlgrthm_8021X;
 
 		break;
@@ -1791,11 +1791,11 @@ static int rtw_cfg80211_set_cipher(struct security_priv *psecuritypriv, u32 ciph
 		return -ENOTSUPP;
 	}
 
-	if(ucast)
+	if (ucast)
 	{
 		psecuritypriv->ndisencryptstatus = ndisencryptstatus;
 
-		//if(psecuritypriv->dot11PrivacyAlgrthm >= _AES_)
+		//if (psecuritypriv->dot11PrivacyAlgrthm >= _AES_)
 		//	psecuritypriv->ndisauthtype = Ndis802_11AuthModeWPA2PSK;
 	}
 
@@ -1858,16 +1858,16 @@ static int rtw_cfg80211_set_wpa_ie(_adapter *padapter, u8 *pie, size_t ielen)
 	}
 
 	pos = buf;
-	if(ielen < RSN_HEADER_LEN){
+	if (ielen < RSN_HEADER_LEN){
 		RT_TRACE(_module_rtl871x_ioctl_os_c,_drv_err_,("Ie len too short %d\n", ielen));
 		ret  = -1;
 		goto exit;
 	}
 
 	pwpa = rtw_get_wpa_ie(buf, &wpa_ielen, ielen);
-	if(pwpa && wpa_ielen>0)
+	if (pwpa && wpa_ielen>0)
 	{
-		if(rtw_parse_wpa_ie(pwpa, wpa_ielen+2, &group_cipher, &pairwise_cipher, NULL) == _SUCCESS)
+		if (rtw_parse_wpa_ie(pwpa, wpa_ielen+2, &group_cipher, &pairwise_cipher, NULL) == _SUCCESS)
 		{
 			padapter->securitypriv.dot11AuthAlgrthm= dot11AuthAlgrthm_8021X;
 			padapter->securitypriv.ndisauthtype=Ndis802_11AuthModeWPAPSK;
@@ -1878,9 +1878,9 @@ static int rtw_cfg80211_set_wpa_ie(_adapter *padapter, u8 *pie, size_t ielen)
 	}
 
 	pwpa2 = rtw_get_wpa2_ie(buf, &wpa2_ielen, ielen);
-	if(pwpa2 && wpa2_ielen>0)
+	if (pwpa2 && wpa2_ielen>0)
 	{
-		if(rtw_parse_wpa2_ie(pwpa2, wpa2_ielen+2, &group_cipher, &pairwise_cipher, NULL) == _SUCCESS)
+		if (rtw_parse_wpa2_ie(pwpa2, wpa2_ielen+2, &group_cipher, &pairwise_cipher, NULL) == _SUCCESS)
 		{
 			padapter->securitypriv.dot11AuthAlgrthm= dot11AuthAlgrthm_8021X;
 			padapter->securitypriv.ndisauthtype=Ndis802_11AuthModeWPA2PSK;
@@ -1963,7 +1963,7 @@ static int rtw_cfg80211_set_wpa_ie(_adapter *padapter, u8 *pie, size_t ielen)
 	}
 
 	//TKIP and AES disallow multicast packets until installing group key
-	if(padapter->securitypriv.dot11PrivacyAlgrthm == _TKIP_
+	if (padapter->securitypriv.dot11PrivacyAlgrthm == _TKIP_
 		|| padapter->securitypriv.dot11PrivacyAlgrthm == _TKIP_WTMIC_
 		|| padapter->securitypriv.dot11PrivacyAlgrthm == _AES_)
 		//WPS open need to enable multicast
@@ -1991,12 +1991,12 @@ static int cfg80211_rtw_join_ibss(struct wiphy *wiphy, struct net_device *ndev,
 	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
 	int ret=0;
 
-	if(_FAIL == rtw_pwr_wakeup(padapter)) {
+	if (_FAIL == rtw_pwr_wakeup(padapter)) {
 		ret= -EPERM;
 		goto exit;
 	}
 
-	if(check_fwstate(pmlmepriv, WIFI_AP_STATE)) {
+	if (check_fwstate(pmlmepriv, WIFI_AP_STATE)) {
 		ret = -EPERM;
 		goto exit;
 	}
@@ -2053,7 +2053,7 @@ static int cfg80211_rtw_leave_ibss(struct wiphy *wiphy, struct net_device *ndev)
 
 	rtw_set_to_roam(padapter, 0);
 
-	if(check_fwstate(&padapter->mlmepriv, _FW_LINKED))
+	if (check_fwstate(&padapter->mlmepriv, _FW_LINKED))
 	{
 		rtw_scan_abort(padapter);
 		LeaveAllPowerSaveMode(padapter);
@@ -2092,7 +2092,7 @@ static int cfg80211_rtw_connect(struct wiphy *wiphy, struct net_device *ndev,
 		sme->privacy, sme->key, sme->key_len, sme->key_idx);
 
 
-	if(adapter_wdev_data(padapter)->block == true)
+	if (adapter_wdev_data(padapter)->block == true)
 	{
 		ret = -EBUSY;
 		DBG_871X("%s wdev_priv.block is set\n", __FUNCTION__);
@@ -2100,12 +2100,12 @@ static int cfg80211_rtw_connect(struct wiphy *wiphy, struct net_device *ndev,
 	}
 
 	rtw_ps_deny(padapter, PS_DENY_JOIN);
-	if(_FAIL == rtw_pwr_wakeup(padapter)) {
+	if (_FAIL == rtw_pwr_wakeup(padapter)) {
 		ret= -EPERM;
 		goto exit;
 	}
 
-	if(check_fwstate(pmlmepriv, WIFI_AP_STATE)) {
+	if (check_fwstate(pmlmepriv, WIFI_AP_STATE)) {
 		ret = -EPERM;
 		goto exit;
 	}
@@ -2170,7 +2170,7 @@ static int cfg80211_rtw_connect(struct wiphy *wiphy, struct net_device *ndev,
 	}
 
 	//For WEP Shared auth
-	if((psecuritypriv->dot11AuthAlgrthm == dot11AuthAlgrthm_Shared
+	if ((psecuritypriv->dot11AuthAlgrthm == dot11AuthAlgrthm_Shared
 		|| psecuritypriv->dot11AuthAlgrthm == dot11AuthAlgrthm_Auto) && sme->key
 	)
 	{
@@ -2191,7 +2191,7 @@ static int cfg80211_rtw_connect(struct wiphy *wiphy, struct net_device *ndev,
 			wep_key_len = wep_key_len <= 5 ? 5 : 13;
 			wep_total_len = wep_key_len + FIELD_OFFSET(NDIS_802_11_WEP, KeyMaterial);
 			pwep =(NDIS_802_11_WEP	 *) rtw_malloc(wep_total_len);
-			if(pwep == NULL){
+			if (pwep == NULL){
 				DBG_871X(" wpa_set_encryption: pwep allocate fail !!!\n");
 				ret = -ENOMEM;
 				goto exit;
@@ -2202,7 +2202,7 @@ static int cfg80211_rtw_connect(struct wiphy *wiphy, struct net_device *ndev,
 			pwep->KeyLength = wep_key_len;
 			pwep->Length = wep_total_len;
 
-			if(wep_key_len==13)
+			if (wep_key_len==13)
 			{
 				padapter->securitypriv.dot11PrivacyAlgrthm=_WEP104_;
 				padapter->securitypriv.dot118021XGrpPrivacy=_WEP104_;
@@ -2218,14 +2218,14 @@ static int cfg80211_rtw_connect(struct wiphy *wiphy, struct net_device *ndev,
 
 		memcpy(pwep->KeyMaterial,  (void *)sme->key, pwep->KeyLength);
 
-		if(rtw_set_802_11_add_wep(padapter, pwep) == (u8)_FAIL)
+		if (rtw_set_802_11_add_wep(padapter, pwep) == (u8)_FAIL)
 		{
 			ret = -EOPNOTSUPP ;
 		}
 
 		kfree((u8 *)pwep);
 
-		if(ret < 0)
+		if (ret < 0)
 			goto exit;
 	}
 
@@ -2354,7 +2354,7 @@ static int cfg80211_rtw_set_pmksa(struct wiphy *wiphy,
 	//overwrite PMKID
 	for(index=0 ; index<NUM_PMKID_CACHE; index++)
 	{
-		if( !memcmp(psecuritypriv->PMKIDList[index].Bssid, (u8 *)pmksa->bssid, ETH_ALEN) )
+		if ( !memcmp(psecuritypriv->PMKIDList[index].Bssid, (u8 *)pmksa->bssid, ETH_ALEN) )
 		{ // BSSID is matched, the same AP => rewrite with new PMKID.
 			DBG_871X(FUNC_NDEV_FMT" BSSID exists in the PMKList.\n", FUNC_NDEV_ARG(ndev));
 
@@ -2366,7 +2366,7 @@ static int cfg80211_rtw_set_pmksa(struct wiphy *wiphy,
 		}
 	}
 
-	if(!blInserted)
+	if (!blInserted)
 	{
 		// Find a new entry
 		DBG_871X(FUNC_NDEV_FMT" Use the new entry index = %d for this PMKID.\n",
@@ -2377,7 +2377,7 @@ static int cfg80211_rtw_set_pmksa(struct wiphy *wiphy,
 
 		psecuritypriv->PMKIDList[psecuritypriv->PMKIDIndex].bUsed = true;
 		psecuritypriv->PMKIDIndex++ ;
-		if(psecuritypriv->PMKIDIndex==16)
+		if (psecuritypriv->PMKIDIndex==16)
 		{
 			psecuritypriv->PMKIDIndex =0;
 		}
@@ -2398,7 +2398,7 @@ static int cfg80211_rtw_del_pmksa(struct wiphy *wiphy,
 
 	for(index=0 ; index<NUM_PMKID_CACHE; index++)
 	{
-		if( !memcmp(psecuritypriv->PMKIDList[index].Bssid, (u8 *)pmksa->bssid, ETH_ALEN) )
+		if ( !memcmp(psecuritypriv->PMKIDList[index].Bssid, (u8 *)pmksa->bssid, ETH_ALEN) )
 		{ // BSSID is matched, the same AP => Remove this PMKID information and reset it.
 			memset( psecuritypriv->PMKIDList[index].Bssid, 0x00, ETH_ALEN );
 			memset( psecuritypriv->PMKIDList[index].PMKID, 0x00, WLAN_PMKID_LEN );
@@ -2408,7 +2408,7 @@ static int cfg80211_rtw_del_pmksa(struct wiphy *wiphy,
 		}
 	}
 
-	if(false == bMatched)
+	if (false == bMatched)
 	{
 		DBG_871X(FUNC_NDEV_FMT" do not have matched BSSID\n"
 			, FUNC_NDEV_ARG(ndev));
@@ -2511,7 +2511,7 @@ static int rtw_cfg80211_monitor_if_xmit_entry(struct sk_buff *skb, struct net_de
 	if (unlikely(skb->len < rtap_len))
 		goto fail;
 
-	if(rtap_len != 14)
+	if (rtap_len != 14)
 	{
 		DBG_8192C("radiotap len (should be 14): %d\n", rtap_len);
 		goto fail;
@@ -2641,7 +2641,7 @@ static const struct net_device_ops rtw_cfg80211_monitor_if_ops = {
        .ndo_set_mac_address = rtw_cfg80211_monitor_if_set_mac_address,
 };
 
-static int rtw_cfg80211_add_monitor_if(_adapter *padapter, char *name, struct net_device **ndev)
+static int rtw_cfg80211_add_monitor_if (_adapter *padapter, char *name, struct net_device **ndev)
 {
 	int ret = 0;
 	struct net_device* mon_ndev = NULL;
@@ -2739,7 +2739,7 @@ static struct wireless_dev *
 		ret = -ENODEV;
 		break;
 	case NL80211_IFTYPE_MONITOR:
-		ret = rtw_cfg80211_add_monitor_if(padapter, (char *)name, &ndev);
+		ret = rtw_cfg80211_add_monitor_if (padapter, (char *)name, &ndev);
 		break;
 
 	case NL80211_IFTYPE_P2P_CLIENT:
@@ -2800,14 +2800,14 @@ static int rtw_add_beacon(_adapter *adapter, const u8 *head, size_t head_len, co
 
 	DBG_8192C("%s beacon_head_len=%zu, beacon_tail_len=%zu\n", __FUNCTION__, head_len, tail_len);
 
-	if(check_fwstate(pmlmepriv, WIFI_AP_STATE) != true)
+	if (check_fwstate(pmlmepriv, WIFI_AP_STATE) != true)
 		return -EINVAL;
 
-	if(head_len<24)
+	if (head_len<24)
 		return -EINVAL;
 
 	pbuf = rtw_zmalloc(head_len+tail_len);
-	if(!pbuf)
+	if (!pbuf)
 		return -ENOMEM;
 
 	memcpy(pbuf, (void *)head+24, head_len-24);// 24=beacon header len.
@@ -2816,7 +2816,7 @@ static int rtw_add_beacon(_adapter *adapter, const u8 *head, size_t head_len, co
 	len = head_len+tail_len-24;
 
 	//check wps ie if inclued
-	if(rtw_get_wps_ie(pbuf+_FIXED_IE_LENGTH_, len-_FIXED_IE_LENGTH_, NULL, &wps_ielen))
+	if (rtw_get_wps_ie(pbuf+_FIXED_IE_LENGTH_, len-_FIXED_IE_LENGTH_, NULL, &wps_ielen))
 		DBG_8192C("add bcn, wps_ielen=%d\n", wps_ielen);
 
 	/* pbss_network->IEs will not include p2p_ie, wfd ie */
@@ -2856,7 +2856,7 @@ static int cfg80211_rtw_start_ap(struct wiphy *wiphy, struct net_device *ndev,
 		WLAN_BSSID_EX *pbss_network = &adapter->mlmepriv.cur_network.network;
 		WLAN_BSSID_EX *pbss_network_ext = &adapter->mlmeextpriv.mlmext_info.network;
 
-		if(0)
+		if (0)
 		DBG_871X(FUNC_ADPT_FMT" ssid:(%s,%zu), from ie:(%s,%d)\n", FUNC_ADPT_ARG(adapter),
 			settings->ssid, settings->ssid_len,
 			pbss_network->Ssid.Ssid, pbss_network->Ssid.SsidLength);
@@ -2866,7 +2866,7 @@ static int cfg80211_rtw_start_ap(struct wiphy *wiphy, struct net_device *ndev,
 		memcpy(pbss_network_ext->Ssid.Ssid, (void *)settings->ssid, settings->ssid_len);
 		pbss_network_ext->Ssid.SsidLength = settings->ssid_len;
 
-		if(0)
+		if (0)
 		DBG_871X(FUNC_ADPT_FMT" after ssid:(%s,%d), (%s,%d)\n", FUNC_ADPT_ARG(adapter),
 			pbss_network->Ssid.Ssid, pbss_network->Ssid.SsidLength,
 			pbss_network_ext->Ssid.Ssid, pbss_network_ext->Ssid.SsidLength);
@@ -2917,14 +2917,14 @@ static int cfg80211_rtw_del_station(struct wiphy *wiphy, struct net_device *ndev
 
 	DBG_871X("+"FUNC_NDEV_FMT"\n", FUNC_NDEV_ARG(ndev));
 
-	if(check_fwstate(pmlmepriv, (_FW_LINKED|WIFI_AP_STATE)) != true)
+	if (check_fwstate(pmlmepriv, (_FW_LINKED|WIFI_AP_STATE)) != true)
 	{
 		DBG_8192C("%s, fw_state != FW_LINKED|WIFI_AP_STATE\n", __func__);
 		return -EINVAL;
 	}
 
 
-	if(!mac)
+	if (!mac)
 	{
 		DBG_8192C("flush all sta, and cam_entry\n");
 
@@ -2958,9 +2958,9 @@ static int cfg80211_rtw_del_station(struct wiphy *wiphy, struct net_device *ndev
 
 		plist = get_next(plist);
 
-		if(!memcmp((u8 *)mac, psta->hwaddr, ETH_ALEN))
+		if (!memcmp((u8 *)mac, psta->hwaddr, ETH_ALEN))
 		{
-			if(psta->dot8021xalg == 1 && psta->bpairwise_key_installed == false)
+			if (psta->dot8021xalg == 1 && psta->bpairwise_key_installed == false)
 			{
 				DBG_8192C("%s, sta's dot8021xalg = 1 and key_installed = false\n", __func__);
 			}
@@ -3013,7 +3013,7 @@ static struct sta_info *rtw_sta_info_get_by_idx(const int idx, struct sta_priv *
 	//check asoc_queue
 	while (phead != plist)
 	{
-		if(idx == i) psta = LIST_CONTAINOR(plist, struct sta_info, asoc_list);
+		if (idx == i) psta = LIST_CONTAINOR(plist, struct sta_info, asoc_list);
 		plist = get_next(plist);
 		i++;
 	}
@@ -3033,7 +3033,7 @@ static int	cfg80211_rtw_dump_station(struct wiphy *wiphy, struct net_device *nde
 	spin_lock_bh(&pstapriv->asoc_list_lock);
 	psta = rtw_sta_info_get_by_idx(idx, pstapriv);
 	spin_unlock_bh(&pstapriv->asoc_list_lock);
-	if(NULL == psta)
+	if (NULL == psta)
 	{
 		DBG_871X("Station is not found\n");
 		ret = -ENOENT;
@@ -3089,7 +3089,7 @@ static int _cfg80211_rtw_mgmt_tx(_adapter *padapter, u8 tx_ch, const u8 *buf, si
 	rtw_set_scan_deny(padapter, 1000);
 
 	rtw_scan_abort(padapter);
-	if(tx_ch != rtw_get_oper_ch(padapter)) {
+	if (tx_ch != rtw_get_oper_ch(padapter)) {
 		if (!check_fwstate(&padapter->mlmepriv, _FW_LINKED ))
 			pmlmeext->cur_channel = tx_ch;
 		set_channel_bwmode(padapter, tx_ch, HAL_PRIME_CHNL_OFFSET_DONT_CARE, CHANNEL_WIDTH_20);
@@ -3207,7 +3207,7 @@ static int cfg80211_rtw_mgmt_tx(struct wiphy *wiphy,
 		DBG_871X("RTW_Tx:category(%u), action(%u)\n", category, action);
 
 	rtw_ps_deny(padapter, PS_DENY_MGNT_TX);
-	if(_FAIL == rtw_pwr_wakeup(padapter)) {
+	if (_FAIL == rtw_pwr_wakeup(padapter)) {
 		ret = -EFAULT;
 		goto cancel_ps_deny;
 	}
@@ -3282,7 +3282,7 @@ static int cfg80211_rtw_sched_scan_start(struct wiphy *wiphy,
 		return -EIO;
 	}
 
-	if(check_fwstate(pmlmepriv, _FW_UNDER_SURVEY) == true ||
+	if (check_fwstate(pmlmepriv, _FW_UNDER_SURVEY) == true ||
 		check_fwstate(pmlmepriv, _FW_LINKED) == true  ||
 		check_fwstate(pmlmepriv, _FW_UNDER_LINKING) == true) {
 		DBG_871X("%s: device is busy.\n", __func__);
@@ -3350,7 +3350,7 @@ static void rtw_cfg80211_init_ht_capab(struct ieee80211_sta_ht_cap *ht_cap, enum
 	 *if BW_40 rx_mask[4]=0x01;
 	 *highest supported RX rate
 	 */
-	if(rf_type == RF_1T1R)
+	if (rf_type == RF_1T1R)
 	{
 		ht_cap->mcs.rx_mask[0] = 0xFF;
 		ht_cap->mcs.rx_mask[1] = 0x00;
@@ -3358,7 +3358,7 @@ static void rtw_cfg80211_init_ht_capab(struct ieee80211_sta_ht_cap *ht_cap, enum
 
 		ht_cap->mcs.rx_highest = cpu_to_le16(MAX_BIT_RATE_40MHZ_MCS7);
 	}
-	else if((rf_type == RF_1T2R) || (rf_type==RF_2T2R))
+	else if ((rf_type == RF_1T2R) || (rf_type==RF_2T2R))
 	{
 		ht_cap->mcs.rx_mask[0] = 0xFF;
 		ht_cap->mcs.rx_mask[1] = 0xFF;
@@ -3386,7 +3386,7 @@ void rtw_cfg80211_init_wiphy(_adapter *padapter)
 
 	{
 		bands = wiphy->bands[IEEE80211_BAND_2GHZ];
-		if(bands)
+		if (bands)
 			rtw_cfg80211_init_ht_capab(&bands->ht_cap, IEEE80211_BAND_2GHZ, rf_type);
 	}
 
@@ -3439,7 +3439,7 @@ static void rtw_cfg80211_preinit_wiphy(_adapter *padapter, struct wiphy *wiphy)
 	wiphy->wowlan = &wowlan_stub;
 #endif
 
-	if(padapter->registrypriv.power_mgnt != PS_MODE_ACTIVE)
+	if (padapter->registrypriv.power_mgnt != PS_MODE_ACTIVE)
 		wiphy->flags |= WIPHY_FLAG_PS_ON_BY_DEFAULT;
 	else
 		wiphy->flags &= ~WIPHY_FLAG_PS_ON_BY_DEFAULT;
@@ -3547,7 +3547,7 @@ int rtw_wdev_alloc(_adapter *padapter, struct device *dev)
 
 	pwdev_priv->bandroid_scan = false;
 
-	if(padapter->registrypriv.power_mgnt != PS_MODE_ACTIVE)
+	if (padapter->registrypriv.power_mgnt != PS_MODE_ACTIVE)
 		pwdev_priv->power_mgmt = true;
 	else
 		pwdev_priv->power_mgmt = false;
@@ -3589,7 +3589,7 @@ void rtw_wdev_unregister(struct wireless_dev *wdev)
 	if (!wdev)
 		return;
 
-	if(!(ndev = wdev_to_ndev(wdev)))
+	if (!(ndev = wdev_to_ndev(wdev)))
 		return;
 
 	adapter = (_adapter *)rtw_netdev_priv(ndev);

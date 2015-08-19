@@ -34,7 +34,7 @@ odm_SetCrystalCap(
 
 	bEEPROMCheck = (pHalData->EEPROMVersion >= 0x01)?true:false;
 
-	if(pCfoTrack->CrystalCap == CrystalCap)
+	if (pCfoTrack->CrystalCap == CrystalCap)
 		return;
 
 	pCfoTrack->CrystalCap = CrystalCap;
@@ -73,7 +73,7 @@ odm_SetATCStatus(
 	PDM_ODM_T					pDM_Odm = (PDM_ODM_T)pDM_VOID;
 	PCFO_TRACKING				pCfoTrack = &pDM_Odm->DM_CfoTrack;
 
-	if(pCfoTrack->bATCStatus == ATCStatus)
+	if (pCfoTrack->bATCStatus == ATCStatus)
 		return;
 
 	PHY_SetBBReg(pDM_Odm->Adapter, ODM_REG(BB_ATC,pDM_Odm), ODM_BIT(BB_ATC,pDM_Odm), ATCStatus);
@@ -135,7 +135,7 @@ ODM_CfoTracking(
 	u1Byte						Adjust_Xtal = 1;
 
 	//4 Support ability
-	if(!(pDM_Odm->SupportAbility & ODM_BB_CFO_TRACKING))
+	if (!(pDM_Odm->SupportAbility & ODM_BB_CFO_TRACKING))
 	{
 		ODM_RT_TRACE(pDM_Odm, ODM_COMP_CFO_TRACKING, ODM_DBG_LOUD, ("ODM_CfoTracking(): Return: SupportAbility ODM_BB_CFO_TRACKING is disabled\n"));
 		return;
@@ -143,7 +143,7 @@ ODM_CfoTracking(
 
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CFO_TRACKING, ODM_DBG_LOUD, ("ODM_CfoTracking()=========> \n"));
 
-	if(!pDM_Odm->bLinked || !pDM_Odm->bOneEntryOnly)
+	if (!pDM_Odm->bLinked || !pDM_Odm->bOneEntryOnly)
 	{
 		//4 No link or more than one entry
 		ODM_CfoTrackingReset(pDM_Odm);
@@ -154,7 +154,7 @@ ODM_CfoTracking(
 	{
 		//3 1. CFO Tracking
 		//4 1.1 No new packet
-		if(pCfoTrack->packetCount == pCfoTrack->packetCount_pre)
+		if (pCfoTrack->packetCount == pCfoTrack->packetCount_pre)
 		{
 			ODM_RT_TRACE(pDM_Odm, ODM_COMP_CFO_TRACKING, ODM_DBG_LOUD, ("ODM_CfoTracking(): packet counter doesn't change\n"));
 			return;
@@ -165,7 +165,7 @@ ODM_CfoTracking(
 		CFO_kHz_A =  (int)(pCfoTrack->CFO_tail[0] * 3125)  / 1280;
 		CFO_kHz_B =  (int)(pCfoTrack->CFO_tail[1] * 3125)  / 1280;
 
-		if(pDM_Odm->RFType < ODM_2T2R)
+		if (pDM_Odm->RFType < ODM_2T2R)
 			CFO_ave = CFO_kHz_A;
 		else
 			CFO_ave = (int)(CFO_kHz_A + CFO_kHz_B) >> 1;
@@ -174,7 +174,7 @@ ODM_CfoTracking(
 
 		//4 1.3 Avoid abnormal large CFO
 		CFO_ave_diff = (pCfoTrack->CFO_ave_pre >= CFO_ave)?(pCfoTrack->CFO_ave_pre - CFO_ave):(CFO_ave - pCfoTrack->CFO_ave_pre);
-		if(CFO_ave_diff > 20 && pCfoTrack->largeCFOHit == 0 && !pCfoTrack->bAdjust)
+		if (CFO_ave_diff > 20 && pCfoTrack->largeCFOHit == 0 && !pCfoTrack->bAdjust)
 		{
 			ODM_RT_TRACE(pDM_Odm, ODM_COMP_CFO_TRACKING, ODM_DBG_LOUD, ("ODM_CfoTracking(): first large CFO hit\n"));
 			pCfoTrack->largeCFOHit = 1;
@@ -185,19 +185,19 @@ ODM_CfoTracking(
 		pCfoTrack->CFO_ave_pre = CFO_ave;
 
 		//4 1.4 Dynamic Xtal threshold
-		if(pCfoTrack->bAdjust == false)
+		if (pCfoTrack->bAdjust == false)
 		{
-			if(CFO_ave > CFO_TH_XTAL_HIGH || CFO_ave < (-CFO_TH_XTAL_HIGH))
+			if (CFO_ave > CFO_TH_XTAL_HIGH || CFO_ave < (-CFO_TH_XTAL_HIGH))
 				pCfoTrack->bAdjust = true;
 		}
 		else
 		{
-			if(CFO_ave < CFO_TH_XTAL_LOW && CFO_ave > (-CFO_TH_XTAL_LOW))
+			if (CFO_ave < CFO_TH_XTAL_LOW && CFO_ave > (-CFO_TH_XTAL_LOW))
 				pCfoTrack->bAdjust = false;
 		}
 
 		//4 1.5 BT case: Disable CFO tracking
-		if(pDM_Odm->bBtEnabled)
+		if (pDM_Odm->bBtEnabled)
 		{
 			pCfoTrack->bAdjust = false;
 			odm_SetCrystalCap(pDM_Odm, pCfoTrack->DefXCap);
@@ -205,25 +205,25 @@ ODM_CfoTracking(
 		}
 
 		//4 1.6 Big jump
-		if(pCfoTrack->bAdjust)
+		if (pCfoTrack->bAdjust)
 		{
-			if(CFO_ave > CFO_TH_XTAL_LOW)
+			if (CFO_ave > CFO_TH_XTAL_LOW)
 				Adjust_Xtal =  Adjust_Xtal + ((CFO_ave - CFO_TH_XTAL_LOW) >> 2);
-			else if(CFO_ave < (-CFO_TH_XTAL_LOW))
+			else if (CFO_ave < (-CFO_TH_XTAL_LOW))
 				Adjust_Xtal =  Adjust_Xtal + ((CFO_TH_XTAL_LOW - CFO_ave) >> 2);
 
 			ODM_RT_TRACE(pDM_Odm, ODM_COMP_CFO_TRACKING, ODM_DBG_LOUD, ("ODM_CfoTracking(): Crystal cap offset = %d\n", Adjust_Xtal));
 		}
 
 		//4 1.7 Adjust Crystal Cap.
-		if(pCfoTrack->bAdjust)
+		if (pCfoTrack->bAdjust)
 		{
-			if(CFO_ave > CFO_TH_XTAL_LOW)
+			if (CFO_ave > CFO_TH_XTAL_LOW)
 				CrystalCap = CrystalCap + Adjust_Xtal;
-			else if(CFO_ave < (-CFO_TH_XTAL_LOW))
+			else if (CFO_ave < (-CFO_TH_XTAL_LOW))
 				CrystalCap = CrystalCap - Adjust_Xtal;
 
-			if(CrystalCap > 0x3f)
+			if (CrystalCap > 0x3f)
 				CrystalCap = 0x3f;
 			else if (CrystalCap < 0)
 				CrystalCap = 0;
@@ -234,7 +234,7 @@ ODM_CfoTracking(
 			pCfoTrack->CrystalCap, pCfoTrack->DefXCap));
 
 		//3 2. Dynamic ATC switch
-		if(CFO_ave < CFO_TH_ATC && CFO_ave > -CFO_TH_ATC)
+		if (CFO_ave < CFO_TH_ATC && CFO_ave > -CFO_TH_ATC)
 		{
 			odm_SetATCStatus(pDM_Odm, false);
 			ODM_RT_TRACE(pDM_Odm, ODM_COMP_CFO_TRACKING, ODM_DBG_LOUD, ("ODM_CfoTracking(): Disable ATC!!\n"));
@@ -259,10 +259,10 @@ ODM_ParsingCFO(
 	PCFO_TRACKING	pCfoTrack = &pDM_Odm->DM_CfoTrack;
 	u1Byte			i;
 
-	if(!(pDM_Odm->SupportAbility & ODM_BB_CFO_TRACKING))
+	if (!(pDM_Odm->SupportAbility & ODM_BB_CFO_TRACKING))
 		return;
 
-	if(pPktinfo->StationID != 0)
+	if (pPktinfo->StationID != 0)
 	{
 		//3 Update CFO report for path-A & path-B
 		// Only paht-A and path-B have CFO tail and short CFO
@@ -272,7 +272,7 @@ ODM_ParsingCFO(
 		}
 
 		//3 Update packet counter
-		if(pCfoTrack->packetCount == 0xffffffff)
+		if (pCfoTrack->packetCount == 0xffffffff)
 			pCfoTrack->packetCount = 0;
 		else
 			pCfoTrack->packetCount++;

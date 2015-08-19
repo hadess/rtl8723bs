@@ -78,13 +78,13 @@ static void Init_ODM_ComInfo_8723b(PADAPTER	Adapter)
 	ODM_CmnInfoInit(pDM_Odm,ODM_CMNINFO_BWIFI_TEST,Adapter->registrypriv.wifi_spec);
 
 
-	if(pHalData->rf_type == RF_1T1R){
+	if (pHalData->rf_type == RF_1T1R){
 		ODM_CmnInfoUpdate(pDM_Odm,ODM_CMNINFO_RF_TYPE,ODM_1T1R);
 	}
-	else if(pHalData->rf_type == RF_2T2R){
+	else if (pHalData->rf_type == RF_2T2R){
 		ODM_CmnInfoUpdate(pDM_Odm,ODM_CMNINFO_RF_TYPE,ODM_2T2R);
 	}
-	else if(pHalData->rf_type == RF_1T2R){
+	else if (pHalData->rf_type == RF_1T2R){
 		ODM_CmnInfoUpdate(pDM_Odm,ODM_CMNINFO_RF_TYPE,ODM_1T2R);
 	}
 
@@ -208,7 +208,7 @@ rtl8723b_HalDmWatchDog(
 	bFwCurrentInPSMode = adapter_to_pwrctl(Adapter)->bFwCurrentInPSMode;
 	rtw_hal_get_hwreg(Adapter, HW_VAR_FWLPS_RF_ON, (u8 *)(&bFwPSAwake));
 
-	if( (hw_init_completed == true)
+	if ( (hw_init_completed == true)
 		&& ((!bFwCurrentInPSMode) && bFwPSAwake))
 	{
 		//
@@ -225,7 +225,7 @@ rtl8723b_HalDmWatchDog(
 		u8	bsta_state=false;
 		u8	bBtDisabled = true;
 
-		if(rtw_linked_check(Adapter)){
+		if (rtw_linked_check(Adapter)){
 			bLinked = true;
 			if (check_fwstate(&Adapter->mlmepriv, WIFI_STATION_STATE))
 				bsta_state = true;
@@ -264,7 +264,7 @@ void rtl8723b_hal_dm_in_lps(PADAPTER padapter)
 
 	//set rssi to fw
 	psta = rtw_get_stainfo(pstapriv, get_bssid(pmlmepriv));
-	if(psta && (psta->rssi_stat.UndecoratedSmoothedPWDB > 0))
+	if (psta && (psta->rssi_stat.UndecoratedSmoothedPWDB > 0))
 	{
 		PWDB_rssi = (psta->mac_id | (psta->rssi_stat.UndecoratedSmoothedPWDB<<16) );
 
@@ -288,12 +288,12 @@ void rtl8723b_HalDmWatchDog_in_LPS(IN	PADAPTER	Adapter)
 		goto skip_lps_dm;
 
 
-	if(rtw_linked_check(Adapter))
+	if (rtw_linked_check(Adapter))
 		bLinked = true;
 
 	ODM_CmnInfoUpdate(&pHalData->odmpriv ,ODM_CMNINFO_LINK, bLinked);
 
-	if(bLinked == false)
+	if (bLinked == false)
 		goto skip_lps_dm;
 
 	if (!(pDM_Odm->SupportAbility & ODM_BB_RSSI_MONITOR))
@@ -305,22 +305,22 @@ void rtl8723b_HalDmWatchDog_in_LPS(IN	PADAPTER	Adapter)
 
       //.1 Find MIN-RSSI
 	psta = rtw_get_stainfo(pstapriv, get_bssid(pmlmepriv));
-	if(psta == NULL)
+	if (psta == NULL)
 		goto skip_lps_dm;
 
 	pdmpriv->EntryMinUndecoratedSmoothedPWDB = psta->rssi_stat.UndecoratedSmoothedPWDB;
 
 	DBG_871X("CurIGValue=%d, EntryMinUndecoratedSmoothedPWDB = %d\n", pDM_DigTable->CurIGValue, pdmpriv->EntryMinUndecoratedSmoothedPWDB );
 
-	if(pdmpriv->EntryMinUndecoratedSmoothedPWDB <=0)
+	if (pdmpriv->EntryMinUndecoratedSmoothedPWDB <=0)
 		goto skip_lps_dm;
 
 	pdmpriv->MinUndecoratedPWDBForDM = pdmpriv->EntryMinUndecoratedSmoothedPWDB;
 
 	pDM_Odm->RSSI_Min = pdmpriv->MinUndecoratedPWDBForDM;
 
-	//if(pDM_DigTable->CurIGValue != pDM_Odm->RSSI_Min)
-	if((pDM_DigTable->CurIGValue > pDM_Odm->RSSI_Min + 5) ||
+	//if (pDM_DigTable->CurIGValue != pDM_Odm->RSSI_Min)
+	if ((pDM_DigTable->CurIGValue > pDM_Odm->RSSI_Min + 5) ||
              (pDM_DigTable->CurIGValue < pDM_Odm->RSSI_Min - 5))
 
 	{

@@ -31,7 +31,7 @@ odm_PathDiversityInit(
 )
 {
 	PDM_ODM_T		pDM_Odm = (PDM_ODM_T)pDM_VOID;
-	if(!(pDM_Odm->SupportAbility & ODM_BB_PATH_DIV))
+	if (!(pDM_Odm->SupportAbility & ODM_BB_PATH_DIV))
 	{
 		ODM_RT_TRACE(pDM_Odm, ODM_COMP_PATH_DIV,ODM_DBG_LOUD,("Return: Not Support PathDiv\n"));
 		return;
@@ -44,7 +44,7 @@ odm_PathDiversity(
 )
 {
 	PDM_ODM_T		pDM_Odm = (PDM_ODM_T)pDM_VOID;
-	if(!(pDM_Odm->SupportAbility & ODM_BB_PATH_DIV))
+	if (!(pDM_Odm->SupportAbility & ODM_BB_PATH_DIV))
 	{
 		ODM_RT_TRACE(pDM_Odm, ODM_COMP_PATH_DIV,ODM_DBG_LOUD,("Return: Not Support PathDiv\n"));
 		return;

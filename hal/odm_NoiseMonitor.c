@@ -49,7 +49,7 @@ static s16 odm_InbandNoise_Monitor_NSeries(PDM_ODM_T	pDM_Odm,u8 bPauseDIG,u8 IGI
 	func_start = jiffies;
 	pDM_Odm->noise_level.noise_all = 0;
 
-	if((pDM_Odm->RFType == ODM_1T2R) ||(pDM_Odm->RFType == ODM_2T2R))
+	if ((pDM_Odm->RFType == ODM_1T2R) ||(pDM_Odm->RFType == ODM_2T2R))
 		max_rf_path = 2;
 	else
 		max_rf_path = 1;
@@ -62,7 +62,7 @@ static s16 odm_InbandNoise_Monitor_NSeries(PDM_ODM_T	pDM_Odm,u8 bPauseDIG,u8 IGI
 	// Step 1. Disable DIG && Set initial gain.
 	//
 
-	if(bPauseDIG)
+	if (bPauseDIG)
 	{
 		odm_PauseDIG(pDM_Odm,ODM_PAUSE_DIG,IGIValue);
 	}
@@ -86,7 +86,7 @@ static s16 odm_InbandNoise_Monitor_NSeries(PDM_ODM_T	pDM_Odm,u8 bPauseDIG,u8 IGI
 		ODM_RT_TRACE(pDM_Odm,ODM_COMP_COMMON, ODM_DBG_LOUD,("Noise Floor Report (0x8f8) = 0x%08x\n", tmp4b));
 
 		//PHY_SetBBReg(pDM_Odm->Adapter, rOFDM0_XAAGCCore1, bMaskByte0, TestInitialGain);
-		//if(max_rf_path == 2)
+		//if (max_rf_path == 2)
 		//	PHY_SetBBReg(pDM_Odm->Adapter, rOFDM0_XBAGCCore1, bMaskByte0, TestInitialGain);
 
 		//update idle time pwer report per 5us
@@ -112,13 +112,13 @@ static s16 odm_InbandNoise_Monitor_NSeries(PDM_ODM_T	pDM_Odm,u8 bPauseDIG,u8 IGI
 
 		for(rf_path = ODM_RF_PATH_A; rf_path < max_rf_path; rf_path++)
 		{
-			if( (noise_data.valid_cnt[rf_path] < ValidCnt) && (noise_data.sval[rf_path] < Valid_Max && noise_data.sval[rf_path] >= Valid_Min))
+			if ( (noise_data.valid_cnt[rf_path] < ValidCnt) && (noise_data.sval[rf_path] < Valid_Max && noise_data.sval[rf_path] >= Valid_Min))
 			{
 				noise_data.valid_cnt[rf_path]++;
 				noise_data.sum[rf_path] += noise_data.sval[rf_path];
 				ODM_RT_TRACE(pDM_Odm,ODM_COMP_COMMON, ODM_DBG_LOUD,("RF_Path:%d Valid sval = %d\n", rf_path,noise_data.sval[rf_path]));
 				ODM_RT_TRACE(pDM_Odm,ODM_COMP_COMMON, ODM_DBG_LOUD,("Sum of sval = %d, \n", noise_data.sum[rf_path]));
-				if(noise_data.valid_cnt[rf_path] == ValidCnt)
+				if (noise_data.valid_cnt[rf_path] == ValidCnt)
 				{
 					valid_done++;
 					ODM_RT_TRACE(pDM_Odm,ODM_COMP_COMMON, ODM_DBG_LOUD,("After divided, RF_Path:%d ,sum = %d \n", rf_path,noise_data.sum[rf_path]));
@@ -134,7 +134,7 @@ static s16 odm_InbandNoise_Monitor_NSeries(PDM_ODM_T	pDM_Odm,u8 bPauseDIG,u8 IGI
 			for(rf_path = ODM_RF_PATH_A; rf_path < max_rf_path; rf_path++)
 			{
 				//printk("%s PATH_%d - sum = %d, valid_cnt = %d \n",__FUNCTION__,rf_path,noise_data.sum[rf_path], noise_data.valid_cnt[rf_path]);
-				if(noise_data.valid_cnt[rf_path])
+				if (noise_data.valid_cnt[rf_path])
 					noise_data.sum[rf_path] /= noise_data.valid_cnt[rf_path];
 				else
 					noise_data.sum[rf_path]  = 0;
@@ -148,7 +148,7 @@ static s16 odm_InbandNoise_Monitor_NSeries(PDM_ODM_T	pDM_Odm,u8 bPauseDIG,u8 IGI
 	pDM_Odm->noise_level.noise[ODM_RF_PATH_A] = -110 + reg_c50 + noise_data.sum[ODM_RF_PATH_A];
 	pDM_Odm->noise_level.noise_all += pDM_Odm->noise_level.noise[ODM_RF_PATH_A];
 
-	if(max_rf_path == 2){
+	if (max_rf_path == 2){
 		reg_c58 = (s4Byte)PHY_QueryBBReg(pDM_Odm->Adapter,rOFDM0_XBAGCCore1,bMaskByte0);
 		reg_c58 &= ~BIT7;
 		ODM_RT_TRACE(pDM_Odm,ODM_COMP_COMMON, ODM_DBG_LOUD,("0x%x = 0x%02x(%d)\n", rOFDM0_XBAGCCore1, reg_c58, reg_c58));
@@ -164,7 +164,7 @@ static s16 odm_InbandNoise_Monitor_NSeries(PDM_ODM_T	pDM_Odm,u8 bPauseDIG,u8 IGI
 	//
 	// Step 4. Recover the Dig
 	//
-	if(bPauseDIG)
+	if (bPauseDIG)
 	{
 		odm_PauseDIG(pDM_Odm,ODM_RESUME_DIG,IGIValue);
 	}

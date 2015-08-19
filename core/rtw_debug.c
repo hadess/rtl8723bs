@@ -76,14 +76,14 @@ void sd_f0_reg_dump(void *sel, _adapter *adapter)
 
 	for(i=0x0;i<=0xff;i++)
 	{
-		if(i%16==0)
+		if (i%16==0)
 			DBG_871X_SEL_NL(sel, "0x%02x ",i);
 
 		DBG_871X_SEL(sel, "%02x ", rtw_sd_f0_read8(adapter, i));
 
-		if(i%16==15)
+		if (i%16==15)
 			DBG_871X_SEL(sel, "\n");
-		else if(i%8==7)
+		else if (i%8==7)
 			DBG_871X_SEL(sel, "\t");
 	}
 }
@@ -96,10 +96,10 @@ void mac_reg_dump(void *sel, _adapter *adapter)
 
 	for(i=0x0;i<0x800;i+=4)
 	{
-		if(j%4==1)
+		if (j%4==1)
 			DBG_871X_SEL_NL(sel, "0x%03x",i);
 		DBG_871X_SEL(sel, " 0x%08x ", rtw_read32(adapter,i));
-		if((j++)%4 == 0)
+		if ((j++)%4 == 0)
 			DBG_871X_SEL(sel, "\n");
 	}
 }
@@ -111,10 +111,10 @@ void bb_reg_dump(void *sel, _adapter *adapter)
 	DBG_871X_SEL_NL(sel, "======= BB REG =======\n");
 	for(i=0x800;i<0x1000;i+=4)
 	{
-		if(j%4==1)
+		if (j%4==1)
 			DBG_871X_SEL_NL(sel, "0x%03x",i);
 		DBG_871X_SEL(sel, " 0x%08x ", rtw_read32(adapter,i));
-		if((j++)%4 == 0)
+		if ((j++)%4 == 0)
 			DBG_871X_SEL(sel, "\n");
 	}
 }
@@ -127,7 +127,7 @@ void rf_reg_dump(void *sel, _adapter *adapter)
 	u8 path_nums = 0;
 
 	rtw_hal_get_hwreg(adapter, HW_VAR_RF_TYPE, (u8 *)(&rf_type));
-	if((RF_1T2R == rf_type) ||(RF_1T1R ==rf_type ))
+	if ((RF_1T2R == rf_type) ||(RF_1T1R ==rf_type ))
 		path_nums = 1;
 	else
 		path_nums = 2;
@@ -139,10 +139,10 @@ void rf_reg_dump(void *sel, _adapter *adapter)
 		for (i=0;i<0x100;i++) {
 			//value = PHY_QueryRFReg(adapter, (RF90_RADIO_PATH_E)path,i, bMaskDWord);
 			value = rtw_hal_read_rfreg(adapter, path, i, 0xffffffff);
-			if(j%4==1)
+			if (j%4==1)
 				DBG_871X_SEL_NL(sel, "0x%02x ",i);
 			DBG_871X_SEL(sel, " 0x%08x ",value);
-			if((j++)%4==0)
+			if ((j++)%4==0)
 				DBG_871X_SEL(sel, "\n");
 		}
 	}
@@ -518,7 +518,7 @@ int proc_get_ap_info(struct seq_file *m, void *v)
 	struct sta_priv *pstapriv = &padapter->stapriv;
 
 	psta = rtw_get_stainfo(pstapriv, cur_network->network.MacAddress);
-	if(psta)
+	if (psta)
 	{
 		int i;
 		struct recv_reorder_ctrl *preorder_ctrl;
@@ -537,7 +537,7 @@ int proc_get_ap_info(struct seq_file *m, void *v)
 		for(i=0;i<16;i++)
 		{
 			preorder_ctrl = &psta->recvreorder_ctrl[i];
-			if(preorder_ctrl->enable)
+			if (preorder_ctrl->enable)
 			{
 				DBG_871X_SEL_NL(m, "tid=%d, indicate_seq=%d\n", i, preorder_ctrl->indicate_seq);
 			}
@@ -1005,7 +1005,7 @@ ssize_t proc_set_rx_signal(struct file *file, const char __user *buffer, size_t 
 
 		is_signal_dbg = is_signal_dbg==0?0:1;
 
-		if(is_signal_dbg && num!=2)
+		if (is_signal_dbg && num!=2)
 			return count;
 
 		signal_strength = signal_strength>100?100:signal_strength;
@@ -1013,7 +1013,7 @@ ssize_t proc_set_rx_signal(struct file *file, const char __user *buffer, size_t 
 		padapter->recvpriv.is_signal_dbg = is_signal_dbg;
 		padapter->recvpriv.signal_strength_dbg=signal_strength;
 
-		if(is_signal_dbg)
+		if (is_signal_dbg)
 			DBG_871X("set %s %u\n", "DBG_SIGNAL_STRENGTH", signal_strength);
 		else
 			DBG_871X("set %s\n", "HW_SIGNAL_STRENGTH");
@@ -1030,7 +1030,7 @@ int proc_get_ht_enable(struct seq_file *m, void *v)
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
 	struct registry_priv	*pregpriv = &padapter->registrypriv;
 
-	if(pregpriv)
+	if (pregpriv)
 		DBG_871X_SEL_NL(m, "%d\n", pregpriv->ht_enable);
 
 	return 0;
@@ -1050,7 +1050,7 @@ ssize_t proc_set_ht_enable(struct file *file, const char __user *buffer, size_t 
 	if (buffer && !copy_from_user(tmp, buffer, sizeof(tmp))) {
 		sscanf(tmp, "%d ", &mode);
 
-		if( pregpriv && mode >= 0 && mode < 2 )
+		if ( pregpriv && mode >= 0 && mode < 2 )
 		{
 			pregpriv->ht_enable= mode;
 			printk("ht_enable=%d\n", pregpriv->ht_enable);
@@ -1067,7 +1067,7 @@ int proc_get_bw_mode(struct seq_file *m, void *v)
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
 	struct registry_priv	*pregpriv = &padapter->registrypriv;
 
-	if(pregpriv)
+	if (pregpriv)
 		DBG_871X_SEL_NL(m, "0x%02x\n", pregpriv->bw_mode);
 
 	return 0;
@@ -1087,7 +1087,7 @@ ssize_t proc_set_bw_mode(struct file *file, const char __user *buffer, size_t co
 	if (buffer && !copy_from_user(tmp, buffer, sizeof(tmp))) {
 		sscanf(tmp, "%d ", &mode);
 
-		if( pregpriv &&  mode < 2 )
+		if ( pregpriv &&  mode < 2 )
 		{
 
 			pregpriv->bw_mode = mode;
@@ -1106,7 +1106,7 @@ int proc_get_ampdu_enable(struct seq_file *m, void *v)
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
 	struct registry_priv	*pregpriv = &padapter->registrypriv;
 
-	if(pregpriv)
+	if (pregpriv)
 		DBG_871X_SEL_NL(m, "%d\n", pregpriv->ampdu_enable);
 
 	return 0;
@@ -1127,7 +1127,7 @@ ssize_t proc_set_ampdu_enable(struct file *file, const char __user *buffer, size
 
 		sscanf(tmp, "%d ", &mode);
 
-		if( pregpriv && mode < 3 )
+		if ( pregpriv && mode < 3 )
 		{
 			pregpriv->ampdu_enable= mode;
 			printk("ampdu_enable=%d\n", mode);
@@ -1147,7 +1147,7 @@ int proc_get_rx_ampdu(struct seq_file *m, void *v)
 	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 
-	if(pregpriv)
+	if (pregpriv)
 		DBG_871X_SEL_NL(m,
 			"bAcceptAddbaReq = %d , 0:Reject AP's Add BA req, 1:Accept AP's Add BA req.\n", pmlmeinfo->bAcceptAddbaReq
 			);
@@ -1172,11 +1172,11 @@ ssize_t proc_set_rx_ampdu(struct file *file, const char __user *buffer, size_t c
 
 		sscanf(tmp, "%d ", &mode);
 
-		if( pregpriv && mode >= 0 && mode < 2 )
+		if ( pregpriv && mode >= 0 && mode < 2 )
 		{
 			pmlmeinfo->bAcceptAddbaReq = mode;
 			DBG_871X("pmlmeinfo->bAcceptAddbaReq=%d \n",pmlmeinfo->bAcceptAddbaReq);
-			if(mode == 0)
+			if (mode == 0)
 			{
 				//tear down Rx AMPDU
 				send_delba(padapter, 0, get_my_bssid(&(pmlmeinfo->network)));// recipient
@@ -1194,7 +1194,7 @@ int proc_get_en_fwps(struct seq_file *m, void *v)
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
 	struct registry_priv	*pregpriv = &padapter->registrypriv;
 
-	if(pregpriv)
+	if (pregpriv)
 		DBG_871X_SEL_NL(m, "check_fw_ps = %d , 1:enable get FW PS state , 0: disable get FW PS state\n"
 			, pregpriv->check_fw_ps);
 
@@ -1216,7 +1216,7 @@ ssize_t proc_set_en_fwps(struct file *file, const char __user *buffer, size_t co
 
 		sscanf(tmp, "%d ", &mode);
 
-		if( pregpriv && mode >= 0 && mode < 2 )
+		if ( pregpriv && mode >= 0 && mode < 2 )
 		{
 			pregpriv->check_fw_ps = mode;
 			DBG_871X("pregpriv->check_fw_ps=%d \n",pregpriv->check_fw_ps);
@@ -1233,7 +1233,7 @@ int proc_get_two_path_rssi(struct seq_file *m, void *v)
 	struct net_device *dev = m->private;
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
 
-	if(padapter)
+	if (padapter)
 		DBG_871X_SEL_NL(m, "%d %d\n",
 			padapter->recvpriv.RxRssi[0], padapter->recvpriv.RxRssi[1]);
 
@@ -1247,7 +1247,7 @@ int proc_get_rx_stbc(struct seq_file *m, void *v)
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
 	struct registry_priv	*pregpriv = &padapter->registrypriv;
 
-	if(pregpriv)
+	if (pregpriv)
 		DBG_871X_SEL_NL(m, "%d\n", pregpriv->rx_stbc);
 
 	return 0;
@@ -1268,7 +1268,7 @@ ssize_t proc_set_rx_stbc(struct file *file, const char __user *buffer, size_t co
 
 		sscanf(tmp, "%d ", &mode);
 
-		if( pregpriv && (mode == 0 || mode == 1|| mode == 2|| mode == 3))
+		if ( pregpriv && (mode == 0 || mode == 1|| mode == 2|| mode == 3))
 		{
 			pregpriv->rx_stbc= mode;
 			printk("rx_stbc=%d\n", mode);
@@ -1306,7 +1306,7 @@ ssize_t proc_set_rssi_disp(struct file *file, const char __user *buffer, size_t 
 			return count;
 		}
 
-		if(enable)
+		if (enable)
 		{
 			DBG_8192C("Linked info Function Enable\n");
 			padapter->bLinkInfoDump = enable ;
@@ -1348,7 +1348,7 @@ int proc_get_all_sta_info(struct seq_file *m, void *v)
 
 			plist = get_next(plist);
 
-			//if(extra_arg == psta->aid)
+			//if (extra_arg == psta->aid)
 			{
 				DBG_871X_SEL_NL(m, "==============================\n");
 				DBG_871X_SEL_NL(m, "sta's macaddr:" MAC_FMT "\n", MAC_ARG(psta->hwaddr));
@@ -1375,7 +1375,7 @@ int proc_get_all_sta_info(struct seq_file *m, void *v)
 				for(j=0;j<16;j++)
 				{
 					preorder_ctrl = &psta->recvreorder_ctrl[j];
-					if(preorder_ctrl->enable)
+					if (preorder_ctrl->enable)
 					{
 						DBG_871X_SEL_NL(m, "tid=%d, indicate_seq=%d\n", j, preorder_ctrl->indicate_seq);
 					}

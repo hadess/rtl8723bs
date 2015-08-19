@@ -108,19 +108,19 @@
 
 #if DBG
 #define ODM_RT_TRACE(pDM_Odm, comp, level, fmt)									\
-		if(((comp) & pDM_Odm->DebugComponents) && (level <= pDM_Odm->DebugLevel || level == ODM_DBG_SERIOUS))	\
+		if (((comp) & pDM_Odm->DebugComponents) && (level <= pDM_Odm->DebugLevel || level == ODM_DBG_SERIOUS))	\
 		{																			\
 			RT_PRINTK fmt;															\
 		}
 
 #define ODM_RT_TRACE_F(pDM_Odm, comp, level, fmt)									\
-		if(((comp) & pDM_Odm->DebugComponents) && (level <= pDM_Odm->DebugLevel))	\
+		if (((comp) & pDM_Odm->DebugComponents) && (level <= pDM_Odm->DebugLevel))	\
 		{																			\
 			RT_PRINTK fmt;															\
 		}
 
 #define ODM_RT_ASSERT(pDM_Odm, expr, fmt)											\
-		if(!(expr)) {																	\
+		if (!(expr)) {																	\
 			DbgPrint( "Assertion failed! %s at ......\n", #expr);								\
 			DbgPrint( "      ......%s,%s,line=%d\n",__FILE__,__FUNCTION__,__LINE__);			\
 			RT_PRINTK fmt;															\
@@ -131,7 +131,7 @@
 #define ODM_dbg_trace(str) { DbgPrint("%s:%s\n", __FUNCTION__, str); }
 
 #define ODM_PRINT_ADDR(pDM_Odm, comp, level, title_str, ptr)							\
-			if(((comp) & pDM_Odm->DebugComponents) && (level <= pDM_Odm->DebugLevel))	\
+			if (((comp) & pDM_Odm->DebugComponents) && (level <= pDM_Odm->DebugLevel))	\
 			{																		\
 				int __i;																\
 				pu1Byte	__ptr = (pu1Byte)ptr;											\

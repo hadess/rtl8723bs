@@ -1084,7 +1084,7 @@ phy_GetChnlIndex(
 	u8  i = 0;
 	bool bIn24G=true;
 
-	if(Channel <= 14)
+	if (Channel <= 14)
 	{
 		bIn24G=true;
 		*ChannelIdx = Channel -1;
@@ -1296,7 +1296,7 @@ PHY_GetTxPowerTrackingOffset(
 	PDM_ODM_T			pDM_Odm = &pHalData->odmpriv;
 	s8	offset = 0;
 
-	if( pDM_Odm->RFCalibrateInfo.TxPowerTrackControl  == false)
+	if ( pDM_Odm->RFCalibrateInfo.TxPowerTrackControl  == false)
 		return offset;
 
 	if ((Rate == MGN_1M) ||(Rate == MGN_2M)||(Rate == MGN_5_5M)||(Rate == MGN_11M))
@@ -2267,7 +2267,7 @@ phy_ConfigMACWithParaFile(
 	char	*szLine, *ptmp;
 	u32	u4bRegOffset, u4bRegValue, u4bMove;
 
-	if(!(Adapter->registrypriv.load_phy_file & LOAD_MAC_PARA_FILE))
+	if (!(Adapter->registrypriv.load_phy_file & LOAD_MAC_PARA_FILE))
 		return rtStatus;
 
 	memset(pHalData->para_file_buf, 0, MAX_PARA_FILE_BUF_LEN);
@@ -2283,7 +2283,7 @@ phy_ConfigMACWithParaFile(
 			{
 				rtStatus = _SUCCESS;
 				pHalData->mac_reg = vzalloc(rlen);
-				if(pHalData->mac_reg) {
+				if (pHalData->mac_reg) {
 					memcpy(pHalData->mac_reg, pHalData->para_file_buf, rlen);
 					pHalData->mac_reg_len = rlen;
 				}
@@ -2309,19 +2309,19 @@ phy_ConfigMACWithParaFile(
 		ptmp = pHalData->para_file_buf;
 		for (szLine = GetLineFromBuffer(ptmp); szLine != NULL; szLine = GetLineFromBuffer(ptmp))
 		{
-			if(!IsCommentString(szLine))
+			if (!IsCommentString(szLine))
 			{
 				// Get 1st hex value as register offset
-				if(GetHexValueFromString(szLine, &u4bRegOffset, &u4bMove))
+				if (GetHexValueFromString(szLine, &u4bRegOffset, &u4bMove))
 				{
-					if(u4bRegOffset == 0xffff)
+					if (u4bRegOffset == 0xffff)
 					{ // Ending.
 						break;
 					}
 
 					// Get 2nd hex value as register value.
 					szLine += u4bMove;
-					if(GetHexValueFromString(szLine, &u4bRegValue, &u4bMove))
+					if (GetHexValueFromString(szLine, &u4bRegValue, &u4bMove))
 					{
 						rtw_write8(Adapter, u4bRegOffset, (u8)u4bRegValue);
 					}
@@ -2351,7 +2351,7 @@ phy_ConfigBBWithParaFile(
 	char	*pBuf = NULL;
 	u32	*pBufLen = NULL;
 
-	if(!(Adapter->registrypriv.load_phy_file & LOAD_BB_PARA_FILE))
+	if (!(Adapter->registrypriv.load_phy_file & LOAD_BB_PARA_FILE))
 		return rtStatus;
 
 	switch(ConfigType)
@@ -2382,7 +2382,7 @@ phy_ConfigBBWithParaFile(
 			{
 				rtStatus = _SUCCESS;
 				pBuf = vzalloc(rlen);
-				if(pBuf) {
+				if (pBuf) {
 					memcpy(pBuf, pHalData->para_file_buf, rlen);
 					*pBufLen = rlen;
 
@@ -2418,12 +2418,12 @@ phy_ConfigBBWithParaFile(
 		ptmp = pHalData->para_file_buf;
 		for (szLine = GetLineFromBuffer(ptmp); szLine != NULL; szLine = GetLineFromBuffer(ptmp))
 		{
-			if(!IsCommentString(szLine))
+			if (!IsCommentString(szLine))
 			{
 				// Get 1st hex value as register offset.
-				if(GetHexValueFromString(szLine, &u4bRegOffset, &u4bMove))
+				if (GetHexValueFromString(szLine, &u4bRegOffset, &u4bMove))
 				{
-					if(u4bRegOffset == 0xffff)
+					if (u4bRegOffset == 0xffff)
 					{ // Ending.
 						break;
 					}
@@ -2454,7 +2454,7 @@ phy_ConfigBBWithParaFile(
 
 					// Get 2nd hex value as register value.
 					szLine += u4bMove;
-					if(GetHexValueFromString(szLine, &u4bRegValue, &u4bMove))
+					if (GetHexValueFromString(szLine, &u4bRegValue, &u4bMove))
 					{
 						//DBG_871X("[BB-ADDR]%03lX=%08lX\n", u4bRegOffset, u4bRegValue);
 						PHY_SetBBReg(Adapter, u4bRegOffset, bMaskDWord, u4bRegValue);
@@ -2540,9 +2540,9 @@ phy_ParseBBPgParaFile(
 	ptmp = buffer;
 	for (szLine = GetLineFromBuffer(ptmp); szLine != NULL; szLine = GetLineFromBuffer(ptmp))
 	{
-		if(!IsCommentString(szLine))
+		if (!IsCommentString(szLine))
 		{
-			if( isAllSpaceOrTab( szLine, sizeof( *szLine ) ) )
+			if ( isAllSpaceOrTab( szLine, sizeof( *szLine ) ) )
 				continue;
 
 			// Get header info (relative value or exact value)
@@ -2589,10 +2589,10 @@ phy_ParseBBPgParaFile(
 			if ( pHalData->odmpriv.PhyRegPgVersion == 0 )
 			{
 				// Get 1st hex value as register offset.
-				if(GetHexValueFromString(szLine, &u4bRegOffset, &u4bMove))
+				if (GetHexValueFromString(szLine, &u4bRegOffset, &u4bMove))
 				{
 					szLine += u4bMove;
-					if(u4bRegOffset == 0xffff)
+					if (u4bRegOffset == 0xffff)
 					{ // Ending.
 						break;
 					}
@@ -2606,7 +2606,7 @@ phy_ParseBBPgParaFile(
 					if ( pHalData->odmpriv.PhyRegPgValueType == PHY_REG_PG_RELATIVE_VALUE )
 					{
 						// Get 3rd hex value as register value.
-						if(GetHexValueFromString(szLine, &u4bRegValue, &u4bMove))
+						if (GetHexValueFromString(szLine, &u4bRegValue, &u4bMove))
 						{
 							PHY_StoreTxPowerByRate(Adapter, 0, 0, 1, u4bRegOffset, u4bRegMask, u4bRegValue);
 							//DBG_871X("[ADDR] %03X=%08X Mask=%08x\n", u4bRegOffset, u4bRegValue, u4bRegMask);
@@ -2676,7 +2676,7 @@ phy_ParseBBPgParaFile(
 				if ( eqNByte( szLine, "0xffff", 6 ) )
 					break;
 
-				if( !eqNByte( "#[END]#", szLine, 7 ) )
+				if ( !eqNByte( "#[END]#", szLine, 7 ) )
 				{
 					// load the table label info
 					if ( szLine[0] == '#' )
@@ -2737,7 +2737,7 @@ phy_ParseBBPgParaFile(
 						if ( pHalData->odmpriv.PhyRegPgValueType == PHY_REG_PG_RELATIVE_VALUE )
 						{
 							// Get 3rd hex value as register value.
-							if(GetHexValueFromString(szLine, &u4bRegValue, &u4bMove))
+							if (GetHexValueFromString(szLine, &u4bRegValue, &u4bMove))
 							{
 								PHY_StoreTxPowerByRate(Adapter, band, rf_path, tx_num, u4bRegOffset, u4bRegMask, u4bRegValue);
 								//DBG_871X("[ADDR] %03X (tx_num %d) =%08X Mask=%08x\n", u4bRegOffset, tx_num, u4bRegValue, u4bRegMask);
@@ -2815,7 +2815,7 @@ phy_ConfigBBWithPgParaFile(
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
 	int	rlen = 0, rtStatus = _FAIL;
 
-	if(!(Adapter->registrypriv.load_phy_file & LOAD_BB_PG_PARA_FILE))
+	if (!(Adapter->registrypriv.load_phy_file & LOAD_BB_PG_PARA_FILE))
 		return rtStatus;
 
 	memset(pHalData->para_file_buf, 0, MAX_PARA_FILE_BUF_LEN);
@@ -2831,7 +2831,7 @@ phy_ConfigBBWithPgParaFile(
 			{
 				rtStatus = _SUCCESS;
 				pHalData->bb_phy_reg_pg = vzalloc(rlen);
-				if(pHalData->bb_phy_reg_pg) {
+				if (pHalData->bb_phy_reg_pg) {
 					memcpy(pHalData->bb_phy_reg_pg, pHalData->para_file_buf, rlen);
 					pHalData->bb_phy_reg_pg_len = rlen;
 				}
@@ -2852,7 +2852,7 @@ phy_ConfigBBWithPgParaFile(
 		}
 	}
 
-	if(rtStatus == _SUCCESS)
+	if (rtStatus == _SUCCESS)
 	{
 		//DBG_871X("phy_ConfigBBWithPgParaFile(): read %s ok\n", pFileName);
 		phy_ParseBBPgParaFile(Adapter, pHalData->para_file_buf);
@@ -2880,7 +2880,7 @@ PHY_ConfigRFWithParaFile(
 	char	*pBuf = NULL;
 	u32	*pBufLen = NULL;
 
-	if(!(Adapter->registrypriv.load_phy_file & LOAD_RF_PARA_FILE))
+	if (!(Adapter->registrypriv.load_phy_file & LOAD_RF_PARA_FILE))
 		return rtStatus;
 
 	switch(eRFPath)
@@ -2911,7 +2911,7 @@ PHY_ConfigRFWithParaFile(
 			{
 				rtStatus = _SUCCESS;
 				pBuf = vzalloc(rlen);
-				if(pBuf) {
+				if (pBuf) {
 					memcpy(pBuf, pHalData->para_file_buf, rlen);
 					*pBufLen = rlen;
 
@@ -2942,19 +2942,19 @@ PHY_ConfigRFWithParaFile(
 		}
 	}
 
-	if(rtStatus == _SUCCESS)
+	if (rtStatus == _SUCCESS)
 	{
 		//DBG_871X("%s(): read %s successfully\n", __FUNCTION__, pFileName);
 
 		ptmp = pHalData->para_file_buf;
 		for (szLine = GetLineFromBuffer(ptmp); szLine != NULL; szLine = GetLineFromBuffer(ptmp))
 		{
-			if(!IsCommentString(szLine))
+			if (!IsCommentString(szLine))
 			{
 				// Get 1st hex value as register offset.
-				if(GetHexValueFromString(szLine, &u4bRegOffset, &u4bMove))
+				if (GetHexValueFromString(szLine, &u4bRegOffset, &u4bMove))
 				{
-					if(u4bRegOffset == 0xfe || u4bRegOffset == 0xffe)
+					if (u4bRegOffset == 0xfe || u4bRegOffset == 0xffe)
 					{ // Deay specific ms. Only RF configuration require delay.
 						msleep(50);
 					}
@@ -2982,14 +2982,14 @@ PHY_ConfigRFWithParaFile(
 					{
 						udelay(1);
 					}
-					else if(u4bRegOffset == 0xffff)
+					else if (u4bRegOffset == 0xffff)
 					{
 						break;
 					}
 
 					// Get 2nd hex value as register value.
 					szLine += u4bMove;
-					if(GetHexValueFromString(szLine, &u4bRegValue, &u4bMove))
+					if (GetHexValueFromString(szLine, &u4bRegValue, &u4bMove))
 					{
 						PHY_SetRFReg(Adapter, eRFPath, u4bRegOffset, bRFRegOffsetMask, u4bRegValue);
 
@@ -3166,7 +3166,7 @@ PHY_ConfigRFWithTxPwrTrackParaFile(
 	char	*szLine, *ptmp;
 	u32	i = 0;
 
-	if(!(Adapter->registrypriv.load_phy_file & LOAD_RF_TXPWR_TRACK_PARA_FILE))
+	if (!(Adapter->registrypriv.load_phy_file & LOAD_RF_TXPWR_TRACK_PARA_FILE))
 		return rtStatus;
 
 	memset(pHalData->para_file_buf, 0, MAX_PARA_FILE_BUF_LEN);
@@ -3182,7 +3182,7 @@ PHY_ConfigRFWithTxPwrTrackParaFile(
 			{
 				rtStatus = _SUCCESS;
 				pHalData->rf_tx_pwr_track = vzalloc(rlen);
-				if(pHalData->rf_tx_pwr_track) {
+				if (pHalData->rf_tx_pwr_track) {
 					memcpy(pHalData->rf_tx_pwr_track, pHalData->para_file_buf, rlen);
 					pHalData->rf_tx_pwr_track_len = rlen;
 				}
@@ -3203,7 +3203,7 @@ PHY_ConfigRFWithTxPwrTrackParaFile(
 		}
 	}
 
-	if(rtStatus == _SUCCESS)
+	if (rtStatus == _SUCCESS)
 	{
 		//DBG_871X("%s(): read %s successfully\n", __FUNCTION__, pFileName);
 
@@ -3275,7 +3275,7 @@ phy_ParsePowerLimitTableFile(
 			continue;
 		}
 
-		if( loadingStage == 0 ) {
+		if ( loadingStage == 0 ) {
 			for ( forCnt = 0; forCnt < TXPWR_LMT_MAX_REGULATION_NUM; ++forCnt )
 				memset( ( void * ) regulation[forCnt], 0, 10 );
 			memset( ( void * ) band, 0, 10 );
@@ -3514,7 +3514,7 @@ PHY_ConfigRFWithPowerLimitTableParaFile(
 	HAL_DATA_TYPE		*pHalData = GET_HAL_DATA(Adapter);
 	int	rlen = 0, rtStatus = _FAIL;
 
-	if(!(Adapter->registrypriv.load_phy_file & LOAD_RF_TXPWR_LMT_PARA_FILE))
+	if (!(Adapter->registrypriv.load_phy_file & LOAD_RF_TXPWR_LMT_PARA_FILE))
 		return rtStatus;
 
 	memset(pHalData->para_file_buf, 0, MAX_PARA_FILE_BUF_LEN);
@@ -3530,7 +3530,7 @@ PHY_ConfigRFWithPowerLimitTableParaFile(
 			{
 				rtStatus = _SUCCESS;
 				pHalData->rf_tx_pwr_lmt = vzalloc(rlen);
-				if(pHalData->rf_tx_pwr_lmt) {
+				if (pHalData->rf_tx_pwr_lmt) {
 					memcpy(pHalData->rf_tx_pwr_lmt, pHalData->para_file_buf, rlen);
 					pHalData->rf_tx_pwr_lmt_len = rlen;
 				}
@@ -3551,7 +3551,7 @@ PHY_ConfigRFWithPowerLimitTableParaFile(
 		}
 	}
 
-	if(rtStatus == _SUCCESS)
+	if (rtStatus == _SUCCESS)
 	{
 		//DBG_871X("%s(): read %s ok\n", __FUNCTION__, pFileName);
 		rtStatus = phy_ParsePowerLimitTableFile( Adapter, pHalData->para_file_buf );
@@ -3568,23 +3568,23 @@ void phy_free_filebuf(_adapter *padapter)
 {
 	HAL_DATA_TYPE		*pHalData = GET_HAL_DATA(padapter);
 
-	if(pHalData->mac_reg)
+	if (pHalData->mac_reg)
 		vfree(pHalData->mac_reg);
-	if(pHalData->bb_phy_reg)
+	if (pHalData->bb_phy_reg)
 		vfree(pHalData->bb_phy_reg);
-	if(pHalData->bb_agc_tab)
+	if (pHalData->bb_agc_tab)
 		vfree(pHalData->bb_agc_tab);
-	if(pHalData->bb_phy_reg_pg)
+	if (pHalData->bb_phy_reg_pg)
 		vfree(pHalData->bb_phy_reg_pg);
-	if(pHalData->bb_phy_reg_mp)
+	if (pHalData->bb_phy_reg_mp)
 		vfree(pHalData->bb_phy_reg_mp);
-	if(pHalData->rf_radio_a)
+	if (pHalData->rf_radio_a)
 		vfree(pHalData->rf_radio_a);
-	if(pHalData->rf_radio_b)
+	if (pHalData->rf_radio_b)
 		vfree(pHalData->rf_radio_b);
-	if(pHalData->rf_tx_pwr_track)
+	if (pHalData->rf_tx_pwr_track)
 		vfree(pHalData->rf_tx_pwr_track);
-	if(pHalData->rf_tx_pwr_lmt)
+	if (pHalData->rf_tx_pwr_lmt)
 		vfree(pHalData->rf_tx_pwr_lmt);
 
 }

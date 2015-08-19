@@ -26,11 +26,11 @@
 
 u8 rtw_hal_data_init(_adapter *padapter)
 {
-	if(is_primary_adapter(padapter))	//if(padapter->isprimary)
+	if (is_primary_adapter(padapter))	//if (padapter->isprimary)
 	{
 		padapter->hal_data_sz = sizeof(HAL_DATA_TYPE);
 		padapter->HalData = vzalloc(padapter->hal_data_sz);
-		if(padapter->HalData == NULL){
+		if (padapter->HalData == NULL){
 			DBG_8192C("cant not alloc memory for HAL DATA \n");
 			return _FAIL;
 		}
@@ -40,7 +40,7 @@ u8 rtw_hal_data_init(_adapter *padapter)
 
 void rtw_hal_data_deinit(_adapter *padapter)
 {
-	if(is_primary_adapter(padapter))	//if(padapter->isprimary)
+	if (is_primary_adapter(padapter))	//if (padapter->isprimary)
 	{
 		if (padapter->HalData)
 		{
@@ -62,26 +62,26 @@ void dump_chip_info(HAL_VERSION	ChipVersion)
 
 	cnt += sprintf((buf+cnt), "Chip Version Info: CHIP_8723B_");
 	cnt += sprintf((buf+cnt), "%s_", IS_NORMAL_CHIP(ChipVersion)?"Normal_Chip":"Test_Chip");
-	if(IS_CHIP_VENDOR_TSMC(ChipVersion))
+	if (IS_CHIP_VENDOR_TSMC(ChipVersion))
 		cnt += sprintf((buf+cnt), "%s_","TSMC");
-	else if(IS_CHIP_VENDOR_UMC(ChipVersion))
+	else if (IS_CHIP_VENDOR_UMC(ChipVersion))
 		cnt += sprintf((buf+cnt), "%s_","UMC");
-	else if(IS_CHIP_VENDOR_SMIC(ChipVersion))
+	else if (IS_CHIP_VENDOR_SMIC(ChipVersion))
 		cnt += sprintf((buf+cnt), "%s_","SMIC");
 
-	if(IS_A_CUT(ChipVersion)) cnt += sprintf((buf+cnt), "A_CUT_");
-	else if(IS_B_CUT(ChipVersion)) cnt += sprintf((buf+cnt), "B_CUT_");
-	else if(IS_C_CUT(ChipVersion)) cnt += sprintf((buf+cnt), "C_CUT_");
-	else if(IS_D_CUT(ChipVersion)) cnt += sprintf((buf+cnt), "D_CUT_");
-	else if(IS_E_CUT(ChipVersion)) cnt += sprintf((buf+cnt), "E_CUT_");
-	else if(IS_I_CUT(ChipVersion)) cnt += sprintf((buf+cnt), "I_CUT_");
-	else if(IS_J_CUT(ChipVersion)) cnt += sprintf((buf+cnt), "J_CUT_");
-	else if(IS_K_CUT(ChipVersion)) cnt += sprintf((buf+cnt), "K_CUT_");
+	if (IS_A_CUT(ChipVersion)) cnt += sprintf((buf+cnt), "A_CUT_");
+	else if (IS_B_CUT(ChipVersion)) cnt += sprintf((buf+cnt), "B_CUT_");
+	else if (IS_C_CUT(ChipVersion)) cnt += sprintf((buf+cnt), "C_CUT_");
+	else if (IS_D_CUT(ChipVersion)) cnt += sprintf((buf+cnt), "D_CUT_");
+	else if (IS_E_CUT(ChipVersion)) cnt += sprintf((buf+cnt), "E_CUT_");
+	else if (IS_I_CUT(ChipVersion)) cnt += sprintf((buf+cnt), "I_CUT_");
+	else if (IS_J_CUT(ChipVersion)) cnt += sprintf((buf+cnt), "J_CUT_");
+	else if (IS_K_CUT(ChipVersion)) cnt += sprintf((buf+cnt), "K_CUT_");
 	else cnt += sprintf((buf+cnt), "UNKNOWN_CUT(%d)_", ChipVersion.CUTVersion);
 
-	if(IS_1T1R(ChipVersion)) cnt += sprintf((buf+cnt), "1T1R_");
-	else if(IS_1T2R(ChipVersion)) cnt += sprintf((buf+cnt), "1T2R_");
-	else if(IS_2T2R(ChipVersion)) cnt += sprintf((buf+cnt), "2T2R_");
+	if (IS_1T1R(ChipVersion)) cnt += sprintf((buf+cnt), "1T1R_");
+	else if (IS_1T2R(ChipVersion)) cnt += sprintf((buf+cnt), "1T2R_");
+	else if (IS_2T2R(ChipVersion)) cnt += sprintf((buf+cnt), "2T2R_");
 	else cnt += sprintf((buf+cnt), "UNKNOWN_RFTYPE(%d)_", ChipVersion.RFType);
 
 	cnt += sprintf((buf+cnt), "RomVer(%d)\n", ChipVersion.ROMVer);
@@ -166,7 +166,7 @@ HAL_IsLegalChannel(
 		bLegalChannel = false;
 		DBG_871X("Channel > 14 but wireless_mode do not support 5G\n");
 	} else if ((Channel <= 14) && (Channel >=1)){
-		if(IsSupported24G(Adapter->registrypriv.wireless_mode) == false) {
+		if (IsSupported24G(Adapter->registrypriv.wireless_mode) == false) {
 			bLegalChannel = false;
 			DBG_871X("(Channel <= 14) && (Channel >=1) but wireless_mode do not support 2.4G\n");
 		}
@@ -388,7 +388,7 @@ void	HalSetBrateCfg(
 		is_brate = mBratesOS[i] & IEEE80211_BASIC_RATE_MASK;
 		brate = mBratesOS[i] & 0x7f;
 
-		if( is_brate )
+		if ( is_brate )
 		{
 			switch(brate)
 			{
@@ -435,7 +435,7 @@ _TwoOutPipeMapping(
 {
 	struct dvobj_priv	*pdvobjpriv = adapter_to_dvobj(pAdapter);
 
-	if(bWIFICfg){ //WMM
+	if (bWIFICfg){ //WMM
 
 		//	BK,	BE,	VI,	VO,	BCN,	CMD,MGT,HIGH,HCCA
 		//{  0,		1,	0,	1,	0,	0,	0,	0,		0	};
@@ -480,7 +480,7 @@ static void _ThreeOutPipeMapping(
 {
 	struct dvobj_priv	*pdvobjpriv = adapter_to_dvobj(pAdapter);
 
-	if(bWIFICfg){//for WMM
+	if (bWIFICfg){//for WMM
 
 		//	BK,	BE,	VI,	VO,	BCN,	CMD,MGT,HIGH,HCCA
 		//{  1,		2,	1,	0,	0,	0,	0,	0,		0	};
@@ -648,7 +648,7 @@ void rtw_hal_update_sta_rate_mask(PADAPTER padapter, struct sta_info *psta)
 	u8	i, rf_type, limit;
 	u32	tx_ra_bitmap;
 
-	if(psta == NULL)
+	if (psta == NULL)
 	{
 		return;
 	}
@@ -663,10 +663,10 @@ void rtw_hal_update_sta_rate_mask(PADAPTER padapter, struct sta_info *psta)
 	}
 
 	//n mode ra_bitmap
-	if(psta->htpriv.ht_option)
+	if (psta->htpriv.ht_option)
 	{
 		rtw_hal_get_hwreg(padapter, HW_VAR_RF_TYPE, (u8 *)(&rf_type));
-		if(rf_type == RF_2T2R)
+		if (rf_type == RF_2T2R)
 			limit=16;// 2R
 		else
 			limit=8;//  1R
@@ -737,7 +737,7 @@ void SetHwReg(_adapter *adapter, u8 variable, u8 *val)
 		}
 		break;
 	case HW_VAR_DM_FUNC_SET:
-		if(*((u32*)val) == DYNAMIC_ALL_FUNC_ENABLE){
+		if (*((u32*)val) == DYNAMIC_ALL_FUNC_ENABLE){
 			struct dm_priv	*dm = &hal_data->dmpriv;
 			dm->DMFlag = dm->InitDMFlag;
 			odm->SupportAbility = dm->InitODMFlag;
@@ -800,7 +800,7 @@ SetHalDefVar(_adapter *adapter, HAL_DEF_VARIABLE variable, void *value)
 	switch(variable) {
 	case HW_DEF_FA_CNT_DUMP:
 		//ODM_COMP_COMMON
-		if(*((u8*)value))
+		if (*((u8*)value))
 			odm->DebugComponents |= (ODM_COMP_DIG |ODM_COMP_FA_CNT);
 		else
 			odm->DebugComponents &= ~(ODM_COMP_DIG |ODM_COMP_FA_CNT);
@@ -810,7 +810,7 @@ SetHalDefVar(_adapter *adapter, HAL_DEF_VARIABLE variable, void *value)
 		DBG_871X("bLinked = %d, RSSI_Min = %d(%%)\n",
 			odm->bLinked, odm->RSSI_Min);
 
-		if(odm->bLinked){
+		if (odm->bLinked){
 			DBG_871X("RxRate = %s, RSSI_A = %d(%%), RSSI_B = %d(%%)\n",
 				HDATA_RATE(odm->RxRate), odm->RSSI_A, odm->RSSI_B);
 
@@ -830,29 +830,29 @@ SetHalDefVar(_adapter *adapter, HAL_DEF_VARIABLE variable, void *value)
 		u8 dm_func = *((u8*)value);
 		struct dm_priv *dm = &hal_data->dmpriv;
 
-		if(dm_func == 0){ //disable all dynamic func
+		if (dm_func == 0){ //disable all dynamic func
 			odm->SupportAbility = DYNAMIC_FUNC_DISABLE;
 			DBG_8192C("==> Disable all dynamic function...\n");
 		}
-		else if(dm_func == 1){//disable DIG
+		else if (dm_func == 1){//disable DIG
 			odm->SupportAbility  &= (~DYNAMIC_BB_DIG);
 			DBG_8192C("==> Disable DIG...\n");
 		}
-		else if(dm_func == 2){//disable High power
+		else if (dm_func == 2){//disable High power
 			odm->SupportAbility  &= (~DYNAMIC_BB_DYNAMIC_TXPWR);
 		}
-		else if(dm_func == 3){//disable tx power tracking
+		else if (dm_func == 3){//disable tx power tracking
 			odm->SupportAbility  &= (~DYNAMIC_RF_CALIBRATION);
 			DBG_8192C("==> Disable tx power tracking...\n");
 		}
-		else if(dm_func == 4){//disable BT coexistence
+		else if (dm_func == 4){//disable BT coexistence
 			dm->DMFlag &= (~DYNAMIC_FUNC_BT);
 		}
-		else if(dm_func == 5){//disable antenna diversity
+		else if (dm_func == 5){//disable antenna diversity
 			odm->SupportAbility  &= (~DYNAMIC_BB_ANT_DIV);
 		}
-		else if(dm_func == 6){//turn on all dynamic func
-			if(!(odm->SupportAbility  & DYNAMIC_BB_DIG)) {
+		else if (dm_func == 6){//turn on all dynamic func
+			if (!(odm->SupportAbility  & DYNAMIC_BB_DIG)) {
 				DIG_T	*pDigTable = &odm->DM_DigTable;
 				pDigTable->CurIGValue= rtw_read8(adapter, 0xc50);
 			}
@@ -975,7 +975,7 @@ void SetHalODMVar(
 		case HAL_ODM_STA_INFO:
 			{
 				struct sta_info *psta = (struct sta_info *)pValue1;
-				if(bSet){
+				if (bSet){
 					DBG_8192C("### Set STA_(%d) info ###\n",psta->mac_id);
 					ODM_CmnInfoPtrArrayHook(podmpriv, ODM_CMNINFO_STA_STATUS,psta->mac_id,psta);
 				}
@@ -1029,12 +1029,12 @@ eqNByte(
 	u32	num
 	)
 {
-	if(num==0)
+	if (num==0)
 		return false;
 	while(num>0)
 	{
 		num--;
-		if(str1[num]!=str2[num])
+		if (str1[num]!=str2[num])
 			return false;
 	}
 	return true;
@@ -1051,7 +1051,7 @@ IsHexDigit(
 	IN		char		chTmp
 )
 {
-	if( (chTmp >= '0' && chTmp <= '9') ||
+	if ( (chTmp >= '0' && chTmp <= '9') ||
 		(chTmp >= 'a' && chTmp <= 'f') ||
 		(chTmp >= 'A' && chTmp <= 'F') )
 	{
@@ -1073,11 +1073,11 @@ MapCharToHexDigit(
 	IN		char		chTmp
 )
 {
-	if(chTmp >= '0' && chTmp <= '9')
+	if (chTmp >= '0' && chTmp <= '9')
 		return (chTmp - '0');
-	else if(chTmp >= 'a' && chTmp <= 'f')
+	else if (chTmp >= 'a' && chTmp <= 'f')
 		return (10 + (chTmp - 'a'));
-	else if(chTmp >= 'A' && chTmp <= 'F')
+	else if (chTmp >= 'A' && chTmp <= 'F')
 		return (10 + (chTmp - 'A'));
 	else
 		return 0;
@@ -1099,7 +1099,7 @@ GetHexValueFromString(
 	char*		szScan = szStr;
 
 	// Check input parameter.
-	if(szStr == NULL || pu4bVal == NULL || pu4bMove == NULL)
+	if (szStr == NULL || pu4bVal == NULL || pu4bMove == NULL)
 	{
 		DBG_871X("GetHexValueFromString(): Invalid inpur argumetns! szStr: %p, pu4bVal: %p, pu4bMove: %p\n", szStr, pu4bVal, pu4bMove);
 		return false;
@@ -1118,7 +1118,7 @@ GetHexValueFromString(
 	}
 
 	// Skip leading '0x' or '0X'.
-	if(*szScan == '0' && (*(szScan+1) == 'x' || *(szScan+1) == 'X'))
+	if (*szScan == '0' && (*(szScan+1) == 'x' || *(szScan+1) == 'X'))
 	{
 		szScan += 2;
 		(*pu4bMove) += 2;
@@ -1126,7 +1126,7 @@ GetHexValueFromString(
 
 	// Check if szScan is now pointer to a character for hex digit,
 	// if not, it means this is not a valid hex number.
-	if(!IsHexDigit(*szScan))
+	if (!IsHexDigit(*szScan))
 	{
 		return false;
 	}
@@ -1201,7 +1201,7 @@ IsCommentString(
 	IN		char			*szStr
 )
 {
-	if(*szStr == '/' && *(szStr+1) == '/')
+	if (*szStr == '/' && *(szStr+1) == '/')
 	{
 		return true;
 	}
@@ -1296,7 +1296,7 @@ void rtw_hal_check_rxfifo_full(_adapter *adapter)
 	save_cnt = true;
 	//todo: other chips
 
-	if(save_cnt)
+	if (save_cnt)
 	{
 		//rtw_write8(adapter, REG_RXERR_RPT+3, rtw_read8(adapter, REG_RXERR_RPT+3)|0xa0);
 		pdbgpriv->dbg_rx_fifo_last_overflow = pdbgpriv->dbg_rx_fifo_curr_overflow;
@@ -1309,12 +1309,12 @@ void linked_info_dump(_adapter *padapter,u8 benable)
 {
 	struct pwrctrl_priv *pwrctrlpriv = adapter_to_pwrctl(padapter);
 
-	if(padapter->bLinkInfoDump == benable)
+	if (padapter->bLinkInfoDump == benable)
 		return;
 
 	DBG_871X("%s %s \n",__FUNCTION__,(benable)?"enable":"disable");
 
-	if(benable){
+	if (benable){
 		pwrctrlpriv->org_power_mgnt = pwrctrlpriv->power_mgnt;//keep org value
 		rtw_pm_set_lps(padapter,PS_MODE_ACTIVE);
 
@@ -1340,7 +1340,7 @@ void rtw_get_raw_rssi_info(void *sel, _adapter *padapter)
 			HDATA_RATE(psample_pkt_rssi->data_rate), psample_pkt_rssi->pwdball, psample_pkt_rssi->pwr_all);
 	isCCKrate = (psample_pkt_rssi->data_rate <= DESC_RATE11M)?true :false;
 
-	if(isCCKrate)
+	if (isCCKrate)
 		psample_pkt_rssi->mimo_singal_strength[0] = psample_pkt_rssi->pwdball;
 
 	for(rf_path = 0;rf_path<pHalData->NumTotalRFPath;rf_path++)
@@ -1348,7 +1348,7 @@ void rtw_get_raw_rssi_info(void *sel, _adapter *padapter)
 		DBG_871X_SEL_NL(sel,"RF_PATH_%d=>singal_strength:%d(%%),singal_quality:%d(%%)\n"
 			,rf_path,psample_pkt_rssi->mimo_singal_strength[rf_path],psample_pkt_rssi->mimo_singal_quality[rf_path]);
 
-		if(!isCCKrate){
+		if (!isCCKrate){
 			DBG_871X_SEL_NL(sel,"\trx_ofdm_pwr:%d(dBm),rx_ofdm_snr:%d(dB)\n",
 			psample_pkt_rssi->ofdm_pwr[rf_path],psample_pkt_rssi->ofdm_snr[rf_path]);
 		}
@@ -1366,7 +1366,7 @@ void rtw_dump_raw_rssi_info(_adapter *padapter)
 
 	isCCKrate = (psample_pkt_rssi->data_rate <= DESC_RATE11M)?true :false;
 
-	if(isCCKrate)
+	if (isCCKrate)
 		psample_pkt_rssi->mimo_singal_strength[0] = psample_pkt_rssi->pwdball;
 
 	for(rf_path = 0;rf_path<pHalData->NumTotalRFPath;rf_path++)
@@ -1374,7 +1374,7 @@ void rtw_dump_raw_rssi_info(_adapter *padapter)
 		DBG_871X("RF_PATH_%d=>singal_strength:%d(%%),singal_quality:%d(%%)"
 			,rf_path,psample_pkt_rssi->mimo_singal_strength[rf_path],psample_pkt_rssi->mimo_singal_quality[rf_path]);
 
-		if(!isCCKrate){
+		if (!isCCKrate){
 			printk(",rx_ofdm_pwr:%d(dBm),rx_ofdm_snr:%d(dB)\n",
 			psample_pkt_rssi->ofdm_pwr[rf_path],psample_pkt_rssi->ofdm_snr[rf_path]);
 		}else{
@@ -1402,7 +1402,7 @@ void rtw_store_phy_info(_adapter *padapter, union recv_frame *prframe)
 	{
 		psample_pkt_rssi->mimo_singal_strength[rf_path] = pPhyInfo->RxMIMOSignalStrength[rf_path];
 		psample_pkt_rssi->mimo_singal_quality[rf_path] = pPhyInfo->RxMIMOSignalQuality[rf_path];
-		if(!isCCKrate){
+		if (!isCCKrate){
 			psample_pkt_rssi->ofdm_pwr[rf_path] = pPhyInfo->RxPwr[rf_path];
 			psample_pkt_rssi->ofdm_snr[rf_path] = pPhyInfo->RxSNR[rf_path];
 		}
@@ -1435,7 +1435,7 @@ void rtw_bb_rf_gain_offset(_adapter *padapter)
 	if (value & BIT4) {
 		DBG_871X("Offset RF Gain.\n");
 		DBG_871X("Offset RF Gain.  padapter->eeprompriv.EEPROMRFGainVal=0x%x\n",padapter->eeprompriv.EEPROMRFGainVal);
-		if(padapter->eeprompriv.EEPROMRFGainVal != 0xff){
+		if (padapter->eeprompriv.EEPROMRFGainVal != 0xff){
 			res = rtw_hal_read_rfreg(padapter, RF_PATH_A, 0x7f, 0xffffffff);
 			res &= 0xfff87fff;
 			DBG_871X("Offset RF Gain. before reg 0x7f=0x%08x\n",res);

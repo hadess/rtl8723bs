@@ -643,10 +643,10 @@ s32 sdio_local_write(
 	s32 err;
 	u8 *ptmpbuf;
 
-	if(addr & 0x3)
+	if (addr & 0x3)
 		DBG_8192C("%s, address must be 4 bytes alignment\n", __FUNCTION__);
 
-	if(cnt  & 0x3)
+	if (cnt  & 0x3)
 		DBG_8192C("%s, size must be the multiple of 4 \n", __FUNCTION__);
 
 	pintfhdl=&padapter->iopriv.intf;
@@ -960,7 +960,7 @@ static struct recv_buf* sd_recv_rxfifo(PADAPTER padapter, u32 size)
 
 		precvbuf->pskb = rtw_skb_alloc(MAX_RECVBUF_SZ + RECVBUFF_ALIGN_SZ);
 
-		if(precvbuf->pskb)
+		if (precvbuf->pskb)
 		{
 			precvbuf->pskb->dev = padapter->pnetdev;
 
@@ -1148,7 +1148,7 @@ void sd_int_dpc(PADAPTER padapter)
 				break;
 		} while (1);
 
-		if(alloc_fail_time==10)
+		if (alloc_fail_time==10)
 			DBG_871X("exit because alloc memory failed more than 10 times \n");
 
 	}
@@ -1255,7 +1255,7 @@ u8 RecvOnePkt(PADAPTER padapter, u32 size)
 	psdio_data = &psddev->intf_data;
 	func = psdio_data->func;
 
-	if(size) {
+	if (size) {
 		sdio_claim_host(func);
 		precvbuf = sd_recv_rxfifo(padapter, size);
 

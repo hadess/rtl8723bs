@@ -66,7 +66,7 @@ void rtw_os_indicate_connect(_adapter *adapter)
 	rtw_indicate_wx_assoc_event(adapter);
 	netif_carrier_on(adapter->pnetdev);
 
-	if(adapter->pid[2] !=0)
+	if (adapter->pid[2] !=0)
 		rtw_signal_process(adapter->pid[2], SIGALRM);
 }
 
@@ -87,7 +87,7 @@ void rtw_reset_securitypriv( _adapter *adapter )
 
 	spin_lock_bh(&adapter->security_key_mutex);
 
-	if(adapter->securitypriv.dot11AuthAlgrthm == dot11AuthAlgrthm_8021X)//802.1x
+	if (adapter->securitypriv.dot11AuthAlgrthm == dot11AuthAlgrthm_8021X)//802.1x
 	{
 		// Added by Albert 2009/02/18
 		// We have to backup the PMK information for WiFi PMK Caching test item.
@@ -120,7 +120,7 @@ void rtw_reset_securitypriv( _adapter *adapter )
 	}
 	else //reset values in securitypriv
 	{
-		//if(adapter->mlmepriv.fw_state & WIFI_STATION_STATE)
+		//if (adapter->mlmepriv.fw_state & WIFI_STATION_STATE)
 		//{
 		struct security_priv *psec_priv=&adapter->securitypriv;
 
@@ -162,7 +162,7 @@ void rtw_report_sec_ie(_adapter *adapter,u8 authmode,u8 *sec_ie)
 	RT_TRACE(_module_mlme_osdep_c_,_drv_info_,("+rtw_report_sec_ie, authmode=%d\n", authmode));
 
 	buff = NULL;
-	if(authmode==_WPA_IE_ID_)
+	if (authmode==_WPA_IE_ID_)
 	{
 		RT_TRACE(_module_mlme_osdep_c_,_drv_info_,("rtw_report_sec_ie, authmode=%d\n", authmode));
 

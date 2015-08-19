@@ -26,14 +26,14 @@
 					do {\
 						for(_offset = 0; _offset < _size; _offset++)\
 						{\
-							if(_deltaThermal < thermalThreshold[_direction][_offset])\
+							if (_deltaThermal < thermalThreshold[_direction][_offset])\
 							{\
-								if(_offset != 0)\
+								if (_offset != 0)\
 									_offset--;\
 								break;\
 							}\
 						}			\
-						if(_offset >= _size)\
+						if (_offset >= _size)\
 							_offset = _size-1;\
 					} while(0)
 
@@ -136,7 +136,7 @@ ODM_TXPowerTrackingCallback_ThermalMeter(
 
 	//4 3. Initialize ThermalValues of RFCalibrateInfo
 
-	if(pDM_Odm->RFCalibrateInfo.bReloadtxpowerindex)
+	if (pDM_Odm->RFCalibrateInfo.bReloadtxpowerindex)
 		ODM_RT_TRACE(pDM_Odm,ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD,("reload ofdm index for band switch\n"));
 
 	//4 4. Calculate average thermal meter
@@ -147,13 +147,13 @@ ODM_TXPowerTrackingCallback_ThermalMeter(
 		pDM_Odm->RFCalibrateInfo.ThermalValue_AVG_index = 0;
 
 	for(i = 0; i < c.AverageThermalNum; i++) {
-		if(pDM_Odm->RFCalibrateInfo.ThermalValue_AVG[i]) {
+		if (pDM_Odm->RFCalibrateInfo.ThermalValue_AVG[i]) {
 			ThermalValue_AVG += pDM_Odm->RFCalibrateInfo.ThermalValue_AVG[i];
 			ThermalValue_AVG_count++;
 		}
 	}
 
-	if(ThermalValue_AVG_count)               //Calculate Average ThermalValue after average enough times
+	if (ThermalValue_AVG_count)               //Calculate Average ThermalValue after average enough times
 	{
 		ThermalValue = (u1Byte)(ThermalValue_AVG / ThermalValue_AVG_count);
 		ODM_RT_TRACE(pDM_Odm,ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD,
@@ -175,7 +175,7 @@ ODM_TXPowerTrackingCallback_ThermalMeter(
 	{
 		ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("delta_LCK(%d) >= Threshold_IQK(%d)\n", delta_LCK, c.Threshold_IQK));
 		pDM_Odm->RFCalibrateInfo.ThermalValue_LCK = ThermalValue;
-		if(c.PHY_LCCalibrate)
+		if (c.PHY_LCCalibrate)
 			(*c.PHY_LCCalibrate)(pDM_Odm);
 	}
 
@@ -189,7 +189,7 @@ ODM_TXPowerTrackingCallback_ThermalMeter(
 
 		//4 7.1 The Final Power Index = BaseIndex + PowerIndexOffset
 
-		if(ThermalValue > pHalData->EEPROMThermalMeter) {
+		if (ThermalValue > pHalData->EEPROMThermalMeter) {
 			ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD,
 				     ("deltaSwingTableIdx_TUP_A[%d] = %d\n", delta, deltaSwingTableIdx_TUP_A[delta]));
 			pDM_Odm->RFCalibrateInfo.DeltaPowerIndexLast[ODM_RF_PATH_A] = pDM_Odm->RFCalibrateInfo.DeltaPowerIndex[ODM_RF_PATH_A];
@@ -199,7 +199,7 @@ ODM_TXPowerTrackingCallback_ThermalMeter(
 
 			ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD,("******Temp is higher and pDM_Odm->Absolute_OFDMSwingIdx[ODM_RF_PATH_A] = %d\n", pDM_Odm->Absolute_OFDMSwingIdx[ODM_RF_PATH_A]));
 
-			if(c.RfPathCount > 1)
+			if (c.RfPathCount > 1)
 			{
 				ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD,
 	                                     ("deltaSwingTableIdx_TUP_B[%d] = %d\n", delta, deltaSwingTableIdx_TUP_B[delta]));
@@ -222,7 +222,7 @@ ODM_TXPowerTrackingCallback_ThermalMeter(
 
 			ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD,("******Temp is lower and pDM_Odm->Absolute_OFDMSwingIdx[ODM_RF_PATH_A] = %d\n", pDM_Odm->Absolute_OFDMSwingIdx[ODM_RF_PATH_A]));
 
-			if(c.RfPathCount > 1) {
+			if (c.RfPathCount > 1) {
 				ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD,
 					("deltaSwingTableIdx_TDOWN_B[%d] = %d\n", delta, deltaSwingTableIdx_TDOWN_B[delta]));
 
@@ -264,7 +264,7 @@ ODM_TXPowerTrackingCallback_ThermalMeter(
 		    //4 7.1 Handle boundary conditions of index.
 
 
-			if(pDM_Odm->RFCalibrateInfo.OFDM_index[p] > c.SwingTableSize_OFDM-1)
+			if (pDM_Odm->RFCalibrateInfo.OFDM_index[p] > c.SwingTableSize_OFDM-1)
 			{
 				pDM_Odm->RFCalibrateInfo.OFDM_index[p] = c.SwingTableSize_OFDM-1;
 			}
@@ -275,7 +275,7 @@ ODM_TXPowerTrackingCallback_ThermalMeter(
 		}
 		ODM_RT_TRACE(pDM_Odm,ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD,
             ("\n\n========================================================================================================\n"));
-		if(pDM_Odm->RFCalibrateInfo.CCK_index > c.SwingTableSize_CCK-1)
+		if (pDM_Odm->RFCalibrateInfo.CCK_index > c.SwingTableSize_CCK-1)
 			pDM_Odm->RFCalibrateInfo.CCK_index = c.SwingTableSize_CCK-1;
 		//else if (pDM_Odm->RFCalibrateInfo.CCK_index < 0)
 			//pDM_Odm->RFCalibrateInfo.CCK_index = 0;
@@ -317,7 +317,7 @@ ODM_TXPowerTrackingCallback_ThermalMeter(
 				("Temperature Increasing(A): delta_pi: %d , delta_t: %d, Now_t: %d, EFUSE_t: %d, Last_t: %d\n",
 				pDM_Odm->RFCalibrateInfo.PowerIndexOffset[ODM_RF_PATH_A], delta, ThermalValue, pHalData->EEPROMThermalMeter, pDM_Odm->RFCalibrateInfo.ThermalValue));
 
-			if(c.RfPathCount > 1)
+			if (c.RfPathCount > 1)
 			ODM_RT_TRACE(pDM_Odm,ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD,
 				("Temperature Increasing(B): delta_pi: %d , delta_t: %d, Now_t: %d, EFUSE_t: %d, Last_t: %d\n",
 				pDM_Odm->RFCalibrateInfo.PowerIndexOffset[ODM_RF_PATH_B], delta, ThermalValue, pHalData->EEPROMThermalMeter, pDM_Odm->RFCalibrateInfo.ThermalValue));
@@ -329,7 +329,7 @@ ODM_TXPowerTrackingCallback_ThermalMeter(
 				("Temperature Decreasing(A): delta_pi: %d , delta_t: %d, Now_t: %d, EFUSE_t: %d, Last_t: %d\n",
 				pDM_Odm->RFCalibrateInfo.PowerIndexOffset[ODM_RF_PATH_A], delta, ThermalValue, pHalData->EEPROMThermalMeter, pDM_Odm->RFCalibrateInfo.ThermalValue));
 
-			if(c.RfPathCount > 1)
+			if (c.RfPathCount > 1)
 			ODM_RT_TRACE(pDM_Odm,ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD,
 				("Temperature Decreasing(B): delta_pi: %d , delta_t: %d, Now_t: %d, EFUSE_t: %d, Last_t: %d\n",
 				pDM_Odm->RFCalibrateInfo.PowerIndexOffset[ODM_RF_PATH_B], delta, ThermalValue, pHalData->EEPROMThermalMeter, pDM_Odm->RFCalibrateInfo.ThermalValue));
@@ -384,11 +384,11 @@ u1Byte ODM_GetRightChnlPlaceforIQK(u1Byte chnl)
 	u1Byte	place = chnl;
 
 
-	if(chnl > 14)
+	if (chnl > 14)
 	{
 		for(place = 14; place<sizeof(channel_all); place++)
 		{
-			if(channel_all[place] == chnl)
+			if (channel_all[place] == chnl)
 			{
 				return place-13;
 			}

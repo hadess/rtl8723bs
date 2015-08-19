@@ -148,7 +148,7 @@ PHY_SetBBReg_8723B(
 
 	//RT_TRACE(COMP_RF, DBG_TRACE, ("--->PHY_SetBBReg(): RegAddr(%#lx), BitMask(%#lx), Data(%#lx)\n", RegAddr, BitMask, Data));
 
-	if(BitMask!= bMaskDWord){//if not "double word" write
+	if (BitMask!= bMaskDWord){//if not "double word" write
 		OriginalValue = rtw_read32(Adapter, RegAddr);
 		BitShift = phy_CalculateBitShift(BitMask);
 		Data = ((OriginalValue & (~BitMask)) | ((Data << BitShift) & BitMask));
@@ -186,7 +186,7 @@ phy_RFSerialRead_8723B(
 
 	NewOffset = Offset;
 
-	if(eRFPath == RF_PATH_A)
+	if (eRFPath == RF_PATH_A)
 	{
 		tmplong2 = PHY_QueryBBReg(Adapter, rFPGA0_XA_HSSIParameter2|MaskforPhySet, bMaskDWord);;
 		tmplong2 = (tmplong2 & (~bLSSIReadAddress)) | (NewOffset<<23) | bLSSIReadEdge;	//T65 RF
@@ -209,12 +209,12 @@ phy_RFSerialRead_8723B(
 		udelay(MAX_STALL_TIME);
 	udelay(10);
 
-	if(eRFPath == RF_PATH_A)
+	if (eRFPath == RF_PATH_A)
 		RfPiEnable = (u1Byte)PHY_QueryBBReg(Adapter, rFPGA0_XA_HSSIParameter1|MaskforPhySet, BIT8);
-	else if(eRFPath == RF_PATH_B)
+	else if (eRFPath == RF_PATH_B)
 		RfPiEnable = (u1Byte)PHY_QueryBBReg(Adapter, rFPGA0_XB_HSSIParameter1|MaskforPhySet, BIT8);
 
-	if(RfPiEnable)
+	if (RfPiEnable)
 	{	// Read from BBreg8b8, 12 bits for 8190, 20bits for T65 RF
 		retValue = PHY_QueryBBReg(Adapter, pPhyReg->rfLSSIReadBackPi|MaskforPhySet, bLSSIReadBackData);
 
@@ -515,7 +515,7 @@ phy_BB8723b_Config_ParaFile(
 				rtStatus = _FAIL;
 		}
 
-		if(rtStatus != _SUCCESS){
+		if (rtStatus != _SUCCESS){
 			DBG_871X("%s():Read Tx power limit fail\n",__func__);
 			goto phy_BB8190_Config_ParaFile_Fail;
 		}
@@ -532,7 +532,7 @@ phy_BB8723b_Config_ParaFile(
 			rtStatus = _FAIL;
 	}
 
-	if(rtStatus != _SUCCESS){
+	if (rtStatus != _SUCCESS){
 		DBG_8192C("%s():Write BB Reg Fail!!", __func__);
 		goto phy_BB8190_Config_ParaFile_Fail;
 	}
@@ -557,7 +557,7 @@ phy_BB8723b_Config_ParaFile(
 	         ( Adapter->registrypriv.RegEnableTxPowerLimit == 2 && pHalData->EEPROMRegulatory == 1 ) )
 			PHY_ConvertTxPowerLimitToPowerIndex( Adapter );
 
-		if(rtStatus != _SUCCESS){
+		if (rtStatus != _SUCCESS){
 			DBG_8192C("%s():BB_PG Reg Fail!!\n",__func__);
 		}
 	}
@@ -573,7 +573,7 @@ phy_BB8723b_Config_ParaFile(
 			rtStatus = _FAIL;
 	}
 
-	if(rtStatus != _SUCCESS){
+	if (rtStatus != _SUCCESS){
 		DBG_8192C("%s():AGC Table Fail\n", __func__);
 		goto phy_BB8190_Config_ParaFile_Fail;
 	}
@@ -732,7 +732,7 @@ PHY_GetTxPowerIndex_8723B(
 
 	txPower += PHY_GetTxPowerTrackingOffset( pAdapter, RFPath, Rate );
 
-	if(txPower > MAX_POWER_INDEX)
+	if (txPower > MAX_POWER_INDEX)
 		txPower = MAX_POWER_INDEX;
 
 	//DBG_871X("Final Tx Power(RF-%c, Channel: %d) = %d(0x%X)\n", ((RFPath==0)?'A':'B'), Channel, txPower, txPower));
@@ -750,7 +750,7 @@ PHY_SetTxPowerLevel8723B(
 	pFAT_T			pDM_FatTable = &pDM_Odm->DM_FatTable;
 	u8				RFPath = ODM_RF_PATH_A;
 
-	if(pHalData->AntDivCfg){// antenna diversity Enable
+	if (pHalData->AntDivCfg){// antenna diversity Enable
 		RFPath = ( (pDM_FatTable->RxIdleAnt == MAIN_ANT) ? ODM_RF_PATH_A : ODM_RF_PATH_B);
 	}
 	else{ // antenna diversity disable
@@ -812,33 +812,33 @@ phy_GetSecondaryChnl_8723B(
 	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(Adapter);
 
 	RT_TRACE(_module_hal_init_c_, _drv_info_,("SCMapping: VHT Case: pHalData->CurrentChannelBW %d, pHalData->nCur80MhzPrimeSC %d, pHalData->nCur40MhzPrimeSC %d \n",pHalData->CurrentChannelBW,pHalData->nCur80MhzPrimeSC,pHalData->nCur40MhzPrimeSC));
-	if(pHalData->CurrentChannelBW== CHANNEL_WIDTH_80)
+	if (pHalData->CurrentChannelBW== CHANNEL_WIDTH_80)
 	{
-		if(pHalData->nCur80MhzPrimeSC == HAL_PRIME_CHNL_OFFSET_LOWER)
+		if (pHalData->nCur80MhzPrimeSC == HAL_PRIME_CHNL_OFFSET_LOWER)
 			SCSettingOf40 = VHT_DATA_SC_40_LOWER_OF_80MHZ;
-		else if(pHalData->nCur80MhzPrimeSC == HAL_PRIME_CHNL_OFFSET_UPPER)
+		else if (pHalData->nCur80MhzPrimeSC == HAL_PRIME_CHNL_OFFSET_UPPER)
 			SCSettingOf40 = VHT_DATA_SC_40_UPPER_OF_80MHZ;
 		else
 			RT_TRACE(_module_hal_init_c_, _drv_err_,("SCMapping: Not Correct Primary40MHz Setting \n"));
 
-		if((pHalData->nCur40MhzPrimeSC == HAL_PRIME_CHNL_OFFSET_LOWER) && (pHalData->nCur80MhzPrimeSC == HAL_PRIME_CHNL_OFFSET_LOWER))
+		if ((pHalData->nCur40MhzPrimeSC == HAL_PRIME_CHNL_OFFSET_LOWER) && (pHalData->nCur80MhzPrimeSC == HAL_PRIME_CHNL_OFFSET_LOWER))
 			SCSettingOf20 = VHT_DATA_SC_20_LOWEST_OF_80MHZ;
-		else if((pHalData->nCur40MhzPrimeSC == HAL_PRIME_CHNL_OFFSET_UPPER) && (pHalData->nCur80MhzPrimeSC == HAL_PRIME_CHNL_OFFSET_LOWER))
+		else if ((pHalData->nCur40MhzPrimeSC == HAL_PRIME_CHNL_OFFSET_UPPER) && (pHalData->nCur80MhzPrimeSC == HAL_PRIME_CHNL_OFFSET_LOWER))
 			SCSettingOf20 = VHT_DATA_SC_20_LOWER_OF_80MHZ;
-		else if((pHalData->nCur40MhzPrimeSC == HAL_PRIME_CHNL_OFFSET_LOWER) && (pHalData->nCur80MhzPrimeSC == HAL_PRIME_CHNL_OFFSET_UPPER))
+		else if ((pHalData->nCur40MhzPrimeSC == HAL_PRIME_CHNL_OFFSET_LOWER) && (pHalData->nCur80MhzPrimeSC == HAL_PRIME_CHNL_OFFSET_UPPER))
 			SCSettingOf20 = VHT_DATA_SC_20_UPPER_OF_80MHZ;
-		else if((pHalData->nCur40MhzPrimeSC == HAL_PRIME_CHNL_OFFSET_UPPER) && (pHalData->nCur80MhzPrimeSC == HAL_PRIME_CHNL_OFFSET_UPPER))
+		else if ((pHalData->nCur40MhzPrimeSC == HAL_PRIME_CHNL_OFFSET_UPPER) && (pHalData->nCur80MhzPrimeSC == HAL_PRIME_CHNL_OFFSET_UPPER))
 			SCSettingOf20 = VHT_DATA_SC_20_UPPERST_OF_80MHZ;
 		else
 			RT_TRACE(_module_hal_init_c_, _drv_err_,("SCMapping: Not Correct Primary40MHz Setting \n"));
 	}
-	else if(pHalData->CurrentChannelBW == CHANNEL_WIDTH_40)
+	else if (pHalData->CurrentChannelBW == CHANNEL_WIDTH_40)
 	{
 		RT_TRACE(_module_hal_init_c_, _drv_info_,("SCMapping: VHT Case: pHalData->CurrentChannelBW %d, pHalData->nCur40MhzPrimeSC %d \n",pHalData->CurrentChannelBW,pHalData->nCur40MhzPrimeSC));
 
-		if(pHalData->nCur40MhzPrimeSC == HAL_PRIME_CHNL_OFFSET_UPPER)
+		if (pHalData->nCur40MhzPrimeSC == HAL_PRIME_CHNL_OFFSET_UPPER)
 			SCSettingOf20 = VHT_DATA_SC_20_UPPER_OF_80MHZ;
-		else if(pHalData->nCur40MhzPrimeSC == HAL_PRIME_CHNL_OFFSET_LOWER)
+		else if (pHalData->nCur40MhzPrimeSC == HAL_PRIME_CHNL_OFFSET_LOWER)
 			SCSettingOf20 = VHT_DATA_SC_20_LOWER_OF_80MHZ;
 		else
 			RT_TRACE(_module_hal_init_c_, _drv_err_,("SCMapping: Not Correct Primary40MHz Setting \n"));
@@ -919,7 +919,7 @@ phy_SwChnl8723B(
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
 	u8			channelToSW = pHalData->CurrentChannel;
 
-	if(pHalData->rf_chip == RF_PSEUDO_11N)
+	if (pHalData->rf_chip == RF_PSEUDO_11N)
 	{
 		//RT_TRACE(COMP_MLME,DBG_LOUD,("phy_SwChnl8723B: return for PSEUDO \n"));
 		return;
@@ -949,18 +949,18 @@ phy_SwChnlAndSetBwMode8723B(
 			pHalData->CurrentChannelBW);
 	}
 
-	if((Adapter->bDriverStopped) || (Adapter->bSurpriseRemoved))
+	if ((Adapter->bDriverStopped) || (Adapter->bSurpriseRemoved))
 	{
 		return;
 	}
 
-	if(pHalData->bSwChnl)
+	if (pHalData->bSwChnl)
 	{
 		phy_SwChnl8723B(Adapter);
 		pHalData->bSwChnl = false;
 	}
 
-	if(pHalData->bSetChnlBW)
+	if (pHalData->bSetChnlBW)
 	{
 		phy_PostSetBwMode8723B(Adapter);
 		pHalData->bSetChnlBW = false;
@@ -992,42 +992,42 @@ PHY_HandleSwChnlAndSetBW8723B(
 	//DBG_871X("=> PHY_HandleSwChnlAndSetBW8812: bSwitchChannel %d, bSetBandWidth %d \n",bSwitchChannel,bSetBandWidth);
 
 	//check is swchnl or setbw
-	if(!bSwitchChannel && !bSetBandWidth)
+	if (!bSwitchChannel && !bSetBandWidth)
 	{
 		DBG_871X("PHY_HandleSwChnlAndSetBW8812:  not switch channel and not set bandwidth \n");
 		return;
 	}
 
 	//skip change for channel or bandwidth is the same
-	if(bSwitchChannel)
+	if (bSwitchChannel)
 	{
-		//if(pHalData->CurrentChannel != ChannelNum)
+		//if (pHalData->CurrentChannel != ChannelNum)
 		{
 			if (HAL_IsLegalChannel(Adapter, ChannelNum))
 				pHalData->bSwChnl = true;
 		}
 	}
 
-	if(bSetBandWidth)
+	if (bSetBandWidth)
 	{
 		pHalData->bSetChnlBW = true;
 	}
 
-	if(!pHalData->bSetChnlBW && !pHalData->bSwChnl)
+	if (!pHalData->bSetChnlBW && !pHalData->bSwChnl)
 	{
 		//DBG_871X("<= PHY_HandleSwChnlAndSetBW8812: bSwChnl %d, bSetChnlBW %d \n",pHalData->bSwChnl,pHalData->bSetChnlBW);
 		return;
 	}
 
 
-	if(pHalData->bSwChnl)
+	if (pHalData->bSwChnl)
 	{
 		pHalData->CurrentChannel=ChannelNum;
 		pHalData->CurrentCenterFrequencyIndex1 = ChannelNum;
 	}
 
 
-	if(pHalData->bSetChnlBW)
+	if (pHalData->bSetChnlBW)
 	{
 		pHalData->CurrentChannelBW = ChnlWidth;
 		pHalData->nCur40MhzPrimeSC = ExtChnlOffsetOf40MHz;
@@ -1036,18 +1036,18 @@ PHY_HandleSwChnlAndSetBW8723B(
 	}
 
 	//Switch workitem or set timer to do switch channel or setbandwidth operation
-	if((!Adapter->bDriverStopped) && (!Adapter->bSurpriseRemoved))
+	if ((!Adapter->bDriverStopped) && (!Adapter->bSurpriseRemoved))
 	{
 		phy_SwChnlAndSetBwMode8723B(Adapter);
 	}
 	else
 	{
-		if(pHalData->bSwChnl)
+		if (pHalData->bSwChnl)
 		{
 			pHalData->CurrentChannel = tmpChannel;
 			pHalData->CurrentCenterFrequencyIndex1 = tmpChannel;
 		}
-		if(pHalData->bSetChnlBW)
+		if (pHalData->bSetChnlBW)
 		{
 			pHalData->CurrentChannelBW = tmpBW;
 			pHalData->nCur40MhzPrimeSC = tmpnCur40MhzPrimeSC;

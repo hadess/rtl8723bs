@@ -43,7 +43,7 @@ uint _rtw_pktfile_read (struct pkt_file *pfile, u8 *rmem, uint rlen)
 	len =  rtw_remainder_len(pfile);
 	len = (rlen > len)? len: rlen;
 
-       if(rmem)
+       if (rmem)
 		skb_copy_bits(pfile->pkt, pfile->buf_len-pfile->pkt_len, rmem, len);
 
 	pfile->cur_addr += len;
@@ -81,7 +81,7 @@ int rtw_os_xmit_resource_alloc(_adapter *padapter, struct xmit_buf *pxmitbuf, u3
 void rtw_os_xmit_resource_free(_adapter *padapter, struct xmit_buf *pxmitbuf,u32 free_sz, u8 flag)
 {
 	if (free_sz > 0 ) {
-		if(pxmitbuf->pallocated_buf)
+		if (pxmitbuf->pallocated_buf)
 			kfree(pxmitbuf->pallocated_buf);
 	}
 }
@@ -95,13 +95,13 @@ void rtw_os_pkt_complete(_adapter *padapter, _pkt *pkt)
 
 	queue = skb_get_queue_mapping(pkt);
 	if (padapter->registrypriv.wifi_spec) {
-		if(__netif_subqueue_stopped(padapter->pnetdev, queue) &&
+		if (__netif_subqueue_stopped(padapter->pnetdev, queue) &&
 			(pxmitpriv->hwxmits[queue].accnt < WMM_XMIT_THRESHOLD))
 		{
 			netif_wake_subqueue(padapter->pnetdev, queue);
 		}
 	} else {
-		if(__netif_subqueue_stopped(padapter->pnetdev, queue))
+		if (__netif_subqueue_stopped(padapter->pnetdev, queue))
 			netif_wake_subqueue(padapter->pnetdev, queue);
 	}
 
@@ -110,7 +110,7 @@ void rtw_os_pkt_complete(_adapter *padapter, _pkt *pkt)
 
 void rtw_os_xmit_complete(_adapter *padapter, struct xmit_frame *pxframe)
 {
-	if(pxframe->pkt)
+	if (pxframe->pkt)
 		rtw_os_pkt_complete(padapter, pxframe->pkt);
 
 	pxframe->pkt = NULL;
@@ -120,7 +120,7 @@ void rtw_os_xmit_schedule(_adapter *padapter)
 {
 	_adapter *pri_adapter = padapter;
 
-	if(!padapter)
+	if (!padapter)
 		return;
 
 	if (!list_empty(&padapter->xmitpriv.pending_xmitbuf_queue.queue))
@@ -140,7 +140,7 @@ static void rtw_check_xmit_resource(_adapter *padapter, _pkt *pkt)
 			netif_stop_subqueue(padapter->pnetdev, queue);
 		}
 	} else {
-		if(pxmitpriv->free_xmitframe_cnt<=4) {
+		if (pxmitpriv->free_xmitframe_cnt<=4) {
 			if (!netif_tx_queue_stopped(netdev_get_tx_queue(padapter->pnetdev, queue)))
 				netif_stop_subqueue(padapter->pnetdev, queue);
 		}
@@ -183,7 +183,7 @@ static int rtw_mlcst2unicst(_adapter *padapter, struct sk_buff *skb)
 
 	for (i = 0; i < chk_alive_num; i++) {
 		psta = rtw_get_stainfo_by_offset(pstapriv, chk_alive_list[i]);
-		if(!(psta->state &_FW_LINKED))
+		if (!(psta->state &_FW_LINKED))
 		{
 			DBG_COUNTER(padapter->tx_logs.os_tx_m2u_ignore_fw_linked);
 			continue;
@@ -232,7 +232,7 @@ int _rtw_xmit_entry(_pkt *pkt, _nic_hdl pnetdev)
 	struct mlme_priv	*pmlmepriv = &padapter->mlmepriv;
 	s32 res = 0;
 
-	if(padapter->registrypriv.mp_mode) {
+	if (padapter->registrypriv.mp_mode) {
 		DBG_871X("MP_TX_DROP_OS_FRAME\n");
 		goto drop_packet;
 	}

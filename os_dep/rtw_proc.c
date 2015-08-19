@@ -75,7 +75,7 @@ static ssize_t proc_set_log_level(struct file *file, const char __user *buffer, 
 
 	if (buffer && !copy_from_user(tmp, buffer, sizeof(tmp))) {
 		sscanf(tmp, "%d ", &log_level);
-		if( log_level >= _drv_always_ && log_level <= _drv_debug_ )
+		if ( log_level >= _drv_always_ && log_level <= _drv_debug_ )
 		{
 			GlobalDebugLevel= log_level;
 			printk("%d\n", GlobalDebugLevel);
@@ -217,7 +217,7 @@ static int proc_get_linked_info_dump(struct seq_file *m, void *v)
 	struct net_device *dev = m->private;
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
 
-	if(padapter)
+	if (padapter)
 		DBG_871X_SEL_NL(m, "linked_info_dump :%s \n", (padapter->bLinkInfoDump)?"enable":"disable");
 
 	return 0;
@@ -235,7 +235,7 @@ static ssize_t proc_set_linked_info_dump(struct file *file, const char __user *b
 		return -EFAULT;
 
 	if (buffer && !copy_from_user(tmp, buffer, sizeof(tmp))) {
-		if( padapter )
+		if ( padapter )
 		{
 			//padapter->bLinkInfoDump = mode;
 			//DBG_871X("linked_info_dump =%s \n", (padapter->bLinkInfoDump)?"enable":"disable");
@@ -275,7 +275,7 @@ static ssize_t proc_reset_rx_info(struct file *file, const char __user *buffer, 
 	struct debug_priv *pdbgpriv = &psdpriv->drv_dbg;
 	char cmd[32];
 	if (buffer && !copy_from_user(cmd, buffer, sizeof(cmd))) {
-		if('0' == cmd[0]){
+		if ('0' == cmd[0]){
 			pdbgpriv->dbg_rx_ampdu_drop_count = 0;
 			pdbgpriv->dbg_rx_ampdu_forced_indicate_count = 0;
 			pdbgpriv->dbg_rx_ampdu_loss_count = 0;

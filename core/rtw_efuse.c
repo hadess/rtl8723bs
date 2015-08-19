@@ -58,12 +58,12 @@ Efuse_Read1ByteFromFakeContent(
 	IN		u16		Offset,
 	IN OUT	u8		*Value	)
 {
-	if(Offset >= EFUSE_MAX_HW_SIZE)
+	if (Offset >= EFUSE_MAX_HW_SIZE)
 	{
 		return false;
 	}
 	//DbgPrint("Read fake content, offset = %d\n", Offset);
-	if(fakeEfuseBank == 0)
+	if (fakeEfuseBank == 0)
 		*Value = fakeEfuseContent[Offset];
 	else
 		*Value = fakeBTEfuseContent[fakeEfuseBank-1][Offset];
@@ -81,11 +81,11 @@ Efuse_Write1ByteToFakeContent(
 	IN		u16		Offset,
 	IN		u8		Value	)
 {
-	if(Offset >= EFUSE_MAX_HW_SIZE)
+	if (Offset >= EFUSE_MAX_HW_SIZE)
 	{
 		return false;
 	}
-	if(fakeEfuseBank == 0)
+	if (fakeEfuseBank == 0)
 		fakeEfuseContent[Offset] = Value;
 	else
 	{
@@ -155,10 +155,10 @@ u8
 Efuse_CalculateWordCnts(IN u8	word_en)
 {
 	u8 word_cnts = 0;
-	if(!(word_en & BIT(0)))	word_cnts++; // 0 : write enable
-	if(!(word_en & BIT(1)))	word_cnts++;
-	if(!(word_en & BIT(2)))	word_cnts++;
-	if(!(word_en & BIT(3)))	word_cnts++;
+	if (!(word_en & BIT(0)))	word_cnts++; // 0 : write enable
+	if (!(word_en & BIT(1)))	word_cnts++;
+	if (!(word_en & BIT(2)))	word_cnts++;
+	if (!(word_en & BIT(3)))	word_cnts++;
 	return word_cnts;
 }
 
@@ -264,7 +264,7 @@ EFUSE_Read1Byte(
 		{
 			Bytetemp = rtw_read8(Adapter, EFUSE_CTRL+3);
 			k++;
-			if(k==1000)
+			if (k==1000)
 			{
 				k=0;
 				break;
@@ -293,7 +293,7 @@ efuse_OneByteRead(
 	//DBG_871X("===> EFUSE_OneByteRead(), addr = %x\n", addr);
 	//DBG_871X("===> EFUSE_OneByteRead() start, 0x34 = 0x%X\n", rtw_read32(pAdapter, EFUSE_TEST));
 
-	if(bPseudoTest)
+	if (bPseudoTest)
 	{
 		bResult = Efuse_Read1ByteFromFakeContent(pAdapter, addr, data);
 		return bResult;
@@ -320,7 +320,7 @@ efuse_OneByteRead(
 		mdelay(1);
 		tmpidx++;
 	}
-	if(tmpidx<100)
+	if (tmpidx<100)
 	{
 		*data=rtw_read8(pAdapter, EFUSE_CTRL);
 		bResult = true;
@@ -351,7 +351,7 @@ efuse_OneByteWrite(
 	//DBG_871X("===> EFUSE_OneByteWrite(), addr = %x data=%x\n", addr, data);
 	//DBG_871X("===> EFUSE_OneByteWrite() start, 0x34 = 0x%X\n", rtw_read32(pAdapter, EFUSE_TEST));
 
-	if(bPseudoTest)
+	if (bPseudoTest)
 	{
 		bResult = Efuse_Write1ByteToFakeContent(pAdapter, addr, data);
 		return bResult;
@@ -381,7 +381,7 @@ efuse_OneByteWrite(
 		tmpidx++;
 	}
 
-	if(tmpidx<100)
+	if (tmpidx<100)
 	{
 		bResult = true;
 	}
