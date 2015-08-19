@@ -1213,33 +1213,15 @@ ssize_t proc_set_en_fwps(struct file *file, const char __user *buffer, size_t co
 		return -EFAULT;
 
 	if (buffer && !copy_from_user(tmp, buffer, sizeof(tmp))) {
-
 		sscanf(tmp, "%d ", &mode);
 
-		if ( pregpriv && mode >= 0 && mode < 2 )
-		{
+		if (pregpriv && mode >= 0 && mode < 2) {
 			pregpriv->check_fw_ps = mode;
 			DBG_871X("pregpriv->check_fw_ps =%d \n", pregpriv->check_fw_ps);
 		}
-
 	}
-
 	return count;
 }
-
-/*
-int proc_get_two_path_rssi(struct seq_file *m, void *v)
-{
-	struct net_device *dev = m->private;
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
-
-	if (padapter)
-		DBG_871X_SEL_NL(m, "%d %d\n",
-			padapter->recvpriv.RxRssi[0], padapter->recvpriv.RxRssi[1]);
-
-	return 0;
-}
-*/
 
 int proc_get_rx_stbc(struct seq_file *m, void *v)
 {
@@ -1265,11 +1247,10 @@ ssize_t proc_set_rx_stbc(struct file *file, const char __user *buffer, size_t co
 		return -EFAULT;
 
 	if (buffer && !copy_from_user(tmp, buffer, sizeof(tmp))) {
-
 		sscanf(tmp, "%d ", &mode);
 
-		if ( pregpriv && (mode == 0 || mode == 1|| mode == 2|| mode == 3))
-		{
+		if (pregpriv && (mode == 0 || mode == 1 ||
+		    mode == 2 || mode == 3)) {
 			pregpriv->rx_stbc = mode;
 			printk("rx_stbc =%d\n", mode);
 		}
@@ -1291,14 +1272,12 @@ ssize_t proc_set_rssi_disp(struct file *file, const char __user *buffer, size_t 
 	char tmp[32];
 	u32 enable =0;
 
-	if (count < 1)
-	{
+	if (count < 1) {
 		DBG_8192C("argument size is less than 1\n");
 		return -EFAULT;
 	}
 
 	if (buffer && !copy_from_user(tmp, buffer, sizeof(tmp))) {
-
 		int num = sscanf(tmp, "%x", &enable);
 
 		if (num !=  1) {
@@ -1306,21 +1285,15 @@ ssize_t proc_set_rssi_disp(struct file *file, const char __user *buffer, size_t 
 			return count;
 		}
 
-		if (enable)
-		{
+		if (enable) {
 			DBG_8192C("Linked info Function Enable\n");
 			padapter->bLinkInfoDump = enable ;
-		}
-		else
-		{
+		} else {
 			DBG_8192C("Linked info Function Disable\n");
 			padapter->bLinkInfoDump = 0 ;
 		}
-
 	}
-
 	return count;
-
 }
 
 int proc_get_all_sta_info(struct seq_file *m, void *v)
@@ -1337,55 +1310,67 @@ int proc_get_all_sta_info(struct seq_file *m, void *v)
 
 	spin_lock_bh(&pstapriv->sta_hash_lock);
 
-	for (i =0; i< NUM_STA; i++)
-	{
+	for (i = 0; i < NUM_STA; i++) {
 		phead = &(pstapriv->sta_hash[i]);
 		plist = get_next(phead);
 
-		while (phead != plist)
-		{
+		while (phead != plist) {
 			psta = LIST_CONTAINOR(plist, struct sta_info, hash_list);
 
 			plist = get_next(plist);
 
-			//if (extra_arg == psta->aid)
-			{
-				DBG_871X_SEL_NL(m, "==============================\n");
-				DBG_871X_SEL_NL(m, "sta's macaddr:" MAC_FMT "\n", MAC_ARG(psta->hwaddr));
-				DBG_871X_SEL_NL(m, "rtsen =%d, cts2slef =%d\n", psta->rtsen, psta->cts2self);
-				DBG_871X_SEL_NL(m, "state =0x%x, aid =%d, macid =%d, raid =%d\n", psta->state, psta->aid, psta->mac_id, psta->raid);
-				DBG_871X_SEL_NL(m, "qos_en =%d, ht_en =%d, init_rate =%d\n", psta->qos_option, psta->htpriv.ht_option, psta->init_rate);
-				DBG_871X_SEL_NL(m, "bwmode =%d, ch_offset =%d, sgi_20m =%d, sgi_40m =%d\n", psta->bw_mode, psta->htpriv.ch_offset, psta->htpriv.sgi_20m, psta->htpriv.sgi_40m);
-				DBG_871X_SEL_NL(m, "ampdu_enable = %d\n", psta->htpriv.ampdu_enable);
-				DBG_871X_SEL_NL(m, "agg_enable_bitmap =%x, candidate_tid_bitmap =%x\n", psta->htpriv.agg_enable_bitmap, psta->htpriv.candidate_tid_bitmap);
-				DBG_871X_SEL_NL(m, "sleepq_len =%d\n", psta->sleepq_len);
-				DBG_871X_SEL_NL(m, "sta_xmitpriv.vo_q_qcnt =%d\n", psta->sta_xmitpriv.vo_q.qcnt);
-				DBG_871X_SEL_NL(m, "sta_xmitpriv.vi_q_qcnt =%d\n", psta->sta_xmitpriv.vi_q.qcnt);
-				DBG_871X_SEL_NL(m, "sta_xmitpriv.be_q_qcnt =%d\n", psta->sta_xmitpriv.be_q.qcnt);
-				DBG_871X_SEL_NL(m, "sta_xmitpriv.bk_q_qcnt =%d\n", psta->sta_xmitpriv.bk_q.qcnt);
+			DBG_871X_SEL_NL(m, "==============================\n");
+			DBG_871X_SEL_NL(m, "sta's macaddr:" MAC_FMT "\n",
+					MAC_ARG(psta->hwaddr));
+			DBG_871X_SEL_NL(m, "rtsen =%d, cts2slef =%d\n",
+					psta->rtsen, psta->cts2self);
+			DBG_871X_SEL_NL(m, "state =0x%x, aid =%d, macid =%d, raid =%d\n",
+					psta->state, psta->aid, psta->mac_id,
+					psta->raid);
+			DBG_871X_SEL_NL(m, "qos_en =%d, ht_en =%d, init_rate =%d\n",
+					psta->qos_option,
+					psta->htpriv.ht_option,
+					psta->init_rate);
+			DBG_871X_SEL_NL(m, "bwmode =%d, ch_offset =%d, sgi_20m =%d, sgi_40m =%d\n",
+					psta->bw_mode, psta->htpriv.ch_offset,
+					psta->htpriv.sgi_20m,
+					psta->htpriv.sgi_40m);
+			DBG_871X_SEL_NL(m, "ampdu_enable = %d\n",
+					psta->htpriv.ampdu_enable);
+			DBG_871X_SEL_NL(m, "agg_enable_bitmap =%x, candidate_tid_bitmap =%x\n",
+					psta->htpriv.agg_enable_bitmap,
+					psta->htpriv.candidate_tid_bitmap);
+			DBG_871X_SEL_NL(m, "sleepq_len =%d\n",
+					psta->sleepq_len);
+			DBG_871X_SEL_NL(m, "sta_xmitpriv.vo_q_qcnt =%d\n",
+					psta->sta_xmitpriv.vo_q.qcnt);
+			DBG_871X_SEL_NL(m, "sta_xmitpriv.vi_q_qcnt =%d\n",
+					psta->sta_xmitpriv.vi_q.qcnt);
+			DBG_871X_SEL_NL(m, "sta_xmitpriv.be_q_qcnt =%d\n",
+					psta->sta_xmitpriv.be_q.qcnt);
+			DBG_871X_SEL_NL(m, "sta_xmitpriv.bk_q_qcnt =%d\n",
+					psta->sta_xmitpriv.bk_q.qcnt);
 
-				DBG_871X_SEL_NL(m, "capability =0x%x\n", psta->capability);
-				DBG_871X_SEL_NL(m, "flags =0x%x\n", psta->flags);
-				DBG_871X_SEL_NL(m, "wpa_psk =0x%x\n", psta->wpa_psk);
-				DBG_871X_SEL_NL(m, "wpa2_group_cipher =0x%x\n", psta->wpa2_group_cipher);
-				DBG_871X_SEL_NL(m, "wpa2_pairwise_cipher =0x%x\n", psta->wpa2_pairwise_cipher);
-				DBG_871X_SEL_NL(m, "qos_info =0x%x\n", psta->qos_info);
-				DBG_871X_SEL_NL(m, "dot118021XPrivacy =0x%x\n", psta->dot118021XPrivacy);
+			DBG_871X_SEL_NL(m, "capability =0x%x\n",
+					psta->capability);
+			DBG_871X_SEL_NL(m, "flags =0x%x\n", psta->flags);
+			DBG_871X_SEL_NL(m, "wpa_psk =0x%x\n", psta->wpa_psk);
+			DBG_871X_SEL_NL(m, "wpa2_group_cipher =0x%x\n",
+					psta->wpa2_group_cipher);
+			DBG_871X_SEL_NL(m, "wpa2_pairwise_cipher =0x%x\n",
+					psta->wpa2_pairwise_cipher);
+			DBG_871X_SEL_NL(m, "qos_info =0x%x\n", psta->qos_info);
+			DBG_871X_SEL_NL(m, "dot118021XPrivacy =0x%x\n",
+					psta->dot118021XPrivacy);
 
-				for (j =0;j<16;j++)
-				{
-					preorder_ctrl = &psta->recvreorder_ctrl[j];
-					if (preorder_ctrl->enable)
-					{
-						DBG_871X_SEL_NL(m, "tid =%d, indicate_seq =%d\n", j, preorder_ctrl->indicate_seq);
-					}
-				}
-
-				DBG_871X_SEL_NL(m, "==============================\n");
+			for (j = 0; j < 16; j++) {
+				preorder_ctrl = &psta->recvreorder_ctrl[j];
+				if (preorder_ctrl->enable)
+					DBG_871X_SEL_NL(m, "tid =%d, indicate_seq =%d\n",
+							j, preorder_ctrl->indicate_seq);
 			}
-
+			DBG_871X_SEL_NL(m, "==============================\n");
 		}
-
 	}
 
 	spin_unlock_bh(&pstapriv->sta_hash_lock);

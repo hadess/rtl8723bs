@@ -204,9 +204,9 @@ u32 rtw_btcoex_GetDBG(PADAPTER padapter, u8 *pStrBuf, u32 bufSize)
 	return hal_btcoex_GetDBG(padapter, pStrBuf, bufSize);
 }
 
-// ==================================================
-// Below Functions are called by BT-Coex
-// ==================================================
+/*  ================================================== */
+/*  Below Functions are called by BT-Coex */
+/*  ================================================== */
 void rtw_btcoex_RejectApAggregatedPacket(PADAPTER padapter, u8 enable)
 {
 	struct mlme_ext_info *pmlmeinfo;

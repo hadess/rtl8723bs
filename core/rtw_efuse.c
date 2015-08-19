@@ -42,10 +42,10 @@ u8	fakeBTEfuseInitMap[EFUSE_BT_MAX_MAP_LEN]={0};
 u8	fakeBTEfuseModifiedMap[EFUSE_BT_MAX_MAP_LEN]={0};
 /*------------------------Define local variable------------------------------*/
 
-//------------------------------------------------------------------------------
+/*  */
 #define REG_EFUSE_CTRL		0x0030
-#define EFUSE_CTRL			REG_EFUSE_CTRL		// E-Fuse Control.
-//------------------------------------------------------------------------------
+#define EFUSE_CTRL			REG_EFUSE_CTRL		/*  E-Fuse Control. */
+/*  */
 
 bool
 Efuse_Read1ByteFromFakeContent(
@@ -62,7 +62,7 @@ Efuse_Read1ByteFromFakeContent(
 	{
 		return false;
 	}
-	//DbgPrint("Read fake content, offset = %d\n", Offset);
+	/* DbgPrint("Read fake content, offset = %d\n", Offset); */
 	if (fakeEfuseBank == 0)
 		*Value = fakeEfuseContent[Offset];
 	else
@@ -155,30 +155,30 @@ u8
 Efuse_CalculateWordCnts(IN u8	word_en)
 {
 	u8 word_cnts = 0;
-	if (!(word_en & BIT(0)))	word_cnts++; // 0 : write enable
+	if (!(word_en & BIT(0)))	word_cnts++; /*  0 : write enable */
 	if (!(word_en & BIT(1)))	word_cnts++;
 	if (!(word_en & BIT(2)))	word_cnts++;
 	if (!(word_en & BIT(3)))	word_cnts++;
 	return word_cnts;
 }
 
-//
-//	Description:
-//		1. Execute E-Fuse read byte operation according as map offset and
-//		    save to E-Fuse table.
-//		2. Refered from SD1 Richard.
-//
-//	Assumption:
-//		1. Boot from E-Fuse and successfully auto-load.
-//		2. PASSIVE_LEVEL (USB interface)
-//
-//	Created by Roger, 2008.10.21.
-//
-//	2008/12/12 MH	1. Reorganize code flow and reserve bytes. and add description.
-//					2. Add efuse utilization collect.
-//	2008/12/22 MH	Read Efuse must check if we write section 1 data again!!! Sec1
-//					write addr must be after sec5.
-//
+/*  */
+/* 	Description: */
+/* 		1. Execute E-Fuse read byte operation according as map offset and */
+/* 		    save to E-Fuse table. */
+/* 		2. Refered from SD1 Richard. */
+/*  */
+/* 	Assumption: */
+/* 		1. Boot from E-Fuse and successfully auto-load. */
+/* 		2. PASSIVE_LEVEL (USB interface) */
+/*  */
+/* 	Created by Roger, 2008.10.21. */
+/*  */
+/* 	2008/12/12 MH	1. Reorganize code flow and reserve bytes. and add description. */
+/* 					2. Add efuse utilization collect. */
+/* 	2008/12/22 MH	Read Efuse must check if we write section 1 data again!!! Sec1 */
+/* 					write addr must be after sec5. */
+/*  */
 
 void
 efuse_ReadEFuse(
@@ -243,22 +243,22 @@ EFUSE_Read1Byte(
 
 	EFUSE_GetEfuseDefinition(Adapter, EFUSE_WIFI , TYPE_EFUSE_REAL_CONTENT_LEN, (void *)&contentLen, false);
 
-	if (Address < contentLen)	//E-fuse 512Byte
+	if (Address < contentLen)	/* E-fuse 512Byte */
 	{
-		//Write E-fuse Register address bit0~7
+		/* Write E-fuse Register address bit0~7 */
 		temp = Address & 0xFF;
 		rtw_write8(Adapter, EFUSE_CTRL+1, temp);
 		Bytetemp = rtw_read8(Adapter, EFUSE_CTRL+2);
-		//Write E-fuse Register address bit8~9
+		/* Write E-fuse Register address bit8~9 */
 		temp = ((Address >> 8) & 0x03) | (Bytetemp & 0xFC);
 		rtw_write8(Adapter, EFUSE_CTRL+2, temp);
 
-		//Write 0x30[31]=0
+		/* Write 0x30[31]=0 */
 		Bytetemp = rtw_read8(Adapter, EFUSE_CTRL+3);
 		temp = Bytetemp & 0x7F;
 		rtw_write8(Adapter, EFUSE_CTRL+3, temp);
 
-		//Wait Write-ready (0x30[31]=1)
+		/* Wait Write-ready (0x30[31]=1) */
 		Bytetemp = rtw_read8(Adapter, EFUSE_CTRL+3);
 		while (!(Bytetemp & 0x80))
 		{
@@ -290,8 +290,8 @@ efuse_OneByteRead(
 	u8	bResult;
 	u8	readbyte;
 
-	//DBG_871X("===> EFUSE_OneByteRead(), addr = %x\n", addr);
-	//DBG_871X("===> EFUSE_OneByteRead() start, 0x34 = 0x%X\n", rtw_read32(pAdapter, EFUSE_TEST));
+	/* DBG_871X("===> EFUSE_OneByteRead(), addr = %x\n", addr); */
+	/* DBG_871X("===> EFUSE_OneByteRead() start, 0x34 = 0x%X\n", rtw_read32(pAdapter, EFUSE_TEST)); */
 
 	if (bPseudoTest)
 	{
@@ -299,19 +299,19 @@ efuse_OneByteRead(
 		return bResult;
 	}
 
-	// <20130121, Kordan> For SMIC EFUSE specificatoin.
-	//0x34[11]: SW force PGMEN input of efuse to high. (for the bank selected by 0x34[9:8])
-	//PHY_SetMacReg(pAdapter, 0x34, BIT11, 0);
+	/*  <20130121, Kordan> For SMIC EFUSE specificatoin. */
+	/* 0x34[11]: SW force PGMEN input of efuse to high. (for the bank selected by 0x34[9:8]) */
+	/* PHY_SetMacReg(pAdapter, 0x34, BIT11, 0); */
 	rtw_write16(pAdapter, 0x34, rtw_read16(pAdapter, 0x34)& (~BIT11) );
 
-	// -----------------e-fuse reg ctrl ---------------------------------
-	//address
+	/*  -----------------e-fuse reg ctrl --------------------------------- */
+	/* address */
 	rtw_write8(pAdapter, EFUSE_CTRL+1, (u8)(addr&0xff));
 	rtw_write8(pAdapter, EFUSE_CTRL+2, ((u8)((addr>>8) &0x03) ) |
 	(rtw_read8(pAdapter, EFUSE_CTRL+2)&0xFC ));
 
-	//rtw_write8(pAdapter, EFUSE_CTRL+3,  0x72);//read cmd
-	//Write bit 32 0
+	/* rtw_write8(pAdapter, EFUSE_CTRL+3,  0x72); read cmd */
+	/* Write bit 32 0 */
 	readbyte = rtw_read8(pAdapter, EFUSE_CTRL+3);
 	rtw_write8(pAdapter, EFUSE_CTRL+3, (readbyte & 0x7f));
 
@@ -348,8 +348,8 @@ efuse_OneByteWrite(
 	u8	bResult =false;
 	u32 efuseValue = 0;
 
-	//DBG_871X("===> EFUSE_OneByteWrite(), addr = %x data =%x\n", addr, data);
-	//DBG_871X("===> EFUSE_OneByteWrite() start, 0x34 = 0x%X\n", rtw_read32(pAdapter, EFUSE_TEST));
+	/* DBG_871X("===> EFUSE_OneByteWrite(), addr = %x data =%x\n", addr, data); */
+	/* DBG_871X("===> EFUSE_OneByteWrite() start, 0x34 = 0x%X\n", rtw_read32(pAdapter, EFUSE_TEST)); */
 
 	if (bPseudoTest)
 	{
@@ -358,8 +358,8 @@ efuse_OneByteWrite(
 	}
 
 
-	// -----------------e-fuse reg ctrl ---------------------------------
-	//address
+	/*  -----------------e-fuse reg ctrl --------------------------------- */
+	/* address */
 
 
 	efuseValue = rtw_read32(pAdapter, EFUSE_CTRL);
@@ -368,11 +368,11 @@ efuse_OneByteWrite(
 	efuseValue |= ((addr<<8 | data) & 0x3FFFF);
 
 
-	// <20130227, Kordan> 8192E MP chip A-cut had better not set 0x34[11] until B-Cut.
+	/*  <20130227, Kordan> 8192E MP chip A-cut had better not set 0x34[11] until B-Cut. */
 
-	// <20130121, Kordan> For SMIC EFUSE specificatoin.
-	//0x34[11]: SW force PGMEN input of efuse to high. (for the bank selected by 0x34[9:8])
-	//PHY_SetMacReg(pAdapter, 0x34, BIT11, 1);
+	/*  <20130121, Kordan> For SMIC EFUSE specificatoin. */
+	/* 0x34[11]: SW force PGMEN input of efuse to high. (for the bank selected by 0x34[9:8]) */
+	/* PHY_SetMacReg(pAdapter, 0x34, BIT11, 1); */
 	rtw_write16(pAdapter, 0x34, rtw_read16(pAdapter, 0x34)| (BIT11) );
 	rtw_write32(pAdapter, EFUSE_CTRL, 0x90600000|((addr<<8 | data)) );
 
@@ -393,7 +393,7 @@ efuse_OneByteWrite(
 		DBG_871X("%s: [ERROR] EFUSE_CTRL =0x%08x !!!\n", __FUNCTION__, rtw_read32(pAdapter, EFUSE_CTRL));
 	}
 
-	// disable Efuse program enable
+	/*  disable Efuse program enable */
 	PHY_SetMacReg(pAdapter, EFUSE_TEST, BIT(11), 0);
 
 	return bResult;
@@ -553,9 +553,9 @@ efuse_ShadowRead1Byte(
 
 	*Value = pEEPROM->efuse_eeprom_data[Offset];
 
-}	// EFUSE_ShadowRead1Byte
+}	/*  EFUSE_ShadowRead1Byte */
 
-//---------------Read Two Bytes
+/* Read Two Bytes */
 static void
 efuse_ShadowRead2Byte(
 	IN	PADAPTER	pAdapter,
@@ -567,9 +567,9 @@ efuse_ShadowRead2Byte(
 	*Value = pEEPROM->efuse_eeprom_data[Offset];
 	*Value |= pEEPROM->efuse_eeprom_data[Offset+1]<<8;
 
-}	// EFUSE_ShadowRead2Byte
+}	/*  EFUSE_ShadowRead2Byte */
 
-//---------------Read Four Bytes
+/* Read Four Bytes */
 static void
 efuse_ShadowRead4Byte(
 	IN	PADAPTER	pAdapter,
@@ -583,7 +583,7 @@ efuse_ShadowRead4Byte(
 	*Value |= pEEPROM->efuse_eeprom_data[Offset+2]<<16;
 	*Value |= pEEPROM->efuse_eeprom_data[Offset+3]<<24;
 
-}	// efuse_ShadowRead4Byte
+}	/*  efuse_ShadowRead4Byte */
 
 /*-----------------------------------------------------------------------------
  * Function:	EFUSE_ShadowMapUpdate
@@ -620,9 +620,9 @@ void EFUSE_ShadowMapUpdate(
 		Efuse_ReadAllMap(pAdapter, efuseType, pEEPROM->efuse_eeprom_data, bPseudoTest);
 	}
 
-	//PlatformMoveMemory((void *)&pHalData->EfuseMap[EFUSE_MODIFY_MAP][0],
-	//(void *)&pHalData->EfuseMap[EFUSE_INIT_MAP][0], mapLen);
-}// EFUSE_ShadowMapUpdate
+	/* PlatformMoveMemory((void *)&pHalData->EfuseMap[EFUSE_MODIFY_MAP][0], */
+	/* void *)&pHalData->EfuseMap[EFUSE_INIT_MAP][0], mapLen); */
+}/*  EFUSE_ShadowMapUpdate */
 
 
 /*-----------------------------------------------------------------------------
