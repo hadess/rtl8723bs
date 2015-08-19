@@ -118,7 +118,7 @@ typedef enum _RT_SPINLOCK_TYPE{
 	#define	USE_WORKITEM 0
 	#define   FPGA_TWO_MAC_VERIFICATION	0
 
-#define READ_NEXT_PAIR(v1, v2, i) do { if (i+2 >= ArrayLen) break; i += 2; v1 = Array[i]; v2 = Array[i+1]; } while(0)
+#define READ_NEXT_PAIR(v1, v2, i) do { if (i+2 >= ArrayLen) break; i += 2; v1 = Array[i]; v2 = Array[i+1]; } while (0)
 #define COND_ELSE  2
 #define COND_ENDIF 3
 

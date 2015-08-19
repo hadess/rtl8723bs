@@ -1146,7 +1146,7 @@ static u32 rtl8723bs_hal_deinit(PADAPTER padapter)
 					cnt++;
 					DBG_871X("%s  polling REG_HMETFR=0x%x, cnt=%d \n", __FUNCTION__, val8, cnt);
 					mdelay(10);
-				}while(cnt<100 && (val8!=0));
+				}while (cnt<100 && (val8!=0));
 				//H2C done, enter 32k
 				if (val8 == 0)
 				{
@@ -1163,7 +1163,7 @@ static u32 rtl8723bs_hal_deinit(PADAPTER padapter)
 						cnt++;
 						DBG_871X("%s  polling 0x100=0x%x, cnt=%d \n", __FUNCTION__, val8, cnt);
 						mdelay(10);
-					}while(cnt<100 && (val8!=0xEA));
+					}while (cnt<100 && (val8!=0xEA));
 				}
 				else
 				{
@@ -1575,7 +1575,7 @@ static void SetHwReg8723BS(PADAPTER padapter, u8 variable, u8 *val)
 
 							DBG_871X_LEVEL(_drv_always_, "RecvOnePkt Result: %d\n", res);
                                                 }
-					}while(trycnt--);
+					}while (trycnt--);
 					if (trycnt ==0)
 						DBG_871X_LEVEL(_drv_always_, "Stop RX DMA failed...... \n");
 
@@ -1607,7 +1607,7 @@ static void SetHwReg8723BS(PADAPTER padapter, u8 variable, u8 *val)
 						DBG_871X_LEVEL(_drv_always_, "Check EnableWoWlan CMD is ready\n");
 						mstatus = rtw_read8(padapter, REG_WOW_CTRL);
 						trycnt = 10;
-						while(!(mstatus&BIT1) && trycnt>1) {
+						while (!(mstatus&BIT1) && trycnt>1) {
 							mstatus = rtw_read8(padapter, REG_WOW_CTRL);
 							DBG_871X("Loop index: %d :0x%02x\n", trycnt, mstatus);
 							trycnt --;
@@ -1651,7 +1651,7 @@ static void SetHwReg8723BS(PADAPTER padapter, u8 variable, u8 *val)
 						DBG_871X_LEVEL(_drv_always_, "Check DisableWoWlan CMD is ready\n");
 						mstatus = rtw_read8(padapter, REG_WOW_CTRL);
 						trycnt = 50;
-						while(mstatus&BIT1 && trycnt>1) {
+						while (mstatus&BIT1 && trycnt>1) {
 							mstatus = rtw_read8(padapter, REG_WOW_CTRL);
 							DBG_871X_LEVEL(_drv_always_, "Loop index: %d :0x%02x\n", trycnt, mstatus);
 							trycnt --;

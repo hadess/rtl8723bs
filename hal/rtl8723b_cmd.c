@@ -46,7 +46,7 @@ static u8 _is_fw_read_cmd_down(_adapter* padapter, u8 msgbox_num)
 		else
 			msleep(1);
 #endif
-	}while( (!read_down) && (retry_cnts--));
+	}while ( (!read_down) && (retry_cnts--));
 
 	return read_down;
 
@@ -120,7 +120,7 @@ s32 FillH2CCmd8723B(PADAPTER padapter, u8 ElementID, u32 CmdLen, u8 *pCmdBuffer)
 
 		pHalData->LastHMEBoxNum = (h2c_box_num+1) % MAX_H2C_BOX_NUMS;
 
-	}while(0);
+	}while (0);
 
 	ret = _SUCCESS;
 
@@ -1318,7 +1318,7 @@ exit:
 	if (ppwrpriv->wowlan_pno_enable && ppwrpriv->pno_in_resume == false) {
 		res = rtw_read8(padapter, REG_PNO_STATUS);
 		DBG_871X("cmd: 0x81 REG_PNO_STATUS: 0x%02x\n", res);
-		while(!(res&BIT(7)) && count < 25) {
+		while (!(res&BIT(7)) && count < 25) {
 			DBG_871X("[%d] cmd: 0x81 REG_PNO_STATUS: 0x%02x\n", count, res);
 			res = rtw_read8(padapter, REG_PNO_STATUS);
 			count++;
@@ -2074,9 +2074,9 @@ void rtl8723b_download_rsvd_page(PADAPTER padapter, u8 mstatus)
 				// check rsvd page download OK.
 				rtw_hal_get_hwreg(padapter, HW_VAR_BCN_VALID, (u8*)(&bcn_valid));
 				poll++;
-			} while(!bcn_valid && (poll%10)!=0 && !padapter->bSurpriseRemoved && !padapter->bDriverStopped);
+			} while (!bcn_valid && (poll%10)!=0 && !padapter->bSurpriseRemoved && !padapter->bDriverStopped);
 
-		}while(!bcn_valid && DLBcnCount<=100 && !padapter->bSurpriseRemoved && !padapter->bDriverStopped);
+		}while (!bcn_valid && DLBcnCount<=100 && !padapter->bSurpriseRemoved && !padapter->bDriverStopped);
 
 		if (padapter->bSurpriseRemoved || padapter->bDriverStopped)
 		{

@@ -779,7 +779,7 @@ void LPS_Leave_check(
 
 	yield();
 
-	while(1)
+	while (1)
 	{
 		down(&pwrpriv->lock);
 

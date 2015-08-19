@@ -102,8 +102,8 @@ typedef enum mstat_status{
 	MSTAT_FREE
 } MSTAT_STATUS;
 
-#define rtw_mstat_update(flag, status, sz) do {} while(0)
-#define rtw_mstat_dump(sel) do {} while(0)
+#define rtw_mstat_update(flag, status, sz) do {} while (0)
+#define rtw_mstat_dump(sel) do {} while (0)
 u8*	_rtw_zmalloc(u32 sz);
 u8*	_rtw_malloc(u32 sz);
 void	_kfree(u8 *pbuf, u32 sz);

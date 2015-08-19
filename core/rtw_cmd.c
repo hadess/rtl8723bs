@@ -236,7 +236,7 @@ void _rtw_free_evt_priv (struct	evt_priv *pevtpriv)
 	RT_TRACE(_module_rtl871x_cmd_c_,_drv_info_,("+_rtw_free_evt_priv \n"));
 
 	_cancel_workitem_sync(&pevtpriv->c2h_wk);
-	while(pevtpriv->c2h_wk_alive)
+	while (pevtpriv->c2h_wk_alive)
 		msleep(10);
 
 	while (!rtw_cbuf_empty(pevtpriv->c2h_queue)) {
@@ -459,7 +459,7 @@ int rtw_cmd_thread(void * context)
 
 	RT_TRACE(_module_rtl871x_cmd_c_,_drv_info_,("start r871x rtw_cmd_thread !!!!\n"));
 
-	while(1)
+	while (1)
 	{
 		if (down_interruptible(&pcmdpriv->cmd_queue_sema)) {
 			DBG_871X_LEVEL(_drv_always_, FUNC_ADPT_FMT" down_interruptible(&pcmdpriv->cmd_queue_sema) return != 0, break\n", FUNC_ADPT_ARG(padapter));
@@ -614,7 +614,7 @@ post_process:
 		}
 
 		rtw_free_cmd_obj(pcmd);
-	}while(1);
+	}while (1);
 
 	up(&pcmdpriv->terminate_cmdthread_sema);
 	atomic_set(&(pcmdpriv->cmdthd_running), false);
@@ -1127,7 +1127,7 @@ u8 rtw_clearstakey_cmd(_adapter *padapter, struct sta_info *sta, u8 enqueue)
 
 	if (!enqueue)
 	{
-		while((cam_id = rtw_camid_search(padapter, sta->hwaddr, -1)) >= 0) {
+		while ((cam_id = rtw_camid_search(padapter, sta->hwaddr, -1)) >= 0) {
 			DBG_871X_LEVEL(_drv_always_, "clear key for addr:"MAC_FMT", camid:%d\n", MAC_ARG(sta->hwaddr), cam_id);
 			clear_cam_entry(padapter, cam_id);
 			rtw_camid_free(padapter, cam_id);
@@ -1868,7 +1868,7 @@ static void rtw_chk_hi_queue_hdl(_adapter *padapter)
 
 	rtw_hal_get_hwreg(padapter, HW_VAR_CHK_HI_QUEUE_EMPTY, &empty);
 
-	while(false == empty && jiffies_to_msecs(jiffies - start) < g_wait_hiq_empty)
+	while (false == empty && jiffies_to_msecs(jiffies - start) < g_wait_hiq_empty)
 	{
 		msleep(100);
 		rtw_hal_get_hwreg(padapter, HW_VAR_CHK_HI_QUEUE_EMPTY, &empty);

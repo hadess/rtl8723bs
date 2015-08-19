@@ -725,7 +725,7 @@ u16 rtw_get_cur_max_rate(_adapter *adapter)
 	}
 	else
 	{
-		while( (pcur_bss->SupportedRates[i]!=0) && (pcur_bss->SupportedRates[i]!=0xFF))
+		while ( (pcur_bss->SupportedRates[i]!=0) && (pcur_bss->SupportedRates[i]!=0xFF))
 		{
 			rate = pcur_bss->SupportedRates[i]&0x7F;
 			if (rate>max_rate)

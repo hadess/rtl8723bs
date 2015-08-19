@@ -1345,7 +1345,7 @@ void rtw_dev_unload(PADAPTER padapter)
 		if (!pwrctl->bInternalAutoSuspend)
 			rtw_stop_drv_threads(padapter);
 
-		while(atomic_read(&(pcmdpriv->cmdthd_running)) == true){
+		while (atomic_read(&(pcmdpriv->cmdthd_running)) == true){
 			if (cnt > 5) {
 				DBG_871X("stop cmdthd timeout\n");
 				break;

@@ -632,7 +632,7 @@ static u32 _ReadCAM(_adapter *padapter ,u32 addr)
 		if (0 == (rtw_read32(padapter,REG_CAMCMD) & CAM_POLLINIG)){
 			break;
 		}
-	}while(count++ < 100);
+	}while (count++ < 100);
 
 	return rtw_read32(padapter,REG_CAMREAD);
 }

@@ -1031,7 +1031,7 @@ eqNByte(
 {
 	if (num==0)
 		return false;
-	while(num>0)
+	while (num>0)
 	{
 		num--;
 		if (str1[num]!=str2[num])
@@ -1110,7 +1110,7 @@ GetHexValueFromString(
 	*pu4bVal = 0;
 
 	// Skip leading space.
-	while(	*szScan != '\0' &&
+	while (	*szScan != '\0' &&
 			(*szScan == ' ' || *szScan == '\t') )
 	{
 		szScan++;
@@ -1139,7 +1139,7 @@ GetHexValueFromString(
 
 		szScan++;
 		(*pu4bMove)++;
-	} while(IsHexDigit(*szScan));
+	} while (IsHexDigit(*szScan));
 
 	return true;
 }
@@ -1187,7 +1187,7 @@ GetFractionValueFromString(
 				return true;
 			}
 		}
-	} while(*szScan >= '0' && *szScan <= '9');
+	} while (*szScan >= '0' && *szScan <= '9');
 
 	return true;
 }
@@ -1272,7 +1272,7 @@ isAllSpaceOrTab(
 {
 	u8	cnt = 0, NumOfSpaceAndTab = 0;
 
-	while( size > cnt )
+	while ( size > cnt )
 	{
 		if ( data[cnt] == ' ' || data[cnt] == '\t' || data[cnt] == '\0' )
 			++NumOfSpaceAndTab;

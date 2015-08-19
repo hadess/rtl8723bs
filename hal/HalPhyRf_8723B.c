@@ -2188,7 +2188,7 @@ PHY_LCCalibrate_8723B(
 		return;
 
 	StartTime = jiffies;
-	while(*(pDM_Odm->pbScanInProcess) && timecount < timeout)
+	while (*(pDM_Odm->pbScanInProcess) && timecount < timeout)
 	{
 		mdelay(50);
 		timecount += 50;

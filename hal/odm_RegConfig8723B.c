@@ -48,7 +48,7 @@ odm_ConfigRFReg_8723B(
 
 			udelay(1);
 
-			while((getvalue>>8)!=(Data>>8))
+			while ((getvalue>>8)!=(Data>>8))
 			{
 				count++;
 				PHY_SetRFReg(pDM_Odm->Adapter, RF_PATH, RegAddr, bRFRegOffsetMask, Data);
@@ -68,7 +68,7 @@ odm_ConfigRFReg_8723B(
 
 			udelay(1);
 
-			while(getvalue!=Data)
+			while (getvalue!=Data)
 			{
 				count++;
 				PHY_SetRFReg(pDM_Odm->Adapter, RF_PATH, RegAddr, bRFRegOffsetMask, Data);

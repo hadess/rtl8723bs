@@ -3193,7 +3193,7 @@ int issue_probereq_ex(_adapter *padapter, NDIS_802_11_SSID *pssid, u8 *da, u8 ch
 		if (i < try_cnt && wait_ms > 0 && ret==_FAIL)
 			msleep(wait_ms);
 
-	}while((i<try_cnt) && ((ret==_FAIL)||(wait_ms==0)));
+	}while ((i<try_cnt) && ((ret==_FAIL)||(wait_ms==0)));
 
 	if (ret != _FAIL) {
 		ret = _SUCCESS;
@@ -3826,7 +3826,7 @@ int issue_nulldata(_adapter *padapter, unsigned char *da, unsigned int power_mod
 		if (i < try_cnt && wait_ms > 0 && ret==_FAIL)
 			msleep(wait_ms);
 
-	}while((i<try_cnt) && ((ret==_FAIL)||(wait_ms==0)));
+	}while ((i<try_cnt) && ((ret==_FAIL)||(wait_ms==0)));
 
 	if (ret != _FAIL) {
 		ret = _SUCCESS;
@@ -3985,7 +3985,7 @@ int issue_qos_nulldata(_adapter *padapter, unsigned char *da, u16 tid, int try_c
 		if (i < try_cnt && wait_ms > 0 && ret==_FAIL)
 			msleep(wait_ms);
 
-	}while((i<try_cnt) && ((ret==_FAIL)||(wait_ms==0)));
+	}while ((i<try_cnt) && ((ret==_FAIL)||(wait_ms==0)));
 
 	if (ret != _FAIL) {
 		ret = _SUCCESS;
@@ -4096,7 +4096,7 @@ int issue_deauth_ex(_adapter *padapter, u8 *da, unsigned short reason, int try_c
 		if (i < try_cnt && wait_ms > 0 && ret==_FAIL)
 			msleep(wait_ms);
 
-	}while((i<try_cnt) && ((ret==_FAIL)||(wait_ms==0)));
+	}while ((i<try_cnt) && ((ret==_FAIL)||(wait_ms==0)));
 
 	if (ret != _FAIL) {
 		ret = _SUCCESS;
@@ -4443,7 +4443,7 @@ static void issue_action_BSSCoexistPacket(_adapter *padapter)
 		phead = get_list_head(queue);
 		plist = get_next(phead);
 
-		while(1)
+		while (1)
 		{
 			int len;
 			u8 *p;
@@ -4585,9 +4585,9 @@ unsigned int send_beacon(_adapter *padapter)
 			yield();
 			rtw_hal_get_hwreg(padapter, HW_VAR_BCN_VALID, (u8 *)(&bxmitok));
 			poll++;
-		}while((poll%10)!=0 && false == bxmitok && !padapter->bSurpriseRemoved && !padapter->bDriverStopped);
+		}while ((poll%10)!=0 && false == bxmitok && !padapter->bSurpriseRemoved && !padapter->bDriverStopped);
 
-	}while(false == bxmitok && issue<100 && !padapter->bSurpriseRemoved && !padapter->bDriverStopped);
+	}while (false == bxmitok && issue<100 && !padapter->bSurpriseRemoved && !padapter->bDriverStopped);
 
 	if (padapter->bSurpriseRemoved || padapter->bDriverStopped)
 	{
@@ -7042,7 +7042,7 @@ u8 set_stakey_hdl(_adapter *padapter, u8 *pbuf)
 
 write_to_cam:
 	if (pparm->algorithm == _NO_PRIVACY_) {
-		while((cam_id = rtw_camid_search(padapter, pparm->addr, -1)) >= 0) {
+		while ((cam_id = rtw_camid_search(padapter, pparm->addr, -1)) >= 0) {
 			DBG_871X_LEVEL(_drv_always_, "clear key for addr:"MAC_FMT", camid:%d\n", MAC_ARG(pparm->addr), cam_id);
 			clear_cam_entry(padapter, cam_id);
 			rtw_camid_free(padapter,cam_id);

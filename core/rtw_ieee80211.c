@@ -69,7 +69,7 @@ int rtw_get_bit_value_from_ieee_value(u8 val)
 	unsigned char dot11_rate_table[]={2,4,11,22,12,18,24,36,48,72,96,108,0}; // last element must be zero!!
 
 	int i=0;
-	while(dot11_rate_table[i] != 0) {
+	while (dot11_rate_table[i] != 0) {
 		if (dot11_rate_table[i] == val)
 			return BIT(i);
 		i++;
@@ -81,7 +81,7 @@ uint	rtw_is_cckrates_included(u8 *rate)
 {
 		u32	i = 0;
 
-		while(rate[i]!=0)
+		while (rate[i]!=0)
 		{
 			if  (  (((rate[i]) & 0x7f) == 2)	|| (((rate[i]) & 0x7f) == 4) ||
 			(((rate[i]) & 0x7f) == 11)  || (((rate[i]) & 0x7f) == 22) )
@@ -97,7 +97,7 @@ uint	rtw_is_cckratesonly_included(u8 *rate)
 	u32 i = 0;
 
 
-	while(rate[i]!=0)
+	while (rate[i]!=0)
 	{
 			if  (  (((rate[i]) & 0x7f) != 2) && (((rate[i]) & 0x7f) != 4) &&
 				(((rate[i]) & 0x7f) != 11)  && (((rate[i]) & 0x7f) != 22) )
@@ -177,7 +177,7 @@ u8 *rtw_get_ie(u8 *pbuf, sint index, sint *len, sint limit)
 	p = pbuf;
 	i = 0;
 	*len = 0;
-	while(1)
+	while (1)
 	{
 		if (*p == index)
 		{
@@ -222,7 +222,7 @@ u8 *rtw_get_ie_ex(u8 *in_ie, uint in_len, u8 eid, u8 *oui, u8 oui_len, u8 *ie, u
 
 	cnt = 0;
 
-	while(cnt<in_len)
+	while (cnt<in_len)
 	{
 		if (eid == in_ie[cnt]
 			&& ( !oui || !memcmp(&in_ie[cnt+2], oui, oui_len)))
@@ -327,7 +327,7 @@ uint	rtw_get_rateset_len(u8	*rateset)
 {
 	uint i = 0;
 
-	while(1)
+	while (1)
 	{
 		if ((rateset[i]) == 0)
 			break;
@@ -436,7 +436,7 @@ unsigned char *rtw_get_wpa_ie(unsigned char *pie, int *wpa_ie_len, int limit)
 	int limit_new = limit;
 	__le16 le_tmp;
 
-	while(1)
+	while (1)
 	{
 		pbuf = rtw_get_ie(pbuf, _WPA_IE_ID_, &len, limit_new);
 
@@ -704,7 +704,7 @@ int rtw_get_wapi_ie(u8 *in_ie,uint in_len,u8 *wapi_ie,u16 *wapi_len)
 
 	cnt = (_TIMESTAMP_ + _BEACON_ITERVAL_ + _CAPABILITY_);
 
-	while(cnt<in_len)
+	while (cnt<in_len)
 	{
 		authmode=in_ie[cnt];
 
@@ -752,7 +752,7 @@ int rtw_get_sec_ie(u8 *in_ie,uint in_len,u8 *rsn_ie,u16 *rsn_len,u8 *wpa_ie,u16 
 
 	sec_idx=0;
 
-	while(cnt<in_len)
+	while (cnt<in_len)
 	{
 		authmode=in_ie[cnt];
 
@@ -844,7 +844,7 @@ u8 *rtw_get_wps_ie(u8 *in_ie, uint in_len, u8 *wps_ie, uint *wps_ielen)
 
 	cnt = 0;
 
-	while(cnt<in_len)
+	while (cnt<in_len)
 	{
 		eid = in_ie[cnt];
 
@@ -900,7 +900,7 @@ u8 *rtw_get_wps_attr(u8 *wps_ie, uint wps_ielen, u16 target_attr_id ,u8 *buf_att
 	// 6 = 1(Element ID) + 1(Length) + 4(WPS OUI)
 	attr_ptr = wps_ie + 6; //goto first attr
 
-	while(attr_ptr - wps_ie < wps_ielen)
+	while (attr_ptr - wps_ie < wps_ielen)
 	{
 		// 4 = 2(Attribute ID) + 2(Length)
 		u16 attr_id = RTW_GET_BE16(attr_ptr);

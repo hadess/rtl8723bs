@@ -254,7 +254,7 @@ void rtw_free_recvframe_queue(_queue *pframequeue,  _queue *pfree_recv_queue)
 	phead = get_list_head(pframequeue);
 	plist = get_next(phead);
 
-	while(phead != plist)
+	while (phead != plist)
 	{
 		precvframe = LIST_CONTAINOR(plist, union recv_frame, u);
 
@@ -272,7 +272,7 @@ u32 rtw_free_uc_swdec_pending_queue(_adapter *adapter)
 {
 	u32 cnt = 0;
 	union recv_frame *pending_frame;
-	while((pending_frame=rtw_alloc_recvframe(&adapter->recvpriv.uc_swdec_pending_queue))) {
+	while ((pending_frame=rtw_alloc_recvframe(&adapter->recvpriv.uc_swdec_pending_queue))) {
 		rtw_free_recvframe(pending_frame, &adapter->recvpriv.free_recv_queue);
 		cnt++;
 	}
@@ -1936,7 +1936,7 @@ union recv_frame * recvframe_defrag(_adapter *adapter,_queue *defrag_q)
 
 	data=get_recvframe_data(prframe);
 
-	while(phead != plist)
+	while (phead != plist)
 	{
 		pnextrframe = LIST_CONTAINOR(plist, union recv_frame , u);
 		pnfhdr=&pnextrframe->u.hdr;
@@ -2129,7 +2129,7 @@ static int amsdu_to_msdu(_adapter *padapter, union recv_frame *prframe)
 
 	pdata = prframe->u.hdr.rx_data;
 
-	while(a_len > ETH_HLEN) {
+	while (a_len > ETH_HLEN) {
 
 		/* Offset 12 denote 2 mac address */
 		nSubframe_Length = RTW_GET_BE16(pdata + 12);
@@ -2385,7 +2385,7 @@ int recv_indicatepkts_in_order(_adapter *padapter, struct recv_reorder_ctrl *pre
 
 	// Prepare indication list and indication.
 	// Check if there is any packet need indicate.
-	while(!list_empty(phead))
+	while (!list_empty(phead))
 	{
 
 		prframe = LIST_CONTAINOR(plist, union recv_frame, u);
@@ -2822,7 +2822,7 @@ int recv_func(_adapter *padapter, union recv_frame *rframe)
 		union recv_frame *pending_frame;
 		int cnt = 0;
 
-		while((pending_frame=rtw_alloc_recvframe(&padapter->recvpriv.uc_swdec_pending_queue))) {
+		while ((pending_frame=rtw_alloc_recvframe(&padapter->recvpriv.uc_swdec_pending_queue))) {
 			cnt++;
 			DBG_COUNTER(padapter->rx_logs.core_rx_dequeue);
 			recv_func_posthandle(padapter, pending_frame);

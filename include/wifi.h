@@ -662,7 +662,7 @@ typedef	enum _ELEMENT_ID{
 #define SetOrderBit(pbuf)	\
 	do	{	\
 		*(unsigned short *)(pbuf) |= cpu_to_le16(_ORDER_); \
-	} while(0)
+	} while (0)
 
 #define GetOrderBit(pbuf)	(((*(unsigned short *)(pbuf)) & cpu_to_le16(_ORDER_)) != 0)
 

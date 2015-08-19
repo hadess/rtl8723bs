@@ -260,7 +260,7 @@ EFUSE_Read1Byte(
 
 		//Wait Write-ready (0x30[31]=1)
 		Bytetemp = rtw_read8(Adapter, EFUSE_CTRL+3);
-		while(!(Bytetemp & 0x80))
+		while (!(Bytetemp & 0x80))
 		{
 			Bytetemp = rtw_read8(Adapter, EFUSE_CTRL+3);
 			k++;
@@ -315,7 +315,7 @@ efuse_OneByteRead(
 	readbyte = rtw_read8(pAdapter, EFUSE_CTRL+3);
 	rtw_write8(pAdapter, EFUSE_CTRL+3, (readbyte & 0x7f));
 
-	while(!(0x80 &rtw_read8(pAdapter, EFUSE_CTRL+3))&&(tmpidx<1000))
+	while (!(0x80 &rtw_read8(pAdapter, EFUSE_CTRL+3))&&(tmpidx<1000))
 	{
 		mdelay(1);
 		tmpidx++;
@@ -376,7 +376,7 @@ efuse_OneByteWrite(
 	rtw_write16(pAdapter, 0x34, rtw_read16(pAdapter,0x34)| (BIT11) );
 	rtw_write32(pAdapter, EFUSE_CTRL, 0x90600000|((addr<<8 | data)) );
 
-	while((0x80 &  rtw_read8(pAdapter, EFUSE_CTRL+3)) && (tmpidx<100) ){
+	while ((0x80 &  rtw_read8(pAdapter, EFUSE_CTRL+3)) && (tmpidx<100) ){
 		mdelay(1);
 		tmpidx++;
 	}

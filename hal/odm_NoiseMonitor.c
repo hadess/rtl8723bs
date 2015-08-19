@@ -75,7 +75,7 @@ static s16 odm_InbandNoise_Monitor_NSeries(PDM_ODM_T	pDM_Odm,u8 bPauseDIG,u8 IGI
 	// Step 3. Get noise power level
 	//
 	start = jiffies;
-	while(1)
+	while (1)
 	{
 
 		//Stop updating idle time pwer report (for driver read)

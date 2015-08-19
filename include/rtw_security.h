@@ -250,7 +250,7 @@ do{\
 		     encry_algo = (u8)psecuritypriv->dot11PrivacyAlgrthm;\
 		     break;\
 	}\
-}while(0)
+}while (0)
 
 #define _AES_IV_LEN_ 8
 
@@ -280,7 +280,7 @@ do{\
 			icv_len = 0;\
 			break;\
 	}\
-}while(0)
+}while (0)
 
 
 #define GET_TKIP_PN(iv,dot11txpn)\
@@ -291,7 +291,7 @@ do{\
 	dot11txpn._byte_.TSC3=iv[5];\
 	dot11txpn._byte_.TSC4=iv[6];\
 	dot11txpn._byte_.TSC5=iv[7];\
-}while(0)
+}while (0)
 
 
 #define ROL32( A, n )	( ((A) << (n)) | ( ((A)>>(32-(n)))  & ( (1UL << (n)) - 1 ) ) )

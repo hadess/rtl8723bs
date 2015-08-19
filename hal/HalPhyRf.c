@@ -35,7 +35,7 @@
 						}			\
 						if (_offset >= _size)\
 							_offset = _size-1;\
-					} while(0)
+					} while (0)
 
 
 void ConfigureTxpowerTrack(

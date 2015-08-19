@@ -130,7 +130,7 @@ static int readFile(struct file *fp,char *buf,int len)
 	if (!fp->f_op || !fp->f_op->read)
 		return -EPERM;
 
-	while(sum<len) {
+	while (sum<len) {
 		rlen=fp->f_op->read(fp,(char __force __user *)buf+sum,len-sum, &fp->f_pos);
 		if (rlen>0)
 			sum+=rlen;

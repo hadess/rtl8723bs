@@ -92,7 +92,7 @@ do {\
 	pcmd->cmdsz = sizeof (*pparm);\
 	pcmd->rsp = NULL;\
 	pcmd->rspsz = 0;\
-} while(0)
+} while (0)
 
 #define init_h2fwcmd_w_parm_no_parm_rsp(pcmd, code) \
 do {\
@@ -102,7 +102,7 @@ do {\
 	pcmd->cmdsz = 0;\
 	pcmd->rsp = NULL;\
 	pcmd->rspsz = 0;\
-} while(0)
+} while (0)
 
 struct c2h_evt_hdr {
 	u8 id:4;

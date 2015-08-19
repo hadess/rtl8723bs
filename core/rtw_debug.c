@@ -470,7 +470,7 @@ int proc_get_survey_info(struct seq_file *m, void *v)
 	}
 
 	DBG_871X_SEL_NL(m, "%5s  %-17s  %3s  %-3s  %-4s  %-4s  %5s  %s\n","index", "bssid", "ch", "RSSI", "SdBm", "Noise", "age", "ssid");
-	while(1)
+	while (1)
 	{
 		if (phead == plist)
 			break;

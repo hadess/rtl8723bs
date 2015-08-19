@@ -1465,7 +1465,7 @@ void rtw_cfg80211_surveydone_event_callback(_adapter *padapter)
 	phead = get_list_head(queue);
 	plist = get_next(phead);
 
-	while(1)
+	while (1)
 	{
 		if (phead == plist)
 			break;

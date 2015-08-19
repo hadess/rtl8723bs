@@ -45,7 +45,7 @@ _FWDownloadEnable(
 				break;
 			rtw_write8(padapter, REG_MCUFWDL, tmp|0x01);
 			msleep(1);
-		}while(count++<100);
+		}while (count++<100);
 		if (count > 0)
 			DBG_871X("%s: !!!!!!!!Write 0x80 Fail!: count = %d\n", __func__, count);
 
@@ -518,7 +518,7 @@ s32 rtl8723b_FirmwareDownload(PADAPTER padapter, bool  bUsedWoWLANFw)
 
 	_FWDownloadEnable(padapter, true);
 	fwdl_start_time = jiffies;
-	while(!padapter->bDriverStopped && !padapter->bSurpriseRemoved
+	while (!padapter->bDriverStopped && !padapter->bSurpriseRemoved
 			&& (write_fw++ < 3 || jiffies_to_msecs(jiffies - fwdl_start_time) < 500))
 	{
 		/* reset FWDL chksum */
@@ -2568,7 +2568,7 @@ s32 rtl8723b_InitLLTTable(PADAPTER padapter)
 		}
 
 		msleep(1);
-	} while(1);
+	} while (1);
 
 	return ret;
 }

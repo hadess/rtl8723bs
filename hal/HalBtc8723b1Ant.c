@@ -1119,7 +1119,7 @@ halbtc8723b1ant_SetAntPath(
 		else
 		{
 			// BT calibration check
-			while(cntBtCalChk <= 20)
+			while (cntBtCalChk <= 20)
 			{
 				u1Tmp = pBtCoexist->fBtcRead1Byte(pBtCoexist, 0x49d);
 				cntBtCalChk++;

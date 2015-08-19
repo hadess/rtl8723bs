@@ -422,7 +422,7 @@ u32	rtw_free_stainfo(_adapter *padapter , struct sta_info *psta)
 		phead =		get_list_head(ppending_recvframe_queue);
 		plist = get_next(phead);
 
-		while(!list_empty(phead))
+		while (!list_empty(phead))
 		{
 			prframe = LIST_CONTAINOR(plist, union recv_frame, u);
 
