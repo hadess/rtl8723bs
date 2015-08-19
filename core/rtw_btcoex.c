@@ -91,7 +91,7 @@ void rtw_btcoex_HaltNotify(PADAPTER padapter)
 {
 	if (false == padapter->bup)
 	{
-		DBG_871X(FUNC_ADPT_FMT ": bup=%d Skip!\n",
+		DBG_871X(FUNC_ADPT_FMT ": bup =%d Skip!\n",
 			FUNC_ADPT_ARG(padapter), padapter->bup);
 
 		return;
@@ -99,7 +99,7 @@ void rtw_btcoex_HaltNotify(PADAPTER padapter)
 
 	if (true == padapter->bSurpriseRemoved)
 	{
-		DBG_871X(FUNC_ADPT_FMT ": bSurpriseRemoved=%d Skip!\n",
+		DBG_871X(FUNC_ADPT_FMT ": bSurpriseRemoved =%d Skip!\n",
 			FUNC_ADPT_ARG(padapter), padapter->bSurpriseRemoved);
 
 		return;

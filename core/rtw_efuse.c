@@ -25,18 +25,18 @@
 
 
 /*------------------------Define local variable------------------------------*/
-u8	fakeEfuseBank=0;
-u32	fakeEfuseUsedBytes=0;
+u8	fakeEfuseBank =0;
+u32	fakeEfuseUsedBytes =0;
 u8	fakeEfuseContent[EFUSE_MAX_HW_SIZE]={0};
 u8	fakeEfuseInitMap[EFUSE_MAX_MAP_LEN]={0};
 u8	fakeEfuseModifiedMap[EFUSE_MAX_MAP_LEN]={0};
 
-u32	BTEfuseUsedBytes=0;
+u32	BTEfuseUsedBytes =0;
 u8	BTEfuseContent[EFUSE_MAX_BT_BANK][EFUSE_MAX_HW_SIZE];
 u8	BTEfuseInitMap[EFUSE_BT_MAX_MAP_LEN]={0};
 u8	BTEfuseModifiedMap[EFUSE_BT_MAX_MAP_LEN]={0};
 
-u32	fakeBTEfuseUsedBytes=0;
+u32	fakeBTEfuseUsedBytes =0;
 u8	fakeBTEfuseContent[EFUSE_MAX_BT_BANK][EFUSE_MAX_HW_SIZE];
 u8	fakeBTEfuseInitMap[EFUSE_BT_MAX_MAP_LEN]={0};
 u8	fakeBTEfuseModifiedMap[EFUSE_BT_MAX_MAP_LEN]={0};
@@ -143,7 +143,7 @@ Efuse_GetCurrentSize(
 	IN u8			efuseType,
 	IN bool		bPseudoTest)
 {
-	u16 ret=0;
+	u16 ret =0;
 
 	ret = pAdapter->HalFunc.EfuseGetCurrentSize(pAdapter, efuseType, bPseudoTest);
 
@@ -238,8 +238,8 @@ EFUSE_Read1Byte(
 	u8	data;
 	u8	Bytetemp = {0x00};
 	u8	temp = {0x00};
-	u32	k=0;
-	u16	contentLen=0;
+	u32	k =0;
+	u16	contentLen =0;
 
 	EFUSE_GetEfuseDefinition(Adapter, EFUSE_WIFI , TYPE_EFUSE_REAL_CONTENT_LEN, (void *)&contentLen, false);
 
@@ -264,13 +264,13 @@ EFUSE_Read1Byte(
 		{
 			Bytetemp = rtw_read8(Adapter, EFUSE_CTRL+3);
 			k++;
-			if (k==1000)
+			if (k ==1000)
 			{
-				k=0;
+				k =0;
 				break;
 			}
 		}
-		data=rtw_read8(Adapter, EFUSE_CTRL);
+		data =rtw_read8(Adapter, EFUSE_CTRL);
 		return data;
 	}
 	else
@@ -302,7 +302,7 @@ efuse_OneByteRead(
 	// <20130121, Kordan> For SMIC EFUSE specificatoin.
 	//0x34[11]: SW force PGMEN input of efuse to high. (for the bank selected by 0x34[9:8])
 	//PHY_SetMacReg(pAdapter, 0x34, BIT11, 0);
-	rtw_write16(pAdapter, 0x34, rtw_read16(pAdapter,0x34)& (~BIT11) );
+	rtw_write16(pAdapter, 0x34, rtw_read16(pAdapter, 0x34)& (~BIT11) );
 
 	// -----------------e-fuse reg ctrl ---------------------------------
 	//address
@@ -322,14 +322,14 @@ efuse_OneByteRead(
 	}
 	if (tmpidx<100)
 	{
-		*data=rtw_read8(pAdapter, EFUSE_CTRL);
+		*data =rtw_read8(pAdapter, EFUSE_CTRL);
 		bResult = true;
 	}
 	else
 	{
 		*data = 0xff;
 		bResult = false;
-		DBG_871X("%s: [ERROR] addr=0x%x bResult=%d time out 1s !!!\n", __FUNCTION__, addr, bResult);
+		DBG_871X("%s: [ERROR] addr =0x%x bResult =%d time out 1s !!!\n", __FUNCTION__, addr, bResult);
 		DBG_871X("%s: [ERROR] EFUSE_CTRL =0x%08x !!!\n", __FUNCTION__, rtw_read32(pAdapter, EFUSE_CTRL));
 	}
 
@@ -345,10 +345,10 @@ efuse_OneByteWrite(
 	IN	bool		bPseudoTest)
 {
 	u8	tmpidx = 0;
-	u8	bResult=false;
+	u8	bResult =false;
 	u32 efuseValue = 0;
 
-	//DBG_871X("===> EFUSE_OneByteWrite(), addr = %x data=%x\n", addr, data);
+	//DBG_871X("===> EFUSE_OneByteWrite(), addr = %x data =%x\n", addr, data);
 	//DBG_871X("===> EFUSE_OneByteWrite() start, 0x34 = 0x%X\n", rtw_read32(pAdapter, EFUSE_TEST));
 
 	if (bPseudoTest)
@@ -373,7 +373,7 @@ efuse_OneByteWrite(
 	// <20130121, Kordan> For SMIC EFUSE specificatoin.
 	//0x34[11]: SW force PGMEN input of efuse to high. (for the bank selected by 0x34[9:8])
 	//PHY_SetMacReg(pAdapter, 0x34, BIT11, 1);
-	rtw_write16(pAdapter, 0x34, rtw_read16(pAdapter,0x34)| (BIT11) );
+	rtw_write16(pAdapter, 0x34, rtw_read16(pAdapter, 0x34)| (BIT11) );
 	rtw_write32(pAdapter, EFUSE_CTRL, 0x90600000|((addr<<8 | data)) );
 
 	while ((0x80 &  rtw_read8(pAdapter, EFUSE_CTRL+3)) && (tmpidx<100) ){
@@ -388,7 +388,7 @@ efuse_OneByteWrite(
 	else
 	{
 		bResult = false;
-		DBG_871X("%s: [ERROR] addr=0x%x ,efuseValue=0x%x ,bResult=%d time out 1s !!! \n",
+		DBG_871X("%s: [ERROR] addr =0x%x , efuseValue =0x%x , bResult =%d time out 1s !!! \n",
 					__FUNCTION__, addr, efuseValue, bResult);
 		DBG_871X("%s: [ERROR] EFUSE_CTRL =0x%08x !!!\n", __FUNCTION__, rtw_read32(pAdapter, EFUSE_CTRL));
 	}
@@ -405,7 +405,7 @@ Efuse_PgPacketRead(	IN	PADAPTER	pAdapter,
 					IN	u8			*data,
 					IN	bool		bPseudoTest)
 {
-	int	ret=0;
+	int	ret =0;
 
 	ret =  pAdapter->HalFunc.Efuse_PgPacketRead(pAdapter, offset, data, bPseudoTest);
 
@@ -478,7 +478,7 @@ Efuse_WordEnableDataWrite(	IN	PADAPTER	pAdapter,
 							IN	u8		*data,
 							IN	bool		bPseudoTest)
 {
-	u8	ret=0;
+	u8	ret =0;
 
 	ret =  pAdapter->HalFunc.Efuse_WordEnableDataWrite(pAdapter, efuse_addr, word_en, data, bPseudoTest);
 
@@ -514,15 +514,15 @@ Efuse_ReadAllMap(
 	IN OUT	u8		*Efuse,
 	IN		bool		bPseudoTest)
 {
-	u16	mapLen=0;
+	u16	mapLen =0;
 
-	Efuse_PowerSwitch(pAdapter,false, true);
+	Efuse_PowerSwitch(pAdapter, false, true);
 
 	EFUSE_GetEfuseDefinition(pAdapter, efuseType, TYPE_EFUSE_MAP_LEN, (void *)&mapLen, bPseudoTest);
 
 	efuse_ReadEFuse(pAdapter, efuseType, 0, mapLen, Efuse, bPseudoTest);
 
-	Efuse_PowerSwitch(pAdapter,false, false);
+	Efuse_PowerSwitch(pAdapter, false, false);
 }
 
 /*-----------------------------------------------------------------------------
@@ -607,7 +607,7 @@ void EFUSE_ShadowMapUpdate(
 	IN bool	bPseudoTest)
 {
 	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(pAdapter);
-	u16	mapLen=0;
+	u16	mapLen =0;
 
 	EFUSE_GetEfuseDefinition(pAdapter, efuseType, TYPE_EFUSE_MAP_LEN, (void *)&mapLen, bPseudoTest);
 
