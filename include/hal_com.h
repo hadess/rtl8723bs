@@ -250,7 +250,7 @@ u8  rtw_hal_networktype_to_raid(_adapter *adapter, struct sta_info *psta);
 u8 rtw_get_mgntframe_raid(_adapter *adapter,unsigned char network_type);
 void rtw_hal_update_sta_rate_mask(PADAPTER padapter, struct sta_info *psta);
 
-void hw_var_port_switch(_adapter *adapter);
+void hw_var_port_switch (_adapter *adapter);
 
 void SetHwReg(PADAPTER padapter, u8 variable, u8 *val);
 void GetHwReg(PADAPTER padapter, u8 variable, u8 *val);

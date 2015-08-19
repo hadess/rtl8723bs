@@ -781,7 +781,7 @@ phy_SetRegBW_8723B(
 	u16	RegRfMod_BW, u2tmp = 0;
 	RegRfMod_BW = rtw_read16(Adapter, REG_TRXPTCL_CTL_8723B);
 
-	switch(CurrentBW)
+	switch (CurrentBW)
 	{
 		case CHANNEL_WIDTH_20:
 			rtw_write16(Adapter, REG_TRXPTCL_CTL_8723B, (RegRfMod_BW & 0xFE7F)); // BIT 7 = 0, BIT 8 = 0
@@ -867,7 +867,7 @@ phy_PostSetBwMode8723B(
 	//3//
 	//3//<2>Set PHY related register
 	//3//
-	switch(pHalData->CurrentChannelBW)
+	switch (pHalData->CurrentChannelBW)
 	{
 		/* 20 MHz channel*/
 		case CHANNEL_WIDTH_20:

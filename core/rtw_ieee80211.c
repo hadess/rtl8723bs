@@ -1452,7 +1452,7 @@ int rtw_action_frame_parse(const u8 *frame, u32 frame_len, u8* category, u8 *act
 
 	c = frame_body[0];
 
-	switch(c) {
+	switch (c) {
 	case RTW_WLAN_CATEGORY_P2P: /* vendor-specific */
 		break;
 	default:

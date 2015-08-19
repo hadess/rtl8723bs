@@ -839,7 +839,7 @@ static int rtw_set_wpa_ie(_adapter *padapter, char *pie, unsigned short ielen)
 			pairwise_cipher = WPA_CIPHER_NONE;
 		}
 
-		switch(group_cipher)
+		switch (group_cipher)
 		{
 			case WPA_CIPHER_NONE:
 				padapter->securitypriv.dot118021XGrpPrivacy=_NO_PRIVACY_;
@@ -863,7 +863,7 @@ static int rtw_set_wpa_ie(_adapter *padapter, char *pie, unsigned short ielen)
 				break;
 		}
 
-		switch(pairwise_cipher)
+		switch (pairwise_cipher)
 		{
 			case WPA_CIPHER_NONE:
 				padapter->securitypriv.dot11PrivacyAlgrthm=_NO_PRIVACY_;
@@ -1053,7 +1053,7 @@ static int rtw_wx_set_mode(struct net_device *dev, struct iw_request_info *a,
 		goto exit;
 	}
 
-	switch(wrqu->mode)
+	switch (wrqu->mode)
 	{
 		case IW_MODE_AUTO:
 			networkType = Ndis802_11AutoUnknown;
@@ -1603,7 +1603,7 @@ static int rtw_wx_set_scan(struct net_device *dev, struct iw_request_info *a,
 		while (len >= 1) {
 			section = *(pos++); len-=1;
 
-			switch(section) {
+			switch (section) {
 				case WEXT_CSCAN_SSID_SECTION:
 					//DBG_871X("WEXT_CSCAN_SSID_SECTION\n");
 					if (len < 1) {
@@ -1938,7 +1938,7 @@ static int rtw_wx_set_rate(struct net_device *dev,
 	}
 	target_rate = target_rate/100000;
 
-	switch(target_rate){
+	switch (target_rate){
 		case 10:
 			ratevalue = 0;
 			break;
@@ -2207,7 +2207,7 @@ static int rtw_wx_set_enc(struct net_device *dev,
 
 			DBG_871X("(keyindex_provided == 1), keyid=%d, key_len=%d\n", key, padapter->securitypriv.dot11DefKeylen[key]);
 
-			switch(padapter->securitypriv.dot11DefKeylen[key])
+			switch (padapter->securitypriv.dot11DefKeylen[key])
 			{
 				case 5:
 					padapter->securitypriv.dot11PrivacyAlgrthm=_WEP40_;
@@ -2278,7 +2278,7 @@ static int rtw_wx_get_enc(struct net_device *dev,
 	//      erq->flags |= IW_ENCODE_OPEN;
 	//}
 
-	switch(padapter->securitypriv.ndisencryptstatus)
+	switch (padapter->securitypriv.ndisencryptstatus)
 	{
 	case Ndis802_11EncryptionNotSupported:
 	case Ndis802_11EncryptionDisabled:
@@ -3092,10 +3092,10 @@ static int rtw_dbg_port(struct net_device *dev,
 
 	extra_arg = *(pdata+1);
 
-	switch(major_cmd)
+	switch (major_cmd)
 	{
 		case 0x70://read_reg
-			switch(minor_cmd)
+			switch (minor_cmd)
 			{
 				case 1:
 					DBG_871X("rtw_read8(0x%x)=0x%02x\n", arg, rtw_read8(padapter, arg));
@@ -3109,7 +3109,7 @@ static int rtw_dbg_port(struct net_device *dev,
 			}
 			break;
 		case 0x71://write_reg
-			switch(minor_cmd)
+			switch (minor_cmd)
 			{
 				case 1:
 					rtw_write8(padapter, arg, extra_arg);
@@ -3141,7 +3141,7 @@ static int rtw_dbg_port(struct net_device *dev,
 			break;
 
 		case 0x76:
-			switch(minor_cmd)
+			switch (minor_cmd)
 			{
 				case 0x00: //normal mode,
 					padapter->recvpriv.is_signal_dbg = 0;
@@ -3179,7 +3179,7 @@ static int rtw_dbg_port(struct net_device *dev,
 				, WLAN_REASON_EXPIRATION_CHK);
 			break;
 		case 0x7F:
-			switch(minor_cmd)
+			switch (minor_cmd)
 			{
 				case 0x0:
 					DBG_871X("fwstate=0x%x\n", get_fwstate(pmlmepriv));
@@ -3710,7 +3710,7 @@ static int wpa_set_param(struct net_device *dev, u8 name, u32 value)
 
 		//ret = ieee80211_wpa_enable(ieee, value);
 
-		switch((value)&0xff)
+		switch ((value)&0xff)
 		{
 		case 1 : //WPA
 			padapter->securitypriv.ndisauthtype = Ndis802_11AuthModeWPAPSK; //WPA_PSK

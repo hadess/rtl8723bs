@@ -1028,7 +1028,7 @@ halbtc8723b2ant_CoexTableWithType(
 	IN	u1Byte				type
 	)
 {
-	switch(type)
+	switch (type)
 	{
 		case 0:
 			halbtc8723b2ant_CoexTable(pBtCoexist, bForceExec, 0x55555555, 0x55555555, 0xffff, 0x3);
@@ -1267,7 +1267,7 @@ halbtc8723b2ant_SetAntPath(
 		}
 
 		pBtCoexist->fBtcWrite4Byte(pBtCoexist, 0x948, 0x0); // fixed internal switch S1->WiFi, S0->BT
-		switch(antPosType)
+		switch (antPosType)
 		{
 			case BTC_ANT_WIFI_AT_MAIN:
 				pBtCoexist->fBtcWrite1ByteBitMask(pBtCoexist, 0x92c, 0x3, 0x1);	// ext switch main at wifi
@@ -1289,7 +1289,7 @@ halbtc8723b2ant_SetAntPath(
 		}
 
 		pBtCoexist->fBtcWrite1ByteBitMask(pBtCoexist, 0x64, 0x1, 0x0); //fixed external switch S1->Main, S0->Aux
-		switch(antPosType)
+		switch (antPosType)
 		{
 			case BTC_ANT_WIFI_AT_MAIN:
 				pBtCoexist->fBtcWrite4Byte(pBtCoexist, 0x948, 0x0); // fixed internal switch S1->WiFi, S0->BT
@@ -1327,7 +1327,7 @@ halbtc8723b2ant_PsTdma(
 	}
 	if (bTurnOn)
 	{
-		switch(type)
+		switch (type)
 		{
 			case 1:
 			default:
@@ -1401,7 +1401,7 @@ halbtc8723b2ant_PsTdma(
 	else
 	{
 		// disable PS tdma
-		switch(type)
+		switch (type)
 		{
 			case 0:
 				halbtc8723b2ant_SetFwPstdma(pBtCoexist, 0x0, 0x0, 0x0, 0x40, 0x0);
@@ -3289,7 +3289,7 @@ halbtc8723b2ant_RunCoexistMechanism(
 				pCoexDm->preAlgorithm, pCoexDm->curAlgorithm));
 			pCoexDm->bAutoTdmaAdjust = false;
 		}
-		switch(pCoexDm->curAlgorithm)
+		switch (pCoexDm->curAlgorithm)
 		{
 			case BT_8723B_2ANT_COEX_ALGO_SCO:
 				BTC_PRINT(BTC_MSG_ALGORITHM, ALGO_TRACE, ("[BTCoex], Action 2-Ant, algorithm = SCO.\n"));

@@ -1611,7 +1611,7 @@ PHY_GetTxPowerLimit(
 		   Adapter->registrypriv.RegEnableTxPowerLimit == 0 )
 		return MAX_POWER_INDEX;
 
-	switch( Adapter->registrypriv.RegPwrTblSel )
+	switch ( Adapter->registrypriv.RegPwrTblSel )
 	{
 		case 1:
 				regulation = TXPWR_LMT_ETSI;
@@ -2092,7 +2092,7 @@ Hal_ChannelPlanToRegulation(
 	pHalData->Regulation2_4G = TXPWR_LMT_WW;
 	pHalData->Regulation5G = TXPWR_LMT_WW;
 
-	switch(ChannelPlan)
+	switch (ChannelPlan)
 	{
 		case RT_CHANNEL_DOMAIN_WORLD_NULL:
 			pHalData->Regulation2_4G = TXPWR_LMT_WW;
@@ -2354,7 +2354,7 @@ phy_ConfigBBWithParaFile(
 	if (!(Adapter->registrypriv.load_phy_file & LOAD_BB_PARA_FILE))
 		return rtStatus;
 
-	switch(ConfigType)
+	switch (ConfigType)
 	{
 		case CONFIG_BB_PHY_REG:
 			pBuf = pHalData->bb_phy_reg;
@@ -2386,7 +2386,7 @@ phy_ConfigBBWithParaFile(
 					memcpy(pBuf, pHalData->para_file_buf, rlen);
 					*pBufLen = rlen;
 
-					switch(ConfigType)
+					switch (ConfigType)
 					{
 						case CONFIG_BB_PHY_REG:
 							pHalData->bb_phy_reg = pBuf;
@@ -2883,7 +2883,7 @@ PHY_ConfigRFWithParaFile(
 	if (!(Adapter->registrypriv.load_phy_file & LOAD_RF_PARA_FILE))
 		return rtStatus;
 
-	switch(eRFPath)
+	switch (eRFPath)
 	{
 		case ODM_RF_PATH_A:
 			pBuf = pHalData->rf_radio_a;
@@ -2915,7 +2915,7 @@ PHY_ConfigRFWithParaFile(
 					memcpy(pBuf, pHalData->para_file_buf, rlen);
 					*pBufLen = rlen;
 
-					switch(eRFPath)
+					switch (eRFPath)
 					{
 						case ODM_RF_PATH_A:
 							pHalData->rf_radio_a = pBuf;

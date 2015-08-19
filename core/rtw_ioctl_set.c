@@ -500,7 +500,7 @@ u8 rtw_set_802_11_infrastructure_mode(_adapter* padapter,
 
 		_clr_fwstate_(pmlmepriv, ~WIFI_NULL_STATE);
 
-		switch(networktype)
+		switch (networktype)
 		{
 			case Ndis802_11IBSS:
 				set_fwstate(pmlmepriv, WIFI_ADHOC_STATE);
@@ -647,7 +647,7 @@ u8 rtw_set_802_11_add_wep(_adapter* padapter, NDIS_802_11_WEP *wep){
 		goto exit;
 	}
 
-	switch(wep->KeyLength)
+	switch (wep->KeyLength)
 	{
 		case 5:
 			psecuritypriv->dot11PrivacyAlgrthm=_WEP40_;

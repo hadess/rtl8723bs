@@ -168,7 +168,7 @@ halbtc8723b1ant_AutoRateFallbackRetry(
 
 	if ( bForceExec || (pCoexDm->preArfrType != pCoexDm->curArfrType))
 	{
-		switch(pCoexDm->curArfrType)
+		switch (pCoexDm->curArfrType)
 		{
 			case 0:	// normal mode
 				pBtCoexist->fBtcWrite4Byte(pBtCoexist, 0x430, pCoexDm->backupArfrCnt1);
@@ -206,7 +206,7 @@ halbtc8723b1ant_RetryLimit(
 
 	if ( bForceExec || (pCoexDm->preRetryLimitType != pCoexDm->curRetryLimitType))
 	{
-		switch(pCoexDm->curRetryLimitType)
+		switch (pCoexDm->curRetryLimitType)
 		{
 			case 0:	// normal mode
 				pBtCoexist->fBtcWrite2Byte(pBtCoexist, 0x42a, pCoexDm->backupRetryLimit);
@@ -233,7 +233,7 @@ halbtc8723b1ant_AmpduMaxTime(
 
 	if ( bForceExec || (pCoexDm->preAmpduTimeType != pCoexDm->curAmpduTimeType))
 	{
-		switch(pCoexDm->curAmpduTimeType)
+		switch (pCoexDm->curAmpduTimeType)
 		{
 			case 0:	// normal mode
 				pBtCoexist->fBtcWrite1Byte(pBtCoexist, 0x456, pCoexDm->backupAmpduMaxTime);
@@ -259,7 +259,7 @@ halbtc8723b1ant_LimitedTx(
 	IN	u1Byte				ampduTimeType
 	)
 {
-	switch(raMaskType)
+	switch (raMaskType)
 	{
 		case 0:	// normal mode
 			halbtc8723b1ant_UpdateRaMask(pBtCoexist, bForceExec, 0x0);
@@ -897,7 +897,7 @@ halbtc8723b1ant_CoexTableWithType(
 
 	pCoexSta->nCoexTableType = type;
 
-	switch(type)
+	switch (type)
 	{
 		case 0:
 			halbtc8723b1ant_CoexTable(pBtCoexist, bForceExec, 0x55555555, 0x55555555, 0xffffff, 0x3);
@@ -1176,7 +1176,7 @@ halbtc8723b1ant_SetAntPath(
 
 
 		// ext switch setting
-		switch(antPosType)
+		switch (antPosType)
 		{
 			case BTC_ANT_PATH_WIFI:
 				if (pBoardInfo->btdmAntPos == BTC_ANTENNA_AT_MAIN_PORT)
@@ -1233,7 +1233,7 @@ halbtc8723b1ant_SetAntPath(
 
 
 		// internal switch setting
-		switch(antPosType)
+		switch (antPosType)
 		{
 			case BTC_ANT_PATH_WIFI:
 				if (pBoardInfo->btdmAntPos == BTC_ANTENNA_AT_MAIN_PORT)
@@ -1370,7 +1370,7 @@ halbtc8723b1ant_PsTdma(
 		}
 
 
-		switch(type)
+		switch (type)
 		{
 			default:
 				halbtc8723b1ant_SetFwPstdma(pBtCoexist, 0x51, 0x1a, 0x1a, 0x0, psTdmaByte4Val);
@@ -1487,7 +1487,7 @@ halbtc8723b1ant_PsTdma(
 	{
 
 		// disable PS tdma
-		switch(type)
+		switch (type)
 		{
 			case 8: //PTA Control
 				halbtc8723b1ant_SetFwPstdma(pBtCoexist, 0x8, 0x0, 0x0, 0x0, 0x0);
@@ -1836,7 +1836,7 @@ halbtc8723b1ant_PowerSaveState(
 {
 	bool		bLowPwrDisable=false;
 
-	switch(psType)
+	switch (psType)
 	{
 		case BTC_PS_WIFI_NATIVE:
 			// recover to original 32k low power setting
@@ -2403,7 +2403,7 @@ halbtc8723b1ant_RunSwCoexistMechanism(
 	}
 	else
 	{
-		switch(pCoexDm->curAlgorithm)
+		switch (pCoexDm->curAlgorithm)
 		{
 			case BT_8723B_1ANT_COEX_ALGO_SCO:
 				BTC_PRINT(BTC_MSG_ALGORITHM, ALGO_TRACE, ("[BTCoex], Action algorithm = SCO.\n"));

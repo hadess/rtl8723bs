@@ -429,7 +429,7 @@ s32 rtl8723b_FirmwareDownload(PADAPTER padapter, bool  bUsedWoWLANFw)
 		pFirmware->eFWSource = FW_SOURCE_HEADER_FILE;
 	}
 
-	switch(pFirmware->eFWSource)
+	switch (pFirmware->eFWSource)
 	{
 		case FW_SOURCE_IMG_FILE:
 #ifdef CONFIG_FILE_FWIMG

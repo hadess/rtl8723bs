@@ -171,7 +171,7 @@ ssize_t proc_set_write_reg(struct file *file, const char __user *buffer, size_t 
 			return count;
 		}
 
-		switch(len)
+		switch (len)
 		{
 			case 1:
 				rtw_write8(padapter, addr, (u8)val);
@@ -206,7 +206,7 @@ int proc_get_read_reg(struct seq_file *m, void *v)
 		return 0;
 	}
 
-	switch(proc_get_read_len)
+	switch (proc_get_read_len)
 	{
 		case 1:
 			DBG_871X_SEL_NL(m, "rtw_read8(0x%x)=0x%x\n", proc_get_read_addr, rtw_read8(padapter, proc_get_read_addr));

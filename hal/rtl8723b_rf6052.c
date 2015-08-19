@@ -74,7 +74,7 @@ PHY_RF6052SetBandwidth8723B(
 {
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
 
-	switch(Bandwidth)
+	switch (Bandwidth)
 	{
 		case CHANNEL_WIDTH_20:
 			pHalData->RfRegChnlVal[0] = ((pHalData->RfRegChnlVal[0] & 0xfffff3ff) | BIT10 | BIT11 );
@@ -126,7 +126,7 @@ phy_RF6052_Config_ParaFile(
 		pPhyReg = &pHalData->PHYRegDef[eRFPath];
 
 		/*----Store original RFENV control type----*/
-		switch(eRFPath)
+		switch (eRFPath)
 		{
 		case RF_PATH_A:
 		case RF_PATH_C:
@@ -154,7 +154,7 @@ phy_RF6052_Config_ParaFile(
 		udelay(1);//PlatformStallExecution(1);
 
 		/*----Initialize RF fom connfiguration file----*/
-		switch(eRFPath)
+		switch (eRFPath)
 		{
 		case RF_PATH_A:
 #ifdef CONFIG_LOAD_PHY_PARA_FROM_FILE
@@ -181,7 +181,7 @@ phy_RF6052_Config_ParaFile(
 		}
 
 		/*----Restore RFENV control type----*/;
-		switch(eRFPath)
+		switch (eRFPath)
 		{
 		case RF_PATH_A:
 		case RF_PATH_C:

@@ -31,7 +31,7 @@ odm_CCKRSSI_8723B(
 	)
 {
 	s8	rx_pwr_all=0x00;
-	switch(LNA_idx)
+	switch (LNA_idx)
 	{
 		//46  53 73 95 201301231630
 		// 46 53 77 99 201301241630

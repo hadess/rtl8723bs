@@ -1899,7 +1899,7 @@ static int rtw_cfg80211_set_wpa_ie(_adapter *padapter, u8 *pie, size_t ielen)
 		pairwise_cipher = WPA_CIPHER_NONE;
 	}
 
-	switch(group_cipher)
+	switch (group_cipher)
 	{
 		case WPA_CIPHER_NONE:
 			padapter->securitypriv.dot118021XGrpPrivacy=_NO_PRIVACY_;
@@ -1923,7 +1923,7 @@ static int rtw_cfg80211_set_wpa_ie(_adapter *padapter, u8 *pie, size_t ielen)
 			break;
 	}
 
-	switch(pairwise_cipher)
+	switch (pairwise_cipher)
 	{
 		case WPA_CIPHER_NONE:
 			padapter->securitypriv.dot11PrivacyAlgrthm=_NO_PRIVACY_;

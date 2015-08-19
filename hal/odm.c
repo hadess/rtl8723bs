@@ -1166,7 +1166,7 @@ u4Byte ODM_Get_Rate_Bitmap(
 
 	WirelessMode = pEntry->wireless_mode;
 
-	switch(WirelessMode)
+	switch (WirelessMode)
 	{
 		case ODM_WM_B:
 			if (ra_mask & 0x0000000c)		//11M or 5.5M enable

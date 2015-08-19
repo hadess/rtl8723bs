@@ -863,7 +863,7 @@ u8 rtw_joinbss_cmd(_adapter  *padapter, struct wlan_network* pnetwork)
 	//for hidden ap to set fw_state here
 	if (check_fwstate(pmlmepriv, WIFI_STATION_STATE|WIFI_ADHOC_STATE) != true)
 	{
-		switch(ndis_network_mode)
+		switch (ndis_network_mode)
 		{
 			case Ndis802_11IBSS:
 				set_fwstate(pmlmepriv, WIFI_ADHOC_STATE);
@@ -1599,7 +1599,7 @@ void lps_ctrl_wk_hdl(_adapter *padapter, u8 lps_ctrl_type)
 		return;
 	}
 
-	switch(lps_ctrl_type)
+	switch (lps_ctrl_type)
 	{
 		case LPS_CTRL_SCAN:
 			//DBG_871X("LPS_CTRL_SCAN \n");
@@ -2118,7 +2118,7 @@ u8 rtw_drvextra_cmd_hdl(_adapter *padapter, unsigned char *pbuf)
 
 	pdrvextra_cmd = (struct drvextra_cmd_parm*)pbuf;
 
-	switch(pdrvextra_cmd->ec_id)
+	switch (pdrvextra_cmd->ec_id)
 	{
 		case DYNAMIC_CHK_WK_CID://only  primary padapter go to this cmd, but execute dynamic_chk_wk_hdl() for two interfaces
 			dynamic_chk_wk_hdl(padapter);

@@ -370,7 +370,7 @@ u8	query_ra_short_GI(struct sta_info *psta)
 	sgi_20m = psta->htpriv.sgi_20m;
 	sgi_40m = psta->htpriv.sgi_40m;
 
-	switch(psta->bw_mode){
+	switch (psta->bw_mode){
 		case CHANNEL_WIDTH_80:
 			sgi = sgi_80m;
 			break;
@@ -597,7 +597,7 @@ static s32 update_attrib_sec_info(_adapter *padapter, struct pkt_attrib *pattrib
 	{
 		GET_ENCRY_ALGO(psecuritypriv, psta, pattrib->encrypt, bmcast);
 
-		switch(psecuritypriv->dot11AuthAlgrthm)
+		switch (psecuritypriv->dot11AuthAlgrthm)
 		{
 			case dot11AuthAlgrthm_Open:
 			case dot11AuthAlgrthm_Shared:
@@ -1111,7 +1111,7 @@ static s32 xmitframe_swencrypt(_adapter *padapter, struct xmit_frame *pxmitframe
 	{
 		//DBG_871X("start xmitframe_swencrypt\n");
 		RT_TRACE(_module_rtl871x_xmit_c_,_drv_alert_,("### xmitframe_swencrypt\n"));
-		switch(pattrib->encrypt){
+		switch (pattrib->encrypt){
 		case _WEP40_:
 		case _WEP104_:
 			rtw_wep_encrypt(padapter, (u8 *)pxmitframe);
@@ -1446,7 +1446,7 @@ s32 rtw_xmitframe_coalesce(_adapter *padapter, _pkt *pkt, struct xmit_frame *pxm
 
 			if (psta != NULL)
 			{
-				switch(pattrib->encrypt)
+				switch (pattrib->encrypt)
 				{
 					case _WEP40_:
 					case _WEP104_:
@@ -1707,7 +1707,7 @@ s32 rtw_mgmt_xmitframe_coalesce(_adapter *padapter, _pkt *pkt, struct xmit_frame
 			//it's MIC of AES
 			pattrib->icv_len = 8;
 
-			switch(pattrib->encrypt)
+			switch (pattrib->encrypt)
 			{
 				case _AES_:
 						//set AES IV header
@@ -1809,7 +1809,7 @@ void rtw_update_protection(_adapter *padapter, u8 *ie, uint ie_len)
 	struct	xmit_priv *pxmitpriv = &padapter->xmitpriv;
 	struct	registry_priv *pregistrypriv = &padapter->registrypriv;
 
-	switch(pxmitpriv->vcs_setting)
+	switch (pxmitpriv->vcs_setting)
 	{
 		case DISABLE_VCS:
 			pxmitpriv->vcs = NONE_VCS;
@@ -2517,7 +2517,7 @@ u32 rtw_get_ff_hwaddr(struct xmit_frame *pxmitframe)
 	u32 addr;
 	struct pkt_attrib *pattrib = &pxmitframe->attrib;
 
-	switch(pattrib->qsel)
+	switch (pattrib->qsel)
 	{
 		case 0:
 		case 3:
@@ -2788,7 +2788,7 @@ sint xmitframe_enqueue_for_sleeping_sta(_adapter *padapter, struct xmit_frame *p
 
 			psta->sleepq_len++;
 
-			switch(pattrib->priority)
+			switch (pattrib->priority)
 			{
 				case 1:
 				case 2:
@@ -2960,7 +2960,7 @@ void wakeup_sta_to_xmit(_adapter *padapter, struct sta_info *psta)
 
 		list_del_init(&pxmitframe->list);
 
-		switch(pxmitframe->attrib.priority)
+		switch (pxmitframe->attrib.priority)
 		{
 			case 1:
 			case 2:
@@ -3128,7 +3128,7 @@ void xmit_delivery_enabled_frames(_adapter *padapter, struct sta_info *psta)
 
 		xmitframe_plist = get_next(xmitframe_plist);
 
-		switch(pxmitframe->attrib.priority)
+		switch (pxmitframe->attrib.priority)
 		{
 			case 1:
 			case 2:
@@ -3362,7 +3362,7 @@ int rtw_sctx_wait(struct submit_ctx *sctx, const char *msg)
 
 static bool rtw_sctx_chk_waring_status(int status)
 {
-	switch(status) {
+	switch (status) {
 	case RTW_SCTX_DONE_UNKNOWN:
 	case RTW_SCTX_DONE_BUF_ALLOC:
 	case RTW_SCTX_DONE_BUF_FREE:

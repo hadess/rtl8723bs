@@ -428,7 +428,7 @@ odm_PauseDIG(
 		return;
 	}
 
-	switch(PauseType)
+	switch (PauseType)
 	{
 		//1 Pause DIG
 		case ODM_PAUSE_DIG:

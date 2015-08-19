@@ -1231,7 +1231,7 @@ int rtw_check_beacon_data(_adapter *padapter, u8 *pbuf,  int len)
 		pHT_info_ie=p;
 	}
 
-	switch(network_type)
+	switch (network_type)
 	{
 		case WIRELESS_11B:
 			pbss_network->NetworkTypeInUse = Ndis802_11DS;
@@ -1506,7 +1506,7 @@ static int rtw_ap_set_key(_adapter *padapter, u8 *key, u8 alg, int keyid, u8 set
 
 	psetkeyparm->set_tx = set_tx;
 
-	switch(alg)
+	switch (alg)
 	{
 		case _WEP40_:
 			keylen = 5;
@@ -1550,7 +1550,7 @@ int rtw_ap_set_wep_key(_adapter *padapter, u8 *key, u8 keylen, int keyid, u8 set
 {
 	u8 alg;
 
-	switch(keylen)
+	switch (keylen)
 	{
 		case 5:
 			alg =_WEP40_;
@@ -1758,7 +1758,7 @@ void update_beacon(_adapter *padapter, u8 ie_id, u8 *oui, u8 tx)
 
 	spin_lock_bh(&pmlmepriv->bcn_update_lock);
 
-	switch(ie_id)
+	switch (ie_id)
 	{
 		case 0xFF:
 

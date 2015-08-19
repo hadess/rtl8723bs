@@ -2646,7 +2646,7 @@ static int update_hidden_ssid(u8 *ies, u32 ies_len, u8 hidden_ssid_mode)
 
 	if (ssid_ie && ssid_len_ori>0)
 	{
-		switch(hidden_ssid_mode)
+		switch (hidden_ssid_mode)
 		{
 			case 1:
 			{

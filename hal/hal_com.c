@@ -182,7 +182,7 @@ u8	MRateToHwRate(u8 rate)
 {
 	u8	ret = DESC_RATE1M;
 
-	switch(rate)
+	switch (rate)
 	{
 		case MGN_1M:		    ret = DESC_RATE1M;	break;
 		case MGN_2M:		    ret = DESC_RATE2M;	break;
@@ -280,7 +280,7 @@ u8	HwRateToMRate(u8 rate)
 {
 	u8	ret_rate = MGN_1M;
 
-	switch(rate)
+	switch (rate)
 	{
 
 		case DESC_RATE1M:		    ret_rate = MGN_1M;		break;
@@ -390,7 +390,7 @@ void	HalSetBrateCfg(
 
 		if ( is_brate )
 		{
-			switch(brate)
+			switch (brate)
 			{
 				case IEEE80211_CCK_RATE_1MB:	*pBrateCfg |= RATE_1M;	break;
 				case IEEE80211_CCK_RATE_2MB:	*pBrateCfg |= RATE_2M;	break;
@@ -529,7 +529,7 @@ Hal_MappingOutPipe(
 
 	bool result = true;
 
-	switch(NumOutPipe)
+	switch (NumOutPipe)
 	{
 		case 2:
 			_TwoOutPipeMapping(pAdapter, bWIFICfg);
@@ -681,7 +681,7 @@ void rtw_hal_update_sta_rate_mask(PADAPTER padapter, struct sta_info *psta)
 	psta->init_rate = get_highest_rate_idx(tx_ra_bitmap)&0x3f;
 }
 
-void hw_var_port_switch(_adapter *adapter)
+void hw_var_port_switch (_adapter *adapter)
 {
 }
 
@@ -692,7 +692,7 @@ void SetHwReg(_adapter *adapter, u8 variable, u8 *val)
 
 	switch (variable) {
 	case HW_VAR_PORT_SWITCH:
-		hw_var_port_switch(adapter);
+		hw_var_port_switch (adapter);
 		break;
 	case HW_VAR_INIT_RTS_RATE:
 		rtw_warn_on(1);
@@ -797,7 +797,7 @@ SetHalDefVar(_adapter *adapter, HAL_DEF_VARIABLE variable, void *value)
 	DM_ODM_T *odm = &(hal_data->odmpriv);
 	u8 bResult = _SUCCESS;
 
-	switch(variable) {
+	switch (variable) {
 	case HW_DEF_FA_CNT_DUMP:
 		//ODM_COMP_COMMON
 		if (*((u8*)value))
@@ -887,7 +887,7 @@ GetHalDefVar(_adapter *adapter, HAL_DEF_VARIABLE variable, void *value)
 	DM_ODM_T *odm = &(hal_data->odmpriv);
 	u8 bResult = _SUCCESS;
 
-	switch(variable) {
+	switch (variable) {
 		case HAL_DEF_UNDERCORATEDSMOOTHEDPWDB:
 			{
 				struct mlme_priv *pmlmepriv;
@@ -942,7 +942,7 @@ void GetHalODMVar(
 	void *pValue1,
 	void *pValue2)
 {
-	switch(eVariable){
+	switch (eVariable){
 #if defined(CONFIG_SIGNAL_DISPLAY_DBM) && defined(CONFIG_BACKGROUND_NOISE_MONITOR)
 	case HAL_ODM_NOISE_MONITOR:
 		{
@@ -971,7 +971,7 @@ void SetHalODMVar(
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
 	PDM_ODM_T podmpriv = &pHalData->odmpriv;
 	//_irqL irqL;
-	switch(eVariable){
+	switch (eVariable){
 		case HAL_ODM_STA_INFO:
 			{
 				struct sta_info *psta = (struct sta_info *)pValue1;

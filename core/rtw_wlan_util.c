@@ -110,7 +110,7 @@ u8 networktype_to_raid_ex(_adapter *adapter, struct sta_info *psta)
 			rf_type = RF_2T2R;
 	}
 
-	switch(psta->wireless_mode)
+	switch (psta->wireless_mode)
 	{
 		case WIRELESS_11B:
 			raid = RATEID_IDX_B;
@@ -308,7 +308,7 @@ void UpdateBrateTbl(
 	for (i=0;i<NDIS_802_11_LENGTH_RATES_EX;i++)
 	{
 		rate = mBratesOS[i] & 0x7f;
-		switch(rate)
+		switch (rate)
 		{
 			case IEEE80211_CCK_RATE_1MB:
 			case IEEE80211_CCK_RATE_2MB:
@@ -332,7 +332,7 @@ void UpdateBrateTblForSoftAP(u8 *bssrateset, u32 bssratelen)
 	for (i=0;i<bssratelen;i++)
 	{
 		rate = bssrateset[i] & 0x7f;
-		switch(rate)
+		switch (rate)
 		{
 			case IEEE80211_CCK_RATE_1MB:
 			case IEEE80211_CCK_RATE_2MB:
@@ -1273,7 +1273,7 @@ void HT_caps_handler(_adapter *padapter, PNDIS_802_11_VARIABLE_IEs pIE)
 		pmlmeinfo->HT_caps.u.HT_cap_element.MCS_rate[i] &= pmlmeext->default_supported_mcs_set[i];
 
 	//update the MCS rates
-	switch(rf_type)
+	switch (rf_type)
 	{
 		case RF_1T1R:
 		case RF_1T2R:

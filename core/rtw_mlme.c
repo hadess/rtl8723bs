@@ -1426,7 +1426,7 @@ static void rtw_joinbss_update_network(_adapter *padapter, struct wlan_network *
 	rtw_set_signal_stat_timer(&padapter->recvpriv);
 
 	//update fw_state //will clr _FW_UNDER_LINKING here indirectly
-	switch(pnetwork->network.InfrastructureMode)
+	switch (pnetwork->network.InfrastructureMode)
 	{
 		case Ndis802_11Infrastructure:
 
@@ -2482,7 +2482,7 @@ sint rtw_set_key(_adapter * adapter,struct security_priv *psecuritypriv,sint key
 	DBG_871X("==> rtw_set_key algorithm(%x),keyid(%x),key_mask(%x)\n",psetkeyparm->algorithm,psetkeyparm->keyid, adapter->securitypriv.key_mask);
 	RT_TRACE(_module_rtl871x_mlme_c_,_drv_err_,("\n rtw_set_key: psetkeyparm->algorithm=%d psetkeyparm->keyid=(u8)keyid=%d \n",psetkeyparm->algorithm, keyid));
 
-	switch(psetkeyparm->algorithm){
+	switch (psetkeyparm->algorithm){
 
 		case _WEP40_:
 			keylen=5;
@@ -2744,7 +2744,7 @@ void rtw_update_registrypriv_dev_network(_adapter* adapter)
 
 	pdev_network->Rssi = 0;
 
-	switch(pregistrypriv->wireless_mode)
+	switch (pregistrypriv->wireless_mode)
 	{
 		case WIRELESS_11B:
 			pdev_network->NetworkTypeInUse = (Ndis802_11DS);
@@ -3001,7 +3001,7 @@ unsigned int rtw_restructure_ht_ie(_adapter *padapter, u8 *in_ie, u8 *out_ie, ui
 	//update default supported_mcs_set
 	rtw_hal_get_hwreg(padapter, HW_VAR_RF_TYPE, (u8 *)(&rf_type));
 
-	switch(rf_type)
+	switch (rf_type)
 	{
 	case RF_1T1R:
 
@@ -3172,7 +3172,7 @@ void rtw_update_ht_cap(_adapter *padapter, u8 *pie, uint ie_len, u8 channel)
 			pmlmeinfo->HT_caps.u.HT_cap_element.MCS_rate[i] &= pmlmeext->default_supported_mcs_set[i];
 
 		//update the MCS rates
-		switch(rf_type)
+		switch (rf_type)
 		{
 			case RF_1T1R:
 			case RF_1T2R:

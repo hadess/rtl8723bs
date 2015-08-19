@@ -978,7 +978,7 @@ static void halbtcoutsrc_DisplayDbgMsg(void *pBtcContext, u8 dispType)
 
 
 	pBtCoexist = (PBTC_COEXIST)pBtcContext;
-	switch(dispType)
+	switch (dispType)
 	{
 		case BTC_DBG_DISP_COEX_STATISTICS:
 			break;

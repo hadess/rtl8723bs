@@ -310,7 +310,7 @@ _InitNormalChipOneOutEpPriority(
 	HAL_DATA_TYPE	*pHalData	= GET_HAL_DATA(Adapter);
 
 	u16	value = 0;
-	switch(pHalData->OutEpQueueSel)
+	switch (pHalData->OutEpQueueSel)
 	{
 		case TX_SELE_HQ:
 			value = QUEUE_HIGH;
@@ -350,7 +350,7 @@ _InitNormalChipTwoOutEpPriority(
 	u16	valueHi = 0;
 	u16	valueLow = 0;
 
-	switch(pHalData->OutEpQueueSel)
+	switch (pHalData->OutEpQueueSel)
 	{
 		case (TX_SELE_HQ | TX_SELE_LQ):
 			valueHi = QUEUE_HIGH;
@@ -424,7 +424,7 @@ _InitNormalChipQueuePriority(
 {
 	HAL_DATA_TYPE	*pHalData	= GET_HAL_DATA(Adapter);
 
-	switch(pHalData->OutEpNumber)
+	switch (pHalData->OutEpNumber)
 	{
 		case 1:
 			_InitNormalChipOneOutEpPriority(Adapter);
@@ -650,7 +650,7 @@ static void _InitOperationMode(PADAPTER padapter)
 	//
 	// Set RRSR, RATR, and REG_BWOPMODE registers
 	//
-	switch(pmlmeext->cur_wireless_mode)
+	switch (pmlmeext->cur_wireless_mode)
 	{
 		case WIRELESS_MODE_B:
 			regBwOpMode = BW_OPMODE_20MHZ;
@@ -1244,7 +1244,7 @@ static void rtl8723bs_interface_configure(PADAPTER padapter)
 	else
 		pHalData->OutEpNumber = SDIO_MAX_TX_QUEUE;
 
-	switch(pHalData->OutEpNumber){
+	switch (pHalData->OutEpNumber){
 		case 3:
 			pHalData->OutEpQueueSel=TX_SELE_HQ| TX_SELE_LQ|TX_SELE_NQ;
 			break;
@@ -1891,7 +1891,7 @@ GetHalDefVar8723BSDIO(
 {
 	u8			bResult = _SUCCESS;
 
-	switch(eVariable)
+	switch (eVariable)
 	{
 		case HAL_DEF_IS_SUPPORT_ANT_DIV:
 			break;
