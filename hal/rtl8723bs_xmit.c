@@ -196,7 +196,7 @@ s32 rtl8723bs_xmit_buf_handler(PADAPTER padapter)
 static s32 xmit_xmitframes(PADAPTER padapter, struct xmit_priv *pxmitpriv)
 {
 	s32 err, ret;
-	u32 k =0;
+	u32 k = 0;
 	struct hw_xmit *hwxmits, *phwxmit;
 	u8 no_res, idx, hwentry;
 	struct tx_servq *ptxservq;
@@ -218,7 +218,7 @@ static s32 xmit_xmitframes(PADAPTER padapter, struct xmit_priv *pxmitpriv)
 	pxmitbuf = NULL;
 
 	if (padapter->registrypriv.wifi_spec == 1) {
-		for (idx =0; idx<4; idx++)
+		for (idx = 0; idx<4; idx++)
 			inx[idx] = pxmitpriv->wmm_para_seq[idx];
 	} else {
 		inx[0] = 0; inx[1] = 1; inx[2] = 2; inx[3] = 3;

@@ -50,7 +50,7 @@ static int rtw_smart_ps = 2;
 
 static int rtw_check_fw_ps = 1;
 
-static int rtw_usb_rxagg_mode = 2;/* USB_RX_AGG_DMA =1, USB_RX_AGG_USB =2 */
+static int rtw_usb_rxagg_mode = 2;/* USB_RX_AGG_DMA = 1, USB_RX_AGG_USB =2 */
 module_param(rtw_usb_rxagg_mode, int, 0644);
 
 static int rtw_radio_enable = 1;
@@ -109,7 +109,7 @@ module_param(rtw_btcoex_enable, int, 0644);
 MODULE_PARM_DESC(rtw_btcoex_enable, "Enable BT co-existence mechanism");
 static int rtw_bt_iso = 2;/*  0:Low, 1:High, 2:From Efuse */
 static int rtw_bt_sco = 3;/*  0:Idle, 1:None-SCO, 2:SCO, 3:From Counter, 4.Busy, 5.OtherBusy */
-static int rtw_bt_ampdu =1 ;/*  0:Disable BT control A-MPDU, 1:Enable BT control A-MPDU. */
+static int rtw_bt_ampdu = 1 ;/*  0:Disable BT control A-MPDU, 1:Enable BT control A-MPDU. */
 static int rtw_ant_num = -1; /*  <0: undefined, >0: Antenna number */
 module_param(rtw_ant_num, int, 0644);
 MODULE_PARM_DESC(rtw_ant_num, "Antenna number setting");
@@ -137,9 +137,9 @@ int rtw_mc2u_disable = 0;
 static int rtw_80211d = 0;
 
 #ifdef CONFIG_QOS_OPTIMIZATION
-static int rtw_qos_opt_enable =1;/* 0: disable, 1:enable */
+static int rtw_qos_opt_enable = 1;/* 0: disable, 1:enable */
 #else
-static int rtw_qos_opt_enable =0;/* 0: disable, 1:enable */
+static int rtw_qos_opt_enable = 0;/* 0: disable, 1:enable */
 #endif
 module_param(rtw_qos_opt_enable, int, 0644);
 
@@ -219,10 +219,10 @@ static uint rtw_hiq_filter = CONFIG_RTW_HIQ_FILTER;
 module_param(rtw_hiq_filter, uint, 0644);
 MODULE_PARM_DESC(rtw_hiq_filter, "0:allow all, 1:allow special, 2:deny all");
 
-#if defined(CONFIG_CALIBRATE_TX_POWER_BY_REGULATORY) /* eFuse: Regulatory selection =1 */
+#if defined(CONFIG_CALIBRATE_TX_POWER_BY_REGULATORY) /* eFuse: Regulatory selection = 1 */
 static int rtw_tx_pwr_lmt_enable = 1;
 static int rtw_tx_pwr_by_rate = 1;
-#elif defined(CONFIG_CALIBRATE_TX_POWER_TO_MAX)/* eFuse: Regulatory selection =0 */
+#elif defined(CONFIG_CALIBRATE_TX_POWER_TO_MAX)/* eFuse: Regulatory selection = 0 */
 static int rtw_tx_pwr_lmt_enable = 0;
 static int rtw_tx_pwr_by_rate = 1;
 #else /* eFuse: Regulatory selection =2 */
@@ -609,7 +609,7 @@ void rtw_unregister_netdevs(struct dvobj_priv *dvobj)
 	int i;
 	_adapter *padapter = NULL;
 
-	for (i =0;i<dvobj->iface_nums;i++)
+	for (i = 0;i<dvobj->iface_nums;i++)
 	{
 		struct net_device *pnetdev = NULL;
 
@@ -755,7 +755,7 @@ struct dvobj_priv *devobj_init(void)
 
 	spin_lock_init(&pdvobj->lock);
 
-	pdvobj->macid[1] = true; /* macid =1 for bc/mc stainfo */
+	pdvobj->macid[1] = true; /* macid = 1 for bc/mc stainfo */
 
 	pdvobj->processing_dev_remove = false;
 
@@ -782,7 +782,7 @@ void devobj_deinit(struct dvobj_priv *pdvobj)
 
 u8 rtw_reset_drv_sw(_adapter *padapter)
 {
-	u8	ret8 =_SUCCESS;
+	u8	ret8 = _SUCCESS;
 	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
 	struct pwrctrl_priv *pwrctrlpriv = adapter_to_pwrctl(padapter);
 
@@ -819,7 +819,7 @@ u8 rtw_reset_drv_sw(_adapter *padapter)
 u8 rtw_init_drv_sw(_adapter *padapter)
 {
 
-	u8	ret8 =_SUCCESS;
+	u8	ret8 = _SUCCESS;
 
 	RT_TRACE(_module_os_intfs_c_, _drv_info_, ("+rtw_init_drv_sw\n"));
 
@@ -830,7 +830,7 @@ u8 rtw_init_drv_sw(_adapter *padapter)
 	if ((rtw_init_cmd_priv(&padapter->cmdpriv)) == _FAIL)
 	{
 		RT_TRACE(_module_os_intfs_c_, _drv_err_, ("\n Can't init cmd_priv\n"));
-		ret8 =_FAIL;
+		ret8 = _FAIL;
 		goto exit;
 	}
 
@@ -839,7 +839,7 @@ u8 rtw_init_drv_sw(_adapter *padapter)
 	if ((rtw_init_evt_priv(&padapter->evtpriv)) == _FAIL)
 	{
 		RT_TRACE(_module_os_intfs_c_, _drv_err_, ("\n Can't init evt_priv\n"));
-		ret8 =_FAIL;
+		ret8 = _FAIL;
 		goto exit;
 	}
 
@@ -847,28 +847,28 @@ u8 rtw_init_drv_sw(_adapter *padapter)
 	if (rtw_init_mlme_priv(padapter) == _FAIL)
 	{
 		RT_TRACE(_module_os_intfs_c_, _drv_err_, ("\n Can't init mlme_priv\n"));
-		ret8 =_FAIL;
+		ret8 = _FAIL;
 		goto exit;
 	}
 
 	if (init_mlme_ext_priv(padapter) == _FAIL)
 	{
 		RT_TRACE(_module_os_intfs_c_, _drv_err_, ("\n Can't init mlme_ext_priv\n"));
-		ret8 =_FAIL;
+		ret8 = _FAIL;
 		goto exit;
 	}
 
 	if (_rtw_init_xmit_priv(&padapter->xmitpriv, padapter) == _FAIL)
 	{
 		DBG_871X("Can't _rtw_init_xmit_priv\n");
-		ret8 =_FAIL;
+		ret8 = _FAIL;
 		goto exit;
 	}
 
 	if (_rtw_init_recv_priv(&padapter->recvpriv, padapter) == _FAIL)
 	{
 		DBG_871X("Can't _rtw_init_recv_priv\n");
-		ret8 =_FAIL;
+		ret8 = _FAIL;
 		goto exit;
 	}
 	/*  add for CONFIG_IEEE80211W, none 11w also can use */
@@ -880,7 +880,7 @@ u8 rtw_init_drv_sw(_adapter *padapter)
 	if (_rtw_init_sta_priv(&padapter->stapriv) == _FAIL)
 	{
 		DBG_871X("Can't _rtw_init_sta_priv\n");
-		ret8 =_FAIL;
+		ret8 = _FAIL;
 		goto exit;
 	}
 
@@ -897,7 +897,7 @@ u8 rtw_init_drv_sw(_adapter *padapter)
 	if (rtw_init_intel_widi(padapter) == _FAIL)
 	{
 		DBG_871X("Can't rtw_init_intel_widi\n");
-		ret8 =_FAIL;
+		ret8 = _FAIL;
 		goto exit;
 	}
 #endif /* CONFIG_INTEL_WIDI */
@@ -1026,7 +1026,7 @@ int rtw_drv_register_netdev(_adapter *if1)
 
 	if (dvobj->iface_nums < IFACE_ID_MAX)
 	{
-		for (i =0; i<dvobj->iface_nums; i++)
+		for (i = 0; i<dvobj->iface_nums; i++)
 		{
 			_adapter *padapter = dvobj->padapters[i];
 
@@ -1074,7 +1074,7 @@ int _netdev_open(struct net_device *pnetdev)
 		padapter->bCardDisableWOHSM = false;
 
 		status = rtw_hal_init(padapter);
-		if (status ==_FAIL)
+		if (status == _FAIL)
 		{
 			RT_TRACE(_module_os_intfs_c_, _drv_err_, ("rtl871x_hal_init(): Can't init h/w!\n"));
 			goto netdev_open_error;
@@ -1083,7 +1083,7 @@ int _netdev_open(struct net_device *pnetdev)
 		DBG_871X("MAC Address = "MAC_FMT"\n", MAC_ARG(pnetdev->dev_addr));
 
 		status =rtw_start_drv_threads(padapter);
-		if (status ==_FAIL)
+		if (status == _FAIL)
 		{
 			DBG_871X("Initialize driver software resource Failed!\n");
 			goto netdev_open_error;
@@ -1165,7 +1165,7 @@ static int  ips_netdrv_open(_adapter *padapter)
 	/* padapter->bup = true; */
 
 	status = rtw_hal_init(padapter);
-	if (status ==_FAIL)
+	if (status == _FAIL)
 	{
 		RT_TRACE(_module_os_intfs_c_, _drv_err_, ("ips_netdrv_open(): Can't init h/w!\n"));
 		goto netdev_open_error;
@@ -1779,7 +1779,7 @@ int rtw_resume_process_wow(_adapter *padapter)
 		DBG_871X_LEVEL(_drv_always_, "%s: ### ERROR ### wowlan_mode =%d\n", __FUNCTION__, pwrpriv->wowlan_mode);
 	}
 
-	if (padapter->pid[1]!=0) {
+	if (padapter->pid[1]!= 0) {
 		DBG_871X("pid[1]:%d\n", padapter->pid[1]);
 		rtw_signal_process(padapter->pid[1], SIGUSR2);
 	}
@@ -1885,7 +1885,7 @@ int rtw_resume_process_ap_wow(_adapter *padapter)
 			rtw_netif_wake_queue(pnetdev);
 	}
 
-	if (padapter->pid[1]!=0) {
+	if (padapter->pid[1]!= 0) {
 		DBG_871X("pid[1]:%d\n", padapter->pid[1]);
 		rtw_signal_process(padapter->pid[1], SIGUSR2);
 	}
@@ -1925,7 +1925,7 @@ static int rtw_resume_process_normal(_adapter *padapter)
 	DBG_871X("==> "FUNC_ADPT_FMT" entry....\n", FUNC_ADPT_ARG(padapter));
 	/*  interface init */
 	/* if (sdio_init(adapter_to_dvobj(padapter)) != _SUCCESS) */
-	if ((padapter->intf_init)&& (padapter->intf_init(adapter_to_dvobj(padapter)) != _SUCCESS))
+	if ((padapter->intf_init) && (padapter->intf_init(adapter_to_dvobj(padapter)) != _SUCCESS))
 	{
 		ret = -1;
 		RT_TRACE(_module_hci_intfs_c_, _drv_err_, ("%s: initialize SDIO Failed!!\n", __FUNCTION__));
@@ -1933,7 +1933,7 @@ static int rtw_resume_process_normal(_adapter *padapter)
 	}
 	rtw_hal_disable_interrupt(padapter);
 	/* if (sdio_alloc_irq(adapter_to_dvobj(padapter)) != _SUCCESS) */
-	if ((padapter->intf_alloc_irq)&&(padapter->intf_alloc_irq(adapter_to_dvobj(padapter)) != _SUCCESS))
+	if ((padapter->intf_alloc_irq) && (padapter->intf_alloc_irq(adapter_to_dvobj(padapter)) != _SUCCESS))
 	{
 		ret = -1;
 		RT_TRACE(_module_hci_intfs_c_, _drv_err_, ("%s: sdio_alloc_irq Failed!!\n", __FUNCTION__));
@@ -1953,7 +1953,7 @@ static int rtw_resume_process_normal(_adapter *padapter)
 	netif_device_attach(pnetdev);
 	netif_carrier_on(pnetdev);
 
-	if (padapter->pid[1]!=0) {
+	if (padapter->pid[1]!= 0) {
 		DBG_871X("pid[1]:%d\n", padapter->pid[1]);
 		rtw_signal_process(padapter->pid[1], SIGUSR2);
 	}

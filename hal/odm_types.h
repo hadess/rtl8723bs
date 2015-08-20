@@ -49,7 +49,7 @@ typedef enum _RT_SPINLOCK_TYPE{
 	RT_INITIAL_SPINLOCK = 11,
 	RT_RF_STATE_SPINLOCK = 12, /*  For RF state. Added by Bruce, 2007-10-30. */
 	/* Shall we define Ndis 6.2 SpinLock Here ? */
-	RT_PORT_SPINLOCK =16,
+	RT_PORT_SPINLOCK = 16,
 	RT_H2C_SPINLOCK = 20, /*  For H2C cmd. Added by tynli. 2009.11.09. */
 
 	RT_BTData_SPINLOCK =25,

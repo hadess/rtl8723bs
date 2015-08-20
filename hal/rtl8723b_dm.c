@@ -229,7 +229,7 @@ skip_dm:
 
 void rtl8723b_hal_dm_in_lps(PADAPTER padapter)
 {
-	u32	PWDB_rssi =0;
+	u32	PWDB_rssi = 0;
 	struct mlme_priv	*pmlmepriv = &padapter->mlmepriv;
 	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(padapter);
 	PDM_ODM_T		pDM_Odm = &pHalData->odmpriv;
@@ -292,7 +292,7 @@ void rtl8723b_HalDmWatchDog_in_LPS(IN	PADAPTER	Adapter)
 
 	DBG_871X("CurIGValue =%d, EntryMinUndecoratedSmoothedPWDB = %d\n", pDM_DigTable->CurIGValue, pdmpriv->EntryMinUndecoratedSmoothedPWDB);
 
-	if (pdmpriv->EntryMinUndecoratedSmoothedPWDB <=0)
+	if (pdmpriv->EntryMinUndecoratedSmoothedPWDB <= 0)
 		goto skip_lps_dm;
 
 	pdmpriv->MinUndecoratedPWDBForDM = pdmpriv->EntryMinUndecoratedSmoothedPWDB;

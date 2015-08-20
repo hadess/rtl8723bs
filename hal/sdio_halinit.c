@@ -176,17 +176,17 @@ u8 _InitPowerOn_8723BS(PADAPTER padapter)
 	/*  Switch the control of EESK, EECS to RFC for DPDT or Antenna switch */
 	value16 |= BIT(11); /*  BIT_EEPRPAD_RFE_CTRL_EN */
 	rtw_write16(padapter, REG_PWR_DATA, value16);
-/* 	DBG_8192C("%s: REG_PWR_DATA(0x%x) =0x%04X\n", __FUNCTION__, REG_PWR_DATA, rtw_read16(padapter, REG_PWR_DATA)); */
+/* 	DBG_8192C("%s: REG_PWR_DATA(0x%x) = 0x%04X\n", __FUNCTION__, REG_PWR_DATA, rtw_read16(padapter, REG_PWR_DATA)); */
 
 	value32 = rtw_read32(padapter, REG_LEDCFG0);
 	value32 |= BIT(23); /*  DPDT_SEL_EN, 1 for SW control */
 	rtw_write32(padapter, REG_LEDCFG0, value32);
-/* 	DBG_8192C("%s: REG_LEDCFG0(0x%x) =0x%08X\n", __FUNCTION__, REG_LEDCFG0, rtw_read32(padapter, REG_LEDCFG0)); */
+/* 	DBG_8192C("%s: REG_LEDCFG0(0x%x) = 0x%08X\n", __FUNCTION__, REG_LEDCFG0, rtw_read32(padapter, REG_LEDCFG0)); */
 
 	value8 = rtw_read8(padapter, REG_PAD_CTRL1_8723B);
 	value8 &= ~BIT(0); /*  BIT_SW_DPDT_SEL_DATA, DPDT_SEL default configuration */
 	rtw_write8(padapter, REG_PAD_CTRL1_8723B, value8);
-/* 	DBG_8192C("%s: REG_PAD_CTRL1(0x%x) =0x%02X\n", __FUNCTION__, REG_PAD_CTRL1_8723B, rtw_read8(padapter, REG_PAD_CTRL1_8723B)); */
+/* 	DBG_8192C("%s: REG_PAD_CTRL1(0x%x) = 0x%02X\n", __FUNCTION__, REG_PAD_CTRL1_8723B, rtw_read8(padapter, REG_PAD_CTRL1_8723B)); */
 
 #ifdef CONFIG_GPIO_WAKEUP
 	HostWakeUpGpioClear(padapter);
@@ -818,7 +818,7 @@ static u32 rtl8723bs_hal_init(PADAPTER padapter)
 
 #ifdef CONFIG_WOWLAN
 	if (rtw_read8(padapter, REG_MCUFWDL)&BIT7) {
-		u8 reg_val =0;
+		u8 reg_val = 0;
 		DBG_871X("+Reset Entry+\n");
 		rtw_write8(padapter, REG_MCUFWDL, 0x00);
 		_8051Reset8723(padapter);
@@ -1087,12 +1087,12 @@ static void CardDisableRTL8723BSdio(PADAPTER padapter)
 	if ((u1bTmp & RAM_DL_SEL) && padapter->bFWReady) /* 8051 RAM code */
 		rtl8723b_FirmwareSelfReset(padapter);
 
-	/*  Reset MCU 0x2[10]=0. Suggested by Filen. 2011.01.26. by tynli. */
+	/*  Reset MCU 0x2[10]= 0. Suggested by Filen. 2011.01.26. by tynli. */
 	u1bTmp = rtw_read8(padapter, REG_SYS_FUNC_EN+1);
 	u1bTmp &= ~BIT(2);	/*  0x2[10], FEN_CPUEN */
 	rtw_write8(padapter, REG_SYS_FUNC_EN+1, u1bTmp);
 
-	/*  MCUFWDL 0x80[1:0]=0 */
+	/*  MCUFWDL 0x80[1:0]= 0 */
 	/*  reset MCU ready status */
 	rtw_write8(padapter, REG_MCUFWDL, 0);
 
@@ -1126,19 +1126,19 @@ static u32 rtl8723bs_hal_deinit(PADAPTER padapter)
 		{
 			if (padapter->netif_up == true)
 			{
-				int cnt =0;
+				int cnt = 0;
 				u8 val8 = 0;
 
 				DBG_871X("%s: issue H2C to FW when entering IPS\n", __FUNCTION__);
 
 				rtl8723b_set_FwPwrModeInIPS_cmd(padapter, 0x3);
-				/* poll 0x1cc to make sure H2C command already finished by FW; MAC_0x1cc =0 means H2C done by FW. */
+				/* poll 0x1cc to make sure H2C command already finished by FW; MAC_0x1cc = 0 means H2C done by FW. */
 				do{
 					val8 = rtw_read8(padapter, REG_HMETFR);
 					cnt++;
-					DBG_871X("%s  polling REG_HMETFR =0x%x, cnt =%d \n", __FUNCTION__, val8, cnt);
+					DBG_871X("%s  polling REG_HMETFR = 0x%x, cnt =%d \n", __FUNCTION__, val8, cnt);
 					mdelay(10);
-				}while (cnt<100 && (val8!=0));
+				}while (cnt<100 && (val8!= 0));
 				/* H2C done, enter 32k */
 				if (val8 == 0)
 				{
@@ -1153,9 +1153,9 @@ static u32 rtl8723bs_hal_deinit(PADAPTER padapter)
 					do{
 						val8 = rtw_read8(padapter, REG_CR);
 						cnt++;
-						DBG_871X("%s  polling 0x100 =0x%x, cnt =%d \n", __FUNCTION__, val8, cnt);
+						DBG_871X("%s  polling 0x100 = 0x%x, cnt =%d \n", __FUNCTION__, val8, cnt);
 						mdelay(10);
-					}while (cnt<100 && (val8!=0xEA));
+					}while (cnt<100 && (val8!= 0xEA));
 				}
 				else
 				{
@@ -1163,7 +1163,7 @@ static u32 rtl8723bs_hal_deinit(PADAPTER padapter)
 					, rtw_read32(padapter, 0x1c8), rtw_read32(padapter, 0x1cc));
 				}
 
-				DBG_871X("polling done when entering IPS, check result : 0x100 =0x%x, cnt =%d, MAC_1cc =0x%02x\n"
+				DBG_871X("polling done when entering IPS, check result : 0x100 = 0x%x, cnt =%d, MAC_1cc = 0x%02x\n"
 				, rtw_read8(padapter, REG_CR), cnt, rtw_read8(padapter, REG_HMETFR));
 
 				adapter_to_pwrctl(padapter)->pre_ips_type = 0;
@@ -1303,7 +1303,7 @@ Hal_EfuseParseMACAddr_8723BS(
 	if (AutoLoadFail)
 	{
 /* 		sMacAddr[5] = (u1Byte)GetRandomNumber(1, 254); */
-		for (i =0; i<6; i++)
+		for (i = 0; i<6; i++)
 			pEEPROM->mac_addr[i] = sMacAddr[i];
 	}
 	else
@@ -1404,7 +1404,7 @@ static void _ReadPROMContent(
 	pEEPROM->bautoload_fail_flag = (eeValue & EEPROM_EN) ? false : true;
 
 	RT_TRACE(_module_hci_hal_init_c_, _drv_info_,
-		 ("%s: 9346CR =0x%02X, Boot from %s, Autoload %s\n",
+		 ("%s: 9346CR = 0x%02X, Boot from %s, Autoload %s\n",
 		  __FUNCTION__, eeValue,
 		  (pEEPROM->EepromOrEfuse ? "EEPROM" : "EFUSE"),
 		  (pEEPROM->bautoload_fail_flag ? "Fail" : "OK")));
@@ -1442,7 +1442,7 @@ static s32 _ReadAdapterInfo8723BS(PADAPTER padapter)
 
 
 	val8 = rtw_read8(padapter, 0x4e);
-	MSG_8192C("%s, 0x4e =0x%x\n", __func__, val8);
+	MSG_8192C("%s, 0x4e = 0x%x\n", __func__, val8);
 	val8 |= BIT(6);
 	rtw_write8(padapter, 0x4e, val8);
 
@@ -1493,7 +1493,7 @@ static void SetHwReg8723BS(PADAPTER padapter, u8 variable, u8 *val)
 	struct dvobj_priv *psdpriv = padapter->dvobj;
 	struct debug_priv *pdbgpriv = &psdpriv->drv_dbg;
 	int res, i;
-	u32 tmp =0, tmp1 =0, himr =0;
+	u32 tmp = 0, tmp1 = 0, himr = 0;
 	u64 iv_low = 0, iv_high = 0;
 	u16 len = 0;
 	u8 mstatus = (*(u8 *)val);
@@ -1518,7 +1518,7 @@ static void SetHwReg8723BS(PADAPTER padapter, u8 variable, u8 *val)
 			break;
 		case HW_VAR_SET_REQ_FW_PS:
 			{
-				u8 req_fw_ps =0;
+				u8 req_fw_ps = 0;
 				req_fw_ps = rtw_read8(padapter, 0x8f);
 				req_fw_ps |= 0x10;
 				rtw_write8(padapter, 0x8f, req_fw_ps);
@@ -1567,7 +1567,7 @@ static void SetHwReg8723BS(PADAPTER padapter, u8 variable, u8 *val)
 							DBG_871X_LEVEL(_drv_always_, "RecvOnePkt Result: %d\n", res);
                                                 }
 					}while (trycnt--);
-					if (trycnt ==0)
+					if (trycnt == 0)
 						DBG_871X_LEVEL(_drv_always_, "Stop RX DMA failed...... \n");
 
 					/*  3. Clear IMR and ISR */
@@ -1618,9 +1618,9 @@ static void SetHwReg8723BS(PADAPTER padapter, u8 variable, u8 *val)
 
 					/*  1. Read wakeup reason */
 					pwrctl->wowlan_wake_reason = rtw_read8(padapter, REG_WOWLAN_WAKE_REASON);
-					DBG_871X_LEVEL(_drv_always_, "wakeup_reason: 0x%02x, mac_630 =0x%08x, mac_634 =0x%08x, mac_1c0 =0x%08x, mac_1c4 =0x%08x"
-					", mac_494 =0x%08x, , mac_498 =0x%08x, mac_49c =0x%08x, mac_608 =0x%08x, mac_4a0 =0x%08x, mac_4a4 =0x%08x\n"
-					", mac_1cc =0x%08x, mac_2f0 =0x%08x, mac_2f4 =0x%08x, mac_2f8 =0x%08x, mac_2fc =0x%08x, mac_8c =0x%08x"
+					DBG_871X_LEVEL(_drv_always_, "wakeup_reason: 0x%02x, mac_630 = 0x%08x, mac_634 = 0x%08x, mac_1c0 = 0x%08x, mac_1c4 = 0x%08x"
+					", mac_494 = 0x%08x, , mac_498 = 0x%08x, mac_49c = 0x%08x, mac_608 = 0x%08x, mac_4a0 = 0x%08x, mac_4a4 = 0x%08x\n"
+					", mac_1cc = 0x%08x, mac_2f0 = 0x%08x, mac_2f4 = 0x%08x, mac_2f8 = 0x%08x, mac_2fc = 0x%08x, mac_8c = 0x%08x"
 					, pwrctl->wowlan_wake_reason, rtw_read32(padapter, REG_WOWLAN_GTK_DBG1), rtw_read32(padapter, REG_WOWLAN_GTK_DBG2)
 					, rtw_read32(padapter, 0x1c0), rtw_read32(padapter, 0x1c4)
 					, rtw_read32(padapter, 0x494), rtw_read32(padapter, 0x498), rtw_read32(padapter, 0x49c), rtw_read32(padapter, 0x608)
@@ -1651,7 +1651,7 @@ static void SetHwReg8723BS(PADAPTER padapter, u8 variable, u8 *val)
 
 						if (mstatus & BIT1) {
 							DBG_871X_LEVEL(_drv_always_, "Disable WOW mode fail!!\n");
-							DBG_871X("Set 0x690 =0x00\n");
+							DBG_871X("Set 0x690 = 0x00\n");
 							rtw_write8(padapter, REG_WOW_CTRL, (rtw_read8(padapter, REG_WOW_CTRL)&0xf0));
 							DBG_871X_LEVEL(_drv_always_, "Release RXDMA\n");
 							rtw_write32(padapter, REG_RXPKT_NUM, (rtw_read32(padapter, REG_RXPKT_NUM)&(~RW_RELEASE_EN)));
@@ -1671,7 +1671,7 @@ static void SetHwReg8723BS(PADAPTER padapter, u8 variable, u8 *val)
 						/*  3.2 read GTK index and key */
 						if (psecuritypriv->binstallKCK_KEK == true && psecuritypriv->dot11PrivacyAlgrthm == _AES_)
 						{
-							u8 gtk_keyindex =0;
+							u8 gtk_keyindex = 0;
 							u8 get_key[16];
 							/* read gtk key index */
 							gtk_keyindex = rtw_read8(padapter, 0x48c);

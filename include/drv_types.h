@@ -642,8 +642,8 @@ struct _ADAPTER{
 
 	/* for debug purpose */
 	u8 fix_rate;
-	u8 driver_vcs_en; /* Enable =1, Disable =0 driver control vrtl_carrier_sense for tx */
-	u8 driver_vcs_type;/* force 0:disable VCS, 1:RTS-CTS, 2:CTS-to-self when vcs_en =1. */
+	u8 driver_vcs_en; /* Enable = 1, Disable = 0 driver control vrtl_carrier_sense for tx */
+	u8 driver_vcs_type;/* force 0:disable VCS, 1:RTS-CTS, 2:CTS-to-self when vcs_en = 1. */
 	u8 driver_ampdu_spacing;/* driver control AMPDU Density for peer sta's rx */
 	u8 driver_rx_ampdu_factor;/* 0xff: disable drv ctrl, 0:8k, 1:16k, 2:32k, 3:64k; */
 

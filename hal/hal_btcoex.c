@@ -138,7 +138,7 @@ static void halbtcoutsrc_DbgInit(void)
 {
 	u8	i;
 
-	for (i =0; i<BTC_MSG_MAX; i++)
+	for (i = 0; i<BTC_MSG_MAX; i++)
 		GLBtcDbgType[i] = 0;
 
 	GLBtcDbgType[BTC_MSG_INTERFACE]			=	\
@@ -818,7 +818,7 @@ static void halbtcoutsrc_BitMaskWrite1Byte(void *pBtcContext, u32 regAddr, u8 bi
 	{
 		originalValue = rtw_read8(padapter, regAddr);
 
-		for (i =0; i<=7; i++)
+		for (i = 0; i<=7; i++)
 		{
 			if ((bitMask>>i)&0x1)
 				break;
@@ -1605,7 +1605,7 @@ u32 hal_btcoex_GetRaMask(PADAPTER padapter)
 
 void hal_btcoex_RecordPwrMode(PADAPTER padapter, u8 *pCmdBuf, u8 cmdLen)
 {
-	BTC_PRINT(BTC_MSG_ALGORITHM, ALGO_TRACE_FW_EXEC, ("[BTCoex], FW write pwrModeCmd =0x%04x%08x\n",
+	BTC_PRINT(BTC_MSG_ALGORITHM, ALGO_TRACE_FW_EXEC, ("[BTCoex], FW write pwrModeCmd = 0x%04x%08x\n",
 		pCmdBuf[0]<<8|pCmdBuf[1],
 		pCmdBuf[2]<<24|pCmdBuf[3]<<16|pCmdBuf[4]<<8|pCmdBuf[5]));
 
@@ -1631,7 +1631,7 @@ void hal_btcoex_SetDBG(PADAPTER padapter, u32 *pDbgModule)
 	if (NULL == pDbgModule)
 		return;
 
-	for (i =0; i<BTC_MSG_MAX; i++)
+	for (i = 0; i<BTC_MSG_MAX; i++)
 		GLBtcDbgType[i] = pDbgModule[i];
 }
 

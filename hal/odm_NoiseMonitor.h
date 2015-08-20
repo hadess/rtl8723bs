@@ -23,10 +23,10 @@ struct noise_level
 	/* s8				sval_a, sval_b; */
 	s8				sval[MAX_RF_PATH];
 
-	/* s4Byte				noise_a =0, noise_b =0, sum_a =0, sum_b =0; */
+	/* s4Byte				noise_a = 0, noise_b = 0, sum_a = 0, sum_b = 0; */
 	/* s4Byte				noise[ODM_RF_PATH_MAX]; */
 	s4Byte				sum[MAX_RF_PATH];
-	/* u1Byte				valid_cnt_a =0, valid_cnt_b =0, */
+	/* u1Byte				valid_cnt_a = 0, valid_cnt_b = 0, */
 	u1Byte				valid[MAX_RF_PATH];
 	u1Byte				valid_cnt[MAX_RF_PATH];
 

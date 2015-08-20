@@ -54,7 +54,7 @@ struct recv_reorder_ctrl
 {
 	_adapter	*padapter;
 	u8 enable;
-	u16 indicate_seq;/* wstart_b, init_value =0xffff */
+	u16 indicate_seq;/* wstart_b, init_value = 0xffff */
 	u16 wend_b;
 	u8 wsize_b;
 	_queue pending_recvframe_queue;
@@ -195,7 +195,7 @@ struct rx_pkt_attrib	{
 
 
 /* These definition is used for Rx packet reordering. */
-#define SN_LESS(a, b)		(((a-b)&0x800)!=0)
+#define SN_LESS(a, b)		(((a-b)&0x800)!= 0)
 #define SN_EQUAL(a, b)	(a == b)
 /* define REORDER_WIN_SIZE	128 */
 /* define REORDER_ENTRY_NUM	128 */
@@ -544,7 +544,7 @@ __inline static s32 translate_percentage_to_dbm(u32 SignalStrengthIndex)
 	/*  Translate to dBm (x =y-100) */
 	SignalPower = SignalStrengthIndex - 100;
 #else
-	/*  Translate to dBm (x =0.5y-95). */
+	/*  Translate to dBm (x = 0.5y-95). */
 	SignalPower = (s32)((SignalStrengthIndex + 1) >> 1);
 	SignalPower -= 95;
 #endif

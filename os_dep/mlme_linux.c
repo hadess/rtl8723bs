@@ -61,7 +61,7 @@ void rtw_os_indicate_connect(_adapter *adapter)
 	rtw_indicate_wx_assoc_event(adapter);
 	netif_carrier_on(adapter->pnetdev);
 
-	if (adapter->pid[2] !=0)
+	if (adapter->pid[2] != 0)
 		rtw_signal_process(adapter->pid[2], SIGALRM);
 }
 
@@ -157,7 +157,7 @@ void rtw_report_sec_ie(_adapter *adapter, u8 authmode, u8 *sec_ie)
 	RT_TRACE(_module_mlme_osdep_c_, _drv_info_, ("+rtw_report_sec_ie, authmode =%d\n", authmode));
 
 	buff = NULL;
-	if (authmode ==_WPA_IE_ID_)
+	if (authmode == _WPA_IE_ID_)
 	{
 		RT_TRACE(_module_mlme_osdep_c_, _drv_info_, ("rtw_report_sec_ie, authmode =%d\n", authmode));
 
@@ -174,7 +174,7 @@ void rtw_report_sec_ie(_adapter *adapter, u8 authmode, u8 *sec_ie)
 		len = sec_ie[1]+2;
 		len = (len < IW_CUSTOM_MAX) ? len:IW_CUSTOM_MAX;
 
-		for (i =0;i<len;i++){
+		for (i = 0;i<len;i++){
 			p+=sprintf(p,"%02x", sec_ie[i]);
 		}
 

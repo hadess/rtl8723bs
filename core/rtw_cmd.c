@@ -177,7 +177,7 @@ No irqsave is necessary.
 
 sint	_rtw_init_cmd_priv (struct	cmd_priv *pcmdpriv)
 {
-	sint res =_SUCCESS;
+	sint res = _SUCCESS;
 
 	sema_init(&(pcmdpriv->cmd_queue_sema), 0);
 	/* sema_init(&(pcmdpriv->cmd_done_sema), 0); */
@@ -218,7 +218,7 @@ exit:
 static void c2h_wk_callback(_workitem *work);
 sint _rtw_init_evt_priv(struct evt_priv *pevtpriv)
 {
-	sint res =_SUCCESS;
+	sint res = _SUCCESS;
 
 	/* allocate DMA-able/Non-Page memory for cmd_buf and rsp_buf */
 	atomic_set(&pevtpriv->event_seq, 0);
@@ -403,16 +403,14 @@ struct	cmd_obj	*rtw_dequeue_cmd(struct cmd_priv *pcmdpriv)
 
 void rtw_free_cmd_obj(struct cmd_obj *pcmd)
 {
-	if ((pcmd->cmdcode!=_JoinBss_CMD_) &&(pcmd->cmdcode!= _CreateBss_CMD_))
-	{
+	if ((pcmd->cmdcode!= _JoinBss_CMD_) &&
+	    (pcmd->cmdcode!= _CreateBss_CMD_)) {
 		/* free parmbuf in cmd_obj */
 		kfree((unsigned char*)pcmd->parmbuf);
 	}
 
-	if (pcmd->rsp!=NULL)
-	{
-		if (pcmd->rspsz!= 0)
-		{
+	if (pcmd->rsp!=NULL) {
+		if (pcmd->rspsz!= 0) {
 			/* free rsp in cmd_obj */
 			kfree((unsigned char*)pcmd->rsp);
 		}
@@ -575,7 +573,7 @@ post_process:
 			pcmd_callback = rtw_cmd_callback[pcmd->cmdcode].callback;
 			if (pcmd_callback == NULL)
 			{
-				RT_TRACE(_module_rtl871x_cmd_c_, _drv_info_, ("mlme_cmd_hdl(): pcmd_callback =0x%p, cmdcode =0x%x\n", pcmd_callback, pcmd->cmdcode));
+				RT_TRACE(_module_rtl871x_cmd_c_, _drv_info_, ("mlme_cmd_hdl(): pcmd_callback = 0x%p, cmdcode = 0x%x\n", pcmd_callback, pcmd->cmdcode));
 				rtw_free_cmd_obj(pcmd);
 			}
 			else
@@ -586,7 +584,7 @@ post_process:
 		}
 		else
 		{
-			RT_TRACE(_module_rtl871x_cmd_c_, _drv_err_, ("%s: cmdcode =0x%x callback not defined!\n", __FUNCTION__, pcmd->cmdcode));
+			RT_TRACE(_module_rtl871x_cmd_c_, _drv_err_, ("%s: cmdcode = 0x%x callback not defined!\n", __FUNCTION__, pcmd->cmdcode));
 			rtw_free_cmd_obj(pcmd);
 		}
 
@@ -662,7 +660,7 @@ u8 rtw_sitesurvey_cmd(_adapter  *padapter, NDIS_802_11_SSID *ssid, int ssid_num,
 	/* prepare ssid list */
 	if (ssid) {
 		int i;
-		for (i =0; i<ssid_num && i< RTW_SSID_SCAN_AMOUNT; i++) {
+		for (i = 0; i<ssid_num && i< RTW_SSID_SCAN_AMOUNT; i++) {
 			if (ssid[i].SsidLength) {
 				memcpy(&psurveyPara->ssid[i], &ssid[i], sizeof(NDIS_802_11_SSID));
 				psurveyPara->ssid_num++;
@@ -676,7 +674,7 @@ u8 rtw_sitesurvey_cmd(_adapter  *padapter, NDIS_802_11_SSID *ssid, int ssid_num,
 	/* prepare channel list */
 	if (ch) {
 		int i;
-		for (i =0; i<ch_num && i< RTW_CHANNEL_SCAN_AMOUNT; i++) {
+		for (i = 0; i<ch_num && i< RTW_CHANNEL_SCAN_AMOUNT; i++) {
 			if (ch[i].hw_value && !(ch[i].flags & RTW_IEEE80211_CHAN_DISABLED)) {
 				memcpy(&psurveyPara->ch[i], &ch[i], sizeof(struct rtw_ieee80211_channel));
 				psurveyPara->ch_num++;
@@ -743,7 +741,7 @@ u8 rtw_createbss_cmd(_adapter  *padapter)
 	struct cmd_priv				*pcmdpriv =&padapter->cmdpriv;
 	struct mlme_priv			*pmlmepriv = &padapter->mlmepriv;
 	WLAN_BSSID_EX		*pdev_network = &padapter->registrypriv.dev_network;
-	u8	res =_SUCCESS;
+	u8	res = _SUCCESS;
 
 	if (pmlmepriv->assoc_ssid.SsidLength == 0){
 		RT_TRACE(_module_rtl871x_cmd_c_, _drv_info_, (" createbss for Any SSid:%s\n", pmlmepriv->assoc_ssid.Ssid));
@@ -777,7 +775,7 @@ u8 rtw_startbss_cmd(_adapter  *padapter, int flags)
 	struct cmd_obj* pcmd;
 	struct cmd_priv  *pcmdpriv =&padapter->cmdpriv;
 	struct submit_ctx sctx;
-	u8 res =_SUCCESS;
+	u8 res = _SUCCESS;
 
 	if (flags & RTW_CMDF_DIRECTLY) {
 		/* no need to enqueue, do the cmd hdl directly and free cmd parameter */
@@ -844,7 +842,7 @@ u8 rtw_joinbss_cmd(_adapter  *padapter, struct wlan_network* pnetwork)
 
 	pcmd = (struct cmd_obj*)rtw_zmalloc(sizeof(struct cmd_obj));
 	if (pcmd ==NULL){
-		res =_FAIL;
+		res = _FAIL;
 		RT_TRACE(_module_rtl871x_cmd_c_, _drv_err_, ("rtw_joinbss_cmd: memory allocate for cmd_obj fail!!!\n"));
 		goto exit;
 	}
@@ -879,7 +877,7 @@ u8 rtw_joinbss_cmd(_adapter  *padapter, struct wlan_network* pnetwork)
 		if (pcmd !=NULL)
 			kfree((unsigned char *)pcmd);
 
-		res =_FAIL;
+		res = _FAIL;
 
 		RT_TRACE(_module_rtl871x_cmd_c_, _drv_err_, ("rtw_joinbss_cmd :psecnetwork ==NULL!!!\n"));
 
@@ -1014,12 +1012,12 @@ u8 rtw_setopmode_cmd(_adapter  *padapter, NDIS_802_11_NETWORK_INFRASTRUCTURE net
 	struct	setopmode_parm* psetop;
 
 	struct	cmd_priv   *pcmdpriv = &padapter->cmdpriv;
-	u8	res =_SUCCESS;
+	u8	res = _SUCCESS;
 
 	psetop = (struct setopmode_parm*)rtw_zmalloc(sizeof(struct setopmode_parm));
 
 	if (psetop ==NULL){
-		res =_FAIL;
+		res = _FAIL;
 		goto exit;
 	}
 	psetop->mode = (u8)networktype;
@@ -1052,11 +1050,11 @@ u8 rtw_setstakey_cmd(_adapter *padapter, struct sta_info *sta, u8 unicast_key, b
 
 	struct mlme_priv			*pmlmepriv = &padapter->mlmepriv;
 	struct security_priv		*psecuritypriv = &padapter->securitypriv;
-	u8	res =_SUCCESS;
+	u8	res = _SUCCESS;
 
 	psetstakey_para = (struct set_stakey_parm*)rtw_zmalloc(sizeof(struct set_stakey_parm));
 	if (psetstakey_para ==NULL){
-		res =_FAIL;
+		res = _FAIL;
 		goto exit;
 	}
 
@@ -1091,7 +1089,7 @@ u8 rtw_setstakey_cmd(_adapter *padapter, struct sta_info *sta, u8 unicast_key, b
 		if (psetstakey_rsp == NULL){
 			kfree((u8 *) ph2c);
 			kfree((u8 *) psetstakey_para);
-			res =_FAIL;
+			res = _FAIL;
 			goto exit;
 		}
 
@@ -1115,7 +1113,7 @@ u8 rtw_clearstakey_cmd(_adapter *padapter, struct sta_info *sta, u8 enqueue)
 	struct cmd_priv				*pcmdpriv =&padapter->cmdpriv;
 	struct set_stakey_rsp		*psetstakey_rsp = NULL;
 	s16 cam_id = 0;
-	u8	res =_SUCCESS;
+	u8	res = _SUCCESS;
 
 	if (!enqueue)
 	{
@@ -1136,7 +1134,7 @@ u8 rtw_clearstakey_cmd(_adapter *padapter, struct sta_info *sta, u8 enqueue)
 		psetstakey_para = (struct set_stakey_parm*)rtw_zmalloc(sizeof(struct set_stakey_parm));
 		if (psetstakey_para ==NULL){
 			kfree((u8 *) ph2c);
-			res =_FAIL;
+			res = _FAIL;
 			goto exit;
 		}
 
@@ -1144,7 +1142,7 @@ u8 rtw_clearstakey_cmd(_adapter *padapter, struct sta_info *sta, u8 enqueue)
 		if (psetstakey_rsp == NULL){
 			kfree((u8 *) ph2c);
 			kfree((u8 *) psetstakey_para);
-			res =_FAIL;
+			res = _FAIL;
 			goto exit;
 		}
 
@@ -1170,7 +1168,7 @@ u8 rtw_addbareq_cmd(_adapter*padapter, u8 tid, u8 *addr)
 	struct cmd_obj*		ph2c;
 	struct addBaReq_parm	*paddbareq_parm;
 
-	u8	res =_SUCCESS;
+	u8	res = _SUCCESS;
 
 	ph2c = (struct cmd_obj*)rtw_zmalloc(sizeof(struct cmd_obj));
 	if (ph2c ==NULL){
@@ -1204,7 +1202,7 @@ u8 rtw_reset_securitypriv_cmd(_adapter*padapter)
 	struct cmd_obj*		ph2c;
 	struct drvextra_cmd_parm  *pdrvextra_cmd_parm;
 	struct cmd_priv	*pcmdpriv =&padapter->cmdpriv;
-	u8	res =_SUCCESS;
+	u8	res = _SUCCESS;
 
 	ph2c = (struct cmd_obj*)rtw_zmalloc(sizeof(struct cmd_obj));
 	if (ph2c ==NULL){
@@ -1239,7 +1237,7 @@ u8 rtw_free_assoc_resources_cmd(_adapter*padapter)
 	struct cmd_obj*		ph2c;
 	struct drvextra_cmd_parm  *pdrvextra_cmd_parm;
 	struct cmd_priv	*pcmdpriv =&padapter->cmdpriv;
-	u8	res =_SUCCESS;
+	u8	res = _SUCCESS;
 
 	ph2c = (struct cmd_obj*)rtw_zmalloc(sizeof(struct cmd_obj));
 	if (ph2c ==NULL){
@@ -1274,7 +1272,7 @@ u8 rtw_dynamic_chk_wk_cmd(_adapter*padapter)
 	struct cmd_obj*		ph2c;
 	struct drvextra_cmd_parm  *pdrvextra_cmd_parm;
 	struct cmd_priv	*pcmdpriv =&padapter->cmdpriv;
-	u8	res =_SUCCESS;
+	u8	res = _SUCCESS;
 
 	/* only  primary padapter does this cmd */
 	ph2c = (struct cmd_obj*)rtw_zmalloc(sizeof(struct cmd_obj));
@@ -1310,7 +1308,7 @@ u8 rtw_set_chplan_cmd(_adapter*padapter, u8 chplan, u8 enqueue, u8 swconfig)
 	struct	SetChannelPlan_param *setChannelPlan_param;
 	struct	cmd_priv   *pcmdpriv = &padapter->cmdpriv;
 
-	u8	res =_SUCCESS;
+	u8	res = _SUCCESS;
 
 	RT_TRACE(_module_rtl871x_cmd_c_, _drv_notice_, ("+rtw_set_chplan_cmd\n"));
 
@@ -1341,7 +1339,7 @@ u8 rtw_set_chplan_cmd(_adapter*padapter, u8 chplan, u8 enqueue, u8 swconfig)
 		pcmdobj = (struct	cmd_obj*)rtw_zmalloc(sizeof(struct	cmd_obj));
 		if (pcmdobj == NULL){
 			kfree((u8 *)setChannelPlan_param);
-			res =_FAIL;
+			res = _FAIL;
 			goto exit;
 		}
 
@@ -1728,7 +1726,7 @@ static void rtw_lps_change_dtim_hdl(_adapter *padapter, u8 dtim)
 {
 	struct pwrctrl_priv *pwrpriv = adapter_to_pwrctl(padapter);
 
-	if (dtim <=0 || dtim > 16)
+	if (dtim <= 0 || dtim > 16)
 		return;
 
 	if (rtw_btcoex_IsBtControlLps(padapter) == true)
@@ -1866,7 +1864,7 @@ static void rtw_chk_hi_queue_hdl(_adapter *padapter)
 		rtw_hal_get_hwreg(padapter, HW_VAR_CHK_HI_QUEUE_EMPTY, &empty);
 	}
 
-	if (psta_bmc->sleepq_len ==0)
+	if (psta_bmc->sleepq_len == 0)
 	{
 		if (empty == _SUCCESS)
 		{

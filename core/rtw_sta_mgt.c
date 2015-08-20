@@ -183,7 +183,7 @@ u32	_rtw_free_sta_priv(struct	sta_priv *pstapriv)
 				psta = LIST_CONTAINOR(plist, struct sta_info , hash_list);
 				plist = get_next(plist);
 
-				for (i =0; i < 16 ; i++)
+				for (i = 0; i < 16 ; i++)
 				{
 					preorder_ctrl = &psta->recvreorder_ctrl[i];
 					_cancel_timer_ex(&preorder_ctrl->reordering_ctrl_timer);
@@ -276,7 +276,7 @@ struct	sta_info *rtw_alloc_stainfo(struct	sta_priv *pstapriv, u8 *hwaddr)
 		init_addba_retry_timer(pstapriv->padapter, psta);
 
 		/* for A-MPDU Rx reordering buffer control */
-		for (i =0; i < 16 ; i++)
+		for (i = 0; i < 16 ; i++)
 		{
 			preorder_ctrl = &psta->recvreorder_ctrl[i];
 
@@ -401,7 +401,7 @@ u32	rtw_free_stainfo(_adapter *padapter , struct sta_info *psta)
 	_cancel_timer_ex(&psta->addba_retry_timer);
 
 	/* for A-MPDU Rx reordering buffer control, cancel reordering_ctrl_timer */
-	for (i =0; i < 16 ; i++)
+	for (i = 0; i < 16 ; i++)
 	{
 		_list	*phead, *plist;
 		union recv_frame *prframe;
@@ -469,7 +469,7 @@ u32	rtw_free_stainfo(_adapter *padapter , struct sta_info *psta)
 	pstapriv->sta_dz_bitmap &=~BIT(psta->aid);
 	pstapriv->tim_bitmap &=~BIT(psta->aid);
 
-	if ((psta->aid >0)&&(pstapriv->sta_aid[psta->aid - 1] == psta))
+	if ((psta->aid >0) && (pstapriv->sta_aid[psta->aid - 1] == psta))
 	{
 		pstapriv->sta_aid[psta->aid - 1] = NULL;
 		psta->aid = 0;
@@ -494,12 +494,12 @@ void rtw_free_all_stainfo(_adapter *padapter)
 	struct	sta_priv *pstapriv = &padapter->stapriv;
 	struct sta_info* pbcmc_stainfo =rtw_get_bcmc_stainfo(padapter);
 
-	if (pstapriv->asoc_sta_count ==1)
+	if (pstapriv->asoc_sta_count == 1)
 		return;
 
 	spin_lock_bh(&pstapriv->sta_hash_lock);
 
-	for (index =0; index< NUM_STA; index++)
+	for (index = 0; index< NUM_STA; index++)
 	{
 		phead = &(pstapriv->sta_hash[index]);
 		plist = get_next(phead);
@@ -570,7 +570,7 @@ u32 rtw_init_bcmc_stainfo(_adapter* padapter)
 
 	struct sta_info		*psta;
 	struct tx_servq	*ptxservq;
-	u32 res =_SUCCESS;
+	u32 res = _SUCCESS;
 	NDIS_802_11_MAC_ADDRESS	bcast_addr = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
 
 	struct	sta_priv *pstapriv = &padapter->stapriv;
@@ -579,7 +579,7 @@ u32 rtw_init_bcmc_stainfo(_adapter* padapter)
 	psta = rtw_alloc_stainfo(pstapriv, bcast_addr);
 
 	if (psta ==NULL){
-		res =_FAIL;
+		res = _FAIL;
 		RT_TRACE(_module_rtl871x_sta_mgt_c_, _drv_err_, ("rtw_alloc_stainfo fail"));
 		goto exit;
 	}

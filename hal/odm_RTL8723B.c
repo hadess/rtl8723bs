@@ -25,7 +25,7 @@ odm_CCKRSSI_8723B(
 	IN		u1Byte	VGA_idx
 	)
 {
-	s8	rx_pwr_all =0x00;
+	s8	rx_pwr_all = 0x00;
 	switch (LNA_idx)
 	{
 		/* 46  53 73 95 201301231630 */

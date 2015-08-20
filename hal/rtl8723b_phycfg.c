@@ -60,7 +60,7 @@ phy_CalculateBitShift(
 {
 	u32 i;
 
-	for (i =0; i<=31; i++)
+	for (i = 0; i<=31; i++)
 	{
 		if (((BitMask>>i) &  0x1) == 1)
 			break;
@@ -170,8 +170,8 @@ phy_RFSerialRead_8723B(
 	BB_REGISTER_DEFINITION_T	*pPhyReg = &pHalData->PHYRegDef[eRFPath];
 	u32						NewOffset;
 	u32 tmplong2;
-	u8					RfPiEnable =0;
-	u4Byte						MaskforPhySet =0;
+	u8					RfPiEnable = 0;
+	u4Byte						MaskforPhySet = 0;
 	int i = 0;
 
 	/*  */
@@ -200,7 +200,7 @@ phy_RFSerialRead_8723B(
 
 	udelay(10);
 
-	for (i =0;i<2;i++)
+	for (i = 0;i<2;i++)
 		udelay(MAX_STALL_TIME);
 	udelay(10);
 
@@ -298,7 +298,7 @@ phy_RFSerialWrite_8723B(
 	/*  Write Operation */
 	/*  */
 	PHY_SetBBReg(Adapter, pPhyReg->rf3wireOffset, bMaskDWord, DataAndAddr);
-	/* RTPRINT(FPHY, PHY_RFW, ("RFW-%d Addr[0x%lx]=0x%lx\n", eRFPath, pPhyReg->rf3wireOffset, DataAndAddr)); */
+	/* RTPRINT(FPHY, PHY_RFW, ("RFW-%d Addr[0x%lx]= 0x%lx\n", eRFPath, pPhyReg->rf3wireOffset, DataAndAddr)); */
 
 }
 
@@ -730,7 +730,7 @@ PHY_GetTxPowerIndex_8723B(
 	if (txPower > MAX_POWER_INDEX)
 		txPower = MAX_POWER_INDEX;
 
-	/* DBG_871X("Final Tx Power(RF-%c, Channel: %d) = %d(0x%X)\n", ((RFPath ==0)?'A':'B'), Channel, txPower, txPower)); */
+	/* DBG_871X("Final Tx Power(RF-%c, Channel: %d) = %d(0x%X)\n", ((RFPath == 0)?'A':'B'), Channel, txPower, txPower)); */
 	return (u8) txPower;
 }
 

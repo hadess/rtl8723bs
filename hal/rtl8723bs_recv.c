@@ -269,7 +269,7 @@ static void rtl8723bs_recv_tasklet(void *priv)
 
 				/*  for first fragment packet, driver need allocate 1536+drvinfo_sz+RXDESC_SIZE to defrag packet. */
 				/*  modify alloc_sz for recvive crc error packet by thomas 2011-06-02 */
-				if ((pattrib->mfrag == 1)&&(pattrib->frag_num == 0)){
+				if ((pattrib->mfrag == 1) && (pattrib->frag_num == 0)){
 					if (skb_len <= 1650)
 						alloc_sz = 1664;
 					else
@@ -297,7 +297,7 @@ static void rtl8723bs_recv_tasklet(void *priv)
 				}
 				else
 				{
-					if ((pattrib->mfrag == 1)&&(pattrib->frag_num == 0))
+					if ((pattrib->mfrag == 1) && (pattrib->frag_num == 0))
 					{
 						DBG_8192C("%s: alloc_skb fail, drop frag frame\n", __FUNCTION__);
 						rtw_free_recvframe(precvframe, &precvpriv->free_recv_queue);
@@ -427,8 +427,8 @@ s32 rtl8723bs_init_recv_priv(PADAPTER padapter)
 			break;
 
 		if (precvbuf->pskb == NULL) {
-			SIZE_PTR tmpaddr =0;
-			SIZE_PTR alignment =0;
+			SIZE_PTR tmpaddr = 0;
+			SIZE_PTR alignment = 0;
 
 			precvbuf->pskb = rtw_skb_alloc(MAX_RECVBUF_SZ + RECVBUFF_ALIGN_SZ);
 

@@ -160,10 +160,10 @@ HAL_IsLegalChannel(
 	if (Channel > 14) {
 		bLegalChannel = false;
 		DBG_871X("Channel > 14 but wireless_mode do not support 5G\n");
-	} else if ((Channel <= 14) && (Channel >=1)){
+	} else if ((Channel <= 14) && (Channel >= 1)){
 		if (IsSupported24G(Adapter->registrypriv.wireless_mode) == false) {
 			bLegalChannel = false;
-			DBG_871X("(Channel <= 14) && (Channel >=1) but wireless_mode do not support 2.4G\n");
+			DBG_871X("(Channel <= 14) && (Channel >= 1) but wireless_mode do not support 2.4G\n");
 		}
 	} else {
 		bLegalChannel = false;
@@ -378,7 +378,7 @@ void	HalSetBrateCfg(
 {
 	u8	i, is_brate, brate;
 
-	for (i =0;i<NDIS_802_11_LENGTH_RATES_EX;i++)
+	for (i = 0;i<NDIS_802_11_LENGTH_RATES_EX;i++)
 	{
 		is_brate = mBratesOS[i] & IEEE80211_BASIC_RATE_MASK;
 		brate = mBratesOS[i] & 0x7f;
@@ -651,7 +651,7 @@ void rtw_hal_update_sta_rate_mask(PADAPTER padapter, struct sta_info *psta)
 	tx_ra_bitmap = 0;
 
 	/* b/g mode ra_bitmap */
-	for (i =0; i<sizeof(psta->bssrateset); i++)
+	for (i = 0; i<sizeof(psta->bssrateset); i++)
 	{
 		if (psta->bssrateset[i])
 			tx_ra_bitmap |= rtw_get_bit_value_from_ieee_value(psta->bssrateset[i]&0x7f);
@@ -662,11 +662,11 @@ void rtw_hal_update_sta_rate_mask(PADAPTER padapter, struct sta_info *psta)
 	{
 		rtw_hal_get_hwreg(padapter, HW_VAR_RF_TYPE, (u8 *)(&rf_type));
 		if (rf_type == RF_2T2R)
-			limit =16;/*  2R */
+			limit = 16;/*  2R */
 		else
 			limit =8;/*   1R */
 
-		for (i =0; i<limit; i++) {
+		for (i = 0; i<limit; i++) {
 			if (psta->htpriv.ht_cap.supp_mcs_set[i/8] & BIT(i%8))
 				tx_ra_bitmap |= BIT(i+12);
 		}
@@ -1024,7 +1024,7 @@ eqNByte(
 	u32	num
 	)
 {
-	if (num ==0)
+	if (num == 0)
 		return false;
 	while (num>0)
 	{
@@ -1421,19 +1421,19 @@ static u32 Array_kfreemap[] = {
 void rtw_bb_rf_gain_offset(_adapter *padapter)
 {
 	u8		value = padapter->eeprompriv.EEPROMRFGainOffset;
-	u32	res, i =0;
+	u32	res, i = 0;
 	u4Byte	   ArrayLen    = sizeof(Array_kfreemap)/sizeof(u32);
 	pu4Byte    Array	   = Array_kfreemap;
-	u4Byte v1 =0, v2 =0, target =0;
+	u4Byte v1 = 0, v2 = 0, target = 0;
 	/* DBG_871X("+%s value: 0x%02x+\n", __func__, value); */
 
 	if (value & BIT4) {
 		DBG_871X("Offset RF Gain.\n");
-		DBG_871X("Offset RF Gain.  padapter->eeprompriv.EEPROMRFGainVal =0x%x\n", padapter->eeprompriv.EEPROMRFGainVal);
+		DBG_871X("Offset RF Gain.  padapter->eeprompriv.EEPROMRFGainVal = 0x%x\n", padapter->eeprompriv.EEPROMRFGainVal);
 		if (padapter->eeprompriv.EEPROMRFGainVal != 0xff){
 			res = rtw_hal_read_rfreg(padapter, RF_PATH_A, 0x7f, 0xffffffff);
 			res &= 0xfff87fff;
-			DBG_871X("Offset RF Gain. before reg 0x7f =0x%08x\n", res);
+			DBG_871X("Offset RF Gain. before reg 0x7f = 0x%08x\n", res);
 			/* res &= 0xfff87fff; */
 			for (i = 0; i < ArrayLen; i += 2)
 			{
@@ -1441,22 +1441,22 @@ void rtw_bb_rf_gain_offset(_adapter *padapter)
 				v2 = Array[i+1];
 				 if (v1 == padapter->eeprompriv.EEPROMRFGainVal)
 				 {
-						DBG_871X("Offset RF Gain. got v1 =0x%x , v2 =0x%x \n", v1, v2);
+						DBG_871X("Offset RF Gain. got v1 = 0x%x , v2 = 0x%x \n", v1, v2);
 						target =v2;
 						break;
 				 }
 			}
-			DBG_871X("padapter->eeprompriv.EEPROMRFGainVal =0x%x , Gain offset Target Value =0x%x\n", padapter->eeprompriv.EEPROMRFGainVal, target);
+			DBG_871X("padapter->eeprompriv.EEPROMRFGainVal = 0x%x , Gain offset Target Value = 0x%x\n", padapter->eeprompriv.EEPROMRFGainVal, target);
 			PHY_SetRFReg(padapter, RF_PATH_A, REG_RF_BB_GAIN_OFFSET, BIT18|BIT17|BIT16|BIT15, target);
 
 			/* res |= (padapter->eeprompriv.EEPROMRFGainVal & 0x0f)<< 15; */
 			/* rtw_hal_write_rfreg(padapter, RF_PATH_A, REG_RF_BB_GAIN_OFFSET, RF_GAIN_OFFSET_MASK, res); */
 			res = rtw_hal_read_rfreg(padapter, RF_PATH_A, 0x7f, 0xffffffff);
-			DBG_871X("Offset RF Gain. After reg 0x7f =0x%08x\n", res);
+			DBG_871X("Offset RF Gain. After reg 0x7f = 0x%08x\n", res);
 		}
 		else
 		{
-			DBG_871X("Offset RF Gain.  padapter->eeprompriv.EEPROMRFGainVal =0x%x	!= 0xff, didn't run Kfree\n", padapter->eeprompriv.EEPROMRFGainVal);
+			DBG_871X("Offset RF Gain.  padapter->eeprompriv.EEPROMRFGainVal = 0x%x	!= 0xff, didn't run Kfree\n", padapter->eeprompriv.EEPROMRFGainVal);
 		}
 	} else {
 		DBG_871X("Using the default RF gain.\n");

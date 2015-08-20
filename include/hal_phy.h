@@ -59,7 +59,7 @@ typedef enum _BAND_TYPE{
 
 typedef	enum _RF_TYPE{
 	RF_TYPE_MIN = 0,	/*  0 */
-	RF_8225 =1,			/*  1 11b/g RF for verification only */
+	RF_8225 = 1,			/*  1 11b/g RF for verification only */
 	RF_8256 =2,			/*  2 11b/g/n */
 	RF_8258 =3,			/*  3 11a/b/g/n RF */
 	RF_6052 =4,			/*  4 11b/g/n RF */

@@ -500,7 +500,7 @@ ODM_DMWatchdog(
 	odm_BasicDbgMessage(pDM_Odm);
 	odm_FalseAlarmCounterStatistics(pDM_Odm);
 	odm_NHMCounterStatistics(pDM_Odm);
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG(): RSSI =0x%x\n", pDM_Odm->RSSI_Min));
+	ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG(): RSSI = 0x%x\n", pDM_Odm->RSSI_Min));
 
 	odm_RSSIMonitorCheck(pDM_Odm);
 
@@ -511,7 +511,7 @@ ODM_DMWatchdog(
 	if (	(adapter_to_pwrctl(pDM_Odm->Adapter)->pwr_mode != PS_MODE_ACTIVE) /*  in LPS mode */
 		/*  */
 		/* 	(pDM_Odm->SupportICType & (ODM_RTL8723A))|| */
-		/* 	(pDM_Odm->SupportICType & (ODM_RTL8188E) &&((pDM_Odm->SupportInterface  == ODM_ITRF_SDIO))) */
+		/* 	(pDM_Odm->SupportICType & (ODM_RTL8188E) &&(&&( ((pDM_Odm->SupportInterface  == ODM_ITRF_SDIO))) */
 		/*  */
 	)
 	{
@@ -699,7 +699,7 @@ ODM_CmnInfoHook(
 			break;
 
 		case	ODM_CMNINFO_WM_MODE:
-			pDM_Odm->pWirelessMode = (u1Byte *)pValue;
+			pDM_Odm->pwirelessmode = (u1Byte *)pValue;
 			break;
 
 		case	ODM_CMNINFO_BAND:
@@ -975,7 +975,7 @@ odm_CommonInfoSelfUpdate(
 	IN		PDM_ODM_T		pDM_Odm
 	)
 {
-	u1Byte	EntryCnt =0;
+	u1Byte	EntryCnt = 0;
 	u1Byte	i;
 	PSTA_INFO_T	pEntry;
 
@@ -989,7 +989,7 @@ odm_CommonInfoSelfUpdate(
 	else
 		pDM_Odm->ControlChannel = *(pDM_Odm->pChannel);
 
-	for (i =0; i<ODM_ASSOCIATE_ENTRY_NUM; i++)
+	for (i = 0; i<ODM_ASSOCIATE_ENTRY_NUM; i++)
 	{
 		pEntry = pDM_Odm->pODM_StaInfo[i];
 		if (IS_STA_VALID(pEntry))
@@ -1008,9 +1008,9 @@ odm_CmnInfoInit_Debug(
 {
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_COMMON, ODM_DBG_LOUD, ("odm_CmnInfoInit_Debug ==>\n"));
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_COMMON, ODM_DBG_LOUD, ("SupportPlatform =%d\n", pDM_Odm->SupportPlatform));
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_COMMON, ODM_DBG_LOUD, ("SupportAbility =0x%x\n", pDM_Odm->SupportAbility));
+	ODM_RT_TRACE(pDM_Odm, ODM_COMP_COMMON, ODM_DBG_LOUD, ("SupportAbility = 0x%x\n", pDM_Odm->SupportAbility));
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_COMMON, ODM_DBG_LOUD, ("SupportInterface =%d\n", pDM_Odm->SupportInterface));
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_COMMON, ODM_DBG_LOUD, ("SupportICType =0x%x\n", pDM_Odm->SupportICType));
+	ODM_RT_TRACE(pDM_Odm, ODM_COMP_COMMON, ODM_DBG_LOUD, ("SupportICType = 0x%x\n", pDM_Odm->SupportICType));
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_COMMON, ODM_DBG_LOUD, ("CutVersion =%d\n", pDM_Odm->CutVersion));
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_COMMON, ODM_DBG_LOUD, ("FabVersion =%d\n", pDM_Odm->FabVersion));
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_COMMON, ODM_DBG_LOUD, ("RFType =%d\n", pDM_Odm->RFType));
@@ -1104,8 +1104,6 @@ u4Byte ODM_Get_Rate_Bitmap(
 	PSTA_INFO_T	pEntry;
 	u4Byte	rate_bitmap = 0;
 	u1Byte	WirelessMode;
-	/* u1Byte	WirelessMode =*(pDM_Odm->pWirelessMode); */
-
 
 	pEntry = pDM_Odm->pODM_StaInfo[macid];
 	if (!IS_STA_VALID(pEntry))
@@ -1282,10 +1280,10 @@ odm_RefreshRateAdaptiveMaskCE(
 
 	/* printk("==> %s \n", __FUNCTION__); */
 
-	for (i =0; i<ODM_ASSOCIATE_ENTRY_NUM; i++){
+	for (i = 0; i<ODM_ASSOCIATE_ENTRY_NUM; i++){
 		PSTA_INFO_T pstat = pDM_Odm->pODM_StaInfo[i];
 		if (IS_STA_VALID(pstat)) {
-			if (IS_MCAST(pstat->hwaddr))  /* if (psta->mac_id ==1) */
+			if (IS_MCAST(pstat->hwaddr))  /* if (psta->mac_id == 1) */
 				 continue;
 			if (IS_MCAST(pstat->hwaddr))
 				continue;
@@ -1430,8 +1428,8 @@ odm_RSSIMonitorCheckCE(
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
 	int	i;
-	int	tmpEntryMaxPWDB =0, tmpEntryMinPWDB =0xff;
-	u8	sta_cnt =0;
+	int	tmpEntryMaxPWDB = 0, tmpEntryMinPWDB = 0xff;
+	u8	sta_cnt = 0;
 	u32	PWDB_rssi[NUM_STA]={0};/* 0~15]:MACID, [16~31]:PWDB_rssi */
 	bool			FirstConnect = false;
 	pRA_T			pRA_Table = &pDM_Odm->DM_RA_Table;
@@ -1446,10 +1444,10 @@ odm_RSSIMonitorCheckCE(
 	{
 		struct sta_info *psta;
 
-		for (i =0; i<ODM_ASSOCIATE_ENTRY_NUM; i++) {
+		for (i = 0; i<ODM_ASSOCIATE_ENTRY_NUM; i++) {
 			if (IS_STA_VALID(psta = pDM_Odm->pODM_StaInfo[i]))
 			{
-					if (IS_MCAST(psta->hwaddr))  /* if (psta->mac_id ==1) */
+					if (IS_MCAST(psta->hwaddr))  /* if (psta->mac_id == 1) */
 						 continue;
 
 					if (psta->rssi_stat.UndecoratedSmoothedPWDB == (-1))
@@ -1469,7 +1467,7 @@ odm_RSSIMonitorCheckCE(
 
 		/* printk("%s ==> sta_cnt(%d)\n", __FUNCTION__, sta_cnt); */
 
-		for (i =0; i< sta_cnt; i++)
+		for (i = 0; i< sta_cnt; i++)
 		{
 			if (PWDB_rssi[i] != (0)){
 				if (pHalData->fw_ractrl == true)/*  Report every sta's RSSI to FW */

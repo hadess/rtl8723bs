@@ -306,8 +306,8 @@ typedef struct hal_com_data
 	/*  */
 	/*  VHT TX power by rate off setArray = */
 	/*  Band:-2G&5G = 0 / 1 */
-	/*  RF: at most 4*4 = ABCD =0/1/2/3 */
-	/*  CCK =0 OFDM =1/2 HT-MCS 0-15 =3/4/56 VHT =7/8/9/10/11 */
+	/*  RF: at most 4*4 = ABCD = 0/1/2/3 */
+	/*  CCK = 0 OFDM = 1/2 HT-MCS 0-15 =3/4/56 VHT =7/8/9/10/11 */
 	/*  */
 	u8	TxPwrByRateTable;
 	u8	TxPwrByRateBand;

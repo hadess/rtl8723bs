@@ -65,7 +65,7 @@ static void setIqkMatrix_8723B(
 	s4Byte		IqkResult_Y
 	)
 {
-	s4Byte			ele_A =0, ele_D, ele_C =0, value32;
+	s4Byte			ele_A = 0, ele_D, ele_C = 0, value32;
 
 	if (OFDM_index >= OFDM_TABLE_SIZE)
 		OFDM_index = OFDM_TABLE_SIZE-1;
@@ -231,26 +231,26 @@ ODM_TxPwrTrackSetPwr_8723B(
 	if (TxRate != 0xFF)
 	{
 		/* 2 CCK */
-		if ((TxRate >= MGN_1M)&&(TxRate <= MGN_11M))
+		if ((TxRate >= MGN_1M) && (TxRate <= MGN_11M))
 			PwrTrackingLimit_CCK = 28;	/* 2dB */
 		/* 2 OFDM */
-		else if ((TxRate >= MGN_6M)&&(TxRate <= MGN_48M))
+		else if ((TxRate >= MGN_6M) && (TxRate <= MGN_48M))
 			PwrTrackingLimit_OFDM = 36; /* 3dB */
 		else if (TxRate == MGN_54M)
 			PwrTrackingLimit_OFDM = 34; /* 2dB */
 
 		/* 2 HT */
-		else if ((TxRate >= MGN_MCS0)&&(TxRate <= MGN_MCS2)) /* QPSK/BPSK */
+		else if ((TxRate >= MGN_MCS0) && (TxRate <= MGN_MCS2)) /* QPSK/BPSK */
 			PwrTrackingLimit_OFDM = 38; /* 4dB */
-		else if ((TxRate >= MGN_MCS3)&&(TxRate <= MGN_MCS4)) /* 16QAM */
+		else if ((TxRate >= MGN_MCS3) && (TxRate <= MGN_MCS4)) /* 16QAM */
 			PwrTrackingLimit_OFDM = 36; /* 3dB */
-		else if ((TxRate >= MGN_MCS5)&&(TxRate <= MGN_MCS7)) /* 64QAM */
+		else if ((TxRate >= MGN_MCS5) && (TxRate <= MGN_MCS7)) /* 64QAM */
 			PwrTrackingLimit_OFDM = 34; /* 2dB */
 
 		else
 			PwrTrackingLimit_OFDM =  pDM_Odm->DefaultOfdmIndex;   /* Default OFDM index = 30 */
 	}
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("TxRate =0x%x, PwrTrackingLimit =%d\n", TxRate, PwrTrackingLimit_OFDM));
+	ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("TxRate = 0x%x, PwrTrackingLimit =%d\n", TxRate, PwrTrackingLimit_OFDM));
 
 	if (Method == TXAGC) {
 		PADAPTER Adapter = pDM_Odm->Adapter;
@@ -783,7 +783,7 @@ phy_PathA_RxIQK8723B(
 
 	if (!(regEAC & BIT27) &&		/* if Tx is OK, check whether Rx is OK */
 	    (((regEA4 & 0x03FF0000)>>16) != 0x132) &&
-	    (((regEAC & 0x03FF0000)>>16) != 0x36)&&
+	    (((regEAC & 0x03FF0000)>>16) != 0x36) &&
 	    (((regEA4 & 0x03FF0000)>>16) < 0x110) &&
 	    (((regEA4 & 0x03FF0000)>>16) > 0xf0) &&
 	    (tmp <0xf))
@@ -891,7 +891,7 @@ phy_PathB_IQK_8723B(
 
 	if (!(regEAC & BIT28) &&
 	    (((regE94 & 0x03FF0000)>>16) != 0x142) &&
-	    (((regE9C & 0x03FF0000)>>16) != 0x42)&&
+	    (((regE9C & 0x03FF0000)>>16) != 0x42) &&
 	    (((regE94 & 0x03FF0000)>>16) <0x110) &&
 	    (((regE94 & 0x03FF0000)>>16) >0xf0) &&
 	    (tmp <0xf))
@@ -1294,8 +1294,10 @@ ODM_SetIQCbyRFpath(PDM_ODM_T pDM_Odm, u4Byte RFpath)
 
 	PODM_RF_CAL_T	pRFCalibrateInfo = &(pDM_Odm->RFCalibrateInfo);
 
-	if ((pRFCalibrateInfo->TxIQC_8723B[PATH_S0][IDX_0xC80][VAL] != 0x0) && (pRFCalibrateInfo->RxIQC_8723B[PATH_S0][IDX_0xC14][VAL] != 0x0)&&
-	    (pRFCalibrateInfo->TxIQC_8723B[PATH_S1][IDX_0xC80][VAL] != 0x0) && (pRFCalibrateInfo->RxIQC_8723B[PATH_S1][IDX_0xC14][VAL] != 0x0)) {
+	if ((pRFCalibrateInfo->TxIQC_8723B[PATH_S0][IDX_0xC80][VAL] != 0x0) &&
+	    (pRFCalibrateInfo->RxIQC_8723B[PATH_S0][IDX_0xC14][VAL] != 0x0) &&
+	    (pRFCalibrateInfo->TxIQC_8723B[PATH_S1][IDX_0xC80][VAL] != 0x0) &&
+	    (pRFCalibrateInfo->RxIQC_8723B[PATH_S1][IDX_0xC14][VAL] != 0x0)) {
 		if (RFpath) /* S1: RFpath = 0, S0:RFpath = 1 */
 		{
 			/* S0 TX IQC */
@@ -1477,7 +1479,7 @@ phy_SimularityCompare_8723B(
 	for (i = 0; i < bound; i++)
 	{
 
-		if ((i ==1) || (i ==3) || (i ==5) || (i ==7))
+		if ((i == 1) || (i ==3) || (i ==5) || (i ==7))
 		{
 			if ((result[c1][i]& 0x00000200) != 0)
 				tmp1 = result[c1][i] | 0xFFFFFC00;
@@ -1601,7 +1603,7 @@ phy_IQCalibrate_8723B(
 
 	/* u4Byte bbvalue; */
 
-	if (t ==0)
+	if (t == 0)
 	{
 /* 		 bbvalue = PHY_QueryBBReg(pDM_Odm->Adapter, rFPGA0_RFMOD, bMaskDWord); */
 /* 			RT_DISP(FINIT, INIT_IQK, ("phy_IQCalibrate_8188E() ==>0x%08x\n", bbvalue)); */
@@ -1769,7 +1771,7 @@ phy_LCCalibrate_8723B(
 	)
 {
 	u1Byte	tmpReg;
-	u4Byte	RF_Amode =0, RF_Bmode =0, LC_Cal;
+	u4Byte	RF_Amode = 0, RF_Bmode = 0, LC_Cal;
 	PADAPTER pAdapter = pDM_Odm->Adapter;
 
 	/* Check continuous TX and Packet TX */
@@ -1905,13 +1907,13 @@ PHY_IQCalibrate_8723B(
 		u1Byte path, bResult = SUCCESS;
 		PODM_RF_CAL_T pRFCalibrateInfo = &(pDM_Odm->RFCalibrateInfo);
 
-		path = (PHY_QueryBBReg(pDM_Odm->Adapter, rS0S1_PathSwitch, bMaskByte0) ==0x00) ? ODM_RF_PATH_A : ODM_RF_PATH_B;
+		path = (PHY_QueryBBReg(pDM_Odm->Adapter, rS0S1_PathSwitch, bMaskByte0) == 0x00) ? ODM_RF_PATH_A : ODM_RF_PATH_B;
 
 		/*  Restore TX IQK */
 		for (i = 0; i < 3; ++i) {
 			offset = pRFCalibrateInfo->TxIQC_8723B[path][i][0];
 			data = pRFCalibrateInfo->TxIQC_8723B[path][i][1];
-			if ((offset ==0) || (data ==0)) {
+			if ((offset == 0) || (data == 0)) {
 				DBG_871X("%s =>path:%s Restore TX IQK result failed \n", __FUNCTION__, (path ==ODM_RF_PATH_A)?"A":"B");
 				bResult = FAIL;
 				break;
@@ -1924,7 +1926,7 @@ PHY_IQCalibrate_8723B(
 		for (i = 0; i < 2; ++i) {
 			offset = pRFCalibrateInfo->RxIQC_8723B[path][i][0];
 			data = pRFCalibrateInfo->RxIQC_8723B[path][i][1];
-			if ((offset ==0) || (data ==0)) {
+			if ((offset == 0) || (data == 0)) {
 				DBG_871X("%s =>path:%s  Restore RX IQK result failed \n", __FUNCTION__, (path ==ODM_RF_PATH_A)?"A":"B");
 				bResult = FAIL;
 				break;
@@ -1933,7 +1935,7 @@ PHY_IQCalibrate_8723B(
 			PHY_SetBBReg(pDM_Odm->Adapter, offset, bMaskDWord, data);
 		}
 
-		if (pDM_Odm->RFCalibrateInfo.TxLOK[ODM_RF_PATH_A] ==0) {
+		if (pDM_Odm->RFCalibrateInfo.TxLOK[ODM_RF_PATH_A] == 0) {
 			DBG_871X("%s => Restore Path-A TxLOK result failed \n", __FUNCTION__);
 			bResult = FAIL;
 		} else {
@@ -1960,7 +1962,7 @@ PHY_IQCalibrate_8723B(
 /* 	Path_SEL_BB = PHY_QueryBBReg(pDM_Odm->Adapter, 0x948, bMaskDWord); */
 /* 	Path_SEL_RF = PHY_QueryRFReg(pDM_Odm->Adapter, ODM_RF_PATH_A, 0xb0, 0xfffff); */
 
-    /* set GNT_BT =0, pause BT traffic */
+    /* set GNT_BT = 0, pause BT traffic */
 /* 	PHY_SetBBReg(pDM_Odm->Adapter, 0x764, BIT12, 0x0); */
 /* 	PHY_SetBBReg(pDM_Odm->Adapter, 0x764, BIT11, 0x1); */
 
@@ -1980,7 +1982,7 @@ PHY_IQCalibrate_8723B(
 	is13simular = false;
 
 
-	for (i =0; i<3; i++)
+	for (i = 0; i<3; i++)
 	{
 		phy_IQCalibrate_8723B(pAdapter, result, i, Is2ant, RF_Path);
 
@@ -2025,7 +2027,7 @@ PHY_IQCalibrate_8723B(
 	}
 /* 	RT_TRACE(COMP_INIT, DBG_LOUD, ("Release Mutex in IQCalibrate \n")); */
 
-	for (i =0; i<4; i++)
+	for (i = 0; i<4; i++)
 	{
 		RegE94 = result[i][0];
 		RegE9C = result[i][1];

@@ -152,9 +152,9 @@ odm_RxPhyStatus92CSeries_Parsing(
 	)
 {
 	u1Byte				i, Max_spatial_stream;
-	s8				rx_pwr[4], rx_pwr_all =0;
+	s8				rx_pwr[4], rx_pwr_all = 0;
 	u1Byte				EVM, PWDB_ALL = 0, PWDB_ALL_BT;
-	u1Byte				RSSI, total_rssi =0;
+	u1Byte				RSSI, total_rssi = 0;
 	bool				isCCKrate =false;
 	u1Byte				rf_rx_num = 0;
 	u1Byte				cck_highpwr = 0;
@@ -278,7 +278,7 @@ odm_RxPhyStatus92CSeries_Parsing(
 			else
 				Max_spatial_stream = 1; /* only spatial stream 1 makes sense */
 
-			for (i =0; i<Max_spatial_stream; i++)
+			for (i = 0; i<Max_spatial_stream; i++)
 			{
 				/*  Do not use shift operation like "rx_evmX >>= 1" because the compilor of free build environment */
 				/*  fill most significant bit to "zero" when doing shifting operation which may change a negative */
@@ -339,10 +339,10 @@ odm_Process_RSSIForDM(
 {
 
 	s4Byte			UndecoratedSmoothedPWDB, UndecoratedSmoothedCCK, UndecoratedSmoothedOFDM, RSSI_Ave;
-	u1Byte			isCCKrate =0;
+	u1Byte			isCCKrate = 0;
 	u1Byte			RSSI_max, RSSI_min, i;
-	u4Byte			OFDM_pkt =0;
-	u4Byte			Weighting =0;
+	u4Byte			OFDM_pkt = 0;
+	u4Byte			Weighting = 0;
 	PSTA_INFO_T		pEntry;
 
 
@@ -476,7 +476,7 @@ odm_Process_RSSIForDM(
 			else
 				pEntry->rssi_stat.ValidBit++;
 
-			for (i =0; i<pEntry->rssi_stat.ValidBit; i++)
+			for (i = 0; i<pEntry->rssi_stat.ValidBit; i++)
 				OFDM_pkt += (u1Byte)(pEntry->rssi_stat.PacketMap>>i)&BIT0;
 
 			if (pEntry->rssi_stat.ValidBit == 64)

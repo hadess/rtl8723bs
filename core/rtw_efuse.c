@@ -25,18 +25,18 @@
 
 
 /*------------------------Define local variable------------------------------*/
-u8	fakeEfuseBank =0;
-u32	fakeEfuseUsedBytes =0;
+u8	fakeEfuseBank = 0;
+u32	fakeEfuseUsedBytes = 0;
 u8	fakeEfuseContent[EFUSE_MAX_HW_SIZE]={0};
 u8	fakeEfuseInitMap[EFUSE_MAX_MAP_LEN]={0};
 u8	fakeEfuseModifiedMap[EFUSE_MAX_MAP_LEN]={0};
 
-u32	BTEfuseUsedBytes =0;
+u32	BTEfuseUsedBytes = 0;
 u8	BTEfuseContent[EFUSE_MAX_BT_BANK][EFUSE_MAX_HW_SIZE];
 u8	BTEfuseInitMap[EFUSE_BT_MAX_MAP_LEN]={0};
 u8	BTEfuseModifiedMap[EFUSE_BT_MAX_MAP_LEN]={0};
 
-u32	fakeBTEfuseUsedBytes =0;
+u32	fakeBTEfuseUsedBytes = 0;
 u8	fakeBTEfuseContent[EFUSE_MAX_BT_BANK][EFUSE_MAX_HW_SIZE];
 u8	fakeBTEfuseInitMap[EFUSE_BT_MAX_MAP_LEN]={0};
 u8	fakeBTEfuseModifiedMap[EFUSE_BT_MAX_MAP_LEN]={0};
@@ -143,7 +143,7 @@ Efuse_GetCurrentSize(
 	IN u8			efuseType,
 	IN bool		bPseudoTest)
 {
-	u16 ret =0;
+	u16 ret = 0;
 
 	ret = pAdapter->HalFunc.EfuseGetCurrentSize(pAdapter, efuseType, bPseudoTest);
 
@@ -238,8 +238,8 @@ EFUSE_Read1Byte(
 	u8	data;
 	u8	Bytetemp = {0x00};
 	u8	temp = {0x00};
-	u32	k =0;
-	u16	contentLen =0;
+	u32	k = 0;
+	u16	contentLen = 0;
 
 	EFUSE_GetEfuseDefinition(Adapter, EFUSE_WIFI , TYPE_EFUSE_REAL_CONTENT_LEN, (void *)&contentLen, false);
 
@@ -253,20 +253,20 @@ EFUSE_Read1Byte(
 		temp = ((Address >> 8) & 0x03) | (Bytetemp & 0xFC);
 		rtw_write8(Adapter, EFUSE_CTRL+2, temp);
 
-		/* Write 0x30[31]=0 */
+		/* Write 0x30[31]= 0 */
 		Bytetemp = rtw_read8(Adapter, EFUSE_CTRL+3);
 		temp = Bytetemp & 0x7F;
 		rtw_write8(Adapter, EFUSE_CTRL+3, temp);
 
-		/* Wait Write-ready (0x30[31]=1) */
+		/* Wait Write-ready (0x30[31]= 1) */
 		Bytetemp = rtw_read8(Adapter, EFUSE_CTRL+3);
 		while (!(Bytetemp & 0x80))
 		{
 			Bytetemp = rtw_read8(Adapter, EFUSE_CTRL+3);
 			k++;
-			if (k ==1000)
+			if (k == 1000)
 			{
-				k =0;
+				k = 0;
 				break;
 			}
 		}
@@ -315,7 +315,7 @@ efuse_OneByteRead(
 	readbyte = rtw_read8(pAdapter, EFUSE_CTRL+3);
 	rtw_write8(pAdapter, EFUSE_CTRL+3, (readbyte & 0x7f));
 
-	while (!(0x80 &rtw_read8(pAdapter, EFUSE_CTRL+3))&&(tmpidx<1000))
+	while (!(0x80 &rtw_read8(pAdapter, EFUSE_CTRL+3)) && (tmpidx<1000))
 	{
 		mdelay(1);
 		tmpidx++;
@@ -329,8 +329,8 @@ efuse_OneByteRead(
 	{
 		*data = 0xff;
 		bResult = false;
-		DBG_871X("%s: [ERROR] addr =0x%x bResult =%d time out 1s !!!\n", __FUNCTION__, addr, bResult);
-		DBG_871X("%s: [ERROR] EFUSE_CTRL =0x%08x !!!\n", __FUNCTION__, rtw_read32(pAdapter, EFUSE_CTRL));
+		DBG_871X("%s: [ERROR] addr = 0x%x bResult =%d time out 1s !!!\n", __FUNCTION__, addr, bResult);
+		DBG_871X("%s: [ERROR] EFUSE_CTRL = 0x%08x !!!\n", __FUNCTION__, rtw_read32(pAdapter, EFUSE_CTRL));
 	}
 
 	return bResult;
@@ -388,9 +388,9 @@ efuse_OneByteWrite(
 	else
 	{
 		bResult = false;
-		DBG_871X("%s: [ERROR] addr =0x%x , efuseValue =0x%x , bResult =%d time out 1s !!! \n",
+		DBG_871X("%s: [ERROR] addr = 0x%x , efuseValue = 0x%x , bResult =%d time out 1s !!! \n",
 					__FUNCTION__, addr, efuseValue, bResult);
-		DBG_871X("%s: [ERROR] EFUSE_CTRL =0x%08x !!!\n", __FUNCTION__, rtw_read32(pAdapter, EFUSE_CTRL));
+		DBG_871X("%s: [ERROR] EFUSE_CTRL = 0x%08x !!!\n", __FUNCTION__, rtw_read32(pAdapter, EFUSE_CTRL));
 	}
 
 	/*  disable Efuse program enable */
@@ -405,7 +405,7 @@ Efuse_PgPacketRead(	IN	PADAPTER	pAdapter,
 					IN	u8			*data,
 					IN	bool		bPseudoTest)
 {
-	int	ret =0;
+	int	ret = 0;
 
 	ret =  pAdapter->HalFunc.Efuse_PgPacketRead(pAdapter, offset, data, bPseudoTest);
 
@@ -478,7 +478,7 @@ Efuse_WordEnableDataWrite(	IN	PADAPTER	pAdapter,
 							IN	u8		*data,
 							IN	bool		bPseudoTest)
 {
-	u8	ret =0;
+	u8	ret = 0;
 
 	ret =  pAdapter->HalFunc.Efuse_WordEnableDataWrite(pAdapter, efuse_addr, word_en, data, bPseudoTest);
 
@@ -514,7 +514,7 @@ Efuse_ReadAllMap(
 	IN OUT	u8		*Efuse,
 	IN		bool		bPseudoTest)
 {
-	u16	mapLen =0;
+	u16	mapLen = 0;
 
 	Efuse_PowerSwitch(pAdapter, false, true);
 
@@ -607,7 +607,7 @@ void EFUSE_ShadowMapUpdate(
 	IN bool	bPseudoTest)
 {
 	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(pAdapter);
-	u16	mapLen =0;
+	u16	mapLen = 0;
 
 	EFUSE_GetEfuseDefinition(pAdapter, efuseType, TYPE_EFUSE_MAP_LEN, (void *)&mapLen, bPseudoTest);
 

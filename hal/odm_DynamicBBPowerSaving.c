@@ -91,12 +91,12 @@ ODM_RF_Saving(
 		if (pDM_PSTable->CurRFState == RF_Save)
 		{
 			PHY_SetBBReg(pDM_Odm->Adapter, 0x874  , 0x1C0000, 0x2); /* Reg874[20:18]=3'b010 */
-			PHY_SetBBReg(pDM_Odm->Adapter, 0xc70, BIT3, 0); /* RegC70[3]=1'b0 */
-			PHY_SetBBReg(pDM_Odm->Adapter, 0x85c, 0xFF000000, 0x63); /* Reg85C[31:24]=0x63 */
+			PHY_SetBBReg(pDM_Odm->Adapter, 0xc70, BIT3, 0); /* RegC70[3]= 1'b0 */
+			PHY_SetBBReg(pDM_Odm->Adapter, 0x85c, 0xFF000000, 0x63); /* Reg85C[31:24]= 0x63 */
 			PHY_SetBBReg(pDM_Odm->Adapter, 0x874, 0xC000, 0x2); /* Reg874[15:14]=2'b10 */
-			PHY_SetBBReg(pDM_Odm->Adapter, 0xa74, 0xF000, 0x3); /* RegA75[7:4]=0x3 */
-			PHY_SetBBReg(pDM_Odm->Adapter, 0x818, BIT28, 0x0); /* Reg818[28]=1'b0 */
-			PHY_SetBBReg(pDM_Odm->Adapter, 0x818, BIT28, 0x1); /* Reg818[28]=1'b1 */
+			PHY_SetBBReg(pDM_Odm->Adapter, 0xa74, 0xF000, 0x3); /* RegA75[7:4]= 0x3 */
+			PHY_SetBBReg(pDM_Odm->Adapter, 0x818, BIT28, 0x0); /* Reg818[28]= 1'b0 */
+			PHY_SetBBReg(pDM_Odm->Adapter, 0x818, BIT28, 0x1); /* Reg818[28]= 1'b1 */
 		}
 		else
 		{

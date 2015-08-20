@@ -133,7 +133,7 @@ extern u4Byte					GLBtcDbgType[];
 				pu1Byte	ptr = (pu1Byte)_Ptr;	\
 				DbgPrint printstr;				\
 				DbgPrint(" ");					\
-				for (__i =0; __i<6; __i++)		\
+				for (__i = 0; __i<6; __i++)		\
 					DbgPrint("%02X%s", ptr[__i], (__i ==5)?"":"-");		\
 				DbgPrint("\n");							\
 	}\
@@ -146,7 +146,7 @@ extern u4Byte					GLBtcDbgType[];
 		int __i;									\
 		pu1Byte	ptr = (pu1Byte)_HexData;			\
 		DbgPrint(_TitleString);					\
-		for (__i =0; __i<(int)_HexDataLen; __i++)	\
+		for (__i = 0; __i<(int)_HexDataLen; __i++)	\
 		{										\
 			DbgPrint("%02X%s", ptr[__i], (((__i + 1) % 4) == 0)?"  ":" ");\
 			if (((__i + 1) % 16) == 0)	DbgPrint("\n");\
@@ -167,7 +167,7 @@ typedef struct _BTC_BOARD_INFO{
 	u1Byte				btChipType;
 	u1Byte				pgAntNum;	/*  pg ant number */
 	u1Byte				btdmAntNum;	/*  ant number for btdm */
-	u1Byte				btdmAntPos;		/* Bryant Add to indicate Antenna Position for (pgAntNum = 2) && (btdmAntNum =1)  (DPDT+1Ant case) */
+	u1Byte				btdmAntPos;		/* Bryant Add to indicate Antenna Position for (pgAntNum = 2) && (btdmAntNum = 1)  (DPDT+1Ant case) */
 	u1Byte				singleAntPath;	/*  current used for 8723b only, 1 =>s0,  0 =>s1 */
 	/* bool				bBtExist; */
 } BTC_BOARD_INFO, *PBTC_BOARD_INFO;

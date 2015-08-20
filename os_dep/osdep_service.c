@@ -24,7 +24,7 @@
 */
 inline int RTW_STATUS_CODE(int error_code)
 {
-	if (error_code >=0)
+	if (error_code >= 0)
 		return _SUCCESS;
 	return _FAIL;
 }
@@ -120,7 +120,7 @@ static int closeFile(struct file *fp)
 
 static int readFile(struct file *fp, char *buf, int len)
 {
-	int rlen =0, sum =0;
+	int rlen = 0, sum = 0;
 
 	if (!fp->f_op || !fp->f_op->read)
 		return -EPERM;
@@ -224,7 +224,7 @@ int rtw_is_file_readable(char *path)
 int rtw_retrive_from_file(char *path, u8* buf, u32 sz)
 {
 	int ret =retriveFromFile(path, buf, sz);
-	return ret>=0?ret:0;
+	return ret>= 0?ret:0;
 }
 
 struct net_device *rtw_alloc_etherdev_with_old_priv(int sizeof_priv, void *old_priv)

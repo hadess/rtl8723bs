@@ -204,7 +204,7 @@ static u32 sdio_read32(struct intf_hdl *pintfhdl, u32 addr)
 #ifdef SDIO_DEBUG_IO
 		}
 
-		DBG_8192C(KERN_ERR "%s: Mac Power off, Read FAIL(%d)! addr =0x%x\n", __func__, err, addr);
+		DBG_8192C(KERN_ERR "%s: Mac Power off, Read FAIL(%d)! addr = 0x%x\n", __func__, err, addr);
 		return SDIO_ERR_VAL32;
 #endif
 	}
@@ -218,7 +218,7 @@ static u32 sdio_read32(struct intf_hdl *pintfhdl, u32 addr)
 
 		ptmpbuf = (u8*)rtw_malloc(8);
 		if (NULL == ptmpbuf) {
-			DBG_8192C(KERN_ERR "%s: Allocate memory FAIL!(size =8) addr =0x%x\n", __func__, addr);
+			DBG_8192C(KERN_ERR "%s: Allocate memory FAIL!(size =8) addr = 0x%x\n", __func__, addr);
 			return SDIO_ERR_VAL32;
 		}
 
@@ -503,7 +503,7 @@ static u32 sdio_write_port(
 	psdio = &adapter_to_dvobj(padapter)->intf_data;
 
 	if (padapter->hw_init_completed == false) {
-		DBG_871X("%s [addr =0x%x cnt =%d] padapter->hw_init_completed == false\n", __func__, addr, cnt);
+		DBG_871X("%s [addr = 0x%x cnt =%d] padapter->hw_init_completed == false\n", __func__, addr, cnt);
 		return _FAIL;
 	}
 
@@ -875,14 +875,14 @@ void EnableInterrupt8723BSdio(PADAPTER padapter)
 	sdio_local_write(padapter, SDIO_REG_HIMR, 4, (u8*)&himr);
 
 	RT_TRACE(_module_hci_ops_c_, _drv_notice_,
-		("%s: enable SDIO HIMR =0x%08X\n", __FUNCTION__, pHalData->sdio_himr));
+		("%s: enable SDIO HIMR = 0x%08X\n", __FUNCTION__, pHalData->sdio_himr));
 
 	/*  Update current system IMR settings */
 	tmp = rtw_read32(padapter, REG_HSIMR);
 	rtw_write32(padapter, REG_HSIMR, tmp | pHalData->SysIntrMask);
 
 	RT_TRACE(_module_hci_ops_c_, _drv_notice_,
-		("%s: enable HSIMR =0x%08X\n", __FUNCTION__, pHalData->SysIntrMask));
+		("%s: enable HSIMR = 0x%08X\n", __FUNCTION__, pHalData->SysIntrMask));
 
 	/*  */
 	/*  <Roger_Notes> There are some C2H CMDs have been sent before system interrupt is enabled, e.g., C2H, CPWM. */
@@ -920,7 +920,7 @@ void DisableInterrupt8723BSdio(PADAPTER padapter)
 /*  */
 u8 CheckIPSStatus(PADAPTER padapter)
 {
-	DBG_871X("%s(): Read 0x100 =0x%02x 0x86 =0x%02x\n", __func__,
+	DBG_871X("%s(): Read 0x100 = 0x%02x 0x86 = 0x%02x\n", __func__,
 		rtw_read8(padapter, 0x100), rtw_read8(padapter, 0x86));
 
 	if (rtw_read8(padapter, 0x100) == 0xEA)
@@ -951,8 +951,8 @@ static struct recv_buf* sd_recv_rxfifo(PADAPTER padapter, u32 size)
 
 	/* 3 2. alloc skb */
 	if (precvbuf->pskb == NULL) {
-		SIZE_PTR tmpaddr =0;
-		SIZE_PTR alignment =0;
+		SIZE_PTR tmpaddr = 0;
+		SIZE_PTR alignment = 0;
 
 		precvbuf->pskb = rtw_skb_alloc(MAX_RECVBUF_SZ + RECVBUFF_ALIGN_SZ);
 
@@ -1104,7 +1104,7 @@ void sd_int_dpc(PADAPTER padapter)
 	if (phal->sdio_hisr & SDIO_HISR_RX_REQUEST)
 	{
 		struct recv_buf *precvbuf;
-		int alloc_fail_time =0;
+		int alloc_fail_time = 0;
 		u32 hisr;
 
 /* 		DBG_8192C("%s: RX Request, size =%d\n", __func__, phal->SdioRxFIFOSize); */
@@ -1135,7 +1135,7 @@ void sd_int_dpc(PADAPTER padapter)
 				break;
 		} while (1);
 
-		if (alloc_fail_time ==10)
+		if (alloc_fail_time == 10)
 			DBG_871X("exit because alloc memory failed more than 10 times \n");
 
 	}

@@ -827,7 +827,7 @@ void rtw_fwdbg_event_callback(_adapter *adapter , u8 *pbuf);
 
 enum rtw_c2h_event
 {
-	GEN_EVT_CODE(_Read_MACREG) =0, /*0*/
+	GEN_EVT_CODE(_Read_MACREG) = 0, /*0*/
 	GEN_EVT_CODE(_Read_BBREG),
 	GEN_EVT_CODE(_Read_RFREG),
 	GEN_EVT_CODE(_Read_EEPROM),

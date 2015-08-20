@@ -1091,7 +1091,7 @@ typedef  struct DM_Out_Source_Dynamic_Mechanism_Structure
 	/* RX Unicast byte count */
 	u8Byte			*pNumRxBytesUnicast;
 	/*  Wireless mode B/G/A/N = BIT0/BIT1/BIT2/BIT3 */
-	u1Byte			*pWirelessMode; /* ODM_WIRELESS_MODE_E */
+	u1Byte			*pwirelessmode; /* ODM_WIRELESS_MODE_E */
 	/*  Frequence band 2.4G/5G = 0/1 */
 	u1Byte			*pBandType;
 	/*  Secondary channel offset don't_care/below/above = 0/1/2 */
@@ -1445,14 +1445,14 @@ typedef enum _RT_STATUS{
 
 typedef enum tag_1R_CCA_Type_Definition
 {
-	CCA_1R =0,
+	CCA_1R = 0,
 	CCA_2R = 1,
 	CCA_MAX = 2,
 }DM_1R_CCA_E;
 
 typedef enum tag_RF_Type_Definition
 {
-	RF_Save =0,
+	RF_Save = 0,
 	RF_Normal = 1,
 	RF_MAX = 2,
 }DM_RF_E;

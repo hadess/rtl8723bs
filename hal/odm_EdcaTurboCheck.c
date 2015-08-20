@@ -81,13 +81,13 @@ void odm_EdcaTurboCheck(void *pDM_VOID)
 
 void odm_EdcaTurboCheckCE(void *pDM_VOID)
 {
+	PDM_ODM_T		pDM_Odm = (PDM_ODM_T)pDM_VOID;
+	PADAPTER	       Adapter = pDM_Odm->Adapter;
 	struct dvobj_priv	*pdvobjpriv = adapter_to_dvobj(Adapter);
 	struct recv_priv	*precvpriv = &(Adapter->recvpriv);
 	struct registry_priv	*pregpriv = &Adapter->registrypriv;
 	struct mlme_ext_priv	*pmlmeext = &(Adapter->mlmeextpriv);
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
-	PDM_ODM_T		pDM_Odm = (PDM_ODM_T)pDM_VOID;
-	PADAPTER	       Adapter = pDM_Odm->Adapter;
 	u32	EDCA_BE_UL = 0x5ea42b;
 	u32	EDCA_BE_DL = 0x5ea42b;
 	u32	iot_peer = 0;

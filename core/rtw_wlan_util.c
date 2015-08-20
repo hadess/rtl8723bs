@@ -305,7 +305,7 @@ void UpdateBrateTbl(
 	u8	rate;
 
 	/*  1M, 2M, 5.5M, 11M, 6M, 12M, 24M are mandatory. */
-	for (i =0;i<NDIS_802_11_LENGTH_RATES_EX;i++)
+	for (i = 0;i<NDIS_802_11_LENGTH_RATES_EX;i++)
 	{
 		rate = mBratesOS[i] & 0x7f;
 		switch (rate)
@@ -329,7 +329,7 @@ void UpdateBrateTblForSoftAP(u8 *bssrateset, u32 bssratelen)
 	u8	i;
 	u8	rate;
 
-	for (i =0;i<bssratelen;i++)
+	for (i = 0;i<bssratelen;i++)
 	{
 		rate = bssrateset[i] & 0x7f;
 		switch (rate)
@@ -764,7 +764,7 @@ static s16 _rtw_camid_search(_adapter *adapter, u8 *addr, s16 kid)
 	int i;
 	s16 cam_id = -1;
 
-	for (i =0;i<TOTAL_CAM_ENTRY;i++) {
+	for (i = 0;i<TOTAL_CAM_ENTRY;i++) {
 		if (addr && memcmp(dvobj->cam_cache[i].mac, addr, ETH_ALEN))
 			continue;
 		if (kid >= 0 && kid != (dvobj->cam_cache[i].ctrl&0x03))
@@ -922,7 +922,7 @@ int WMM_param_handler(_adapter *padapter, PNDIS_802_11_VARIABLE_IEs	pIE)
 	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 
-	if (pmlmepriv->qospriv.qos_option ==0)
+	if (pmlmepriv->qospriv.qos_option == 0)
 	{
 		pmlmeinfo->WMM_enable = 0;
 		return false;
@@ -1043,12 +1043,12 @@ void WMMOnAssocRsp(_adapter *padapter)
 
 		inx[0] = 0; inx[1] = 1; inx[2] = 2; inx[3] = 3;
 
-		if (pregpriv->wifi_spec ==1)
+		if (pregpriv->wifi_spec == 1)
 		{
 			u32	j, tmp, change_inx =false;
 
 			/* entry indx: 0->vo, 1->vi, 2->be, 3->bk. */
-			for (i =0; i<4; i++)
+			for (i = 0; i<4; i++)
 			{
 				for (j =i+1; j<4; j++)
 				{
@@ -1080,7 +1080,7 @@ void WMMOnAssocRsp(_adapter *padapter)
 			}
 		}
 
-		for (i =0; i<4; i++) {
+		for (i = 0; i<4; i++) {
 			pxmitpriv->wmm_para_seq[i] = inx[i];
 			DBG_871X("wmm_para_seq(%d): %d\n", i, pxmitpriv->wmm_para_seq[i]);
 		}
@@ -1097,7 +1097,7 @@ static void bwmode_update_check(_adapter *padapter, PNDIS_802_11_VARIABLE_IEs pI
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 	struct registry_priv *pregistrypriv = &padapter->registrypriv;
 	struct ht_priv			*phtpriv = &pmlmepriv->htpriv;
-	u8	cbw40_enable =0;
+	u8	cbw40_enable = 0;
 
 	if (!pIE)
 		return;
@@ -1199,7 +1199,7 @@ void HT_caps_handler(_adapter *padapter, PNDIS_802_11_VARIABLE_IEs pIE)
 	unsigned int	i;
 	u8	rf_type;
 	u8	max_AMPDU_len, min_MPDU_spacing;
-	u8	cur_ldpc_cap =0, cur_stbc_cap =0;
+	u8	cur_ldpc_cap = 0, cur_stbc_cap = 0;
 	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 	struct mlme_priv		*pmlmepriv = &padapter->mlmepriv;
@@ -1434,7 +1434,7 @@ int rtw_check_bcn_info(ADAPTER *Adapter, u8 *pframe, u32 packet_len)
 	unsigned short	val16, subtype;
 	struct wlan_network *cur_network = &(Adapter->mlmepriv.cur_network);
 	/* u8 wpa_ie[255], rsn_ie[255]; */
-	u16 wpa_len =0, rsn_len =0;
+	u16 wpa_len = 0, rsn_len = 0;
 	u8 encryp_protocol = 0;
 	WLAN_BSSID_EX *bssid;
 	int group_cipher = 0, pairwise_cipher = 0, is_8021x = 0;
@@ -1774,9 +1774,9 @@ int support_short_GI(_adapter *padapter, struct HT_caps_element *pHT_caps, u8 bw
 unsigned char get_highest_rate_idx(u32 mask)
 {
 	int i;
-	unsigned char rate_idx =0;
+	unsigned char rate_idx = 0;
 
-	for (i =31; i>=0; i--)
+	for (i =31; i>= 0; i--)
 	{
 		if (mask & BIT(i))
 		{
@@ -1849,7 +1849,7 @@ unsigned char check_assoc_AP(u8 *pframe, uint len)
 					u32	Vender = HT_IOT_PEER_REALTEK;
 
 					if (pIE->Length >= 5) {
-						if (pIE->data[4]==1)
+						if (pIE->data[4]== 1)
 						{
 							/* if (pIE->data[5] & RT_HT_CAP_USE_LONG_PREAMBLE) */
 							/* 	bssDesc->BssHT.RT2RT_HT_Mode |= RT_HT_CAP_USE_LONG_PREAMBLE; */
@@ -2161,7 +2161,7 @@ void adaptive_early_32k(struct mlme_ext_priv *pmlmeext, u8 *pframe, uint len)
 	int i;
 	u8* pIE;
 	__le32 *pbuf;
-	u64 tsf =0;
+	u64 tsf = 0;
 	u32 delay_ms;
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 
@@ -2175,7 +2175,7 @@ void adaptive_early_32k(struct mlme_ext_priv *pmlmeext, u8 *pframe, uint len)
 	tsf = tsf << 32;
 	tsf |= le32_to_cpu(*pbuf);
 
-	/* DBG_871X("%s(): tsf_upper = 0x%08x, tsf_lower =0x%08x\n", __func__, (u32)(tsf>>32), (u32)tsf); */
+	/* DBG_871X("%s(): tsf_upper = 0x%08x, tsf_lower = 0x%08x\n", __func__, (u32)(tsf>>32), (u32)tsf); */
 
 	/* delay = (timestamp mod 1024*100)/1000 (unit: ms) */
 	/* delay_ms = do_div(tsf, (pmlmeinfo->bcn_interval*1024))/1000; */
@@ -2197,7 +2197,7 @@ void adaptive_early_32k(struct mlme_ext_priv *pmlmeext, u8 *pframe, uint len)
 	DBG_871X("%s(): (a)bcn_cnt = %d\n", __func__, pmlmeext->bcn_cnt);
 
 
-	for (i =0; i<9; i++)
+	for (i = 0; i<9; i++)
 	{
 		DBG_871X("%s():bcn_delay_cnt[%d]=%d,  bcn_delay_ratio[%d]=%d\n", __func__, i,
 			pmlmeext->bcn_delay_cnt[i] , i, pmlmeext->bcn_delay_ratio[i]);
@@ -2217,7 +2217,7 @@ void adaptive_early_32k(struct mlme_ext_priv *pmlmeext, u8 *pframe, uint len)
 
 		DBG_871X("%s(): bcn_cnt = %d\n", __func__, pmlmeext->bcn_cnt);
 
-		for (i =0; i<9; i++)
+		for (i = 0; i<9; i++)
 		{
 			pmlmeext->bcn_delay_ratio[i] = (pmlmeext->bcn_delay_cnt[i] * 100) /pmlmeext->bcn_cnt;
 
@@ -2276,7 +2276,7 @@ void rtw_alloc_macid(_adapter *padapter, struct sta_info *psta)
 	}
 
 	spin_lock_bh(&pdvobj->lock);
-	for (i =0; i<NUM_STA; i++)
+	for (i = 0; i<NUM_STA; i++)
 	{
 		if (pdvobj->macid[i] == false)
 		{
@@ -2314,7 +2314,7 @@ void rtw_release_macid(_adapter *padapter, struct sta_info *psta)
 	}
 
 	spin_lock_bh(&pdvobj->lock);
-	if (psta->mac_id<NUM_STA && psta->mac_id !=1)
+	if (psta->mac_id<NUM_STA && psta->mac_id != 1)
 	{
 		if (pdvobj->macid[psta->mac_id] == true)
 		{
@@ -2330,11 +2330,11 @@ void rtw_release_macid(_adapter *padapter, struct sta_info *psta)
 /* For 8188E RA */
 u8 rtw_search_max_mac_id(_adapter *padapter)
 {
-	u8 max_mac_id =0;
+	u8 max_mac_id = 0;
 	struct dvobj_priv *pdvobj = adapter_to_dvobj(padapter);
 	int i;
 	spin_lock_bh(&pdvobj->lock);
-	for (i =(NUM_STA-1); i>=0 ; i--)
+	for (i =(NUM_STA-1); i>= 0 ; i--)
 	{
 		if (pdvobj->macid[i] == true)
 		{
@@ -2352,7 +2352,7 @@ _adapter *dvobj_get_port0_adapter(struct dvobj_priv *dvobj)
 {
 	_adapter *port0_iface = NULL;
 	int i;
-	for (i =0;i<dvobj->iface_nums;i++) {
+	for (i = 0;i<dvobj->iface_nums;i++) {
 		if (get_iface_type(dvobj->padapters[i]) == IFACE_PORT0)
 			break;
 	}
@@ -2375,7 +2375,7 @@ int rtw_get_gpio(struct net_device *netdev, int gpio_num)
 
 	rtw_ps_deny(adapter, PS_DENY_IOCTL);
 
-	DBG_871X("rf_pwrstate =0x%02x\n", pwrpriv->rf_pwrstate);
+	DBG_871X("rf_pwrstate = 0x%02x\n", pwrpriv->rf_pwrstate);
 	LeaveAllPowerSaveModeDirect(adapter);
 
 	/* Read GPIO Direction */

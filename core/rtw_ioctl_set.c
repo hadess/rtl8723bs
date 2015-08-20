@@ -75,7 +75,7 @@ u8 rtw_do_join(_adapter * padapter)
 	u8* pibss = NULL;
 	struct	mlme_priv	*pmlmepriv = &(padapter->mlmepriv);
 	_queue	*queue	= &(pmlmepriv->scanned_queue);
-	u8 ret =_SUCCESS;
+	u8 ret = _SUCCESS;
 
 	spin_lock_bh(&(pmlmepriv->scanned_queue.lock));
 	phead = get_list_head(queue);
@@ -122,7 +122,7 @@ u8 rtw_do_join(_adapter * padapter)
 	{
 		int select_ret;
 		spin_unlock_bh(&(pmlmepriv->scanned_queue.lock));
-		if ((select_ret =rtw_select_and_join_from_scanned_queue(pmlmepriv)) ==_SUCCESS)
+		if ((select_ret =rtw_select_and_join_from_scanned_queue(pmlmepriv)) == _SUCCESS)
 		{
 			pmlmepriv->to_join = false;
 			_set_timer(&pmlmepriv->assoc_timer, MAX_JOIN_TIMEOUT);
@@ -147,7 +147,7 @@ u8 rtw_do_join(_adapter * padapter)
 
 				rtw_generate_random_ibss(pibss);
 
-				if (rtw_createbss_cmd(padapter)!=_SUCCESS)
+				if (rtw_createbss_cmd(padapter)!= _SUCCESS)
 				{
 					RT_TRACE(_module_rtl871x_ioctl_set_c_, _drv_err_, ("***Error =>do_goin: rtw_createbss_cmd status FAIL*** \n "));
 					ret =  false;
@@ -193,14 +193,14 @@ exit:
 
 u8 rtw_set_802_11_bssid(_adapter* padapter, u8 *bssid)
 {
-	u8 status =_SUCCESS;
+	u8 status = _SUCCESS;
 
 	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
 
 	DBG_871X_LEVEL(_drv_always_, "set bssid:%pM\n", bssid);
 
-	if ((bssid[0]==0x00 && bssid[1]==0x00 && bssid[2]==0x00 && bssid[3]==0x00 && bssid[4]==0x00 &&bssid[5]==0x00) ||
-	    (bssid[0]==0xFF && bssid[1]==0xFF && bssid[2]==0xFF && bssid[3]==0xFF && bssid[4]==0xFF &&bssid[5]==0xFF))
+	if ((bssid[0]== 0x00 && bssid[1]== 0x00 && bssid[2]== 0x00 && bssid[3]== 0x00 && bssid[4]== 0x00 &&bssid[5]== 0x00) ||
+	    (bssid[0]== 0xFF && bssid[1]== 0xFF && bssid[2]== 0xFF && bssid[3]== 0xFF && bssid[4]== 0xFF &&bssid[5]== 0xFF))
 	{
 		status = _FAIL;
 		goto exit;
@@ -209,7 +209,7 @@ u8 rtw_set_802_11_bssid(_adapter* padapter, u8 *bssid)
 	spin_lock_bh(&pmlmepriv->lock);
 
 
-	DBG_871X("Set BSSID under fw_state =0x%08x\n", get_fwstate(pmlmepriv));
+	DBG_871X("Set BSSID under fw_state = 0x%08x\n", get_fwstate(pmlmepriv));
 	if (check_fwstate(pmlmepriv, _FW_UNDER_SURVEY) == true) {
 		goto handle_tkip_countermeasure;
 	} else if (check_fwstate(pmlmepriv, _FW_UNDER_LINKING) == true) {
@@ -277,7 +277,7 @@ u8 rtw_set_802_11_ssid(_adapter* padapter, NDIS_802_11_SSID *ssid)
 	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
 	struct wlan_network *pnetwork = &pmlmepriv->cur_network;
 
-	DBG_871X_LEVEL(_drv_always_, "set ssid [%s] fw_state =0x%08x\n",
+	DBG_871X_LEVEL(_drv_always_, "set ssid [%s] fw_state = 0x%08x\n",
 			ssid->Ssid, get_fwstate(pmlmepriv));
 
 	if (padapter->hw_init_completed ==false){
@@ -289,7 +289,7 @@ u8 rtw_set_802_11_ssid(_adapter* padapter, NDIS_802_11_SSID *ssid)
 
 	spin_lock_bh(&pmlmepriv->lock);
 
-	DBG_871X("Set SSID under fw_state =0x%08x\n", get_fwstate(pmlmepriv));
+	DBG_871X("Set SSID under fw_state = 0x%08x\n", get_fwstate(pmlmepriv));
 	if (check_fwstate(pmlmepriv, _FW_UNDER_SURVEY) == true) {
 		goto handle_tkip_countermeasure;
 	} else if (check_fwstate(pmlmepriv, _FW_UNDER_LINKING) == true) {
@@ -307,7 +307,7 @@ u8 rtw_set_802_11_ssid(_adapter* padapter, NDIS_802_11_SSID *ssid)
 			if ((check_fwstate(pmlmepriv, WIFI_STATION_STATE) == false))
 			{
 				RT_TRACE(_module_rtl871x_ioctl_set_c_, _drv_err_,
-					 ("Set SSID is the same ssid, fw_state =0x%08x\n",
+					 ("Set SSID is the same ssid, fw_state = 0x%08x\n",
 					  get_fwstate(pmlmepriv)));
 
 				if (rtw_is_same_ibss(padapter, pnetwork) == false)
@@ -337,8 +337,8 @@ u8 rtw_set_802_11_ssid(_adapter* padapter, NDIS_802_11_SSID *ssid)
 		else
 		{
 			RT_TRACE(_module_rtl871x_ioctl_set_c_, _drv_info_, ("Set SSID not the same ssid\n"));
-			RT_TRACE(_module_rtl871x_ioctl_set_c_, _drv_info_, ("set_ssid =[%s] len =0x%x\n", ssid->Ssid, (unsigned int)ssid->SsidLength));
-			RT_TRACE(_module_rtl871x_ioctl_set_c_, _drv_info_, ("assoc_ssid =[%s] len =0x%x\n", pmlmepriv->assoc_ssid.Ssid, (unsigned int)pmlmepriv->assoc_ssid.SsidLength));
+			RT_TRACE(_module_rtl871x_ioctl_set_c_, _drv_info_, ("set_ssid =[%s] len = 0x%x\n", ssid->Ssid, (unsigned int)ssid->SsidLength));
+			RT_TRACE(_module_rtl871x_ioctl_set_c_, _drv_info_, ("assoc_ssid =[%s] len = 0x%x\n", pmlmepriv->assoc_ssid.Ssid, (unsigned int)pmlmepriv->assoc_ssid.SsidLength));
 
 			rtw_disassoc_cmd(padapter, 0, true);
 
@@ -414,7 +414,7 @@ u8 rtw_set_802_11_connect(_adapter* padapter, u8 *bssid, NDIS_802_11_SSID *ssid)
 
 	spin_lock_bh(&pmlmepriv->lock);
 
-	DBG_871X_LEVEL(_drv_always_, FUNC_ADPT_FMT"  fw_state =0x%08x\n",
+	DBG_871X_LEVEL(_drv_always_, FUNC_ADPT_FMT"  fw_state = 0x%08x\n",
 		FUNC_ADPT_ARG(padapter), get_fwstate(pmlmepriv));
 
 	if (check_fwstate(pmlmepriv, _FW_UNDER_SURVEY) == true) {
@@ -463,13 +463,13 @@ u8 rtw_set_802_11_infrastructure_mode(_adapter* padapter,
 	NDIS_802_11_NETWORK_INFRASTRUCTURE* pold_state = &(cur_network->network.InfrastructureMode);
 
 	RT_TRACE(_module_rtl871x_ioctl_set_c_, _drv_notice_,
-		 ("+rtw_set_802_11_infrastructure_mode: old =%d new =%d fw_state =0x%08x\n",
+		 ("+rtw_set_802_11_infrastructure_mode: old =%d new =%d fw_state = 0x%08x\n",
 		  *pold_state, networktype, get_fwstate(pmlmepriv)));
 
 	if (*pold_state != networktype)
 	{
 		RT_TRACE(_module_rtl871x_ioctl_set_c_, _drv_info_, (" change mode!"));
-		/* DBG_871X("change mode, old_mode =%d, new_mode =%d, fw_state =0x%x\n", *pold_state, networktype, get_fwstate(pmlmepriv)); */
+		/* DBG_871X("change mode, old_mode =%d, new_mode =%d, fw_state = 0x%x\n", *pold_state, networktype, get_fwstate(pmlmepriv)); */
 
 		if (*pold_state ==Ndis802_11APMode)
 		{
@@ -620,7 +620,7 @@ u8 rtw_set_802_11_authentication_mode(_adapter* padapter, NDIS_802_11_AUTHENTICA
 
 	res =rtw_set_auth(padapter, psecuritypriv);
 
-	if (res ==_SUCCESS)
+	if (res == _SUCCESS)
 		ret =true;
 	else
 		ret =false;
@@ -634,7 +634,7 @@ u8 rtw_set_802_11_add_wep(_adapter* padapter, NDIS_802_11_WEP *wep){
 	u8		btransmitkey;
 	sint		keyid, res;
 	struct security_priv* psecuritypriv =&(padapter->securitypriv);
-	u8		ret =_SUCCESS;
+	u8		ret = _SUCCESS;
 
 	bdefaultkey =(wep->KeyIndex & 0x40000000) > 0 ? false : true;   /* for ??? */
 	btransmitkey = (wep->KeyIndex & 0x80000000) > 0 ? true  : false;	/* for ??? */
@@ -650,20 +650,20 @@ u8 rtw_set_802_11_add_wep(_adapter* padapter, NDIS_802_11_WEP *wep){
 	switch (wep->KeyLength)
 	{
 		case 5:
-			psecuritypriv->dot11PrivacyAlgrthm =_WEP40_;
+			psecuritypriv->dot11PrivacyAlgrthm = _WEP40_;
 			RT_TRACE(_module_rtl871x_ioctl_set_c_, _drv_info_, ("MgntActrtw_set_802_11_add_wep:wep->KeyLength =5\n"));
 			break;
 		case 13:
-			psecuritypriv->dot11PrivacyAlgrthm =_WEP104_;
-			RT_TRACE(_module_rtl871x_ioctl_set_c_, _drv_info_, ("MgntActrtw_set_802_11_add_wep:wep->KeyLength =13\n"));
+			psecuritypriv->dot11PrivacyAlgrthm = _WEP104_;
+			RT_TRACE(_module_rtl871x_ioctl_set_c_, _drv_info_, ("MgntActrtw_set_802_11_add_wep:wep->KeyLength = 13\n"));
 			break;
 		default:
-			psecuritypriv->dot11PrivacyAlgrthm =_NO_PRIVACY_;
+			psecuritypriv->dot11PrivacyAlgrthm = _NO_PRIVACY_;
 			RT_TRACE(_module_rtl871x_ioctl_set_c_, _drv_info_, ("MgntActrtw_set_802_11_add_wep:wep->KeyLength!=5 or 13\n"));
 			break;
 	}
 
-	RT_TRACE(_module_rtl871x_ioctl_set_c_, _drv_info_, ("rtw_set_802_11_add_wep:befor memcpy, wep->KeyLength =0x%x wep->KeyIndex =0x%x  keyid =%x\n", wep->KeyLength, wep->KeyIndex, keyid));
+	RT_TRACE(_module_rtl871x_ioctl_set_c_, _drv_info_, ("rtw_set_802_11_add_wep:befor memcpy, wep->KeyLength = 0x%x wep->KeyIndex = 0x%x  keyid =%x\n", wep->KeyLength, wep->KeyIndex, keyid));
 
 	memcpy(&(psecuritypriv->dot11DefKey[keyid].skey[0]),&(wep->KeyMaterial), wep->KeyLength);
 
@@ -680,7 +680,7 @@ u8 rtw_set_802_11_add_wep(_adapter* padapter, NDIS_802_11_WEP *wep){
 
 	res =rtw_set_key(padapter, psecuritypriv, keyid, 1, true);
 
-	if (res ==_FAIL)
+	if (res == _FAIL)
 		ret = false;
 exit:
 
@@ -700,7 +700,7 @@ u16 rtw_get_cur_max_rate(_adapter *adapter)
 	struct mlme_priv	*pmlmepriv = &adapter->mlmepriv;
 	WLAN_BSSID_EX	*pcur_bss = &pmlmepriv->cur_network.network;
 	struct sta_info *psta = NULL;
-	u8	short_GI =0;
+	u8	short_GI = 0;
 	u8	rf_type = 0;
 
 	if ((check_fwstate(pmlmepriv, _FW_LINKED) != true)
@@ -725,7 +725,7 @@ u16 rtw_get_cur_max_rate(_adapter *adapter)
 	}
 	else
 	{
-		while ((pcur_bss->SupportedRates[i]!=0) && (pcur_bss->SupportedRates[i]!=0xFF))
+		while ((pcur_bss->SupportedRates[i]!= 0) && (pcur_bss->SupportedRates[i]!= 0xFF))
 		{
 			rate = pcur_bss->SupportedRates[i]&0x7F;
 			if (rate>max_rate)

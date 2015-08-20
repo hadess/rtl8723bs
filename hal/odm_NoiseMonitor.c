@@ -36,10 +36,10 @@
 static s16 odm_InbandNoise_Monitor_NSeries(PDM_ODM_T	pDM_Odm, u8 bPauseDIG, u8 IGIValue, u32 max_time)
 {
 	u4Byte				tmp4b;
-	u1Byte				max_rf_path =0, rf_path;
-	u1Byte				reg_c50, reg_c58, valid_done =0;
+	u1Byte				max_rf_path = 0, rf_path;
+	u1Byte				reg_c50, reg_c58, valid_done = 0;
 	struct noise_level		noise_data;
-	u32 start  = 0,		func_start =0,	func_end = 0;
+	u32 start  = 0,		func_start = 0,	func_end = 0;
 
 	func_start = jiffies;
 	pDM_Odm->noise_level.noise_all = 0;

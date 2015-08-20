@@ -68,7 +68,7 @@ int _ips_leave(_adapter * padapter)
 	struct pwrctrl_priv *pwrpriv = adapter_to_pwrctl(padapter);
 	int result = _SUCCESS;
 
-	if ((pwrpriv->rf_pwrstate == rf_off) &&(!pwrpriv->bips_processing))
+	if ((pwrpriv->rf_pwrstate == rf_off) && (!pwrpriv->bips_processing))
 	{
 		pwrpriv->bips_processing = true;
 		pwrpriv->change_rfpwrstate = rf_on;
@@ -178,7 +178,7 @@ void rtw_ps_processor(_adapter*padapter)
 	up(&adapter_to_pwrctl(padapter)->lock);
 	if (ps_deny != 0)
 	{
-		DBG_871X(FUNC_ADPT_FMT ": ps_deny =0x%08X, skip power save!\n",
+		DBG_871X(FUNC_ADPT_FMT ": ps_deny = 0x%08X, skip power save!\n",
 			FUNC_ADPT_ARG(padapter), ps_deny);
 		goto exit;
 	}
@@ -197,7 +197,7 @@ void rtw_ps_processor(_adapter*padapter)
 	if (rtw_pwr_unassociated_idle(padapter) == false)
 		goto exit;
 
-	if ((pwrpriv->rf_pwrstate == rf_on) && ((pwrpriv->pwr_state_check_cnts%4) ==0))
+	if ((pwrpriv->rf_pwrstate == rf_on) && ((pwrpriv->pwr_state_check_cnts%4) == 0))
 	{
 		DBG_871X("==>%s\n", __FUNCTION__);
 		pwrpriv->change_rfpwrstate = rf_off;
@@ -299,10 +299,10 @@ void rtw_set_rpwm(PADAPTER padapter, u8 pslv)
 	else
 	{
 		if ((pwrpriv->rpwm == pslv)
-			|| ((pwrpriv->rpwm >= PS_STATE_S2)&&(pslv >= PS_STATE_S2)))
+			|| ((pwrpriv->rpwm >= PS_STATE_S2) && (pslv >= PS_STATE_S2)))
 		{
 			RT_TRACE(_module_rtl871x_pwrctrl_c_, _drv_err_,
-				("%s: Already set rpwm[0x%02X], new =0x%02X!\n", __FUNCTION__, pwrpriv->rpwm, pslv));
+				("%s: Already set rpwm[0x%02X], new = 0x%02X!\n", __FUNCTION__, pwrpriv->rpwm, pslv));
 			return;
 		}
 	}
@@ -336,7 +336,7 @@ void rtw_set_rpwm(PADAPTER padapter, u8 pslv)
 	if ((pwrpriv->cpwm < PS_STATE_S2) && (pslv >= PS_STATE_S2))
 		rpwm |= PS_ACK;
 	RT_TRACE(_module_rtl871x_pwrctrl_c_, _drv_notice_,
-			 ("rtw_set_rpwm: rpwm =0x%02x cpwm =0x%02x\n", rpwm, pwrpriv->cpwm));
+			 ("rtw_set_rpwm: rpwm = 0x%02x cpwm = 0x%02x\n", rpwm, pwrpriv->cpwm));
 
 	pwrpriv->rpwm = pslv;
 
@@ -357,7 +357,7 @@ void rtw_set_rpwm(PADAPTER padapter, u8 pslv)
 	{
 		unsigned long start_time;
 		u8 cpwm_now;
-		u8 poll_cnt =0;
+		u8 poll_cnt = 0;
 
 		start_time = jiffies;
 
@@ -482,7 +482,7 @@ void rtw_set_ps_mode(PADAPTER padapter, u8 ps_mode, u8 smart_ps, u8 bcn_ant_mode
 				start_time = jiffies;
 				do {
 					rtw_hal_get_hwreg(padapter, HW_VAR_SYS_CLKR, &val8);
-					if (!(val8 & BIT(4))){ /* 0x08 bit4 =1 --> in 32k, bit4 = 0 --> leave 32k */
+					if (!(val8 & BIT(4))){ /* 0x08 bit4 = 1 --> in 32k, bit4 = 0 --> leave 32k */
 						pwrpriv->cpwm = PS_STATE_S4;
 						break;
 					}
@@ -824,7 +824,7 @@ void cpwm_int_hdl(
 
 	if (pwrpriv->rpwm < PS_STATE_S2)
 	{
-		DBG_871X("%s: Redundant CPWM Int. RPWM =0x%02X CPWM =0x%02x\n", __func__, pwrpriv->rpwm, pwrpriv->cpwm);
+		DBG_871X("%s: Redundant CPWM Int. RPWM = 0x%02X CPWM = 0x%02x\n", __func__, pwrpriv->rpwm, pwrpriv->cpwm);
 		up(&pwrpriv->lock);
 		goto exit;
 	}
@@ -845,7 +845,7 @@ void cpwm_int_hdl(
 
 exit:
 	RT_TRACE(_module_rtl871x_pwrctrl_c_, _drv_notice_,
-			 ("cpwm_int_hdl: cpwm =0x%02x\n", pwrpriv->cpwm));
+			 ("cpwm_int_hdl: cpwm = 0x%02x\n", pwrpriv->cpwm));
 }
 
 static void cpwm_event_callback(struct work_struct *work)
@@ -871,12 +871,12 @@ static void rpwmtimeout_workitem_callback(struct work_struct *work)
 	pwrpriv = container_of(work, struct pwrctrl_priv, rpwmtimeoutwi);
 	dvobj = pwrctl_to_dvobj(pwrpriv);
 	padapter = dvobj->if1;
-/* 	DBG_871X("+%s: rpwm =0x%02X cpwm =0x%02X\n", __func__, pwrpriv->rpwm, pwrpriv->cpwm); */
+/* 	DBG_871X("+%s: rpwm = 0x%02X cpwm = 0x%02X\n", __func__, pwrpriv->rpwm, pwrpriv->cpwm); */
 
 	down(&pwrpriv->lock);
 	if ((pwrpriv->rpwm == pwrpriv->cpwm) || (pwrpriv->cpwm >= PS_STATE_S2))
 	{
-		DBG_871X("%s: rpwm =0x%02X cpwm =0x%02X CPWM done!\n", __func__, pwrpriv->rpwm, pwrpriv->cpwm);
+		DBG_871X("%s: rpwm = 0x%02X cpwm = 0x%02X CPWM done!\n", __func__, pwrpriv->rpwm, pwrpriv->cpwm);
 		goto exit;
 	}
 	up(&pwrpriv->lock);
@@ -918,7 +918,7 @@ static void pwr_rpwm_timeout_handler(void *FunctionContext)
 
 	padapter = (PADAPTER)FunctionContext;
 	pwrpriv = adapter_to_pwrctl(padapter);
-	DBG_871X("+%s: rpwm =0x%02X cpwm =0x%02X\n", __func__, pwrpriv->rpwm, pwrpriv->cpwm);
+	DBG_871X("+%s: rpwm = 0x%02X cpwm = 0x%02X\n", __func__, pwrpriv->rpwm, pwrpriv->cpwm);
 
 	if ((pwrpriv->rpwm == pwrpriv->cpwm) || (pwrpriv->cpwm >= PS_STATE_S2))
 	{
@@ -972,7 +972,7 @@ s32 rtw_register_task_alive(PADAPTER padapter, u32 task)
 	if (pwrctrl->bFwCurrentInPSMode == true)
 	{
 		RT_TRACE(_module_rtl871x_pwrctrl_c_, _drv_notice_,
-				 ("%s: task =0x%x cpwm =0x%02x alives =0x%08x\n",
+				 ("%s: task = 0x%x cpwm = 0x%02x alives = 0x%08x\n",
 				  __FUNCTION__, task, pwrctrl->cpwm, pwrctrl->alives));
 
 		if (pwrctrl->cpwm < pslv)
@@ -1030,7 +1030,7 @@ void rtw_unregister_task_alive(PADAPTER padapter, u32 task)
 		&& (pwrctrl->bFwCurrentInPSMode == true))
 	{
 		RT_TRACE(_module_rtl871x_pwrctrl_c_, _drv_notice_,
-				 ("%s: cpwm =0x%02x alives =0x%08x\n",
+				 ("%s: cpwm = 0x%02x alives = 0x%08x\n",
 				  __FUNCTION__, pwrctrl->cpwm, pwrctrl->alives));
 
 		if (pwrctrl->cpwm > pslv)
@@ -1073,7 +1073,7 @@ s32 rtw_register_tx_alive(PADAPTER padapter)
 	if (pwrctrl->bFwCurrentInPSMode == true)
 	{
 		RT_TRACE(_module_rtl871x_pwrctrl_c_, _drv_notice_,
-				 ("rtw_register_tx_alive: cpwm =0x%02x alives =0x%08x\n",
+				 ("rtw_register_tx_alive: cpwm = 0x%02x alives = 0x%08x\n",
 				  pwrctrl->cpwm, pwrctrl->alives));
 
 		if (pwrctrl->cpwm < pslv)
@@ -1125,7 +1125,7 @@ s32 rtw_register_cmd_alive(PADAPTER padapter)
 	if (pwrctrl->bFwCurrentInPSMode == true)
 	{
 		RT_TRACE(_module_rtl871x_pwrctrl_c_, _drv_info_,
-				 ("rtw_register_cmd_alive: cpwm =0x%02x alives =0x%08x\n",
+				 ("rtw_register_cmd_alive: cpwm = 0x%02x alives = 0x%08x\n",
 				  pwrctrl->cpwm, pwrctrl->alives));
 
 		if (pwrctrl->cpwm < pslv)
@@ -1180,7 +1180,7 @@ void rtw_unregister_tx_alive(PADAPTER padapter)
 		&& (pwrctrl->bFwCurrentInPSMode == true))
 	{
 		RT_TRACE(_module_rtl871x_pwrctrl_c_, _drv_notice_,
-				 ("%s: cpwm =0x%02x alives =0x%08x\n",
+				 ("%s: cpwm = 0x%02x alives = 0x%08x\n",
 				  __FUNCTION__, pwrctrl->cpwm, pwrctrl->alives));
 
 		if (pwrctrl->cpwm > pslv)
@@ -1226,7 +1226,7 @@ void rtw_unregister_cmd_alive(PADAPTER padapter)
 		&& (pwrctrl->bFwCurrentInPSMode == true))
 	{
 		RT_TRACE(_module_rtl871x_pwrctrl_c_, _drv_info_,
-				 ("%s: cpwm =0x%02x alives =0x%08x\n",
+				 ("%s: cpwm = 0x%02x alives = 0x%08x\n",
 				  __FUNCTION__, pwrctrl->cpwm, pwrctrl->alives));
 
 		if (pwrctrl->cpwm > pslv)
@@ -1246,8 +1246,8 @@ void rtw_init_pwrctrl_priv(PADAPTER padapter)
 	sema_init(&pwrctrlpriv->lock, 1);
 	sema_init(&pwrctrlpriv->check_32k_lock, 1);
 	pwrctrlpriv->rf_pwrstate = rf_on;
-	pwrctrlpriv->ips_enter_cnts =0;
-	pwrctrlpriv->ips_leave_cnts =0;
+	pwrctrlpriv->ips_enter_cnts = 0;
+	pwrctrlpriv->ips_leave_cnts = 0;
 	pwrctrlpriv->bips_processing = false;
 
 	pwrctrlpriv->ips_mode = padapter->registrypriv.ips_mode;
@@ -1468,7 +1468,7 @@ int rtw_pm_set_ips(_adapter *padapter, u8 mode)
 	else if (mode ==IPS_NONE){
 		rtw_ips_mode_req(pwrctrlpriv, mode);
 		DBG_871X("%s %s\n", __FUNCTION__, "IPS_NONE");
-		if ((padapter->bSurpriseRemoved ==0)&&(_FAIL == rtw_pwr_wakeup(padapter)))
+		if ((padapter->bSurpriseRemoved == 0) && (_FAIL == rtw_pwr_wakeup(padapter)))
 			return -EFAULT;
 	}
 	else {

@@ -30,7 +30,7 @@ void rtw_os_free_recvframe(union recv_frame *precvframe)
 /* alloc os related resource in union recv_frame */
 int rtw_os_recv_resource_alloc(_adapter *padapter, union recv_frame *precvframe)
 {
-	int	res =_SUCCESS;
+	int	res = _SUCCESS;
 
 	precvframe->u.hdr.pkt_newalloc = precvframe->u.hdr.pkt = NULL;
 
@@ -44,7 +44,7 @@ void rtw_os_recv_resource_free(struct recv_priv *precvpriv)
 	union recv_frame *precvframe;
 	precvframe = (union recv_frame*) precvpriv->precv_frame_buf;
 
-	for (i =0; i < NR_RECVFRAME; i++)
+	for (i = 0; i < NR_RECVFRAME; i++)
 	{
 		if (precvframe->u.hdr.pkt)
 		{
@@ -264,7 +264,7 @@ static void rtw_os_ksocket_send(_adapter *padapter, union recv_frame *precv_fram
 	struct rx_pkt_attrib *pattrib = &precv_frame->u.hdr.attrib;
 	struct sta_info *psta = precv_frame->u.hdr.psta;
 
-	DBG_871X("eth rx: got eth_type =0x%x\n", pattrib->eth_type);
+	DBG_871X("eth rx: got eth_type = 0x%x\n", pattrib->eth_type);
 
 	if (psta && psta->isrc && psta->pid>0)
 	{
@@ -272,7 +272,7 @@ static void rtw_os_ksocket_send(_adapter *padapter, union recv_frame *precv_fram
 
 		rx_pid = *(u16*)(skb->data+ETH_HLEN);
 
-		DBG_871X("eth rx(pid =0x%x): sta("MAC_FMT") pid =0x%x\n",
+		DBG_871X("eth rx(pid = 0x%x): sta("MAC_FMT") pid = 0x%x\n",
 			rx_pid, MAC_ARG(psta->hwaddr), psta->pid);
 
 		if (rx_pid == psta->pid)
@@ -281,10 +281,10 @@ static void rtw_os_ksocket_send(_adapter *padapter, union recv_frame *precv_fram
 			u16 len = *(u16*)(skb->data+ETH_HLEN+2);
 			/* u16 ctrl_type = *(u16*)(skb->data+ETH_HLEN+4); */
 
-			/* DBG_871X("eth, RC: len =0x%x, ctrl_type =0x%x\n", len, ctrl_type); */
-			DBG_871X("eth, RC: len =0x%x\n", len);
+			/* DBG_871X("eth, RC: len = 0x%x, ctrl_type = 0x%x\n", len, ctrl_type); */
+			DBG_871X("eth, RC: len = 0x%x\n", len);
 
-			for (i =0;i<len;i++)
+			for (i = 0;i<len;i++)
 				DBG_871X("0x%x\n", *(skb->data+ETH_HLEN+4+i));
 				/* DBG_871X("0x%x\n", *(skb->data+ETH_HLEN+6+i)); */
 

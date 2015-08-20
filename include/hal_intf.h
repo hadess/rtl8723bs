@@ -301,10 +301,10 @@ typedef enum _wowlan_subcode{
 	WOWLAN_DISABLE			= 7,
 	WOWLAN_STATUS			= 8,
 	WOWLAN_DEBUG_RELOAD_FW	= 9,
-	WOWLAN_DEBUG_1			=10,
-	WOWLAN_DEBUG_2			=11,
-	WOWLAN_AP_ENABLE		=12,
-	WOWLAN_AP_DISABLE		=13
+	WOWLAN_DEBUG_1			= 10,
+	WOWLAN_DEBUG_2			= 11,
+	WOWLAN_AP_ENABLE		= 12,
+	WOWLAN_AP_DISABLE		= 13
 }wowlan_subcode;
 
 struct wowlan_ioctl_param{

@@ -382,16 +382,16 @@ __inline static unsigned char * get_da(unsigned char *pframe)
 	unsigned int	to_fr_ds	= (GetToDs(pframe) << 1) | GetFrDs(pframe);
 
 	switch (to_fr_ds) {
-		case 0x00:	/*  ToDs =0, FromDs =0 */
+		case 0x00:	/*  ToDs = 0, FromDs = 0 */
 			da = GetAddr1Ptr(pframe);
 			break;
-		case 0x01:	/*  ToDs =0, FromDs =1 */
+		case 0x01:	/*  ToDs = 0, FromDs = 1 */
 			da = GetAddr1Ptr(pframe);
 			break;
-		case 0x02:	/*  ToDs =1, FromDs =0 */
+		case 0x02:	/*  ToDs = 1, FromDs = 0 */
 			da = GetAddr3Ptr(pframe);
 			break;
-		default:	/*  ToDs =1, FromDs =1 */
+		default:	/*  ToDs = 1, FromDs = 1 */
 			da = GetAddr3Ptr(pframe);
 			break;
 	}
@@ -406,16 +406,16 @@ __inline static unsigned char * get_sa(unsigned char *pframe)
 	unsigned int	to_fr_ds	= (GetToDs(pframe) << 1) | GetFrDs(pframe);
 
 	switch (to_fr_ds) {
-		case 0x00:	/*  ToDs =0, FromDs =0 */
+		case 0x00:	/*  ToDs = 0, FromDs = 0 */
 			sa = GetAddr2Ptr(pframe);
 			break;
-		case 0x01:	/*  ToDs =0, FromDs =1 */
+		case 0x01:	/*  ToDs = 0, FromDs = 1 */
 			sa = GetAddr3Ptr(pframe);
 			break;
-		case 0x02:	/*  ToDs =1, FromDs =0 */
+		case 0x02:	/*  ToDs = 1, FromDs = 0 */
 			sa = GetAddr2Ptr(pframe);
 			break;
-		default:	/*  ToDs =1, FromDs =1 */
+		default:	/*  ToDs = 1, FromDs = 1 */
 			sa = GetAddr4Ptr(pframe);
 			break;
 	}
@@ -429,16 +429,16 @@ __inline static unsigned char * get_hdr_bssid(unsigned char *pframe)
 	unsigned int	to_fr_ds	= (GetToDs(pframe) << 1) | GetFrDs(pframe);
 
 	switch (to_fr_ds) {
-		case 0x00:	/*  ToDs =0, FromDs =0 */
+		case 0x00:	/*  ToDs = 0, FromDs = 0 */
 			sa = GetAddr3Ptr(pframe);
 			break;
-		case 0x01:	/*  ToDs =0, FromDs =1 */
+		case 0x01:	/*  ToDs = 0, FromDs = 1 */
 			sa = GetAddr2Ptr(pframe);
 			break;
-		case 0x02:	/*  ToDs =1, FromDs =0 */
+		case 0x02:	/*  ToDs = 1, FromDs = 0 */
 			sa = GetAddr1Ptr(pframe);
 			break;
-		case 0x03:	/*  ToDs =1, FromDs =1 */
+		case 0x03:	/*  ToDs = 1, FromDs = 1 */
 			sa = GetAddr1Ptr(pframe);
 			break;
 	}
@@ -1135,8 +1135,8 @@ enum P2P_PROTO_WK_ID
 #define	WFD_DEVINFO_PC_TDLS					0x0080
 #define	WFD_DEVINFO_HDCP_SUPPORT			0x0100
 
-#define IP_MCAST_MAC(mac)		((mac[0]==0x01)&&(mac[1]==0x00)&&(mac[2]==0x5e))
-#define ICMPV6_MCAST_MAC(mac)	((mac[0]==0x33)&&(mac[1]==0x33)&&(mac[2]!=0xff))
+#define IP_MCAST_MAC(mac)		((mac[0]== 0x01) && (mac[1]== 0x00) && (mac[2]== 0x5e))
+#define ICMPV6_MCAST_MAC(mac)	((mac[0]== 0x33) && (mac[1]== 0x33) && (mac[2]!= 0xff))
 
 /* Regulatroy Domain */
 struct regd_pair_mapping {

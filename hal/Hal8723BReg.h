@@ -883,7 +883,7 @@ Current IOREG MAP
 #define	RCR_BM_DATA_EN				BIT17		// Broadcast data packet interrupt enable.
 #define	RCR_UC_DATA_EN				BIT16		// Unicast data packet interrupt enable.
 */
-/*#define	RCR_HTC_LOC_CTRL				BIT14       // MFC<--HTC=1 MFC-->HTC=0
+/*#define	RCR_HTC_LOC_CTRL				BIT14       // MFC<--HTC= 1 MFC-->HTC= 0
 #define	RCR_AMF						BIT13		// Accept management type frame
 #define	RCR_ACF						BIT12		// Accept control type frame. Control frames BA, BAR, and PS-Poll (when in AP mode) are not controlled by this bit. They are controlled by ADF.
 #define	RCR_ADF						BIT11		// Accept data type frame. This bit also regulates BA, BAR, and PS-Poll (AP mode only).

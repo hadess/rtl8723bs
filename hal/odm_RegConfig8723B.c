@@ -37,8 +37,8 @@ odm_ConfigRFReg_8723B(
 		/* For disable/enable test in high temperature, the B6 value will fail to fill. Suggestion by BB Stanley, 2013.06.25. */
 		if (Addr == 0xb6)
 		{
-			u4Byte getvalue =0;
-			u1Byte	count =0;
+			u4Byte getvalue = 0;
+			u1Byte	count = 0;
 			getvalue = PHY_QueryRFReg(pDM_Odm->Adapter, RF_PATH, Addr, bMaskDWord);
 
 			udelay(1);
@@ -57,8 +57,8 @@ odm_ConfigRFReg_8723B(
 
 		if (Addr == 0xb2)
 		{
-			u4Byte getvalue =0;
-			u1Byte	count =0;
+			u4Byte getvalue = 0;
+			u1Byte	count = 0;
 			getvalue = PHY_QueryRFReg(pDM_Odm->Adapter, RF_PATH, Addr, bMaskDWord);
 
 			udelay(1);

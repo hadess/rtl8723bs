@@ -21,16 +21,16 @@
 #define NUM_ACL 16
 
 
-/* if mode ==0, then the sta is allowed once the addr is hit. */
-/* if mode ==1, then the sta is rejected once the addr is non-hit. */
+/* if mode == 0, then the sta is allowed once the addr is hit. */
+/* if mode == 1, then the sta is rejected once the addr is non-hit. */
 struct rtw_wlan_acl_node {
         _list		        list;
         u8       addr[ETH_ALEN];
         u8       valid;
 };
 
-/* mode =0, disable */
-/* mode =1, accept unless in deny list */
+/* mode = 0, disable */
+/* mode = 1, accept unless in deny list */
 /* mode =2, deny unless in accept list */
 struct wlan_acl_pool {
 	int mode;
@@ -348,7 +348,7 @@ struct	sta_priv {
 	struct sta_info *sta_aid[NUM_STA];
 
 	u16 sta_dz_bitmap;/* only support 15 stations, staion aid bitmap for sleeping sta. */
-	u16 tim_bitmap;/* only support 15 stations, aid =0~15 mapping bit0~bit15 */
+	u16 tim_bitmap;/* only support 15 stations, aid = 0~15 mapping bit0~bit15 */
 
 	u16 max_num_sta;
 

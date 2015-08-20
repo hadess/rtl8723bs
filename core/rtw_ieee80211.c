@@ -68,7 +68,7 @@ int rtw_get_bit_value_from_ieee_value(u8 val)
 {
 	unsigned char dot11_rate_table[]={2, 4, 11, 22, 12, 18, 24, 36, 48, 72, 96, 108, 0}; /*  last element must be zero!! */
 
-	int i =0;
+	int i = 0;
 	while (dot11_rate_table[i] != 0) {
 		if (dot11_rate_table[i] == val)
 			return BIT(i);
@@ -81,7 +81,7 @@ uint	rtw_is_cckrates_included(u8 *rate)
 {
 		u32	i = 0;
 
-		while (rate[i]!=0)
+		while (rate[i]!= 0)
 		{
 			if  ( (((rate[i]) & 0x7f) == 2)	|| (((rate[i]) & 0x7f) == 4) ||
 			(((rate[i]) & 0x7f) == 11)  || (((rate[i]) & 0x7f) == 22))
@@ -97,7 +97,7 @@ uint	rtw_is_cckratesonly_included(u8 *rate)
 	u32 i = 0;
 
 
-	while (rate[i]!=0)
+	while (rate[i]!= 0)
 	{
 			if  ( (((rate[i]) & 0x7f) != 2) && (((rate[i]) & 0x7f) != 4) &&
 				(((rate[i]) & 0x7f) != 11)  && (((rate[i]) & 0x7f) != 22))
@@ -217,7 +217,7 @@ u8 *rtw_get_ie_ex(u8 *in_ie, uint in_len, u8 eid, u8 *oui, u8 oui_len, u8 *ie, u
 	if (ielen)
 		*ielen = 0;
 
-	if (!in_ie || in_len<=0)
+	if (!in_ie || in_len<= 0)
 		return target_ie;
 
 	cnt = 0;
@@ -525,7 +525,7 @@ int rtw_get_wpa2_cipher_suite(u8 *s)
 
 int rtw_parse_wpa_ie(u8* wpa_ie, int wpa_ie_len, int *group_cipher, int *pairwise_cipher, int *is_8021x)
 {
-	int i, ret =_SUCCESS;
+	int i, ret = _SUCCESS;
 	int left, count;
 	u8 *pos;
 	u8 SUITE_1X[4] = {0x00, 0x50, 0xf2, 1};
@@ -610,7 +610,7 @@ int rtw_parse_wpa_ie(u8* wpa_ie, int wpa_ie_len, int *group_cipher, int *pairwis
 
 int rtw_parse_wpa2_ie(u8* rsn_ie, int rsn_ie_len, int *group_cipher, int *pairwise_cipher, int *is_8021x)
 {
-	int i, ret =_SUCCESS;
+	int i, ret = _SUCCESS;
 	int left, count;
 	u8 *pos;
 	u8 SUITE_1X[4] = {0x00, 0x0f, 0xac, 0x01};
@@ -699,7 +699,7 @@ int rtw_get_wapi_ie(u8 *in_ie, uint in_len, u8 *wapi_ie, u16 *wapi_len)
 	if (wapi_len)
 		*wapi_len = 0;
 
-	if (!in_ie || in_len<=0)
+	if (!in_ie || in_len<= 0)
 		return len;
 
 	cnt = (_TIMESTAMP_ + _BEACON_ITERVAL_ + _CAPABILITY_);
@@ -708,14 +708,14 @@ int rtw_get_wapi_ie(u8 *in_ie, uint in_len, u8 *wapi_ie, u16 *wapi_len)
 	{
 		authmode =in_ie[cnt];
 
-		/* if (authmode ==_WAPI_IE_) */
-		if (authmode ==_WAPI_IE_ && (!memcmp(&in_ie[cnt+6], wapi_oui1, 4) ||
+		/* if (authmode == _WAPI_IE_) */
+		if (authmode == _WAPI_IE_ && (!memcmp(&in_ie[cnt+6], wapi_oui1, 4) ||
 					!memcmp(&in_ie[cnt+6], wapi_oui2, 4)))
 		{
 			if (wapi_ie) {
 				memcpy(wapi_ie, &in_ie[cnt], in_ie[cnt+1]+2);
 
-				for (i =0;i<(in_ie[cnt+1]+2);i =i+8){
+				for (i = 0;i<(in_ie[cnt+1]+2);i =i+8){
 					RT_TRACE(_module_rtl871x_mlme_c_, _drv_info_, ("\n %2x,%2x,%2x,%2x,%2x,%2x,%2x,%2x\n",
 								wapi_ie[i], wapi_ie[i+1], wapi_ie[i+2], wapi_ie[i+3], wapi_ie[i+4],
 								wapi_ie[i+5], wapi_ie[i+6], wapi_ie[i+7]));
@@ -750,20 +750,19 @@ int rtw_get_sec_ie(u8 *in_ie, uint in_len, u8 *rsn_ie, u16 *rsn_len, u8 *wpa_ie,
 
 	cnt = (_TIMESTAMP_ + _BEACON_ITERVAL_ + _CAPABILITY_);
 
-	sec_idx =0;
+	sec_idx = 0;
 
-	while (cnt<in_len)
-	{
+	while (cnt < in_len) {
 		authmode =in_ie[cnt];
 
-		if ((authmode ==_WPA_IE_ID_)&&(!memcmp(&in_ie[cnt+2], &wpa_oui[0], 4)))
+		if ((authmode == _WPA_IE_ID_) && (!memcmp(&in_ie[cnt+2], &wpa_oui[0], 4)))
 		{
 				RT_TRACE(_module_rtl871x_mlme_c_, _drv_info_, ("\n rtw_get_wpa_ie: sec_idx =%d in_ie[cnt+1]+2 =%d\n", sec_idx, in_ie[cnt+1]+2));
 
 				if (wpa_ie) {
 				memcpy(wpa_ie, &in_ie[cnt], in_ie[cnt+1]+2);
 
-				for (i =0;i<(in_ie[cnt+1]+2);i =i+8){
+				for (i = 0;i<(in_ie[cnt+1]+2);i =i+8){
 						RT_TRACE(_module_rtl871x_mlme_c_, _drv_info_, ("\n %2x,%2x,%2x,%2x,%2x,%2x,%2x,%2x\n",
 									wpa_ie[i], wpa_ie[i+1], wpa_ie[i+2], wpa_ie[i+3], wpa_ie[i+4],
 									wpa_ie[i+5], wpa_ie[i+6], wpa_ie[i+7]));
@@ -775,14 +774,14 @@ int rtw_get_sec_ie(u8 *in_ie, uint in_len, u8 *rsn_ie, u16 *rsn_len, u8 *wpa_ie,
 		}
 		else
 		{
-			if (authmode ==_WPA2_IE_ID_)
+			if (authmode == _WPA2_IE_ID_)
 			{
 				RT_TRACE(_module_rtl871x_mlme_c_, _drv_info_, ("\n get_rsn_ie: sec_idx =%d in_ie[cnt+1]+2 =%d\n", sec_idx, in_ie[cnt+1]+2));
 
 				if (rsn_ie) {
 				memcpy(rsn_ie, &in_ie[cnt], in_ie[cnt+1]+2);
 
-				for (i =0;i<(in_ie[cnt+1]+2);i =i+8){
+				for (i = 0;i<(in_ie[cnt+1]+2);i =i+8){
 						RT_TRACE(_module_rtl871x_mlme_c_, _drv_info_, ("\n %2x,%2x,%2x,%2x,%2x,%2x,%2x,%2x\n",
 									rsn_ie[i], rsn_ie[i+1], rsn_ie[i+2], rsn_ie[i+3], rsn_ie[i+4],
 									rsn_ie[i+5], rsn_ie[i+6], rsn_ie[i+7]));
@@ -812,8 +811,7 @@ u8 rtw_is_wps_ie(u8 *ie_ptr, uint *wps_ielen)
 
 	eid = ie_ptr[0];
 
-	if ((eid ==_WPA_IE_ID_)&&(!memcmp(&ie_ptr[2], wps_oui, 4)))
-	{
+	if ((eid == _WPA_IE_ID_) && (!memcmp(&ie_ptr[2], wps_oui, 4))) {
 		/* DBG_8192C("==> found WPS_IE.....\n"); */
 		*wps_ielen = ie_ptr[1]+2;
 		match =true;
@@ -839,7 +837,7 @@ u8 *rtw_get_wps_ie(u8 *in_ie, uint in_len, u8 *wps_ie, uint *wps_ielen)
 	if (wps_ielen)
 		*wps_ielen = 0;
 
-	if (!in_ie || in_len<=0)
+	if (!in_ie || in_len<= 0)
 		return wpsie_ptr;
 
 	cnt = 0;
@@ -848,7 +846,7 @@ u8 *rtw_get_wps_ie(u8 *in_ie, uint in_len, u8 *wps_ie, uint *wps_ielen)
 	{
 		eid = in_ie[cnt];
 
-		if ((eid ==_WPA_IE_ID_)&&(!memcmp(&in_ie[cnt+2], wps_oui, 4)))
+		if ((eid == _WPA_IE_ID_) && (!memcmp(&in_ie[cnt+2], wps_oui, 4)))
 		{
 			wpsie_ptr = &in_ie[cnt];
 
@@ -1211,11 +1209,11 @@ ParseRes rtw_ieee802_11_parse_elems(u8 *start, uint len,
 static u8 key_char2num(u8 ch);
 static u8 key_char2num(u8 ch)
 {
-    if ((ch>='0')&&(ch<='9'))
+    if ((ch>='0') && (ch<='9'))
         return ch - '0';
-    else if ((ch>='a')&&(ch<='f'))
+    else if ((ch>='a') && (ch<='f'))
         return ch - 'a' + 10;
-    else if ((ch>='A')&&(ch<='F'))
+    else if ((ch>='A') && (ch<='F'))
         return ch - 'A' + 10;
     else
 	 return 0xff;
@@ -1247,10 +1245,10 @@ void rtw_macaddr_cfg(u8 *mac_addr)
 		memcpy(mac, mac_addr, ETH_ALEN);
 	}
 
-	if (((mac[0]==0xff) &&(mac[1]==0xff) && (mac[2]==0xff) &&
-	     (mac[3]==0xff) && (mac[4]==0xff) &&(mac[5]==0xff)) ||
-	    ((mac[0]==0x0) && (mac[1]==0x0) && (mac[2]==0x0) &&
-	     (mac[3]==0x0) && (mac[4]==0x0) &&(mac[5]==0x0)))
+	if (((mac[0]== 0xff) && (mac[1]== 0xff) && (mac[2]== 0xff) &&
+	     (mac[3]== 0xff) && (mac[4]== 0xff) && (mac[5]== 0xff)) ||
+	    ((mac[0]== 0x0) && (mac[1]== 0x0) && (mac[2]== 0x0) &&
+	     (mac[3]== 0x0) && (mac[4]== 0x0) && (mac[5]== 0x0)))
 	{
 		mac[0] = 0x00;
 		mac[1] = 0xe0;
@@ -1312,7 +1310,7 @@ void rtw_get_bcn_info(struct wlan_network *pnetwork)
 	unsigned short cap = 0;
 	u8 bencrypt = 0;
 	/* u8 wpa_ie[255], rsn_ie[255]; */
-	u16 wpa_len =0, rsn_len =0;
+	u16 wpa_len = 0, rsn_len = 0;
 	struct HT_info_element *pht_info = NULL;
 	struct ieee80211_ht_cap *pht_cap = NULL;
 	unsigned int		len;
