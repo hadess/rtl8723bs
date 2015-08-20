@@ -723,7 +723,7 @@ void SetHwReg(_adapter *adapter, u8 variable, u8 *val)
 		odm->SupportAbility = *((u32*)val);
 		break;
 	case HW_VAR_DM_FUNC_OP:
-		if (*((u8*)val) == true) {
+		if (*((u8 *)val) == true) {
 			/* save dm flag */
 			odm->BK_SupportAbility = odm->SupportAbility;
 		} else {
@@ -773,7 +773,7 @@ void GetHwReg(_adapter *adapter, u8 variable, u8 *val)
 		*((u32*)val) = odm->SupportAbility;
 		break;
 	case HW_VAR_RF_TYPE:
-		*((u8*)val) = hal_data->rf_type;
+		*((u8 *)val) = hal_data->rf_type;
 		break;
 	default:
 		DBG_871X_LEVEL(_drv_always_, FUNC_ADPT_FMT" variable(%d) not defined!\n",
@@ -795,7 +795,7 @@ SetHalDefVar(_adapter *adapter, HAL_DEF_VARIABLE variable, void *value)
 	switch (variable) {
 	case HW_DEF_FA_CNT_DUMP:
 		/* ODM_COMP_COMMON */
-		if (*((u8*)value))
+		if (*((u8 *)value))
 			odm->DebugComponents |= (ODM_COMP_DIG |ODM_COMP_FA_CNT);
 		else
 			odm->DebugComponents &= ~(ODM_COMP_DIG |ODM_COMP_FA_CNT);
@@ -822,7 +822,7 @@ SetHalDefVar(_adapter *adapter, HAL_DEF_VARIABLE variable, void *value)
 		break;
 	case HAL_DEF_DBG_DM_FUNC:
 	{
-		u8 dm_func = *((u8*)value);
+		u8 dm_func = *((u8 *)value);
 		struct dm_priv *dm = &hal_data->dmpriv;
 
 		if (dm_func == 0){ /* disable all dynamic func */
@@ -858,10 +858,10 @@ SetHalDefVar(_adapter *adapter, HAL_DEF_VARIABLE variable, void *value)
 	}
 		break;
 	case HAL_DEF_DBG_DUMP_RXPKT:
-		hal_data->bDumpRxPkt = *((u8*)value);
+		hal_data->bDumpRxPkt = *((u8 *)value);
 		break;
 	case HAL_DEF_DBG_DUMP_TXPKT:
-		hal_data->bDumpTxPkt = *((u8*)value);
+		hal_data->bDumpTxPkt = *((u8 *)value);
 		break;
 	case HAL_DEF_ANT_DETECT:
 		hal_data->AntDetection = *((u8 *)value);
@@ -908,16 +908,16 @@ GetHalDefVar(_adapter *adapter, HAL_DEF_VARIABLE variable, void *value)
 			*((u32*)value) =hal_data->odmpriv.SupportAbility;
 			break;
 		case HAL_DEF_DBG_DUMP_RXPKT:
-			*((u8*)value) = hal_data->bDumpRxPkt;
+			*((u8 *)value) = hal_data->bDumpRxPkt;
 			break;
 		case HAL_DEF_DBG_DUMP_TXPKT:
-			*((u8*)value) = hal_data->bDumpTxPkt;
+			*((u8 *)value) = hal_data->bDumpTxPkt;
 			break;
 		case HAL_DEF_ANT_DETECT:
 			*((u8 *)value) = hal_data->AntDetection;
 			break;
 		case HAL_DEF_MACID_SLEEP:
-			*(u8*)value = false;
+			*(u8 *)value = false;
 			break;
 		case HAL_DEF_TX_PAGE_SIZE:
 			*((u32*)value) = PAGE_SIZE_128;
@@ -942,7 +942,7 @@ void GetHalODMVar(
 	case HAL_ODM_NOISE_MONITOR:
 		{
 			HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
-			u8 chan = *(u8*)pValue1;
+			u8 chan = *(u8 *)pValue1;
 			*(s16 *)pValue2 = pHalData->noise[chan];
 			#ifdef DBG_NOISE_MONITOR
 			DBG_8192C("### Noise monitor chan(%d)-noise:%d (dBm) ###\n",

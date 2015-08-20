@@ -1004,7 +1004,7 @@ static u32 rtl8723bs_hal_init(PADAPTER padapter)
 	u1bTmp |= (MACTXEN | MACRXEN);
 	rtw_write8(padapter, REG_CR, u1bTmp);
 
-	rtw_hal_set_hwreg(padapter, HW_VAR_NAV_UPPER, (u8*)&NavUpper);
+	rtw_hal_set_hwreg(padapter, HW_VAR_NAV_UPPER, (u8 *)&NavUpper);
 
 	/* ack for xmit mgmt frames. */
 	rtw_write32(padapter, REG_FWHW_TXQ_CTRL, rtw_read32(padapter, REG_FWHW_TXQ_CTRL)|BIT(12));
@@ -1556,7 +1556,7 @@ static void SetHwReg8723BS(PADAPTER padapter, u8 variable, u8 *val)
 							break;
 						} else {
 							/*  If RX_DMA is not idle, receive one pkt from DMA */
-							res = sdio_local_read(padapter, SDIO_REG_RX0_REQ_LEN, 4, (u8*)&tmp);
+							res = sdio_local_read(padapter, SDIO_REG_RX0_REQ_LEN, 4, (u8 *)&tmp);
 							len = le16_to_cpu(tmp);
 							DBG_871X_LEVEL(_drv_always_, "RX len:%d\n", len);
 							if (len > 0)
@@ -1573,20 +1573,20 @@ static void SetHwReg8723BS(PADAPTER padapter, u8 variable, u8 *val)
 					/*  3. Clear IMR and ISR */
 					DBG_871X_LEVEL(_drv_always_, "Clear IMR and ISR\n");
 					tmp = 0;
-					sdio_local_write(padapter, SDIO_REG_HIMR_ON, 4, (u8*)&tmp);
-					sdio_local_write(padapter, SDIO_REG_HIMR, 4, (u8*)&tmp);
-					sdio_local_read(padapter, SDIO_REG_HISR, 4, (u8*)&tmp);
-					sdio_local_write(padapter, SDIO_REG_HISR, 4, (u8*)&tmp);
+					sdio_local_write(padapter, SDIO_REG_HIMR_ON, 4, (u8 *)&tmp);
+					sdio_local_write(padapter, SDIO_REG_HIMR, 4, (u8 *)&tmp);
+					sdio_local_read(padapter, SDIO_REG_HISR, 4, (u8 *)&tmp);
+					sdio_local_write(padapter, SDIO_REG_HISR, 4, (u8 *)&tmp);
 
 					/*  4. Enable CPWM2 only */
 					DBG_871X_LEVEL(_drv_always_, "Enable only CPWM2\n");
-					sdio_local_read(padapter, SDIO_REG_HIMR, 4, (u8*)&tmp);
+					sdio_local_read(padapter, SDIO_REG_HIMR, 4, (u8 *)&tmp);
 					DBG_871X("DisableInterruptButCpwm28723BSdio(): Read SDIO_REG_HIMR: 0x%08x\n", tmp);
 
 					himr = cpu_to_le32(SDIO_HIMR_DISABLED)|SDIO_HIMR_CPWM2_MSK;
-					sdio_local_write(padapter, SDIO_REG_HIMR, 4, (u8*)&himr);
+					sdio_local_write(padapter, SDIO_REG_HIMR, 4, (u8 *)&himr);
 
-					sdio_local_read(padapter, SDIO_REG_HIMR, 4, (u8*)&tmp);
+					sdio_local_read(padapter, SDIO_REG_HIMR, 4, (u8 *)&tmp);
 					DBG_871X("DisableInterruptButCpwm28723BSdio(): Read again SDIO_REG_HIMR: 0x%08x\n", tmp);
 
 					/*  5. Set Enable WOWLAN H2C command. */
@@ -1747,7 +1747,7 @@ static void SetHwReg8723BS(PADAPTER padapter, u8 variable, u8 *val)
 					break;
 				} else {
 					/*  If RX_DMA is not idle, receive one pkt from DMA */
-					res = sdio_local_read(padapter, SDIO_REG_RX0_REQ_LEN, 4, (u8*)&tmp);
+					res = sdio_local_read(padapter, SDIO_REG_RX0_REQ_LEN, 4, (u8 *)&tmp);
 					len = le16_to_cpu(tmp);
 
 					DBG_871X_LEVEL(_drv_always_, "RX len:%d\n", len);
@@ -1766,20 +1766,20 @@ static void SetHwReg8723BS(PADAPTER padapter, u8 variable, u8 *val)
 			/*  3. Clear IMR and ISR */
 			DBG_871X_LEVEL(_drv_always_, "Clear IMR and ISR\n");
 			tmp = 0;
-			sdio_local_write(padapter, SDIO_REG_HIMR_ON, 4, (u8*)&tmp);
-			sdio_local_write(padapter, SDIO_REG_HIMR, 4, (u8*)&tmp);
-			sdio_local_read(padapter, SDIO_REG_HISR, 4, (u8*)&tmp);
-			sdio_local_write(padapter, SDIO_REG_HISR, 4, (u8*)&tmp);
+			sdio_local_write(padapter, SDIO_REG_HIMR_ON, 4, (u8 *)&tmp);
+			sdio_local_write(padapter, SDIO_REG_HIMR, 4, (u8 *)&tmp);
+			sdio_local_read(padapter, SDIO_REG_HISR, 4, (u8 *)&tmp);
+			sdio_local_write(padapter, SDIO_REG_HISR, 4, (u8 *)&tmp);
 
 			/*  4. Enable CPWM2 only */
 			DBG_871X_LEVEL(_drv_always_, "Enable only CPWM2\n");
-			sdio_local_read(padapter, SDIO_REG_HIMR, 4, (u8*)&tmp);
+			sdio_local_read(padapter, SDIO_REG_HIMR, 4, (u8 *)&tmp);
 			DBG_871X("DisableInterruptButCpwm28723BSdio(): Read SDIO_REG_HIMR: 0x%08x\n", tmp);
 
 			himr = cpu_to_le32(SDIO_HIMR_DISABLED)|SDIO_HIMR_CPWM2_MSK;
-			sdio_local_write(padapter, SDIO_REG_HIMR, 4, (u8*)&himr);
+			sdio_local_write(padapter, SDIO_REG_HIMR, 4, (u8 *)&himr);
 
-			sdio_local_read(padapter, SDIO_REG_HIMR, 4, (u8*)&tmp);
+			sdio_local_read(padapter, SDIO_REG_HIMR, 4, (u8 *)&tmp);
 			DBG_871X("DisableInterruptButCpwm28723BSdio(): Read again SDIO_REG_HIMR: 0x%08x\n", tmp);
 
 			/*  5. Set Enable WOWLAN H2C command. */

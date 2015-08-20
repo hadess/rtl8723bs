@@ -416,7 +416,7 @@ s32 rtl8723bs_init_recv_priv(PADAPTER padapter)
 		goto exit;
 	}
 
-	precvpriv->precv_buf = (u8*)N_BYTE_ALIGMENT((SIZE_PTR)(precvpriv->pallocated_recv_buf), 4);
+	precvpriv->precv_buf = (u8 *)N_BYTE_ALIGMENT((SIZE_PTR)(precvpriv->pallocated_recv_buf), 4);
 
 	/*  init each recv buffer */
 	precvbuf = (struct recv_buf*)precvpriv->precv_buf;

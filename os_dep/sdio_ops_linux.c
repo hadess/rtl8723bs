@@ -430,7 +430,7 @@ s32 _sd_read(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, void *pdata)
 	if (unlikely((cnt == 1) || (cnt ==2)))
 	{
 		int i;
-		u8 *pbuf = (u8*)pdata;
+		u8 *pbuf = (u8 *)pdata;
 
 		for (i = 0; i < cnt; i++)
 		{
@@ -533,7 +533,7 @@ s32 _sd_write(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, void *pdata)
 	if (unlikely((cnt == 1) || (cnt ==2)))
 	{
 		int i;
-		u8 *pbuf = (u8*)pdata;
+		u8 *pbuf = (u8 *)pdata;
 
 		for (i = 0; i < cnt; i++)
 		{

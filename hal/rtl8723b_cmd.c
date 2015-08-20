@@ -93,15 +93,15 @@ s32 FillH2CCmd8723B(PADAPTER padapter, u8 ElementID, u32 CmdLen, u8 *pCmdBuffer)
 
 		if (CmdLen<=3)
 		{
-			memcpy((u8*)(&h2c_cmd)+1, pCmdBuffer, CmdLen);
+			memcpy((u8 *)(&h2c_cmd)+1, pCmdBuffer, CmdLen);
 		}
 		else {
-			memcpy((u8*)(&h2c_cmd)+1, pCmdBuffer, 3);
-			memcpy((u8*)(&h2c_cmd_ex), pCmdBuffer+3, CmdLen-3);
-/* 			*(u8*)(&h2c_cmd) |= BIT(7); */
+			memcpy((u8 *)(&h2c_cmd)+1, pCmdBuffer, 3);
+			memcpy((u8 *)(&h2c_cmd_ex), pCmdBuffer+3, CmdLen-3);
+/* 			*(u8 *)(&h2c_cmd) |= BIT(7); */
 		}
 
-		*(u8*)(&h2c_cmd) |= ElementID;
+		*(u8 *)(&h2c_cmd) |= ElementID;
 
 		if (CmdLen>3){
 			msgbox_ex_addr = REG_HMEBOX_EXT0_8723B + (h2c_box_num *RTL8723B_EX_MESSAGE_BOX_SIZE);
@@ -415,7 +415,7 @@ static void ConstructARPResponse(
 	/*  */
 	/*  Frame Body. */
 	/*  */
-	pARPRspPkt =  (u8*)(pframe+ *pLength);
+	pARPRspPkt =  (u8 *)(pframe+ *pLength);
 	payload = pARPRspPkt; /* Get Payload pointer */
 	/*  LLC header */
 	memcpy(pARPRspPkt, ARPLLCHeader, 8);
@@ -487,7 +487,7 @@ static void ConstructPnoInfo(
 	struct pwrctrl_priv *pwrctl = adapter_to_pwrctl(padapter);
 
 	u8	*pPnoInfoPkt = pframe;
-	pPnoInfoPkt =  (u8*)(pframe+ *pLength);
+	pPnoInfoPkt =  (u8 *)(pframe+ *pLength);
 	memcpy(pPnoInfoPkt, &pwrctl->pnlo_info->ssid_num, 4);
 
 	*pLength+=4;
@@ -531,7 +531,7 @@ static void ConstructSSIDList(
 	u8	*pSSIDListPkt = pframe;
 	struct pwrctrl_priv *pwrctl = adapter_to_pwrctl(padapter);
 
-	pSSIDListPkt =  (u8*)(pframe+ *pLength);
+	pSSIDListPkt =  (u8 *)(pframe+ *pLength);
 
 	for (i = 0; i < pwrctl->pnlo_info->ssid_num ; i++) {
 		memcpy(pSSIDListPkt, &pwrctl->pno_ssid_list->node[i].SSID,
@@ -552,7 +552,7 @@ static void ConstructScanInfo(
 	u8	*pScanInfoPkt = pframe;
 	struct pwrctrl_priv *pwrctl = adapter_to_pwrctl(padapter);
 
-	pScanInfoPkt =  (u8*)(pframe+ *pLength);
+	pScanInfoPkt =  (u8 *)(pframe+ *pLength);
 
 	memcpy(pScanInfoPkt, &pwrctl->pscan_info->channel_num, 1);
 
@@ -674,7 +674,7 @@ static void ConstructGTKResponse(
 	/*  */
 	/*  Frame Body. */
 	/*  */
-	pGTKRspPkt =  (u8*)(pframe+ *pLength);
+	pGTKRspPkt =  (u8 *)(pframe+ *pLength);
 	/*  LLC header */
 	memcpy(pGTKRspPkt, LLCHeader, 8);
 	*pLength += 8;
@@ -2065,7 +2065,7 @@ void rtl8723b_download_rsvd_page(PADAPTER padapter, u8 mstatus)
 				yield();
 				/* mdelay(10); */
 				/*  check rsvd page download OK. */
-				rtw_hal_get_hwreg(padapter, HW_VAR_BCN_VALID, (u8*)(&bcn_valid));
+				rtw_hal_get_hwreg(padapter, HW_VAR_BCN_VALID, (u8 *)(&bcn_valid));
 				poll++;
 			} while (!bcn_valid && (poll%10)!= 0 && !padapter->bSurpriseRemoved && !padapter->bDriverStopped);
 

@@ -872,7 +872,7 @@ unsigned int OnBeacon(_adapter *padapter, union recv_frame *precv_frame)
 					update_network(&(pmlmepriv->cur_network.network), pbss, padapter, true);
 					rtw_get_bcn_info(&(pmlmepriv->cur_network));
 				}
-				kfree((u8*)pbss);
+				kfree((u8 *)pbss);
 			}
 
 			/* check the vendor of the assoc AP */
@@ -2131,8 +2131,8 @@ unsigned int OnAction_back(_adapter *padapter, union recv_frame *precv_frame)
 			case RTW_WLAN_ACTION_ADDBA_REQ: /* ADDBA request */
 
 				memcpy(&(pmlmeinfo->ADDBA_req), &(frame_body[2]), sizeof(struct ADDBA_request));
-				/* process_addba_req(padapter, (u8*)&(pmlmeinfo->ADDBA_req), GetAddr3Ptr(pframe)); */
-				process_addba_req(padapter, (u8*)&(pmlmeinfo->ADDBA_req), addr);
+				/* process_addba_req(padapter, (u8 *)&(pmlmeinfo->ADDBA_req), GetAddr3Ptr(pframe)); */
+				process_addba_req(padapter, (u8 *)&(pmlmeinfo->ADDBA_req), addr);
 
 				if (pmlmeinfo->bAcceptAddbaReq == true)
 				{
@@ -2702,7 +2702,7 @@ void issue_beacon(_adapter *padapter, int timeout_ms)
 			wps_ie = rtw_get_wps_ie(pmgntframe->buf_addr+TXDESC_OFFSET+sizeof (struct ieee80211_hdr_3addr)+_BEACON_IE_OFFSET_,
 				pattrib->pktlen-sizeof (struct ieee80211_hdr_3addr)-_BEACON_IE_OFFSET_, NULL, &wps_ielen);
 			if (wps_ie && wps_ielen>0) {
-				rtw_get_wps_attr_content(wps_ie,  wps_ielen, WPS_ATTR_SELECTED_REGISTRAR, (u8*)(&sr), NULL);
+				rtw_get_wps_attr_content(wps_ie,  wps_ielen, WPS_ATTR_SELECTED_REGISTRAR, (u8 *)(&sr), NULL);
 			}
 			if (sr != 0)
 				set_fwstate(pmlmepriv, WIFI_UNDER_WPS);
@@ -3004,8 +3004,8 @@ void issue_probersp(_adapter *padapter, unsigned char *da, u8 is_valid_p2p_probe
 		/* append vendor specific ie */
 		memcpy(RC_INFO, RC_OUI, sizeof(RC_OUI));
 		memcpy(&RC_INFO[4], mac, ETH_ALEN);
-		memcpy(&RC_INFO[10], (u8*)&psta->pid, 2);
-		memcpy(&RC_INFO[12], (u8*)&cu_ch, 2);
+		memcpy(&RC_INFO[10], (u8 *)&psta->pid, 2);
+		memcpy(&RC_INFO[12], (u8 *)&cu_ch, 2);
 
 		pframe = rtw_set_ie(pframe, _VENDOR_SPECIFIC_IE_, sizeof(RC_INFO), RC_INFO, &pattrib->pktlen);
 	}
@@ -5407,7 +5407,7 @@ void report_survey_event(_adapter *padapter, union recv_frame *precv_frame)
 	}
 
 	cmdsz = (sizeof(struct survey_event) + sizeof(struct C2HEvent_Header));
-	if ((pevtcmd = (u8*)rtw_zmalloc(cmdsz)) == NULL)
+	if ((pevtcmd = (u8 *)rtw_zmalloc(cmdsz)) == NULL)
 	{
 		kfree((u8 *)pcmd_obj);
 		return;
@@ -5462,7 +5462,7 @@ void report_surveydone_event(_adapter *padapter)
 	}
 
 	cmdsz = (sizeof(struct surveydone_event) + sizeof(struct C2HEvent_Header));
-	if ((pevtcmd = (u8*)rtw_zmalloc(cmdsz)) == NULL)
+	if ((pevtcmd = (u8 *)rtw_zmalloc(cmdsz)) == NULL)
 	{
 		kfree((u8 *)pcmd_obj);
 		return;
@@ -5510,7 +5510,7 @@ void report_join_res(_adapter *padapter, int res)
 	}
 
 	cmdsz = (sizeof(struct joinbss_event) + sizeof(struct C2HEvent_Header));
-	if ((pevtcmd = (u8*)rtw_zmalloc(cmdsz)) == NULL)
+	if ((pevtcmd = (u8 *)rtw_zmalloc(cmdsz)) == NULL)
 	{
 		kfree((u8 *)pcmd_obj);
 		return;
@@ -5562,7 +5562,7 @@ void report_wmm_edca_update(_adapter *padapter)
 	}
 
 	cmdsz = (sizeof(struct wmm_event) + sizeof(struct C2HEvent_Header));
-	if ((pevtcmd = (u8*)rtw_zmalloc(cmdsz)) == NULL)
+	if ((pevtcmd = (u8 *)rtw_zmalloc(cmdsz)) == NULL)
 	{
 		kfree((u8 *)pcmd_obj);
 		return;
@@ -5609,7 +5609,7 @@ void report_del_sta_event(_adapter *padapter, unsigned char* MacAddr, unsigned s
 	}
 
 	cmdsz = (sizeof(struct stadel_event) + sizeof(struct C2HEvent_Header));
-	if ((pevtcmd = (u8*)rtw_zmalloc(cmdsz)) == NULL)
+	if ((pevtcmd = (u8 *)rtw_zmalloc(cmdsz)) == NULL)
 	{
 		kfree((u8 *)pcmd_obj);
 		return;
@@ -5665,7 +5665,7 @@ void report_add_sta_event(_adapter *padapter, unsigned char* MacAddr, int cam_id
 	}
 
 	cmdsz = (sizeof(struct stassoc_event) + sizeof(struct C2HEvent_Header));
-	if ((pevtcmd = (u8*)rtw_zmalloc(cmdsz)) == NULL)
+	if ((pevtcmd = (u8 *)rtw_zmalloc(cmdsz)) == NULL)
 	{
 		kfree((u8 *)pcmd_obj);
 		return;
@@ -6536,7 +6536,7 @@ u8 createbss_hdl(_adapter *padapter, u8 *pbuf)
 
 	if (pmlmeinfo->state == WIFI_FW_AP_STATE) {
 		WLAN_BSSID_EX *network = &padapter->mlmepriv.cur_network.network;
-		start_bss_network(padapter, (u8*)network);
+		start_bss_network(padapter, (u8 *)network);
 		return H2C_SUCCESS;
 	}
 
@@ -6953,7 +6953,7 @@ u8 setkey_hdl(_adapter *padapter, u8 *pbuf)
 	}
 
 	if (cam_id >= 0 && cam_id <=3)
-		rtw_hal_set_hwreg(padapter, HW_VAR_SEC_DK_CFG, (u8*)true);
+		rtw_hal_set_hwreg(padapter, HW_VAR_SEC_DK_CFG, (u8 *)true);
 
 	/* allow multicast packets to driver */
 	padapter->HalFunc.SetHwRegHandler(padapter, HW_VAR_ON_RCR_AM, null_addr);
@@ -7150,7 +7150,7 @@ u8 mlme_evt_hdl(_adapter *padapter, unsigned char *pbuf)
 	if (peventbuf)
 	{
 		event_callback = wlanevents[evt_code].event_callback;
-		event_callback(padapter, (u8*)peventbuf);
+		event_callback(padapter, (u8 *)peventbuf);
 
 		pevt_priv->evt_done_cnt++;
 	}

@@ -426,7 +426,7 @@ free_adapter:
 		if (pnetdev)
 			rtw_free_netdev(pnetdev);
 		else
-			vfree((u8*)padapter);
+			vfree((u8 *)padapter);
 		padapter = NULL;
 	}
 exit:

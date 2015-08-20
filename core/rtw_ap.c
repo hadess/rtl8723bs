@@ -502,8 +502,8 @@ void update_bmc_sta(_adapter *padapter)
 		/* psta->dot118021XPrivacy = _NO_PRIVACY_;//!!! remove it, because it has been set before this. */
 
 		/* prepare for add_RATid */
-		supportRateNum = rtw_get_rateset_len((u8*)&pcur_network->SupportedRates);
-		network_type = rtw_check_network_type((u8*)&pcur_network->SupportedRates, supportRateNum, pcur_network->Configuration.DSConfig);
+		supportRateNum = rtw_get_rateset_len((u8 *)&pcur_network->SupportedRates);
+		network_type = rtw_check_network_type((u8 *)&pcur_network->SupportedRates, supportRateNum, pcur_network->Configuration.DSConfig);
 		if (IsSupportedTxCCK(network_type)) {
 			network_type = WIRELESS_11B;
 		}
@@ -1280,7 +1280,7 @@ int rtw_check_beacon_data(_adapter *padapter, u8 *pbuf,  int len)
 	pbss_network->Length = get_WLAN_BSSID_EX_sz((WLAN_BSSID_EX  *)pbss_network);
 
 	/* issue beacon to start bss network */
-	/* start_bss_network(padapter, (u8*)pbss_network); */
+	/* start_bss_network(padapter, (u8 *)pbss_network); */
 	rtw_startbss_cmd(padapter, RTW_CMDF_WAIT_ACK);
 
 
@@ -1695,7 +1695,7 @@ static void update_bcn_wps_ie(_adapter *padapter)
 	if ((pmlmeinfo->state&0x03) == WIFI_FW_AP_STATE)
 	{
 		u8 sr = 0;
-		rtw_get_wps_attr_content(pwps_ie_src,  wps_ielen, WPS_ATTR_SELECTED_REGISTRAR, (u8*)(&sr), NULL);
+		rtw_get_wps_attr_content(pwps_ie_src,  wps_ielen, WPS_ATTR_SELECTED_REGISTRAR, (u8 *)(&sr), NULL);
 
 		if (sr) {
 			set_fwstate(pmlmepriv, WIFI_UNDER_WPS);
@@ -2335,7 +2335,7 @@ void rtw_ap_restore_network(_adapter *padapter)
 
 	set_channel_bwmode(padapter, pmlmeext->cur_channel, pmlmeext->cur_ch_offset, pmlmeext->cur_bwmode);
 
-	start_bss_network(padapter, (u8*)&mlmepriv->cur_network.network);
+	start_bss_network(padapter, (u8 *)&mlmepriv->cur_network.network);
 
 	if ((padapter->securitypriv.dot11PrivacyAlgrthm == _TKIP_) ||
 		(padapter->securitypriv.dot11PrivacyAlgrthm == _AES_))

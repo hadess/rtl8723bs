@@ -70,7 +70,7 @@ _BlockWrite(
 	u32			blockSize_p3 = 1;	/*  Phase #3 : Use 1-byte, the remnant of FW image. */
 	u32			blockCount_p1 = 0, blockCount_p2 = 0, blockCount_p3 = 0;
 	u32			remainSize_p1 = 0, remainSize_p2 = 0;
-	u8			*bufferPtr	= (u8*)buffer;
+	u8			*bufferPtr	= (u8 *)buffer;
 	u32			i = 0, offset = 0;
 
 /* 	printk("====>%s %d\n", __func__, __LINE__); */
@@ -163,7 +163,7 @@ _WriteFW(
 	int ret = _SUCCESS;
 	u32	pageNums, remainSize ;
 	u32	page, offset;
-	u8		*bufferPtr = (u8*)buffer;
+	u8		*bufferPtr = (u8 *)buffer;
 
 	pageNums = size / MAX_DLFW_PAGE_SIZE ;
 	/* RT_ASSERT((pageNums <= 4), ("Page numbers should not greater then 4 \n")); */
@@ -440,7 +440,7 @@ s32 rtl8723b_FirmwareDownload(PADAPTER padapter, bool  bUsedWoWLANFw)
 			if (!pwrpriv->wowlan_ap_mode) {
 				ODM_ConfigFWWithHeaderFile(&pHalData->odmpriv,
 						CONFIG_FW_WoWLAN,
-						(u8*)&pFirmware->szFwBuffer,
+						(u8 *)&pFirmware->szFwBuffer,
 						&pFirmware->ulFwLength);
 
 				DBG_8192C(" ===> %s fw: %s, size: %d\n",
@@ -449,7 +449,7 @@ s32 rtl8723b_FirmwareDownload(PADAPTER padapter, bool  bUsedWoWLANFw)
 			} else {
 				ODM_ConfigFWWithHeaderFile(&pHalData->odmpriv,
 						CONFIG_FW_AP_WoWLAN,
-						(u8*)&pFirmware->szFwBuffer,
+						(u8 *)&pFirmware->szFwBuffer,
 						&pFirmware->ulFwLength);
 
 				DBG_8192C(" ===> %s fw: %s, size: %d\n",
@@ -462,13 +462,13 @@ s32 rtl8723b_FirmwareDownload(PADAPTER padapter, bool  bUsedWoWLANFw)
 				if (padapter->registrypriv.mp_mode == 0)
 				{
 					ODM_ConfigFWWithHeaderFile(&pHalData->odmpriv, CONFIG_FW_NIC,
-						(u8*)&pFirmware->szFwBuffer, &pFirmware->ulFwLength);
+						(u8 *)&pFirmware->szFwBuffer, &pFirmware->ulFwLength);
 					DBG_8192C("%s fw: %s, size: %d\n", __FUNCTION__, "FW_NIC", pFirmware->ulFwLength);
 				}
 				else
 				{
 					ODM_ConfigFWWithHeaderFile(&pHalData->odmpriv, CONFIG_FW_MP,
-						(u8*)&pFirmware->szFwBuffer, &pFirmware->ulFwLength);
+						(u8 *)&pFirmware->szFwBuffer, &pFirmware->ulFwLength);
 					DBG_8192C("%s fw: %s, size: %d\n", __FUNCTION__, "FW_MP", pFirmware->ulFwLength);
 				}
 			}
@@ -544,9 +544,9 @@ fwdl_stat:
 
 exit:
 	if (pFirmware)
-		kfree((u8*)pFirmware);
+		kfree((u8 *)pFirmware);
 	if (pBTFirmware)
-		kfree((u8*)pBTFirmware);
+		kfree((u8 *)pBTFirmware);
 	DBG_871X(" <=== rtl8723b_FirmwareDownload()\n");
 	return rtStatus;
 }
@@ -678,7 +678,7 @@ Hal_GetEfuseDefinition(
 		case TYPE_EFUSE_MAX_SECTION:
 			{
 				u8 *pMax_section;
-				pMax_section = (u8*)pOut;
+				pMax_section = (u8 *)pOut;
 
 				if (efuseType == EFUSE_WIFI)
 					*pMax_section = EFUSE_MAX_SECTION_8723B;
@@ -738,7 +738,7 @@ Hal_GetEfuseDefinition(
 		case TYPE_EFUSE_PROTECT_BYTES_BANK:
 			{
 				u8 *pu1Tmp;
-				pu1Tmp = (u8*)pOut;
+				pu1Tmp = (u8 *)pOut;
 
 				if (efuseType == EFUSE_WIFI)
 					*pu1Tmp = EFUSE_OOB_PROTECT_BYTES;
@@ -762,7 +762,7 @@ Hal_GetEfuseDefinition(
 		default:
 			{
 				u8 *pu1Tmp;
-				pu1Tmp = (u8*)pOut;
+				pu1Tmp = (u8 *)pOut;
 				*pu1Tmp = 0;
 			}
 			break;
@@ -941,7 +941,7 @@ hal_ReadEFuse_WiFi(
 		return;
 	}
 
-	efuseTbl = (u8*)rtw_malloc(EFUSE_MAX_MAP_LEN);
+	efuseTbl = (u8 *)rtw_malloc(EFUSE_MAX_MAP_LEN);
 	if (efuseTbl == NULL)
 	{
 		DBG_8192C("%s: alloc efuseTbl fail!\n", __FUNCTION__);
@@ -1065,8 +1065,8 @@ if (1)
 	}
 	else
 	{
-		rtw_hal_set_hwreg(padapter, HW_VAR_EFUSE_BYTES, (u8*)&used);
-		rtw_hal_set_hwreg(padapter, HW_VAR_EFUSE_USAGE, (u8*)&efuse_usage);
+		rtw_hal_set_hwreg(padapter, HW_VAR_EFUSE_BYTES, (u8 *)&used);
+		rtw_hal_set_hwreg(padapter, HW_VAR_EFUSE_USAGE, (u8 *)&efuse_usage);
 	}
 
 	if (efuseTbl)
@@ -1214,8 +1214,8 @@ hal_ReadEFuse_BT(
 	}
 	else
 	{
-		rtw_hal_set_hwreg(padapter, HW_VAR_EFUSE_BT_BYTES, (u8*)&used);
-		rtw_hal_set_hwreg(padapter, HW_VAR_EFUSE_BT_USAGE, (u8*)&efuse_usage);
+		rtw_hal_set_hwreg(padapter, HW_VAR_EFUSE_BT_BYTES, (u8 *)&used);
+		rtw_hal_set_hwreg(padapter, HW_VAR_EFUSE_BT_USAGE, (u8 *)&efuse_usage);
 	}
 
 exit:
@@ -1264,7 +1264,7 @@ hal_EfuseGetCurrentSize_WiFi(
 	}
 	else
 	{
-		rtw_hal_get_hwreg(padapter, HW_VAR_EFUSE_BYTES, (u8*)&efuse_addr);
+		rtw_hal_get_hwreg(padapter, HW_VAR_EFUSE_BYTES, (u8 *)&efuse_addr);
 	}
 	start_addr = efuse_addr;
 	DBG_8192C("%s: start_efuse_addr = 0x%X\n", __FUNCTION__, efuse_addr);
@@ -1340,7 +1340,7 @@ hal_EfuseGetCurrentSize_WiFi(
 	}
 	else
 	{
-		rtw_hal_set_hwreg(padapter, HW_VAR_EFUSE_BYTES, (u8*)&efuse_addr);
+		rtw_hal_set_hwreg(padapter, HW_VAR_EFUSE_BYTES, (u8 *)&efuse_addr);
 	}
 
 	goto exit;
@@ -1380,7 +1380,7 @@ hal_EfuseGetCurrentSize_BT(
 	}
 	else
 	{
-		rtw_hal_get_hwreg(padapter, HW_VAR_EFUSE_BT_BYTES, (u8*)&btusedbytes);
+		rtw_hal_get_hwreg(padapter, HW_VAR_EFUSE_BT_BYTES, (u8 *)&btusedbytes);
 	}
 	efuse_addr = (u16)((btusedbytes%EFUSE_BT_REAL_BANK_CONTENT_LEN));
 	startBank = (u8)(1+(btusedbytes/EFUSE_BT_REAL_BANK_CONTENT_LEN));
@@ -1747,7 +1747,7 @@ hal_EfusePartialWriteCheck(
 		}
 		else
 		{
-			rtw_hal_get_hwreg(padapter, HW_VAR_EFUSE_BYTES, (u8*)&startAddr);
+			rtw_hal_get_hwreg(padapter, HW_VAR_EFUSE_BYTES, (u8 *)&startAddr);
 		}
 	}
 	else
@@ -1762,7 +1762,7 @@ hal_EfusePartialWriteCheck(
 		}
 		else
 		{
-			rtw_hal_get_hwreg(padapter, HW_VAR_EFUSE_BT_BYTES, (u8*)&startAddr);
+			rtw_hal_get_hwreg(padapter, HW_VAR_EFUSE_BT_BYTES, (u8 *)&startAddr);
 		}
 	}
 	startAddr %= efuse_max;
@@ -3754,7 +3754,7 @@ static void hw_var_set_bcn_func(PADAPTER padapter, u8 variable, u8 *val)
 
 	bcn_ctrl_reg = REG_BCN_CTRL;
 
-	if (*(u8*)val)
+	if (*(u8 *)val)
 	{
 		rtw_write8(padapter, bcn_ctrl_reg, (EN_BCN_FUNCTION | EN_TXBCN_RPT));
 	}
@@ -3856,7 +3856,7 @@ static void hw_var_set_mlme_sitesurvey(PADAPTER padapter, u8 variable, u8* val)
 	}
 	value_rcr = rtw_read32(padapter, REG_RCR);
 
-	if (*((u8*)val))
+	if (*((u8 *)val))
 	{
 		/*  under sitesurvey */
 		value_rcr &= ~(rcr_clear_bit);
@@ -3913,7 +3913,7 @@ static void hw_var_set_mlme_join(PADAPTER padapter, u8 variable, u8 *val)
 
 
 	RetryLimit = 0x30;
-	type = *(u8*)val;
+	type = *(u8 *)val;
 	pHalData = GET_HAL_DATA(padapter);
 	pmlmepriv = &padapter->mlmepriv;
 	pEEPROM = GET_EEPROM_EFUSE_PRIV(padapter);
@@ -4358,7 +4358,7 @@ void SetHwReg8723B(PADAPTER padapter, u8 variable, u8 *val)
 
 	case HW_VAR_ACM_CTRL:
 		{
-			u8 ctrl = *((u8*)val);
+			u8 ctrl = *((u8 *)val);
 			u8 hwctrl = 0;
 
 			if (ctrl != 0)
@@ -4765,7 +4765,7 @@ u8 GetHalDefVar8723B(PADAPTER padapter, HAL_DEF_VARIABLE variable, void *pval)
 
 		case HW_DEF_RA_INFO_DUMP:
 			{
-				u8 mac_id = *(u8*)pval;
+				u8 mac_id = *(u8 *)pval;
 				u32 cmd;
 				u32 ra_info1, ra_info2;
 				u32 rate_mask1, rate_mask2;
@@ -4817,16 +4817,16 @@ u8 GetHalDefVar8723B(PADAPTER padapter, HAL_DEF_VARIABLE variable, void *pval)
 		case HAL_DEF_TX_PAGE_BOUNDARY:
 			if (!padapter->registrypriv.wifi_spec)
 			{
-				*(u8*)pval = TX_PAGE_BOUNDARY_8723B;
+				*(u8 *)pval = TX_PAGE_BOUNDARY_8723B;
 			}
 			else
 			{
-				*(u8*)pval = WMM_NORMAL_TX_PAGE_BOUNDARY_8723B;
+				*(u8 *)pval = WMM_NORMAL_TX_PAGE_BOUNDARY_8723B;
 			}
 			break;
 
 		case HAL_DEF_MACID_SLEEP:
-			*(u8*)pval = true; /*  support macid sleep */
+			*(u8 *)pval = true; /*  support macid sleep */
 			break;
 
 		default:

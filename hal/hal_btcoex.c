@@ -436,10 +436,10 @@ static u8 halbtcoutsrc_Get(void *pBtcContext, u8 getType, void *pOutBuf)
 	padapter = pBtCoexist->Adapter;
 	pHalData = GET_HAL_DATA(padapter);
 	mlmeext = &padapter->mlmeextpriv;
-	pu8 = (u8*)pOutBuf;
+	pu8 = (u8 *)pOutBuf;
 	pS4Tmp = (s32*)pOutBuf;
 	pU4Tmp = (u32*)pOutBuf;
-	pU1Tmp = (u8*)pOutBuf;
+	pU1Tmp = (u8 *)pOutBuf;
 	ret = true;
 
 	switch (getType)
@@ -610,8 +610,8 @@ static u8 halbtcoutsrc_Set(void *pBtcContext, u8 setType, void *pInBuf)
 	pBtCoexist = (PBTC_COEXIST)pBtcContext;
 	padapter = pBtCoexist->Adapter;
 	pHalData = GET_HAL_DATA(padapter);
-	pu8 = (u8*)pInBuf;
-	pU1Tmp = (u8*)pInBuf;
+	pu8 = (u8 *)pInBuf;
+	pU1Tmp = (u8 *)pInBuf;
 	pU4Tmp = (u32*)pInBuf;
 	ret = true;
 
@@ -925,8 +925,8 @@ static void halbtcoutsrc_SetBtReg(void *pBtcContext, u8 RegType, u32 RegAddr, u3
 	PADAPTER padapter;
 	u8 CmdBuffer1[4] = {0};
 	u8 CmdBuffer2[4] = {0};
-	u8* AddrToSet = (u8*)&RegAddr;
-	u8* ValueToSet = (u8*)&Data;
+	u8* AddrToSet = (u8 *)&RegAddr;
+	u8* ValueToSet = (u8 *)&Data;
 	u8 OperVer = 0;
 	u8 ReqNum = 0;
 

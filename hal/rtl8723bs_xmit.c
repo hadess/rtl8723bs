@@ -319,7 +319,7 @@ static s32 xmit_xmitframes(PADAPTER padapter, struct xmit_priv *pxmitpriv)
 
 				if (k == 0) {
 					pxmitbuf->ff_hwaddr = rtw_get_ff_hwaddr(pxmitframe);
-					pxmitbuf->priv_data = (u8*)pxmitframe;
+					pxmitbuf->priv_data = (u8 *)pxmitframe;
 				}
 
 				/*  coalesce the xmitframe to xmitbuf */

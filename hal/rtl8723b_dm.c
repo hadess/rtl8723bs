@@ -248,7 +248,7 @@ void rtl8723b_hal_dm_in_lps(PADAPTER padapter)
 	{
 		PWDB_rssi = (psta->mac_id | (psta->rssi_stat.UndecoratedSmoothedPWDB<<16));
 
-		rtl8723b_set_rssi_cmd(padapter, (u8*)&PWDB_rssi);
+		rtl8723b_set_rssi_cmd(padapter, (u8 *)&PWDB_rssi);
 	}
 
 }

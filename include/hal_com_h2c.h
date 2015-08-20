@@ -112,24 +112,24 @@ enum h2c_cmd{
 /*  ARP packet */
 /*  */
 /*  LLC Header */
-#define GET_ARP_PKT_LLC_TYPE(__pHeader)						ReadEF2Byte(((u8*)(__pHeader)) + 6)
+#define GET_ARP_PKT_LLC_TYPE(__pHeader)						ReadEF2Byte(((u8 *)(__pHeader)) + 6)
 
 /* ARP element */
-#define GET_ARP_PKT_OPERATION(__pHeader)				ReadEF2Byte(((u8*)(__pHeader)) + 6)
-#define GET_ARP_PKT_SENDER_MAC_ADDR(__pHeader, _val)	cpMacAddr((u8*)(_val), ((u8*)(__pHeader))+8)
-#define GET_ARP_PKT_SENDER_IP_ADDR(__pHeader, _val)		cpIpAddr((u8*)(_val), ((u8*)(__pHeader))+14)
-#define GET_ARP_PKT_TARGET_MAC_ADDR(__pHeader, _val)	cpMacAddr((u8*)(_val), ((u8*)(__pHeader))+18)
-#define GET_ARP_PKT_TARGET_IP_ADDR(__pHeader, _val)	cpIpAddr((u8*)(_val), ((u8*)(__pHeader))+24)
+#define GET_ARP_PKT_OPERATION(__pHeader)				ReadEF2Byte(((u8 *)(__pHeader)) + 6)
+#define GET_ARP_PKT_SENDER_MAC_ADDR(__pHeader, _val)	cpMacAddr((u8 *)(_val), ((u8 *)(__pHeader))+8)
+#define GET_ARP_PKT_SENDER_IP_ADDR(__pHeader, _val)		cpIpAddr((u8 *)(_val), ((u8 *)(__pHeader))+14)
+#define GET_ARP_PKT_TARGET_MAC_ADDR(__pHeader, _val)	cpMacAddr((u8 *)(_val), ((u8 *)(__pHeader))+18)
+#define GET_ARP_PKT_TARGET_IP_ADDR(__pHeader, _val)	cpIpAddr((u8 *)(_val), ((u8 *)(__pHeader))+24)
 
-#define SET_ARP_PKT_HW(__pHeader, __Value)				WriteEF2Byte(((u8*)(__pHeader)) + 0, __Value)
-#define SET_ARP_PKT_PROTOCOL(__pHeader, __Value)			WriteEF2Byte(((u8*)(__pHeader)) + 2, __Value)
-#define SET_ARP_PKT_HW_ADDR_LEN(__pHeader, __Value)		WriteEF1Byte(((u8*)(__pHeader)) + 4, __Value)
-#define SET_ARP_PKT_PROTOCOL_ADDR_LEN(__pHeader, __Value)	WriteEF1Byte(((u8*)(__pHeader)) + 5, __Value)
-#define SET_ARP_PKT_OPERATION(__pHeader, __Value)		WriteEF2Byte(((u8*)(__pHeader)) + 6, __Value)
-#define SET_ARP_PKT_SENDER_MAC_ADDR(__pHeader, _val)	cpMacAddr(((u8*)(__pHeader))+8, (u8*)(_val))
-#define SET_ARP_PKT_SENDER_IP_ADDR(__pHeader, _val)		cpIpAddr(((u8*)(__pHeader))+14, (u8*)(_val))
-#define SET_ARP_PKT_TARGET_MAC_ADDR(__pHeader, _val)	cpMacAddr(((u8*)(__pHeader))+18, (u8*)(_val))
-#define SET_ARP_PKT_TARGET_IP_ADDR(__pHeader, _val)		cpIpAddr(((u8*)(__pHeader))+24, (u8*)(_val))
+#define SET_ARP_PKT_HW(__pHeader, __Value)				WriteEF2Byte(((u8 *)(__pHeader)) + 0, __Value)
+#define SET_ARP_PKT_PROTOCOL(__pHeader, __Value)			WriteEF2Byte(((u8 *)(__pHeader)) + 2, __Value)
+#define SET_ARP_PKT_HW_ADDR_LEN(__pHeader, __Value)		WriteEF1Byte(((u8 *)(__pHeader)) + 4, __Value)
+#define SET_ARP_PKT_PROTOCOL_ADDR_LEN(__pHeader, __Value)	WriteEF1Byte(((u8 *)(__pHeader)) + 5, __Value)
+#define SET_ARP_PKT_OPERATION(__pHeader, __Value)		WriteEF2Byte(((u8 *)(__pHeader)) + 6, __Value)
+#define SET_ARP_PKT_SENDER_MAC_ADDR(__pHeader, _val)	cpMacAddr(((u8 *)(__pHeader))+8, (u8 *)(_val))
+#define SET_ARP_PKT_SENDER_IP_ADDR(__pHeader, _val)		cpIpAddr(((u8 *)(__pHeader))+14, (u8 *)(_val))
+#define SET_ARP_PKT_TARGET_MAC_ADDR(__pHeader, _val)	cpMacAddr(((u8 *)(__pHeader))+18, (u8 *)(_val))
+#define SET_ARP_PKT_TARGET_IP_ADDR(__pHeader, _val)		cpIpAddr(((u8 *)(__pHeader))+24, (u8 *)(_val))
 
 #define FW_WOWLAN_FUN_EN				BIT(0)
 #define FW_WOWLAN_PATTERN_MATCH			BIT(1)

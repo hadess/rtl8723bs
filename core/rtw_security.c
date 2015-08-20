@@ -1613,7 +1613,7 @@ u32	rtw_aes_encrypt(_adapter *padapter, u8 *pxmitframe)
 
 				aes_cipher(prwskey, pattrib->hdrlen, pframe, length);
 			pframe+=pxmitpriv->frag_len;
-			pframe =(u8*)RND4((SIZE_PTR)(pframe));
+			pframe =(u8 *)RND4((SIZE_PTR)(pframe));
 
 			}
 		}

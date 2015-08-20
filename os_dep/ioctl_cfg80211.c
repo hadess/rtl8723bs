@@ -143,8 +143,8 @@ static struct ieee80211_supported_band *rtw_spt_band_alloc(
 	if (!spt_band)
 		goto exit;
 
-	spt_band->channels = (struct ieee80211_channel*)(((u8*)spt_band)+sizeof(struct ieee80211_supported_band));
-	spt_band->bitrates = (struct ieee80211_rate*)(((u8*)spt_band->channels)+sizeof(struct ieee80211_channel)*n_channels);
+	spt_band->channels = (struct ieee80211_channel*)(((u8 *)spt_band)+sizeof(struct ieee80211_supported_band));
+	spt_band->bitrates = (struct ieee80211_rate*)(((u8 *)spt_band->channels)+sizeof(struct ieee80211_channel)*n_channels);
 	spt_band->band = band;
 	spt_band->n_channels = n_channels;
 	spt_band->n_bitrates = n_bitrates;
@@ -175,7 +175,7 @@ static void rtw_spt_band_free(struct ieee80211_supported_band *spt_band)
 			+ sizeof(struct ieee80211_channel)*RTW_2G_CHANNELS_NUM
 			+ sizeof(struct ieee80211_rate)*RTW_G_RATES_NUM;
 	}
-	kfree((u8*)spt_band);
+	kfree((u8 *)spt_band);
 }
 
 static const struct ieee80211_txrx_stypes
@@ -308,7 +308,7 @@ struct cfg80211_bss *rtw_cfg80211_inform_bss(_adapter *padapter, struct wlan_net
 		wpsie = rtw_get_wps_ie(pnetwork->network.IEs+_FIXED_IE_LENGTH_, pnetwork->network.IELength-_FIXED_IE_LENGTH_, NULL, &wpsielen);
 
 		if (wpsie && wpsielen>0)
-			psr = rtw_get_wps_attr_content(wpsie,  wpsielen, WPS_ATTR_SELECTED_REGISTRAR, (u8*)(&sr), NULL);
+			psr = rtw_get_wps_attr_content(wpsie,  wpsielen, WPS_ATTR_SELECTED_REGISTRAR, (u8 *)(&sr), NULL);
 
 		if (sr != 0)
 		{
@@ -1174,7 +1174,7 @@ static int cfg80211_rtw_add_key(struct wiphy *wiphy, struct net_device *ndev,
 addkey_end:
 	if (param)
 	{
-		kfree((u8*)param);
+		kfree((u8 *)param);
 	}
 
 	return ret;
@@ -2698,7 +2698,7 @@ static int rtw_cfg80211_add_monitor_if (_adapter *padapter, char *name, struct n
 
 out:
 	if (ret && mon_wdev) {
-		kfree((u8*)mon_wdev);
+		kfree((u8 *)mon_wdev);
 		mon_wdev = NULL;
 	}
 
@@ -3548,7 +3548,7 @@ int rtw_wdev_alloc(_adapter *padapter, struct device *dev)
 
 	return ret;
 
-	kfree((u8*)wdev);
+	kfree((u8 *)wdev);
 unregister_wiphy:
 	wiphy_unregister(wiphy);
  free_wiphy:
@@ -3569,7 +3569,7 @@ void rtw_wdev_free(struct wireless_dev *wdev)
 
 	wiphy_free(wdev->wiphy);
 
-	kfree((u8*)wdev);
+	kfree((u8 *)wdev);
 }
 
 void rtw_wdev_unregister(struct wireless_dev *wdev)

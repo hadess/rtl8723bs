@@ -143,7 +143,7 @@ void rtw_odm_ability_msg(void *sel, _adapter *adapter)
 	u32 ability = 0;
 	int i;
 
-	rtw_hal_get_hwreg(adapter, HW_VAR_DM_FLAG, (u8*)&ability);
+	rtw_hal_get_hwreg(adapter, HW_VAR_DM_FLAG, (u8 *)&ability);
 	DBG_871X_SEL_NL(sel, "odm.SupportAbility = 0x%08x\n", ability);
 	for (i = 0;i<RTW_ODM_ABILITY_MAX;i++) {
 		if (odm_ability_str[i])
@@ -154,7 +154,7 @@ void rtw_odm_ability_msg(void *sel, _adapter *adapter)
 
 inline void rtw_odm_ability_set(_adapter *adapter, u32 ability)
 {
-	rtw_hal_set_hwreg(adapter, HW_VAR_DM_FLAG, (u8*)&ability);
+	rtw_hal_set_hwreg(adapter, HW_VAR_DM_FLAG, (u8 *)&ability);
 }
 
 void rtw_odm_adaptivity_parm_msg(void *sel, _adapter *adapter)

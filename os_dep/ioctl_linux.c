@@ -209,14 +209,14 @@ static char *translate_scan(_adapter *padapter,
 
 	/* Add the protocol name */
 	iwe.cmd = SIOCGIWNAME;
-	if ((rtw_is_cckratesonly_included((u8*)&pnetwork->network.SupportedRates)) == true)
+	if ((rtw_is_cckratesonly_included((u8 *)&pnetwork->network.SupportedRates)) == true)
 	{
 		if (ht_cap == true)
 			snprintf(iwe.u.name, IFNAMSIZ, "IEEE 802.11bn");
 		else
 		snprintf(iwe.u.name, IFNAMSIZ, "IEEE 802.11b");
 	}
-	else if ((rtw_is_cckrates_included((u8*)&pnetwork->network.SupportedRates)) == true)
+	else if ((rtw_is_cckrates_included((u8 *)&pnetwork->network.SupportedRates)) == true)
 	{
 		if (ht_cap == true)
 			snprintf(iwe.u.name, IFNAMSIZ, "IEEE 802.11bgn");
@@ -954,14 +954,14 @@ static int rtw_wx_get_name(struct net_device *dev,
 
 		prates = &pcur_bss->SupportedRates;
 
-		if (rtw_is_cckratesonly_included((u8*)prates) == true)
+		if (rtw_is_cckratesonly_included((u8 *)prates) == true)
 		{
 			if (ht_cap == true)
 				snprintf(wrqu->name, IFNAMSIZ, "IEEE 802.11bn");
 			else
 				snprintf(wrqu->name, IFNAMSIZ, "IEEE 802.11b");
 		}
-		else if ((rtw_is_cckrates_included((u8*)prates)) == true)
+		else if ((rtw_is_cckrates_included((u8 *)prates)) == true)
 		{
 			if (ht_cap == true)
 				snprintf(wrqu->name, IFNAMSIZ, "IEEE 802.11bgn");
@@ -2503,7 +2503,7 @@ static int rtw_wx_set_enc_ext(struct net_device *dev,
 exit:
 	if (param)
 	{
-		kfree((u8*)param);
+		kfree((u8 *)param);
 	}
 
 	return ret;
@@ -2548,7 +2548,7 @@ static int rtw_wx_read32(struct net_device *dev,
 	if (0 == len)
 		return -EINVAL;
 
-	ptmp = (u8*)rtw_malloc(len);
+	ptmp = (u8 *)rtw_malloc(len);
 	if (NULL == ptmp)
 		return -ENOMEM;
 
@@ -2802,7 +2802,7 @@ static int rtw_get_ap_info(struct net_device *dev,
 		/* if (hwaddr_aton_i(pdata->pointer, bssid)) */
 		if (hwaddr_aton_i(data, bssid))
 		{
-			DBG_871X("Invalid BSSID '%s'.\n", (u8*)data);
+			DBG_871X("Invalid BSSID '%s'.\n", (u8 *)data);
 			spin_unlock_bh(&(pmlmepriv->scanned_queue.lock));
 			return -EINVAL;
 		}
@@ -2836,7 +2836,7 @@ static int rtw_get_ap_info(struct net_device *dev,
 
 	if (pdata->length>=34)
 	{
-		if (copy_to_user((u8 __force __user *)pdata->pointer+32, (u8*)&pdata->flags, 1))
+		if (copy_to_user((u8 __force __user *)pdata->pointer+32, (u8 *)&pdata->flags, 1))
 		{
 			ret = -EINVAL;
 			goto exit;
@@ -3174,7 +3174,7 @@ static int rtw_dbg_port(struct net_device *dev,
 				case 0x06:
 					{
 						u32	ODMFlag;
-						rtw_hal_get_hwreg(padapter, HW_VAR_DM_FLAG, (u8*)(&ODMFlag));
+						rtw_hal_get_hwreg(padapter, HW_VAR_DM_FLAG, (u8 *)(&ODMFlag));
 						DBG_871X("(B)DMFlag = 0x%x, arg = 0x%x\n", ODMFlag, arg);
 						ODMFlag = (u32)(0x0f&arg);
 						DBG_871X("(A)DMFlag = 0x%x\n", ODMFlag);
@@ -3771,7 +3771,7 @@ static int wpa_supplicant_ioctl(struct net_device *dev, struct iw_point *p)
 
 	if (copy_from_user(param, p->pointer, p->length))
 	{
-		kfree((u8*)param);
+		kfree((u8 *)param);
 		ret = -EFAULT;
 		goto out;
 	}
@@ -4721,7 +4721,7 @@ static int rtw_hostapd_ioctl(struct net_device *dev, struct iw_point *p)
 
 	if (copy_from_user(param, p->pointer, p->length))
 	{
-		kfree((u8*)param);
+		kfree((u8 *)param);
 		ret = -EFAULT;
 		goto out;
 	}
@@ -5053,7 +5053,7 @@ static int rtw_test(
 	DBG_871X("+%s\n", __func__);
 	len = wrqu->data.length;
 
-	pbuf = (u8*)rtw_zmalloc(len);
+	pbuf = (u8 *)rtw_zmalloc(len);
 	if (pbuf == NULL) {
 		DBG_871X("%s: no memory!\n", __func__);
 		return -ENOMEM;
@@ -5698,7 +5698,7 @@ static int rtw_ioctl_wext_private(struct net_device *dev, union iwreq_data *wrq_
 	}
 
 	if (extra_size == 0) {
-		extra = (u8*)&wdata;
+		extra = (u8 *)&wdata;
 		kfree(buffer);
 		buffer = NULL;
 	} else

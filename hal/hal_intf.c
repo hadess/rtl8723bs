@@ -461,7 +461,7 @@ s32 rtw_hal_macid_sleep(PADAPTER padapter, u32 macid)
 	if (false == support)
 		return _FAIL;
 
-	rtw_hal_set_hwreg(padapter, HW_VAR_MACID_SLEEP, (u8*)&macid);
+	rtw_hal_set_hwreg(padapter, HW_VAR_MACID_SLEEP, (u8 *)&macid);
 
 	return _SUCCESS;
 }
@@ -476,7 +476,7 @@ s32 rtw_hal_macid_wakeup(PADAPTER padapter, u32 macid)
 	if (false == support)
 		return _FAIL;
 
-	rtw_hal_set_hwreg(padapter, HW_VAR_MACID_WAKEUP, (u8*)&macid);
+	rtw_hal_set_hwreg(padapter, HW_VAR_MACID_WAKEUP, (u8 *)&macid);
 
 	return _SUCCESS;
 }
