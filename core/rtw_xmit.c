@@ -429,7 +429,7 @@ static void update_attrib_vcs_info(_adapter *padapter, struct xmit_frame *pxmitf
 		{
 			/* IOT action */
 			if ((pmlmeinfo->assoc_AP_vendor == HT_IOT_PEER_ATHEROS) && (pattrib->ampdu_en ==true) &&
-				(padapter->securitypriv.dot11PrivacyAlgrthm == _AES_ ))
+				(padapter->securitypriv.dot11PrivacyAlgrthm == _AES_))
 			{
 				pattrib->vcs_mode = CTS_TO_SELF;
 				break;
@@ -452,7 +452,7 @@ static void update_attrib_vcs_info(_adapter *padapter, struct xmit_frame *pxmitf
 			{
 				u8 HTOpMode = pmlmeinfo->HT_protection;
 				if ((pmlmeext->cur_bwmode && (HTOpMode == 2 || HTOpMode == 3)) ||
-					(!pmlmeext->cur_bwmode && HTOpMode == 3) )
+					(!pmlmeext->cur_bwmode && HTOpMode == 3))
 				{
 					pattrib->vcs_mode = RTS_CTS;
 					break;
@@ -806,7 +806,7 @@ static s32 update_attrib(_adapter *padapter, _pkt *pkt, struct pkt_attrib *pattr
 		DBG_871X_LEVEL(_drv_always_, "send eapol packet\n");
 	}
 
-	if ( (pattrib->ether_type == 0x888e) || (pattrib->dhcp_pkt == 1) )
+	if ((pattrib->ether_type == 0x888e) || (pattrib->dhcp_pkt == 1))
 	{
 		rtw_set_scan_deny(padapter, 3000);
 	}
@@ -876,7 +876,7 @@ static s32 update_attrib(_adapter *padapter, _pkt *pkt, struct pkt_attrib *pattr
 
 	update_attrib_phy_info(padapter, pattrib, psta);
 
-	/* DBG_8192C("%s ==> mac_id(%d)\n", __FUNCTION__, pattrib->mac_id ); */
+	/* DBG_8192C("%s ==> mac_id(%d)\n", __FUNCTION__, pattrib->mac_id); */
 
 	pattrib->psta = psta;
 	/* TODO:_unlock */
@@ -885,7 +885,7 @@ static s32 update_attrib(_adapter *padapter, _pkt *pkt, struct pkt_attrib *pattr
 
 	pattrib->ack_policy = 0;
 	/*  get ether_hdr_len */
-	pattrib->pkt_hdrlen = ETH_HLEN;/* pattrib->ether_type == 0x8100) ? (14 + 4 ): 14; vlan tag */
+	pattrib->pkt_hdrlen = ETH_HLEN;/* pattrib->ether_type == 0x8100) ? (14 + 4): 14; vlan tag */
 
 	pattrib->hdrlen = WLAN_HDR_A3_LEN;
 	pattrib->subtype = WIFI_DATA_TYPE;
@@ -1018,12 +1018,12 @@ static s32 xmitframe_addmic(_adapter *padapter, struct xmit_frame *pxmitframe){
 				payload =payload+pattrib->hdrlen+pattrib->iv_len;
 				RT_TRACE(_module_rtl871x_xmit_c_, _drv_err_, ("curfragnum =%d pattrib->hdrlen =%d pattrib->iv_len =%d", curfragnum, pattrib->hdrlen, pattrib->iv_len));
 				if ((curfragnum+1) ==pattrib->nr_frags){
-					length =pattrib->last_txcmdsz-pattrib->hdrlen-pattrib->iv_len-( (pattrib->bswenc) ? pattrib->icv_len : 0);
+					length =pattrib->last_txcmdsz-pattrib->hdrlen-pattrib->iv_len-((pattrib->bswenc) ? pattrib->icv_len : 0);
 					rtw_secmicappend(&micdata, payload, length);
 					payload =payload+length;
 				}
 				else{
-					length =pxmitpriv->frag_len-pattrib->hdrlen-pattrib->iv_len-( (pattrib->bswenc) ? pattrib->icv_len : 0);
+					length =pxmitpriv->frag_len-pattrib->hdrlen-pattrib->iv_len-((pattrib->bswenc) ? pattrib->icv_len : 0);
 					rtw_secmicappend(&micdata, payload, length);
 					payload =payload+length+pattrib->icv_len;
 					RT_TRACE(_module_rtl871x_xmit_c_, _drv_err_, ("curfragnum =%d length =%d pattrib->icv_len =%d", curfragnum, length, pattrib->icv_len));
@@ -1075,7 +1075,7 @@ static s32 xmitframe_swencrypt(_adapter *padapter, struct xmit_frame *pxmitframe
 			rtw_tkip_encrypt(padapter, (u8 *)pxmitframe);
 			break;
 		case _AES_:
-			rtw_aes_encrypt(padapter, (u8 * )pxmitframe);
+			rtw_aes_encrypt(padapter, (u8 *)pxmitframe);
 			break;
 		default:
 				break;
@@ -1120,7 +1120,7 @@ s32 rtw_make_wlanhdr (_adapter *padapter , u8 *hdr, struct pkt_attrib *pattrib)
 				qos_option = true;
 
 		}
-		else if ((check_fwstate(pmlmepriv,  WIFI_AP_STATE) == true) ) {
+		else if ((check_fwstate(pmlmepriv,  WIFI_AP_STATE) == true)) {
 			/* to_ds = 0, fr_ds = 1; */
 			SetFrDs(fctrl);
 			memcpy(pwlanhdr->addr1, pattrib->dst, ETH_ALEN);
@@ -1399,7 +1399,7 @@ s32 rtw_xmitframe_coalesce(_adapter *padapter, _pkt *pkt, struct xmit_frame *pxm
 
 		pframe += mem_sz;
 
-		if ((pattrib->icv_len >0 )&& (pattrib->bswenc)) {
+		if ((pattrib->icv_len >0)&& (pattrib->bswenc)) {
 			memcpy(pframe, pattrib->icv, pattrib->icv_len);
 			pframe += pattrib->icv_len;
 		}
@@ -1595,7 +1595,7 @@ s32 rtw_mgmt_xmitframe_coalesce(_adapter *padapter, _pkt *pkt, struct xmit_frame
 			pframe += pattrib->pktlen-pattrib->hdrlen;
 			/* add 8 bytes CCMP IV header to length */
 			pattrib->pktlen += pattrib->iv_len;
-			if ((pattrib->icv_len >0 )&& (pattrib->bswenc)) {
+			if ((pattrib->icv_len >0)&& (pattrib->bswenc)) {
 				memcpy(pframe, pattrib->icv, pattrib->icv_len);
 				pframe += pattrib->icv_len;
 			}

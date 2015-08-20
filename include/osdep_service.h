@@ -23,7 +23,7 @@
 #include <osdep_service_linux.h>
 
 #ifndef BIT
-	#define BIT(x)	( 1 << (x))
+	#define BIT(x)	(1 << (x))
 #endif
 
 #define BIT0	0x00000001

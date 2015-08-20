@@ -93,7 +93,7 @@
 
 /*------------------------Export Marco Definition---------------------------*/
 	#define DbgPrint	printk
-	#define RT_PRINTK(fmt, args...)	DbgPrint( "%s(): " fmt, __FUNCTION__, ## args);
+	#define RT_PRINTK(fmt, args...)	DbgPrint("%s(): " fmt, __FUNCTION__, ## args);
 	#define	RT_DISP(dbgtype, dbgflag, printstr)
 
 #ifndef ASSERT
@@ -115,8 +115,8 @@
 
 #define ODM_RT_ASSERT(pDM_Odm, expr, fmt)											\
 		if (!(expr)) {																	\
-			DbgPrint( "Assertion failed! %s at ......\n", #expr);								\
-			DbgPrint( "      ......%s,%s, line =%d\n", __FILE__, __FUNCTION__, __LINE__);			\
+			DbgPrint("Assertion failed! %s at ......\n", #expr);								\
+			DbgPrint("      ......%s,%s, line =%d\n", __FILE__, __FUNCTION__, __LINE__);			\
 			RT_PRINTK fmt;															\
 			ASSERT(false);															\
 		}
@@ -132,7 +132,7 @@
 				DbgPrint("[ODM] ");													\
 				DbgPrint(title_str);													\
 				DbgPrint(" ");														\
-				for ( __i =0; __i<6; __i++ )												\
+				for (__i =0; __i<6; __i++)												\
 					DbgPrint("%02X%s", __ptr[__i], (__i ==5)?"":"-");						\
 				DbgPrint("\n");														\
 			}

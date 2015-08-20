@@ -364,7 +364,7 @@ u8	HwRateToMRate(u8 rate)
 		case DESC_RATEVHTSS4MCS9:	ret_rate = MGN_VHT4SS_MCS9;		break;
 
 		default:
-			DBG_871X("HwRateToMRate(): Non supported Rate [%x]!!!\n", rate );
+			DBG_871X("HwRateToMRate(): Non supported Rate [%x]!!!\n", rate);
 			break;
 	}
 
@@ -383,7 +383,7 @@ void	HalSetBrateCfg(
 		is_brate = mBratesOS[i] & IEEE80211_BASIC_RATE_MASK;
 		brate = mBratesOS[i] & 0x7f;
 
-		if ( is_brate )
+		if (is_brate)
 		{
 			switch (brate)
 			{
@@ -905,7 +905,7 @@ GetHalDefVar(_adapter *adapter, HAL_DEF_VARIABLE variable, void *value)
 			*((u4Byte*)value) = odm->DebugLevel;
 			break;
 		case HAL_DEF_DBG_DM_FUNC:
-			*(( u32*)value) =hal_data->odmpriv.SupportAbility;
+			*((u32*)value) =hal_data->odmpriv.SupportAbility;
 			break;
 		case HAL_DEF_DBG_DUMP_RXPKT:
 			*((u8*)value) = hal_data->bDumpRxPkt;
@@ -920,7 +920,7 @@ GetHalDefVar(_adapter *adapter, HAL_DEF_VARIABLE variable, void *value)
 			*(u8*)value = false;
 			break;
 		case HAL_DEF_TX_PAGE_SIZE:
-			*(( u32*)value) = PAGE_SIZE_128;
+			*((u32*)value) = PAGE_SIZE_128;
 			break;
 		default:
 			DBG_871X_LEVEL(_drv_always_, "%s: [WARNING] HAL_DEF_VARIABLE(%d) not defined!\n", __FUNCTION__, variable);
@@ -1046,9 +1046,9 @@ IsHexDigit(
 	IN		char		chTmp
 )
 {
-	if ( (chTmp >= '0' && chTmp <= '9') ||
+	if ((chTmp >= '0' && chTmp <= '9') ||
 		(chTmp >= 'a' && chTmp <= 'f') ||
-		(chTmp >= 'A' && chTmp <= 'F') )
+		(chTmp >= 'A' && chTmp <= 'F'))
 	{
 		return true;
 	}
@@ -1106,7 +1106,7 @@ GetHexValueFromString(
 
 	/*  Skip leading space. */
 	while (	*szScan != '\0' &&
-			(*szScan == ' ' || *szScan == '\t') )
+			(*szScan == ' ' || *szScan == '\t'))
 	{
 		szScan++;
 		(*pu4bMove)++;
@@ -1155,7 +1155,7 @@ GetFractionValueFromString(
 	*pFraction = 0;
 
 	/*  Skip leading space. */
-	while (	*szScan != '\0' &&	(*szScan == ' ' || *szScan == '\t') ) {
+	while (	*szScan != '\0' &&	(*szScan == ' ' || *szScan == '\t')) {
 		++szScan;
 		++(*pu4bMove);
 	}
@@ -1163,17 +1163,17 @@ GetFractionValueFromString(
 	/*  Parse each digit. */
 	do {
 		(*pInteger) *= 10;
-		*pInteger += ( *szScan - '0' );
+		*pInteger += (*szScan - '0');
 
 		++szScan;
 		++(*pu4bMove);
 
-		if ( *szScan == '.' )
+		if (*szScan == '.')
 		{
 			++szScan;
 			++(*pu4bMove);
 
-			if ( *szScan < '0' || *szScan > '9' )
+			if (*szScan < '0' || *szScan > '9')
 				return false;
 			else {
 				*pFraction = *szScan - '0';
@@ -1215,12 +1215,12 @@ GetU1ByteIntegerFromStringInDecimal(
 	u16 i = 0;
 	*pInt = 0;
 
-	while ( Str[i] != '\0' )
+	while (Str[i] != '\0')
 	{
-		if ( Str[i] >= '0' && Str[i] <= '9' )
+		if (Str[i] >= '0' && Str[i] <= '9')
 		{
 			*pInt *= 10;
-			*pInt += ( Str[i] - '0' );
+			*pInt += (Str[i] - '0');
 		}
 		else
 		{
@@ -1242,7 +1242,7 @@ ParseQualifiedString(
     OUT		char*	Out,
     IN		char		LeftQualifier,
     IN		char		RightQualifier
-    )
+   )
 {
 	u32	i = 0, j = 0;
 	char	c = In[(*Start)++];
@@ -1267,9 +1267,9 @@ isAllSpaceOrTab(
 {
 	u8	cnt = 0, NumOfSpaceAndTab = 0;
 
-	while ( size > cnt )
+	while (size > cnt)
 	{
-		if ( data[cnt] == ' ' || data[cnt] == '\t' || data[cnt] == '\0' )
+		if (data[cnt] == ' ' || data[cnt] == '\t' || data[cnt] == '\0')
 			++NumOfSpaceAndTab;
 
 		++cnt;
@@ -1435,11 +1435,11 @@ void rtw_bb_rf_gain_offset(_adapter *padapter)
 			res &= 0xfff87fff;
 			DBG_871X("Offset RF Gain. before reg 0x7f =0x%08x\n", res);
 			/* res &= 0xfff87fff; */
-			for (i = 0; i < ArrayLen; i += 2 )
+			for (i = 0; i < ArrayLen; i += 2)
 			{
 				v1 = Array[i];
 				v2 = Array[i+1];
-				 if ( v1 == padapter->eeprompriv.EEPROMRFGainVal )
+				 if (v1 == padapter->eeprompriv.EEPROMRFGainVal)
 				 {
 						DBG_871X("Offset RF Gain. got v1 =0x%x , v2 =0x%x \n", v1, v2);
 						target =v2;

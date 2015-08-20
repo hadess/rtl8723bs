@@ -197,7 +197,7 @@ sint	_rtw_init_cmd_priv (struct	cmd_priv *pcmdpriv)
 		goto exit;
 	}
 
-	pcmdpriv->cmd_buf = pcmdpriv->cmd_allocated_buf  +  CMDBUFF_ALIGN_SZ - ( (SIZE_PTR)(pcmdpriv->cmd_allocated_buf) & (CMDBUFF_ALIGN_SZ-1));
+	pcmdpriv->cmd_buf = pcmdpriv->cmd_allocated_buf  +  CMDBUFF_ALIGN_SZ - ((SIZE_PTR)(pcmdpriv->cmd_allocated_buf) & (CMDBUFF_ALIGN_SZ-1));
 
 	pcmdpriv->rsp_allocated_buf = rtw_zmalloc(MAX_RSPSZ + 4);
 
@@ -206,7 +206,7 @@ sint	_rtw_init_cmd_priv (struct	cmd_priv *pcmdpriv)
 		goto exit;
 	}
 
-	pcmdpriv->rsp_buf = pcmdpriv->rsp_allocated_buf  +  4 - ( (SIZE_PTR)(pcmdpriv->rsp_allocated_buf) & 3);
+	pcmdpriv->rsp_buf = pcmdpriv->rsp_allocated_buf  +  4 - ((SIZE_PTR)(pcmdpriv->rsp_allocated_buf) & 3);
 
 	pcmdpriv->cmd_issued_cnt = pcmdpriv->cmd_done_cnt = pcmdpriv->rsp_cnt = 0;
 
@@ -350,7 +350,7 @@ int rtw_cmd_filter(struct cmd_priv *pcmdpriv, struct cmd_obj *cmd_obj)
 	if (cmd_obj->cmdcode == GEN_CMD_CODE(_SetChannelPlan))
 		bAllow = true;
 
-	if ( (pcmdpriv->padapter->hw_init_completed ==false && bAllow == false)
+	if ((pcmdpriv->padapter->hw_init_completed ==false && bAllow == false)
 		|| atomic_read(&(pcmdpriv->cmdthd_running)) == false	/* com_thread not running */
 	)
 	{
@@ -378,7 +378,7 @@ u32 rtw_enqueue_cmd(struct cmd_priv *pcmdpriv, struct cmd_obj *cmd_obj)
 
 	cmd_obj->padapter = padapter;
 
-	if ( _FAIL == (res =rtw_cmd_filter(pcmdpriv, cmd_obj)) ) {
+	if (_FAIL == (res =rtw_cmd_filter(pcmdpriv, cmd_obj))) {
 		rtw_free_cmd_obj(cmd_obj);
 		goto exit;
 	}
@@ -506,7 +506,7 @@ _next:
 
 		cmd_start_time = jiffies;
 
-		if ( _FAIL == rtw_cmd_filter(pcmdpriv, pcmd) )
+		if (_FAIL == rtw_cmd_filter(pcmdpriv, pcmd))
 		{
 			pcmd->res = H2C_DROPPED;
 			goto post_process;
@@ -905,9 +905,9 @@ u8 rtw_joinbss_cmd(_adapter  *padapter, struct wlan_network* pnetwork)
 	/*  If not,  we have to copy the connecting AP's MAC address to it so that */
 	/*  the driver just has the bssid information for PMKIDList searching. */
 
-	if ( pmlmepriv->assoc_by_bssid == false )
+	if (pmlmepriv->assoc_by_bssid == false)
 	{
-		memcpy( &pmlmepriv->assoc_bssid[ 0 ], &pnetwork->network.MacAddress[ 0 ], ETH_ALEN );
+		memcpy(&pmlmepriv->assoc_bssid[ 0 ], &pnetwork->network.MacAddress[ 0 ], ETH_ALEN);
 	}
 
 	psecnetwork->IELength = rtw_restruct_sec_ie(padapter, &pnetwork->network.IEs[0], &psecnetwork->IEs[0], pnetwork->network.IELength);
@@ -937,9 +937,9 @@ u8 rtw_joinbss_cmd(_adapter  *padapter, struct wlan_network* pnetwork)
 		/* 	Added by Albert 2010/06/23 */
 		/* 	For the WEP mode, we will use the bg mode to do the connection to avoid some IOT issue. */
 		/* 	Especially for Realtek 8192u SoftAP. */
-		if (	( padapter->securitypriv.dot11PrivacyAlgrthm != _WEP40_ ) &&
-			( padapter->securitypriv.dot11PrivacyAlgrthm != _WEP104_ ) &&
-			( padapter->securitypriv.dot11PrivacyAlgrthm != _TKIP_ ))
+		if (	(padapter->securitypriv.dot11PrivacyAlgrthm != _WEP40_) &&
+			(padapter->securitypriv.dot11PrivacyAlgrthm != _WEP104_) &&
+			(padapter->securitypriv.dot11PrivacyAlgrthm != _TKIP_))
 		{
 			rtw_ht_use_default_setting(padapter);
 
@@ -1081,7 +1081,7 @@ u8 rtw_setstakey_cmd(_adapter *padapter, struct sta_info *sta, u8 unicast_key, b
 	if (enqueue)
 	{
 		ph2c = (struct cmd_obj*)rtw_zmalloc(sizeof(struct cmd_obj));
-		if ( ph2c == NULL){
+		if (ph2c == NULL){
 			kfree((u8 *) psetstakey_para);
 			res = _FAIL;
 			goto exit;
@@ -1128,7 +1128,7 @@ u8 rtw_clearstakey_cmd(_adapter *padapter, struct sta_info *sta, u8 enqueue)
 	else
 	{
 		ph2c = (struct cmd_obj*)rtw_zmalloc(sizeof(struct cmd_obj));
-		if ( ph2c == NULL){
+		if (ph2c == NULL){
 			res = _FAIL;
 			goto exit;
 		}
@@ -1351,7 +1351,7 @@ u8 rtw_set_chplan_cmd(_adapter*padapter, u8 chplan, u8 enqueue, u8 swconfig)
 	else
 	{
 		/* no need to enqueue, do the cmd hdl directly and free cmd parameter */
-		if ( H2C_SUCCESS !=set_chplan_hdl(padapter, (unsigned char *)setChannelPlan_param) )
+		if (H2C_SUCCESS !=set_chplan_hdl(padapter, (unsigned char *)setChannelPlan_param))
 			res = _FAIL;
 
 		kfree((u8 *)setChannelPlan_param);
@@ -1414,8 +1414,8 @@ u8 traffic_status_watchdog(_adapter *padapter, u8 from_timer)
 		if (pmlmepriv->LinkDetectInfo.bBusyTraffic)
 				BusyThreshold = BusyThresholdLow;
 
-		if ( pmlmepriv->LinkDetectInfo.NumRxOkInPeriod > BusyThreshold ||
-			pmlmepriv->LinkDetectInfo.NumTxOkInPeriod > BusyThreshold )
+		if (pmlmepriv->LinkDetectInfo.NumRxOkInPeriod > BusyThreshold ||
+			pmlmepriv->LinkDetectInfo.NumTxOkInPeriod > BusyThreshold)
 		{
 			bBusyTraffic = true;
 
@@ -1426,8 +1426,8 @@ u8 traffic_status_watchdog(_adapter *padapter, u8 from_timer)
 		}
 
 		/*  Higher Tx/Rx data. */
-		if ( pmlmepriv->LinkDetectInfo.NumRxOkInPeriod > 4000 ||
-			pmlmepriv->LinkDetectInfo.NumTxOkInPeriod > 4000 )
+		if (pmlmepriv->LinkDetectInfo.NumRxOkInPeriod > 4000 ||
+			pmlmepriv->LinkDetectInfo.NumTxOkInPeriod > 4000)
 		{
 			bHigherBusyTraffic = true;
 
@@ -1454,8 +1454,8 @@ u8 traffic_status_watchdog(_adapter *padapter, u8 from_timer)
 #endif
 
 		/*  check traffic for  powersaving. */
-		if ( ((pmlmepriv->LinkDetectInfo.NumRxUnicastOkInPeriod + pmlmepriv->LinkDetectInfo.NumTxOkInPeriod) > 8 ) ||
-			(pmlmepriv->LinkDetectInfo.NumRxUnicastOkInPeriod > 2) )
+		if (((pmlmepriv->LinkDetectInfo.NumRxUnicastOkInPeriod + pmlmepriv->LinkDetectInfo.NumTxOkInPeriod) > 8) ||
+			(pmlmepriv->LinkDetectInfo.NumRxUnicastOkInPeriod > 2))
 		{
 			/* DBG_871X("(-)Tx = %d, Rx = %d \n", pmlmepriv->LinkDetectInfo.NumTxOkInPeriod, pmlmepriv->LinkDetectInfo.NumRxUnicastOkInPeriod); */
 			bEnterPS = false;
@@ -2232,7 +2232,7 @@ void rtw_createbss_cmd_callback(_adapter *padapter, struct cmd_obj *pcmd)
 	if ((pcmd->res != H2C_SUCCESS))
 	{
 		RT_TRACE(_module_rtl871x_cmd_c_, _drv_err_, ("\n ********Error: rtw_createbss_cmd_callback  Fail ************\n\n."));
-		_set_timer(&pmlmepriv->assoc_timer, 1 );
+		_set_timer(&pmlmepriv->assoc_timer, 1);
 	}
 
 	_cancel_timer(&pmlmepriv->assoc_timer, &timer_cancelled);
@@ -2240,7 +2240,7 @@ void rtw_createbss_cmd_callback(_adapter *padapter, struct cmd_obj *pcmd)
 	spin_lock_bh(&pmlmepriv->lock);
 
 
-	if (check_fwstate(pmlmepriv, WIFI_AP_STATE) )
+	if (check_fwstate(pmlmepriv, WIFI_AP_STATE))
 	{
 		psta = rtw_get_stainfo(&padapter->stapriv, pnetwork->MacAddress);
 		if (!psta)
@@ -2253,16 +2253,16 @@ void rtw_createbss_cmd_callback(_adapter *padapter, struct cmd_obj *pcmd)
 		}
 		}
 
-		rtw_indicate_connect( padapter);
+		rtw_indicate_connect(padapter);
 	}
 	else
 	{
 		pwlan = _rtw_alloc_network(pmlmepriv);
 		spin_lock_bh(&(pmlmepriv->scanned_queue.lock));
-		if ( pwlan == NULL)
+		if (pwlan == NULL)
 		{
 			pwlan = rtw_get_oldest_wlan_network(&pmlmepriv->scanned_queue);
-			if ( pwlan == NULL)
+			if (pwlan == NULL)
 			{
 				RT_TRACE(_module_rtl871x_cmd_c_, _drv_err_, ("\n Error:  can't get pwlan in rtw_joinbss_event_callback \n"));
 				spin_unlock_bh(&(pmlmepriv->scanned_queue.lock));

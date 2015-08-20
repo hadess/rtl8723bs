@@ -108,7 +108,7 @@ void rtw_indicate_wx_assoc_event(_adapter *padapter)
 
 	wrqu.ap_addr.sa_family = ARPHRD_ETHER;
 
-	if (check_fwstate(pmlmepriv, WIFI_ADHOC_MASTER_STATE) ==true )
+	if (check_fwstate(pmlmepriv, WIFI_ADHOC_MASTER_STATE) ==true)
 		memcpy(wrqu.ap_addr.sa_data, pnetwork->MacAddress, ETH_ALEN);
 	else
 		memcpy(wrqu.ap_addr.sa_data, pmlmepriv->cur_network.network.MacAddress, ETH_ALEN);
@@ -133,8 +133,8 @@ uint	rtw_is_cckrates_included(u8 *rate)
 
 		while (rate[i]!=0)
 		{
-			if  (  (((rate[i]) & 0x7f) == 2)	|| (((rate[i]) & 0x7f) == 4) ||
-			(((rate[i]) & 0x7f) == 11)  || (((rate[i]) & 0x7f) == 22) )
+			if  ( (((rate[i]) & 0x7f) == 2)	|| (((rate[i]) & 0x7f) == 4) ||
+			(((rate[i]) & 0x7f) == 11)  || (((rate[i]) & 0x7f) == 22))
 			return true;
 			i++;
 		}
@@ -148,8 +148,8 @@ uint	rtw_is_cckratesonly_included(u8 *rate)
 
 	while (rate[i]!=0)
 	{
-			if  (  (((rate[i]) & 0x7f) != 2) && (((rate[i]) & 0x7f) != 4) &&
-				(((rate[i]) & 0x7f) != 11)  && (((rate[i]) & 0x7f) != 22) )
+			if  ( (((rate[i]) & 0x7f) != 2) && (((rate[i]) & 0x7f) != 4) &&
+				(((rate[i]) & 0x7f) != 11)  && (((rate[i]) & 0x7f) != 22))
 			return false;
 			i++;
 	}
@@ -437,7 +437,7 @@ static char *translate_scan(_adapter *padapter,
 	#endif
 	;
 
-	if ( check_fwstate(pmlmepriv, _FW_LINKED) == true &&
+	if (check_fwstate(pmlmepriv, _FW_LINKED) == true &&
 		is_same_network(&pmlmepriv->cur_network.network, &pnetwork->network, 0)){
 		ss = padapter->recvpriv.signal_strength;
 		sq = padapter->recvpriv.signal_qual;
@@ -672,7 +672,7 @@ static int wpa_set_encryption(struct net_device *dev, struct ieee_param *param, 
 		{
 			psta = rtw_get_stainfo(pstapriv, get_bssid(pmlmepriv));
 			if (psta == NULL) {
-				/* DEBUG_ERR( ("Set wpa_set_encryption: Obtain Sta_info fail \n")); */
+				/* DEBUG_ERR(("Set wpa_set_encryption: Obtain Sta_info fail \n")); */
 			}
 			else
 			{
@@ -743,7 +743,7 @@ static int wpa_set_encryption(struct net_device *dev, struct ieee_param *param, 
 			pbcmc_sta =rtw_get_bcmc_stainfo(padapter);
 			if (pbcmc_sta ==NULL)
 			{
-				/* DEBUG_ERR( ("Set OID_802_11_ADD_KEY: bcmc stainfo is null \n")); */
+				/* DEBUG_ERR(("Set OID_802_11_ADD_KEY: bcmc stainfo is null \n")); */
 			}
 			else
 			{
@@ -887,7 +887,7 @@ static int rtw_set_wpa_ie(_adapter *padapter, char *pie, unsigned short ielen)
 			u16 cnt = 0;
 			u8 eid, wps_oui[4]={0x0, 0x50, 0xf2, 0x04};
 
-			while ( cnt < ielen )
+			while (cnt < ielen)
 			{
 				eid = buf[cnt];
 
@@ -1136,7 +1136,7 @@ static int rtw_wx_set_pmkid(struct net_device *dev,
 	u8          j, blInserted = false;
 	int         intReturn = false;
 	struct security_priv *psecuritypriv = &padapter->securitypriv;
-        struct iw_pmksa*  pPMK = ( struct iw_pmksa* ) extra;
+        struct iw_pmksa*  pPMK = (struct iw_pmksa*) extra;
         u8     strZeroMacAddress[ ETH_ALEN ] = { 0x00 };
         u8     strIssueBssid[ ETH_ALEN ] = { 0x00 };
 
@@ -1147,13 +1147,13 @@ static int rtw_wx_set_pmkid(struct net_device *dev,
         If cmd is IW_PMKSA_REMOVE, it means the wpa_supplicant wants to remove a PMKID/BSSID from driver.
         */
 
-	memcpy( strIssueBssid, pPMK->bssid.sa_data, ETH_ALEN);
-        if ( pPMK->cmd == IW_PMKSA_ADD )
+	memcpy(strIssueBssid, pPMK->bssid.sa_data, ETH_ALEN);
+        if (pPMK->cmd == IW_PMKSA_ADD)
         {
-                DBG_871X( "[rtw_wx_set_pmkid] IW_PMKSA_ADD!\n" );
-                if ( !memcmp( strIssueBssid, strZeroMacAddress, ETH_ALEN ))
+                DBG_871X("[rtw_wx_set_pmkid] IW_PMKSA_ADD!\n");
+                if (!memcmp(strIssueBssid, strZeroMacAddress, ETH_ALEN))
                 {
-                    return( intReturn );
+                    return(intReturn);
                 }
                 else
                 {
@@ -1164,12 +1164,12 @@ static int rtw_wx_set_pmkid(struct net_device *dev,
 		/* overwrite PMKID */
 		for (j =0 ; j<NUM_PMKID_CACHE; j++)
 		{
-			if ( !memcmp( psecuritypriv->PMKIDList[j].Bssid, strIssueBssid, ETH_ALEN))
+			if (!memcmp(psecuritypriv->PMKIDList[j].Bssid, strIssueBssid, ETH_ALEN))
 			{ /*  BSSID is matched, the same AP => rewrite with new PMKID. */
 
-                                DBG_871X( "[rtw_wx_set_pmkid] BSSID exists in the PMKList.\n" );
+                                DBG_871X("[rtw_wx_set_pmkid] BSSID exists in the PMKList.\n");
 
-				memcpy( psecuritypriv->PMKIDList[j].PMKID, pPMK->pmkid, IW_PMKID_LEN);
+				memcpy(psecuritypriv->PMKIDList[j].PMKID, pPMK->pmkid, IW_PMKID_LEN);
                                 psecuritypriv->PMKIDList[ j ].bUsed = true;
 				psecuritypriv->PMKIDIndex = j+1;
 				blInserted = true;
@@ -1180,8 +1180,8 @@ static int rtw_wx_set_pmkid(struct net_device *dev,
 	        if (!blInserted)
                 {
 		    /*  Find a new entry */
-                    DBG_871X( "[rtw_wx_set_pmkid] Use the new entry index = %d for this PMKID.\n",
-                            psecuritypriv->PMKIDIndex );
+                    DBG_871X("[rtw_wx_set_pmkid] Use the new entry index = %d for this PMKID.\n",
+                            psecuritypriv->PMKIDIndex);
 
 	            memcpy(psecuritypriv->PMKIDList[psecuritypriv->PMKIDIndex].Bssid, strIssueBssid, ETH_ALEN);
 		    memcpy(psecuritypriv->PMKIDList[psecuritypriv->PMKIDIndex].PMKID, pPMK->pmkid, IW_PMKID_LEN);
@@ -1194,24 +1194,24 @@ static int rtw_wx_set_pmkid(struct net_device *dev,
                     }
 		}
         }
-        else if ( pPMK->cmd == IW_PMKSA_REMOVE )
+        else if (pPMK->cmd == IW_PMKSA_REMOVE)
         {
-                DBG_871X( "[rtw_wx_set_pmkid] IW_PMKSA_REMOVE!\n" );
+                DBG_871X("[rtw_wx_set_pmkid] IW_PMKSA_REMOVE!\n");
                 intReturn = true;
 		for (j =0 ; j<NUM_PMKID_CACHE; j++)
 		{
-			if ( !memcmp( psecuritypriv->PMKIDList[j].Bssid, strIssueBssid, ETH_ALEN))
+			if (!memcmp(psecuritypriv->PMKIDList[j].Bssid, strIssueBssid, ETH_ALEN))
 			{ /*  BSSID is matched, the same AP => Remove this PMKID information and reset it. */
-                                memset( psecuritypriv->PMKIDList[ j ].Bssid, 0x00, ETH_ALEN );
+                                memset(psecuritypriv->PMKIDList[ j ].Bssid, 0x00, ETH_ALEN);
                                 psecuritypriv->PMKIDList[ j ].bUsed = false;
 				break;
 			}
 	        }
         }
-        else if ( pPMK->cmd == IW_PMKSA_FLUSH )
+        else if (pPMK->cmd == IW_PMKSA_FLUSH)
         {
-            DBG_871X( "[rtw_wx_set_pmkid] IW_PMKSA_FLUSH!\n" );
-            memset( &psecuritypriv->PMKIDList[ 0 ], 0x00, sizeof( RT_PMKID_LIST ) * NUM_PMKID_CACHE );
+            DBG_871X("[rtw_wx_set_pmkid] IW_PMKSA_FLUSH!\n");
+            memset(&psecuritypriv->PMKIDList[ 0 ], 0x00, sizeof(RT_PMKID_LIST) * NUM_PMKID_CACHE);
             psecuritypriv->PMKIDIndex = 0;
             intReturn = true;
         }
@@ -1428,9 +1428,9 @@ static int rtw_wx_get_wap(struct net_device *dev,
 
 	RT_TRACE(_module_rtl871x_mlme_c_, _drv_info_, ("rtw_wx_get_wap\n"));
 
-	if  ( ((check_fwstate(pmlmepriv, _FW_LINKED)) == true) ||
+	if  (((check_fwstate(pmlmepriv, _FW_LINKED)) == true) ||
 			((check_fwstate(pmlmepriv, WIFI_ADHOC_MASTER_STATE)) == true) ||
-			((check_fwstate(pmlmepriv, WIFI_AP_STATE)) == true) )
+			((check_fwstate(pmlmepriv, WIFI_AP_STATE)) == true))
 	{
 
 		memcpy(wrqu->ap_addr.sa_data, pcur_bss->MacAddress, ETH_ALEN);
@@ -1778,7 +1778,7 @@ static int rtw_wx_set_essid(struct net_device *dev,
 	{
 		len = (wrqu->essid.length < IW_ESSID_MAX_SIZE) ? wrqu->essid.length : IW_ESSID_MAX_SIZE;
 
-		if ( wrqu->essid.length != 33 )
+		if (wrqu->essid.length != 33)
 			DBG_871X("ssid =%s, len =%d\n", extra, wrqu->essid.length);
 
 		memset(&ndis_ssid, 0, sizeof(NDIS_802_11_SSID));
@@ -1867,7 +1867,7 @@ static int rtw_wx_get_essid(struct net_device *dev,
 
 	RT_TRACE(_module_rtl871x_mlme_c_, _drv_info_, ("rtw_wx_get_essid\n"));
 
-	if ( (check_fwstate(pmlmepriv, _FW_LINKED) == true) ||
+	if ((check_fwstate(pmlmepriv, _FW_LINKED) == true) ||
 	      (check_fwstate(pmlmepriv, WIFI_ADHOC_MASTER_STATE) == true))
 	{
 		len = pcur_bss->Ssid.SsidLength;
@@ -1968,7 +1968,7 @@ set_rate:
 		RT_TRACE(_module_rtl871x_ioctl_os_c, _drv_info_, ("datarate_inx =%d\n", datarates[i]));
 	}
 
-	if ( rtw_setdatarate_cmd(padapter, datarates) !=_SUCCESS){
+	if (rtw_setdatarate_cmd(padapter, datarates) !=_SUCCESS){
 		RT_TRACE(_module_rtl871x_ioctl_os_c, _drv_err_, ("rtw_wx_set_rate Fail!!!\n"));
 		ret = -1;
 	}
@@ -2202,7 +2202,7 @@ static int rtw_wx_set_enc(struct net_device *dev,
 	memcpy(wep.KeyMaterial, keybuf, wep.KeyLength);
 
 	if (rtw_set_802_11_add_wep(padapter, &wep) == false) {
-		if (rf_on == pwrpriv->rf_pwrstate )
+		if (rf_on == pwrpriv->rf_pwrstate)
 			ret = -EOPNOTSUPP;
 		goto exit;
 	}
@@ -2344,7 +2344,7 @@ static int rtw_wx_set_auth(struct net_device *dev,
 
 	case IW_AUTH_TKIP_COUNTERMEASURES:
         {
-	    if ( param->value )
+	    if (param->value)
             {  /*  wpa_supplicant is enabling the tkip countermeasure. */
                padapter->securitypriv.btkip_countermeasure = true;
             }
@@ -2896,13 +2896,13 @@ static int rtw_wps_start(struct net_device *dev,
 		goto exit;
 	}
 
-	uintRet = copy_from_user( ( void* ) &u32wps_start, pdata->pointer, 4 );
-	if ( u32wps_start == 0 )
+	uintRet = copy_from_user((void*) &u32wps_start, pdata->pointer, 4);
+	if (u32wps_start == 0)
 	{
 		u32wps_start = *extra;
 	}
 
-	DBG_871X( "[%s] wps_start = %d\n", __FUNCTION__, u32wps_start );
+	DBG_871X("[%s] wps_start = %d\n", __FUNCTION__, u32wps_start);
 
 #ifdef CONFIG_INTEL_WIDI
 	process_intel_widi_wps_status(padapter, u32wps_start);
@@ -2968,16 +2968,16 @@ static int rtw_rereg_nd_name(struct net_device *dev,
 	if (wrqu->data.length > IFNAMSIZ)
 		return -EFAULT;
 
-	if ( copy_from_user(new_ifname, wrqu->data.pointer, IFNAMSIZ) ) {
+	if (copy_from_user(new_ifname, wrqu->data.pointer, IFNAMSIZ)) {
 		return -EFAULT;
 	}
 
-	if ( 0 == strcmp(rereg_priv->old_ifname, new_ifname) ) {
+	if (0 == strcmp(rereg_priv->old_ifname, new_ifname)) {
 		return ret;
 	}
 
 	DBG_871X("%s new_ifname:%s\n", __FUNCTION__, new_ifname);
-	if ( 0 != (ret = rtw_change_ifname(padapter, new_ifname)) ) {
+	if (0 != (ret = rtw_change_ifname(padapter, new_ifname))) {
 		goto exit;
 	}
 
@@ -3251,7 +3251,7 @@ static int rtw_dbg_port(struct net_device *dev,
 				case 0x0a:
 					{
 						int max_mac_id = 0;
-						max_mac_id = rtw_search_max_mac_id( padapter);
+						max_mac_id = rtw_search_max_mac_id(padapter);
 						printk("%s ==> max_mac_id = %d \n", __FUNCTION__, max_mac_id);
 					}
 					break;
@@ -3314,7 +3314,7 @@ static int rtw_dbg_port(struct net_device *dev,
 					struct registry_priv	*pregpriv = &padapter->registrypriv;
 					/*  0: disable, bit(0):enable 2.4g, bit(1):enable 5g, 0x3: enable both 2.4g and 5g */
 					/* default is set to enable 2.4GHZ for IOT issue with bufflao's AP at 5GHZ */
-					if ( pregpriv && (extra_arg == 0 || extra_arg == 1|| extra_arg == 2 || extra_arg == 3))
+					if (pregpriv && (extra_arg == 0 || extra_arg == 1|| extra_arg == 2 || extra_arg == 3))
 					{
 						pregpriv->rx_stbc = extra_arg;
 						DBG_871X("set rx_stbc =%d\n", pregpriv->rx_stbc);
@@ -3328,7 +3328,7 @@ static int rtw_dbg_port(struct net_device *dev,
 				{
 					struct registry_priv	*pregpriv = &padapter->registrypriv;
 					/*  0: disable, 0x1:enable (but wifi_spec should be 0), 0x2: force enable (don't care wifi_spec) */
-					if ( pregpriv && extra_arg < 3 )
+					if (pregpriv && extra_arg < 3)
 					{
 						pregpriv->ampdu_enable = extra_arg;
 						DBG_871X("set ampdu_enable =%d\n", pregpriv->ampdu_enable);
@@ -4482,7 +4482,7 @@ static int rtw_set_wps_beacon(struct net_device *dev, struct ieee_param *param, 
 	{
 		pmlmepriv->wps_beacon_ie = rtw_malloc(ie_len);
 		pmlmepriv->wps_beacon_ie_len = ie_len;
-		if ( pmlmepriv->wps_beacon_ie == NULL) {
+		if (pmlmepriv->wps_beacon_ie == NULL) {
 			DBG_871X("%s()-%d: rtw_malloc() ERROR!\n", __FUNCTION__, __LINE__);
 			return -EINVAL;
 		}
@@ -4525,7 +4525,7 @@ static int rtw_set_wps_probe_resp(struct net_device *dev, struct ieee_param *par
 	{
 		pmlmepriv->wps_probe_resp_ie = rtw_malloc(ie_len);
 		pmlmepriv->wps_probe_resp_ie_len = ie_len;
-		if ( pmlmepriv->wps_probe_resp_ie == NULL) {
+		if (pmlmepriv->wps_probe_resp_ie == NULL) {
 			DBG_871X("%s()-%d: rtw_malloc() ERROR!\n", __FUNCTION__, __LINE__);
 			return -EINVAL;
 		}
@@ -4562,7 +4562,7 @@ static int rtw_set_wps_assoc_resp(struct net_device *dev, struct ieee_param *par
 	{
 		pmlmepriv->wps_assoc_resp_ie = rtw_malloc(ie_len);
 		pmlmepriv->wps_assoc_resp_ie_len = ie_len;
-		if ( pmlmepriv->wps_assoc_resp_ie == NULL) {
+		if (pmlmepriv->wps_assoc_resp_ie == NULL) {
 			DBG_871X("%s()-%d: rtw_malloc() ERROR!\n", __FUNCTION__, __LINE__);
 			return -EINVAL;
 		}
@@ -4900,7 +4900,7 @@ static int rtw_wx_set_priv(struct net_device *dev,
 			}
 
 			pmlmepriv->wps_probe_req_ie = rtw_malloc(cp_sz);
-			if ( pmlmepriv->wps_probe_req_ie == NULL) {
+			if (pmlmepriv->wps_probe_req_ie == NULL) {
 				printk("%s()-%d: rtw_malloc() ERROR!\n", __FUNCTION__, __LINE__);
 				ret =  -EINVAL;
 				goto FREE_EXT;
@@ -4945,14 +4945,14 @@ static int rtw_pm_set(struct net_device *dev,
 	unsigned	mode = 0;
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
 
-	DBG_871X( "[%s] extra = %s\n", __FUNCTION__, extra );
+	DBG_871X("[%s] extra = %s\n", __FUNCTION__, extra);
 
-	if ( !memcmp( extra, "lps =", 4 ) )
+	if (!memcmp(extra, "lps =", 4))
 	{
 		sscanf(extra+4, "%u", &mode);
 		ret = rtw_pm_set_lps(padapter, mode);
 	}
-	else if ( !memcmp( extra, "ips =", 4 ) )
+	else if (!memcmp(extra, "ips =", 4))
 	{
 		sscanf(extra+4, "%u", &mode);
 		ret = rtw_pm_set_ips(padapter, mode);
@@ -5025,14 +5025,14 @@ static int rtw_widi_set_probe_request(struct net_device *dev,
 	pbuf = rtw_malloc(sizeof(l2_msg_t));
 	if (pbuf)
 	{
-		if ( copy_from_user(pbuf, wrqu->data.pointer, wrqu->data.length) )
+		if (copy_from_user(pbuf, wrqu->data.pointer, wrqu->data.length))
 			ret = -EFAULT;
 		/* memcpy(pbuf, wrqu->data.pointer, wrqu->data.length); */
 
-		if ( wrqu->data.flags == 0 )
+		if (wrqu->data.flags == 0)
 			intel_widi_wk_cmd(padapter, INTEL_WIDI_ISSUE_PROB_WK, pbuf, sizeof(l2_msg_t));
-		else if ( wrqu->data.flags == 1 )
-			rtw_set_wfd_rds_sink_info( padapter, (l2_msg_t *)pbuf );
+		else if (wrqu->data.flags == 1)
+			rtw_set_wfd_rds_sink_info(padapter, (l2_msg_t *)pbuf);
 	}
 	return ret;
 }

@@ -117,7 +117,7 @@ MODULE_PARM_DESC(rtw_ant_num, "Antenna number setting");
 static int rtw_AcceptAddbaReq = true;/*  0:Reject AP's Add BA req, 1:Accept AP's Add BA req. */
 
 static int rtw_antdiv_cfg = 1; /*  0:OFF , 1:ON, 2:decide by Efuse config */
-static int rtw_antdiv_type = 0 ; /* 0:decide by efuse  1: for 88EE, 1Tx and 1RxCG are diversity.(2 Ant with SPDT), 2:  for 88EE, 1Tx and 2Rx are diversity.( 2 Ant, Tx and RxCG are both on aux port, RxCS is on main port ), 3: for 88EE, 1Tx and 1RxCG are fixed.(1Ant, Tx and RxCG are both on aux port) */
+static int rtw_antdiv_type = 0 ; /* 0:decide by efuse  1: for 88EE, 1Tx and 1RxCG are diversity.(2 Ant with SPDT), 2:  for 88EE, 1Tx and 2Rx are diversity.(2 Ant, Tx and RxCG are both on aux port, RxCS is on main port), 3: for 88EE, 1Tx and 1RxCG are fixed.(1Ant, Tx and RxCG are both on aux port) */
 
 
 static int rtw_enusbss = 0;/* 0:disable, 1:enable */
@@ -261,7 +261,7 @@ int _netdev_open(struct net_device *pnetdev);
 int netdev_open (struct net_device *pnetdev);
 static int netdev_close (struct net_device *pnetdev);
 
-static uint loadparam( _adapter *padapter,  _nic_hdl	pnetdev)
+static uint loadparam(_adapter *padapter,  _nic_hdl	pnetdev)
 {
 
 	uint status = _SUCCESS;
@@ -787,7 +787,7 @@ u8 rtw_reset_drv_sw(_adapter *padapter)
 	struct pwrctrl_priv *pwrctrlpriv = adapter_to_pwrctl(padapter);
 
 	/* hal_priv */
-	if ( is_primary_adapter(padapter))
+	if (is_primary_adapter(padapter))
 		rtw_hal_def_value_init(padapter);
 
 	RTW_ENABLE_FUNC(padapter, DF_RX_BIT);
@@ -1779,7 +1779,7 @@ int rtw_resume_process_wow(_adapter *padapter)
 		DBG_871X_LEVEL(_drv_always_, "%s: ### ERROR ### wowlan_mode =%d\n", __FUNCTION__, pwrpriv->wowlan_mode);
 	}
 
-	if ( padapter->pid[1]!=0) {
+	if (padapter->pid[1]!=0) {
 		DBG_871X("pid[1]:%d\n", padapter->pid[1]);
 		rtw_signal_process(padapter->pid[1], SIGUSR2);
 	}
@@ -1885,7 +1885,7 @@ int rtw_resume_process_ap_wow(_adapter *padapter)
 			rtw_netif_wake_queue(pnetdev);
 	}
 
-	if ( padapter->pid[1]!=0) {
+	if (padapter->pid[1]!=0) {
 		DBG_871X("pid[1]:%d\n", padapter->pid[1]);
 		rtw_signal_process(padapter->pid[1], SIGUSR2);
 	}
@@ -1953,7 +1953,7 @@ static int rtw_resume_process_normal(_adapter *padapter)
 	netif_device_attach(pnetdev);
 	netif_carrier_on(pnetdev);
 
-	if ( padapter->pid[1]!=0) {
+	if (padapter->pid[1]!=0) {
 		DBG_871X("pid[1]:%d\n", padapter->pid[1]);
 		rtw_signal_process(padapter->pid[1], SIGUSR2);
 	}

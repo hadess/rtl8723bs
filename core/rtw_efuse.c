@@ -302,13 +302,13 @@ efuse_OneByteRead(
 	/*  <20130121, Kordan> For SMIC EFUSE specificatoin. */
 	/* 0x34[11]: SW force PGMEN input of efuse to high. (for the bank selected by 0x34[9:8]) */
 	/* PHY_SetMacReg(pAdapter, 0x34, BIT11, 0); */
-	rtw_write16(pAdapter, 0x34, rtw_read16(pAdapter, 0x34)& (~BIT11) );
+	rtw_write16(pAdapter, 0x34, rtw_read16(pAdapter, 0x34)& (~BIT11));
 
 	/*  -----------------e-fuse reg ctrl --------------------------------- */
 	/* address */
 	rtw_write8(pAdapter, EFUSE_CTRL+1, (u8)(addr&0xff));
-	rtw_write8(pAdapter, EFUSE_CTRL+2, ((u8)((addr>>8) &0x03) ) |
-	(rtw_read8(pAdapter, EFUSE_CTRL+2)&0xFC ));
+	rtw_write8(pAdapter, EFUSE_CTRL+2, ((u8)((addr>>8) &0x03)) |
+	(rtw_read8(pAdapter, EFUSE_CTRL+2)&0xFC));
 
 	/* rtw_write8(pAdapter, EFUSE_CTRL+3,  0x72); read cmd */
 	/* Write bit 32 0 */
@@ -373,10 +373,10 @@ efuse_OneByteWrite(
 	/*  <20130121, Kordan> For SMIC EFUSE specificatoin. */
 	/* 0x34[11]: SW force PGMEN input of efuse to high. (for the bank selected by 0x34[9:8]) */
 	/* PHY_SetMacReg(pAdapter, 0x34, BIT11, 1); */
-	rtw_write16(pAdapter, 0x34, rtw_read16(pAdapter, 0x34)| (BIT11) );
-	rtw_write32(pAdapter, EFUSE_CTRL, 0x90600000|((addr<<8 | data)) );
+	rtw_write16(pAdapter, 0x34, rtw_read16(pAdapter, 0x34)| (BIT11));
+	rtw_write32(pAdapter, EFUSE_CTRL, 0x90600000|((addr<<8 | data)));
 
-	while ((0x80 &  rtw_read8(pAdapter, EFUSE_CTRL+3)) && (tmpidx<100) ){
+	while ((0x80 &  rtw_read8(pAdapter, EFUSE_CTRL+3)) && (tmpidx<100)){
 		mdelay(1);
 		tmpidx++;
 	}

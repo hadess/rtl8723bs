@@ -17,7 +17,7 @@
 
 
 /* 	Commented by Albert 20101105 */
-/* 	Increase the SURVEY_TO value from 100 to 150  ( 100ms to 150ms ) */
+/* 	Increase the SURVEY_TO value from 100 to 150  (100ms to 150ms) */
 /* 	The Realtek 8188CE SoftAP will spend around 100ms to send the probe response after receiving the probe request. */
 /* 	So, this driver tried to extend the dwell time for each scanning channel. */
 /* 	This will increase the chance to receive the probe response from SoftAP. */

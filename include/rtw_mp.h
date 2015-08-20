@@ -193,7 +193,7 @@ typedef struct _MPT_CONTEXT
 #define EFUSE_MAX_SIZE		512
 /* end of E-Fuse */
 
-/* define RTPRIV_IOCTL_MP					( SIOCIWFIRSTPRIV + 0x17) */
+/* define RTPRIV_IOCTL_MP					(SIOCIWFIRSTPRIV + 0x17) */
 enum {
 	WRITE_REG = 1,
 	READ_REG,
@@ -539,7 +539,7 @@ extern void Hal_SetBandwidth(PADAPTER pAdapter);
 
 extern void Hal_SetTxPower(PADAPTER pAdapter);
 extern void Hal_SetCarrierSuppressionTx(PADAPTER pAdapter, u8 bStart);
-extern void Hal_SetSingleToneTx ( PADAPTER pAdapter , u8 bStart );
+extern void Hal_SetSingleToneTx (PADAPTER pAdapter , u8 bStart);
 extern void Hal_SetSingleCarrierTx (PADAPTER pAdapter, u8 bStart);
 extern void Hal_SetContinuousTx (PADAPTER pAdapter, u8 bStart);
 extern void Hal_SetBandwidth(PADAPTER pAdapter);

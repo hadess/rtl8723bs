@@ -119,7 +119,7 @@ struct tx_desc {
 	__le32 txdw11;
 
 	/*  2008/05/15 MH Because PCIE HW memory R/W 4K limit. And now,  our descriptor */
-	/*  size is 40 bytes. If you use more than 102 descriptor( 103*40>4096), HW will execute */
+	/*  size is 40 bytes. If you use more than 102 descriptor(103*40>4096), HW will execute */
 	/*  memoryR/W CRC error. And then all DMA fetch will fail. We must decrease descriptor */
 	/*  number or enlarge descriptor size as 64 bytes. */
 	__le32 txdw12;
@@ -281,7 +281,7 @@ struct xmit_buf
 	u8	pg_num;
 	u8	agg_num;
 
-#if defined(DBG_XMIT_BUF )|| defined(DBG_XMIT_BUF_EXT)
+#if defined(DBG_XMIT_BUF)|| defined(DBG_XMIT_BUF_EXT)
 	u8 no;
 #endif
 

@@ -111,7 +111,7 @@ odm_NHMBB(
 		pDM_Odm->NHM_cnt_0, pDM_Odm->NHMCurTxOkcnt, pDM_Odm->NHMCurRxOkcnt));
 
 
-	if ( (pDM_Odm->NHMCurTxOkcnt) + 1 > (u8Byte)(pDM_Odm->NHMCurRxOkcnt<<2) + 1)		/* Tx > 4*Rx possible for adaptivity test */
+	if ((pDM_Odm->NHMCurTxOkcnt) + 1 > (u8Byte)(pDM_Odm->NHMCurRxOkcnt<<2) + 1)		/* Tx > 4*Rx possible for adaptivity test */
 	{
 		if (pDM_Odm->NHM_cnt_0 >= 190 || pDM_Odm->adaptivity_flag == true)
 		{
@@ -199,7 +199,7 @@ odm_SearchPwdBLowerBound(
 		}
 		/* DbgPrint("txEdcca1 = %d, txEdcca0 = %d\n", pDM_Odm->txEdcca1, pDM_Odm->txEdcca0); */
 
-		if (pDM_Odm->txEdcca1 > 5 ) {
+		if (pDM_Odm->txEdcca1 > 5) {
 			IGI = IGI -1;
 			TH_L2H_dmc = TH_L2H_dmc + 1;
 			if (TH_L2H_dmc > 10)
@@ -302,7 +302,7 @@ odm_Adaptivity(
 	if (pDM_Odm->TxHangFlg == true)
 	{
 		PHY_SetBBReg(pDM_Odm->Adapter, ODM_REG_DBG_RPT_11N, bMaskDWord, 0x208);
-		odm_SearchPwdBLowerBound(pDM_Odm, pDM_Odm->IGI_target );
+		odm_SearchPwdBLowerBound(pDM_Odm, pDM_Odm->IGI_target);
 	}
 
 	if ((!pDM_Odm->bLinked)||(*pDM_Odm->pChannel > 149)) /*  Band4 doesn't need adaptivity */
@@ -608,9 +608,9 @@ odm_DIG(
 		else
 			offset = 15;
 
-		if ((pDM_Odm->RSSI_Min + offset) > dm_dig_max )
+		if ((pDM_Odm->RSSI_Min + offset) > dm_dig_max)
 			pDM_DigTable->rx_gain_range_max = dm_dig_max;
-		else if ((pDM_Odm->RSSI_Min + offset) < dm_dig_min )
+		else if ((pDM_Odm->RSSI_Min + offset) < dm_dig_min)
 			pDM_DigTable->rx_gain_range_max = dm_dig_min;
 		else
 			pDM_DigTable->rx_gain_range_max = pDM_Odm->RSSI_Min + offset;

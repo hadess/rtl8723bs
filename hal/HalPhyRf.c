@@ -109,7 +109,7 @@ ODM_TXPowerTrackingCallback_ThermalMeter(
 	pu1Byte			deltaSwingTableIdx_TUP_B;
 	pu1Byte			deltaSwingTableIdx_TDOWN_B;
 
-	/* 4 2. Initilization ( 7 steps in total ) */
+	/* 4 2. Initilization (7 steps in total) */
 
 	ConfigureTxpowerTrack(pDM_Odm, &c);
 
@@ -295,7 +295,7 @@ ODM_TXPowerTrackingCallback_ThermalMeter(
 	}
 
 	if ((pDM_Odm->RFCalibrateInfo.PowerIndexOffset[ODM_RF_PATH_A] != 0 ||
-		 pDM_Odm->RFCalibrateInfo.PowerIndexOffset[ODM_RF_PATH_B] != 0 ) &&
+		 pDM_Odm->RFCalibrateInfo.PowerIndexOffset[ODM_RF_PATH_B] != 0) &&
 	 pDM_Odm->RFCalibrateInfo.TxPowerTrackControl)
 	{
 		/* 4 7.2 Configure the Swing Table to adjust Tx Power. */

@@ -465,8 +465,8 @@ static u8 init_channel_set(_adapter* padapter, u8 ChannelPlan, RT_CHANNEL_INFO *
 	{
 		for (index =0;index<RTW_ChannelPlan5G[Index5G].Len;index++)
 		{
-			if ( RTW_ChannelPlan5G[Index5G].Channel[index] <= 48
-				|| RTW_ChannelPlan5G[Index5G].Channel[index] >= 149 ) {
+			if (RTW_ChannelPlan5G[Index5G].Channel[index] <= 48
+				|| RTW_ChannelPlan5G[Index5G].Channel[index] >= 149) {
 				channel_set[chanset_size].ChannelNum = RTW_ChannelPlan5G[Index5G].Channel[index];
 				if (RT_CHANNEL_DOMAIN_WORLD_WIDE_5G == ChannelPlan)/* passive scan for all 5G channels */
 					channel_set[chanset_size].ScanType = SCAN_PASSIVE;
@@ -794,7 +794,7 @@ _non_rc_device:
 			goto _issue_probersp;
 		}
 
-		if ( (ielen != 0 && false ==!memcmp((void *)(p+2), (void *)cur->Ssid.Ssid, cur->Ssid.SsidLength))
+		if ((ielen != 0 && false ==!memcmp((void *)(p+2), (void *)cur->Ssid.Ssid, cur->Ssid.SsidLength))
 			|| (ielen == 0 && pmlmeinfo->hidden_ssid_mode)
 		)
 		{
@@ -1013,7 +1013,7 @@ unsigned int OnAuth(_adapter *padapter, union recv_frame *precv_frame)
 		auth_mode = 0;
 
 	if ((algorithm > 0 && auth_mode == 0) ||	/*  rx a shared-key auth but shared not enabled */
-		(algorithm == 0 && auth_mode == 1) )	/*  rx a open-system auth but shared-key is enabled */
+		(algorithm == 0 && auth_mode == 1))	/*  rx a open-system auth but shared-key is enabled */
 	{
 		DBG_871X("auth rejected due to bad alg [alg =%d, auth_mib =%d] %02X%02X%02X%02X%02X%02X\n",
 			algorithm, auth_mode, sa[0], sa[1], sa[2], sa[3], sa[4], sa[5]);
@@ -1957,10 +1957,10 @@ unsigned int OnDeAuth(_adapter *padapter, union recv_frame *precv_frame)
 		/* 	we will send the deauth first. */
 		/* 	However, the Win8.1 with BRCM Wi-Fi will send the deauth with reason code 6 to us after receieving our deauth. */
 		/* 	Added the following code to avoid this case. */
-		if ( ( pmlmeinfo->state & WIFI_FW_AUTH_STATE ) ||
-			( pmlmeinfo->state & WIFI_FW_ASSOC_STATE ) )
+		if ((pmlmeinfo->state & WIFI_FW_AUTH_STATE) ||
+			(pmlmeinfo->state & WIFI_FW_ASSOC_STATE))
 		{
-			if ( reason == WLAN_REASON_CLASS2_FRAME_FROM_NONAUTH_STA )
+			if (reason == WLAN_REASON_CLASS2_FRAME_FROM_NONAUTH_STA)
 			{
 				ignore_received_deauth = 1;
 			} else if (WLAN_REASON_PREV_AUTH_NOT_VALID == reason) {
@@ -1972,7 +1972,7 @@ unsigned int OnDeAuth(_adapter *padapter, union recv_frame *precv_frame)
 		DBG_871X_LEVEL(_drv_always_, "sta recv deauth reason code(%d) sta:%pM, ignore = %d\n",
 				reason, GetAddr3Ptr(pframe), ignore_received_deauth);
 
-		if ( 0 == ignore_received_deauth )
+		if (0 == ignore_received_deauth)
 		{
 			receive_disconnect(padapter, GetAddr3Ptr(pframe) , reason);
 		}
@@ -2209,7 +2209,7 @@ static s32 rtw_action_public_decache(union recv_frame *recv_frame, s32 token)
 	_adapter *adapter = recv_frame->u.hdr.adapter;
 	struct mlme_ext_priv *mlmeext = &(adapter->mlmeextpriv);
 	u8 *frame = recv_frame->u.hdr.rx_data;
-	u16 seq_ctrl = ( (recv_frame->u.hdr.attrib.seq_num&0xffff) << 4) |
+	u16 seq_ctrl = ((recv_frame->u.hdr.attrib.seq_num&0xffff) << 4) |
 		(recv_frame->u.hdr.attrib.frag_num & 0xf);
 
 	if (GetRetry(frame)) {
@@ -2680,7 +2680,7 @@ void issue_beacon(_adapter *padapter, int timeout_ms)
 	pframe += sizeof(struct ieee80211_hdr_3addr);
 	pattrib->pktlen = sizeof (struct ieee80211_hdr_3addr);
 
-	if ( (pmlmeinfo->state&0x03) == WIFI_FW_AP_STATE)
+	if ((pmlmeinfo->state&0x03) == WIFI_FW_AP_STATE)
 	{
 		/* DBG_871X("ie len =%d\n", cur_network->IELength); */
 		{
@@ -2744,7 +2744,7 @@ void issue_beacon(_adapter *padapter, int timeout_ms)
 	/*  DS parameter set */
 	pframe = rtw_set_ie(pframe, _DSSET_IE_, 1, (unsigned char *)&(cur_network->Configuration.DSConfig), &pattrib->pktlen);
 
-	/* if ( (pmlmeinfo->state&0x03) == WIFI_FW_ADHOC_STATE) */
+	/* if ((pmlmeinfo->state&0x03) == WIFI_FW_ADHOC_STATE) */
 	{
 		u8 erpinfo =0;
 		u32 ATIMWindow;
@@ -2849,7 +2849,7 @@ void issue_probersp(_adapter *padapter, unsigned char *da, u8 is_valid_p2p_probe
 	if (cur_network->IELength>MAX_IE_SZ)
 		return;
 
-	if ( (pmlmeinfo->state&0x03) == WIFI_FW_AP_STATE)
+	if ((pmlmeinfo->state&0x03) == WIFI_FW_AP_STATE)
 	{
 		pwps_ie = rtw_get_wps_ie(cur_network->IEs+_FIXED_IE_LENGTH_, cur_network->IELength-_FIXED_IE_LENGTH_, NULL, &wps_ielen);
 
@@ -2957,7 +2957,7 @@ void issue_probersp(_adapter *padapter, unsigned char *da, u8 is_valid_p2p_probe
 		/*  DS parameter set */
 		pframe =rtw_set_ie(pframe, _DSSET_IE_, 1, (unsigned char *)&(cur_network->Configuration.DSConfig), &pattrib->pktlen);
 
-		if ( (pmlmeinfo->state&0x03) == WIFI_FW_ADHOC_STATE)
+		if ((pmlmeinfo->state&0x03) == WIFI_FW_ADHOC_STATE)
 		{
 			u8 erpinfo =0;
 			u32 ATIMWindow;
@@ -3550,7 +3550,7 @@ void issue_assocreq(_adapter *padapter)
 		/*  Check if the AP's supported rates are also supported by STA. */
 		for (j =0; j < sta_bssrate_len; j++) {
 			 /*  Avoid the proprietary data rate (22Mbps) of Handlink WSG-4000 AP */
-			if ( (pmlmeinfo->network.SupportedRates[i]|IEEE80211_BASIC_RATE_MASK)
+			if ((pmlmeinfo->network.SupportedRates[i]|IEEE80211_BASIC_RATE_MASK)
 					== (sta_bssrate[j]|IEEE80211_BASIC_RATE_MASK)) {
 				/* DBG_871X("match i = %d, j =%d\n", i, j); */
 				break;
@@ -4507,7 +4507,7 @@ unsigned int send_delba(_adapter *padapter, u8 initiator, u8 *addr)
 			if (psta->htpriv.agg_enable_bitmap & BIT(tid))
 			{
 				DBG_871X("tx agg disable tid(%d)\n", tid);
-				issue_action_BA(padapter, addr, RTW_WLAN_ACTION_DELBA, (((tid <<1) |initiator)&0x1F) );
+				issue_action_BA(padapter, addr, RTW_WLAN_ACTION_DELBA, (((tid <<1) |initiator)&0x1F));
 				psta->htpriv.agg_enable_bitmap &= ~BIT(tid);
 				psta->htpriv.candidate_tid_bitmap &= ~BIT(tid);
 
@@ -4594,7 +4594,7 @@ void site_survey(_adapter *padapter)
 		 , jiffies_to_msecs(jiffies - padapter->mlmepriv.scan_start_time)
 		 , ScanType?'A':'P', pmlmeext->sitesurvey_res.scan_mode?'A':'P'
 		 , pmlmeext->sitesurvey_res.ssid[0].SsidLength?'S':' '
-		 );
+		);
 #ifdef DBG_FIXED_CHAN
 	DBG_871X(FUNC_ADPT_FMT" fixed_chan:%u\n", pmlmeext->fixed_chan);
 #endif
@@ -5016,7 +5016,7 @@ void start_clnt_join(_adapter* padapter)
 		/* and enable a timer */
 		beacon_timeout = decide_wait_for_beacon_timeout(pmlmeinfo->bcn_interval);
 		set_link_timer(pmlmeext, beacon_timeout);
-		_set_timer( &padapter->mlmepriv.assoc_timer,
+		_set_timer(&padapter->mlmepriv.assoc_timer,
 			(REAUTH_TO * REAUTH_LIMIT) + (REASSOC_TO*REASSOC_LIMIT) +beacon_timeout);
 
 		pmlmeinfo->state = WIFI_FW_AUTH_NULL | WIFI_FW_STATION_STATE;
@@ -6658,7 +6658,7 @@ u8 join_cmd_hdl(_adapter *padapter, u8 *pbuf)
 		switch (pIE->ElementID)
 		{
 			case _VENDOR_SPECIFIC_IE_:/* Get WMM IE. */
-				if ( !memcmp(pIE->data, WMM_OUI, 4) )
+				if (!memcmp(pIE->data, WMM_OUI, 4))
 				{
 					WMM_param_handler(padapter, pIE);
 				}
@@ -7115,7 +7115,7 @@ u8 mlme_evt_hdl(_adapter *padapter, unsigned char *pbuf)
 
 	#ifdef CHECK_EVENT_SEQ
 	/*  checking event sequence... */
-	if (evt_seq != (atomic_read(&pevt_priv->event_seq) & 0x7f) )
+	if (evt_seq != (atomic_read(&pevt_priv->event_seq) & 0x7f))
 	{
 		RT_TRACE(_module_rtl871x_cmd_c_, _drv_info_, ("Evetn Seq Error! %d vs %d\n", (evt_seq & 0x7f), (atomic_read(&pevt_priv->event_seq) & 0x7f)));
 

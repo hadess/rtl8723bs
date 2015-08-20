@@ -36,7 +36,7 @@ void _ips_enter(_adapter * padapter)
 	pwrpriv->ips_enter_cnts++;
 	DBG_871X("==>ips_enter cnts:%d\n", pwrpriv->ips_enter_cnts);
 
-	if (rf_off == pwrpriv->change_rfpwrstate )
+	if (rf_off == pwrpriv->change_rfpwrstate)
 	{
 		pwrpriv->bpower_saving = true;
 		DBG_871X_LEVEL(_drv_always_, "nolinked power save enter\n");
@@ -116,7 +116,7 @@ static bool rtw_pwr_unassociated_idle(_adapter *adapter)
 
 	bool ret = false;
 
-	if (adapter_to_pwrctl(adapter)->bpower_saving ==true ) {
+	if (adapter_to_pwrctl(adapter)->bpower_saving ==true) {
 		/* DBG_871X("%s: already in LPS or IPS mode\n", __func__); */
 		goto exit;
 	}
@@ -298,7 +298,7 @@ void rtw_set_rpwm(PADAPTER padapter, u8 pslv)
 	}
 	else
 	{
-		if ( (pwrpriv->rpwm == pslv)
+		if ((pwrpriv->rpwm == pslv)
 			|| ((pwrpriv->rpwm >= PS_STATE_S2)&&(pslv >= PS_STATE_S2)))
 		{
 			RT_TRACE(_module_rtl871x_pwrctrl_c_, _drv_err_,
@@ -401,7 +401,7 @@ static u8 PS_RDY_CHECK(_adapter * padapter)
 	else if (true == pwrpriv->bInSuspend)
 		return false;
 #else
-	if (true == pwrpriv->bInSuspend )
+	if (true == pwrpriv->bInSuspend)
 		return false;
 #endif
 
@@ -422,7 +422,7 @@ static u8 PS_RDY_CHECK(_adapter * padapter)
 	)
 		return false;
 
-	if ( (padapter->securitypriv.dot11AuthAlgrthm == dot11AuthAlgrthm_8021X) && (padapter->securitypriv.binstallGrpkey == false) )
+	if ((padapter->securitypriv.dot11AuthAlgrthm == dot11AuthAlgrthm_8021X) && (padapter->securitypriv.binstallGrpkey == false))
 	{
 		DBG_871X("Group handshake still in progress !!!\n");
 		return false;
@@ -1374,7 +1374,7 @@ int _rtw_pwr_wakeup(_adapter *padapter, u32 ips_deffer_ms, const char *caller)
 	}
 
 	/* System suspend is not allowed to wakeup */
-	if ((pwrpriv->bInternalAutoSuspend == false) && (true == pwrpriv->bInSuspend )){
+	if ((pwrpriv->bInternalAutoSuspend == false) && (true == pwrpriv->bInSuspend)){
 		ret = _FAIL;
 		goto exit;
 	}
@@ -1392,7 +1392,7 @@ int _rtw_pwr_wakeup(_adapter *padapter, u32 ips_deffer_ms, const char *caller)
 		goto exit;
 	}
 
-	if (rf_off == pwrpriv->rf_pwrstate )
+	if (rf_off == pwrpriv->rf_pwrstate)
 	{
 		{
 			DBG_8192C("%s call ips_leave....\n", __FUNCTION__);
@@ -1432,7 +1432,7 @@ int rtw_pm_set_lps(_adapter *padapter, u8 mode)
 	int	ret = 0;
 	struct pwrctrl_priv *pwrctrlpriv = adapter_to_pwrctl(padapter);
 
-	if ( mode < PS_MODE_NUM )
+	if (mode < PS_MODE_NUM)
 	{
 		if (pwrctrlpriv->power_mgnt !=mode)
 		{
@@ -1460,7 +1460,7 @@ int rtw_pm_set_ips(_adapter *padapter, u8 mode)
 {
 	struct pwrctrl_priv *pwrctrlpriv = adapter_to_pwrctl(padapter);
 
-	if ( mode == IPS_NORMAL || mode == IPS_LEVEL_2 ) {
+	if (mode == IPS_NORMAL || mode == IPS_LEVEL_2) {
 		rtw_ips_mode_req(pwrctrlpriv, mode);
 		DBG_871X("%s %s\n", __FUNCTION__, mode == IPS_NORMAL?"IPS_NORMAL":"IPS_LEVEL_2");
 		return 0;
@@ -1468,7 +1468,7 @@ int rtw_pm_set_ips(_adapter *padapter, u8 mode)
 	else if (mode ==IPS_NONE){
 		rtw_ips_mode_req(pwrctrlpriv, mode);
 		DBG_871X("%s %s\n", __FUNCTION__, "IPS_NONE");
-		if ((padapter->bSurpriseRemoved ==0)&&(_FAIL == rtw_pwr_wakeup(padapter)) )
+		if ((padapter->bSurpriseRemoved ==0)&&(_FAIL == rtw_pwr_wakeup(padapter)))
 			return -EFAULT;
 	}
 	else {

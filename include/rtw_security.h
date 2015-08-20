@@ -121,13 +121,13 @@ struct security_priv
 	u8	key_mask; /* use to restore wep key after hal_init */
 
 	u32 dot118021XGrpPrivacy;	/*  This specify the privacy algthm. used for Grp key */
-	u32	dot118021XGrpKeyid;		/*  key id used for Grp Key ( tx key index) */
+	u32	dot118021XGrpKeyid;		/*  key id used for Grp Key (tx key index) */
 	union Keytype	dot118021XGrpKey[BIP_MAX_KEYID];	/*  802.1x Group Key, for inx0 and inx1 */
 	union Keytype	dot118021XGrptxmickey[BIP_MAX_KEYID];
 	union Keytype	dot118021XGrprxmickey[BIP_MAX_KEYID];
 	union pn48		dot11Grptxpn;			/*  PN48 used for Grp Key xmit. */
 	union pn48		dot11Grprxpn;			/*  PN48 used for Grp Key recv. */
-	u32	dot11wBIPKeyid;						/*  key id used for BIP Key ( tx key index) */
+	u32	dot11wBIPKeyid;						/*  key id used for BIP Key (tx key index) */
 	union Keytype	dot11wBIPKey[6];		/*  BIP Key, for index4 and index5 */
 	union pn48		dot11wBIPtxpn;			/*  PN48 used for Grp Key xmit. */
 	union pn48		dot11wBIPrxpn;			/*  PN48 used for Grp Key recv. */
@@ -241,7 +241,7 @@ do{\
 
 #define _AES_IV_LEN_ 8
 
-#define SET_ICE_IV_LEN( iv_len, icv_len, encrypt)\
+#define SET_ICE_IV_LEN(iv_len, icv_len, encrypt)\
 do{\
 	switch (encrypt)\
 	{\
@@ -281,8 +281,8 @@ do{\
 }while (0)
 
 
-#define ROL32( A, n )	( ((A) << (n)) | ( ((A)>>(32-(n)))  & ( (1UL << (n)) - 1 ) ) )
-#define ROR32( A, n )	ROL32( (A), 32-(n) )
+#define ROL32(A, n)	(((A) << (n)) | (((A)>>(32-(n)))  & ((1UL << (n)) - 1)))
+#define ROR32(A, n)	ROL32((A), 32-(n))
 
 struct mic_data
 {
@@ -401,7 +401,7 @@ static const unsigned long K[64] = {
 
 /* Various logical functions */
 #define RORc(x, y) \
-( ((((unsigned long) (x) & 0xFFFFFFFFUL) >> (unsigned long) ((y) & 31)) | \
+(((((unsigned long) (x) & 0xFFFFFFFFUL) >> (unsigned long) ((y) & 31)) | \
    ((unsigned long) (x) << (unsigned long) (32 - ((y) & 31)))) & 0xFFFFFFFFUL)
 #define Ch(x, y, z)       (z ^ (x & (y ^ z)))
 #define Maj(x, y, z)      (((x | y) & z) | (x & y))
@@ -415,10 +415,10 @@ static const unsigned long K[64] = {
 #define MIN(x, y) (((x) < (y)) ? (x) : (y))
 #endif
 int omac1_aes_128(u8 *key, u8 *data, size_t data_len, u8 *mac);
-void rtw_secmicsetkey(struct mic_data *pmicdata, u8 * key );
-void rtw_secmicappendbyte(struct mic_data *pmicdata, u8 b );
-void rtw_secmicappend(struct mic_data *pmicdata, u8 * src, u32 nBytes );
-void rtw_secgetmic(struct mic_data *pmicdata, u8 * dst );
+void rtw_secmicsetkey(struct mic_data *pmicdata, u8 * key);
+void rtw_secmicappendbyte(struct mic_data *pmicdata, u8 b);
+void rtw_secmicappend(struct mic_data *pmicdata, u8 * src, u32 nBytes);
+void rtw_secgetmic(struct mic_data *pmicdata, u8 * dst);
 
 void rtw_seccalctkipmic(
 	u8 * key,

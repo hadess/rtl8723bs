@@ -431,7 +431,7 @@ void add_RATid(_adapter *padapter, struct sta_info *psta, u8 rssi_level)
 
 	shortGIrate = query_ra_short_GI(psta);
 
-	if ( pcur_network->Configuration.DSConfig > 14 ) {
+	if (pcur_network->Configuration.DSConfig > 14) {
 
 		if (tx_ra_bitmap & 0xffff000)
 			sta_band |= WIRELESS_11_5N ;
@@ -508,7 +508,7 @@ void update_bmc_sta(_adapter *padapter)
 			network_type = WIRELESS_11B;
 		}
 		else if (network_type == WIRELESS_INVALID) { /*  error handling */
-			if ( pcur_network->Configuration.DSConfig > 14 )
+			if (pcur_network->Configuration.DSConfig > 14)
 				network_type = WIRELESS_11A;
 			else
 				network_type = WIRELESS_11B;
@@ -646,7 +646,7 @@ void update_sta_info_apmode(_adapter *padapter, struct sta_info *psta)
 		if (TEST_FLAG(phtpriv_ap->stbc_cap, STBC_HT_ENABLE_TX) &&
 			GET_HT_CAPABILITY_ELE_RX_STBC((u8 *)(&phtpriv_sta->ht_cap)))
 		{
-			SET_FLAG(cur_stbc_cap, (STBC_HT_ENABLE_TX | STBC_HT_CAP_TX) );
+			SET_FLAG(cur_stbc_cap, (STBC_HT_ENABLE_TX | STBC_HT_CAP_TX));
 			DBG_871X("Enable HT Tx STBC for STA(%d)\n", psta->aid);
 		}
 	}
@@ -802,7 +802,7 @@ void start_bss_network(_adapter *padapter, u8 *pbuf)
 
 	/* check if there is wps ie, */
 	/* if there is wpsie in beacon, the hostapd will update beacon twice when stating hostapd, */
-	/* and at first time the security ie ( RSN/WPA IE) will not include in beacon. */
+	/* and at first time the security ie (RSN/WPA IE) will not include in beacon. */
 	if (NULL == rtw_get_wps_ie(pnetwork->IEs+_FIXED_IE_LENGTH_, pnetwork->IELength-_FIXED_IE_LENGTH_, NULL, NULL))
 	{
 		pmlmeext->bstart_bss = true;
@@ -876,7 +876,7 @@ void start_bss_network(_adapter *padapter, u8 *pbuf)
 
 	/* set channel, bwmode */
 	p = rtw_get_ie((pnetwork->IEs + sizeof(NDIS_802_11_FIXED_IEs)), _HT_ADD_INFO_IE_, &ie_len, (pnetwork->IELength - sizeof(NDIS_802_11_FIXED_IEs)));
-	if ( p && ie_len)
+	if (p && ie_len)
 	{
 		pht_info = (struct HT_info_element *)(p+2);
 
@@ -1254,7 +1254,7 @@ int rtw_check_beacon_data(_adapter *padapter, u8 *pbuf,  int len)
 
 	pmlmepriv->htpriv.ht_option = false;
 
-	if ( (psecuritypriv->wpa2_pairwise_cipher&WPA_CIPHER_TKIP) ||
+	if ((psecuritypriv->wpa2_pairwise_cipher&WPA_CIPHER_TKIP) ||
 		      (psecuritypriv->wpa_pairwise_cipher&WPA_CIPHER_TKIP))
 	{
 		/* todo: */
@@ -1299,7 +1299,7 @@ int rtw_check_beacon_data(_adapter *padapter, u8 *pbuf,  int len)
 	update_ap_info(padapter, psta);
 
 	psta->state |= WIFI_AP_STATE;		/* Aries, add, fix bug of flush_cam_entry at STOP AP mode , 0724 */
-	rtw_indicate_connect( padapter);
+	rtw_indicate_connect(padapter);
 
 	pmlmepriv->cur_network.join_res = true;/* for check if already set beacon */
 
@@ -1444,7 +1444,7 @@ u8 rtw_ap_set_pairwise_key(_adapter *padapter, struct sta_info *psta)
 	u8	res =_SUCCESS;
 
 	ph2c = (struct cmd_obj*)rtw_zmalloc(sizeof(struct cmd_obj));
-	if ( ph2c == NULL){
+	if (ph2c == NULL){
 		res = _FAIL;
 		goto exit;
 	}
@@ -1691,13 +1691,13 @@ static void update_bcn_wps_ie(_adapter *padapter)
 		kfree(pbackup_remainder_ie);
 
 	/*  deal with the case without set_tx_beacon_cmd() in update_beacon() */
-#if defined( CONFIG_INTERRUPT_BASED_TXBCN )
-	if ( (pmlmeinfo->state&0x03) == WIFI_FW_AP_STATE)
+#if defined(CONFIG_INTERRUPT_BASED_TXBCN)
+	if ((pmlmeinfo->state&0x03) == WIFI_FW_AP_STATE)
 	{
 		u8 sr = 0;
 		rtw_get_wps_attr_content(pwps_ie_src,  wps_ielen, WPS_ATTR_SELECTED_REGISTRAR, (u8*)(&sr), NULL);
 
-		if ( sr ) {
+		if (sr) {
 			set_fwstate(pmlmepriv, WIFI_UNDER_WPS);
 			DBG_871X("%s, set WIFI_UNDER_WPS\n", __func__);
 		}

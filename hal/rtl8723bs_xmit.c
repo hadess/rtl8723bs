@@ -90,7 +90,7 @@ static s32 rtl8723_dequeue_writeport(PADAPTER padapter)
 
 query_free_page:
 	/*  check if hardware tx fifo page is enough */
-	if ( false == rtw_hal_sdio_query_tx_freepage(pri_padapter, PageIdx, pxmitbuf->pg_num))
+	if (false == rtw_hal_sdio_query_tx_freepage(pri_padapter, PageIdx, pxmitbuf->pg_num))
 	{
 		if (!bUpdatePageNum) {
 			/*  Total number of page is NOT available, so update current FIFO status */
@@ -177,7 +177,7 @@ s32 rtl8723bs_xmit_buf_handler(PADAPTER padapter)
 	do {
 		queue_empty = rtl8723_dequeue_writeport(padapter);
 /* 	dump secondary adapter xmitbuf */
-	} while ( !queue_empty);
+	} while (!queue_empty);
 
 	rtw_unregister_tx_alive(padapter);
 

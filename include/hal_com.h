@@ -298,7 +298,7 @@ ParseQualifiedString(
     OUT	char* Out,
     IN	char  LeftQualifier,
     IN	char  RightQualifier
-    );
+   );
 
 bool
 GetU1ByteIntegerFromStringInDecimal(

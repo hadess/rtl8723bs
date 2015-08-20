@@ -105,7 +105,7 @@ _pkt *rtw_os_alloc_msdu_pkt(union recv_frame *prframe, u16 nSubframe_Length, u8 
 	if (sub_skb->len >= 8 &&
 		((!memcmp(sub_skb->data, rtw_rfc1042_header, SNAP_SIZE) &&
 		  eth_type != ETH_P_AARP && eth_type != ETH_P_IPX) ||
-		 !memcmp(sub_skb->data, rtw_bridge_tunnel_header, SNAP_SIZE) )) {
+		 !memcmp(sub_skb->data, rtw_bridge_tunnel_header, SNAP_SIZE))) {
 		/* remove RFC1042 or Bridge-Tunnel encapsulation and replace EtherType */
 		skb_pull(sub_skb, SNAP_SIZE);
 		memcpy(skb_push(sub_skb, ETH_ALEN), pattrib->src, ETH_ALEN);
@@ -162,7 +162,7 @@ void rtw_os_recv_indicate_pkt(_adapter *padapter, _pkt *pkt, struct rx_pkt_attri
 
 					_rtw_xmit_entry(pkt, pnetdev);
 
-					if (bmcast && (pskb2 != NULL) ) {
+					if (bmcast && (pskb2 != NULL)) {
 						pkt = pskb2;
 						DBG_COUNTER(padapter->rx_logs.os_indicate_ap_mcast);
 					} else {
@@ -182,7 +182,7 @@ void rtw_os_recv_indicate_pkt(_adapter *padapter, _pkt *pkt, struct rx_pkt_attri
 		pkt->dev = padapter->pnetdev;
 
 #ifdef CONFIG_TCP_CSUM_OFFLOAD_RX
-		if ( (pattrib->tcpchk_valid == 1) && (pattrib->tcp_chkrpt == 1) ) {
+		if ((pattrib->tcpchk_valid == 1) && (pattrib->tcp_chkrpt == 1)) {
 			pkt->ip_summed = CHECKSUM_UNNECESSARY;
 		} else {
 			pkt->ip_summed = CHECKSUM_NONE;
@@ -208,7 +208,7 @@ void rtw_handle_tkip_mic_err(_adapter *padapter, u8 bgroup)
 	struct security_priv	*psecuritypriv = &padapter->securitypriv;
 	unsigned long cur_time = 0;
 
-	if ( psecuritypriv->last_mic_err_time == 0 )
+	if (psecuritypriv->last_mic_err_time == 0)
 	{
 		psecuritypriv->last_mic_err_time = jiffies;
 	}
@@ -216,7 +216,7 @@ void rtw_handle_tkip_mic_err(_adapter *padapter, u8 bgroup)
 	{
 		cur_time = jiffies;
 
-		if ( cur_time - psecuritypriv->last_mic_err_time < 60*HZ )
+		if (cur_time - psecuritypriv->last_mic_err_time < 60*HZ)
 		{
 			psecuritypriv->btkip_countermeasure = true;
 			psecuritypriv->last_mic_err_time = 0;
@@ -228,7 +228,7 @@ void rtw_handle_tkip_mic_err(_adapter *padapter, u8 bgroup)
 		}
 	}
 
-	if ( bgroup )
+	if (bgroup)
 	{
 		key_type |= NL80211_KEYTYPE_GROUP;
 	}
@@ -240,8 +240,8 @@ void rtw_handle_tkip_mic_err(_adapter *padapter, u8 bgroup)
 	cfg80211_michael_mic_failure(padapter->pnetdev, (u8 *)&pmlmepriv->assoc_bssid[ 0 ], key_type, -1,
 		NULL, GFP_ATOMIC);
 
-	memset( &ev, 0x00, sizeof( ev ) );
-	if ( bgroup )
+	memset(&ev, 0x00, sizeof(ev));
+	if (bgroup)
 	{
 	    ev.flags |= IW_MICFAILURE_GROUP;
 	}
@@ -251,10 +251,10 @@ void rtw_handle_tkip_mic_err(_adapter *padapter, u8 bgroup)
 	}
 
 	ev.src_addr.sa_family = ARPHRD_ETHER;
-	memcpy( ev.src_addr.sa_data, &pmlmepriv->assoc_bssid[ 0 ], ETH_ALEN );
+	memcpy(ev.src_addr.sa_data, &pmlmepriv->assoc_bssid[ 0 ], ETH_ALEN);
 
-	memset( &wrqu, 0x00, sizeof( wrqu ) );
-	wrqu.data.length = sizeof( ev );
+	memset(&wrqu, 0x00, sizeof(wrqu));
+	wrqu.data.length = sizeof(ev);
 }
 
 #ifdef CONFIG_AUTO_AP_MODE

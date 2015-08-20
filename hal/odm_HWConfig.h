@@ -142,7 +142,7 @@ ODM_PhyStatusQuery(
 HAL_STATUS
 ODM_ConfigRFWithTxPwrTrackHeaderFile(
 	IN	PDM_ODM_T			pDM_Odm
-    );
+   );
 
 HAL_STATUS
 ODM_ConfigRFWithHeaderFile(
@@ -155,12 +155,12 @@ HAL_STATUS
 ODM_ConfigBBWithHeaderFile(
 	IN	PDM_ODM_T	                pDM_Odm,
 	IN	ODM_BB_Config_Type		ConfigType
-    );
+   );
 
 HAL_STATUS
 ODM_ConfigMACWithHeaderFile(
 	IN	PDM_ODM_T	pDM_Odm
-    );
+   );
 
 HAL_STATUS
 ODM_ConfigFWWithHeaderFile(

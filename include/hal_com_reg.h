@@ -514,7 +514,7 @@
 
 
 /*  */
-/*  9. Security Control Registers	(Offset: ) */
+/*  9. Security Control Registers	(Offset:) */
 /*  */
 #define RWCAM					REG_CAMCMD		/* IN 8190 Data Sheet is called CAMcmd */
 #define WCAMI					REG_CAMWRITE	/*  Software write CAM input content */
@@ -1301,9 +1301,9 @@ Current IOREG MAP
 #define _TXDMA_HIQ_MAP(x)			(((x)&0x3) << 14)
 #define _TXDMA_MGQ_MAP(x)			(((x)&0x3) << 12)
 #define _TXDMA_BKQ_MAP(x)			(((x)&0x3) << 10)
-#define _TXDMA_BEQ_MAP(x)			(((x)&0x3) << 8 )
-#define _TXDMA_VIQ_MAP(x)			(((x)&0x3) << 6 )
-#define _TXDMA_VOQ_MAP(x)			(((x)&0x3) << 4 )
+#define _TXDMA_BEQ_MAP(x)			(((x)&0x3) << 8)
+#define _TXDMA_VIQ_MAP(x)			(((x)&0x3) << 6)
+#define _TXDMA_VOQ_MAP(x)			(((x)&0x3) << 4)
 
 #define QUEUE_EXTRA				0
 #define QUEUE_LOW				1

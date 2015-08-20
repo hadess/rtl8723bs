@@ -74,7 +74,7 @@ u32	_rtw_init_sta_priv(struct	sta_priv *pstapriv)
 		return _FAIL;
 
 	pstapriv->pstainfo_buf = pstapriv->pallocated_stainfo_buf + 4 -
-		((SIZE_PTR)(pstapriv->pallocated_stainfo_buf ) & 3);
+		((SIZE_PTR)(pstapriv->pallocated_stainfo_buf) & 3);
 
 	_rtw_init_queue(&pstapriv->free_sta_queue);
 
@@ -135,8 +135,8 @@ inline struct sta_info *rtw_get_stainfo_by_offset(struct sta_priv *stapriv, int 
 }
 
 /*  this function is used to free the memory of lock || sema for all stainfos */
-void kfree_all_stainfo(struct sta_priv *pstapriv );
-void kfree_all_stainfo(struct sta_priv *pstapriv )
+void kfree_all_stainfo(struct sta_priv *pstapriv);
+void kfree_all_stainfo(struct sta_priv *pstapriv)
 {
 	_list	*plist, *phead;
 	struct sta_info *psta = NULL;
@@ -265,9 +265,9 @@ struct	sta_info *rtw_alloc_stainfo(struct	sta_priv *pstapriv, u8 *hwaddr)
 /*  In this case, this packet will be dropped by recv_decache function if we use the 0x00 as the default value for tid_rxseq variable. */
 /*  So, we initialize the tid_rxseq variable as the 0xffff. */
 
-		for ( i = 0; i < 16; i++ )
+		for (i = 0; i < 16; i++)
 		{
-                     memcpy( &psta->sta_recvpriv.rxcache.tid_rxseq[ i ], &wRxSeqInitialValue, 2 );
+                     memcpy(&psta->sta_recvpriv.rxcache.tid_rxseq[ i ], &wRxSeqInitialValue, 2);
 		}
 
 		RT_TRACE(_module_rtl871x_sta_mgt_c_, _drv_info_, ("alloc number_%d stainfo  with hwaddr = %x %x %x %x %x %x  \n",
@@ -353,7 +353,7 @@ u32	rtw_free_stainfo(_adapter *padapter , struct sta_info *psta)
 
 	/* vo */
 	/* spin_lock_bh(&(pxmitpriv->vo_pending.lock)); */
-	rtw_free_xmitframe_queue( pxmitpriv, &pstaxmitpriv->vo_q.sta_pending);
+	rtw_free_xmitframe_queue(pxmitpriv, &pstaxmitpriv->vo_q.sta_pending);
 	list_del_init(&(pstaxmitpriv->vo_q.tx_pending));
 	phwxmit = pxmitpriv->hwxmits;
 	phwxmit->accnt -= pstaxmitpriv->vo_q.qcnt;
@@ -362,7 +362,7 @@ u32	rtw_free_stainfo(_adapter *padapter , struct sta_info *psta)
 
 	/* vi */
 	/* spin_lock_bh(&(pxmitpriv->vi_pending.lock)); */
-	rtw_free_xmitframe_queue( pxmitpriv, &pstaxmitpriv->vi_q.sta_pending);
+	rtw_free_xmitframe_queue(pxmitpriv, &pstaxmitpriv->vi_q.sta_pending);
 	list_del_init(&(pstaxmitpriv->vi_q.tx_pending));
 	phwxmit = pxmitpriv->hwxmits+1;
 	phwxmit->accnt -= pstaxmitpriv->vi_q.qcnt;
@@ -371,7 +371,7 @@ u32	rtw_free_stainfo(_adapter *padapter , struct sta_info *psta)
 
 	/* be */
 	/* spin_lock_bh(&(pxmitpriv->be_pending.lock)); */
-	rtw_free_xmitframe_queue( pxmitpriv, &pstaxmitpriv->be_q.sta_pending);
+	rtw_free_xmitframe_queue(pxmitpriv, &pstaxmitpriv->be_q.sta_pending);
 	list_del_init(&(pstaxmitpriv->be_q.tx_pending));
 	phwxmit = pxmitpriv->hwxmits+2;
 	phwxmit->accnt -= pstaxmitpriv->be_q.qcnt;
@@ -380,7 +380,7 @@ u32	rtw_free_stainfo(_adapter *padapter , struct sta_info *psta)
 
 	/* bk */
 	/* spin_lock_bh(&(pxmitpriv->bk_pending.lock)); */
-	rtw_free_xmitframe_queue( pxmitpriv, &pstaxmitpriv->bk_q.sta_pending);
+	rtw_free_xmitframe_queue(pxmitpriv, &pstaxmitpriv->bk_q.sta_pending);
 	list_del_init(&(pstaxmitpriv->bk_q.tx_pending));
 	phwxmit = pxmitpriv->hwxmits+3;
 	phwxmit->accnt -= pstaxmitpriv->bk_q.qcnt;
@@ -492,7 +492,7 @@ void rtw_free_all_stainfo(_adapter *padapter)
 	s32	index;
 	struct sta_info *psta = NULL;
 	struct	sta_priv *pstapriv = &padapter->stapriv;
-	struct sta_info* pbcmc_stainfo =rtw_get_bcmc_stainfo( padapter);
+	struct sta_info* pbcmc_stainfo =rtw_get_bcmc_stainfo(padapter);
 
 	if (pstapriv->asoc_sta_count ==1)
 		return;

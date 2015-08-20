@@ -21,7 +21,7 @@ CheckPositive(
     IN  PDM_ODM_T     pDM_Odm,
     IN  const u4Byte  Condition1,
     IN  const u4Byte  Condition2
-    )
+   )
 {
 	u1Byte    _BoardType = ((pDM_Odm->BoardType & BIT4) >> 4) << 0 | /*  _GLNA */
                            ((pDM_Odm->BoardType & BIT3) >> 3) << 1 | /*  _GPA */
@@ -90,7 +90,7 @@ CheckNegative(
     IN  PDM_ODM_T     pDM_Odm,
     IN  const u4Byte  Condition1,
     IN  const u4Byte  Condition2
-    )
+   )
 {
     return true;
 }
@@ -245,13 +245,13 @@ ODM_ReadAndConfig_MP_8723B_AGC_TAB(
 
     ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_LOUD, ("===> ODM_ReadAndConfig_MP_8723B_AGC_TAB\n"));
 
-    for (i = 0; i < ArrayLen; i += 2 )
+    for (i = 0; i < ArrayLen; i += 2)
     {
         u4Byte v1 = Array[i];
         u4Byte v2 = Array[i+1];
 
         /*  This (offset, data) pair doesn't care the condition. */
-        if ( v1 < 0x40000000 )
+        if (v1 < 0x40000000)
         {
            odm_ConfigBB_AGC_8723B(pDM_Odm, v1, bMaskDWord, v2);
            continue;
@@ -264,20 +264,20 @@ ODM_ReadAndConfig_MP_8723B_AGC_TAB(
             if (cCond == COND_ELSE) { /*  ELSE, ENDIF */
                 bMatched = true;
                 READ_NEXT_PAIR(v1, v2, i);
-            } else if ( ! CheckPositive(pDM_Odm, v1, v2) ) {
+            } else if (! CheckPositive(pDM_Odm, v1, v2)) {
                 bMatched = false;
                 READ_NEXT_PAIR(v1, v2, i);
                 READ_NEXT_PAIR(v1, v2, i);
             } else {
                 READ_NEXT_PAIR(v1, v2, i);
-                if ( ! CheckNegative(pDM_Odm, v1, v2) )
+                if (! CheckNegative(pDM_Odm, v1, v2))
                     bMatched = false;
                 else
                     bMatched = true;
                 READ_NEXT_PAIR(v1, v2, i);
             }
 
-            if ( bMatched == false )
+            if (bMatched == false)
             {   /*  Condition isn't matched. Discard the following (offset, data) pairs. */
                 while (v1 < 0x40000000 && i < ArrayLen -2)
                     READ_NEXT_PAIR(v1, v2, i);
@@ -514,13 +514,13 @@ ODM_ReadAndConfig_MP_8723B_PHY_REG(
 
     ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_LOUD, ("===> ODM_ReadAndConfig_MP_8723B_PHY_REG\n"));
 
-    for (i = 0; i < ArrayLen; i += 2 )
+    for (i = 0; i < ArrayLen; i += 2)
     {
         u4Byte v1 = Array[i];
         u4Byte v2 = Array[i+1];
 
         /*  This (offset, data) pair doesn't care the condition. */
-        if ( v1 < 0x40000000 )
+        if (v1 < 0x40000000)
         {
            odm_ConfigBB_PHY_8723B(pDM_Odm, v1, bMaskDWord, v2);
            continue;
@@ -533,20 +533,20 @@ ODM_ReadAndConfig_MP_8723B_PHY_REG(
             if (cCond == COND_ELSE) { /*  ELSE, ENDIF */
                 bMatched = true;
                 READ_NEXT_PAIR(v1, v2, i);
-            } else if ( ! CheckPositive(pDM_Odm, v1, v2) ) {
+            } else if (! CheckPositive(pDM_Odm, v1, v2)) {
                 bMatched = false;
                 READ_NEXT_PAIR(v1, v2, i);
                 READ_NEXT_PAIR(v1, v2, i);
             } else {
                 READ_NEXT_PAIR(v1, v2, i);
-                if ( ! CheckNegative(pDM_Odm, v1, v2) )
+                if (! CheckNegative(pDM_Odm, v1, v2))
                     bMatched = false;
                 else
                     bMatched = true;
                 READ_NEXT_PAIR(v1, v2, i);
             }
 
-            if ( bMatched == false )
+            if (bMatched == false)
             {   /*  Condition isn't matched. Discard the following (offset, data) pairs. */
                 while (v1 < 0x40000000 && i < ArrayLen -2)
                     READ_NEXT_PAIR(v1, v2, i);
@@ -598,7 +598,7 @@ ODM_ReadAndConfig_MP_8723B_PHY_REG_PG(
 	pDM_Odm->PhyRegPgVersion = 1;
 	pDM_Odm->PhyRegPgValueType = PHY_REG_PG_EXACT_VALUE;
 
-	for (i = 0; i < ArrayLen; i += 6 )
+	for (i = 0; i < ArrayLen; i += 6)
 	{
 	    u4Byte v1 = Array[i];
 	    u4Byte v2 = Array[i+1];

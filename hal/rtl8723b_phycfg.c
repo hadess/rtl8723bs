@@ -62,7 +62,7 @@ phy_CalculateBitShift(
 
 	for (i =0; i<=31; i++)
 	{
-		if ( ((BitMask>>i) &  0x1 ) == 1)
+		if (((BitMask>>i) &  0x1) == 1)
 			break;
 	}
 
@@ -498,12 +498,12 @@ phy_BB8723b_Config_ParaFile(
 	pszRFTxPwrLmtFile = sz8723BRFTxPwrLmtFile;
 
 	/*  Read Tx Power Limit File */
-	PHY_InitTxPowerLimit( Adapter );
-	if ( Adapter->registrypriv.RegEnableTxPowerLimit == 1 ||
-	     ( Adapter->registrypriv.RegEnableTxPowerLimit == 2 && pHalData->EEPROMRegulatory == 1 ) )
+	PHY_InitTxPowerLimit(Adapter);
+	if (Adapter->registrypriv.RegEnableTxPowerLimit == 1 ||
+	     (Adapter->registrypriv.RegEnableTxPowerLimit == 2 && pHalData->EEPROMRegulatory == 1))
 	{
 #ifdef CONFIG_LOAD_PHY_PARA_FROM_FILE
-		if (PHY_ConfigRFWithPowerLimitTableParaFile( Adapter, pszRFTxPwrLmtFile ) == _FAIL)
+		if (PHY_ConfigRFWithPowerLimitTableParaFile(Adapter, pszRFTxPwrLmtFile) == _FAIL)
 #endif
 		{
 			if (HAL_STATUS_SUCCESS != ODM_ConfigRFWithHeaderFile(&pHalData->odmpriv, CONFIG_RF_TXPWR_LMT, (ODM_RF_RADIO_PATH_E)0))
@@ -533,9 +533,9 @@ phy_BB8723b_Config_ParaFile(
 	}
 
 	/*  If EEPROM or EFUSE autoload OK, We must config by PHY_REG_PG.txt */
-	PHY_InitTxPowerByRate( Adapter );
-	if ( Adapter->registrypriv.RegEnableTxPowerByRate == 1 ||
-	     ( Adapter->registrypriv.RegEnableTxPowerByRate == 2 && pHalData->EEPROMRegulatory != 2 ) )
+	PHY_InitTxPowerByRate(Adapter);
+	if (Adapter->registrypriv.RegEnableTxPowerByRate == 1 ||
+	     (Adapter->registrypriv.RegEnableTxPowerByRate == 2 && pHalData->EEPROMRegulatory != 2))
 	{
 #ifdef CONFIG_LOAD_PHY_PARA_FROM_FILE
 		if (phy_ConfigBBWithPgParaFile(Adapter, pszBBRegPgFile) == _FAIL)
@@ -545,12 +545,12 @@ phy_BB8723b_Config_ParaFile(
 				rtStatus = _FAIL;
 		}
 
-		if ( pHalData->odmpriv.PhyRegPgValueType == PHY_REG_PG_EXACT_VALUE )
-			PHY_TxPowerByRateConfiguration( Adapter );
+		if (pHalData->odmpriv.PhyRegPgValueType == PHY_REG_PG_EXACT_VALUE)
+			PHY_TxPowerByRateConfiguration(Adapter);
 
-		if ( Adapter->registrypriv.RegEnableTxPowerLimit == 1 ||
-	         ( Adapter->registrypriv.RegEnableTxPowerLimit == 2 && pHalData->EEPROMRegulatory == 1 ) )
-			PHY_ConvertTxPowerLimitToPowerIndex( Adapter );
+		if (Adapter->registrypriv.RegEnableTxPowerLimit == 1 ||
+	         (Adapter->registrypriv.RegEnableTxPowerLimit == 2 && pHalData->EEPROMRegulatory == 1))
+			PHY_ConvertTxPowerLimitToPowerIndex(Adapter);
 
 		if (rtStatus != _SUCCESS){
 			DBG_8192C("%s():BB_PG Reg Fail!!\n", __func__);
@@ -715,17 +715,17 @@ PHY_GetTxPowerIndex_8723B(
 	s8					txPower = 0, powerDiffByRate = 0, limit = 0;
 	bool				bIn24G = false;
 
-	/* DBG_871X("===>%s\n", __FUNCTION__ ); */
+	/* DBG_871X("===>%s\n", __FUNCTION__); */
 
-	txPower = (s8) PHY_GetTxPowerIndexBase( pAdapter, RFPath, Rate, BandWidth, Channel, &bIn24G );
-	powerDiffByRate = PHY_GetTxPowerByRate( pAdapter, BAND_ON_2_4G, ODM_RF_PATH_A, RF_1TX, Rate );
+	txPower = (s8) PHY_GetTxPowerIndexBase(pAdapter, RFPath, Rate, BandWidth, Channel, &bIn24G);
+	powerDiffByRate = PHY_GetTxPowerByRate(pAdapter, BAND_ON_2_4G, ODM_RF_PATH_A, RF_1TX, Rate);
 
-	limit = PHY_GetTxPowerLimit( pAdapter, pAdapter->registrypriv.RegPwrTblSel, (u8)(!bIn24G), pHalData->CurrentChannelBW, RFPath, Rate, pHalData->CurrentChannel);
+	limit = PHY_GetTxPowerLimit(pAdapter, pAdapter->registrypriv.RegPwrTblSel, (u8)(!bIn24G), pHalData->CurrentChannelBW, RFPath, Rate, pHalData->CurrentChannel);
 
 	powerDiffByRate = powerDiffByRate > limit ? limit : powerDiffByRate;
 	txPower += powerDiffByRate;
 
-	txPower += PHY_GetTxPowerTrackingOffset( pAdapter, RFPath, Rate );
+	txPower += PHY_GetTxPowerTrackingOffset(pAdapter, RFPath, Rate);
 
 	if (txPower > MAX_POWER_INDEX)
 		txPower = MAX_POWER_INDEX;
@@ -746,7 +746,7 @@ PHY_SetTxPowerLevel8723B(
 	u8				RFPath = ODM_RF_PATH_A;
 
 	if (pHalData->AntDivCfg){/*  antenna diversity Enable */
-		RFPath = ( (pDM_FatTable->RxIdleAnt == MAIN_ANT) ? ODM_RF_PATH_A : ODM_RF_PATH_B);
+		RFPath = ((pDM_FatTable->RxIdleAnt == MAIN_ANT) ? ODM_RF_PATH_A : ODM_RF_PATH_B);
 	}
 	else{ /*  antenna diversity disable */
 		RFPath = pHalData->ant_path;
@@ -839,8 +839,8 @@ phy_GetSecondaryChnl_8723B(
 			RT_TRACE(_module_hal_init_c_, _drv_err_, ("SCMapping: Not Correct Primary40MHz Setting \n"));
 	}
 
-	RT_TRACE(_module_hal_init_c_, _drv_info_, ("SCMapping: SC Value %x \n", ( (SCSettingOf40 << 4) | SCSettingOf20)));
-	return  ( (SCSettingOf40 << 4) | SCSettingOf20);
+	RT_TRACE(_module_hal_init_c_, _drv_info_, ("SCMapping: SC Value %x \n", ((SCSettingOf40 << 4) | SCSettingOf20)));
+	return  ((SCSettingOf40 << 4) | SCSettingOf20);
 }
 
 static void
@@ -919,9 +919,9 @@ phy_SwChnl8723B(
 		/* RT_TRACE(COMP_MLME, DBG_LOUD, ("phy_SwChnl8723B: return for PSEUDO \n")); */
 		return;
 	}
-	pHalData->RfRegChnlVal[0] = ((pHalData->RfRegChnlVal[0] & 0xfffff00) | channelToSW  );
-	PHY_SetRFReg(pAdapter, ODM_RF_PATH_A, RF_CHNLBW, 0x3FF, pHalData->RfRegChnlVal[0] );
-	PHY_SetRFReg(pAdapter, ODM_RF_PATH_B, RF_CHNLBW, 0x3FF, pHalData->RfRegChnlVal[0] );
+	pHalData->RfRegChnlVal[0] = ((pHalData->RfRegChnlVal[0] & 0xfffff00) | channelToSW );
+	PHY_SetRFReg(pAdapter, ODM_RF_PATH_A, RF_CHNLBW, 0x3FF, pHalData->RfRegChnlVal[0]);
+	PHY_SetRFReg(pAdapter, ODM_RF_PATH_B, RF_CHNLBW, 0x3FF, pHalData->RfRegChnlVal[0]);
 
 	DBG_8192C("===>phy_SwChnl8723B: Channel = %d\n", channelToSW);
 }
@@ -934,9 +934,9 @@ phy_SwChnlAndSetBwMode8723B(
 	HAL_DATA_TYPE		*pHalData = GET_HAL_DATA(Adapter);
 
 	/* RT_TRACE(COMP_SCAN, DBG_LOUD, ("phy_SwChnlAndSetBwMode8723B(): bSwChnl %d, bSetChnlBW %d \n", pHalData->bSwChnl, pHalData->bSetChnlBW)); */
-	if ( Adapter->bNotifyChannelChange )
+	if (Adapter->bNotifyChannelChange)
 	{
-		DBG_871X( "[%s] bSwChnl =%d, ch =%d, bSetChnlBW =%d, bw =%d\n",
+		DBG_871X("[%s] bSwChnl =%d, ch =%d, bSetChnlBW =%d, bw =%d\n",
 			__FUNCTION__,
 			pHalData->bSwChnl,
 			pHalData->CurrentChannel,

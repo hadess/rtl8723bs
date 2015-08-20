@@ -1538,7 +1538,7 @@ BEAMFORMING_CAP
 Beamforming_GetEntryBeamCapByMacId(
  IN PMGNT_INFO pMgntInfo,
  IN u1Byte  MacId
- );
+);
 #endif
 
 void
@@ -1588,17 +1588,17 @@ ODM_CmnInfoUpdate(
 void
 ODM_InitAllTimers(
     IN PDM_ODM_T	pDM_Odm
-    );
+   );
 
 void
 ODM_CancelAllTimers(
     IN PDM_ODM_T    pDM_Odm
-    );
+   );
 
 void
 ODM_ReleaseAllTimers(
     IN PDM_ODM_T	pDM_Odm
-    );
+   );
 
 void
 ODM_AntselStatistics_88C(

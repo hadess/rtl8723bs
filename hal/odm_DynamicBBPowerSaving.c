@@ -45,7 +45,7 @@ ODM_RF_Saving(
 	pPS_T	pDM_PSTable = &pDM_Odm->DM_PSTable;
 	u1Byte	Rssi_Up_bound = 30 ;
 	u1Byte	Rssi_Low_bound = 25;
-	if (pDM_Odm->PatchID == 40 ) /* RT_CID_819x_FUNAI_TV */
+	if (pDM_Odm->PatchID == 40) /* RT_CID_819x_FUNAI_TV */
 	{
 		Rssi_Up_bound = 50 ;
 		Rssi_Low_bound = 45;

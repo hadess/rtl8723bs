@@ -44,7 +44,7 @@ odm_ConfigBB_AGC_8723B(
     IN	u4Byte		Addr,
     IN	u4Byte		Bitmask,
     IN	u4Byte		Data
-    );
+   );
 
 void
 odm_ConfigBB_PHY_REG_PG_8723B(
@@ -55,7 +55,7 @@ odm_ConfigBB_PHY_REG_PG_8723B(
     IN	u4Byte		Addr,
     IN	u4Byte		Bitmask,
     IN	u4Byte		Data
-    );
+   );
 
 void
 odm_ConfigBB_PHY_8723B(
@@ -63,7 +63,7 @@ odm_ConfigBB_PHY_8723B(
     IN	u4Byte		Addr,
     IN	u4Byte		Bitmask,
     IN	u4Byte		Data
-    );
+   );
 
 void
 odm_ConfigBB_TXPWR_LMT_8723B(
@@ -75,6 +75,6 @@ odm_ConfigBB_TXPWR_LMT_8723B(
 	IN	pu1Byte		RfPath,
 	IN	pu1Byte		Channel,
 	IN	pu1Byte		PowerLimit
-    );
+   );
 
 #endif

@@ -250,7 +250,7 @@
 			u8	*ptr = (u8 *)_HexData;				\
 			_dbgdump("%s", DRIVER_PREFIX);						\
 			_dbgdump(_TitleString);						\
-			for ( __i =0; __i<(int)_HexDataLen; __i++ )				\
+			for (__i =0; __i<(int)_HexDataLen; __i++)				\
 			{								\
 				_dbgdump("%02X%s", ptr[__i], (((__i + 1) % 4) == 0)?"  ":" ");	\
 				if (((__i + 1) % 16) == 0)	_dbgdump("\n");			\

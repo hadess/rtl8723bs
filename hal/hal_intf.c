@@ -357,7 +357,7 @@ void	rtw_hal_write_bbreg(_adapter *padapter, u32 RegAddr, u32 BitMask, u32 Data)
 u32	rtw_hal_read_rfreg(_adapter *padapter, u32 eRFPath, u32 RegAddr, u32 BitMask)
 {
 	u32 data = 0;
-	if ( padapter->HalFunc.read_rfreg)
+	if (padapter->HalFunc.read_rfreg)
 		data = padapter->HalFunc.read_rfreg(padapter, eRFPath, RegAddr, BitMask);
 	return data;
 }
@@ -388,7 +388,7 @@ void	rtw_hal_dm_watchdog(_adapter *padapter)
 
 void	rtw_hal_dm_watchdog_in_lps(_adapter *padapter)
 {
-	if (adapter_to_pwrctl(padapter)->bFwCurrentInPSMode ==true )
+	if (adapter_to_pwrctl(padapter)->bFwCurrentInPSMode ==true)
 	{
 		if (padapter->HalFunc.hal_dm_watchdog_in_lps)
 		{

@@ -22,7 +22,7 @@
 ******************************************************************************/
 
 void
-ODM_ReadAndConfig_MP_8723B_RadioA( /*  TC: Test Chip, MP: MP Chip */
+ODM_ReadAndConfig_MP_8723B_RadioA(/*  TC: Test Chip, MP: MP Chip */
 	IN   PDM_ODM_T  pDM_Odm
 );
 
@@ -31,7 +31,7 @@ ODM_ReadAndConfig_MP_8723B_RadioA( /*  TC: Test Chip, MP: MP Chip */
 ******************************************************************************/
 
 void
-ODM_ReadAndConfig_MP_8723B_TxPowerTrack_SDIO( /*  TC: Test Chip, MP: MP Chip */
+ODM_ReadAndConfig_MP_8723B_TxPowerTrack_SDIO(/*  TC: Test Chip, MP: MP Chip */
 	IN   PDM_ODM_T  pDM_Odm
 );
 u4Byte ODM_GetVersion_MP_8723B_TxPowerTrack_SDIO(void);
@@ -41,7 +41,7 @@ u4Byte ODM_GetVersion_MP_8723B_TxPowerTrack_SDIO(void);
 ******************************************************************************/
 
 void
-ODM_ReadAndConfig_MP_8723B_TXPWR_LMT( /*  TC: Test Chip, MP: MP Chip */
+ODM_ReadAndConfig_MP_8723B_TXPWR_LMT(/*  TC: Test Chip, MP: MP Chip */
 	IN   PDM_ODM_T  pDM_Odm
 );
 u4Byte ODM_GetVersion_MP_8723B_TXPWR_LMT(void);

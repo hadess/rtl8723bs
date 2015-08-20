@@ -22,7 +22,7 @@
 ******************************************************************************/
 
 void
-ODM_ReadAndConfig_MP_8723B_AGC_TAB( /*  TC: Test Chip, MP: MP Chip */
+ODM_ReadAndConfig_MP_8723B_AGC_TAB(/*  TC: Test Chip, MP: MP Chip */
 	IN   PDM_ODM_T  pDM_Odm
 );
 
@@ -31,7 +31,7 @@ ODM_ReadAndConfig_MP_8723B_AGC_TAB( /*  TC: Test Chip, MP: MP Chip */
 ******************************************************************************/
 
 void
-ODM_ReadAndConfig_MP_8723B_PHY_REG( /*  TC: Test Chip, MP: MP Chip */
+ODM_ReadAndConfig_MP_8723B_PHY_REG(/*  TC: Test Chip, MP: MP Chip */
 	IN   PDM_ODM_T  pDM_Odm
 );
 
@@ -40,7 +40,7 @@ ODM_ReadAndConfig_MP_8723B_PHY_REG( /*  TC: Test Chip, MP: MP Chip */
 ******************************************************************************/
 
 void
-ODM_ReadAndConfig_MP_8723B_PHY_REG_PG( /*  TC: Test Chip, MP: MP Chip */
+ODM_ReadAndConfig_MP_8723B_PHY_REG_PG(/*  TC: Test Chip, MP: MP Chip */
 	IN   PDM_ODM_T  pDM_Odm
 );
 u4Byte ODM_GetVersion_MP_8723B_PHY_REG_PG(void);

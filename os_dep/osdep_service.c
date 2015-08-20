@@ -181,7 +181,7 @@ static int retriveFromFile(char *path, u8* buf, u32 sz)
 	struct file *fp;
 
 	if (path && buf) {
-		if ( 0 == (ret =openFile(&fp, path, O_RDONLY, 0)) ){
+		if (0 == (ret =openFile(&fp, path, O_RDONLY, 0))){
 			DBG_871X("%s openFile path:%s fp =%p\n", __FUNCTION__, path , fp);
 
 			oldfs = get_fs(); set_fs(get_ds());
@@ -329,7 +329,7 @@ int rtw_change_ifname(_adapter *padapter, const char *ifname)
 	else
 		ret = register_netdevice(pnetdev);
 
-	if ( ret != 0) {
+	if (ret != 0) {
 		RT_TRACE(_module_hci_intfs_c_, _drv_err_, ("register_netdev() failed\n"));
 		goto error;
 	}

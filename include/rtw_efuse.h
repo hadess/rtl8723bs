@@ -48,9 +48,9 @@ enum _EFUSE_DEF_TYPE {
 #define		EFUSE_MAX_HW_SIZE		512
 #define		EFUSE_MAX_SECTION_BASE	16
 
-#define EXT_HEADER(header) ((header & 0x1F ) == 0x0F)
+#define EXT_HEADER(header) ((header & 0x1F) == 0x0F)
 #define ALL_WORDS_DISABLED(wde)	((wde & 0x0F) == 0x0F)
-#define GET_HDR_OFFSET_2_0(header) ( (header & 0xE0) >> 5)
+#define GET_HDR_OFFSET_2_0(header) ((header & 0xE0) >> 5)
 
 #define		EFUSE_REPEAT_THRESHOLD_			3
 

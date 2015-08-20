@@ -83,8 +83,8 @@ uint	rtw_is_cckrates_included(u8 *rate)
 
 		while (rate[i]!=0)
 		{
-			if  (  (((rate[i]) & 0x7f) == 2)	|| (((rate[i]) & 0x7f) == 4) ||
-			(((rate[i]) & 0x7f) == 11)  || (((rate[i]) & 0x7f) == 22) )
+			if  ( (((rate[i]) & 0x7f) == 2)	|| (((rate[i]) & 0x7f) == 4) ||
+			(((rate[i]) & 0x7f) == 11)  || (((rate[i]) & 0x7f) == 22))
 			return true;
 			i++;
 		}
@@ -99,8 +99,8 @@ uint	rtw_is_cckratesonly_included(u8 *rate)
 
 	while (rate[i]!=0)
 	{
-			if  (  (((rate[i]) & 0x7f) != 2) && (((rate[i]) & 0x7f) != 4) &&
-				(((rate[i]) & 0x7f) != 11)  && (((rate[i]) & 0x7f) != 22) )
+			if  ( (((rate[i]) & 0x7f) != 2) && (((rate[i]) & 0x7f) != 4) &&
+				(((rate[i]) & 0x7f) != 11)  && (((rate[i]) & 0x7f) != 22))
 
 			return false;
 
@@ -225,7 +225,7 @@ u8 *rtw_get_ie_ex(u8 *in_ie, uint in_len, u8 eid, u8 *oui, u8 oui_len, u8 *ie, u
 	while (cnt<in_len)
 	{
 		if (eid == in_ie[cnt]
-			&& ( !oui || !memcmp(&in_ie[cnt+2], oui, oui_len)))
+			&& (!oui || !memcmp(&in_ie[cnt+2], oui, oui_len)))
 		{
 			target_ie = &in_ie[cnt];
 
@@ -537,7 +537,7 @@ int rtw_parse_wpa_ie(u8* wpa_ie, int wpa_ie_len, int *group_cipher, int *pairwis
 
 
 	if ((*wpa_ie != _WPA_IE_ID_) || (*(wpa_ie+1) != (u8)(wpa_ie_len - 2)) ||
-	   (memcmp(wpa_ie+2, RTW_WPA_OUI_TYPE, WPA_SELECTOR_LEN)) )
+	   (memcmp(wpa_ie+2, RTW_WPA_OUI_TYPE, WPA_SELECTOR_LEN)))
 	{
 		return _FAIL;
 	}
@@ -891,8 +891,8 @@ u8 *rtw_get_wps_attr(u8 *wps_ie, uint wps_ielen, u16 target_attr_id , u8 *buf_at
 	if (len_attr)
 		*len_attr = 0;
 
-	if ( ( wps_ie[0] != _VENDOR_SPECIFIC_IE_ ) ||
-		( memcmp( wps_ie + 2, wps_oui , 4 ) ) )
+	if ((wps_ie[0] != _VENDOR_SPECIFIC_IE_) ||
+		(memcmp(wps_ie + 2, wps_oui , 4)))
 	{
 		return attr_ptr;
 	}
@@ -908,7 +908,7 @@ u8 *rtw_get_wps_attr(u8 *wps_ie, uint wps_ielen, u16 target_attr_id , u8 *buf_at
 		u16 attr_len = attr_data_len + 4;
 
 		/* DBG_871X("%s attr_ptr:%p, id:%u, length:%u\n", __FUNCTION__, attr_ptr, attr_id, attr_data_len); */
-		if ( attr_id == target_attr_id )
+		if (attr_id == target_attr_id)
 		{
 			target_attr_ptr = attr_ptr;
 
@@ -1232,11 +1232,11 @@ void rtw_macaddr_cfg(u8 *mac_addr)
 	u8 mac[ETH_ALEN];
 	if (mac_addr == NULL)	return;
 
-	if ( rtw_initmac )
+	if (rtw_initmac)
 	{	/* 	Users specify the mac address */
 		int jj, kk;
 
-		for ( jj = 0, kk = 0; jj < ETH_ALEN; jj++, kk += 3 )
+		for (jj = 0, kk = 0; jj < ETH_ALEN; jj++, kk += 3)
 		{
 			mac[jj] = key_2char2num(rtw_initmac[kk], rtw_initmac[kk+ 1]);
 		}

@@ -75,7 +75,7 @@ int rtw_os_xmit_resource_alloc(_adapter *padapter, struct xmit_buf *pxmitbuf, u3
 
 void rtw_os_xmit_resource_free(_adapter *padapter, struct xmit_buf *pxmitbuf, u32 free_sz, u8 flag)
 {
-	if (free_sz > 0 ) {
+	if (free_sz > 0) {
 		if (pxmitbuf->pallocated_buf)
 			kfree(pxmitbuf->pallocated_buf);
 	}
@@ -245,9 +245,9 @@ int _rtw_xmit_entry(_pkt *pkt, _nic_hdl pnetdev)
 
 	rtw_check_xmit_resource(padapter, pkt);
 
-	if ( !rtw_mc2u_disable
+	if (!rtw_mc2u_disable
 		&& check_fwstate(pmlmepriv, WIFI_AP_STATE) == true
-		&& ( IP_MCAST_MAC(pkt->data)
+		&& (IP_MCAST_MAC(pkt->data)
 			|| ICMPV6_MCAST_MAC(pkt->data)
 			#ifdef CONFIG_TX_BCAST2UNI
 			|| is_broadcast_mac_addr(pkt->data)
@@ -256,14 +256,14 @@ int _rtw_xmit_entry(_pkt *pkt, _nic_hdl pnetdev)
 		&& (padapter->registrypriv.wifi_spec == 0)
 		)
 	{
-		if ( pxmitpriv->free_xmitframe_cnt > (NR_XMITFRAME/4) ) {
+		if (pxmitpriv->free_xmitframe_cnt > (NR_XMITFRAME/4)) {
 			res = rtw_mlcst2unicst(padapter, pkt);
 			if (res == true) {
 				goto exit;
 			}
 		} else {
 			/* DBG_871X("Stop M2U(%d, %d)! ", pxmitpriv->free_xmitframe_cnt, pxmitpriv->free_xmitbuf_cnt); */
-			/* DBG_871X("!m2u ); */
+			/* DBG_871X("!m2u); */
 			DBG_COUNTER(padapter->tx_logs.os_tx_m2u_stop);
 		}
 	}

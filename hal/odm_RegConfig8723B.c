@@ -113,7 +113,7 @@ odm_ConfigBB_AGC_8723B(
     IN	u4Byte		Addr,
     IN	u4Byte		Bitmask,
     IN	u4Byte		Data
-    )
+   )
 {
 	PHY_SetBBReg(pDM_Odm->Adapter, Addr, Bitmask, Data);
 	/*  Add 1us delay between BB/RF register setting. */
@@ -131,7 +131,7 @@ odm_ConfigBB_PHY_REG_PG_8723B(
     IN	u4Byte		Addr,
     IN	u4Byte		Bitmask,
     IN	u4Byte		Data
-    )
+   )
 {
 	if (Addr == 0xfe || Addr == 0xffe)
 		msleep(50);
@@ -148,7 +148,7 @@ odm_ConfigBB_PHY_8723B(
     IN	u4Byte		Addr,
     IN	u4Byte		Bitmask,
     IN	u4Byte		Data
-    )
+   )
 {
 	if (Addr == 0xfe)
 		msleep(50);

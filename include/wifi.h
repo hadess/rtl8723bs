@@ -349,7 +349,7 @@ enum WIFI_REG_DOMAIN {
 #define GetAddr4Ptr(pbuf)	((unsigned char *)((size_t)(pbuf) + 24))
 
 #define MacAddr_isBcst(addr) \
-	( \
+	(\
 	((addr[0] == 0xff) && (addr[1] == 0xff) && \
 	(addr[2] == 0xff) && (addr[3] == 0xff) && \
 	(addr[4] == 0xff) && (addr[5] == 0xff))  ? true : false \
@@ -1003,7 +1003,7 @@ typedef enum _HT_CAP_AMPDU_FACTOR {
 #define	P2P_GRPCAP_PERSISTENT_RECONN		BIT(5)
 #define	P2P_GRPCAP_GROUP_FORMATION			BIT(6)
 
-/* 	P2P Public Action Frame ( Management Frame ) */
+/* 	P2P Public Action Frame (Management Frame) */
 #define	P2P_PUB_ACTION_ACTION				0x09
 
 /* 	P2P Public Action Frame Type */
@@ -1043,7 +1043,7 @@ typedef enum _HT_CAP_AMPDU_FACTOR {
 #define	P2P_TX_PRESCAN_TIMEOUT				100		/* 	100ms */
 #define	P2P_INVITE_TIMEOUT					5000	/* 	5 seconds timeout for sending the invitation request */
 #define	P2P_CONCURRENT_INVITE_TIMEOUT		3000	/* 	3 seconds timeout for sending the invitation request under concurrent mode */
-#define	P2P_RESET_SCAN_CH						25000	/* 	25 seconds timeout to reset the scan channel ( based on channel plan ) */
+#define	P2P_RESET_SCAN_CH						25000	/* 	25 seconds timeout to reset the scan channel (based on channel plan) */
 #define	P2P_MAX_INTENT						15
 
 #define	P2P_MAX_NOA_NUM						2

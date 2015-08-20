@@ -127,7 +127,7 @@ void rf_reg_dump(void *sel, _adapter *adapter)
 	u8 path_nums = 0;
 
 	rtw_hal_get_hwreg(adapter, HW_VAR_RF_TYPE, (u8 *)(&rf_type));
-	if ((RF_1T2R == rf_type) ||(RF_1T1R ==rf_type ))
+	if ((RF_1T2R == rf_type) ||(RF_1T1R ==rf_type))
 		path_nums = 1;
 	else
 		path_nums = 2;
@@ -479,7 +479,7 @@ int proc_get_survey_info(struct seq_file *m, void *v)
                 if (!pnetwork)
 			break;
 
-		if ( check_fwstate(pmlmepriv, _FW_LINKED) == true &&
+		if (check_fwstate(pmlmepriv, _FW_LINKED) == true &&
 			is_same_network(&pmlmepriv->cur_network.network, &pnetwork->network, 0)) {
 			notify_signal = translate_percentage_to_dbm(padapter->recvpriv.signal_strength);//dbm
 		} else {
@@ -1050,7 +1050,7 @@ ssize_t proc_set_ht_enable(struct file *file, const char __user *buffer, size_t 
 	if (buffer && !copy_from_user(tmp, buffer, sizeof(tmp))) {
 		sscanf(tmp, "%d ", &mode);
 
-		if ( pregpriv && mode >= 0 && mode < 2 )
+		if (pregpriv && mode >= 0 && mode < 2)
 		{
 			pregpriv->ht_enable = mode;
 			printk("ht_enable =%d\n", pregpriv->ht_enable);
@@ -1087,7 +1087,7 @@ ssize_t proc_set_bw_mode(struct file *file, const char __user *buffer, size_t co
 	if (buffer && !copy_from_user(tmp, buffer, sizeof(tmp))) {
 		sscanf(tmp, "%d ", &mode);
 
-		if ( pregpriv &&  mode < 2 )
+		if (pregpriv &&  mode < 2)
 		{
 
 			pregpriv->bw_mode = mode;
@@ -1127,7 +1127,7 @@ ssize_t proc_set_ampdu_enable(struct file *file, const char __user *buffer, size
 
 		sscanf(tmp, "%d ", &mode);
 
-		if ( pregpriv && mode < 3 )
+		if (pregpriv && mode < 3)
 		{
 			pregpriv->ampdu_enable = mode;
 			printk("ampdu_enable =%d\n", mode);
@@ -1172,7 +1172,7 @@ ssize_t proc_set_rx_ampdu(struct file *file, const char __user *buffer, size_t c
 
 		sscanf(tmp, "%d ", &mode);
 
-		if ( pregpriv && mode >= 0 && mode < 2 )
+		if (pregpriv && mode >= 0 && mode < 2)
 		{
 			pmlmeinfo->bAcceptAddbaReq = mode;
 			DBG_871X("pmlmeinfo->bAcceptAddbaReq =%d \n", pmlmeinfo->bAcceptAddbaReq);

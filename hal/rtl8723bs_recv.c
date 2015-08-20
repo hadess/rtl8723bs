@@ -288,8 +288,8 @@ static void rtl8723bs_recv_tasklet(void *priv)
 				{
 					pkt_copy->dev = padapter->pnetdev;
 					precvframe->u.hdr.pkt = pkt_copy;
-					skb_reserve( pkt_copy, 8 - ((SIZE_PTR)( pkt_copy->data ) & 7 ));/* force pkt_copy->data at 8-byte alignment address */
-					skb_reserve( pkt_copy, shift_sz );/* force ip_hdr at 8-byte alignment address according to shift_sz. */
+					skb_reserve(pkt_copy, 8 - ((SIZE_PTR)(pkt_copy->data) & 7));/* force pkt_copy->data at 8-byte alignment address */
+					skb_reserve(pkt_copy, shift_sz);/* force ip_hdr at 8-byte alignment address according to shift_sz. */
 					memcpy(pkt_copy->data, (ptr + rx_report_sz + pattrib->shift_sz), skb_len);
 					precvframe->u.hdr.rx_head = pkt_copy->head;
 					precvframe->u.hdr.rx_data = precvframe->u.hdr.rx_tail = pkt_copy->data;

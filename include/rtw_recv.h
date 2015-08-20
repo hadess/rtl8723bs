@@ -346,7 +346,7 @@ struct recv_buf
 
 	end   ----->
 
-	len = (unsigned int )(tail - data);
+	len = (unsigned int)(tail - data);
 
 */
 struct recv_frame_hdr

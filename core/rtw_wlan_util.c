@@ -69,8 +69,8 @@ int cckrates_included(unsigned char *rate, int ratelen)
 
 	for (i = 0; i < ratelen; i++)
 	{
-		if  (  (((rate[i]) & 0x7f) == 2)	|| (((rate[i]) & 0x7f) == 4) ||
-			   (((rate[i]) & 0x7f) == 11)  || (((rate[i]) & 0x7f) == 22) )
+		if  ( (((rate[i]) & 0x7f) == 2)	|| (((rate[i]) & 0x7f) == 4) ||
+			   (((rate[i]) & 0x7f) == 11)  || (((rate[i]) & 0x7f) == 22))
 		return true;
 	}
 
@@ -84,8 +84,8 @@ int cckratesonly_included(unsigned char *rate, int ratelen)
 
 	for (i = 0; i < ratelen; i++)
 	{
-		if  ( (((rate[i]) & 0x7f) != 2) && (((rate[i]) & 0x7f) != 4) &&
-			   (((rate[i]) & 0x7f) != 11)  && (((rate[i]) & 0x7f) != 22) )
+		if  ((((rate[i]) & 0x7f) != 2) && (((rate[i]) & 0x7f) != 4) &&
+			   (((rate[i]) & 0x7f) != 11)  && (((rate[i]) & 0x7f) != 22))
 		return false;
 	}
 
@@ -443,17 +443,17 @@ u8	rtw_get_center_ch(u8 channel, u8 chnl_bw, u8 chnl_offset)
 
 	if (chnl_bw == CHANNEL_WIDTH_80)
 	{
-		if ((channel == 36) || (channel == 40) || (channel == 44) || (channel == 48) )
+		if ((channel == 36) || (channel == 40) || (channel == 44) || (channel == 48))
 			center_ch = 42;
-		if ((channel == 52) || (channel == 56) || (channel == 60) || (channel == 64) )
+		if ((channel == 52) || (channel == 56) || (channel == 60) || (channel == 64))
 			center_ch = 58;
-		if ((channel == 100) || (channel == 104) || (channel == 108) || (channel == 112) )
+		if ((channel == 100) || (channel == 104) || (channel == 108) || (channel == 112))
 			center_ch = 106;
-		if ((channel == 116) || (channel == 120) || (channel == 124) || (channel == 128) )
+		if ((channel == 116) || (channel == 120) || (channel == 124) || (channel == 128))
 			center_ch = 122;
-		if ((channel == 132) || (channel == 136) || (channel == 140) || (channel == 144) )
+		if ((channel == 132) || (channel == 136) || (channel == 140) || (channel == 144))
 			center_ch = 138;
-		if ((channel == 149) || (channel == 153) || (channel == 157) || (channel == 161) )
+		if ((channel == 149) || (channel == 153) || (channel == 157) || (channel == 161))
 			center_ch = 155;
 		else if (channel <= 14)
 			center_ch = 7;
@@ -494,9 +494,9 @@ void set_channel_bwmode(_adapter *padapter, unsigned char channel, unsigned char
 {
 	u8 center_ch, chnl_offset80 = HAL_PRIME_CHNL_OFFSET_DONT_CARE;
 
-	if ( padapter->bNotifyChannelChange )
+	if (padapter->bNotifyChannelChange)
 	{
-		DBG_871X( "[%s] ch = %d, offset = %d, bwmode = %d\n", __FUNCTION__, channel, channel_offset, bwmode );
+		DBG_871X("[%s] ch = %d, offset = %d, bwmode = %d\n", __FUNCTION__, channel, channel_offset, bwmode);
 	}
 
 	center_ch = rtw_get_center_ch(channel, bwmode, channel_offset);
@@ -663,10 +663,10 @@ void _write_cam(_adapter *padapter, u8 entry, u16 ctrl, u8 *mac, u8 *key)
 	for (j = 5; j >= 0; j--) {
 		switch (j) {
 		case 0:
-			val = (ctrl | (mac[0] << 16) | (mac[1] << 24) );
+			val = (ctrl | (mac[0] << 16) | (mac[1] << 24));
 			break;
 		case 1:
-			val = (mac[2] | ( mac[3] << 8) | (mac[4] << 16) | (mac[5] << 24));
+			val = (mac[2] | (mac[3] << 8) | (mac[4] << 16) | (mac[5] << 24));
 			break;
 		default:
 			i = (j - 2) << 2;
@@ -1259,7 +1259,7 @@ void HT_caps_handler(_adapter *padapter, PNDIS_802_11_VARIABLE_IEs pIE)
 		case RF_2T2R:
 		default:
 #ifdef CONFIG_DISABLE_MCS13TO15
-			if (pmlmeext->cur_bwmode == CHANNEL_WIDTH_40 && pregistrypriv->wifi_spec != 1 )
+			if (pmlmeext->cur_bwmode == CHANNEL_WIDTH_40 && pregistrypriv->wifi_spec != 1)
 				set_mcs_rate_by_mask(pmlmeinfo->HT_caps.u.HT_cap_element.MCS_rate, MCS_RATE_2R_13TO15_OFF);
 			else
 				set_mcs_rate_by_mask(pmlmeinfo->HT_caps.u.HT_cap_element.MCS_rate, MCS_RATE_2R);
@@ -1288,7 +1288,7 @@ void HT_caps_handler(_adapter *padapter, PNDIS_802_11_VARIABLE_IEs pIE)
 		/*  Config STBC setting */
 		if (TEST_FLAG(phtpriv->stbc_cap, STBC_HT_ENABLE_TX) && GET_HT_CAPABILITY_ELE_RX_STBC(pIE->data))
 		{
-			SET_FLAG(cur_stbc_cap, (STBC_HT_ENABLE_TX | STBC_HT_CAP_TX) );
+			SET_FLAG(cur_stbc_cap, (STBC_HT_ENABLE_TX | STBC_HT_CAP_TX));
 			DBG_871X("Enable HT Tx STBC!\n");
 		}
 		phtpriv->stbc_cap = cur_stbc_cap;
@@ -1941,7 +1941,7 @@ void update_capinfo(PADAPTER Adapter, u16 updateCap)
 
 	/*  Check preamble mode, 2005.01.06, by rcnjko. */
 	/*  Mark to update preamble value forever, 2008.03.18 by lanhsin */
-	/* if ( pMgntInfo->RegPreambleMode == PREAMBLE_AUTO ) */
+	/* if (pMgntInfo->RegPreambleMode == PREAMBLE_AUTO) */
 	{
 
 		if (updateCap & cShortPreamble)
@@ -1950,7 +1950,7 @@ void update_capinfo(PADAPTER Adapter, u16 updateCap)
 			{
 				ShortPreamble = true;
 				pmlmeinfo->preamble_mode = PREAMBLE_SHORT;
-				rtw_hal_set_hwreg( Adapter, HW_VAR_ACK_PREAMBLE, (u8 *)&ShortPreamble );
+				rtw_hal_set_hwreg(Adapter, HW_VAR_ACK_PREAMBLE, (u8 *)&ShortPreamble);
 			}
 		}
 		else
@@ -1959,25 +1959,25 @@ void update_capinfo(PADAPTER Adapter, u16 updateCap)
 			{
 				ShortPreamble = false;
 				pmlmeinfo->preamble_mode = PREAMBLE_LONG;
-				rtw_hal_set_hwreg( Adapter, HW_VAR_ACK_PREAMBLE, (u8 *)&ShortPreamble );
+				rtw_hal_set_hwreg(Adapter, HW_VAR_ACK_PREAMBLE, (u8 *)&ShortPreamble);
 			}
 		}
 	}
 
-	if ( updateCap & cIBSS ) {
+	if (updateCap & cIBSS) {
 		/* Filen: See 802.11-2007 p.91 */
 		pmlmeinfo->slotTime = NON_SHORT_SLOT_TIME;
 	}
 	else
 	{
 		/* Filen: See 802.11-2007 p.90 */
-		if ( pmlmeext->cur_wireless_mode & (WIRELESS_11_24N | WIRELESS_11A | WIRELESS_11_5N | WIRELESS_11AC))
+		if (pmlmeext->cur_wireless_mode & (WIRELESS_11_24N | WIRELESS_11A | WIRELESS_11_5N | WIRELESS_11AC))
 		{
 			pmlmeinfo->slotTime = SHORT_SLOT_TIME;
 		}
-		else if ( pmlmeext->cur_wireless_mode & (WIRELESS_11G))
+		else if (pmlmeext->cur_wireless_mode & (WIRELESS_11G))
 		{
-			if ( (updateCap & cShortSlotTime) /* && (!(pMgntInfo->pHTInfo->RT2RT_HT_Mode & RT_HT_CAP_USE_LONG_PREAMBLE)) */)
+			if ((updateCap & cShortSlotTime) /* && (!(pMgntInfo->pHTInfo->RT2RT_HT_Mode & RT_HT_CAP_USE_LONG_PREAMBLE)) */)
 			{ /*  Short Slot Time */
 				pmlmeinfo->slotTime = SHORT_SLOT_TIME;
 			}
@@ -1993,7 +1993,7 @@ void update_capinfo(PADAPTER Adapter, u16 updateCap)
 		}
 	}
 
-	rtw_hal_set_hwreg( Adapter, HW_VAR_SLOT_TIME, &pmlmeinfo->slotTime );
+	rtw_hal_set_hwreg(Adapter, HW_VAR_SLOT_TIME, &pmlmeinfo->slotTime);
 
 }
 
@@ -2048,9 +2048,9 @@ void update_wireless_mode(_adapter *padapter)
 	SIFS_Timer = 0x0a0a0808; /* 0x0808 -> for CCK, 0x0a0a -> for OFDM */
                              /* change this value if having IOT issues. */
 
-	padapter->HalFunc.SetHwRegHandler( padapter, HW_VAR_RESP_SIFS,  (u8 *)&SIFS_Timer);
+	padapter->HalFunc.SetHwRegHandler(padapter, HW_VAR_RESP_SIFS,  (u8 *)&SIFS_Timer);
 
-	padapter->HalFunc.SetHwRegHandler( padapter, HW_VAR_WIRELESS_MODE,  (u8 *)&(pmlmeext->cur_wireless_mode));
+	padapter->HalFunc.SetHwRegHandler(padapter, HW_VAR_WIRELESS_MODE,  (u8 *)&(pmlmeext->cur_wireless_mode));
 
 	if (pmlmeext->cur_wireless_mode & WIRELESS_11B)
 		update_mgnt_tx_rate(padapter, IEEE80211_CCK_RATE_1MB);
@@ -2286,7 +2286,7 @@ void rtw_alloc_macid(_adapter *padapter, struct sta_info *psta)
 	}
 	spin_unlock_bh(&pdvobj->lock);
 
-	if ( i > (NUM_STA-1))
+	if (i > (NUM_STA-1))
 	{
 		psta->mac_id = NUM_STA;
 		DBG_871X("  no room for more MACIDs\n");
@@ -2314,7 +2314,7 @@ void rtw_release_macid(_adapter *padapter, struct sta_info *psta)
 	}
 
 	spin_lock_bh(&pdvobj->lock);
-	if (psta->mac_id<NUM_STA && psta->mac_id !=1 )
+	if (psta->mac_id<NUM_STA && psta->mac_id !=1)
 	{
 		if (pdvobj->macid[psta->mac_id] == true)
 		{
@@ -2382,7 +2382,7 @@ int rtw_get_gpio(struct net_device *netdev, int gpio_num)
 	direction = (rtw_read8(adapter, REG_GPIO_PIN_CTRL + 2) & BIT(gpio_num)) >> gpio_num;
 
 	/* According the direction to read register value */
-	if ( direction )
+	if (direction)
 		value =  (rtw_read8(adapter, REG_GPIO_PIN_CTRL + 1)& BIT(gpio_num)) >> gpio_num;
 	else
 		value =  (rtw_read8(adapter, REG_GPIO_PIN_CTRL)& BIT(gpio_num)) >> gpio_num;
@@ -2401,7 +2401,7 @@ int  rtw_set_gpio_output_value(struct net_device *netdev, int gpio_num, bool isH
 	_adapter *adapter = (_adapter *)rtw_netdev_priv(netdev);
 
 	/* Check GPIO is 4~7 */
-	if ( gpio_num > 7 || gpio_num < 4)
+	if (gpio_num > 7 || gpio_num < 4)
 	{
 		DBG_871X("%s The gpio number does not included 4~7.\n", __FUNCTION__);
 		return -1;
@@ -2415,14 +2415,14 @@ int  rtw_set_gpio_output_value(struct net_device *netdev, int gpio_num, bool isH
 	direction = (rtw_read8(adapter, REG_GPIO_PIN_CTRL + 2) & BIT(gpio_num)) >> gpio_num;
 
 	/* If GPIO is output direction, setting value. */
-	if ( direction )
+	if (direction)
 	{
 		if (isHigh)
 			rtw_write8(adapter, REG_GPIO_PIN_CTRL + 1, rtw_read8(adapter, REG_GPIO_PIN_CTRL + 1) | BIT(gpio_num));
 		else
 			rtw_write8(adapter, REG_GPIO_PIN_CTRL + 1, rtw_read8(adapter, REG_GPIO_PIN_CTRL + 1) & ~BIT(gpio_num));
 
-		DBG_871X("%s Set gpio %x[%d]=%d\n", __FUNCTION__, REG_GPIO_PIN_CTRL+1, gpio_num, isHigh );
+		DBG_871X("%s Set gpio %x[%d]=%d\n", __FUNCTION__, REG_GPIO_PIN_CTRL+1, gpio_num, isHigh);
 		res = 0;
 	}
 	else
@@ -2440,7 +2440,7 @@ int rtw_config_gpio(struct net_device *netdev, int gpio_num, bool isOutput)
 {
 	_adapter *adapter = (_adapter *)rtw_netdev_priv(netdev);
 
-	if ( gpio_num > 7 || gpio_num < 4)
+	if (gpio_num > 7 || gpio_num < 4)
 	{
 		DBG_871X("%s The gpio number does not included 4~7.\n", __FUNCTION__);
 		return -1;
@@ -2452,7 +2452,7 @@ int rtw_config_gpio(struct net_device *netdev, int gpio_num, bool isOutput)
 
 	LeaveAllPowerSaveModeDirect(adapter);
 
-	if ( isOutput )
+	if (isOutput)
 	{
 		rtw_write8(adapter, REG_GPIO_PIN_CTRL + 2, rtw_read8(adapter, REG_GPIO_PIN_CTRL + 2) | BIT(gpio_num));
 	}
@@ -2476,11 +2476,11 @@ void rtw_get_current_ip_address(PADAPTER padapter, u8 *pcurrentip)
 	struct in_device *my_ip_ptr = padapter->pnetdev->ip_ptr;
 	u8 ipaddress[4];
 
-	if ( (pmlmeinfo->state & WIFI_FW_LINKING_STATE) ||
+	if ((pmlmeinfo->state & WIFI_FW_LINKING_STATE) ||
 			pmlmeinfo->state & WIFI_FW_AP_STATE) {
-		if ( my_ip_ptr != NULL ) {
+		if (my_ip_ptr != NULL) {
 			struct in_ifaddr *my_ifa_list  = my_ip_ptr->ifa_list ;
-			if ( my_ifa_list != NULL ) {
+			if (my_ifa_list != NULL) {
 				ipaddress[0] = my_ifa_list->ifa_address & 0xFF;
 				ipaddress[1] = (my_ifa_list->ifa_address >> 8) & 0xFF;
 				ipaddress[2] = (my_ifa_list->ifa_address >> 16) & 0xFF;

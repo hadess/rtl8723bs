@@ -116,7 +116,7 @@ odm_SignalScaleMapping(
 static u1Byte
 odm_EVMdbToPercentage(
     IN		s8 Value
-    )
+   )
 {
 	/*  */
 	/*  -33dB~0dB to 0%~99% */
@@ -258,7 +258,7 @@ odm_RxPhyStatus92CSeries_Parsing(
 		/*  */
 		/*  (2)PWDB, Average PWDB cacluated by hardware (for rate adaptive) */
 		/*  */
-		rx_pwr_all = (((pPhyStaRpt->cck_sig_qual_ofdm_pwdb_all) >> 1 )& 0x7f) -110;
+		rx_pwr_all = (((pPhyStaRpt->cck_sig_qual_ofdm_pwdb_all) >> 1)& 0x7f) -110;
 
 		PWDB_ALL_BT = PWDB_ALL = odm_QueryRxPwrPercentage(rx_pwr_all);
 		/* RT_DISP(FRX, RX_PHY_SS, ("PWDB_ALL =%d\n", PWDB_ALL)); */
@@ -283,7 +283,7 @@ odm_RxPhyStatus92CSeries_Parsing(
 				/*  Do not use shift operation like "rx_evmX >>= 1" because the compilor of free build environment */
 				/*  fill most significant bit to "zero" when doing shifting operation which may change a negative */
 				/*  value to positive one, then the dbm value (which is supposed to be negative)  is not correct anymore. */
-				EVM = odm_EVMdbToPercentage( (pPhyStaRpt->stream_rxevm[i] ));	/* dbm */
+				EVM = odm_EVMdbToPercentage((pPhyStaRpt->stream_rxevm[i]));	/* dbm */
 
 				/* RT_DISP(FRX, RX_PHY_SQ, ("RXRATE =%x RXEVM =%x EVM =%s%d\n", */
 				/* GET_RX_STATUS_DESC_RX_MCS(pDesc), pDrvInfo->rxevm[i], "%", EVM)); */
@@ -351,10 +351,10 @@ odm_Process_RSSIForDM(
 
 	pEntry = pDM_Odm->pODM_StaInfo[pPktinfo->StationID];
 
-	if (!IS_STA_VALID(pEntry) ){
+	if (!IS_STA_VALID(pEntry)){
 		return;
 	}
-	if ((!pPktinfo->bPacketMatchBSSID) )
+	if ((!pPktinfo->bPacketMatchBSSID))
 	{
 		return;
 	}
@@ -362,7 +362,7 @@ odm_Process_RSSIForDM(
 	if (pPktinfo->bPacketBeacon)
 		pDM_Odm->PhyDbgInfo.NumQryBeaconPkt++;
 
-	isCCKrate = ((pPktinfo->DataRate <= DESC_RATE11M )) ? true : false;
+	isCCKrate = ((pPktinfo->DataRate <= DESC_RATE11M)) ? true : false;
 	pDM_Odm->RxRate = pPktinfo->DataRate;
 
 	/* Statistic for antenna/path diversity------------------ */
@@ -423,14 +423,14 @@ odm_Process_RSSIForDM(
 				if (pPhyInfo->RxPWDBAll > (u4Byte)UndecoratedSmoothedOFDM)
 				{
 					UndecoratedSmoothedOFDM =
-							( ((UndecoratedSmoothedOFDM)*(Rx_Smooth_Factor-1)) +
+							(((UndecoratedSmoothedOFDM)*(Rx_Smooth_Factor-1)) +
 							(RSSI_Ave)) /(Rx_Smooth_Factor);
 					UndecoratedSmoothedOFDM = UndecoratedSmoothedOFDM + 1;
 				}
 				else
 				{
 					UndecoratedSmoothedOFDM =
-							( ((UndecoratedSmoothedOFDM)*(Rx_Smooth_Factor-1)) +
+							(((UndecoratedSmoothedOFDM)*(Rx_Smooth_Factor-1)) +
 							(RSSI_Ave)) /(Rx_Smooth_Factor);
 				}
 			}
@@ -454,14 +454,14 @@ odm_Process_RSSIForDM(
 				if (pPhyInfo->RxPWDBAll > (u4Byte)UndecoratedSmoothedCCK)
 				{
 					UndecoratedSmoothedCCK =
-							( ((UndecoratedSmoothedCCK)*(Rx_Smooth_Factor-1)) +
+							(((UndecoratedSmoothedCCK)*(Rx_Smooth_Factor-1)) +
 							(pPhyInfo->RxPWDBAll)) /(Rx_Smooth_Factor);
 					UndecoratedSmoothedCCK = UndecoratedSmoothedCCK + 1;
 				}
 				else
 				{
 					UndecoratedSmoothedCCK =
-							( ((UndecoratedSmoothedCCK)*(Rx_Smooth_Factor-1)) +
+							(((UndecoratedSmoothedCCK)*(Rx_Smooth_Factor-1)) +
 							(pPhyInfo->RxPWDBAll)) /(Rx_Smooth_Factor);
 				}
 			}
@@ -550,7 +550,7 @@ ODM_ConfigRFWithHeaderFile(
 	IN	PDM_ODM_T			pDM_Odm,
 	IN	ODM_RF_Config_Type		ConfigType,
 	IN	ODM_RF_RADIO_PATH_E	eRFPath
-    )
+   )
 {
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_LOUD,
 				("===>ODM_ConfigRFWithHeaderFile (%s)\n", (pDM_Odm->bIsMPChip) ? "MPChip" : "TestChip"));
@@ -571,7 +571,7 @@ ODM_ConfigRFWithHeaderFile(
 HAL_STATUS
 ODM_ConfigRFWithTxPwrTrackHeaderFile(
 	IN	PDM_ODM_T			pDM_Odm
-    )
+   )
 {
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_LOUD,
 				 ("===>ODM_ConfigRFWithTxPwrTrackHeaderFile (%s)\n", (pDM_Odm->bIsMPChip) ? "MPChip" : "TestChip"));

@@ -2567,9 +2567,9 @@ Hal_GetChnlGroup8723B(
 	{
 		bIn24G =true;
 
-		if      (1  <= Channel && Channel <= 2 )   *pGroup = 0;
-		else if (3  <= Channel && Channel <= 5 )   *pGroup = 1;
-		else if (6  <= Channel && Channel <= 8 )   *pGroup = 2;
+		if      (1  <= Channel && Channel <= 2)   *pGroup = 0;
+		else if (3  <= Channel && Channel <= 5)   *pGroup = 1;
+		else if (6  <= Channel && Channel <= 8)   *pGroup = 2;
 		else if (9  <= Channel && Channel <= 11)   *pGroup = 3;
 		else if (12 <= Channel && Channel <= 14)   *pGroup = 4;
 		else
@@ -3122,7 +3122,7 @@ void Hal_ReadRFGainOffset(
 	/*  BB_RF Gain Offset from EEPROM */
 	/*  */
 
-	if (!AutoloadFail ){
+	if (!AutoloadFail){
 		Adapter->eeprompriv.EEPROMRFGainOffset =PROMContent[EEPROM_RF_GAIN_OFFSET];
 		DBG_871X("AutoloadFail =%x,\n", AutoloadFail);
 		Adapter->eeprompriv.EEPROMRFGainVal =EFUSE_Read1Byte(Adapter, EEPROM_RF_GAIN_VAL);
@@ -4864,7 +4864,7 @@ void rtl8723b_stop_thread(_adapter *padapter)
 	struct xmit_priv *xmitpriv = &padapter->xmitpriv;
 
 	/*  stop xmit_buf_thread */
-	if (xmitpriv->SdioXmitThread ) {
+	if (xmitpriv->SdioXmitThread) {
 		up(&xmitpriv->SdioXmitSema);
 		down(&xmitpriv->SdioXmitTerminateSema);
 		xmitpriv->SdioXmitThread = NULL;

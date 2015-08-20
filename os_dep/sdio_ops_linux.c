@@ -282,11 +282,11 @@ u32 sd_read32(struct intf_hdl *pintfhdl, u32 addr, s32 *err)
 				break;
 			}else{
 				DBG_871X(KERN_ERR "%s: (%d) addr =0x%05x, val =0x%x, try_cnt =%d\n", __func__, *err, addr, v, i);
-				if (( -ESHUTDOWN == *err ) || ( -ENODEV == *err)){
+				if ((-ESHUTDOWN == *err) || (-ENODEV == *err)){
 					padapter->bSurpriseRemoved = true;
 				}
 
-				if (rtw_inc_and_chk_continual_io_error(psdiodev) == true ){
+				if (rtw_inc_and_chk_continual_io_error(psdiodev) == true){
 					padapter->bSurpriseRemoved = true;
 					break;
 				}
@@ -374,11 +374,11 @@ void sd_write32(struct intf_hdl *pintfhdl, u32 addr, u32 v, s32 *err)
 				break;
 			}else{
 				DBG_871X(KERN_ERR "%s: (%d) addr =0x%05x, val =0x%x, try_cnt =%d\n", __func__, *err, addr, v, i);
-				if (( -ESHUTDOWN == *err ) || ( -ENODEV == *err)){
+				if ((-ESHUTDOWN == *err) || (-ENODEV == *err)){
 					padapter->bSurpriseRemoved = true;
 				}
 
-				if (rtw_inc_and_chk_continual_io_error(psdiodev) == true ){
+				if (rtw_inc_and_chk_continual_io_error(psdiodev) == true){
 					padapter->bSurpriseRemoved = true;
 					break;
 				}

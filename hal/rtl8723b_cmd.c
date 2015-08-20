@@ -34,14 +34,14 @@ static u8 _is_fw_read_cmd_down(_adapter* padapter, u8 msgbox_num)
 
 	do{
 		valid = rtw_read8(padapter, REG_HMETFR) & BIT(msgbox_num);
-		if (0 == valid ){
+		if (0 == valid){
 			read_down = true;
 		}
 #ifdef CONFIG_WOWLAN
 		else
 			msleep(1);
 #endif
-	}while ( (!read_down) && (retry_cnts--));
+	}while ((!read_down) && (retry_cnts--));
 
 	return read_down;
 
@@ -93,7 +93,7 @@ s32 FillH2CCmd8723B(PADAPTER padapter, u8 ElementID, u32 CmdLen, u8 *pCmdBuffer)
 
 		if (CmdLen<=3)
 		{
-			memcpy((u8*)(&h2c_cmd)+1, pCmdBuffer, CmdLen );
+			memcpy((u8*)(&h2c_cmd)+1, pCmdBuffer, CmdLen);
 		}
 		else{
 			memcpy((u8*)(&h2c_cmd)+1, pCmdBuffer, 3);
@@ -170,7 +170,7 @@ static void ConstructBeacon(_adapter *padapter, u8 *pframe, u32 *pLength)
 	pframe += 2;
 	pktlen += 2;
 
-	if ( (pmlmeinfo->state&0x03) == WIFI_FW_AP_STATE)
+	if ((pmlmeinfo->state&0x03) == WIFI_FW_AP_STATE)
 	{
 		/* DBG_871X("ie len =%d\n", cur_network->IELength); */
 		pktlen += cur_network->IELength - sizeof(NDIS_802_11_FIXED_IEs);
@@ -191,7 +191,7 @@ static void ConstructBeacon(_adapter *padapter, u8 *pframe, u32 *pLength)
 	/*  DS parameter set */
 	pframe = rtw_set_ie(pframe, _DSSET_IE_, 1, (unsigned char *)&(cur_network->Configuration.DSConfig), &pktlen);
 
-	if ( (pmlmeinfo->state&0x03) == WIFI_FW_ADHOC_STATE)
+	if ((pmlmeinfo->state&0x03) == WIFI_FW_ADHOC_STATE)
 	{
 		u32 ATIMWindow;
 		/*  IBSS Parameter Set... */
