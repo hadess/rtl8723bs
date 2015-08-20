@@ -1,6 +1,6 @@
-//===========================================
-// The following is for 8723B 2Ant BT Co-exist definition
-//===========================================
+/*  */
+/*  The following is for 8723B 2Ant BT Co-exist definition */
+/*  */
 #define	BT_INFO_8723B_2ANT_B_FTP						BIT7
 #define	BT_INFO_8723B_2ANT_B_A2DP					BIT6
 #define	BT_INFO_8723B_2ANT_B_HID						BIT5
@@ -45,7 +45,7 @@ typedef enum _BT_8723B_2ANT_COEX_ALGO{
 }BT_8723B_2ANT_COEX_ALGO,*PBT_8723B_2ANT_COEX_ALGO;
 
 typedef struct _COEX_DM_8723B_2ANT{
-	// fw mechanism
+	/*  fw mechanism */
 	u1Byte		preBtDecPwrLvl;
 	u1Byte		curBtDecPwrLvl;
 	u1Byte		preFwDacSwingLvl;
@@ -63,7 +63,7 @@ typedef struct _COEX_DM_8723B_2ANT{
 	bool		bPreBtAutoReport;
 	bool		bCurBtAutoReport;
 
-	// sw mechanism
+	/*  sw mechanism */
 	bool		bPreRfRxLpfShrink;
 	bool		bCurRfRxLpfShrink;
 	u4Byte		btRf0x1eBackup;
@@ -87,7 +87,7 @@ typedef struct _COEX_DM_8723B_2ANT{
 	u1Byte		curVal0x6cc;
 	bool		bLimitedDig;
 
-	// algorithm related
+	/*  algorithm related */
 	u1Byte		preAlgorithm;
 	u1Byte		curAlgorithm;
 	u1Byte		btStatus;
@@ -122,9 +122,9 @@ typedef struct _COEX_STA_8723B_2ANT{
 	u1Byte					btInfoExt;
 }COEX_STA_8723B_2ANT, *PCOEX_STA_8723B_2ANT;
 
-//===========================================
-// The following is interface which will notify coex module.
-//===========================================
+/*  */
+/*  The following is interface which will notify coex module. */
+/*  */
 void
 EXhalbtc8723b2ant_PowerOnSetting(
 	IN	PBTC_COEXIST		pBtCoexist

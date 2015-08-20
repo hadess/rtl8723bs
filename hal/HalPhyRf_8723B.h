@@ -11,22 +11,17 @@
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
  * more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110, USA
- *
- *
  ******************************************************************************/
 
 #ifndef __HAL_PHY_RF_8723B_H__
 #define __HAL_PHY_RF_8723B_H__
 
 /*--------------------------Define Parameters-------------------------------*/
-#define	IQK_DELAY_TIME_8723B		20		//ms
+#define	IQK_DELAY_TIME_8723B		20		/* ms */
 #define IQK_DEFERRED_TIME_8723B		4
 #define	index_mapping_NUM_8723B		15
 #define AVG_THERMAL_NUM_8723B		4
-#define	RF_T_METER_8723B					0x42	//
+#define	RF_T_METER_8723B					0x42	/*  */
 
 
 void ConfigureTxpowerTrack_8723B(
@@ -48,7 +43,7 @@ ODM_TxPwrTrackSetPwr_8723B(
 	u1Byte				ChannelMappedIndex
 	);
 
-//1 7.	IQK
+/* 1 7.	IQK */
 
 void
 PHY_IQCalibrate_8723B(
@@ -64,17 +59,17 @@ ODM_SetIQCbyRFpath(
     IN u4Byte RFpath
 	);
 
-//
-// LC calibrate
-//
+/*  */
+/*  LC calibrate */
+/*  */
 void
 PHY_LCCalibrate_8723B(
 	IN PDM_ODM_T		pDM_Odm
 );
 
-//
-// AP calibrate
-//
+/*  */
+/*  AP calibrate */
+/*  */
 void
 PHY_DigitalPredistortion_8723B(		IN	PADAPTER	pAdapter);
 
@@ -102,4 +97,4 @@ _PHY_MACSettingCalibration_8723B(
 	IN	pu4Byte		MACBackup
 	);
 
-#endif	// #ifndef __HAL_PHY_RF_8188E_H__
+#endif	/*  #ifndef __HAL_PHY_RF_8188E_H__ */

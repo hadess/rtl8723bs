@@ -1,6 +1,6 @@
-//===========================================
-// The following is for 8723B 1ANT BT Co-exist definition
-//===========================================
+/*  */
+/*  The following is for 8723B 1ANT BT Co-exist definition */
+/*  */
 #define	BT_INFO_8723B_1ANT_B_FTP						BIT7
 #define	BT_INFO_8723B_1ANT_B_A2DP					BIT6
 #define	BT_INFO_8723B_1ANT_B_HID						BIT5
@@ -15,7 +15,7 @@
 
 #define	BTC_RSSI_COEX_THRESH_TOL_8723B_1ANT		2
 
-#define  BT_8723B_1ANT_WIFI_NOISY_THRESH								30   //max: 255
+#define  BT_8723B_1ANT_WIFI_NOISY_THRESH								30   /* max: 255 */
 
 typedef enum _BT_INFO_SRC_8723B_1ANT{
 	BT_INFO_SRC_8723B_1ANT_WIFI_FW			= 0x0,
@@ -60,7 +60,7 @@ typedef enum _BT_8723B_1ANT_COEX_ALGO{
 }BT_8723B_1ANT_COEX_ALGO,*PBT_8723B_1ANT_COEX_ALGO;
 
 typedef struct _COEX_DM_8723B_1ANT{
-	// fw mechanism
+	/*  fw mechanism */
 	bool		bCurIgnoreWlanAct;
 	bool		bPreIgnoreWlanAct;
 	u1Byte		prePsTdma;
@@ -77,7 +77,7 @@ typedef struct _COEX_DM_8723B_1ANT{
 	u1Byte		preRpwm;
 	u1Byte		curRpwm;
 
-	// sw mechanism
+	/*  sw mechanism */
 	bool	bPreLowPenaltyRa;
 	bool		bCurLowPenaltyRa;
 	u4Byte		preVal0x6c0;
@@ -90,12 +90,12 @@ typedef struct _COEX_DM_8723B_1ANT{
 	u1Byte		curVal0x6cc;
 	bool		bLimitedDig;
 
-	u4Byte		backupArfrCnt1;	// Auto Rate Fallback Retry cnt
-	u4Byte		backupArfrCnt2;	// Auto Rate Fallback Retry cnt
+	u4Byte		backupArfrCnt1;	/*  Auto Rate Fallback Retry cnt */
+	u4Byte		backupArfrCnt2;	/*  Auto Rate Fallback Retry cnt */
 	u2Byte		backupRetryLimit;
 	u1Byte		backupAmpduMaxTime;
 
-	// algorithm related
+	/*  algorithm related */
 	u1Byte		preAlgorithm;
 	u1Byte		curAlgorithm;
 	u1Byte		btStatus;
@@ -136,8 +136,8 @@ typedef struct _COEX_STA_8723B_1ANT{
 	u1Byte					btInfoC2h[BT_INFO_SRC_8723B_1ANT_MAX][10];
 	u4Byte					btInfoC2hCnt[BT_INFO_SRC_8723B_1ANT_MAX];
 	bool					bC2hBtInquiryPage;
-	bool					bC2hBtPage;				//Add for win8.1 page out issue
-	bool					bWiFiIsHighPriTask;		//Add for win8.1 page out issue
+	bool					bC2hBtPage;				/* Add for win8.1 page out issue */
+	bool					bWiFiIsHighPriTask;		/* Add for win8.1 page out issue */
 	u1Byte					btRetryCnt;
 	u1Byte					btInfoExt;
 	u4Byte					popEventCnt;
@@ -160,9 +160,9 @@ typedef struct _COEX_STA_8723B_1ANT{
 	bool					bForceLpsOn;
 }COEX_STA_8723B_1ANT, *PCOEX_STA_8723B_1ANT;
 
-//===========================================
-// The following is interface which will notify coex module.
-//===========================================
+/*  */
+/*  The following is interface which will notify coex module. */
+/*  */
 void
 EXhalbtc8723b1ant_PowerOnSetting(
 	IN	PBTC_COEXIST		pBtCoexist

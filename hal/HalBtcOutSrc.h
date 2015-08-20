@@ -21,25 +21,25 @@
 #define		BT_COEX_ANT_TYPE_ANTDIV		1
 #define		BT_COEX_ANT_TYPE_DETECTED	2
 
-#define		BTC_MIMO_PS_STATIC			0	// 1ss
-#define		BTC_MIMO_PS_DYNAMIC			1	// 2ss
+#define		BTC_MIMO_PS_STATIC			0	/*  1ss */
+#define		BTC_MIMO_PS_DYNAMIC			1	/*  2ss */
 
 #define		BTC_RATE_DISABLE			0
 #define		BTC_RATE_ENABLE				1
 
-// single Antenna definition
+/*  single Antenna definition */
 #define		BTC_ANT_PATH_WIFI			0
 #define		BTC_ANT_PATH_BT				1
 #define		BTC_ANT_PATH_PTA			2
-// dual Antenna definition
+/*  dual Antenna definition */
 #define		BTC_ANT_WIFI_AT_MAIN		0
 #define		BTC_ANT_WIFI_AT_AUX			1
-// coupler Antenna definition
+/*  coupler Antenna definition */
 #define		BTC_ANT_WIFI_AT_CPL_MAIN	0
 #define		BTC_ANT_WIFI_AT_CPL_AUX		1
 
 typedef enum _BTC_POWERSAVE_TYPE{
-	BTC_PS_WIFI_NATIVE			= 0,	// wifi original power save behavior
+	BTC_PS_WIFI_NATIVE			= 0,	/*  wifi original power save behavior */
 	BTC_PS_LPS_ON				= 1,
 	BTC_PS_LPS_OFF				= 2,
 	BTC_PS_MAX
@@ -79,11 +79,11 @@ typedef enum _BTC_MSG_TYPE{
 }BTC_MSG_TYPE;
 extern u4Byte					GLBtcDbgType[];
 
-// following is for BTC_MSG_INTERFACE
+/*  following is for BTC_MSG_INTERFACE */
 #define		INTF_INIT						BIT0
 #define		INTF_NOTIFY						BIT2
 
-// following is for BTC_ALGORITHM
+/*  following is for BTC_ALGORITHM */
 #define		ALGO_BT_RSSI_STATE				BIT0
 #define		ALGO_WIFI_RSSI_STATE				BIT1
 #define		ALGO_BT_MONITOR				BIT2
@@ -95,18 +95,18 @@ extern u4Byte					GLBtcDbgType[];
 #define		ALGO_TRACE_SW_DETAIL			BIT8
 #define		ALGO_TRACE_SW_EXEC				BIT9
 
-// following is for wifi link status
+/*  following is for wifi link status */
 #define		WIFI_STA_CONNECTED				BIT0
 #define		WIFI_AP_CONNECTED				BIT1
 #define		WIFI_HS_CONNECTED				BIT2
 #define		WIFI_P2P_GO_CONNECTED			BIT3
 #define		WIFI_P2P_GC_CONNECTED			BIT4
 
-// following is for command line utility
+/*  following is for command line utility */
 #define	CL_SPRINTF	snprintf
 #define	CL_PRINTF	DCMD_Printf
 
-// The following is for dbgview print
+/*  The following is for dbgview print */
 #if DBG
 #define	BTC_PRINT(dbgtype, dbgflag, printstr)\
 {\
@@ -133,8 +133,8 @@ extern u4Byte					GLBtcDbgType[];
 				pu1Byte	ptr = (pu1Byte)_Ptr;	\
 				DbgPrint printstr;				\
 				DbgPrint(" ");					\
-				for ( __i=0; __i<6; __i++ )		\
-					DbgPrint("%02X%s", ptr[__i], (__i==5)?"":"-");		\
+				for ( __i =0; __i<6; __i++ )		\
+					DbgPrint("%02X%s", ptr[__i], (__i ==5)?"":"-");		\
 				DbgPrint("\n");							\
 	}\
 }
@@ -146,7 +146,7 @@ extern u4Byte					GLBtcDbgType[];
 		int __i;									\
 		pu1Byte	ptr = (pu1Byte)_HexData;			\
 		DbgPrint(_TitleString);					\
-		for ( __i=0; __i<(int)_HexDataLen; __i++ )	\
+		for ( __i =0; __i<(int)_HexDataLen; __i++ )	\
 		{										\
 			DbgPrint("%02X%s", ptr[__i], (((__i + 1) % 4) == 0)?"  ":" ");\
 			if (((__i + 1) % 16) == 0)	DbgPrint("\n");\
@@ -163,13 +163,13 @@ extern u4Byte					GLBtcDbgType[];
 #endif
 
 typedef struct _BTC_BOARD_INFO{
-	// The following is some board information
+	/*  The following is some board information */
 	u1Byte				btChipType;
-	u1Byte				pgAntNum;	// pg ant number
-	u1Byte				btdmAntNum;	// ant number for btdm
-	u1Byte				btdmAntPos;		//Bryant Add to indicate Antenna Position for (pgAntNum = 2) && (btdmAntNum =1)  (DPDT+1Ant case)
-	u1Byte				singleAntPath;	// current used for 8723b only, 1=>s0,  0=>s1
-	//bool				bBtExist;
+	u1Byte				pgAntNum;	/*  pg ant number */
+	u1Byte				btdmAntNum;	/*  ant number for btdm */
+	u1Byte				btdmAntPos;		/* Bryant Add to indicate Antenna Position for (pgAntNum = 2) && (btdmAntNum =1)  (DPDT+1Ant case) */
+	u1Byte				singleAntPath;	/*  current used for 8723b only, 1 =>s0,  0 =>s1 */
+	/* bool				bBtExist; */
 } BTC_BOARD_INFO, *PBTC_BOARD_INFO;
 
 typedef enum _BTC_DBG_OPCODE{
@@ -222,7 +222,7 @@ typedef enum _BTC_WIFI_PNP{
 	BTC_WIFI_PNP_MAX
 }BTC_WIFI_PNP,*PBTC_WIFI_PNP;
 
-//for 8723b-d cut large current issue
+/* for 8723b-d cut large current issue */
 typedef enum _BT_WIFI_COEX_STATE{
 	BTC_WIFI_STAT_INIT,
 	BTC_WIFI_STAT_IQK,
@@ -233,9 +233,9 @@ typedef enum _BT_WIFI_COEX_STATE{
 	BTC_WIFI_STAT_MAX
 }BT_WIFI_COEX_STATE,*PBT_WIFI_COEX_STATE;
 
-// defined for BFP_BTC_GET
+/*  defined for BFP_BTC_GET */
 typedef enum _BTC_GET_TYPE{
-	// type bool
+	/*  type bool */
 	BTC_GET_BL_HS_OPERATION,
 	BTC_GET_BL_HS_CONNECTING,
 	BTC_GET_BL_WIFI_CONNECTED,
@@ -251,33 +251,33 @@ typedef enum _BTC_GET_TYPE{
 	BTC_GET_BL_EXT_SWITCH,
 	BTC_GET_BL_WIFI_IS_IN_MP_MODE,
 
-	// type s4Byte
+	/*  type s4Byte */
 	BTC_GET_S4_WIFI_RSSI,
 	BTC_GET_S4_HS_RSSI,
 
-	// type u4Byte
+	/*  type u4Byte */
 	BTC_GET_U4_WIFI_BW,
 	BTC_GET_U4_WIFI_TRAFFIC_DIRECTION,
 	BTC_GET_U4_WIFI_FW_VER,
 	BTC_GET_U4_WIFI_LINK_STATUS,
 	BTC_GET_U4_BT_PATCH_VER,
 
-	// type u1Byte
+	/*  type u1Byte */
 	BTC_GET_U1_WIFI_DOT11_CHNL,
 	BTC_GET_U1_WIFI_CENTRAL_CHNL,
 	BTC_GET_U1_WIFI_HS_CHNL,
 	BTC_GET_U1_MAC_PHY_MODE,
 	BTC_GET_U1_AP_NUM,
 
-	//===== for 1Ant ======
+	/*  for 1Ant ====== */
 	BTC_GET_U1_LPS_MODE,
 
 	BTC_GET_MAX
 }BTC_GET_TYPE,*PBTC_GET_TYPE;
 
-// defined for BFP_BTC_SET
+/*  defined for BFP_BTC_SET */
 typedef enum _BTC_SET_TYPE{
-	// type bool
+	/*  type bool */
 	BTC_SET_BL_BT_DISABLE,
 	BTC_SET_BL_BT_TRAFFIC_BUSY,
 	BTC_SET_BL_BT_LIMITED_DIG,
@@ -287,32 +287,32 @@ typedef enum _BTC_SET_TYPE{
 	BTC_SET_BL_INC_SCAN_DEV_NUM,
 	BTC_SET_BL_BT_TX_RX_MASK,
 
-	// type u1Byte
+	/*  type u1Byte */
 	BTC_SET_U1_RSSI_ADJ_VAL_FOR_AGC_TABLE_ON,
 	BTC_SET_U1_AGG_BUF_SIZE,
 
-	// type trigger some action
+	/*  type trigger some action */
 	BTC_SET_ACT_GET_BT_RSSI,
 	BTC_SET_ACT_AGGREGATE_CTRL,
-	//===== for 1Ant ======
-	// type bool
+	/*  for 1Ant ====== */
+	/*  type bool */
 
-	// type u1Byte
+	/*  type u1Byte */
 	BTC_SET_U1_RSSI_ADJ_VAL_FOR_1ANT_COEX_TYPE,
 	BTC_SET_U1_LPS_VAL,
 	BTC_SET_U1_RPWM_VAL,
-	// type trigger some action
+	/*  type trigger some action */
 	BTC_SET_ACT_LEAVE_LPS,
 	BTC_SET_ACT_ENTER_LPS,
 	BTC_SET_ACT_NORMAL_LPS,
 	BTC_SET_ACT_DISABLE_LOW_POWER,
 	BTC_SET_ACT_UPDATE_RAMASK,
 	BTC_SET_ACT_SEND_MIMO_PS,
-	// BT Coex related
+	/*  BT Coex related */
 	BTC_SET_ACT_CTRL_BT_INFO,
 	BTC_SET_ACT_CTRL_BT_COEX,
 	BTC_SET_ACT_CTRL_8723B_ANT,
-	//=================
+	/*  */
 	BTC_SET_MAX
 }BTC_SET_TYPE,*PBTC_SET_TYPE;
 
@@ -362,7 +362,7 @@ typedef enum _BTC_NOTIFY_TYPE_STACK_OPERATION{
 	BTC_STACK_OP_MAX
 }BTC_NOTIFY_TYPE_STACK_OPERATION,*PBTC_NOTIFY_TYPE_STACK_OPERATION;
 
-//Bryant Add
+/* Bryant Add */
 typedef enum _BTC_ANTENNA_POS{
 	BTC_ANTENNA_AT_MAIN_PORT				= 0x1,
 	BTC_ANTENNA_AT_AUX_PORT				= 0x2,
@@ -504,7 +504,7 @@ typedef struct _BTC_BT_INFO{
 
 	bool					bBtCtrlLps;
 	bool					bBtLpsOn;
-	bool					bForceToRoam;	// for 1Ant solution
+	bool					bForceToRoam;	/*  for 1Ant solution */
 	u1Byte					lpsVal;
 	u1Byte					rpwmVal;
 	u4Byte					raMask;
@@ -512,7 +512,7 @@ typedef struct _BTC_BT_INFO{
 
 typedef struct _BTC_STACK_INFO{
 	bool					bProfileNotified;
-	u2Byte					hciVersion;	// stack hci version
+	u2Byte					hciVersion;	/*  stack hci version */
 	u1Byte					numOfLink;
 	bool					bBtLinkExist;
 	bool					bScoExist;
@@ -558,10 +558,10 @@ typedef struct _BTC_STATISTICS{
 } BTC_STATISTICS, *PBTC_STATISTICS;
 
 typedef struct _BTC_COEXIST{
-	bool				bBinded;		// make sure only one adapter can bind the data context
-	void *				Adapter;		// default adapter
+	bool				bBinded;		/*  make sure only one adapter can bind the data context */
+	void *				Adapter;		/*  default adapter */
 	BTC_BOARD_INFO		boardInfo;
-	BTC_BT_INFO			btInfo;		// some bt info referenced by non-bt module
+	BTC_BT_INFO			btInfo;		/*  some bt info referenced by non-bt module */
 	BTC_STACK_INFO		stackInfo;
 	BTC_BT_LINK_INFO	btLinkInfo;
 	BTC_CHIP_INTERFACE	chipInterface;
@@ -573,8 +573,8 @@ typedef struct _BTC_COEXIST{
 	BTC_STATISTICS		statistics;
 	u1Byte				pwrModeVal[10];
 
-	// function pointers
-	// io related
+	/*  function pointers */
+	/*  io related */
 	BFP_BTC_R1			fBtcRead1Byte;
 	BFP_BTC_W1			fBtcWrite1Byte;
 	BFP_BTC_W1_BIT_MASK	fBtcWrite1ByteBitMask;
@@ -583,19 +583,19 @@ typedef struct _BTC_COEXIST{
 	BFP_BTC_R4			fBtcRead4Byte;
 	BFP_BTC_W4			fBtcWrite4Byte;
 	BFP_BTC_LOCAL_REG_W1	fBtcWriteLocalReg1Byte;
-	// read/write bb related
+	/*  read/write bb related */
 	BFP_BTC_SET_BB_REG	fBtcSetBbReg;
 	BFP_BTC_GET_BB_REG	fBtcGetBbReg;
 
-	// read/write rf related
+	/*  read/write rf related */
 	BFP_BTC_SET_RF_REG	fBtcSetRfReg;
 	BFP_BTC_GET_RF_REG	fBtcGetRfReg;
 
-	// fill h2c related
+	/*  fill h2c related */
 	BFP_BTC_FILL_H2C		fBtcFillH2c;
-	// other
+	/*  other */
 	BFP_BTC_DISP_DBG_MSG	fBtcDispDbgMsg;
-	// normal get/set related
+	/*  normal get/set related */
 	BFP_BTC_GET			fBtcGet;
 	BFP_BTC_SET			fBtcSet;
 

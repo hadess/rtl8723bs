@@ -11,16 +11,11 @@
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
  * more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110, USA
- *
- *
  ******************************************************************************/
 
-//============================================================
-// include files
-//============================================================
+/*  */
+/*  include files */
+/*  */
 #include "odm_precomp.h"
 
 
@@ -33,7 +28,7 @@ odm_PathDiversityInit(
 	PDM_ODM_T		pDM_Odm = (PDM_ODM_T)pDM_VOID;
 	if (!(pDM_Odm->SupportAbility & ODM_BB_PATH_DIV))
 	{
-		ODM_RT_TRACE(pDM_Odm, ODM_COMP_PATH_DIV,ODM_DBG_LOUD,("Return: Not Support PathDiv\n"));
+		ODM_RT_TRACE(pDM_Odm, ODM_COMP_PATH_DIV, ODM_DBG_LOUD, ("Return: Not Support PathDiv\n"));
 		return;
 	}
 }
@@ -46,7 +41,7 @@ odm_PathDiversity(
 	PDM_ODM_T		pDM_Odm = (PDM_ODM_T)pDM_VOID;
 	if (!(pDM_Odm->SupportAbility & ODM_BB_PATH_DIV))
 	{
-		ODM_RT_TRACE(pDM_Odm, ODM_COMP_PATH_DIV,ODM_DBG_LOUD,("Return: Not Support PathDiv\n"));
+		ODM_RT_TRACE(pDM_Odm, ODM_COMP_PATH_DIV, ODM_DBG_LOUD, ("Return: Not Support PathDiv\n"));
 		return;
 	}
 }

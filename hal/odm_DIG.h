@@ -11,11 +11,6 @@
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
  * more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110, USA
- *
- *
  ******************************************************************************/
 
 #ifndef	__ODMDIG_H__
@@ -41,7 +36,7 @@ typedef struct _Dynamic_Initial_Gain_Threshold_
 
 	u1Byte		PreIGValue;
 	u1Byte		CurIGValue;
-	u1Byte		BackupIGValue;		//MP DIG
+	u1Byte		BackupIGValue;		/* MP DIG */
 	u1Byte		BT30_CurIGI;
 	u1Byte		IGIBackup;
 
@@ -79,7 +74,7 @@ typedef struct false_ALARM_STATISTICS{
 	u4Byte	Cnt_Crc8_fail;
 	u4Byte	Cnt_Mcs_fail;
 	u4Byte	Cnt_Ofdm_fail;
-	u4Byte	Cnt_Ofdm_fail_pre;	//For RTL8881A
+	u4Byte	Cnt_Ofdm_fail_pre;	/* For RTL8881A */
 	u4Byte	Cnt_Cck_fail;
 	u4Byte	Cnt_all;
 	u4Byte	Cnt_Fast_Fsync;
@@ -87,8 +82,8 @@ typedef struct false_ALARM_STATISTICS{
 	u4Byte	Cnt_OFDM_CCA;
 	u4Byte	Cnt_CCK_CCA;
 	u4Byte	Cnt_CCA_all;
-	u4Byte	Cnt_BW_USC;	//Gary
-	u4Byte	Cnt_BW_LSC;	//Gary
+	u4Byte	Cnt_BW_USC;	/* Gary */
+	u4Byte	Cnt_BW_LSC;	/* Gary */
 }false_ALARM_STATISTICS, *Pfalse_ALARM_STATISTICS;
 
 typedef enum tag_Dynamic_Init_Gain_Operation_Type_Definition
@@ -156,12 +151,12 @@ typedef enum tag_DIG_Connect_Definition
 #define		DMfalseALARM_THRESH_HIGH	1000
 
 #define		DM_DIG_MAX_NIC				0x3e
-#define		DM_DIG_MIN_NIC				0x1e //0x22//0x1c
+#define		DM_DIG_MIN_NIC				0x1e /* 0x22//0x1c */
 #define		DM_DIG_MAX_OF_MIN_NIC		0x3e
 
 #define		DM_DIG_MAX_AP					0x3e
 #define		DM_DIG_MIN_AP					0x1c
-#define		DM_DIG_MAX_OF_MIN			0x2A	//0x32
+#define		DM_DIG_MAX_OF_MIN			0x2A	/* 0x32 */
 #define		DM_DIG_MIN_AP_DFS				0x20
 
 #define		DM_DIG_MAX_NIC_HP			0x46
@@ -170,11 +165,11 @@ typedef enum tag_DIG_Connect_Definition
 #define		DM_DIG_MAX_AP_HP				0x42
 #define		DM_DIG_MIN_AP_HP				0x30
 
-#define		DM_DIG_FA_TH0				0x200//0x20
+#define		DM_DIG_FA_TH0				0x200/* 0x20 */
 
 #define		DM_DIG_FA_TH1					0x300
 #define		DM_DIG_FA_TH2					0x400
-//this is for 92d
+/* this is for 92d */
 #define		DM_DIG_FA_TH0_92D				0x100
 #define		DM_DIG_FA_TH1_92D				0x400
 #define		DM_DIG_FA_TH2_92D				0x600
@@ -183,9 +178,9 @@ typedef enum tag_DIG_Connect_Definition
 #define		DM_DIG_BACKOFF_MIN			-4
 #define		DM_DIG_BACKOFF_DEFAULT		10
 
-#define			DM_DIG_FA_TH0_LPS				4 //-> 4 in lps
-#define			DM_DIG_FA_TH1_LPS				15 //-> 15 lps
-#define			DM_DIG_FA_TH2_LPS				30 //-> 30 lps
+#define			DM_DIG_FA_TH0_LPS				4 /*  4 in lps */
+#define			DM_DIG_FA_TH1_LPS				15 /*  15 lps */
+#define			DM_DIG_FA_TH2_LPS				30 /*  30 lps */
 #define			RSSI_OFFSET_DIG				0x05
 
 void

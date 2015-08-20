@@ -11,11 +11,6 @@
 * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
 * more details.
 *
-* You should have received a copy of the GNU General Public License along with
-* this program; if not, write to the Free Software Foundation, Inc.,
-* 51 Franklin Street, Fifth Floor, Boston, MA 02110, USA
-*
-*
 ******************************************************************************/
 
 #ifndef __INC_MP_RF_HW_IMG_8723B_H
@@ -27,7 +22,7 @@
 ******************************************************************************/
 
 void
-ODM_ReadAndConfig_MP_8723B_RadioA( // TC: Test Chip, MP: MP Chip
+ODM_ReadAndConfig_MP_8723B_RadioA( /*  TC: Test Chip, MP: MP Chip */
 	IN   PDM_ODM_T  pDM_Odm
 );
 
@@ -36,7 +31,7 @@ ODM_ReadAndConfig_MP_8723B_RadioA( // TC: Test Chip, MP: MP Chip
 ******************************************************************************/
 
 void
-ODM_ReadAndConfig_MP_8723B_TxPowerTrack_SDIO( // TC: Test Chip, MP: MP Chip
+ODM_ReadAndConfig_MP_8723B_TxPowerTrack_SDIO( /*  TC: Test Chip, MP: MP Chip */
 	IN   PDM_ODM_T  pDM_Odm
 );
 u4Byte ODM_GetVersion_MP_8723B_TxPowerTrack_SDIO(void);
@@ -46,7 +41,7 @@ u4Byte ODM_GetVersion_MP_8723B_TxPowerTrack_SDIO(void);
 ******************************************************************************/
 
 void
-ODM_ReadAndConfig_MP_8723B_TXPWR_LMT( // TC: Test Chip, MP: MP Chip
+ODM_ReadAndConfig_MP_8723B_TXPWR_LMT( /*  TC: Test Chip, MP: MP Chip */
 	IN   PDM_ODM_T  pDM_Odm
 );
 u4Byte ODM_GetVersion_MP_8723B_TXPWR_LMT(void);

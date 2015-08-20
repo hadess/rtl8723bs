@@ -11,11 +11,6 @@
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
  * more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110, USA
- *
- *
  ******************************************************************************/
 /*++
 Copyright (c) Realtek Semiconductor Corp. All rights reserved.
@@ -36,15 +31,15 @@ Major Change History:
 #include <HalPwrSeqCmd.h>
 
 
-//
-//	Description:
-//		This routine deal with the Power Configuration CMDs parsing for RTL8723/RTL8188E Series IC.
-//
-//	Assumption:
-//		We should follow specific format which was released from HW SD.
-//
-//	2011.07.07, added by Roger.
-//
+/*  */
+/* 	Description: */
+/* 		This routine deal with the Power Configuration CMDs parsing for RTL8723/RTL8188E Series IC. */
+/*  */
+/* 	Assumption: */
+/* 		We should follow specific format which was released from HW SD. */
+/*  */
+/* 	2011.07.07, added by Roger. */
+/*  */
 u8 HalPwrSeqCmdParsing(
 	PADAPTER		padapter,
 	u8				CutVersion,
@@ -57,7 +52,7 @@ u8 HalPwrSeqCmdParsing(
 	u32				AryIdx = 0;
 	u8				value = 0;
 	u32				offset = 0;
-	u32				pollingCount = 0; // polling autoload done.
+	u32				pollingCount = 0; /*  polling autoload done. */
 	u32				maxPollingCnt = 5000;
 
 	do {
@@ -74,7 +69,7 @@ u8 HalPwrSeqCmdParsing(
 					GET_PWR_CFG_MASK(PwrCfgCmd),
 					GET_PWR_CFG_VALUE(PwrCfgCmd)));
 
-		//2 Only Handle the command whose FAB, CUT, and Interface are matched
+		/* 2 Only Handle the command whose FAB, CUT, and Interface are matched */
 		if ((GET_PWR_CFG_FAB_MASK(PwrCfgCmd) & FabVersion) &&
 			(GET_PWR_CFG_CUT_MASK(PwrCfgCmd) & CutVersion) &&
 			(GET_PWR_CFG_INTF_MASK(PwrCfgCmd) & InterfaceType))
@@ -89,30 +84,30 @@ u8 HalPwrSeqCmdParsing(
 					RT_TRACE(_module_hal_init_c_ , _drv_info_, ("HalPwrSeqCmdParsing: PWR_CMD_WRITE\n"));
 					offset = GET_PWR_CFG_OFFSET(PwrCfgCmd);
 
-					//
-					// <Roger_Notes> We should deal with interface specific address mapping for some interfaces, e.g., SDIO interface
-					// 2011.07.07.
-					//
+					/*  */
+					/*  <Roger_Notes> We should deal with interface specific address mapping for some interfaces, e.g., SDIO interface */
+					/*  2011.07.07. */
+					/*  */
 					if (GET_PWR_CFG_BASE(PwrCfgCmd) == PWR_BASEADDR_SDIO)
 					{
-						// Read Back SDIO Local value
+						/*  Read Back SDIO Local value */
 						value = SdioLocalCmd52Read1Byte(padapter, offset);
 
 						value &= ~(GET_PWR_CFG_MASK(PwrCfgCmd));
 						value |= (GET_PWR_CFG_VALUE(PwrCfgCmd) & GET_PWR_CFG_MASK(PwrCfgCmd));
 
-						// Write Back SDIO Local value
+						/*  Write Back SDIO Local value */
 						SdioLocalCmd52Write1Byte(padapter, offset, value);
 					}
 					else
 					{
-						// Read the value from system register
+						/*  Read the value from system register */
 						value = rtw_read8(padapter, offset);
 
-						value=value&(~(GET_PWR_CFG_MASK(PwrCfgCmd)));
-						value=value|(GET_PWR_CFG_VALUE(PwrCfgCmd)&GET_PWR_CFG_MASK(PwrCfgCmd));
+						value =value&(~(GET_PWR_CFG_MASK(PwrCfgCmd)));
+						value =value|(GET_PWR_CFG_VALUE(PwrCfgCmd)&GET_PWR_CFG_MASK(PwrCfgCmd));
 
-						// Write the value back to sytem register
+						/*  Write the value back to sytem register */
 						rtw_write8(padapter, offset, value);
 					}
 					break;
@@ -128,7 +123,7 @@ u8 HalPwrSeqCmdParsing(
 						else
 							value = rtw_read8(padapter, offset);
 
-						value=value&GET_PWR_CFG_MASK(PwrCfgCmd);
+						value =value&GET_PWR_CFG_MASK(PwrCfgCmd);
 						if (value == (GET_PWR_CFG_VALUE(PwrCfgCmd) & GET_PWR_CFG_MASK(PwrCfgCmd)))
 							bPollingBit = true;
 						else
@@ -151,7 +146,7 @@ u8 HalPwrSeqCmdParsing(
 					break;
 
 				case PWR_CMD_END:
-					// When this command is parsed, end the process
+					/*  When this command is parsed, end the process */
 					RT_TRACE(_module_hal_init_c_ , _drv_info_, ("HalPwrSeqCmdParsing: PWR_CMD_END\n"));
 					return true;
 					break;
@@ -162,7 +157,7 @@ u8 HalPwrSeqCmdParsing(
 			}
 		}
 
-		AryIdx++;//Add Array Index
+		AryIdx++;/* Add Array Index */
 	}while (1);
 
 	return true;

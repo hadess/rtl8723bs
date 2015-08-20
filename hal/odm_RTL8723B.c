@@ -11,16 +11,11 @@
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
  * more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110, USA
- *
- *
  ******************************************************************************/
 
-//============================================================
-// include files
-//============================================================
+/*  */
+/*  include files */
+/*  */
 
 #include "odm_precomp.h"
 
@@ -30,11 +25,11 @@ odm_CCKRSSI_8723B(
 	IN		u1Byte	VGA_idx
 	)
 {
-	s8	rx_pwr_all=0x00;
+	s8	rx_pwr_all =0x00;
 	switch (LNA_idx)
 	{
-		//46  53 73 95 201301231630
-		// 46 53 77 99 201301241630
+		/* 46  53 73 95 201301231630 */
+		/*  46 53 77 99 201301241630 */
 
 		case 6:
                         rx_pwr_all = -34 - (2 * VGA_idx);
@@ -49,8 +44,8 @@ odm_CCKRSSI_8723B(
                         rx_pwr_all = 16 - (2 * VGA_idx);
 			break;
 		default:
-                        //rx_pwr_all = -53+(2*(31-VGA_idx));
-                        //DbgPrint("wrong LNA index\n");
+                        /* rx_pwr_all = -53+(2*(31-VGA_idx)); */
+                        /* DbgPrint("wrong LNA index\n"); */
 			break;
 
 	}

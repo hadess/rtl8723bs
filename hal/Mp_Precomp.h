@@ -11,11 +11,6 @@
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
  * more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110, USA
- *
- *
  ******************************************************************************/
 #ifndef __MP_PRECOMP_H__
 #define __MP_PRECOMP_H__
@@ -35,4 +30,4 @@
 #include "HalBtc8723b1Ant.h"
 #include "HalBtc8723b2Ant.h"
 
-#endif // __MP_PRECOMP_H__
+#endif /*  __MP_PRECOMP_H__ */

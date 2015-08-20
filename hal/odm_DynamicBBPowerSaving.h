@@ -11,11 +11,6 @@
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
  * more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110, USA
- *
- *
  ******************************************************************************/
 
 #ifndef	__ODMDYNAMICBBPOWERSAVING_H__
@@ -32,7 +27,7 @@ typedef struct _Dynamic_Power_Saving_
 	int		    Rssi_val_min;
 
 	u1Byte		initialize;
-	u4Byte		Reg874,RegC70,Reg85C,RegA74;
+	u4Byte		Reg874, RegC70, Reg85C, RegA74;
 
 }PS_T,*pPS_T;
 

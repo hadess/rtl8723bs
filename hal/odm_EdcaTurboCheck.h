@@ -11,11 +11,6 @@
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
  * more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110, USA
- *
- *
  ******************************************************************************/
 
 #ifndef	__ODMEDCATURBOCHECK_H__
@@ -26,7 +21,7 @@ typedef struct _EDCA_TURBO_
 	bool bCurrentTurboEDCA;
 	bool bIsCurRDLState;
 
-	u4Byte	prv_traffic_idx; // edca turbo
+	u4Byte	prv_traffic_idx; /*  edca turbo */
 }EDCA_T,*pEDCA_T;
 
 void

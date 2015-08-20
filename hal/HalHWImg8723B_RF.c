@@ -11,11 +11,6 @@
 * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
 * more details.
 *
-* You should have received a copy of the GNU General Public License along with
-* this program; if not, write to the Free Software Foundation, Inc.,
-* 51 Franklin Street, Fifth Floor, Boston, MA 02110, USA
-*
-*
 ******************************************************************************/
 
 
@@ -28,11 +23,11 @@ CheckPositive(
     IN  const u4Byte  Condition2
     )
 {
-	u1Byte    _BoardType = ((pDM_Odm->BoardType & BIT4) >> 4) << 0 | // _GLNA
-                           ((pDM_Odm->BoardType & BIT3) >> 3) << 1 | // _GPA
-                           ((pDM_Odm->BoardType & BIT7) >> 7) << 2 | // _ALNA
-                           ((pDM_Odm->BoardType & BIT6) >> 6) << 3 | // _APA
-                           ((pDM_Odm->BoardType & BIT2) >> 2) << 4;  // _BT
+	u1Byte    _BoardType = ((pDM_Odm->BoardType & BIT4) >> 4) << 0 | /*  _GLNA */
+                           ((pDM_Odm->BoardType & BIT3) >> 3) << 1 | /*  _GPA */
+                           ((pDM_Odm->BoardType & BIT7) >> 7) << 2 | /*  _ALNA */
+                           ((pDM_Odm->BoardType & BIT6) >> 6) << 3 | /*  _APA */
+                           ((pDM_Odm->BoardType & BIT2) >> 2) << 4;  /*  _BT */
 
 	u4Byte	  cond1   = Condition1, cond2 = Condition2;
 	u4Byte    driver1 = pDM_Odm->CutVersion       << 24 |
@@ -56,35 +51,35 @@ CheckPositive(
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_TRACE,
                 ("	(Board, Package) = (0x%X, 0x%X)\n", pDM_Odm->BoardType, pDM_Odm->PackageType));
 
-	//============== Value Defined Check ===============//
-	//QFN Type [15:12] and Cut Version [27:24] need to do value check
+	/*  Value Defined Check =============== */
+	/* QFN Type [15:12] and Cut Version [27:24] need to do value check */
 
 	if (((cond1 & 0x0000F000) != 0) &&((cond1 & 0x0000F000) != (driver1 & 0x0000F000)))
 		return false;
 	if (((cond1 & 0x0F000000) != 0) &&((cond1 & 0x0F000000) != (driver1 & 0x0F000000)))
 		return false;
 
-	//=============== Bit Defined Check ================//
-    // We don't care [31:28] and [23:20]
-    //
+	/*  Bit Defined Check ================ */
+    /*  We don't care [31:28] and [23:20] */
+    /*  */
 	cond1   &= 0x000F0FFF;
 	driver1 &= 0x000F0FFF;
 
 	if ((cond1 & driver1) == cond1) {
 		u4Byte bitMask = 0;
-		if ((cond1 & 0x0F) == 0) // BoardType is DONTCARE
+		if ((cond1 & 0x0F) == 0) /*  BoardType is DONTCARE */
 			return true;
 
-		if ((cond1 & BIT0) != 0) //GLNA
+		if ((cond1 & BIT0) != 0) /* GLNA */
 			bitMask |= 0x000000FF;
-		if ((cond1 & BIT1) != 0) //GPA
+		if ((cond1 & BIT1) != 0) /* GPA */
 			bitMask |= 0x0000FF00;
-		if ((cond1 & BIT2) != 0) //ALNA
+		if ((cond1 & BIT2) != 0) /* ALNA */
 			bitMask |= 0x00FF0000;
-		if ((cond1 & BIT3) != 0) //APA
+		if ((cond1 & BIT3) != 0) /* APA */
 			bitMask |= 0xFF000000;
 
-		if ((cond2 & bitMask) == (driver2 & bitMask)) // BoardType of each RF path is matched
+		if ((cond2 & bitMask) == (driver2 & bitMask)) /*  BoardType of each RF path is matched */
 			return true;
 		return false;
 	}
@@ -129,30 +124,30 @@ static u4Byte Array_MP_8723B_RadioA[] = {
 		0x01E, 0x00000000,
 		0x0DF, 0x00000780,
 		0x050, 0x00067435,
-	0x80002000,0x00000000,0x40000000,0x00000000,
+	0x80002000, 0x00000000, 0x40000000, 0x00000000,
 		0x051, 0x0006B10E,
-	0x90003000,0x00000000,0x40000000,0x00000000,
+	0x90003000, 0x00000000, 0x40000000, 0x00000000,
 		0x051, 0x0006B10E,
-	0x90004000,0x00000000,0x40000000,0x00000000,
+	0x90004000, 0x00000000, 0x40000000, 0x00000000,
 		0x051, 0x0006B10E,
-	0xA0000000,0x00000000,
+	0xA0000000, 0x00000000,
 		0x051, 0x0006B04E,
-	0xB0000000,0x00000000,
+	0xB0000000, 0x00000000,
 		0x052, 0x000007D2,
 		0x053, 0x00000000,
 		0x054, 0x00050400,
 		0x055, 0x0004026E,
 		0x0DD, 0x0000004C,
 		0x070, 0x00067435,
-	0x80002000,0x00000000,0x40000000,0x00000000,
+	0x80002000, 0x00000000, 0x40000000, 0x00000000,
 		0x071, 0x0006B10E,
-	0x90003000,0x00000000,0x40000000,0x00000000,
+	0x90003000, 0x00000000, 0x40000000, 0x00000000,
 		0x071, 0x0006B10E,
-	0x90004000,0x00000000,0x40000000,0x00000000,
+	0x90004000, 0x00000000, 0x40000000, 0x00000000,
 		0x071, 0x0006B10E,
-	0xA0000000,0x00000000,
+	0xA0000000, 0x00000000,
 		0x071, 0x0006B04E,
-	0xB0000000,0x00000000,
+	0xB0000000, 0x00000000,
 		0x072, 0x000007D2,
 		0x073, 0x00000000,
 		0x074, 0x00050400,
@@ -249,18 +244,18 @@ ODM_ReadAndConfig_MP_8723B_RadioA(
         u4Byte v1 = Array[i];
         u4Byte v2 = Array[i+1];
 
-        // This (offset, data) pair doesn't care the condition.
+        /*  This (offset, data) pair doesn't care the condition. */
         if ( v1 < 0x40000000 )
         {
            odm_ConfigRF_RadioA_8723B(pDM_Odm, v1, v2);
            continue;
         }
         else
-        {   // This line is the beginning of branch.
+        {   /*  This line is the beginning of branch. */
             bool bMatched = true;
             u1Byte  cCond  = (u1Byte)((v1 & (BIT29|BIT28)) >> 28);
 
-            if (cCond == COND_ELSE) { // ELSE, ENDIF
+            if (cCond == COND_ELSE) { /*  ELSE, ENDIF */
                 bMatched = true;
                 READ_NEXT_PAIR(v1, v2, i);
             } else if ( ! CheckPositive(pDM_Odm, v1, v2) ) {
@@ -277,20 +272,20 @@ ODM_ReadAndConfig_MP_8723B_RadioA(
             }
 
             if ( bMatched == false )
-            {   // Condition isn't matched. Discard the following (offset, data) pairs.
+            {   /*  Condition isn't matched. Discard the following (offset, data) pairs. */
                 while (v1 < 0x40000000 && i < ArrayLen -2)
                     READ_NEXT_PAIR(v1, v2, i);
 
-                i -= 2; // prevent from for-loop += 2
+                i -= 2; /*  prevent from for-loop += 2 */
             }
-            else // Configure matched pairs and skip to end of if-else.
+            else /*  Configure matched pairs and skip to end of if-else. */
             {
                 while (v1 < 0x40000000 && i < ArrayLen-2) {
                     odm_ConfigRF_RadioA_8723B(pDM_Odm, v1, v2);
                     READ_NEXT_PAIR(v1, v2, i);
                 }
 
-                // Keeps reading until ENDIF.
+                /*  Keeps reading until ENDIF. */
                 cCond = (u1Byte)((v1 & (BIT29|BIT28)) >> 28);
                 while (cCond != COND_ENDIF && i < ArrayLen-2) {
                     READ_NEXT_PAIR(v1, v2, i);

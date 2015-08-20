@@ -11,11 +11,6 @@
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
  * more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110, USA
- *
- *
  ******************************************************************************/
 
 #ifndef	__ODM_PRECOMP_H__
@@ -25,18 +20,18 @@
 
 #define		TEST_FALG___		1
 
-//2 Config Flags and Structs - defined by each ODM Type
+/* 2 Config Flags and Structs - defined by each ODM Type */
 
-	//#include <basic_types.h>
-	//#include <osdep_service.h>
-	//#include <drv_types.h>
-	//#include <rtw_byteorder.h>
-	//#include <hal_intf.h>
+	/* include <basic_types.h> */
+	/* include <osdep_service.h> */
+	/* include <drv_types.h> */
+	/* include <rtw_byteorder.h> */
+	/* include <hal_intf.h> */
 #define BEAMFORMING_SUPPORT 0
 
-//2 Hardware Parameter Files
+/* 2 Hardware Parameter Files */
 
-//2 OutSrc Header Files
+/* 2 OutSrc Header Files */
 
 #include "odm.h"
 #include "odm_HWConfig.h"
@@ -51,10 +46,10 @@
 #include "odm_CfoTracking.h"
 #include "odm_NoiseMonitor.h"
 
-	//#include "hal_com.h"
+	/* include "hal_com.h" */
 	#include "HalPhyRf.h"
 
-	#include "HalPhyRf_8723B.h"//for IQK,LCK,Power-tracking
+	#include "HalPhyRf_8723B.h"/* for IQK, LCK, Power-tracking */
 	#include "rtl8723b_hal.h"
 
 #include "odm_interface.h"
@@ -68,4 +63,4 @@
 #include "odm_RTL8723B.h"
 #include "odm_RegConfig8723B.h"
 
-#endif	// __ODM_PRECOMP_H__
+#endif	/*  __ODM_PRECOMP_H__ */

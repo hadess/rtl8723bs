@@ -11,11 +11,6 @@
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
  * more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110, USA
- *
- *
  ******************************************************************************/
 
 #define _HAL_INTF_C_
@@ -49,7 +44,7 @@ void rtw_hal_def_value_init(_adapter *padapter)
 }
 void	rtw_hal_free_data(_adapter *padapter)
 {
-	//free HAL Data
+	/* free HAL Data */
 	rtw_hal_data_deinit(padapter);
 
 	if (is_primary_adapter(padapter))
@@ -64,7 +59,7 @@ void	rtw_hal_dm_init(_adapter *padapter)
 }
 void rtw_hal_dm_deinit(_adapter *padapter)
 {
-	// cancel dm  timer
+	/*  cancel dm  timer */
 	if (is_primary_adapter(padapter))
 		if (padapter->HalFunc.dm_deinit)
 			padapter->HalFunc.dm_deinit(padapter);
@@ -123,7 +118,7 @@ uint	 rtw_hal_init(_adapter *padapter)
 		DBG_871X("rtw_hal_init: hal__init fail\n");
 	}
 
-	RT_TRACE(_module_hal_init_c_,_drv_err_,("-rtl871x_hal_init:status=0x%x\n",status));
+	RT_TRACE(_module_hal_init_c_, _drv_err_, ("-rtl871x_hal_init:status =0x%x\n", status));
 
 	return status;
 
@@ -171,25 +166,25 @@ void rtw_hal_set_hwreg_with_buf(_adapter *padapter, u8 variable, u8 *pbuf, int l
 u8 rtw_hal_set_def_var(_adapter *padapter, HAL_DEF_VARIABLE eVariable, void * pValue)
 {
 	if (padapter->HalFunc.SetHalDefVarHandler)
-		return padapter->HalFunc.SetHalDefVarHandler(padapter,eVariable,pValue);
+		return padapter->HalFunc.SetHalDefVarHandler(padapter, eVariable, pValue);
 	return _FAIL;
 }
 u8 rtw_hal_get_def_var(_adapter *padapter, HAL_DEF_VARIABLE eVariable, void * pValue)
 {
 	if (padapter->HalFunc.GetHalDefVarHandler)
-		return padapter->HalFunc.GetHalDefVarHandler(padapter,eVariable,pValue);
+		return padapter->HalFunc.GetHalDefVarHandler(padapter, eVariable, pValue);
 	return _FAIL;
 }
 
-void rtw_hal_set_odm_var(_adapter *padapter, HAL_ODM_VARIABLE eVariable, void * pValue1,bool bSet)
+void rtw_hal_set_odm_var(_adapter *padapter, HAL_ODM_VARIABLE eVariable, void * pValue1, bool bSet)
 {
 	if (padapter->HalFunc.SetHalODMVarHandler)
-		padapter->HalFunc.SetHalODMVarHandler(padapter,eVariable,pValue1,bSet);
+		padapter->HalFunc.SetHalODMVarHandler(padapter, eVariable, pValue1, bSet);
 }
-void	rtw_hal_get_odm_var(_adapter *padapter, HAL_ODM_VARIABLE eVariable, void * pValue1,void * pValue2)
+void	rtw_hal_get_odm_var(_adapter *padapter, HAL_ODM_VARIABLE eVariable, void * pValue1, void * pValue2)
 {
 	if (padapter->HalFunc.GetHalODMVarHandler)
-		padapter->HalFunc.GetHalODMVarHandler(padapter,eVariable,pValue1,pValue2);
+		padapter->HalFunc.GetHalODMVarHandler(padapter, eVariable, pValue1, pValue2);
 }
 
 void rtw_hal_enable_interrupt(_adapter *padapter)
@@ -254,16 +249,16 @@ s32	rtw_hal_mgnt_xmit(_adapter *padapter, struct xmit_frame *pmgntframe)
 {
 	s32 ret = _FAIL;
 	update_mgntframe_attrib_addr(padapter, pmgntframe);
-	//pframe = (u8 *)(pmgntframe->buf_addr) + TXDESC_OFFSET;
-	//pwlanhdr = (struct rtw_ieee80211_hdr *)pframe;
-	//memcpy(pmgntframe->attrib.ra, pwlanhdr->addr1, ETH_ALEN);
+	/* pframe = (u8 *)(pmgntframe->buf_addr) + TXDESC_OFFSET; */
+	/* pwlanhdr = (struct rtw_ieee80211_hdr *)pframe; */
+	/* memcpy(pmgntframe->attrib.ra, pwlanhdr->addr1, ETH_ALEN); */
 
 	if (padapter->securitypriv.binstallBIPkey == true)
 	{
 		if (IS_MCAST(pmgntframe->attrib.ra))
 		{
 			pmgntframe->attrib.encrypt = _BIP_;
-			//pmgntframe->attrib.bswenc = true;
+			/* pmgntframe->attrib.bswenc = true; */
 		}
 		else
 		{
@@ -397,7 +392,7 @@ void	rtw_hal_dm_watchdog_in_lps(_adapter *padapter)
 	{
 		if (padapter->HalFunc.hal_dm_watchdog_in_lps)
 		{
-			padapter->HalFunc.hal_dm_watchdog_in_lps(padapter);//this fuction caller is in interrupt context
+			padapter->HalFunc.hal_dm_watchdog_in_lps(padapter);/* this fuction caller is in interrupt context */
 		}
 	}
 }
@@ -419,7 +414,7 @@ s32 rtw_hal_xmit_thread_handler(_adapter *padapter)
 void rtw_hal_notch_filter(_adapter *adapter, bool enable)
 {
 	if (adapter->HalFunc.hal_notch_filter)
-		adapter->HalFunc.hal_notch_filter(adapter,enable);
+		adapter->HalFunc.hal_notch_filter(adapter, enable);
 }
 
 void rtw_hal_reset_security_engine(_adapter * adapter)

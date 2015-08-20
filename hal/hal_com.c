@@ -11,11 +11,6 @@
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
  * more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110, USA
- *
- *
  ******************************************************************************/
 #define _HAL_COM_C_
 
@@ -26,7 +21,7 @@
 
 u8 rtw_hal_data_init(_adapter *padapter)
 {
-	if (is_primary_adapter(padapter))	//if (padapter->isprimary)
+	if (is_primary_adapter(padapter))	/* if (padapter->isprimary) */
 	{
 		padapter->hal_data_sz = sizeof(HAL_DATA_TYPE);
 		padapter->HalData = vzalloc(padapter->hal_data_sz);
@@ -40,7 +35,7 @@ u8 rtw_hal_data_init(_adapter *padapter)
 
 void rtw_hal_data_deinit(_adapter *padapter)
 {
-	if (is_primary_adapter(padapter))	//if (padapter->isprimary)
+	if (is_primary_adapter(padapter))	/* if (padapter->isprimary) */
 	{
 		if (padapter->HalData)
 		{
@@ -139,7 +134,7 @@ hal_com_config_channel_plan(
 #ifndef CONFIG_SW_CHANNEL_PLAN
 			if (hw_channel_plan & EEPROM_CHANNEL_PLAN_BY_HW_MASK)
 				pHalData->bDisableSWChannelPlan = true;
-#endif // !CONFIG_SW_CHANNEL_PLAN
+#endif /*  !CONFIG_SW_CHANNEL_PLAN */
 
 			chnlPlan = hw_chnlPlan;
 		}
@@ -369,7 +364,7 @@ u8	HwRateToMRate(u8 rate)
 		case DESC_RATEVHTSS4MCS9:	ret_rate = MGN_VHT4SS_MCS9;		break;
 
 		default:
-			DBG_871X("HwRateToMRate(): Non supported Rate [%x]!!!\n",rate );
+			DBG_871X("HwRateToMRate(): Non supported Rate [%x]!!!\n", rate );
 			break;
 	}
 
@@ -383,7 +378,7 @@ void	HalSetBrateCfg(
 {
 	u8	i, is_brate, brate;
 
-	for (i=0;i<NDIS_802_11_LENGTH_RATES_EX;i++)
+	for (i =0;i<NDIS_802_11_LENGTH_RATES_EX;i++)
 	{
 		is_brate = mBratesOS[i] & IEEE80211_BASIC_RATE_MASK;
 		brate = mBratesOS[i] & 0x7f;
@@ -416,15 +411,15 @@ _OneOutPipeMapping(
 {
 	struct dvobj_priv	*pdvobjpriv = adapter_to_dvobj(pAdapter);
 
-	pdvobjpriv->Queue2Pipe[0] = pdvobjpriv->RtOutPipe[0];//VO
-	pdvobjpriv->Queue2Pipe[1] = pdvobjpriv->RtOutPipe[0];//VI
-	pdvobjpriv->Queue2Pipe[2] = pdvobjpriv->RtOutPipe[0];//BE
-	pdvobjpriv->Queue2Pipe[3] = pdvobjpriv->RtOutPipe[0];//BK
+	pdvobjpriv->Queue2Pipe[0] = pdvobjpriv->RtOutPipe[0];/* VO */
+	pdvobjpriv->Queue2Pipe[1] = pdvobjpriv->RtOutPipe[0];/* VI */
+	pdvobjpriv->Queue2Pipe[2] = pdvobjpriv->RtOutPipe[0];/* BE */
+	pdvobjpriv->Queue2Pipe[3] = pdvobjpriv->RtOutPipe[0];/* BK */
 
-	pdvobjpriv->Queue2Pipe[4] = pdvobjpriv->RtOutPipe[0];//BCN
-	pdvobjpriv->Queue2Pipe[5] = pdvobjpriv->RtOutPipe[0];//MGT
-	pdvobjpriv->Queue2Pipe[6] = pdvobjpriv->RtOutPipe[0];//HIGH
-	pdvobjpriv->Queue2Pipe[7] = pdvobjpriv->RtOutPipe[0];//TXCMD
+	pdvobjpriv->Queue2Pipe[4] = pdvobjpriv->RtOutPipe[0];/* BCN */
+	pdvobjpriv->Queue2Pipe[5] = pdvobjpriv->RtOutPipe[0];/* MGT */
+	pdvobjpriv->Queue2Pipe[6] = pdvobjpriv->RtOutPipe[0];/* HIGH */
+	pdvobjpriv->Queue2Pipe[7] = pdvobjpriv->RtOutPipe[0];/* TXCMD */
 }
 
 static void
@@ -435,39 +430,39 @@ _TwoOutPipeMapping(
 {
 	struct dvobj_priv	*pdvobjpriv = adapter_to_dvobj(pAdapter);
 
-	if (bWIFICfg){ //WMM
+	if (bWIFICfg){ /* WMM */
 
-		//	BK,	BE,	VI,	VO,	BCN,	CMD,MGT,HIGH,HCCA
-		//{  0,		1,	0,	1,	0,	0,	0,	0,		0	};
-		//0:ep_0 num, 1:ep_1 num
+		/* 	BK,	BE,	VI,	VO,	BCN,	CMD, MGT, HIGH, HCCA */
+		/*   0,		1,	0,	1,	0,	0,	0,	0,		0	}; */
+		/* 0:ep_0 num, 1:ep_1 num */
 
-		pdvobjpriv->Queue2Pipe[0] = pdvobjpriv->RtOutPipe[1];//VO
-		pdvobjpriv->Queue2Pipe[1] = pdvobjpriv->RtOutPipe[0];//VI
-		pdvobjpriv->Queue2Pipe[2] = pdvobjpriv->RtOutPipe[1];//BE
-		pdvobjpriv->Queue2Pipe[3] = pdvobjpriv->RtOutPipe[0];//BK
+		pdvobjpriv->Queue2Pipe[0] = pdvobjpriv->RtOutPipe[1];/* VO */
+		pdvobjpriv->Queue2Pipe[1] = pdvobjpriv->RtOutPipe[0];/* VI */
+		pdvobjpriv->Queue2Pipe[2] = pdvobjpriv->RtOutPipe[1];/* BE */
+		pdvobjpriv->Queue2Pipe[3] = pdvobjpriv->RtOutPipe[0];/* BK */
 
-		pdvobjpriv->Queue2Pipe[4] = pdvobjpriv->RtOutPipe[0];//BCN
-		pdvobjpriv->Queue2Pipe[5] = pdvobjpriv->RtOutPipe[0];//MGT
-		pdvobjpriv->Queue2Pipe[6] = pdvobjpriv->RtOutPipe[0];//HIGH
-		pdvobjpriv->Queue2Pipe[7] = pdvobjpriv->RtOutPipe[0];//TXCMD
+		pdvobjpriv->Queue2Pipe[4] = pdvobjpriv->RtOutPipe[0];/* BCN */
+		pdvobjpriv->Queue2Pipe[5] = pdvobjpriv->RtOutPipe[0];/* MGT */
+		pdvobjpriv->Queue2Pipe[6] = pdvobjpriv->RtOutPipe[0];/* HIGH */
+		pdvobjpriv->Queue2Pipe[7] = pdvobjpriv->RtOutPipe[0];/* TXCMD */
 
 	}
-	else{//typical setting
+	else{/* typical setting */
 
 
-		//BK,	BE,	VI,	VO,	BCN,	CMD,MGT,HIGH,HCCA
-		//{  1,		1,	0,	0,	0,	0,	0,	0,		0	};
-		//0:ep_0 num, 1:ep_1 num
+		/* BK,	BE,	VI,	VO,	BCN,	CMD, MGT, HIGH, HCCA */
+		/*   1,		1,	0,	0,	0,	0,	0,	0,		0	}; */
+		/* 0:ep_0 num, 1:ep_1 num */
 
-		pdvobjpriv->Queue2Pipe[0] = pdvobjpriv->RtOutPipe[0];//VO
-		pdvobjpriv->Queue2Pipe[1] = pdvobjpriv->RtOutPipe[0];//VI
-		pdvobjpriv->Queue2Pipe[2] = pdvobjpriv->RtOutPipe[1];//BE
-		pdvobjpriv->Queue2Pipe[3] = pdvobjpriv->RtOutPipe[1];//BK
+		pdvobjpriv->Queue2Pipe[0] = pdvobjpriv->RtOutPipe[0];/* VO */
+		pdvobjpriv->Queue2Pipe[1] = pdvobjpriv->RtOutPipe[0];/* VI */
+		pdvobjpriv->Queue2Pipe[2] = pdvobjpriv->RtOutPipe[1];/* BE */
+		pdvobjpriv->Queue2Pipe[3] = pdvobjpriv->RtOutPipe[1];/* BK */
 
-		pdvobjpriv->Queue2Pipe[4] = pdvobjpriv->RtOutPipe[0];//BCN
-		pdvobjpriv->Queue2Pipe[5] = pdvobjpriv->RtOutPipe[0];//MGT
-		pdvobjpriv->Queue2Pipe[6] = pdvobjpriv->RtOutPipe[0];//HIGH
-		pdvobjpriv->Queue2Pipe[7] = pdvobjpriv->RtOutPipe[0];//TXCMD
+		pdvobjpriv->Queue2Pipe[4] = pdvobjpriv->RtOutPipe[0];/* BCN */
+		pdvobjpriv->Queue2Pipe[5] = pdvobjpriv->RtOutPipe[0];/* MGT */
+		pdvobjpriv->Queue2Pipe[6] = pdvobjpriv->RtOutPipe[0];/* HIGH */
+		pdvobjpriv->Queue2Pipe[7] = pdvobjpriv->RtOutPipe[0];/* TXCMD */
 
 	}
 
@@ -480,39 +475,39 @@ static void _ThreeOutPipeMapping(
 {
 	struct dvobj_priv	*pdvobjpriv = adapter_to_dvobj(pAdapter);
 
-	if (bWIFICfg){//for WMM
+	if (bWIFICfg){/* for WMM */
 
-		//	BK,	BE,	VI,	VO,	BCN,	CMD,MGT,HIGH,HCCA
-		//{  1,		2,	1,	0,	0,	0,	0,	0,		0	};
-		//0:H, 1:N, 2:L
+		/* 	BK,	BE,	VI,	VO,	BCN,	CMD, MGT, HIGH, HCCA */
+		/*   1,		2,	1,	0,	0,	0,	0,	0,		0	}; */
+		/* 0:H, 1:N, 2:L */
 
-		pdvobjpriv->Queue2Pipe[0] = pdvobjpriv->RtOutPipe[0];//VO
-		pdvobjpriv->Queue2Pipe[1] = pdvobjpriv->RtOutPipe[1];//VI
-		pdvobjpriv->Queue2Pipe[2] = pdvobjpriv->RtOutPipe[2];//BE
-		pdvobjpriv->Queue2Pipe[3] = pdvobjpriv->RtOutPipe[1];//BK
+		pdvobjpriv->Queue2Pipe[0] = pdvobjpriv->RtOutPipe[0];/* VO */
+		pdvobjpriv->Queue2Pipe[1] = pdvobjpriv->RtOutPipe[1];/* VI */
+		pdvobjpriv->Queue2Pipe[2] = pdvobjpriv->RtOutPipe[2];/* BE */
+		pdvobjpriv->Queue2Pipe[3] = pdvobjpriv->RtOutPipe[1];/* BK */
 
-		pdvobjpriv->Queue2Pipe[4] = pdvobjpriv->RtOutPipe[0];//BCN
-		pdvobjpriv->Queue2Pipe[5] = pdvobjpriv->RtOutPipe[0];//MGT
-		pdvobjpriv->Queue2Pipe[6] = pdvobjpriv->RtOutPipe[0];//HIGH
-		pdvobjpriv->Queue2Pipe[7] = pdvobjpriv->RtOutPipe[0];//TXCMD
+		pdvobjpriv->Queue2Pipe[4] = pdvobjpriv->RtOutPipe[0];/* BCN */
+		pdvobjpriv->Queue2Pipe[5] = pdvobjpriv->RtOutPipe[0];/* MGT */
+		pdvobjpriv->Queue2Pipe[6] = pdvobjpriv->RtOutPipe[0];/* HIGH */
+		pdvobjpriv->Queue2Pipe[7] = pdvobjpriv->RtOutPipe[0];/* TXCMD */
 
 	}
-	else{//typical setting
+	else{/* typical setting */
 
 
-		//	BK,	BE,	VI,	VO,	BCN,	CMD,MGT,HIGH,HCCA
-		//{  2,		2,	1,	0,	0,	0,	0,	0,		0	};
-		//0:H, 1:N, 2:L
+		/* 	BK,	BE,	VI,	VO,	BCN,	CMD, MGT, HIGH, HCCA */
+		/*   2,		2,	1,	0,	0,	0,	0,	0,		0	}; */
+		/* 0:H, 1:N, 2:L */
 
-		pdvobjpriv->Queue2Pipe[0] = pdvobjpriv->RtOutPipe[0];//VO
-		pdvobjpriv->Queue2Pipe[1] = pdvobjpriv->RtOutPipe[1];//VI
-		pdvobjpriv->Queue2Pipe[2] = pdvobjpriv->RtOutPipe[2];//BE
-		pdvobjpriv->Queue2Pipe[3] = pdvobjpriv->RtOutPipe[2];//BK
+		pdvobjpriv->Queue2Pipe[0] = pdvobjpriv->RtOutPipe[0];/* VO */
+		pdvobjpriv->Queue2Pipe[1] = pdvobjpriv->RtOutPipe[1];/* VI */
+		pdvobjpriv->Queue2Pipe[2] = pdvobjpriv->RtOutPipe[2];/* BE */
+		pdvobjpriv->Queue2Pipe[3] = pdvobjpriv->RtOutPipe[2];/* BK */
 
-		pdvobjpriv->Queue2Pipe[4] = pdvobjpriv->RtOutPipe[0];//BCN
-		pdvobjpriv->Queue2Pipe[5] = pdvobjpriv->RtOutPipe[0];//MGT
-		pdvobjpriv->Queue2Pipe[6] = pdvobjpriv->RtOutPipe[0];//HIGH
-		pdvobjpriv->Queue2Pipe[7] = pdvobjpriv->RtOutPipe[0];//TXCMD
+		pdvobjpriv->Queue2Pipe[4] = pdvobjpriv->RtOutPipe[0];/* BCN */
+		pdvobjpriv->Queue2Pipe[5] = pdvobjpriv->RtOutPipe[0];/* MGT */
+		pdvobjpriv->Queue2Pipe[6] = pdvobjpriv->RtOutPipe[0];/* HIGH */
+		pdvobjpriv->Queue2Pipe[7] = pdvobjpriv->RtOutPipe[0];/* TXCMD */
 	}
 
 }
@@ -632,9 +627,9 @@ exit:
 
 u8  rtw_hal_networktype_to_raid(_adapter *adapter, struct sta_info *psta)
 {
-	return networktype_to_raid_ex(adapter,psta);
+	return networktype_to_raid_ex(adapter, psta);
 }
-u8 rtw_get_mgntframe_raid(_adapter *adapter,unsigned char network_type)
+u8 rtw_get_mgntframe_raid(_adapter *adapter, unsigned char network_type)
 {
 
 	u8 raid;
@@ -655,23 +650,23 @@ void rtw_hal_update_sta_rate_mask(PADAPTER padapter, struct sta_info *psta)
 
 	tx_ra_bitmap = 0;
 
-	//b/g mode ra_bitmap
-	for (i=0; i<sizeof(psta->bssrateset); i++)
+	/* b/g mode ra_bitmap */
+	for (i =0; i<sizeof(psta->bssrateset); i++)
 	{
 		if (psta->bssrateset[i])
 			tx_ra_bitmap |= rtw_get_bit_value_from_ieee_value(psta->bssrateset[i]&0x7f);
 	}
 
-	//n mode ra_bitmap
+	/* n mode ra_bitmap */
 	if (psta->htpriv.ht_option)
 	{
 		rtw_hal_get_hwreg(padapter, HW_VAR_RF_TYPE, (u8 *)(&rf_type));
 		if (rf_type == RF_2T2R)
-			limit=16;// 2R
+			limit =16;/*  2R */
 		else
-			limit=8;//  1R
+			limit =8;/*   1R */
 
-		for (i=0; i<limit; i++) {
+		for (i =0; i<limit; i++) {
 			if (psta->htpriv.ht_cap.supp_mcs_set[i/8] & BIT(i%8))
 				tx_ra_bitmap |= BIT(i+12);
 		}
@@ -748,7 +743,7 @@ void SetHwReg(_adapter *adapter, u8 variable, u8 *val)
 	case HW_VAR_DM_FUNC_CLR:
 		/*
 		* input is already a mask to clear function
-		* don't invert it again! George,Lucas@20130513
+		* don't invert it again! George, Lucas@20130513
 		*/
 		odm->SupportAbility &= *((u32 *)val);
 		break;
@@ -799,7 +794,7 @@ SetHalDefVar(_adapter *adapter, HAL_DEF_VARIABLE variable, void *value)
 
 	switch (variable) {
 	case HW_DEF_FA_CNT_DUMP:
-		//ODM_COMP_COMMON
+		/* ODM_COMP_COMMON */
 		if (*((u8*)value))
 			odm->DebugComponents |= (ODM_COMP_DIG |ODM_COMP_FA_CNT);
 		else
@@ -830,31 +825,31 @@ SetHalDefVar(_adapter *adapter, HAL_DEF_VARIABLE variable, void *value)
 		u8 dm_func = *((u8*)value);
 		struct dm_priv *dm = &hal_data->dmpriv;
 
-		if (dm_func == 0){ //disable all dynamic func
+		if (dm_func == 0){ /* disable all dynamic func */
 			odm->SupportAbility = DYNAMIC_FUNC_DISABLE;
 			DBG_8192C("==> Disable all dynamic function...\n");
 		}
-		else if (dm_func == 1){//disable DIG
+		else if (dm_func == 1){/* disable DIG */
 			odm->SupportAbility  &= (~DYNAMIC_BB_DIG);
 			DBG_8192C("==> Disable DIG...\n");
 		}
-		else if (dm_func == 2){//disable High power
+		else if (dm_func == 2){/* disable High power */
 			odm->SupportAbility  &= (~DYNAMIC_BB_DYNAMIC_TXPWR);
 		}
-		else if (dm_func == 3){//disable tx power tracking
+		else if (dm_func == 3){/* disable tx power tracking */
 			odm->SupportAbility  &= (~DYNAMIC_RF_CALIBRATION);
 			DBG_8192C("==> Disable tx power tracking...\n");
 		}
-		else if (dm_func == 4){//disable BT coexistence
+		else if (dm_func == 4){/* disable BT coexistence */
 			dm->DMFlag &= (~DYNAMIC_FUNC_BT);
 		}
-		else if (dm_func == 5){//disable antenna diversity
+		else if (dm_func == 5){/* disable antenna diversity */
 			odm->SupportAbility  &= (~DYNAMIC_BB_ANT_DIV);
 		}
-		else if (dm_func == 6){//turn on all dynamic func
+		else if (dm_func == 6){/* turn on all dynamic func */
 			if (!(odm->SupportAbility  & DYNAMIC_BB_DIG)) {
 				DIG_T	*pDigTable = &odm->DM_DigTable;
-				pDigTable->CurIGValue= rtw_read8(adapter, 0xc50);
+				pDigTable->CurIGValue = rtw_read8(adapter, 0xc50);
 			}
 			dm->DMFlag |= DYNAMIC_FUNC_BT;
 			odm->SupportAbility = DYNAMIC_ALL_FUNC_ENABLE;
@@ -951,12 +946,12 @@ void GetHalODMVar(
 			*(s16 *)pValue2 = pHalData->noise[chan];
 			#ifdef DBG_NOISE_MONITOR
 			DBG_8192C("### Noise monitor chan(%d)-noise:%d (dBm) ###\n",
-				chan,pHalData->noise[chan]);
+				chan, pHalData->noise[chan]);
 			#endif
 
 		}
 		break;
-#endif//#ifdef CONFIG_BACKGROUND_NOISE_MONITOR
+#endif/* ifdef CONFIG_BACKGROUND_NOISE_MONITOR */
 	default:
 		break;
 	}
@@ -970,29 +965,29 @@ void SetHalODMVar(
 {
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
 	PDM_ODM_T podmpriv = &pHalData->odmpriv;
-	//_irqL irqL;
+	/* _irqL irqL; */
 	switch (eVariable){
 		case HAL_ODM_STA_INFO:
 			{
 				struct sta_info *psta = (struct sta_info *)pValue1;
 				if (bSet){
-					DBG_8192C("### Set STA_(%d) info ###\n",psta->mac_id);
-					ODM_CmnInfoPtrArrayHook(podmpriv, ODM_CMNINFO_STA_STATUS,psta->mac_id,psta);
+					DBG_8192C("### Set STA_(%d) info ###\n", psta->mac_id);
+					ODM_CmnInfoPtrArrayHook(podmpriv, ODM_CMNINFO_STA_STATUS, psta->mac_id, psta);
 				}
 				else{
-					DBG_8192C("### Clean STA_(%d) info ###\n",psta->mac_id);
-					//spin_lock_bh(&pHalData->odm_stainfo_lock);
-					ODM_CmnInfoPtrArrayHook(podmpriv, ODM_CMNINFO_STA_STATUS,psta->mac_id,NULL);
+					DBG_8192C("### Clean STA_(%d) info ###\n", psta->mac_id);
+					/* spin_lock_bh(&pHalData->odm_stainfo_lock); */
+					ODM_CmnInfoPtrArrayHook(podmpriv, ODM_CMNINFO_STA_STATUS, psta->mac_id, NULL);
 
-					//spin_unlock_bh(&pHalData->odm_stainfo_lock);
+					/* spin_unlock_bh(&pHalData->odm_stainfo_lock); */
 			            }
 			}
 			break;
 		case HAL_ODM_P2P_STATE:
-				ODM_CmnInfoUpdate(podmpriv,ODM_CMNINFO_WIFI_DIRECT,bSet);
+				ODM_CmnInfoUpdate(podmpriv, ODM_CMNINFO_WIFI_DIRECT, bSet);
 			break;
 		case HAL_ODM_WIFI_DISPLAY_STATE:
-				ODM_CmnInfoUpdate(podmpriv,ODM_CMNINFO_WIFI_DISPLAY,bSet);
+				ODM_CmnInfoUpdate(podmpriv, ODM_CMNINFO_WIFI_DISPLAY, bSet);
 			break;
 		#if defined(CONFIG_SIGNAL_DISPLAY_DBM) && defined(CONFIG_BACKGROUND_NOISE_MONITOR)
 		case HAL_ODM_NOISE_MONITOR:
@@ -1000,12 +995,12 @@ void SetHalODMVar(
 				struct noise_info *pinfo = (struct noise_info *)pValue1;
 
 				#ifdef DBG_NOISE_MONITOR
-				DBG_8192C("### Noise monitor chan(%d)-bPauseDIG:%d,IGIValue:0x%02x,max_time:%d (ms) ###\n",
-					pinfo->chan,pinfo->bPauseDIG,pinfo->IGIValue,pinfo->max_time);
+				DBG_8192C("### Noise monitor chan(%d)-bPauseDIG:%d, IGIValue:0x%02x, max_time:%d (ms) ###\n",
+					pinfo->chan, pinfo->bPauseDIG, pinfo->IGIValue, pinfo->max_time);
 				#endif
 
-				pHalData->noise[pinfo->chan] = ODM_InbandNoise_Monitor(podmpriv,pinfo->bPauseDIG,pinfo->IGIValue,pinfo->max_time);
-				DBG_871X("chan_%d, noise = %d (dBm)\n",pinfo->chan,pHalData->noise[pinfo->chan]);
+				pHalData->noise[pinfo->chan] = ODM_InbandNoise_Monitor(podmpriv, pinfo->bPauseDIG, pinfo->IGIValue, pinfo->max_time);
+				DBG_871X("chan_%d, noise = %d (dBm)\n", pinfo->chan, pHalData->noise[pinfo->chan]);
 				#ifdef DBG_NOISE_MONITOR
 				DBG_871X("noise_a = %d, noise_b = %d  noise_all:%d \n",
 					podmpriv->noise_level.noise[ODM_RF_PATH_A],
@@ -1014,7 +1009,7 @@ void SetHalODMVar(
 				#endif
 			}
 			break;
-		#endif//#ifdef CONFIG_BACKGROUND_NOISE_MONITOR
+		#endif/* ifdef CONFIG_BACKGROUND_NOISE_MONITOR */
 
 		default:
 			break;
@@ -1029,7 +1024,7 @@ eqNByte(
 	u32	num
 	)
 {
-	if (num==0)
+	if (num ==0)
 		return false;
 	while (num>0)
 	{
@@ -1040,12 +1035,12 @@ eqNByte(
 	return true;
 }
 
-//
-//	Description:
-//		Return true if chTmp is represent for hex digit and
-//		false otherwise.
-//
-//
+/*  */
+/* 	Description: */
+/* 		Return true if chTmp is represent for hex digit and */
+/* 		false otherwise. */
+/*  */
+/*  */
 bool
 IsHexDigit(
 	IN		char		chTmp
@@ -1064,10 +1059,10 @@ IsHexDigit(
 }
 
 
-//
-//	Description:
-//		Translate a character to hex digit.
-//
+/*  */
+/* 	Description: */
+/* 		Translate a character to hex digit. */
+/*  */
 u32
 MapCharToHexDigit(
 	IN		char		chTmp
@@ -1085,10 +1080,10 @@ MapCharToHexDigit(
 
 
 
-//
-//	Description:
-//		Parse hex number from the string pucStr.
-//
+/*  */
+/* 	Description: */
+/* 		Parse hex number from the string pucStr. */
+/*  */
 bool
 GetHexValueFromString(
 	IN		char*			szStr,
@@ -1098,18 +1093,18 @@ GetHexValueFromString(
 {
 	char*		szScan = szStr;
 
-	// Check input parameter.
+	/*  Check input parameter. */
 	if (szStr == NULL || pu4bVal == NULL || pu4bMove == NULL)
 	{
 		DBG_871X("GetHexValueFromString(): Invalid inpur argumetns! szStr: %p, pu4bVal: %p, pu4bMove: %p\n", szStr, pu4bVal, pu4bMove);
 		return false;
 	}
 
-	// Initialize output.
+	/*  Initialize output. */
 	*pu4bMove = 0;
 	*pu4bVal = 0;
 
-	// Skip leading space.
+	/*  Skip leading space. */
 	while (	*szScan != '\0' &&
 			(*szScan == ' ' || *szScan == '\t') )
 	{
@@ -1117,21 +1112,21 @@ GetHexValueFromString(
 		(*pu4bMove)++;
 	}
 
-	// Skip leading '0x' or '0X'.
+	/*  Skip leading '0x' or '0X'. */
 	if (*szScan == '0' && (*(szScan+1) == 'x' || *(szScan+1) == 'X'))
 	{
 		szScan += 2;
 		(*pu4bMove) += 2;
 	}
 
-	// Check if szScan is now pointer to a character for hex digit,
-	// if not, it means this is not a valid hex number.
+	/*  Check if szScan is now pointer to a character for hex digit, */
+	/*  if not, it means this is not a valid hex number. */
 	if (!IsHexDigit(*szScan))
 	{
 		return false;
 	}
 
-	// Parse each digit.
+	/*  Parse each digit. */
 	do
 	{
 		(*pu4bVal) <<= 4;
@@ -1154,18 +1149,18 @@ GetFractionValueFromString(
 {
 	char	*szScan = szStr;
 
-	// Initialize output.
+	/*  Initialize output. */
 	*pu4bMove = 0;
 	*pInteger = 0;
 	*pFraction = 0;
 
-	// Skip leading space.
+	/*  Skip leading space. */
 	while (	*szScan != '\0' &&	(*szScan == ' ' || *szScan == '\t') ) {
 		++szScan;
 		++(*pu4bMove);
 	}
 
-	// Parse each digit.
+	/*  Parse each digit. */
 	do {
 		(*pInteger) *= 10;
 		*pInteger += ( *szScan - '0' );
@@ -1192,10 +1187,10 @@ GetFractionValueFromString(
 	return true;
 }
 
-//
-//	Description:
-//		Return true if szStr is comment out with leading "//".
-//
+/*  */
+/* 	Description: */
+/* 		Return true if szStr is comment out with leading "//". */
+/*  */
 bool
 IsCommentString(
 	IN		char			*szStr
@@ -1237,9 +1232,9 @@ GetU1ByteIntegerFromStringInDecimal(
 	return true;
 }
 
-// <20121004, Kordan> For example,
-// ParseQualifiedString(inString, 0, outString, '[', ']') gets "Kordan" from a string "Hello [Kordan]".
-// If RightQualifier does not exist, it will hang on in the while loop
+/*  <20121004, Kordan> For example, */
+/*  ParseQualifiedString(inString, 0, outString, '[', ']') gets "Kordan" from a string "Hello [Kordan]". */
+/*  If RightQualifier does not exist, it will hang on in the while loop */
 bool
 ParseQualifiedString(
     IN		char*	In,
@@ -1257,7 +1252,7 @@ ParseQualifiedString(
 
 	i = (*Start);
 	while ((c = In[(*Start)++]) != RightQualifier)
-		; // find ']'
+		; /*  find ']' */
 	j = (*Start) - 2;
 	strncpy((char *)Out, (const char*)(In+i), j-i+1);
 
@@ -1288,38 +1283,38 @@ void rtw_hal_check_rxfifo_full(_adapter *adapter)
 {
 	struct dvobj_priv *psdpriv = adapter->dvobj;
 	struct debug_priv *pdbgpriv = &psdpriv->drv_dbg;
-	int save_cnt=false;
+	int save_cnt =false;
 
-	//switch counter to RX fifo
-	//printk("8723b or 8192e , MAC_667 set 0xf0\n");
+	/* switch counter to RX fifo */
+	/* printk("8723b or 8192e , MAC_667 set 0xf0\n"); */
 	rtw_write8(adapter, REG_RXERR_RPT+3, rtw_read8(adapter, REG_RXERR_RPT+3)|0xf0);
 	save_cnt = true;
-	//todo: other chips
+	/* todo: other chips */
 
 	if (save_cnt)
 	{
-		//rtw_write8(adapter, REG_RXERR_RPT+3, rtw_read8(adapter, REG_RXERR_RPT+3)|0xa0);
+		/* rtw_write8(adapter, REG_RXERR_RPT+3, rtw_read8(adapter, REG_RXERR_RPT+3)|0xa0); */
 		pdbgpriv->dbg_rx_fifo_last_overflow = pdbgpriv->dbg_rx_fifo_curr_overflow;
 		pdbgpriv->dbg_rx_fifo_curr_overflow = rtw_read16(adapter, REG_RXERR_RPT);
 		pdbgpriv->dbg_rx_fifo_diff_overflow = pdbgpriv->dbg_rx_fifo_curr_overflow-pdbgpriv->dbg_rx_fifo_last_overflow;
 	}
 }
 
-void linked_info_dump(_adapter *padapter,u8 benable)
+void linked_info_dump(_adapter *padapter, u8 benable)
 {
 	struct pwrctrl_priv *pwrctrlpriv = adapter_to_pwrctl(padapter);
 
 	if (padapter->bLinkInfoDump == benable)
 		return;
 
-	DBG_871X("%s %s \n",__FUNCTION__,(benable)?"enable":"disable");
+	DBG_871X("%s %s \n", __FUNCTION__, (benable)?"enable":"disable");
 
 	if (benable){
-		pwrctrlpriv->org_power_mgnt = pwrctrlpriv->power_mgnt;//keep org value
-		rtw_pm_set_lps(padapter,PS_MODE_ACTIVE);
+		pwrctrlpriv->org_power_mgnt = pwrctrlpriv->power_mgnt;/* keep org value */
+		rtw_pm_set_lps(padapter, PS_MODE_ACTIVE);
 
-		pwrctrlpriv->ips_org_mode = pwrctrlpriv->ips_mode;//keep org value
-		rtw_pm_set_ips(padapter,IPS_NONE);
+		pwrctrlpriv->ips_org_mode = pwrctrlpriv->ips_mode;/* keep org value */
+		rtw_pm_set_ips(padapter, IPS_NONE);
 	}
 	else{
 		rtw_pm_set_ips(padapter, pwrctrlpriv->ips_org_mode);
@@ -1332,7 +1327,7 @@ void linked_info_dump(_adapter *padapter,u8 benable)
 #ifdef DBG_RX_SIGNAL_DISPLAY_RAW_DATA
 void rtw_get_raw_rssi_info(void *sel, _adapter *padapter)
 {
-	u8 isCCKrate,rf_path;
+	u8 isCCKrate, rf_path;
 	PHAL_DATA_TYPE	pHalData =  GET_HAL_DATA(padapter);
 	struct rx_raw_rssi *psample_pkt_rssi = &padapter->recvpriv.raw_rssi_info;
 
@@ -1345,19 +1340,19 @@ void rtw_get_raw_rssi_info(void *sel, _adapter *padapter)
 
 	for (rf_path = 0;rf_path<pHalData->NumTotalRFPath;rf_path++)
 	{
-		DBG_871X_SEL_NL(sel,"RF_PATH_%d=>singal_strength:%d(%%),singal_quality:%d(%%)\n"
-			,rf_path,psample_pkt_rssi->mimo_singal_strength[rf_path],psample_pkt_rssi->mimo_singal_quality[rf_path]);
+		DBG_871X_SEL_NL(sel,"RF_PATH_%d =>singal_strength:%d(%%), singal_quality:%d(%%)\n"
+			, rf_path, psample_pkt_rssi->mimo_singal_strength[rf_path], psample_pkt_rssi->mimo_singal_quality[rf_path]);
 
 		if (!isCCKrate){
-			DBG_871X_SEL_NL(sel,"\trx_ofdm_pwr:%d(dBm),rx_ofdm_snr:%d(dB)\n",
-			psample_pkt_rssi->ofdm_pwr[rf_path],psample_pkt_rssi->ofdm_snr[rf_path]);
+			DBG_871X_SEL_NL(sel,"\trx_ofdm_pwr:%d(dBm), rx_ofdm_snr:%d(dB)\n",
+			psample_pkt_rssi->ofdm_pwr[rf_path], psample_pkt_rssi->ofdm_snr[rf_path]);
 		}
 	}
 }
 
 void rtw_dump_raw_rssi_info(_adapter *padapter)
 {
-	u8 isCCKrate,rf_path;
+	u8 isCCKrate, rf_path;
 	PHAL_DATA_TYPE	pHalData =  GET_HAL_DATA(padapter);
 	struct rx_raw_rssi *psample_pkt_rssi = &padapter->recvpriv.raw_rssi_info;
 	DBG_871X("============ RAW Rx Info dump ===================\n");
@@ -1371,12 +1366,12 @@ void rtw_dump_raw_rssi_info(_adapter *padapter)
 
 	for (rf_path = 0;rf_path<pHalData->NumTotalRFPath;rf_path++)
 	{
-		DBG_871X("RF_PATH_%d=>singal_strength:%d(%%),singal_quality:%d(%%)"
-			,rf_path,psample_pkt_rssi->mimo_singal_strength[rf_path],psample_pkt_rssi->mimo_singal_quality[rf_path]);
+		DBG_871X("RF_PATH_%d =>singal_strength:%d(%%), singal_quality:%d(%%)"
+			, rf_path, psample_pkt_rssi->mimo_singal_strength[rf_path], psample_pkt_rssi->mimo_singal_quality[rf_path]);
 
 		if (!isCCKrate){
-			printk(",rx_ofdm_pwr:%d(dBm),rx_ofdm_snr:%d(dB)\n",
-			psample_pkt_rssi->ofdm_pwr[rf_path],psample_pkt_rssi->ofdm_snr[rf_path]);
+			printk(", rx_ofdm_pwr:%d(dBm), rx_ofdm_snr:%d(dB)\n",
+			psample_pkt_rssi->ofdm_pwr[rf_path], psample_pkt_rssi->ofdm_snr[rf_path]);
 		}else{
 			printk("\n");
 		}
@@ -1385,7 +1380,7 @@ void rtw_dump_raw_rssi_info(_adapter *padapter)
 
 void rtw_store_phy_info(_adapter *padapter, union recv_frame *prframe)
 {
-	u8 isCCKrate,rf_path;
+	u8 isCCKrate, rf_path;
 	PHAL_DATA_TYPE	pHalData =  GET_HAL_DATA(padapter);
 	struct rx_pkt_attrib *pattrib = &prframe->u.hdr.attrib;
 
@@ -1411,57 +1406,57 @@ void rtw_store_phy_info(_adapter *padapter, union recv_frame *prframe)
 #endif
 
 static u32 Array_kfreemap[] = {
-0xf8,0xe,
-0xf6,0xc,
-0xf4,0xa,
-0xf2,0x8,
-0xf0,0x6,
-0xf3,0x4,
-0xf5,0x2,
-0xf7,0x0,
-0xf9,0x0,
-0xfc,0x0,
+0xf8, 0xe,
+0xf6, 0xc,
+0xf4, 0xa,
+0xf2, 0x8,
+0xf0, 0x6,
+0xf3, 0x4,
+0xf5, 0x2,
+0xf7, 0x0,
+0xf9, 0x0,
+0xfc, 0x0,
 };
 
 void rtw_bb_rf_gain_offset(_adapter *padapter)
 {
 	u8		value = padapter->eeprompriv.EEPROMRFGainOffset;
-	u32	res,i=0;
+	u32	res, i =0;
 	u4Byte	   ArrayLen    = sizeof(Array_kfreemap)/sizeof(u32);
 	pu4Byte    Array	   = Array_kfreemap;
-	u4Byte v1=0,v2=0,target=0;
-	//DBG_871X("+%s value: 0x%02x+\n", __func__, value);
+	u4Byte v1 =0, v2 =0, target =0;
+	/* DBG_871X("+%s value: 0x%02x+\n", __func__, value); */
 
 	if (value & BIT4) {
 		DBG_871X("Offset RF Gain.\n");
-		DBG_871X("Offset RF Gain.  padapter->eeprompriv.EEPROMRFGainVal=0x%x\n",padapter->eeprompriv.EEPROMRFGainVal);
+		DBG_871X("Offset RF Gain.  padapter->eeprompriv.EEPROMRFGainVal =0x%x\n", padapter->eeprompriv.EEPROMRFGainVal);
 		if (padapter->eeprompriv.EEPROMRFGainVal != 0xff){
 			res = rtw_hal_read_rfreg(padapter, RF_PATH_A, 0x7f, 0xffffffff);
 			res &= 0xfff87fff;
-			DBG_871X("Offset RF Gain. before reg 0x7f=0x%08x\n",res);
-			//res &= 0xfff87fff;
+			DBG_871X("Offset RF Gain. before reg 0x7f =0x%08x\n", res);
+			/* res &= 0xfff87fff; */
 			for (i = 0; i < ArrayLen; i += 2 )
 			{
 				v1 = Array[i];
 				v2 = Array[i+1];
 				 if ( v1 == padapter->eeprompriv.EEPROMRFGainVal )
 				 {
-						DBG_871X("Offset RF Gain. got v1 =0x%x ,v2 =0x%x \n",v1,v2);
-						target=v2;
+						DBG_871X("Offset RF Gain. got v1 =0x%x , v2 =0x%x \n", v1, v2);
+						target =v2;
 						break;
 				 }
 			}
-			DBG_871X("padapter->eeprompriv.EEPROMRFGainVal=0x%x ,Gain offset Target Value=0x%x\n",padapter->eeprompriv.EEPROMRFGainVal,target);
+			DBG_871X("padapter->eeprompriv.EEPROMRFGainVal =0x%x , Gain offset Target Value =0x%x\n", padapter->eeprompriv.EEPROMRFGainVal, target);
 			PHY_SetRFReg(padapter, RF_PATH_A, REG_RF_BB_GAIN_OFFSET, BIT18|BIT17|BIT16|BIT15, target);
 
-			//res |= (padapter->eeprompriv.EEPROMRFGainVal & 0x0f)<< 15;
-			//rtw_hal_write_rfreg(padapter, RF_PATH_A, REG_RF_BB_GAIN_OFFSET, RF_GAIN_OFFSET_MASK, res);
+			/* res |= (padapter->eeprompriv.EEPROMRFGainVal & 0x0f)<< 15; */
+			/* rtw_hal_write_rfreg(padapter, RF_PATH_A, REG_RF_BB_GAIN_OFFSET, RF_GAIN_OFFSET_MASK, res); */
 			res = rtw_hal_read_rfreg(padapter, RF_PATH_A, 0x7f, 0xffffffff);
-			DBG_871X("Offset RF Gain. After reg 0x7f=0x%08x\n",res);
+			DBG_871X("Offset RF Gain. After reg 0x7f =0x%08x\n", res);
 		}
 		else
 		{
-			DBG_871X("Offset RF Gain.  padapter->eeprompriv.EEPROMRFGainVal=0x%x	!= 0xff, didn't run Kfree\n",padapter->eeprompriv.EEPROMRFGainVal);
+			DBG_871X("Offset RF Gain.  padapter->eeprompriv.EEPROMRFGainVal =0x%x	!= 0xff, didn't run Kfree\n", padapter->eeprompriv.EEPROMRFGainVal);
 		}
 	} else {
 		DBG_871X("Using the default RF gain.\n");

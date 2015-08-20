@@ -11,14 +11,8 @@
 * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
 * more details.
 *
-* You should have received a copy of the GNU General Public License along with
-* this program; if not, write to the Free Software Foundation, Inc.,
-* 51 Franklin Street, Fifth Floor, Boston, MA 02110, USA
-*
-*
 ******************************************************************************/
 
-//#include "Mp_Precomp.h"
 #include "odm_precomp.h"
 
 #ifdef CONFIG_AP_WOWLAN
@@ -1593,7 +1587,7 @@ ODM_ReadFirmware_MP_8723B_FW_BT(
 }
 
 
-// v27.01 20140429 by Isaachsu <isaachsu@realtek.com>
+/*  v27.01 20140429 by Isaachsu <isaachsu@realtek.com> */
 static u1Byte Array_MP_8723B_FW_NIC[] = {
 0x01, 0x53, 0x10, 0x00, 0x1B, 0x00, 0x01, 0x00, 0x04, 0x29, 0x13, 0x45, 0x38, 0x78, 0x00, 0x00,
 0xD1, 0x11, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -3537,7 +3531,7 @@ ODM_ReadFirmware_MP_8723B_FW_NIC(
 	*pFirmwareSize = ArrayLength_MP_8723B_FW_NIC;
 }
 
-// v27.01 20140429 by Isaachsu <isaachsu@realtek.com>
+/*  v27.01 20140429 by Isaachsu <isaachsu@realtek.com> */
 static u1Byte Array_MP_8723B_FW_WoWLAN[] = {
 0x01, 0x53, 0x30, 0x00, 0x1B, 0x00, 0x01, 0x00, 0x04, 0x29, 0x13, 0x46, 0x2C, 0x6C, 0x00, 0x00,
 0xD1, 0x11, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,

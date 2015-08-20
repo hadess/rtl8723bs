@@ -11,24 +11,20 @@
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
  * more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110, USA
- *
  *******************************************************************************/
 #define _SDIO_OPS_C_
 
 #include <rtl8723b_hal.h>
 
-//#define SDIO_DEBUG_IO 1
+/* define SDIO_DEBUG_IO 1 */
 
 
-//
-// Description:
-//	The following mapping is for SDIO host local register space.
-//
-// Creadted by Roger, 2011.01.31.
-//
+/*  */
+/*  Description: */
+/* 	The following mapping is for SDIO host local register space. */
+/*  */
+/*  Creadted by Roger, 2011.01.31. */
+/*  */
 static void HalSdioGetCmdAddr8723BSdio(
 	IN	PADAPTER			padapter,
 	IN	u8				DeviceID,
@@ -84,9 +80,9 @@ static u8 get_deviceid(u32 addr)
 			devideId = WLAN_IOREG_DEVICE_ID;
 			break;
 
-//		case 0x1027:
-//			devideId = SDIO_FIRMWARE_FIFO;
-//			break;
+/* 		case 0x1027: */
+/* 			devideId = SDIO_FIRMWARE_FIFO; */
+/* 			break; */
 
 		case 0x1031:
 			devideId = WLAN_TX_HIQ_DEVICE_ID;
@@ -105,7 +101,7 @@ static u8 get_deviceid(u32 addr)
 			break;
 
 		default:
-//			devideId = (u8)((addr >> 13) & 0xF);
+/* 			devideId = (u8)((addr >> 13) & 0xF); */
 			devideId = WLAN_IOREG_DEVICE_ID;
 			break;
 	}
@@ -208,12 +204,12 @@ static u32 sdio_read32(struct intf_hdl *pintfhdl, u32 addr)
 #ifdef SDIO_DEBUG_IO
 		}
 
-		DBG_8192C(KERN_ERR "%s: Mac Power off, Read FAIL(%d)! addr=0x%x\n", __func__, err, addr);
+		DBG_8192C(KERN_ERR "%s: Mac Power off, Read FAIL(%d)! addr =0x%x\n", __func__, err, addr);
 		return SDIO_ERR_VAL32;
 #endif
 	}
 
-	// 4 bytes alignment
+	/*  4 bytes alignment */
 	shift = ftaddr & 0x3;
 	if (shift == 0) {
 		val = sd_read32(pintfhdl, ftaddr, NULL);
@@ -222,7 +218,7 @@ static u32 sdio_read32(struct intf_hdl *pintfhdl, u32 addr)
 
 		ptmpbuf = (u8*)rtw_malloc(8);
 		if (NULL == ptmpbuf) {
-			DBG_8192C(KERN_ERR "%s: Allocate memory FAIL!(size=8) addr=0x%x\n", __func__, addr);
+			DBG_8192C(KERN_ERR "%s: Allocate memory FAIL!(size =8) addr =0x%x\n", __func__, addr);
 			return SDIO_ERR_VAL32;
 		}
 
@@ -260,7 +256,7 @@ static s32 sdio_readN(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, u8 *pbuf)
 		return err;
 	}
 
-	// 4 bytes alignment
+	/*  4 bytes alignment */
 	shift = ftaddr & 0x3;
 	if (shift == 0) {
 		err = sd_read(pintfhdl, ftaddr, cnt, pbuf);
@@ -328,7 +324,7 @@ static s32 sdio_write32(struct intf_hdl *pintfhdl, u32 addr, u32 val)
 		return err;
 	}
 
-	// 4 bytes alignment
+	/*  4 bytes alignment */
 	shift = ftaddr & 0x3;
 	if (shift == 0)
 	{
@@ -446,7 +442,7 @@ static u32 sdio_read_port(
 	oldcnt = cnt;
 	if (cnt > psdio->block_transfer_len)
 		cnt = _RND(cnt, psdio->block_transfer_len);
-//	cnt = sdio_align_size(cnt);
+/* 	cnt = sdio_align_size(cnt); */
 
 	if (oldcnt != cnt) {
 #ifdef SDIO_DYNAMIC_ALLOC_MEM
@@ -458,8 +454,8 @@ static u32 sdio_read_port(
 			oldmem == NULL;
 		}
 #else
-		// in this case, caller should gurante the buffer is big enough
-		// to receive data after alignment
+		/*  in this case, caller should gurante the buffer is big enough */
+		/*  to receive data after alignment */
 #endif
 	}
 
@@ -507,7 +503,7 @@ static u32 sdio_write_port(
 	psdio = &adapter_to_dvobj(padapter)->intf_data;
 
 	if (padapter->hw_init_completed == false) {
-		DBG_871X("%s [addr=0x%x cnt=%d] padapter->hw_init_completed == false\n",__func__,addr,cnt);
+		DBG_871X("%s [addr =0x%x cnt =%d] padapter->hw_init_completed == false\n", __func__, addr, cnt);
 		return _FAIL;
 	}
 
@@ -516,7 +512,7 @@ static u32 sdio_write_port(
 
 	if (cnt > psdio->block_transfer_len)
 		cnt = _RND(cnt, psdio->block_transfer_len);
-//	cnt = sdio_align_size(cnt);
+/* 	cnt = sdio_align_size(cnt); */
 
 	err = sd_write(pintfhdl, addr, cnt, xmitbuf->pdata);
 
@@ -561,7 +557,7 @@ static s32 _sdio_local_read(
 	u32 n;
 
 
-	pintfhdl=&padapter->iopriv.intf;
+	pintfhdl =&padapter->iopriv.intf;
 
 	HalSdioGetCmdAddr8723BSdio(padapter, SDIO_LOCAL_DEVICE_ID, addr, &addr);
 
@@ -602,7 +598,7 @@ s32 sdio_local_read(
 	u8 *ptmpbuf;
 	u32 n;
 
-	pintfhdl=&padapter->iopriv.intf;
+	pintfhdl =&padapter->iopriv.intf;
 
 	HalSdioGetCmdAddr8723BSdio(padapter, SDIO_LOCAL_DEVICE_ID, addr, &addr);
 
@@ -649,7 +645,7 @@ s32 sdio_local_write(
 	if (cnt  & 0x3)
 		DBG_8192C("%s, size must be the multiple of 4 \n", __FUNCTION__);
 
-	pintfhdl=&padapter->iopriv.intf;
+	pintfhdl =&padapter->iopriv.intf;
 
 	HalSdioGetCmdAddr8723BSdio(padapter, SDIO_LOCAL_DEVICE_ID, addr, &addr);
 
@@ -677,7 +673,7 @@ s32 sdio_local_write(
 u8 SdioLocalCmd52Read1Byte(PADAPTER padapter, u32 addr)
 {
 	u8 val = 0;
-	struct intf_hdl * pintfhdl=&padapter->iopriv.intf;
+	struct intf_hdl * pintfhdl =&padapter->iopriv.intf;
 
 	HalSdioGetCmdAddr8723BSdio(padapter, SDIO_LOCAL_DEVICE_ID, addr, &addr);
 	sd_cmd52_read(pintfhdl, addr, 1, &val);
@@ -688,7 +684,7 @@ u8 SdioLocalCmd52Read1Byte(PADAPTER padapter, u32 addr)
 static u16 SdioLocalCmd52Read2Byte(PADAPTER padapter, u32 addr)
 {
 	__le16 val = 0;
-	struct intf_hdl * pintfhdl=&padapter->iopriv.intf;
+	struct intf_hdl * pintfhdl =&padapter->iopriv.intf;
 
 	HalSdioGetCmdAddr8723BSdio(padapter, SDIO_LOCAL_DEVICE_ID, addr, &addr);
 	sd_cmd52_read(pintfhdl, addr, 2, (u8*)&val);
@@ -701,7 +697,7 @@ static u32 SdioLocalCmd53Read4Byte(PADAPTER padapter, u32 addr)
 
 	u8 bMacPwrCtrlOn;
 	u32 val = 0;
-	struct intf_hdl * pintfhdl=&padapter->iopriv.intf;
+	struct intf_hdl * pintfhdl =&padapter->iopriv.intf;
 	__le32 le_tmp;
 
 	HalSdioGetCmdAddr8723BSdio(padapter, SDIO_LOCAL_DEVICE_ID, addr, &addr);
@@ -717,7 +713,7 @@ static u32 SdioLocalCmd53Read4Byte(PADAPTER padapter, u32 addr)
 
 void SdioLocalCmd52Write1Byte(PADAPTER padapter, u32 addr, u8 v)
 {
-	struct intf_hdl * pintfhdl=&padapter->iopriv.intf;
+	struct intf_hdl * pintfhdl =&padapter->iopriv.intf;
 
 	HalSdioGetCmdAddr8723BSdio(padapter, SDIO_LOCAL_DEVICE_ID, addr, &addr);
 	sd_cmd52_write(pintfhdl, addr, 1, &v);
@@ -725,7 +721,7 @@ void SdioLocalCmd52Write1Byte(PADAPTER padapter, u32 addr, u8 v)
 
 static void SdioLocalCmd52Write4Byte(PADAPTER padapter, u32 addr, u32 v)
 {
-	struct intf_hdl * pintfhdl=&padapter->iopriv.intf;
+	struct intf_hdl * pintfhdl =&padapter->iopriv.intf;
 	__le32 le_tmp;
 
 	HalSdioGetCmdAddr8723BSdio(padapter, SDIO_LOCAL_DEVICE_ID, addr, &addr);
@@ -744,7 +740,7 @@ static s32 ReadInterrupt8723BSdio(PADAPTER padapter, u32 *phisr)
 
 	himr = GET_HAL_DATA(padapter)->sdio_himr;
 
-	// decide how many bytes need to be read
+	/*  decide how many bytes need to be read */
 	hisr_len = 0;
 	while (himr)
 	{
@@ -765,15 +761,15 @@ static s32 ReadInterrupt8723BSdio(PADAPTER padapter, u32 *phisr)
 	return true;
 }
 
-//
-//	Description:
-//		Initialize SDIO Host Interrupt Mask configuration variables for future use.
-//
-//	Assumption:
-//		Using SDIO Local register ONLY for configuration.
-//
-//	Created by Roger, 2011.02.11.
-//
+/*  */
+/* 	Description: */
+/* 		Initialize SDIO Host Interrupt Mask configuration variables for future use. */
+/*  */
+/* 	Assumption: */
+/* 		Using SDIO Local register ONLY for configuration. */
+/*  */
+/* 	Created by Roger, 2011.02.11. */
+/*  */
 void InitInterrupt8723BSdio(PADAPTER padapter)
 {
 	PHAL_DATA_TYPE pHalData;
@@ -783,31 +779,31 @@ void InitInterrupt8723BSdio(PADAPTER padapter)
 	pHalData->sdio_himr = (u32)(			\
 								SDIO_HIMR_RX_REQUEST_MSK			|
 								SDIO_HIMR_AVAL_MSK					|
-//								SDIO_HIMR_TXERR_MSK				|
-//								SDIO_HIMR_RXERR_MSK				|
-//								SDIO_HIMR_TXFOVW_MSK				|
-//								SDIO_HIMR_RXFOVW_MSK				|
-//								SDIO_HIMR_TXBCNOK_MSK				|
-//								SDIO_HIMR_TXBCNERR_MSK			|
-//								SDIO_HIMR_BCNERLY_INT_MSK			|
-//								SDIO_HIMR_C2HCMD_MSK				|
-//								SDIO_HIMR_HSISR_IND_MSK			|
-//								SDIO_HIMR_GTINT3_IND_MSK			|
-//								SDIO_HIMR_GTINT4_IND_MSK			|
-//								SDIO_HIMR_PSTIMEOUT_MSK			|
-//								SDIO_HIMR_OCPINT_MSK				|
-//								SDIO_HIMR_ATIMEND_MSK				|
-//								SDIO_HIMR_ATIMEND_E_MSK			|
-//								SDIO_HIMR_CTWEND_MSK				|
+/* 								SDIO_HIMR_TXERR_MSK				| */
+/* 								SDIO_HIMR_RXERR_MSK				| */
+/* 								SDIO_HIMR_TXFOVW_MSK				| */
+/* 								SDIO_HIMR_RXFOVW_MSK				| */
+/* 								SDIO_HIMR_TXBCNOK_MSK				| */
+/* 								SDIO_HIMR_TXBCNERR_MSK			| */
+/* 								SDIO_HIMR_BCNERLY_INT_MSK			| */
+/* 								SDIO_HIMR_C2HCMD_MSK				| */
+/* 								SDIO_HIMR_HSISR_IND_MSK			| */
+/* 								SDIO_HIMR_GTINT3_IND_MSK			| */
+/* 								SDIO_HIMR_GTINT4_IND_MSK			| */
+/* 								SDIO_HIMR_PSTIMEOUT_MSK			| */
+/* 								SDIO_HIMR_OCPINT_MSK				| */
+/* 								SDIO_HIMR_ATIMEND_MSK				| */
+/* 								SDIO_HIMR_ATIMEND_E_MSK			| */
+/* 								SDIO_HIMR_CTWEND_MSK				| */
 								0);
 }
 
-//
-//	Description:
-//		Initialize System Host Interrupt Mask configuration variables for future use.
-//
-//	Created by Roger, 2011.08.03.
-//
+/*  */
+/* 	Description: */
+/* 		Initialize System Host Interrupt Mask configuration variables for future use. */
+/*  */
+/* 	Created by Roger, 2011.08.03. */
+/*  */
 void InitSysInterrupt8723BSdio(PADAPTER padapter)
 {
 	PHAL_DATA_TYPE pHalData;
@@ -816,24 +812,24 @@ void InitSysInterrupt8723BSdio(PADAPTER padapter)
 	pHalData = GET_HAL_DATA(padapter);
 
 	pHalData->SysIntrMask = (			\
-//							HSIMR_GPIO12_0_INT_EN			|
-//							HSIMR_SPS_OCP_INT_EN			|
-//							HSIMR_RON_INT_EN				|
-//							HSIMR_PDNINT_EN				|
-//							HSIMR_GPIO9_INT_EN				|
+/* 							HSIMR_GPIO12_0_INT_EN			| */
+/* 							HSIMR_SPS_OCP_INT_EN			| */
+/* 							HSIMR_RON_INT_EN				| */
+/* 							HSIMR_PDNINT_EN				| */
+/* 							HSIMR_GPIO9_INT_EN				| */
 							0);
 }
 
 #ifdef CONFIG_WOWLAN
-//
-//	Description:
-//		Clear corresponding SDIO Host ISR interrupt service.
-//
-//	Assumption:
-//		Using SDIO Local register ONLY for configuration.
-//
-//	Created by Roger, 2011.02.11.
-//
+/*  */
+/* 	Description: */
+/* 		Clear corresponding SDIO Host ISR interrupt service. */
+/*  */
+/* 	Assumption: */
+/* 		Using SDIO Local register ONLY for configuration. */
+/*  */
+/* 	Created by Roger, 2011.02.11. */
+/*  */
 void ClearInterrupt8723BSdio(PADAPTER padapter)
 {
 	PHAL_DATA_TYPE pHalData;
@@ -846,10 +842,10 @@ void ClearInterrupt8723BSdio(PADAPTER padapter)
 	pHalData = GET_HAL_DATA(padapter);
 	clear = rtw_zmalloc(4);
 
-	// Clear corresponding HISR Content if needed
+	/*  Clear corresponding HISR Content if needed */
 	*(__le32*)clear = cpu_to_le32(pHalData->sdio_hisr & MASK_SDIO_HISR_CLEAR);
 	if (*(__le32*)clear) {
-		// Perform write one clear operation
+		/*  Perform write one clear operation */
 		sdio_local_write(padapter, SDIO_REG_HISR, 4, clear);
 	}
 
@@ -857,16 +853,16 @@ void ClearInterrupt8723BSdio(PADAPTER padapter)
 }
 #endif
 
-//
-//	Description:
-//		Enalbe SDIO Host Interrupt Mask configuration on SDIO local domain.
-//
-//	Assumption:
-//		1. Using SDIO Local register ONLY for configuration.
-//		2. PASSIVE LEVEL
-//
-//	Created by Roger, 2011.02.11.
-//
+/*  */
+/* 	Description: */
+/* 		Enalbe SDIO Host Interrupt Mask configuration on SDIO local domain. */
+/*  */
+/* 	Assumption: */
+/* 		1. Using SDIO Local register ONLY for configuration. */
+/* 		2. PASSIVE LEVEL */
+/*  */
+/* 	Created by Roger, 2011.02.11. */
+/*  */
 void EnableInterrupt8723BSdio(PADAPTER padapter)
 {
 	PHAL_DATA_TYPE pHalData;
@@ -879,32 +875,32 @@ void EnableInterrupt8723BSdio(PADAPTER padapter)
 	sdio_local_write(padapter, SDIO_REG_HIMR, 4, (u8*)&himr);
 
 	RT_TRACE(_module_hci_ops_c_, _drv_notice_,
-		("%s: enable SDIO HIMR=0x%08X\n", __FUNCTION__, pHalData->sdio_himr));
+		("%s: enable SDIO HIMR =0x%08X\n", __FUNCTION__, pHalData->sdio_himr));
 
-	// Update current system IMR settings
+	/*  Update current system IMR settings */
 	tmp = rtw_read32(padapter, REG_HSIMR);
 	rtw_write32(padapter, REG_HSIMR, tmp | pHalData->SysIntrMask);
 
 	RT_TRACE(_module_hci_ops_c_, _drv_notice_,
-		("%s: enable HSIMR=0x%08X\n", __FUNCTION__, pHalData->SysIntrMask));
+		("%s: enable HSIMR =0x%08X\n", __FUNCTION__, pHalData->SysIntrMask));
 
-	//
-	// <Roger_Notes> There are some C2H CMDs have been sent before system interrupt is enabled, e.g., C2H, CPWM.
-	// So we need to clear all C2H events that FW has notified, otherwise FW won't schedule any commands anymore.
-	// 2011.10.19.
-	//
+	/*  */
+	/*  <Roger_Notes> There are some C2H CMDs have been sent before system interrupt is enabled, e.g., C2H, CPWM. */
+	/*  So we need to clear all C2H events that FW has notified, otherwise FW won't schedule any commands anymore. */
+	/*  2011.10.19. */
+	/*  */
 	rtw_write8(padapter, REG_C2HEVT_CLEAR, C2H_EVT_HOST_CLOSE);
 }
 
-//
-//	Description:
-//		Disable SDIO Host IMR configuration to mask unnecessary interrupt service.
-//
-//	Assumption:
-//		Using SDIO Local register ONLY for configuration.
-//
-//	Created by Roger, 2011.02.11.
-//
+/*  */
+/* 	Description: */
+/* 		Disable SDIO Host IMR configuration to mask unnecessary interrupt service. */
+/*  */
+/* 	Assumption: */
+/* 		Using SDIO Local register ONLY for configuration. */
+/*  */
+/* 	Created by Roger, 2011.02.11. */
+/*  */
 void DisableInterrupt8723BSdio(PADAPTER padapter)
 {
 	__le32 himr;
@@ -913,19 +909,19 @@ void DisableInterrupt8723BSdio(PADAPTER padapter)
 	sdio_local_write(padapter, SDIO_REG_HIMR, 4, (u8*)&himr);
 }
 
-//
-//	Description:
-//		Using 0x100 to check the power status of FW.
-//
-//	Assumption:
-//		Using SDIO Local register ONLY for configuration.
-//
-//	Created by Isaac, 2013.09.10.
-//
+/*  */
+/* 	Description: */
+/* 		Using 0x100 to check the power status of FW. */
+/*  */
+/* 	Assumption: */
+/* 		Using SDIO Local register ONLY for configuration. */
+/*  */
+/* 	Created by Isaac, 2013.09.10. */
+/*  */
 u8 CheckIPSStatus(PADAPTER padapter)
 {
-	DBG_871X("%s(): Read 0x100=0x%02x 0x86=0x%02x\n", __func__,
-		rtw_read8(padapter, 0x100),rtw_read8(padapter, 0x86));
+	DBG_871X("%s(): Read 0x100 =0x%02x 0x86 =0x%02x\n", __func__,
+		rtw_read8(padapter, 0x100), rtw_read8(padapter, 0x86));
 
 	if (rtw_read8(padapter, 0x100) == 0xEA)
 		return true;
@@ -941,11 +937,11 @@ static struct recv_buf* sd_recv_rxfifo(PADAPTER padapter, u32 size)
 	struct recv_buf	*precvbuf;
 
 
-	// Patch for some SDIO Host 4 bytes issue
-	// ex. RK3188
+	/*  Patch for some SDIO Host 4 bytes issue */
+	/*  ex. RK3188 */
 	readsize = RND4(size);
 
-	//3 1. alloc recvbuf
+	/* 3 1. alloc recvbuf */
 	precvpriv = &padapter->recvpriv;
 	precvbuf = rtw_dequeue_recvbuf(&precvpriv->free_recv_buf_queue);
 	if (precvbuf == NULL) {
@@ -953,10 +949,10 @@ static struct recv_buf* sd_recv_rxfifo(PADAPTER padapter, u32 size)
 		return NULL;
 	}
 
-	//3 2. alloc skb
+	/* 3 2. alloc skb */
 	if (precvbuf->pskb == NULL) {
-		SIZE_PTR tmpaddr=0;
-		SIZE_PTR alignment=0;
+		SIZE_PTR tmpaddr =0;
+		SIZE_PTR alignment =0;
 
 		precvbuf->pskb = rtw_skb_alloc(MAX_RECVBUF_SZ + RECVBUFF_ALIGN_SZ);
 
@@ -970,12 +966,12 @@ static struct recv_buf* sd_recv_rxfifo(PADAPTER padapter, u32 size)
 		}
 
 		if (precvbuf->pskb == NULL) {
-			DBG_871X("%s: alloc_skb fail! read=%d\n", __FUNCTION__, readsize);
+			DBG_871X("%s: alloc_skb fail! read =%d\n", __FUNCTION__, readsize);
 			return NULL;
 		}
 	}
 
-	//3 3. read data from rxfifo
+	/* 3 3. read data from rxfifo */
 	preadbuf = precvbuf->pskb->data;
 	ret = sdio_read_port(&padapter->iopriv.intf, WLAN_RX0FF_DEVICE_ID, readsize, preadbuf);
 	if (ret == _FAIL) {
@@ -984,7 +980,7 @@ static struct recv_buf* sd_recv_rxfifo(PADAPTER padapter, u32 size)
 	}
 
 
-	//3 4. init recvbuf
+	/* 3 4. init recvbuf */
 	precvbuf->len = size;
 	precvbuf->phead = precvbuf->pskb->head;
 	precvbuf->pdata = precvbuf->pskb->data;
@@ -1004,10 +1000,10 @@ static void sd_rxhandler(PADAPTER padapter, struct recv_buf *precvbuf)
 	precvpriv = &padapter->recvpriv;
 	ppending_queue = &precvpriv->recv_buf_pending_queue;
 
-	//3 1. enqueue recvbuf
+	/* 3 1. enqueue recvbuf */
 	rtw_enqueue_recvbuf(precvbuf, ppending_queue);
 
-	//3 2. schedule tasklet
+	/* 3 2. schedule tasklet */
 	tasklet_schedule(&precvpriv->recv_tasklet);
 }
 
@@ -1015,7 +1011,7 @@ void sd_int_dpc(PADAPTER padapter)
 {
 	PHAL_DATA_TYPE phal;
 	struct dvobj_priv *dvobj;
-	struct intf_hdl * pintfhdl=&padapter->iopriv.intf;
+	struct intf_hdl * pintfhdl =&padapter->iopriv.intf;
 	struct pwrctrl_priv *pwrctl;
 
 
@@ -1025,18 +1021,9 @@ void sd_int_dpc(PADAPTER padapter)
 
 	if (phal->sdio_hisr & SDIO_HISR_AVAL)
 	{
-		//_irqL irql;
 		u8	freepage[4];
 
 		_sdio_local_read(padapter, SDIO_REG_FREE_TXPG, 4, freepage);
-		//spin_lock_bh(&phal->SdioTxFIFOFreePageLock);
-		//memcpy(phal->SdioTxFIFOFreePage, freepage, 4);
-		//spin_unlock_bh(&phal->SdioTxFIFOFreePageLock);
-		//DBG_871X("SDIO_HISR_AVAL, Tx Free Page = 0x%x%x%x%x\n",
-		//	freepage[0],
-		//	freepage[1],
-		//	freepage[2],
-		//	freepage[3]);
 		up(&(padapter->xmitpriv.xmit_sema));
 	}
 	if (phal->sdio_hisr & SDIO_HISR_CPWM1)
@@ -1048,7 +1035,7 @@ void sd_int_dpc(PADAPTER padapter)
 
 		report.state = SdioLocalCmd52Read1Byte(padapter, SDIO_REG_HCPWM1_8723B);
 
-		//cpwm_int_hdl(padapter, &report);
+		/* cpwm_int_hdl(padapter, &report); */
 		_set_workitem(&(pwrctl->cpwm_event));
 	}
 
@@ -1117,10 +1104,10 @@ void sd_int_dpc(PADAPTER padapter)
 	if (phal->sdio_hisr & SDIO_HISR_RX_REQUEST)
 	{
 		struct recv_buf *precvbuf;
-		int alloc_fail_time=0;
+		int alloc_fail_time =0;
 		u32 hisr;
 
-//		DBG_8192C("%s: RX Request, size=%d\n", __func__, phal->SdioRxFIFOSize);
+/* 		DBG_8192C("%s: RX Request, size =%d\n", __func__, phal->SdioRxFIFOSize); */
 		phal->sdio_hisr ^= SDIO_HISR_RX_REQUEST;
 		do {
 			phal->SdioRxFIFOSize = SdioLocalCmd52Read2Byte(padapter, SDIO_REG_RX0_REQ_LEN);
@@ -1148,7 +1135,7 @@ void sd_int_dpc(PADAPTER padapter)
 				break;
 		} while (1);
 
-		if (alloc_fail_time==10)
+		if (alloc_fail_time ==10)
 			DBG_871X("exit because alloc memory failed more than 10 times \n");
 
 	}
@@ -1174,7 +1161,7 @@ void sd_int_hdl(PADAPTER padapter)
 
 		phal->sdio_hisr &= phal->sdio_himr;
 
-		// clear HISR
+		/*  clear HISR */
 		v32 = phal->sdio_hisr & MASK_SDIO_HISR_CLEAR;
 		if (v32) {
 			SdioLocalCmd52Write4Byte(padapter, SDIO_REG_HISR, v32);
@@ -1188,45 +1175,45 @@ void sd_int_hdl(PADAPTER padapter)
 	}
 }
 
-//
-//	Description:
-//		Query SDIO Local register to query current the number of Free TxPacketBuffer page.
-//
-//	Assumption:
-//		1. Running at PASSIVE_LEVEL
-//		2. RT_TX_SPINLOCK is NOT acquired.
-//
-//	Created by Roger, 2011.01.28.
-//
+/*  */
+/* 	Description: */
+/* 		Query SDIO Local register to query current the number of Free TxPacketBuffer page. */
+/*  */
+/* 	Assumption: */
+/* 		1. Running at PASSIVE_LEVEL */
+/* 		2. RT_TX_SPINLOCK is NOT acquired. */
+/*  */
+/* 	Created by Roger, 2011.01.28. */
+/*  */
 u8 HalQueryTxBufferStatus8723BSdio(PADAPTER padapter)
 {
 	PHAL_DATA_TYPE phal;
 	u32 NumOfFreePage;
-	//_irqL irql;
+	/* _irqL irql; */
 
 
 	phal = GET_HAL_DATA(padapter);
 
 	NumOfFreePage = SdioLocalCmd53Read4Byte(padapter, SDIO_REG_FREE_TXPG);
 
-	//spin_lock_bh(&phal->SdioTxFIFOFreePageLock);
+	/* spin_lock_bh(&phal->SdioTxFIFOFreePageLock); */
 	memcpy(phal->SdioTxFIFOFreePage, &NumOfFreePage, 4);
 	RT_TRACE(_module_hci_ops_c_, _drv_notice_,
-			("%s: Free page for HIQ(%#x),MIDQ(%#x),LOWQ(%#x),PUBQ(%#x)\n",
+			("%s: Free page for HIQ(%#x), MIDQ(%#x), LOWQ(%#x), PUBQ(%#x)\n",
 			__FUNCTION__,
 			phal->SdioTxFIFOFreePage[HI_QUEUE_IDX],
 			phal->SdioTxFIFOFreePage[MID_QUEUE_IDX],
 			phal->SdioTxFIFOFreePage[LOW_QUEUE_IDX],
 			phal->SdioTxFIFOFreePage[PUBLIC_QUEUE_IDX]));
-	//spin_unlock_bh(&phal->SdioTxFIFOFreePageLock);
+	/* spin_unlock_bh(&phal->SdioTxFIFOFreePageLock); */
 
 	return true;
 }
 
-//
-//	Description:
-//		Query SDIO Local register to get the current number of TX OQT Free Space.
-//
+/*  */
+/* 	Description: */
+/* 		Query SDIO Local register to get the current number of TX OQT Free Space. */
+/*  */
 u8 HalQueryTxOQTBufferStatus8723BSdio(PADAPTER padapter)
 {
 	HAL_DATA_TYPE *pHalData = GET_HAL_DATA(padapter);
@@ -1260,7 +1247,7 @@ u8 RecvOnePkt(PADAPTER padapter, u32 size)
 		precvbuf = sd_recv_rxfifo(padapter, size);
 
 		if (precvbuf) {
-			//printk("Completed Recv One Pkt.\n");
+			/* printk("Completed Recv One Pkt.\n"); */
 			sd_rxhandler(padapter, precvbuf);
 			res = true;
 		}else{
@@ -1271,4 +1258,4 @@ u8 RecvOnePkt(PADAPTER padapter, u32 size)
 	DBG_871X("-%s-\n", __func__);
 	return res;
 }
-#endif //CONFIG_WOWLAN
+#endif /* CONFIG_WOWLAN */

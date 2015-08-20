@@ -11,11 +11,6 @@
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
  * more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110, USA
- *
- *
  ******************************************************************************/
 
 #include "odm_precomp.h"
@@ -36,13 +31,13 @@ odm_ConfigRFReg_8723B(
 	else
 	{
 		PHY_SetRFReg(pDM_Odm->Adapter, RF_PATH, RegAddr, bRFRegOffsetMask, Data);
-		// Add 1us delay between BB/RF register setting.
+		/*  Add 1us delay between BB/RF register setting. */
 		udelay(1);
 
-		//For disable/enable test in high temperature, the B6 value will fail to fill. Suggestion by BB Stanley, 2013.06.25.
+		/* For disable/enable test in high temperature, the B6 value will fail to fill. Suggestion by BB Stanley, 2013.06.25. */
 		if (Addr == 0xb6)
 		{
-			u4Byte getvalue=0;
+			u4Byte getvalue =0;
 			u1Byte	count =0;
 			getvalue = PHY_QueryRFReg(pDM_Odm->Adapter, RF_PATH, Addr, bMaskDWord);
 
@@ -54,7 +49,7 @@ odm_ConfigRFReg_8723B(
 				PHY_SetRFReg(pDM_Odm->Adapter, RF_PATH, RegAddr, bRFRegOffsetMask, Data);
 				udelay(1);
 				getvalue = PHY_QueryRFReg(pDM_Odm->Adapter, RF_PATH, Addr, bMaskDWord);
-				ODM_RT_TRACE(pDM_Odm,ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ConfigRFWithHeaderFile: [B6] getvalue 0x%x, Data 0x%x, count %d\n", getvalue, Data,count));
+				ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ConfigRFWithHeaderFile: [B6] getvalue 0x%x, Data 0x%x, count %d\n", getvalue, Data, count));
 				if (count>5)
 					break;
 			}
@@ -62,7 +57,7 @@ odm_ConfigRFReg_8723B(
 
 		if (Addr == 0xb2)
 		{
-			u4Byte getvalue=0;
+			u4Byte getvalue =0;
 			u1Byte	count =0;
 			getvalue = PHY_QueryRFReg(pDM_Odm->Adapter, RF_PATH, Addr, bMaskDWord);
 
@@ -73,11 +68,11 @@ odm_ConfigRFReg_8723B(
 				count++;
 				PHY_SetRFReg(pDM_Odm->Adapter, RF_PATH, RegAddr, bRFRegOffsetMask, Data);
 				udelay(1);
-				//Do LCK againg
+				/* Do LCK againg */
 				PHY_SetRFReg(pDM_Odm->Adapter, RF_PATH, 0x18, bRFRegOffsetMask, 0x0fc07);
 				udelay(1);
 				getvalue = PHY_QueryRFReg(pDM_Odm->Adapter, RF_PATH, Addr, bMaskDWord);
-				ODM_RT_TRACE(pDM_Odm,ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ConfigRFWithHeaderFile: [B2] getvalue 0x%x, Data 0x%x, count %d\n", getvalue, Data,count));
+				ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ConfigRFWithHeaderFile: [B2] getvalue 0x%x, Data 0x%x, count %d\n", getvalue, Data, count));
 				if (count>5)
 					break;
 			}
@@ -93,12 +88,12 @@ odm_ConfigRF_RadioA_8723B(
 	IN	u4Byte					Data
 	)
 {
-	u4Byte  content = 0x1000; // RF_Content: radioa_txt
-	u4Byte	maskforPhySet= (u4Byte)(content&0xE000);
+	u4Byte  content = 0x1000; /*  RF_Content: radioa_txt */
+	u4Byte	maskforPhySet = (u4Byte)(content&0xE000);
 
 	odm_ConfigRFReg_8723B(pDM_Odm, Addr, Data, ODM_RF_PATH_A, Addr|maskforPhySet);
 
-	ODM_RT_TRACE(pDM_Odm,ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ConfigRFWithHeaderFile: [RadioA] %08X %08X\n", Addr, Data));
+	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ConfigRFWithHeaderFile: [RadioA] %08X %08X\n", Addr, Data));
 }
 
 void
@@ -109,7 +104,7 @@ odm_ConfigMAC_8723B(
 	)
 {
 	rtw_write8(pDM_Odm->Adapter, Addr, Data);
-    ODM_RT_TRACE(pDM_Odm,ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ConfigMACWithHeaderFile: [MAC_REG] %08X %08X\n", Addr, Data));
+    ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ConfigMACWithHeaderFile: [MAC_REG] %08X %08X\n", Addr, Data));
 }
 
 void
@@ -121,10 +116,10 @@ odm_ConfigBB_AGC_8723B(
     )
 {
 	PHY_SetBBReg(pDM_Odm->Adapter, Addr, Bitmask, Data);
-	// Add 1us delay between BB/RF register setting.
+	/*  Add 1us delay between BB/RF register setting. */
 	udelay(1);
 
-    ODM_RT_TRACE(pDM_Odm,ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ConfigBBWithHeaderFile: [AGC_TAB] %08X %08X\n", Addr, Data));
+    ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ConfigBBWithHeaderFile: [AGC_TAB] %08X %08X\n", Addr, Data));
 }
 
 void
@@ -144,7 +139,7 @@ odm_ConfigBB_PHY_REG_PG_8723B(
     {
 	    PHY_StoreTxPowerByRate(pDM_Odm->Adapter, Band, RfPath, TxNum, Addr, Bitmask, Data);
     }
-	ODM_RT_TRACE(pDM_Odm,ODM_COMP_INIT, ODM_DBG_LOUD, ("===> ODM_ConfigBBWithHeaderFile: [PHY_REG] %08X %08X %08X\n", Addr, Bitmask, Data));
+	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_LOUD, ("===> ODM_ConfigBBWithHeaderFile: [PHY_REG] %08X %08X %08X\n", Addr, Bitmask, Data));
 }
 
 void
@@ -172,9 +167,9 @@ odm_ConfigBB_PHY_8723B(
 		PHY_SetBBReg(pDM_Odm->Adapter, Addr, Bitmask, Data);
 	}
 
-	// Add 1us delay between BB/RF register setting.
+	/*  Add 1us delay between BB/RF register setting. */
 	udelay(1);
-    ODM_RT_TRACE(pDM_Odm,ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ConfigBBWithHeaderFile: [PHY_REG] %08X %08X\n", Addr, Data));
+    ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ConfigBBWithHeaderFile: [PHY_REG] %08X %08X\n", Addr, Data));
 }
 
 void

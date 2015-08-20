@@ -11,65 +11,59 @@
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
  * more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110, USA
- *
- *
  ******************************************************************************/
-
 
 #ifndef	__ODM_DBG_H__
 #define __ODM_DBG_H__
 
 
-//-----------------------------------------------------------------------------
-//	Define the debug levels
-//
-//	1.	DBG_TRACE and DBG_LOUD are used for normal cases.
-//	So that, they can help SW engineer to develope or trace states changed
-//	and also help HW enginner to trace every operation to and from HW,
-//	e.g IO, Tx, Rx.
-//
-//	2.	DBG_WARNNING and DBG_SERIOUS are used for unusual or error cases,
-//	which help us to debug SW or HW.
-//
-//-----------------------------------------------------------------------------
-//
-//	Never used in a call to ODM_RT_TRACE()!
-//
+/*  */
+/* 	Define the debug levels */
+/*  */
+/* 	1.	DBG_TRACE and DBG_LOUD are used for normal cases. */
+/* 	So that, they can help SW engineer to develope or trace states changed */
+/* 	and also help HW enginner to trace every operation to and from HW, */
+/* 	e.g IO, Tx, Rx. */
+/*  */
+/* 	2.	DBG_WARNNING and DBG_SERIOUS are used for unusual or error cases, */
+/* 	which help us to debug SW or HW. */
+/*  */
+/*  */
+/*  */
+/* 	Never used in a call to ODM_RT_TRACE()! */
+/*  */
 #define ODM_DBG_OFF					1
 
-//
-//	Fatal bug.
-//	For example, Tx/Rx/IO locked up, OS hangs, memory access violation,
-//	resource allocation failed, unexpected HW behavior, HW BUG and so on.
-//
+/*  */
+/* 	Fatal bug. */
+/* 	For example, Tx/Rx/IO locked up, OS hangs, memory access violation, */
+/* 	resource allocation failed, unexpected HW behavior, HW BUG and so on. */
+/*  */
 #define ODM_DBG_SERIOUS				2
 
-//
-//	Abnormal, rare, or unexpeted cases.
-//	For example, IRP/Packet/OID canceled, device suprisely unremoved and so on.
-//
+/*  */
+/* 	Abnormal, rare, or unexpeted cases. */
+/* 	For example, IRP/Packet/OID canceled, device suprisely unremoved and so on. */
+/*  */
 #define ODM_DBG_WARNING				3
 
-//
-//	Normal case with useful information about current SW or HW state.
-//	For example, Tx/Rx descriptor to fill, Tx/Rx descriptor completed status,
-//	SW protocol state change, dynamic mechanism state change and so on.
-//
+/*  */
+/* 	Normal case with useful information about current SW or HW state. */
+/* 	For example, Tx/Rx descriptor to fill, Tx/Rx descriptor completed status, */
+/* 	SW protocol state change, dynamic mechanism state change and so on. */
+/*  */
 #define ODM_DBG_LOUD					4
 
-//
-//	Normal case with detail execution flow or information.
-//
+/*  */
+/* 	Normal case with detail execution flow or information. */
+/*  */
 #define ODM_DBG_TRACE					5
 
-//-----------------------------------------------------------------------------
-// Define the tracing components
-//
-//-----------------------------------------------------------------------------
-//BB Functions
+/*  */
+/*  Define the tracing components */
+/*  */
+/*  */
+/* BB Functions */
 #define ODM_COMP_DIG					BIT0
 #define ODM_COMP_RA_MASK				BIT1
 #define ODM_COMP_DYNAMIC_TXPWR		BIT2
@@ -86,14 +80,14 @@
 #define ODM_COMP_RXHP					BIT13
 #define ODM_COMP_MP					BIT14
 #define ODM_COMP_CFO_TRACKING		BIT15
-//MAC Functions
+/* MAC Functions */
 #define ODM_COMP_EDCA_TURBO			BIT16
 #define ODM_COMP_EARLY_MODE			BIT17
-//RF Functions
+/* RF Functions */
 #define ODM_COMP_TX_PWR_TRACK		BIT24
 #define ODM_COMP_RX_GAIN_TRACK		BIT25
 #define ODM_COMP_CALIBRATION			BIT26
-//Common Functions
+/* Common Functions */
 #define ODM_COMP_COMMON				BIT30
 #define ODM_COMP_INIT					BIT31
 
@@ -122,7 +116,7 @@
 #define ODM_RT_ASSERT(pDM_Odm, expr, fmt)											\
 		if (!(expr)) {																	\
 			DbgPrint( "Assertion failed! %s at ......\n", #expr);								\
-			DbgPrint( "      ......%s,%s,line=%d\n",__FILE__,__FUNCTION__,__LINE__);			\
+			DbgPrint( "      ......%s,%s, line =%d\n", __FILE__, __FUNCTION__, __LINE__);			\
 			RT_PRINTK fmt;															\
 			ASSERT(false);															\
 		}
@@ -138,8 +132,8 @@
 				DbgPrint("[ODM] ");													\
 				DbgPrint(title_str);													\
 				DbgPrint(" ");														\
-				for ( __i=0; __i<6; __i++ )												\
-					DbgPrint("%02X%s", __ptr[__i], (__i==5)?"":"-");						\
+				for ( __i =0; __i<6; __i++ )												\
+					DbgPrint("%02X%s", __ptr[__i], (__i ==5)?"":"-");						\
 				DbgPrint("\n");														\
 			}
 #else
@@ -157,4 +151,4 @@ ODM_InitDebugSetting(
 	IN		PDM_ODM_T		pDM_Odm
 	);
 
-#endif	// __ODM_DBG_H__
+#endif	/*  __ODM_DBG_H__ */
