@@ -11,11 +11,6 @@
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
  * more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110, USA
- *
- *
  ******************************************************************************/
 
 
@@ -23,12 +18,12 @@
  * Automatically generated C config: don't edit
  */
 
-//#define CONFIG_FILE_FWIMG
+/* define CONFIG_FILE_FWIMG */
 
 /*
  * Functions Config
  */
-//#define CONFIG_DEBUG_CFG80211
+/* define CONFIG_DEBUG_CFG80211 */
 
 /*
  * Auto Config Section
@@ -51,10 +46,10 @@
 /*
  * Platform dependent
  */
-#define WAKEUP_GPIO_IDX	12	//WIFI Chip Side
+#define WAKEUP_GPIO_IDX	12	/* WIFI Chip Side */
 #ifdef CONFIG_WOWLAN
 #define CONFIG_GTK_OL
-#endif //CONFIG_WOWLAN
+#endif /* CONFIG_WOWLAN */
 
 /*
  * Debug Related Config
@@ -62,13 +57,13 @@
 #undef CONFIG_DEBUG
 
 #ifdef CONFIG_DEBUG
-#define DBG	1	// for ODM & BTCOEX debug
-//#define CONFIG_DEBUG_RTL871X /* RT_TRACE, RT_PRINT_DATA, _func_enter_, _func_exit_ */
-#else // !CONFIG_DEBUG
-#define DBG	0	// for ODM & BTCOEX debug
-#endif // !CONFIG_DEBUG
+#define DBG	1	/*  for ODM & BTCOEX debug */
+/*#define CONFIG_DEBUG_RTL871X */
+#else /*  !CONFIG_DEBUG */
+#define DBG	0	/*  for ODM & BTCOEX debug */
+#endif /*  !CONFIG_DEBUG */
 
 #define CONFIG_PROC_DEBUG
 
-//#define DBG_XMIT_BUF
-//#define DBG_XMIT_BUF_EXT
+/* define DBG_XMIT_BUF */
+/* define DBG_XMIT_BUF_EXT */

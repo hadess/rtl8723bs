@@ -11,17 +11,12 @@
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
  * more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110, USA
- *
- *
  ******************************************************************************/
 /*! \file */
 #ifndef __INC_ETHERNET_H
 #define __INC_ETHERNET_H
 
-#define ETHERNET_HEADER_SIZE				14		//!< Ethernet Header Length
-#define LLC_HEADER_SIZE						6		//!< LLC Header Length
+#define ETHERNET_HEADER_SIZE	14		/*  Ethernet Header Length */
+#define LLC_HEADER_SIZE		6		/*  LLC Header Length */
 
-#endif // #ifndef __INC_ETHERNET_H
+#endif /*  #ifndef __INC_ETHERNET_H */

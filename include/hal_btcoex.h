@@ -11,19 +11,14 @@
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
  * more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110, USA
- *
- *
  ******************************************************************************/
 #ifndef __HAL_BTCOEX_H__
 #define __HAL_BTCOEX_H__
 
 #include <drv_types.h>
 
-// Some variables can't get from outsrc BT-Coex,
-// so we need to save here
+/*  Some variables can't get from outsrc BT-Coex, */
+/*  so we need to save here */
 typedef struct _BT_COEXIST
 {
 	u8 bBtExist;
@@ -70,4 +65,4 @@ void hal_btcoex_DisplayBtCoexInfo(PADAPTER, u8 *pbuf, u32 bufsize);
 void hal_btcoex_SetDBG(PADAPTER, u32 *pDbgModule);
 u32 hal_btcoex_GetDBG(PADAPTER, u8 *pStrBuf, u32 bufSize);
 
-#endif // !__HAL_BTCOEX_H__
+#endif /*  !__HAL_BTCOEX_H__ */

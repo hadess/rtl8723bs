@@ -11,11 +11,6 @@
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
  * more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110, USA
- *
- *
  ******************************************************************************/
 #ifndef _RTW_HT_H_
 #define _RTW_HT_H_
@@ -24,23 +19,23 @@
 struct ht_priv
 {
 	u8	ht_option;
-	u8	ampdu_enable;//for enable Tx A-MPDU
-	u8	tx_amsdu_enable;//for enable Tx A-MSDU
-	u8	bss_coexist;//for 20/40 Bss coexist
+	u8	ampdu_enable;/* for enable Tx A-MPDU */
+	u8	tx_amsdu_enable;/* for enable Tx A-MSDU */
+	u8	bss_coexist;/* for 20/40 Bss coexist */
 
-	//u8	baddbareq_issued[16];
-	u32	tx_amsdu_maxlen; // 1: 8k, 0:4k ; default:8k, for tx
-	u32	rx_ampdu_maxlen; //for rx reordering ctrl win_sz, updated when join_callback.
+	/* u8	baddbareq_issued[16]; */
+	u32	tx_amsdu_maxlen; /*  1: 8k, 0:4k ; default:8k, for tx */
+	u32	rx_ampdu_maxlen; /* for rx reordering ctrl win_sz, updated when join_callback. */
 
 	u8	rx_ampdu_min_spacing;
 
-	u8	ch_offset;//PRIME_CHNL_OFFSET
+	u8	ch_offset;/* PRIME_CHNL_OFFSET */
 	u8	sgi_20m;
 	u8	sgi_40m;
 
-	//for processing Tx A-MPDU
+	/* for processing Tx A-MPDU */
 	u8	agg_enable_bitmap;
-	//u8	ADDBA_retry_count;
+	/* u8	ADDBA_retry_count; */
 	u8	candidate_tid_bitmap;
 
 	u8	ldpc_cap;
@@ -70,7 +65,7 @@ typedef enum _RT_HT_INF0_CAP{
 	RT_HT_CAP_USE_SOFTAP = 0x10,
 	RT_HT_CAP_USE_92SE = 0x20,
 	RT_HT_CAP_USE_88C_92C = 0x40,
-	RT_HT_CAP_USE_AP_CLIENT_MODE = 0x80,	// AP team request to reserve this bit, by Emily
+	RT_HT_CAP_USE_AP_CLIENT_MODE = 0x80,	/*  AP team request to reserve this bit, by Emily */
 }RT_HT_INF0_CAPBILITY, *PRT_HT_INF0_CAPBILITY;
 
 typedef enum _RT_HT_INF1_CAP{
@@ -89,18 +84,18 @@ typedef enum _RT_HT_INF1_CAP{
 #define	STBC_HT_TEST_TX_ENABLE		BIT2
 #define	STBC_HT_CAP_TX				BIT3
 
-#define	BEAMFORMING_HT_BEAMFORMER_ENABLE	BIT0	// Declare our NIC supports beamformer
-#define	BEAMFORMING_HT_BEAMFORMEE_ENABLE	BIT1	// Declare our NIC supports beamformee
-#define	BEAMFORMING_HT_BEAMFORMER_TEST		BIT2	// Transmiting Beamforming no matter the target supports it or not
+#define	BEAMFORMING_HT_BEAMFORMER_ENABLE	BIT0	/*  Declare our NIC supports beamformer */
+#define	BEAMFORMING_HT_BEAMFORMEE_ENABLE	BIT1	/*  Declare our NIC supports beamformee */
+#define	BEAMFORMING_HT_BEAMFORMER_TEST		BIT2	/*  Transmiting Beamforming no matter the target supports it or not */
 
-//------------------------------------------------------------
-// The HT Control field
-//------------------------------------------------------------
+/*  */
+/*  The HT Control field */
+/*  */
 #define SET_HT_CTRL_CSI_STEERING(_pEleStart, _val)					SET_BITS_TO_LE_1BYTE((_pEleStart)+2, 6, 2, _val)
 #define SET_HT_CTRL_NDP_ANNOUNCEMENT(_pEleStart, _val)			SET_BITS_TO_LE_1BYTE((_pEleStart)+3, 0, 1, _val)
 #define GET_HT_CTRL_NDP_ANNOUNCEMENT(_pEleStart)					LE_BITS_TO_1BYTE((_pEleStart)+3, 0, 1)
 
-// 20/40 BSS Coexist
+/*  20/40 BSS Coexist */
 #define SET_EXT_CAPABILITY_ELE_BSS_COEXIST(_pEleStart, _val)			SET_BITS_TO_LE_1BYTE((_pEleStart), 0, 1, _val)
 #define GET_EXT_CAPABILITY_ELE_BSS_COEXIST(_pEleStart)				LE_BITS_TO_1BYTE((_pEleStart), 0, 1)
 
@@ -110,7 +105,7 @@ typedef enum _RT_HT_INF1_CAP{
 
 #define GET_HT_CAPABILITY_ELE_RX_STBC(_pEleStart)					LE_BITS_TO_1BYTE((_pEleStart)+1, 0, 2)
 
-//TXBF Capabilities
+/* TXBF Capabilities */
 #define SET_HT_CAP_TXBF_RECEIVE_NDP_CAP(_pEleStart, _val)					SET_BITS_TO_LE_4BYTE( ((u8 *)(_pEleStart))+21, 3, 1, ((u8)_val) )
 #define SET_HT_CAP_TXBF_TRANSMIT_NDP_CAP(_pEleStart, _val)				SET_BITS_TO_LE_4BYTE( ((u8 *)(_pEleStart))+21, 4, 1, ((u8)_val) )
 #define SET_HT_CAP_TXBF_EXPLICIT_COMP_STEERING_CAP(_pEleStart, _val)		SET_BITS_TO_LE_4BYTE( ((u8 *)(_pEleStart))+21, 10, 1, ((u8)_val) )
@@ -120,4 +115,4 @@ typedef enum _RT_HT_INF1_CAP{
 #define GET_HT_CAP_TXBF_EXPLICIT_COMP_STEERING_CAP(_pEleStart)			LE_BITS_TO_4BYTE((_pEleStart)+21, 10, 1)
 #define GET_HT_CAP_TXBF_EXPLICIT_COMP_FEEDBACK_CAP(_pEleStart)			LE_BITS_TO_4BYTE((_pEleStart)+21, 15, 2)
 
-#endif	//_RTL871X_HT_H_
+#endif	/* _RTL871X_HT_H_ */

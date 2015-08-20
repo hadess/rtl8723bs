@@ -11,11 +11,6 @@
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
  * more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110, USA
- *
- *
  ******************************************************************************/
 #ifndef _RTL8192C_RECV_H_
 #define _RTL8192C_RECV_H_
@@ -45,7 +40,7 @@ struct phy_stat
 	unsigned int phydw7;
 };
 
-// Rx smooth factor
+/*  Rx smooth factor */
 #define	Rx_Smooth_Factor (20)
 
 

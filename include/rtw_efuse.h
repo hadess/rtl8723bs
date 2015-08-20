@@ -11,11 +11,6 @@
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
  * more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110, USA
- *
- *
  ******************************************************************************/
 #ifndef __RTW_EFUSE_H__
 #define __RTW_EFUSE_H__
@@ -59,13 +54,13 @@ enum _EFUSE_DEF_TYPE {
 
 #define		EFUSE_REPEAT_THRESHOLD_			3
 
-//=============================================
-//	The following is for BT Efuse definition
-//=============================================
+/*  */
+/* 	The following is for BT Efuse definition */
+/*  */
 #define		EFUSE_BT_MAX_MAP_LEN		1024
 #define		EFUSE_MAX_BANK			4
 #define		EFUSE_MAX_BT_BANK		(EFUSE_MAX_BANK-1)
-//=============================================
+/*  */
 /*--------------------------Define Parameters-------------------------------*/
 #define		EFUSE_MAX_WORD_UNIT			4
 
@@ -122,7 +117,7 @@ void	EFUSE_GetEfuseDefinition(PADAPTER pAdapter, u8 efuseType, u8 type, void *pO
 u8	efuse_OneByteRead(PADAPTER pAdapter, u16 addr, u8 *data, bool	 bPseudoTest);
 u8	efuse_OneByteWrite(PADAPTER pAdapter, u16 addr, u8 data, bool	 bPseudoTest);
 
-void	Efuse_PowerSwitch(PADAPTER pAdapter,u8	bWrite,u8	 PwrState);
+void	Efuse_PowerSwitch(PADAPTER pAdapter, u8	bWrite, u8	 PwrState);
 int	Efuse_PgPacketRead(PADAPTER pAdapter, u8 offset, u8 *data, bool bPseudoTest);
 int	Efuse_PgPacketWrite(PADAPTER pAdapter, u8 offset, u8 word_en, u8 *data, bool bPseudoTest);
 void	efuse_WordEnableDataRead(u8 word_en, u8 *sourdata, u8 *targetdata);

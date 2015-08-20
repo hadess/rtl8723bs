@@ -11,11 +11,6 @@
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
  * more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110, USA
- *
- *
  ******************************************************************************/
 #ifndef __RTW_CMD_H_
 #define __RTW_CMD_H_
@@ -40,7 +35,7 @@
 		u8	*rsp;
 		u32	rspsz;
 		struct submit_ctx *sctx;
-		//_sema		cmd_sem;
+		/* _sema		cmd_sem; */
 		_list	list;
 	};
 
@@ -52,19 +47,19 @@
 
 	struct cmd_priv {
 		_sema	cmd_queue_sema;
-		//_sema	cmd_done_sema;
+		/* _sema	cmd_done_sema; */
 		_sema	terminate_cmdthread_sema;
 		_queue	cmd_queue;
 		u8	cmd_seq;
-		u8	*cmd_buf;	//shall be non-paged, and 4 bytes aligned
+		u8	*cmd_buf;	/* shall be non-paged, and 4 bytes aligned */
 		u8	*cmd_allocated_buf;
-		u8	*rsp_buf;	//shall be non-paged, and 4 bytes aligned
+		u8	*rsp_buf;	/* shall be non-paged, and 4 bytes aligned */
 		u8	*rsp_allocated_buf;
 		u32	cmd_issued_cnt;
 		u32	cmd_done_cnt;
 		u32	rsp_cnt;
 		atomic_t cmdthd_running;
-		//u8 cmdthd_running;
+		/* u8 cmdthd_running; */
 		u8 stop_req;
 		_adapter *padapter;
 		_mutex sctx_mutex;
@@ -77,7 +72,7 @@
 		#define C2H_QUEUE_MAX_LEN 10
 
 		atomic_t event_seq;
-		u8	*evt_buf;	//shall be non-paged, and 4 bytes aligned
+		u8	*evt_buf;	/* shall be non-paged, and 4 bytes aligned */
 		u8	*evt_allocated_buf;
 		u32	evt_done_cnt;
 		u8	*c2h_mem;
@@ -123,17 +118,17 @@ struct c2h_evt_hdr_88xx {
 
 struct P2P_PS_Offload_t {
 	u8 Offload_En:1;
-	u8 role:1; // 1: Owner, 0: Client
+	u8 role:1; /*  1: Owner, 0: Client */
 	u8 CTWindow_En:1;
 	u8 NoA0_En:1;
 	u8 NoA1_En:1;
-	u8 AllStaSleep:1; // Only valid in Owner
+	u8 AllStaSleep:1; /*  Only valid in Owner */
 	u8 discovery:1;
 	u8 rsvd:1;
 };
 
 struct P2P_PS_CTWPeriod_t {
-	u8 CTWPeriod;	//TU
+	u8 CTWPeriod;	/* TU */
 };
 
 extern u32 rtw_enqueue_cmd(struct cmd_priv *pcmdpriv, struct cmd_obj *obj);
@@ -156,19 +151,19 @@ enum rtw_drvextra_cmd_id
 	DYNAMIC_CHK_WK_CID,
 	DM_CTRL_WK_CID,
 	PBC_POLLING_WK_CID,
-	POWER_SAVING_CTRL_WK_CID,//IPS,AUTOSuspend
+	POWER_SAVING_CTRL_WK_CID,/* IPS, AUTOSuspend */
 	LPS_CTRL_WK_CID,
 	ANT_SELECT_WK_CID,
 	P2P_PS_WK_CID,
 	P2P_PROTO_WK_CID,
-	CHECK_HIQ_WK_CID,//for softap mode, check hi queue if empty
+	CHECK_HIQ_WK_CID,/* for softap mode, check hi queue if empty */
 	INTEl_WIDI_WK_CID,
 	C2H_WK_CID,
 	RTP_TIMER_CFG_WK_CID,
-	RESET_SECURITYPRIV, // add for CONFIG_IEEE80211W, none 11w also can use
-	FREE_ASSOC_RESOURCES, // add for CONFIG_IEEE80211W, none 11w also can use
+	RESET_SECURITYPRIV, /*  add for CONFIG_IEEE80211W, none 11w also can use */
+	FREE_ASSOC_RESOURCES, /*  add for CONFIG_IEEE80211W, none 11w also can use */
 	DM_IN_LPS_WK_CID,
-	DM_RA_MSK_WK_CID, //add for STA update RAMask when bandwith change.
+	DM_RA_MSK_WK_CID, /* add for STA update RAMask when bandwith change. */
 	BEAMFORMING_WK_CID,
 	LPS_CHANGE_DTIM_CID,
 	BTINFO_WK_CID,
@@ -177,12 +172,12 @@ enum rtw_drvextra_cmd_id
 
 enum LPS_CTRL_TYPE
 {
-	LPS_CTRL_SCAN=0,
-	LPS_CTRL_JOINBSS=1,
-	LPS_CTRL_CONNECT=2,
-	LPS_CTRL_DISCONNECT=3,
-	LPS_CTRL_SPECIAL_PACKET=4,
-	LPS_CTRL_LEAVE=5,
+	LPS_CTRL_SCAN =0,
+	LPS_CTRL_JOINBSS =1,
+	LPS_CTRL_CONNECT =2,
+	LPS_CTRL_DISCONNECT =3,
+	LPS_CTRL_SPECIAL_PACKET =4,
+	LPS_CTRL_LEAVE =5,
 	LPS_CTRL_TRAFFIC_BUSY = 6,
 };
 
@@ -201,7 +196,7 @@ Command Mode
 
 */
 struct usb_suspend_parm {
-	u32 action;// 1: sleep, 0:resume
+	u32 action;/*  1: sleep, 0:resume */
 };
 
 /*
@@ -257,13 +252,13 @@ Command Mode
 
 The definition of mode:
 
-#define IW_MODE_AUTO	0	// Let the driver decides which AP to join
-#define IW_MODE_ADHOC	1	// Single cell network (Ad-Hoc Clients)
-#define IW_MODE_INFRA	2	// Multi cell network, roaming, ..
-#define IW_MODE_MASTER	3	// Synchronisation master or Access Point
-#define IW_MODE_REPEAT	4	// Wireless Repeater (forwarder)
-#define IW_MODE_SECOND	5	// Secondary master/repeater (backup)
-#define IW_MODE_MONITOR	6	// Passive monitor (listen only)
+#define IW_MODE_AUTO	0	 Let the driver decides which AP to join
+#define IW_MODE_ADHOC	1	 Single cell network (Ad-Hoc Clients)
+#define IW_MODE_INFRA	2	 Multi cell network, roaming, ..
+#define IW_MODE_MASTER	3	 Synchronisation master or Access Point
+#define IW_MODE_REPEAT	4	 Wireless Repeater (forwarder)
+#define IW_MODE_SECOND	5	 Secondary master/repeater (backup)
+#define IW_MODE_MONITOR	6	 Passive monitor (listen only)
 
 */
 struct	setopmode_parm {
@@ -280,11 +275,10 @@ Command-Event Mode
 
 */
 
-#define RTW_SSID_SCAN_AMOUNT 9 // for WEXT_CSCAN_AMOUNT 9
+#define RTW_SSID_SCAN_AMOUNT 9 /*  for WEXT_CSCAN_AMOUNT 9 */
 #define RTW_CHANNEL_SCAN_AMOUNT (14+37)
 struct sitesurvey_parm {
-	sint scan_mode;	//active: 1, passive: 0
-	/* sint bsslimit;	// 1 ~ 48 */
+	sint scan_mode;	/* active: 1, passive: 0 */
 	u8 ssid_num;
 	u8 ch_num;
 	NDIS_802_11_SSID ssid[RTW_SSID_SCAN_AMOUNT];
@@ -300,8 +294,8 @@ Command Mode
 
 */
 struct setauth_parm {
-	u8 mode;  //0: legacy open, 1: legacy shared 2: 802.1x
-	u8 _1x;   //0: PSK, 1: TLS
+	u8 mode;  /* 0: legacy open, 1: legacy shared 2: 802.1x */
+	u8 _1x;   /* 0: PSK, 1: TLS */
 	u8 rsvd[2];
 };
 
@@ -318,11 +312,11 @@ when 802.1x ==> keyid > 2 ==> unicast key
 
 */
 struct setkey_parm {
-	u8	algorithm;	// encryption algorithm, could be none, wep40, TKIP, CCMP, wep104
+	u8	algorithm;	/*  encryption algorithm, could be none, wep40, TKIP, CCMP, wep104 */
 	u8	keyid;
-	u8	grpkey;		// 1: this is the grpkey for 802.1x. 0: this is the unicast key for 802.1x
-	u8	set_tx;		// 1: main tx key for wep. 0: other key.
-	u8	key[16];	// this could be 40 or 104
+	u8	grpkey;		/*  1: this is the grpkey for 802.1x. 0: this is the unicast key for 802.1x */
+	u8	set_tx;		/*  1: main tx key for wep. 0: other key. */
+	u8	key[16];	/*  this could be 40 or 104 */
 };
 
 /*
@@ -606,11 +600,11 @@ struct Tx_Beacon_param
 
 */
 
-// CMD param Formart for driver extra cmd handler
+/*  CMD param Formart for driver extra cmd handler */
 struct drvextra_cmd_parm {
-	int ec_id; //extra cmd id
-	int type; // Can use this field as the type id or command size
-	int size; //buffer size
+	int ec_id; /* extra cmd id */
+	int type; /*  Can use this field as the type id or command size */
+	int size; /* buffer size */
 	unsigned char *pbuf;
 };
 
@@ -639,7 +633,7 @@ struct gettxagctbl_rsp {
 };
 
 struct setagcctrl_parm {
-	u32	agcctrl;		// 0: pure hw, 1: fw
+	u32	agcctrl;		/*  0: pure hw, 1: fw */
 };
 
 
@@ -708,7 +702,7 @@ struct getratable_rsp {
 };
 
 
-//to get TX,RX retry count
+/* to get TX, RX retry count */
 struct gettxretrycnt_parm{
 	unsigned int rsvd;
 };
@@ -723,7 +717,7 @@ struct getrxretrycnt_rsp{
 	unsigned long rx_retrycnt;
 };
 
-//to get BCNOK,BCNERR count
+/* to get BCNOK, BCNERR count */
 struct getbcnokcnt_parm{
 	unsigned int rsvd;
 };
@@ -738,7 +732,7 @@ struct getbcnerrcnt_rsp{
 	unsigned long bcnerrcnt;
 };
 
-// to get current TX power level
+/*  to get current TX power level */
 struct getcurtxpwrlevel_parm{
 	unsigned int rsvd;
 };
@@ -856,12 +850,12 @@ extern u8 rtw_setopmode_cmd(_adapter  *padapter, NDIS_802_11_NETWORK_INFRASTRUCT
 extern u8 rtw_setdatarate_cmd(_adapter  *padapter, u8 *rateset);
 extern u8 rtw_setrfintfs_cmd(_adapter  *padapter, u8 mode);
 
-extern u8 rtw_gettssi_cmd(_adapter  *padapter, u8 offset,u8 *pval);
+extern u8 rtw_gettssi_cmd(_adapter  *padapter, u8 offset, u8 *pval);
 extern u8 rtw_setfwdig_cmd(_adapter*padapter, u8 type);
 extern u8 rtw_setfwra_cmd(_adapter*padapter, u8 type);
 
 extern u8 rtw_addbareq_cmd(_adapter*padapter, u8 tid, u8 *addr);
-// add for CONFIG_IEEE80211W, none 11w also can use
+/*  add for CONFIG_IEEE80211W, none 11w also can use */
 extern u8 rtw_reset_securitypriv_cmd(_adapter*padapter);
 extern u8 rtw_free_assoc_resources_cmd(_adapter *padapter);
 extern u8 rtw_dynamic_chk_wk_cmd(_adapter *adapter);
@@ -983,4 +977,4 @@ enum rtw_h2c_cmd
 #define _GetRFReg_CMD_		_Read_RFREG_CMD_
 #define _SetRFReg_CMD_		_Write_RFREG_CMD_
 
-#endif // _CMD_H_
+#endif /*  _CMD_H_ */

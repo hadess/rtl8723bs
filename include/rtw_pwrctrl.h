@@ -11,11 +11,6 @@
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
  * more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110, USA
- *
- *
  ******************************************************************************/
 #ifndef __RTW_PWRCTRL_H_
 #define __RTW_PWRCTRL_H_
@@ -48,7 +43,7 @@ enum Power_Mgnt
 	PS_MODE_ACTIVE	= 0	,
 	PS_MODE_MIN			,
 	PS_MODE_MAX			,
-	PS_MODE_DTIM			,	//PS_MODE_SELF_DEFINED
+	PS_MODE_DTIM			,	/* PS_MODE_SELF_DEFINED */
 	PS_MODE_VOIP			,
 	PS_MODE_UAPSD_WMM	,
 	PS_MODE_UAPSD			,
@@ -61,7 +56,7 @@ enum Power_Mgnt
 
 #ifdef CONFIG_PNO_SUPPORT
 #define MAX_PNO_LIST_COUNT 16
-#define MAX_SCAN_LIST_COUNT 14 //2.4G only
+#define MAX_SCAN_LIST_COUNT 14 /* 2.4G only */
 #endif
 
 /*
@@ -103,7 +98,7 @@ enum Power_Mgnt
 
 struct reportpwrstate_parm {
 	unsigned char mode;
-	unsigned char state; //the CPWM value
+	unsigned char state; /* the CPWM value */
 	unsigned short rsvd;
 };
 
@@ -111,41 +106,41 @@ struct reportpwrstate_parm {
 typedef _sema _pwrlock;
 
 
-#define LPS_DELAY_TIME	1*HZ // 1 sec
+#define LPS_DELAY_TIME	1*HZ /*  1 sec */
 
 #define EXE_PWR_NONE	0x01
 #define EXE_PWR_IPS		0x02
 #define EXE_PWR_LPS		0x04
 
-// RF state.
+/*  RF state. */
 typedef enum _rt_rf_power_state
 {
-	rf_on,		// RF is on after RFSleep or RFOff
-	rf_sleep,	// 802.11 Power Save mode
-	rf_off,		// HW/SW Radio OFF or Inactive Power Save
-	//=====Add the new RF state above this line=====//
+	rf_on,		/*  RF is on after RFSleep or RFOff */
+	rf_sleep,	/*  802.11 Power Save mode */
+	rf_off,		/*  HW/SW Radio OFF or Inactive Power Save */
+	/* Add the new RF state above this line ===== */
 	rf_max
 }rt_rf_power_state;
 
-// RF Off Level for IPS or HW/SW radio off
-#define	RT_RF_OFF_LEVL_ASPM			BIT(0)	// PCI ASPM
-#define	RT_RF_OFF_LEVL_CLK_REQ		BIT(1)	// PCI clock request
-#define	RT_RF_OFF_LEVL_PCI_D3			BIT(2)	// PCI D3 mode
-#define	RT_RF_OFF_LEVL_HALT_NIC		BIT(3)	// NIC halt, re-initialize hw parameters
-#define	RT_RF_OFF_LEVL_FREE_FW		BIT(4)	// FW free, re-download the FW
-#define	RT_RF_OFF_LEVL_FW_32K		BIT(5)	// FW in 32k
-#define	RT_RF_PS_LEVEL_ALWAYS_ASPM	BIT(6)	// Always enable ASPM and Clock Req in initialization.
-#define	RT_RF_LPS_DISALBE_2R			BIT(30)	// When LPS is on, disable 2R if no packet is received or transmittd.
-#define	RT_RF_LPS_LEVEL_ASPM			BIT(31)	// LPS with ASPM
+/*  RF Off Level for IPS or HW/SW radio off */
+#define	RT_RF_OFF_LEVL_ASPM			BIT(0)	/*  PCI ASPM */
+#define	RT_RF_OFF_LEVL_CLK_REQ		BIT(1)	/*  PCI clock request */
+#define	RT_RF_OFF_LEVL_PCI_D3			BIT(2)	/*  PCI D3 mode */
+#define	RT_RF_OFF_LEVL_HALT_NIC		BIT(3)	/*  NIC halt, re-initialize hw parameters */
+#define	RT_RF_OFF_LEVL_FREE_FW		BIT(4)	/*  FW free, re-download the FW */
+#define	RT_RF_OFF_LEVL_FW_32K		BIT(5)	/*  FW in 32k */
+#define	RT_RF_PS_LEVEL_ALWAYS_ASPM	BIT(6)	/*  Always enable ASPM and Clock Req in initialization. */
+#define	RT_RF_LPS_DISALBE_2R			BIT(30)	/*  When LPS is on, disable 2R if no packet is received or transmittd. */
+#define	RT_RF_LPS_LEVEL_ASPM			BIT(31)	/*  LPS with ASPM */
 
 #define	RT_IN_PS_LEVEL(ppsc, _PS_FLAG)		((ppsc->cur_ps_level & _PS_FLAG) ? true : false)
 #define	RT_CLEAR_PS_LEVEL(ppsc, _PS_FLAG)	(ppsc->cur_ps_level &= (~(_PS_FLAG)))
 #define	RT_SET_PS_LEVEL(ppsc, _PS_FLAG)		(ppsc->cur_ps_level |= _PS_FLAG)
 
-// ASPM OSC Control bit, added by Roger, 2013.03.29.
-#define	RT_PCI_ASPM_OSC_IGNORE		0	 // PCI ASPM ignore OSC control in default
-#define	RT_PCI_ASPM_OSC_ENABLE		BIT0 // PCI ASPM controlled by OS according to ACPI Spec 5.0
-#define	RT_PCI_ASPM_OSC_DISABLE		BIT1 // PCI ASPM controlled by driver or BIOS, i.e., force enable ASPM
+/*  ASPM OSC Control bit, added by Roger, 2013.03.29. */
+#define	RT_PCI_ASPM_OSC_IGNORE		0	 /*  PCI ASPM ignore OSC control in default */
+#define	RT_PCI_ASPM_OSC_ENABLE		BIT0 /*  PCI ASPM controlled by OS according to ACPI Spec 5.0 */
+#define	RT_PCI_ASPM_OSC_DISABLE		BIT1 /*  PCI ASPM controlled by driver or BIOS, i.e., force enable ASPM */
 
 
 enum _PS_BBRegBackup_ {
@@ -156,14 +151,14 @@ enum _PS_BBRegBackup_ {
 	PSBBREG_TOTALCNT
 };
 
-enum { // for ips_mode
-	IPS_NONE=0,
+enum { /*  for ips_mode */
+	IPS_NONE = 0,
 	IPS_NORMAL,
 	IPS_LEVEL_2,
 	IPS_NUM
 };
 
-// Design for pwrctrl_priv.ips_deny, 32 bits for 32 reasons at most
+/*  Design for pwrctrl_priv.ips_deny, 32 bits for 32 reasons at most */
 typedef enum _PS_DENY_REASON
 {
 	PS_DENY_DRV_INITIAL = 0,
@@ -180,13 +175,13 @@ typedef enum _PS_DENY_REASON
 #ifdef CONFIG_PNO_SUPPORT
 typedef struct pno_nlo_info
 {
-	u32 fast_scan_period;				//Fast scan period
-	u32	ssid_num;				//number of entry
-	u32	slow_scan_period;			//slow scan period
-	u32	fast_scan_iterations;			//Fast scan iterations
-	u8	ssid_length[MAX_PNO_LIST_COUNT];	//SSID Length Array
-	u8	ssid_cipher_info[MAX_PNO_LIST_COUNT];	//Cipher information for security
-	u8	ssid_channel_info[MAX_PNO_LIST_COUNT];	//channel information
+	u32 fast_scan_period;				/* Fast scan period */
+	u32	ssid_num;				/* number of entry */
+	u32	slow_scan_period;			/* slow scan period */
+	u32	fast_scan_iterations;			/* Fast scan iterations */
+	u8	ssid_length[MAX_PNO_LIST_COUNT];	/* SSID Length Array */
+	u8	ssid_cipher_info[MAX_PNO_LIST_COUNT];	/* Cipher information for security */
+	u8	ssid_channel_info[MAX_PNO_LIST_COUNT];	/* channel information */
 }pno_nlo_info_t;
 
 typedef struct pno_ssid {
@@ -203,32 +198,32 @@ typedef struct pno_scan_channel_info
 	u8	channel;
 	u8	tx_power;
 	u8	timeout;
-	u8	active;				//set 1 means active scan, or pasivite scan.
+	u8	active;				/* set 1 means active scan, or pasivite scan. */
 }pno_scan_channel_info_t;
 
 typedef struct pno_scan_info
 {
-	u8	enableRFE;			//Enable RFE
-	u8	period_scan_time;		//exclusive with fast_scan_period and slow_scan_period
-	u8	periodScan;			//exclusive with fast_scan_period and slow_scan_period
-	u8	orig_80_offset;			//original channel 80 offset
-	u8	orig_40_offset;			//original channel 40 offset
-	u8	orig_bw;			//original bandwidth
-	u8	orig_ch;			//original channel
-	u8	channel_num;			//number of channel
-	u64	rfe_type;			//rfe_type && 0x00000000000000ff
+	u8	enableRFE;			/* Enable RFE */
+	u8	period_scan_time;		/* exclusive with fast_scan_period and slow_scan_period */
+	u8	periodScan;			/* exclusive with fast_scan_period and slow_scan_period */
+	u8	orig_80_offset;			/* original channel 80 offset */
+	u8	orig_40_offset;			/* original channel 40 offset */
+	u8	orig_bw;			/* original bandwidth */
+	u8	orig_ch;			/* original channel */
+	u8	channel_num;			/* number of channel */
+	u64	rfe_type;			/* rfe_type && 0x00000000000000ff */
 	pno_scan_channel_info_t ssid_channel_info[MAX_SCAN_LIST_COUNT];
 }pno_scan_info_t;
-#endif //CONFIG_PNO_SUPPORT
+#endif /* CONFIG_PNO_SUPPORT */
 
 struct pwrctrl_priv
 {
 	_pwrlock	lock;
 	_pwrlock	check_32k_lock;
-	volatile u8 rpwm; // requested power state for fw
-	volatile u8 cpwm; // fw current power state. updated when 1. read from HCPWM 2. driver lowers power level
-	volatile u8 tog; // toggling
-	volatile u8 cpwm_tog; // toggling
+	volatile u8 rpwm; /*  requested power state for fw */
+	volatile u8 cpwm; /*  fw current power state. updated when 1. read from HCPWM 2. driver lowers power level */
+	volatile u8 tog; /*  toggling */
+	volatile u8 cpwm_tog; /*  toggling */
 
 	u8	pwr_mode;
 	u8	smart_ps;
@@ -240,14 +235,14 @@ struct pwrctrl_priv
 	u8 brpwmtimeout;
 	_workitem rpwmtimeoutwi;
 	_timer pwr_rpwm_timer;
-	u8	bpower_saving; //for LPS/IPS
+	u8	bpower_saving; /* for LPS/IPS */
 
 	u8	b_hw_radio_off;
 	u8	reg_rfoff;
-	u8	reg_pdnmode; //powerdown mode
+	u8	reg_pdnmode; /* powerdown mode */
 	u32	rfoff_reason;
 
-	//RF OFF Level
+	/* RF OFF Level */
 	u32	cur_ps_level;
 	u32	reg_rfps_level;
 
@@ -256,15 +251,15 @@ struct pwrctrl_priv
 
 	u8	ips_mode;
 	u8	ips_org_mode;
-	u8	ips_mode_req; // used to accept the mode setting request, will update to ipsmode later
+	u8	ips_mode_req; /*  used to accept the mode setting request, will update to ipsmode later */
 	uint bips_processing;
 	unsigned long ips_deny_time; /* will deny IPS when system time is smaller than this */
-	u8 pre_ips_type;// 0: default flow, 1: carddisbale flow
+	u8 pre_ips_type;/*  0: default flow, 1: carddisbale flow */
 
-	// ps_deny: if 0, power save is free to go; otherwise deny all kinds of power save.
-	// Use PS_DENY_REASON to decide reason.
-	// Don't access this variable directly without control function,
-	// and this variable should be protected by lock.
+	/*  ps_deny: if 0, power save is free to go; otherwise deny all kinds of power save. */
+	/*  Use PS_DENY_REASON to decide reason. */
+	/*  Don't access this variable directly without control function, */
+	/*  and this variable should be protected by lock. */
 	u32 ps_deny;
 
 	u8 ps_processing; /* temporarily used to mark whether in rtw_ps_processor */
@@ -305,15 +300,15 @@ struct pwrctrl_priv
 #endif
 	u32		wowlan_pattern_context[8][5];
 	u64		wowlan_fw_iv;
-#endif // CONFIG_WOWLAN
+#endif /*  CONFIG_WOWLAN */
 	_timer	pwr_state_check_timer;
 	int		pwr_state_check_interval;
 	u8		pwr_state_check_cnts;
 
 	int		ps_flag; /* used by autosuspend */
 
-	rt_rf_power_state	rf_pwrstate;//cur power state, only for IPS
-	//rt_rf_power_state	current_rfpwrstate;
+	rt_rf_power_state	rf_pwrstate;/* cur power state, only for IPS */
+	/* rt_rf_power_state	current_rfpwrstate; */
 	rt_rf_power_state	change_rfpwrstate;
 
 	u8		bHWPowerdown; /* power down mode selection. 0:radio off, 1:power down */
@@ -379,4 +374,4 @@ void rtw_ps_deny(PADAPTER padapter, PS_DENY_REASON reason);
 void rtw_ps_deny_cancel(PADAPTER padapter, PS_DENY_REASON reason);
 u32 rtw_ps_deny_get(PADAPTER padapter);
 
-#endif  //__RTL871X_PWRCTRL_H_
+#endif  /* __RTL871X_PWRCTRL_H_ */

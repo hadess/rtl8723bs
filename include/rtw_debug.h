@@ -11,11 +11,6 @@
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
  * more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110, USA
- *
- *
  ******************************************************************************/
 #ifndef __RTW_DEBUG_H__
 #define __RTW_DEBUG_H__
@@ -61,7 +56,7 @@
 #define _module_hci_ops_os_c_			BIT(24)
 #define _module_rtl871x_ioctl_os_c		BIT(25)
 #define _module_rtl8712_cmd_c_		BIT(26)
-//#define _module_efuse_			BIT(27)
+/* define _module_efuse_			BIT(27) */
 #define	_module_rtl8192c_xmit_c_ BIT(28)
 #define _module_hal_xmit_c_	BIT(28)
 #define _module_efuse_			BIT(29)
@@ -257,7 +252,7 @@
 			u8	*ptr = (u8 *)_HexData;				\
 			_dbgdump("%s", DRIVER_PREFIX);						\
 			_dbgdump(_TitleString);						\
-			for ( __i=0; __i<(int)_HexDataLen; __i++ )				\
+			for ( __i =0; __i<(int)_HexDataLen; __i++ )				\
 			{								\
 				_dbgdump("%02X%s", ptr[__i], (((__i + 1) % 4) == 0)?"  ":" ");	\
 				if (((__i + 1) % 16) == 0)	_dbgdump("\n");			\
@@ -335,7 +330,7 @@ ssize_t proc_set_rx_stbc(struct file *file, const char __user *buffer, size_t co
 int proc_get_en_fwps(struct seq_file *m, void *v);
 ssize_t proc_set_en_fwps(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data);
 
-//int proc_get_two_path_rssi(struct seq_file *m, void *v);
+/* int proc_get_two_path_rssi(struct seq_file *m, void *v); */
 int proc_get_rssi_disp(struct seq_file *m, void *v);
 ssize_t proc_set_rssi_disp(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data);
 
@@ -359,4 +354,4 @@ int proc_get_int_logs(struct seq_file *m, void *v);
 
 #endif /* CONFIG_PROC_DEBUG */
 
-#endif	//__RTW_DEBUG_H__
+#endif	/* __RTW_DEBUG_H__ */

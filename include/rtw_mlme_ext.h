@@ -11,73 +11,68 @@
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
  * more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110, USA
- *
- *
  ******************************************************************************/
 #ifndef __RTW_MLME_EXT_H_
 #define __RTW_MLME_EXT_H_
 
 
-//	Commented by Albert 20101105
-//	Increase the SURVEY_TO value from 100 to 150  ( 100ms to 150ms )
-//	The Realtek 8188CE SoftAP will spend around 100ms to send the probe response after receiving the probe request.
-//	So, this driver tried to extend the dwell time for each scanning channel.
-//	This will increase the chance to receive the probe response from SoftAP.
+/* 	Commented by Albert 20101105 */
+/* 	Increase the SURVEY_TO value from 100 to 150  ( 100ms to 150ms ) */
+/* 	The Realtek 8188CE SoftAP will spend around 100ms to send the probe response after receiving the probe request. */
+/* 	So, this driver tried to extend the dwell time for each scanning channel. */
+/* 	This will increase the chance to receive the probe response from SoftAP. */
 
 #define SURVEY_TO		(100)
-#define REAUTH_TO		(300) //(50)
-#define REASSOC_TO		(300) //(50)
-//#define DISCONNECT_TO	(3000)
+#define REAUTH_TO		(300) /* 50) */
+#define REASSOC_TO		(300) /* 50) */
+/* define DISCONNECT_TO	(3000) */
 #define ADDBA_TO			(2000)
 
-#define LINKED_TO (1) //unit:2 sec, 1x2=2 sec
+#define LINKED_TO (1) /* unit:2 sec, 1x2 =2 sec */
 
 #define REAUTH_LIMIT	(4)
 #define REASSOC_LIMIT	(4)
 #define READDBA_LIMIT	(2)
 
 #define ROAMING_LIMIT	8
-//#define	IOCMD_REG0		0x10250370
-//#define	IOCMD_REG1		0x10250374
-//#define	IOCMD_REG2		0x10250378
+/* define	IOCMD_REG0		0x10250370 */
+/* define	IOCMD_REG1		0x10250374 */
+/* define	IOCMD_REG2		0x10250378 */
 
-//#define	FW_DYNAMIC_FUN_SWITCH	0x10250364
+/* define	FW_DYNAMIC_FUN_SWITCH	0x10250364 */
 
-//#define	WRITE_BB_CMD		0xF0000001
-//#define	SET_CHANNEL_CMD	0xF3000000
-//#define	UPDATE_RA_CMD	0xFD0000A2
+/* define	WRITE_BB_CMD		0xF0000001 */
+/* define	SET_CHANNEL_CMD	0xF3000000 */
+/* define	UPDATE_RA_CMD	0xFD0000A2 */
 
 #define DYNAMIC_FUNC_DISABLE		(0x0)
 
-// ====== ODM_ABILITY_E ========
-// BB ODM section BIT 0-15
-#define DYNAMIC_BB_DIG				BIT0 //ODM_BB_DIG
-#define DYNAMIC_BB_RA_MASK			BIT1 //ODM_BB_RA_MASK
-#define DYNAMIC_BB_DYNAMIC_TXPWR	BIT2 //ODM_BB_DYNAMIC_TXPWR
-#define DYNAMIC_BB_BB_FA_CNT		BIT3 //ODM_BB_FA_CNT
-#define DYNAMIC_BB_RSSI_MONITOR		BIT4 //ODM_BB_RSSI_MONITOR
-#define DYNAMIC_BB_CCK_PD			BIT5 //ODM_BB_CCK_PD
-#define DYNAMIC_BB_ANT_DIV			BIT6 //ODM_BB_ANT_DIV
-#define DYNAMIC_BB_PWR_SAVE			BIT7 //ODM_BB_PWR_SAVE
-#define DYNAMIC_BB_PWR_TRAIN		BIT8 //ODM_BB_PWR_TRAIN
-#define DYNAMIC_BB_RATE_ADAPTIVE	BIT9 //ODM_BB_RATE_ADAPTIVE
-#define DYNAMIC_BB_PATH_DIV			BIT10//ODM_BB_PATH_DIV
-#define DYNAMIC_BB_PSD				BIT11//ODM_BB_PSD
-#define DYNAMIC_BB_RXHP				BIT12//ODM_BB_RXHP
-#define DYNAMIC_BB_ADAPTIVITY		BIT13//ODM_BB_ADAPTIVITY
-#define DYNAMIC_BB_DYNAMIC_ATC		BIT14//ODM_BB_DYNAMIC_ATC
+/*  ====== ODM_ABILITY_E ======== */
+/*  BB ODM section BIT 0-15 */
+#define DYNAMIC_BB_DIG				BIT0 /* ODM_BB_DIG */
+#define DYNAMIC_BB_RA_MASK			BIT1 /* ODM_BB_RA_MASK */
+#define DYNAMIC_BB_DYNAMIC_TXPWR	BIT2 /* ODM_BB_DYNAMIC_TXPWR */
+#define DYNAMIC_BB_BB_FA_CNT		BIT3 /* ODM_BB_FA_CNT */
+#define DYNAMIC_BB_RSSI_MONITOR		BIT4 /* ODM_BB_RSSI_MONITOR */
+#define DYNAMIC_BB_CCK_PD			BIT5 /* ODM_BB_CCK_PD */
+#define DYNAMIC_BB_ANT_DIV			BIT6 /* ODM_BB_ANT_DIV */
+#define DYNAMIC_BB_PWR_SAVE			BIT7 /* ODM_BB_PWR_SAVE */
+#define DYNAMIC_BB_PWR_TRAIN		BIT8 /* ODM_BB_PWR_TRAIN */
+#define DYNAMIC_BB_RATE_ADAPTIVE	BIT9 /* ODM_BB_RATE_ADAPTIVE */
+#define DYNAMIC_BB_PATH_DIV			BIT10/* ODM_BB_PATH_DIV */
+#define DYNAMIC_BB_PSD				BIT11/* ODM_BB_PSD */
+#define DYNAMIC_BB_RXHP				BIT12/* ODM_BB_RXHP */
+#define DYNAMIC_BB_ADAPTIVITY		BIT13/* ODM_BB_ADAPTIVITY */
+#define DYNAMIC_BB_DYNAMIC_ATC		BIT14/* ODM_BB_DYNAMIC_ATC */
 
-// MAC DM section BIT 16-23
-#define DYNAMIC_MAC_EDCA_TURBO		BIT16//ODM_MAC_EDCA_TURBO
-#define DYNAMIC_MAC_EARLY_MODE		BIT17//ODM_MAC_EARLY_MODE
+/*  MAC DM section BIT 16-23 */
+#define DYNAMIC_MAC_EDCA_TURBO		BIT16/* ODM_MAC_EDCA_TURBO */
+#define DYNAMIC_MAC_EARLY_MODE		BIT17/* ODM_MAC_EARLY_MODE */
 
-// RF ODM section BIT 24-31
-#define DYNAMIC_RF_TX_PWR_TRACK		BIT24//ODM_RF_TX_PWR_TRACK
-#define DYNAMIC_RF_RX_GAIN_TRACK	BIT25//ODM_RF_RX_GAIN_TRACK
-#define DYNAMIC_RF_CALIBRATION		BIT26//ODM_RF_CALIBRATION
+/*  RF ODM section BIT 24-31 */
+#define DYNAMIC_RF_TX_PWR_TRACK		BIT24/* ODM_RF_TX_PWR_TRACK */
+#define DYNAMIC_RF_RX_GAIN_TRACK	BIT25/* ODM_RF_RX_GAIN_TRACK */
+#define DYNAMIC_RF_CALIBRATION		BIT26/* ODM_RF_CALIBRATION */
 
 #define DYNAMIC_ALL_FUNC_ENABLE		0xFFFFFFF
 
@@ -120,17 +115,17 @@ extern unsigned char WMM_INFO_OUI[];
 extern unsigned char WMM_PARA_OUI[];
 
 
-//
-// Channel Plan Type.
-// Note:
-//	We just add new channel plan when the new channel plan is different from any of the following
-//	channel plan.
-//	If you just wnat to customize the acitions(scan period or join actions) about one of the channel plan,
-//	customize them in RT_CHANNEL_INFO in the RT_CHANNEL_LIST.
-//
+/*  */
+/*  Channel Plan Type. */
+/*  Note: */
+/* 	We just add new channel plan when the new channel plan is different from any of the following */
+/* 	channel plan. */
+/* 	If you just wnat to customize the acitions(scan period or join actions) about one of the channel plan, */
+/* 	customize them in RT_CHANNEL_INFO in the RT_CHANNEL_LIST. */
+/*  */
 typedef enum _RT_CHANNEL_DOMAIN
 {
-	//===== old channel plan mapping =====//
+	/*  old channel plan mapping ===== */
 	RT_CHANNEL_DOMAIN_FCC = 0x00,
 	RT_CHANNEL_DOMAIN_IC = 0x01,
 	RT_CHANNEL_DOMAIN_ETSI = 0x02,
@@ -153,7 +148,7 @@ typedef enum _RT_CHANNEL_DOMAIN
 	RT_CHANNEL_DOMAIN_WORLD_WIDE_5G = 0x13,
 	RT_CHANNEL_DOMAIN_TAIWAN_NO_DFS = 0x14,
 
-	//===== new channel plan mapping, (2GDOMAIN_5GDOMAIN) =====//
+	/*  new channel plan mapping, (2GDOMAIN_5GDOMAIN) ===== */
 	RT_CHANNEL_DOMAIN_WORLD_NULL = 0x20,
 	RT_CHANNEL_DOMAIN_ETSI1_NULL = 0x21,
 	RT_CHANNEL_DOMAIN_FCC1_NULL = 0x22,
@@ -192,60 +187,60 @@ typedef enum _RT_CHANNEL_DOMAIN
 	RT_CHANNEL_DOMAIN_FCC1_FCC9 = 0x55,
 	RT_CHANNEL_DOMAIN_WORLD_ETSI13 = 0x56,
 	RT_CHANNEL_DOMAIN_FCC1_FCC10 = 0x57,
-	//===== Add new channel plan above this line===============//
+	/*  Add new channel plan above this line =============== */
 	RT_CHANNEL_DOMAIN_MAX,
 	RT_CHANNEL_DOMAIN_REALTEK_DEFINE = 0x7F,
 }RT_CHANNEL_DOMAIN, *PRT_CHANNEL_DOMAIN;
 
 typedef enum _RT_CHANNEL_DOMAIN_2G
 {
-	RT_CHANNEL_DOMAIN_2G_WORLD = 0x00,		//Worldwird 13
-	RT_CHANNEL_DOMAIN_2G_ETSI1 = 0x01,		//Europe
-	RT_CHANNEL_DOMAIN_2G_FCC1 = 0x02,		//US
-	RT_CHANNEL_DOMAIN_2G_MKK1 = 0x03,		//Japan
-	RT_CHANNEL_DOMAIN_2G_ETSI2 = 0x04,		//France
-	RT_CHANNEL_DOMAIN_2G_GLOBAL = 0x05,		//Global domain
+	RT_CHANNEL_DOMAIN_2G_WORLD = 0x00,		/* Worldwird 13 */
+	RT_CHANNEL_DOMAIN_2G_ETSI1 = 0x01,		/* Europe */
+	RT_CHANNEL_DOMAIN_2G_FCC1 = 0x02,		/* US */
+	RT_CHANNEL_DOMAIN_2G_MKK1 = 0x03,		/* Japan */
+	RT_CHANNEL_DOMAIN_2G_ETSI2 = 0x04,		/* France */
+	RT_CHANNEL_DOMAIN_2G_GLOBAL = 0x05,		/* Global domain */
 	RT_CHANNEL_DOMAIN_2G_NULL = 0x06,
-	//===== Add new channel plan above this line===============//
+	/*  Add new channel plan above this line =============== */
 	RT_CHANNEL_DOMAIN_2G_MAX,
 }RT_CHANNEL_DOMAIN_2G, *PRT_CHANNEL_DOMAIN_2G;
 
 typedef enum _RT_CHANNEL_DOMAIN_5G
 {
 	RT_CHANNEL_DOMAIN_5G_NULL = 0x00,
-	RT_CHANNEL_DOMAIN_5G_ETSI1 = 0x01,		//Europe
-	RT_CHANNEL_DOMAIN_5G_ETSI2 = 0x02,		//Australia, New Zealand
-	RT_CHANNEL_DOMAIN_5G_ETSI3 = 0x03,		//Russia
-	RT_CHANNEL_DOMAIN_5G_FCC1 = 0x04,		//US
-	RT_CHANNEL_DOMAIN_5G_FCC2 = 0x05,		//FCC o/w DFS Channels
-	RT_CHANNEL_DOMAIN_5G_FCC3 = 0x06,		//India, Mexico
-	RT_CHANNEL_DOMAIN_5G_FCC4 = 0x07,		//Venezuela
-	RT_CHANNEL_DOMAIN_5G_FCC5 = 0x08,		//China
-	RT_CHANNEL_DOMAIN_5G_FCC6 = 0x09,		//Israel
-	RT_CHANNEL_DOMAIN_5G_FCC7_IC1 = 0x0A,	//US, Canada
-	RT_CHANNEL_DOMAIN_5G_KCC1 = 0x0B,		//Korea
-	RT_CHANNEL_DOMAIN_5G_MKK1 = 0x0C,		//Japan
-	RT_CHANNEL_DOMAIN_5G_MKK2 = 0x0D,		//Japan (W52, W53)
-	RT_CHANNEL_DOMAIN_5G_MKK3 = 0x0E,		//Japan (W56)
-	RT_CHANNEL_DOMAIN_5G_NCC1 = 0x0F,		//Taiwan
-	RT_CHANNEL_DOMAIN_5G_NCC2 = 0x10,		//Taiwan o/w DFS
-	RT_CHANNEL_DOMAIN_5G_NCC3 = 0x11,		//Taiwan w/o DFS, Band4 only
-	RT_CHANNEL_DOMAIN_5G_ETSI4 = 0x12,		//Europe w/o DFS, Band1 only
-	RT_CHANNEL_DOMAIN_5G_ETSI5 = 0x13,		//Australia, New Zealand(w/o Weather radar)
-	RT_CHANNEL_DOMAIN_5G_FCC8 = 0x14,		//Latin America
-	RT_CHANNEL_DOMAIN_5G_ETSI6 = 0x15,		//Israel, Bahrain, Egypt, India, China, Malaysia
-	RT_CHANNEL_DOMAIN_5G_ETSI7 = 0x16,		//China
-	RT_CHANNEL_DOMAIN_5G_ETSI8 = 0x17,		//Jordan
-	RT_CHANNEL_DOMAIN_5G_ETSI9 = 0x18,		//Lebanon
-	RT_CHANNEL_DOMAIN_5G_ETSI10 = 0x19,		//Qatar
-	RT_CHANNEL_DOMAIN_5G_ETSI11 = 0x1A,		//Russia
-	RT_CHANNEL_DOMAIN_5G_NCC4 = 0x1B,		//Taiwan, (w/o Weather radar)
-	RT_CHANNEL_DOMAIN_5G_ETSI12 = 0x1C,		//Indonesia
-	RT_CHANNEL_DOMAIN_5G_FCC9 = 0x1D,		//(w/o Weather radar)
-	RT_CHANNEL_DOMAIN_5G_ETSI13 = 0x1E,		//(w/o Weather radar)
-	RT_CHANNEL_DOMAIN_5G_FCC10 = 0x1F,		//Argentina (w/o Weather radar)
-	//===== Add new channel plan above this line===============//
-	//===== Driver Self Defined =====//
+	RT_CHANNEL_DOMAIN_5G_ETSI1 = 0x01,		/* Europe */
+	RT_CHANNEL_DOMAIN_5G_ETSI2 = 0x02,		/* Australia, New Zealand */
+	RT_CHANNEL_DOMAIN_5G_ETSI3 = 0x03,		/* Russia */
+	RT_CHANNEL_DOMAIN_5G_FCC1 = 0x04,		/* US */
+	RT_CHANNEL_DOMAIN_5G_FCC2 = 0x05,		/* FCC o/w DFS Channels */
+	RT_CHANNEL_DOMAIN_5G_FCC3 = 0x06,		/* India, Mexico */
+	RT_CHANNEL_DOMAIN_5G_FCC4 = 0x07,		/* Venezuela */
+	RT_CHANNEL_DOMAIN_5G_FCC5 = 0x08,		/* China */
+	RT_CHANNEL_DOMAIN_5G_FCC6 = 0x09,		/* Israel */
+	RT_CHANNEL_DOMAIN_5G_FCC7_IC1 = 0x0A,	/* US, Canada */
+	RT_CHANNEL_DOMAIN_5G_KCC1 = 0x0B,		/* Korea */
+	RT_CHANNEL_DOMAIN_5G_MKK1 = 0x0C,		/* Japan */
+	RT_CHANNEL_DOMAIN_5G_MKK2 = 0x0D,		/* Japan (W52, W53) */
+	RT_CHANNEL_DOMAIN_5G_MKK3 = 0x0E,		/* Japan (W56) */
+	RT_CHANNEL_DOMAIN_5G_NCC1 = 0x0F,		/* Taiwan */
+	RT_CHANNEL_DOMAIN_5G_NCC2 = 0x10,		/* Taiwan o/w DFS */
+	RT_CHANNEL_DOMAIN_5G_NCC3 = 0x11,		/* Taiwan w/o DFS, Band4 only */
+	RT_CHANNEL_DOMAIN_5G_ETSI4 = 0x12,		/* Europe w/o DFS, Band1 only */
+	RT_CHANNEL_DOMAIN_5G_ETSI5 = 0x13,		/* Australia, New Zealand(w/o Weather radar) */
+	RT_CHANNEL_DOMAIN_5G_FCC8 = 0x14,		/* Latin America */
+	RT_CHANNEL_DOMAIN_5G_ETSI6 = 0x15,		/* Israel, Bahrain, Egypt, India, China, Malaysia */
+	RT_CHANNEL_DOMAIN_5G_ETSI7 = 0x16,		/* China */
+	RT_CHANNEL_DOMAIN_5G_ETSI8 = 0x17,		/* Jordan */
+	RT_CHANNEL_DOMAIN_5G_ETSI9 = 0x18,		/* Lebanon */
+	RT_CHANNEL_DOMAIN_5G_ETSI10 = 0x19,		/* Qatar */
+	RT_CHANNEL_DOMAIN_5G_ETSI11 = 0x1A,		/* Russia */
+	RT_CHANNEL_DOMAIN_5G_NCC4 = 0x1B,		/* Taiwan, (w/o Weather radar) */
+	RT_CHANNEL_DOMAIN_5G_ETSI12 = 0x1C,		/* Indonesia */
+	RT_CHANNEL_DOMAIN_5G_FCC9 = 0x1D,		/* w/o Weather radar) */
+	RT_CHANNEL_DOMAIN_5G_ETSI13 = 0x1E,		/* w/o Weather radar) */
+	RT_CHANNEL_DOMAIN_5G_FCC10 = 0x1F,		/* Argentina (w/o Weather radar) */
+	/*  Add new channel plan above this line =============== */
+	/*  Driver Self Defined ===== */
 	RT_CHANNEL_DOMAIN_5G_FCC = 0x20,
 	RT_CHANNEL_DOMAIN_5G_JAPAN_NO_DFS = 0x21,
 	RT_CHANNEL_DOMAIN_5G_FCC4_NO_DFS = 0x22,
@@ -302,8 +297,8 @@ typedef enum _HT_IOT_PEER
 	HT_IOT_PEER_CISCO				= 6,
 	HT_IOT_PEER_MERU				= 7,
 	HT_IOT_PEER_MARVELL			= 8,
-	HT_IOT_PEER_REALTEK_SOFTAP	= 9,// peer is RealTek SOFT_AP, by Bohn, 2009.12.17
-	HT_IOT_PEER_SELF_SOFTAP			= 10, // Self is SoftAP
+	HT_IOT_PEER_REALTEK_SOFTAP	= 9,/*  peer is RealTek SOFT_AP, by Bohn, 2009.12.17 */
+	HT_IOT_PEER_SELF_SOFTAP			= 10, /*  Self is SoftAP */
 	HT_IOT_PEER_AIRGO				= 11,
 	HT_IOT_PEER_INTEL				= 12,
 	HT_IOT_PEER_RTK_APCLIENT		= 13,
@@ -349,10 +344,10 @@ struct	ss_res
 	struct rtw_ieee80211_channel ch[RTW_CHANNEL_SCAN_AMOUNT];
 };
 
-//#define AP_MODE				0x0C
-//#define STATION_MODE	0x08
-//#define AD_HOC_MODE		0x04
-//#define NO_LINK_MODE	0x00
+/* define AP_MODE				0x0C */
+/* define STATION_MODE	0x08 */
+/* define AD_HOC_MODE		0x04 */
+/* define NO_LINK_MODE	0x00 */
 
 #define		WIFI_FW_NULL_STATE			_HW_STATE_NOLINK_
 #define	WIFI_FW_STATION_STATE		_HW_STATE_STATION_
@@ -402,10 +397,10 @@ struct mlme_ext_info
 	u32	reassoc_count;
 	u32	link_count;
 	u32	auth_seq;
-	u32	auth_algo;	// 802.11 auth, could be open, shared, auto
+	u32	auth_algo;	/*  802.11 auth, could be open, shared, auto */
 	u32	authModeToggle;
-	u32	enc_algo;//encrypt algorithm;
-	u32	key_index;	// this is only valid for legendary wep, 0~3 for key id.
+	u32	enc_algo;/* encrypt algorithm; */
+	u32	key_index;	/*  this is only valid for legendary wep, 0~3 for key id. */
 	u32	iv;
 	u8	chg_txt[128];
 	u16	aid;
@@ -428,7 +423,7 @@ struct mlme_ext_info
 	u8	ADDBA_retry_count;
 	u8	candidate_tid_bitmap;
 	u8	dialogToken;
-	// Accept ADDBA Request
+	/*  Accept ADDBA Request */
 	bool bAcceptAddbaReq;
 	u8	bwmode_updated;
 	u8	hidden_ssid_mode;
@@ -438,49 +433,46 @@ struct mlme_ext_info
 	struct WMM_para_element	WMM_param;
 	struct HT_caps_element	HT_caps;
 	struct HT_info_element		HT_info;
-	WLAN_BSSID_EX			network;//join network or bss_network, if in ap mode, it is the same to cur_network.network
+	WLAN_BSSID_EX			network;/* join network or bss_network, if in ap mode, it is the same to cur_network.network */
 	struct FW_Sta_Info		FW_sta_info[NUM_STA];
 };
 
-// The channel information about this channel including joining, scanning, and power constraints.
+/*  The channel information about this channel including joining, scanning, and power constraints. */
 typedef struct _RT_CHANNEL_INFO
 {
-	u8				ChannelNum;		// The channel number.
-	RT_SCAN_TYPE	ScanType;		// Scan type such as passive or active scan.
-	//u16				ScanPeriod;		// Listen time in millisecond in this channel.
-	//s32				MaxTxPwrDbm;	// Max allowed tx power.
-	//u32				ExInfo;			// Extended Information for this channel.
+	u8				ChannelNum;		/*  The channel number. */
+	RT_SCAN_TYPE	ScanType;		/*  Scan type such as passive or active scan. */
 }RT_CHANNEL_INFO, *PRT_CHANNEL_INFO;
 
 int rtw_ch_set_search_ch(RT_CHANNEL_INFO *ch_set, const u32 ch);
 bool rtw_mlme_band_check(_adapter *adapter, const u32 ch);
 
-// P2P_MAX_REG_CLASSES - Maximum number of regulatory classes
+/*  P2P_MAX_REG_CLASSES - Maximum number of regulatory classes */
 #define P2P_MAX_REG_CLASSES 10
 
-// P2P_MAX_REG_CLASS_CHANNELS - Maximum number of channels per regulatory class
+/*  P2P_MAX_REG_CLASS_CHANNELS - Maximum number of channels per regulatory class */
 #define P2P_MAX_REG_CLASS_CHANNELS 20
 
-//  struct p2p_channels - List of supported channels
+/*   struct p2p_channels - List of supported channels */
 struct p2p_channels {
-	// struct p2p_reg_class - Supported regulatory class
+	/*  struct p2p_reg_class - Supported regulatory class */
 	struct p2p_reg_class {
-		// reg_class - Regulatory class (IEEE 802.11-2007, Annex J)
+		/*  reg_class - Regulatory class (IEEE 802.11-2007, Annex J) */
 		u8 reg_class;
 
-		// channel - Supported channels
+		/*  channel - Supported channels */
 		u8 channel[P2P_MAX_REG_CLASS_CHANNELS];
 
-		// channels - Number of channel entries in use
+		/*  channels - Number of channel entries in use */
 		size_t channels;
 	} reg_class[P2P_MAX_REG_CLASSES];
 
-	// reg_classes - Number of reg_class entries in use
+	/*  reg_classes - Number of reg_class entries in use */
 	size_t reg_classes;
 };
 
 struct p2p_oper_class_map {
-	enum hw_mode {IEEE80211G,IEEE80211A} mode;
+	enum hw_mode {IEEE80211G, IEEE80211A} mode;
 	u8 op_class;
 	u8 min_chan;
 	u8 max_chan;
@@ -497,12 +489,12 @@ struct mlme_ext_priv
 	u16	sa_query_seq;
 	u64 mgnt_80211w_IPN;
 	u64 mgnt_80211w_IPN_rx;
-	//struct fw_priv	fwpriv;
+	/* struct fw_priv	fwpriv; */
 
 	unsigned char	cur_channel;
 	unsigned char	cur_bwmode;
-	unsigned char	cur_ch_offset;//PRIME_CHNL_OFFSET
-	unsigned char	cur_wireless_mode;	// NETWORK_TYPE
+	unsigned char	cur_ch_offset;/* PRIME_CHNL_OFFSET */
+	unsigned char	cur_wireless_mode;	/*  NETWORK_TYPE */
 
 	unsigned char	max_chan_nums;
 	RT_CHANNEL_INFO		channel_set[MAX_CHANNEL_NUM];
@@ -512,22 +504,22 @@ struct mlme_ext_priv
 	unsigned char default_supported_mcs_set[16];
 
 	struct ss_res		sitesurvey_res;
-	struct mlme_ext_info	mlmext_info;//for sta/adhoc mode, including current scanning/connecting/connected related info.
-                                                     //for ap mode, network includes ap's cap_info
+	struct mlme_ext_info	mlmext_info;/* for sta/adhoc mode, including current scanning/connecting/connected related info. */
+                                                     /* for ap mode, network includes ap's cap_info */
 	_timer		survey_timer;
 	_timer		link_timer;
 	_timer		sa_query_timer;
-	//_timer		ADDBA_timer;
+	/* _timer		ADDBA_timer; */
 	u16			chan_scan_time;
 	unsigned long last_scan_time;
 	u8	scan_abort;
-	u8	tx_rate; // TXRATE when USERATE is set.
+	u8	tx_rate; /*  TXRATE when USERATE is set. */
 
-	u32	retry; //retry for issue probereq
+	u32	retry; /* retry for issue probereq */
 
 	u64 TSFValue;
 
-	//for LPS-32K to adaptive bcn early and timeout
+	/* for LPS-32K to adaptive bcn early and timeout */
 	u8 adaptive_tsf_done;
 	u32 bcn_delay_cnt[9];
 	u32 bcn_delay_ratio[9];
@@ -539,7 +531,7 @@ struct mlme_ext_priv
 
 	u8 update_channel_plan_by_ap_done;
 
-	//recv_decache check for Action_public frame
+	/* recv_decache check for Action_public frame */
 	u8 action_public_dialog_token;
 	u16	 action_public_rxseq;
 
@@ -558,21 +550,19 @@ extern void init_mlme_ext_timer(_adapter *padapter);
 extern void init_addba_retry_timer(_adapter *padapter, struct sta_info *psta);
 extern struct xmit_frame *alloc_mgtxmitframe(struct xmit_priv *pxmitpriv);
 
-//void fill_fwpriv(_adapter * padapter, struct fw_priv *pfwpriv);
+/* void fill_fwpriv(_adapter * padapter, struct fw_priv *pfwpriv); */
 
 unsigned char networktype_to_raid_ex(_adapter *adapter, struct sta_info *psta);
 
 void get_rate_set(_adapter *padapter, unsigned char *pbssrate, int *bssrate_len);
 void set_mcs_rate_by_mask(u8 *mcs_set, u32 mask);
-void UpdateBrateTbl(_adapter *padapter,u8 *mBratesOS);
+void UpdateBrateTbl(_adapter *padapter, u8 *mBratesOS);
 void UpdateBrateTblForSoftAP(u8 *bssrateset, u32 bssratelen);
 
 void Save_DM_Func_Flag(_adapter *padapter);
 void Restore_DM_Func_Flag(_adapter *padapter);
 void Switch_DM_Func(_adapter *padapter, u32 mode, u8 enable);
 
-//void Set_NETYPE1_MSR(_adapter *padapter, u8 type);
-//void Set_NETYPE0_MSR(_adapter *padapter, u8 type);
 void Set_MSR(_adapter *padapter, u8 type);
 
 u8 rtw_get_oper_ch(_adapter *adapter);
@@ -589,7 +579,7 @@ void SelectChannel(_adapter *padapter, unsigned char channel);
 
 unsigned int decide_wait_for_beacon_timeout(unsigned int bcn_interval);
 
-void read_cam(_adapter *padapter ,u8 entry, u8 *get_key);
+void read_cam(_adapter *padapter , u8 entry, u8 *get_key);
 
 /* modify HW only */
 void _write_cam(_adapter *padapter, u8 entry, u16 ctrl, u8 *mac, u8 *key);
@@ -642,7 +632,7 @@ void update_wireless_mode(_adapter * padapter);
 void update_sta_basic_rate(struct sta_info *psta, u8 wireless_mode);
 int update_sta_support_rate(_adapter *padapter, u8* pvar_ie, uint var_ie_len, int cam_idx);
 
-//for sta/adhoc mode
+/* for sta/adhoc mode */
 void update_sta_info(_adapter *padapter, struct sta_info *psta);
 void Update_RA_Entry(_adapter *padapter, struct sta_info *psta);
 void set_sta_rate(_adapter *padapter, struct sta_info *psta);
@@ -733,8 +723,8 @@ void survey_timer_hdl (_adapter *padapter);
 void link_timer_hdl (_adapter *padapter);
 void addba_timer_hdl(struct sta_info *psta);
 void sa_query_timer_hdl(_adapter *padapter);
-//void reauth_timer_hdl(_adapter *padapter);
-//void reassoc_timer_hdl(_adapter *padapter);
+/* void reauth_timer_hdl(_adapter *padapter); */
+/* void reassoc_timer_hdl(_adapter *padapter); */
 
 #define set_survey_timer(mlmeext, ms) \
 	do { \
@@ -799,7 +789,7 @@ u8 tx_beacon_hdl(_adapter *padapter, unsigned char *pbuf);
 u8 set_ch_hdl(_adapter *padapter, u8 *pbuf);
 u8 set_chplan_hdl(_adapter *padapter, unsigned char *pbuf);
 u8 led_blink_hdl(_adapter *padapter, unsigned char *pbuf);
-u8 set_csa_hdl(_adapter *padapter, unsigned char *pbuf);	//Kurt: Handling DFS channel switch announcement ie.
+u8 set_csa_hdl(_adapter *padapter, unsigned char *pbuf);	/* Kurt: Handling DFS channel switch announcement ie. */
 u8 tdls_hdl(_adapter *padapter, unsigned char *pbuf);
 u8 run_in_thread_hdl(_adapter *padapter, u8 *pbuf);
 
@@ -837,7 +827,7 @@ void rtw_fwdbg_event_callback(_adapter *adapter , u8 *pbuf);
 
 enum rtw_c2h_event
 {
-	GEN_EVT_CODE(_Read_MACREG)=0, /*0*/
+	GEN_EVT_CODE(_Read_MACREG) =0, /*0*/
 	GEN_EVT_CODE(_Read_BBREG),
 	GEN_EVT_CODE(_Read_RFREG),
 	GEN_EVT_CODE(_Read_EEPROM),
@@ -861,8 +851,8 @@ enum rtw_c2h_event
 	GEN_EVT_CODE(_C2HFEEDBACK),               /*20*/
 	GEN_EVT_CODE(_ADDBA),
 	GEN_EVT_CODE(_C2HBCN),
-	GEN_EVT_CODE(_ReportPwrState),		//filen: only for PCIE, USB
-	GEN_EVT_CODE(_CloseRF),				//filen: only for PCIE, work around ASPM
+	GEN_EVT_CODE(_ReportPwrState),		/* filen: only for PCIE, USB */
+	GEN_EVT_CODE(_CloseRF),				/* filen: only for PCIE, work around ASPM */
 	GEN_EVT_CODE(_WMM),					/*25*/
 	MAX_C2HEVT
 };
@@ -902,6 +892,6 @@ static struct fwevent wlanevents[] =
 
 };
 
-#endif//_RTL8192C_CMD_C_
+#endif/* _RTL8192C_CMD_C_ */
 
 #endif

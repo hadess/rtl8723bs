@@ -11,11 +11,6 @@
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
  * more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110, USA
- *
- *
  ******************************************************************************/
 #ifndef __IOCTL_CFG80211_H__
 #define __IOCTL_CFG80211_H__
@@ -87,8 +82,8 @@ struct rtw_wdev_priv
 	struct cfg80211_scan_request *scan_request;
 	_lock scan_req_lock;
 
-	struct net_device *pmon_ndev;//for monitor interface
-	char ifname_mon[IFNAMSIZ + 1]; //interface name for monitor interface
+	struct net_device *pmon_ndev;/* for monitor interface */
+	char ifname_mon[IFNAMSIZ + 1]; /* interface name for monitor interface */
 
 	u8 p2p_enabled;
 
@@ -128,10 +123,10 @@ void rtw_cfg80211_rx_action(_adapter *adapter, u8 *frame, uint frame_len, const 
 
 bool rtw_cfg80211_pwr_mgmt(_adapter *adapter);
 
-#define rtw_cfg80211_rx_mgmt(adapter, freq, sig_dbm, buf, len, gfp) cfg80211_rx_mgmt((adapter)->rtw_wdev, freq, sig_dbm, buf, len,0)
+#define rtw_cfg80211_rx_mgmt(adapter, freq, sig_dbm, buf, len, gfp) cfg80211_rx_mgmt((adapter)->rtw_wdev, freq, sig_dbm, buf, len, 0)
 #define rtw_cfg80211_send_rx_assoc(adapter, bss, buf, len) cfg80211_send_rx_assoc((adapter)->pnetdev, bss, buf, len)
 #define rtw_cfg80211_mgmt_tx_status(adapter, cookie, buf, len, ack, gfp) cfg80211_mgmt_tx_status((adapter)->rtw_wdev, cookie, buf, len, ack, gfp)
 #define rtw_cfg80211_ready_on_channel(adapter, cookie, chan, channel_type, duration, gfp)  cfg80211_ready_on_channel((adapter)->rtw_wdev, cookie, chan, duration, gfp)
 #define rtw_cfg80211_remain_on_channel_expired(adapter, cookie, chan, chan_type, gfp) cfg80211_remain_on_channel_expired((adapter)->rtw_wdev, cookie, chan, gfp)
 
-#endif //__IOCTL_CFG80211_H__
+#endif /* __IOCTL_CFG80211_H__ */

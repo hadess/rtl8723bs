@@ -11,18 +11,13 @@
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
  * more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110, USA
- *
- *
  ******************************************************************************/
 #ifndef __RTW_AP_H_
 #define __RTW_AP_H_
 
 void init_mlme_ap_info(_adapter *padapter);
 void free_mlme_ap_info(_adapter *padapter);
-//void update_BCNTIM(_adapter *padapter);
+/* void update_BCNTIM(_adapter *padapter); */
 void update_beacon(_adapter *padapter, u8 ie_id, u8 *oui, u8 tx);
 void add_RATid(_adapter *padapter, struct sta_info *psta, u8 rssi_level);
 void expire_timeout_chk(_adapter *padapter);

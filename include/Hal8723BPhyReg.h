@@ -11,29 +11,24 @@
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
  * more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110, USA
- *
- *
  ******************************************************************************/
 #ifndef __INC_HAL8723BPHYREG_H__
 #define __INC_HAL8723BPHYREG_H__
 
 #include <Hal8192CPhyReg.h>
 
-// BB Register Definition
-//
-// 4. Page9(0x900)
-//
+/*  BB Register Definition */
+/*  */
+/*  4. Page9(0x900) */
+/*  */
 #define rDPDT_control				0x92c
 #define rfe_ctrl_anta_src				0x930
 #define rS0S1_PathSwitch			0x948
 #define AGC_table_select				0xb2c
 
-//
-// PageB(0xB00)
-//
+/*  */
+/*  PageB(0xB00) */
+/*  */
 #define rPdp_AntA						0xb00
 #define rPdp_AntA_4						0xb04
 #define rPdp_AntA_8						0xb08

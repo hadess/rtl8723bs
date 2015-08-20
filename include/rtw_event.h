@@ -11,11 +11,6 @@
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
  * more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110, USA
- *
- *
  ******************************************************************************/
 #ifndef _RTW_EVENT_H_
 #define _RTW_EVENT_H_
@@ -69,7 +64,7 @@ struct stassoc_event {
 
 struct stadel_event {
  unsigned char macaddr[6];
- unsigned char rsvd[2]; //for reason
+ unsigned char rsvd[2]; /* for reason */
  int mac_id;
 };
 
@@ -119,4 +114,4 @@ struct network_queue {
 };
 
 
-#endif // _WLANEVENT_H_
+#endif /*  _WLANEVENT_H_ */

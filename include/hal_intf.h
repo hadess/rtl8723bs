@@ -11,11 +11,6 @@
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
  * more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110, USA
- *
- *
  ******************************************************************************/
 #ifndef __HAL_INTF_H__
 #define __HAL_INTF_H__
@@ -95,9 +90,9 @@ typedef enum _HW_VARIABLES{
 	HW_VAR_FIFO_CLEARN_UP,
 	HW_VAR_CHECK_TXBUF,
 	HW_VAR_PCIE_STOP_TX_DMA,
-	HW_VAR_APFM_ON_MAC, //Auto FSM to Turn On, include clock, isolation, power control for MAC only
-	// The valid upper nav range for the HW updating, if the true value is larger than the upper range, the HW won't update it.
-	// Unit in microsecond. 0 means disable this function.
+	HW_VAR_APFM_ON_MAC, /* Auto FSM to Turn On, include clock, isolation, power control for MAC only */
+	/*  The valid upper nav range for the HW updating, if the true value is larger than the upper range, the HW won't update it. */
+	/*  Unit in microsecond. 0 means disable this function. */
 #ifdef CONFIG_WOWLAN
 	HW_VAR_WOWLAN,
 	HW_VAR_WAKEUP_REASON,
@@ -140,17 +135,17 @@ typedef enum _HAL_DEF_VARIABLE{
 	HAL_DEF_DRVINFO_SZ,
 	HAL_DEF_MAX_RECVBUF_SZ,
 	HAL_DEF_RX_PACKET_OFFSET,
-	HAL_DEF_DBG_DUMP_RXPKT,//for dbg
-	HAL_DEF_DBG_DM_FUNC,//for dbg
+	HAL_DEF_DBG_DUMP_RXPKT,/* for dbg */
+	HAL_DEF_DBG_DM_FUNC,/* for dbg */
 	HAL_DEF_RA_DECISION_RATE,
 	HAL_DEF_RA_SGI,
 	HAL_DEF_PT_PWR_STATUS,
-	HAL_DEF_TX_LDPC,				// LDPC support
-	HAL_DEF_RX_LDPC,				// LDPC support
-	HAL_DEF_TX_STBC,				// TX STBC support
-	HAL_DEF_RX_STBC,				// RX STBC support
-	HAL_DEF_EXPLICIT_BEAMFORMER,// Explicit  Compressed Steering Capable
-	HAL_DEF_EXPLICIT_BEAMFORMEE,// Explicit Compressed Beamforming Feedback Capable
+	HAL_DEF_TX_LDPC,				/*  LDPC support */
+	HAL_DEF_RX_LDPC,				/*  LDPC support */
+	HAL_DEF_TX_STBC,				/*  TX STBC support */
+	HAL_DEF_RX_STBC,				/*  RX STBC support */
+	HAL_DEF_EXPLICIT_BEAMFORMER,/*  Explicit  Compressed Steering Capable */
+	HAL_DEF_EXPLICIT_BEAMFORMEE,/*  Explicit Compressed Beamforming Feedback Capable */
 	HW_VAR_MAX_RX_AMPDU_FACTOR,
 	HW_DEF_RA_INFO_DUMP,
 	HAL_DEF_DBG_DUMP_TXPKT,
@@ -160,11 +155,11 @@ typedef enum _HAL_DEF_VARIABLE{
 	HAL_DEF_TX_PAGE_SIZE,
 	HAL_DEF_TX_PAGE_BOUNDARY,
 	HAL_DEF_TX_PAGE_BOUNDARY_WOWLAN,
-	HAL_DEF_ANT_DETECT,//to do for 8723a
-	HAL_DEF_PCI_SUUPORT_L1_BACKDOOR, // Determine if the L1 Backdoor setting is turned on.
+	HAL_DEF_ANT_DETECT,/* to do for 8723a */
+	HAL_DEF_PCI_SUUPORT_L1_BACKDOOR, /*  Determine if the L1 Backdoor setting is turned on. */
 	HAL_DEF_PCI_AMD_L1_SUPPORT,
-	HAL_DEF_PCI_ASPM_OSC, // Support for ASPM OSC, added by Roger, 2013.03.27.
-	HAL_DEF_MACID_SLEEP, // Support for MACID sleep
+	HAL_DEF_PCI_ASPM_OSC, /*  Support for ASPM OSC, added by Roger, 2013.03.27. */
+	HAL_DEF_MACID_SLEEP, /*  Support for MACID sleep */
 	HAL_DEF_DBG_RX_INFO_DUMP,
 }HAL_DEF_VARIABLE;
 
@@ -226,16 +221,16 @@ struct hal_ops {
 	void	(*hal_dm_watchdog_in_lps)(_adapter *padapter);
 
 
-	void	(*SetHwRegHandler)(_adapter *padapter, u8	variable,u8* val);
-	void	(*GetHwRegHandler)(_adapter *padapter, u8	variable,u8* val);
+	void	(*SetHwRegHandler)(_adapter *padapter, u8	variable, u8* val);
+	void	(*GetHwRegHandler)(_adapter *padapter, u8	variable, u8* val);
 
 	void	(*SetHwRegHandlerWithBuf)(_adapter *padapter, u8 variable, u8* pbuf, int len);
 
 	u8	(*GetHalDefVarHandler)(_adapter *padapter, HAL_DEF_VARIABLE eVariable, void * pValue);
 	u8	(*SetHalDefVarHandler)(_adapter *padapter, HAL_DEF_VARIABLE eVariable, void * pValue);
 
-	void	(*GetHalODMVarHandler)(_adapter *padapter, HAL_ODM_VARIABLE eVariable, void * pValue1,void * pValue2);
-	void	(*SetHalODMVarHandler)(_adapter *padapter, HAL_ODM_VARIABLE eVariable, void * pValue1,bool bSet);
+	void	(*GetHalODMVarHandler)(_adapter *padapter, HAL_ODM_VARIABLE eVariable, void * pValue1, void * pValue2);
+	void	(*SetHalODMVarHandler)(_adapter *padapter, HAL_ODM_VARIABLE eVariable, void * pValue1, bool bSet);
 
 	void	(*UpdateRAMaskHandler)(_adapter *padapter, u32 mac_id, u8 rssi_level);
 	void	(*SetBeaconRelatedRegistersHandler)(_adapter *padapter);
@@ -245,7 +240,7 @@ struct hal_ops {
 	void	(*run_thread)(_adapter *padapter);
 	void	(*cancel_thread)(_adapter *padapter);
 
-	u8	(*interface_ps_func)(_adapter *padapter,HAL_INTF_PS_FUNC efunc_id, u8* val);
+	u8	(*interface_ps_func)(_adapter *padapter, HAL_INTF_PS_FUNC efunc_id, u8* val);
 
 	s32	(*hal_xmit)(_adapter *padapter, struct xmit_frame *pxmitframe);
 	/*
@@ -354,8 +349,8 @@ void rtw_hal_read_chip_version(_adapter *padapter);
 u8 rtw_hal_set_def_var(_adapter *padapter, HAL_DEF_VARIABLE eVariable, void * pValue);
 u8 rtw_hal_get_def_var(_adapter *padapter, HAL_DEF_VARIABLE eVariable, void * pValue);
 
-void rtw_hal_set_odm_var(_adapter *padapter, HAL_ODM_VARIABLE eVariable, void * pValue1,bool bSet);
-void	rtw_hal_get_odm_var(_adapter *padapter, HAL_ODM_VARIABLE eVariable, void * pValue1,void * pValue2);
+void rtw_hal_set_odm_var(_adapter *padapter, HAL_ODM_VARIABLE eVariable, void * pValue1, bool bSet);
+void	rtw_hal_get_odm_var(_adapter *padapter, HAL_ODM_VARIABLE eVariable, void * pValue1, void * pValue2);
 
 void rtw_hal_enable_interrupt(_adapter *padapter);
 void rtw_hal_disable_interrupt(_adapter *padapter);
@@ -415,4 +410,4 @@ s32 rtw_hal_macid_wakeup(PADAPTER padapter, u32 macid);
 
 s32 rtw_hal_fill_h2c_cmd(PADAPTER, u8 ElementID, u32 CmdLen, u8 *pCmdBuffer);
 
-#endif //__HAL_INTF_H__
+#endif /* __HAL_INTF_H__ */

@@ -11,11 +11,6 @@
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
  * more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110, USA
- *
- *
  ******************************************************************************/
 
 #ifndef __OSDEP_INTF_H_
@@ -25,14 +20,14 @@
 struct intf_priv {
 
 	u8 *intf_dev;
-	u32	max_iosz;	//USB2.0: 128, USB1.1: 64, SDIO:64
-	u32	max_xmitsz; //USB2.0: unlimited, SDIO:512
-	u32	max_recvsz; //USB2.0: unlimited, SDIO:512
+	u32	max_iosz;	/* USB2.0: 128, USB1.1: 64, SDIO:64 */
+	u32	max_xmitsz; /* USB2.0: unlimited, SDIO:512 */
+	u32	max_recvsz; /* USB2.0: unlimited, SDIO:512 */
 
 	volatile u8 *io_rwmem;
 	volatile u8 *allocated_io_rwmem;
-	u32	io_wsz; //unit: 4bytes
-	u32	io_rsz;//unit: 4bytes
+	u32	io_wsz; /* unit: 4bytes */
+	u32	io_rsz;/* unit: 4bytes */
 	u8 intf_status;
 
 	void (*_bus_io)(u8 *priv);
@@ -90,4 +85,4 @@ void rtw_ndev_destructor(_nic_hdl ndev);
 int rtw_suspend_common(_adapter *padapter);
 int rtw_resume_common(_adapter *padapter);
 
-#endif	//_OSDEP_INTF_H_
+#endif	/* _OSDEP_INTF_H_ */

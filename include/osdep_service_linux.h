@@ -11,11 +11,6 @@
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
  * more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110, USA
- *
- *
  ******************************************************************************/
 #ifndef __OSDEP_LINUX_SERVICE_H_
 #define __OSDEP_LINUX_SERVICE_H_
@@ -28,7 +23,7 @@
 	#include <linux/slab.h>
 	#include <linux/module.h>
 	#include <linux/kref.h>
-	//#include <linux/smp_lock.h>
+	/* include <linux/smp_lock.h> */
 	#include <linux/netdevice.h>
 	#include <linux/skbuff.h>
 	#include <asm/uaccess.h>
@@ -44,13 +39,13 @@
 	#include <linux/if_arp.h>
 	#include <linux/rtnetlink.h>
 	#include <linux/delay.h>
-	#include <linux/interrupt.h>	// for struct tasklet_struct
+	#include <linux/interrupt.h>	/*  for struct tasklet_struct */
 	#include <linux/ip.h>
 	#include <linux/kthread.h>
 	#include <linux/list.h>
 	#include <linux/vmalloc.h>
 
-//	#include <linux/ieee80211.h>
+/* 	#include <linux/ieee80211.h> */
         #include <net/ieee80211_radiotap.h>
 	#include <net/cfg80211.h>
 
@@ -70,7 +65,7 @@
 	typedef struct	__queue	_queue;
 	typedef struct	list_head	_list;
 	typedef	int	_OS_STATUS;
-	//typedef u32	_irqL;
+	/* typedef u32	_irqL; */
 	typedef unsigned long _irqL;
 	typedef	struct	net_device * _nic_hdl;
 
@@ -97,23 +92,23 @@ __inline static _list	*get_list_head(_queue	*queue)
 
 #define RTW_TIMER_HDL_ARGS void *FunctionContext
 
-__inline static void _init_timer(_timer *ptimer,_nic_hdl nic_hdl,void *pfunc,void* cntx)
+__inline static void _init_timer(_timer *ptimer, _nic_hdl nic_hdl, void *pfunc, void* cntx)
 {
-	//setup_timer(ptimer, pfunc,(u32)cntx);
+	/* setup_timer(ptimer, pfunc, (u32)cntx); */
 	ptimer->function = pfunc;
 	ptimer->data = (unsigned long)cntx;
 	init_timer(ptimer);
 }
 
-__inline static void _set_timer(_timer *ptimer,u32 delay_time)
+__inline static void _set_timer(_timer *ptimer, u32 delay_time)
 {
 	mod_timer(ptimer , (jiffies+(delay_time*HZ/1000)));
 }
 
-__inline static void _cancel_timer(_timer *ptimer,u8 *bcancelled)
+__inline static void _cancel_timer(_timer *ptimer, u8 *bcancelled)
 {
 	del_timer_sync(ptimer);
-	*bcancelled=  true;//true ==1; false==0
+	*bcancelled =  true;/* true ==1; false ==0 */
 }
 
 
@@ -162,7 +157,7 @@ static inline void rtw_merge_string(char *dst, int dst_len, char *src1, char *sr
 	len += snprintf(dst+len, dst_len - len, "%s", src2);
 }
 
-#define rtw_signal_process(pid, sig) kill_pid(find_vpid((pid)),(sig), 1)
+#define rtw_signal_process(pid, sig) kill_pid(find_vpid((pid)), (sig), 1)
 
 #define rtw_netdev_priv(netdev) ( ((struct rtw_netdev_priv_indicator *)netdev_priv(netdev))->priv )
 

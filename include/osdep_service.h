@@ -11,11 +11,6 @@
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
  * more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110, USA
- *
- *
  ******************************************************************************/
 #ifndef __OSDEP_SERVICE_H_
 #define __OSDEP_SERVICE_H_
@@ -24,11 +19,8 @@
 #define _FAIL		0
 #define _SUCCESS	1
 #define RTW_RX_HANDLED 2
-//#define RTW_STATUS_TIMEDOUT -110
 
 #include <osdep_service_linux.h>
-
-//#include <rtw_byteorder.h>
 
 #ifndef BIT
 	#define BIT(x)	( 1 << (x))
@@ -78,7 +70,7 @@ extern int RTW_STATUS_CODE(int error_code);
 enum mstat_f {
 	/* type: 0x00ff */
 	MSTAT_TYPE_VIR = 0x00,
-	MSTAT_TYPE_PHY= 0x01,
+	MSTAT_TYPE_PHY = 0x01,
 	MSTAT_TYPE_SKB = 0x02,
 	MSTAT_TYPE_USB = 0x03,
 	MSTAT_TYPE_MAX = 0x04,
@@ -186,7 +178,7 @@ __inline static u32 _RND8(u32 sz)
 #define MAC_FMT "%02x:%02x:%02x:%02x:%02x:%02x"
 #endif
 #ifndef MAC_ARG
-#define MAC_ARG(x) ((u8*)(x))[0],((u8*)(x))[1],((u8*)(x))[2],((u8*)(x))[3],((u8*)(x))[4],((u8*)(x))[5]
+#define MAC_ARG(x) ((u8*)(x))[0], ((u8*)(x))[1], ((u8*)(x))[2], ((u8*)(x))[3], ((u8*)(x))[4], ((u8*)(x))[5]
 #endif
 
 
@@ -195,7 +187,7 @@ extern void rtw_softap_lock_suspend(void);
 extern void rtw_softap_unlock_suspend(void);
 #endif
 
-//File operation APIs, just for linux now
+/* File operation APIs, just for linux now */
 extern int rtw_is_file_readable(char *path);
 extern int rtw_retrive_from_file(char *path, u8* buf, u32 sz);
 
@@ -286,7 +278,7 @@ bool rtw_cbuf_push(struct rtw_cbuf *cbuf, void *buf);
 void *rtw_cbuf_pop(struct rtw_cbuf *cbuf);
 struct rtw_cbuf *rtw_cbuf_alloc(u32 size);
 
-// String handler
+/*  String handler */
 /*
  * Write formatted output to sized buffer
  */

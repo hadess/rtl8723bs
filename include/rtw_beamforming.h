@@ -11,11 +11,6 @@
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
  * more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110, USA
- *
- *
  ******************************************************************************/
 #ifndef __RTW_BEAMFORMING_H_
 #define __RTW_BEAMFORMING_H_
@@ -46,8 +41,8 @@ typedef enum _BEAMFORMING_CAP
 	BEAMFORMING_CAP_NONE = 0x0,
 	BEAMFORMER_CAP_HT_EXPLICIT = 0x1,
 	BEAMFORMEE_CAP_HT_EXPLICIT = 0x2,
-	BEAMFORMER_CAP_VHT_SU = 0x4,			// Self has er Cap, because Reg er  & peer ee
-	BEAMFORMEE_CAP_VHT_SU = 0x8,			// Self has ee Cap, because Reg ee & peer er
+	BEAMFORMER_CAP_VHT_SU = 0x4,			/*  Self has er Cap, because Reg er  & peer ee */
+	BEAMFORMEE_CAP_VHT_SU = 0x8,			/*  Self has ee Cap, because Reg ee & peer er */
 	BEAMFORMER_CAP = 0x10,
 	BEAMFORMEE_CAP = 0x20,
 }BEAMFORMING_CAP, *PBEAMFORMING_CAP;
@@ -74,18 +69,18 @@ enum BEAMFORMING_CTRL_TYPE
 	BEAMFORMING_CTRL_LEAVE = 1,
 	BEAMFORMING_CTRL_START_PERIOD = 2,
 	BEAMFORMING_CTRL_END_PERIOD = 3,
-	BEAMFORMING_CTRL_SOUNDING_FAIL=4,
-	BEAMFORMING_CTRL_SOUNDING_CLK=5,
+	BEAMFORMING_CTRL_SOUNDING_FAIL =4,
+	BEAMFORMING_CTRL_SOUNDING_CLK =5,
 };
 
 struct beamforming_entry {
 	bool	bUsed;
 	bool	bSound;
-	u16	aid;			// Used to construct AID field of NDPA packet.
-	u16	mac_id;		// Used to Set Reg42C in IBSS mode.
-	u16	p_aid;		// Used to fill Reg42C & Reg714 to compare with P_AID of Tx DESC.
-	u8	mac_addr[6];// Used to fill Reg6E4 to fill Mac address of CSI report frame.
-	CHANNEL_WIDTH	sound_bw;	// Sounding BandWidth
+	u16	aid;			/*  Used to construct AID field of NDPA packet. */
+	u16	mac_id;		/*  Used to Set Reg42C in IBSS mode. */
+	u16	p_aid;		/*  Used to fill Reg42C & Reg714 to compare with P_AID of Tx DESC. */
+	u8	mac_addr[6];/*  Used to fill Reg6E4 to fill Mac address of CSI report frame. */
+	CHANNEL_WIDTH	sound_bw;	/*  Sounding BandWidth */
 	u16	sound_period;
 	BEAMFORMING_CAP	beamforming_entry_cap;
 	BEAMFORMING_ENTRY_STATE	beamforming_entry_state;
@@ -121,7 +116,7 @@ struct rtw_ndpa_sta_info {
 	u16	nc_index:3;
 };
 
-BEAMFORMING_CAP beamforming_get_entry_beam_cap_by_mac_id(void * pmlmepriv ,u8 mac_id);
+BEAMFORMING_CAP beamforming_get_entry_beam_cap_by_mac_id(void * pmlmepriv , u8 mac_id);
 void	beamforming_notify(PADAPTER adapter);
 BEAMFORMING_CAP beamforming_get_beamform_cap(struct beamforming_info	*pBeamInfo);
 
@@ -130,7 +125,7 @@ u32	beamforming_get_report_frame(PADAPTER	 Adapter, union recv_frame *precv_fram
 bool	beamforming_send_ht_ndpa_packet(PADAPTER Adapter, u8 *ra, CHANNEL_WIDTH bw, u8 qidx);
 bool	beamforming_send_vht_ndpa_packet(PADAPTER Adapter, u8 *ra, u16 aid, CHANNEL_WIDTH bw, u8 qidx);
 
-void	beamforming_check_sounding_success(PADAPTER Adapter,bool status);
+void	beamforming_check_sounding_success(PADAPTER Adapter, bool status);
 
 void	beamforming_watchdog(PADAPTER Adapter);
 

@@ -11,11 +11,6 @@
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
  * more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110, USA
- *
- *
  ******************************************************************************/
 #ifndef __XMIT_OSDEP_H_
 #define __XMIT_OSDEP_H_
@@ -23,7 +18,7 @@
 
 struct pkt_file {
 	_pkt *pkt;
-	__kernel_size_t pkt_len;	 //the remainder length of the open_file
+	__kernel_size_t pkt_len;	 /* the remainder length of the open_file */
 	_buffer *cur_buffer;
 	u8 *buf_start;
 	u8 *cur_addr;
@@ -56,4 +51,4 @@ extern sint rtw_endofpktfile (struct pkt_file *pfile);
 extern void rtw_os_pkt_complete(_adapter *padapter, _pkt *pkt);
 extern void rtw_os_xmit_complete(_adapter *padapter, struct xmit_frame *pxframe);
 
-#endif //__XMIT_OSDEP_H_
+#endif /* __XMIT_OSDEP_H_ */

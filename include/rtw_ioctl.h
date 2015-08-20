@@ -11,17 +11,12 @@
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
  * more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110, USA
- *
- *
  ******************************************************************************/
 #ifndef _RTW_IOCTL_H_
 #define _RTW_IOCTL_H_
 
-//	00 - Success
-//	11 - Error
+/* 	00 - Success */
+/* 	11 - Error */
 #define STATUS_SUCCESS				(0x00000000L)
 #define STATUS_PENDING				(0x00000103L)
 
@@ -73,13 +68,13 @@
 #define NDIS_STATUS_SAP_IN_USE			((uint)0xC0010021L)
 #define NDIS_STATUS_INVALID_ADDRESS		((uint)0xC0010022L)
 #define NDIS_STATUS_VC_NOT_ACTIVATED		((uint)0xC0010023L)
-#define NDIS_STATUS_DEST_OUT_OF_ORDER		((uint)0xC0010024L)  // cause 27
-#define NDIS_STATUS_VC_NOT_AVAILABLE		((uint)0xC0010025L)  // cause 35,45
-#define NDIS_STATUS_CELLRATE_NOT_AVAILABLE	((uint)0xC0010026L)  // cause 37
-#define NDIS_STATUS_INCOMPATABLE_QOS		((uint)0xC0010027L)  // cause 49
-#define NDIS_STATUS_AAL_PARAMS_UNSUPPORTED	((uint)0xC0010028L)  // cause 93
-#define NDIS_STATUS_NO_ROUTE_TO_DESTINATION	((uint)0xC0010029L)  // cause 3
+#define NDIS_STATUS_DEST_OUT_OF_ORDER		((uint)0xC0010024L)  /*  cause 27 */
+#define NDIS_STATUS_VC_NOT_AVAILABLE		((uint)0xC0010025L)  /*  cause 35, 45 */
+#define NDIS_STATUS_CELLRATE_NOT_AVAILABLE	((uint)0xC0010026L)  /*  cause 37 */
+#define NDIS_STATUS_INCOMPATABLE_QOS		((uint)0xC0010027L)  /*  cause 49 */
+#define NDIS_STATUS_AAL_PARAMS_UNSUPPORTED	((uint)0xC0010028L)  /*  cause 93 */
+#define NDIS_STATUS_NO_ROUTE_TO_DESTINATION	((uint)0xC0010029L)  /*  cause 3 */
 
 extern struct iw_handler_def  rtw_handlers_def;
 
-#endif // #ifndef __INC_CEINFO_
+#endif /*  #ifndef __INC_CEINFO_ */

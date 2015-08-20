@@ -11,11 +11,6 @@
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
  * more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110, USA
- *
- *
  ******************************************************************************/
 #ifndef __BASIC_TYPES_H__
 #define __BASIC_TYPES_H__
@@ -30,13 +25,13 @@
 
 	typedef	signed int sint;
 
-	#define FIELD_OFFSET(s,field)	((__kernel_ssize_t)&((s*)(0))->field)
+	#define FIELD_OFFSET(s, field)	((__kernel_ssize_t)&((s*)(0))->field)
 
 #define SIZE_PTR __kernel_size_t
 #define SSIZE_PTR __kernel_ssize_t
 
-//port from fw by thomas
-// TODO: Belows are Sync from SD7-Driver. It is necessary to check correctness
+/* port from fw by thomas */
+/*  TODO: Belows are Sync from SD7-Driver. It is necessary to check correctness */
 
 /*
  *	Call endian free function when
@@ -45,9 +40,9 @@
  *		3. After read integer from IO.
 */
 
-//
-// Byte Swapping routine.
-//
+/*  */
+/*  Byte Swapping routine. */
+/*  */
 #define EF1Byte	(u8)
 #define EF2Byte		le16_to_cpu
 #define EF4Byte	le32_to_cpu
@@ -122,11 +117,11 @@
 #define LE_P1BYTE_TO_HOST_1BYTE(__pstart) \
 	(EF1BYTE(*((u8 *)(__pstart))))
 
-//
-//	Description:
-//		Translate subfield (continuous bits in little-endian) of 4-byte value in litten byte to
-//		4-byte value in host byte ordering.
-//
+/*  */
+/* 	Description: */
+/* 		Translate subfield (continuous bits in little-endian) of 4-byte value in litten byte to */
+/* 		4-byte value in host byte ordering. */
+/*  */
 #define LE_BITS_TO_4BYTE(__pstart, __bitoffset, __bitlen) \
 	( \
 		(LE_P4BYTE_TO_HOST_4BYTE(__pstart) >> (__bitoffset))  & \
@@ -143,11 +138,11 @@
 		BIT_LEN_MASK_8(__bitlen) \
 	)
 
-//
-//	Description:
-//		Mask subfield (continuous bits in little-endian) of 4-byte value in litten byte oredering
-//		and return the result in 4-byte value in host byte ordering.
-//
+/*  */
+/* 	Description: */
+/* 		Mask subfield (continuous bits in little-endian) of 4-byte value in litten byte oredering */
+/* 		and return the result in 4-byte value in host byte ordering. */
+/*  */
 #define LE_BITS_CLEARED_TO_4BYTE(__pstart, __bitoffset, __bitlen) \
 	( \
 		LE_P4BYTE_TO_HOST_4BYTE(__pstart)  & \
@@ -164,10 +159,10 @@
 		(~BIT_OFFSET_LEN_MASK_8(__bitoffset, __bitlen)) \
 	)
 
-//
-//	Description:
-//		Set subfield of little-endian 4-byte value to specified value.
-//
+/*  */
+/* 	Description: */
+/* 		Set subfield of little-endian 4-byte value to specified value. */
+/*  */
 #define SET_BITS_TO_LE_4BYTE(__pstart, __bitoffset, __bitlen, __val) \
 		*((u32 *)(__pstart)) =				\
 		(							\
@@ -204,13 +199,13 @@
 		); \
 }
 
-// Get the N-bytes aligment offset from the current length
+/*  Get the N-bytes aligment offset from the current length */
 #define N_BYTE_ALIGMENT(__Value, __Aligment) ((__Aligment == 1) ? (__Value) : (((__Value + __Aligment - 1) / __Aligment) * __Aligment))
 
-#define TEST_FLAG(__Flag,__testFlag)		(((__Flag) & (__testFlag)) != 0)
+#define TEST_FLAG(__Flag, __testFlag)		(((__Flag) & (__testFlag)) != 0)
 #define SET_FLAG(__Flag, __setFlag)			((__Flag) |= __setFlag)
 #define CLEAR_FLAG(__Flag, __clearFlag)		((__Flag) &= ~(__clearFlag))
 #define CLEAR_FLAGS(__Flag)					((__Flag) = 0)
 #define TEST_FLAGS(__Flag, __testFlags)		(((__Flag) & (__testFlags)) == (__testFlags))
 
-#endif //__BASIC_TYPES_H__
+#endif /* __BASIC_TYPES_H__ */

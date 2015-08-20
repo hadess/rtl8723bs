@@ -11,29 +11,24 @@
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
  * more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110, USA
- *
- *
  ******************************************************************************/
 #ifndef __RTL8723B_DM_H__
 #define __RTL8723B_DM_H__
-//============================================================
-// Description:
-//
-// This file is for 8723B dynamic mechanism only
-//
-//
-//============================================================
+/*  */
+/*  Description: */
+/*  */
+/*  This file is for 8723B dynamic mechanism only */
+/*  */
+/*  */
+/*  */
 
-//============================================================
-// structure and define
-//============================================================
+/*  */
+/*  structure and define */
+/*  */
 
-//============================================================
-// function prototype
-//============================================================
+/*  */
+/*  function prototype */
+/*  */
 
 void rtl8723b_init_dm_priv(PADAPTER padapter);
 

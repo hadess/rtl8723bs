@@ -11,19 +11,14 @@
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
  * more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110, USA
- *
- *
  ******************************************************************************/
 #ifndef _RTL8192C_RF_H_
 #define _RTL8192C_RF_H_
 
 
-//
-// RF RL6052 Series API
-//
+/*  */
+/*  RF RL6052 Series API */
+/*  */
 void		rtl8192c_RF_ChangeTxPath(	IN	PADAPTER	Adapter,
 										IN	u16		DataRate);
 void		rtl8192c_PHY_RF6052SetBandwidth(

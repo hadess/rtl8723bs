@@ -11,11 +11,6 @@
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
  * more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110, USA
- *
- *
  ******************************************************************************/
 #ifndef __SDIO_HAL_H__
 #define __SDIO_HAL_H__
@@ -30,4 +25,4 @@ void rtw_set_hal_ops(_adapter *padapter);
 
 void rtl8723bs_set_hal_ops(PADAPTER padapter);
 
-#endif //__SDIO_HAL_H__
+#endif /* __SDIO_HAL_H__ */

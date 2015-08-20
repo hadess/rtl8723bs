@@ -11,11 +11,6 @@
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
  * more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110, USA
- *
- *
  ******************************************************************************/
 #ifndef __RTW_BTCOEX_H__
 #define __RTW_BTCOEX_H__
@@ -59,11 +54,11 @@ void rtw_btcoex_DisplayBtCoexInfo(PADAPTER, u8 *pbuf, u32 bufsize);
 void rtw_btcoex_SetDBG(PADAPTER, u32 *pDbgModule);
 u32 rtw_btcoex_GetDBG(PADAPTER, u8 *pStrBuf, u32 bufSize);
 
-// ==================================================
-// Below Functions are called by BT-Coex
-// ==================================================
+/*  ================================================== */
+/*  Below Functions are called by BT-Coex */
+/*  ================================================== */
 void rtw_btcoex_RejectApAggregatedPacket(PADAPTER, u8 enable);
 void rtw_btcoex_LPS_Enter(PADAPTER);
 void rtw_btcoex_LPS_Leave(PADAPTER);
 
-#endif // __RTW_BTCOEX_H__
+#endif /*  __RTW_BTCOEX_H__ */

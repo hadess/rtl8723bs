@@ -11,22 +11,17 @@
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
  * more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110, USA
- *
- *
  ******************************************************************************/
 #ifndef __RTL8723B_XMIT_H__
 #define __RTL8723B_XMIT_H__
 
-//
-// Queue Select Value in TxDesc
-//
-#define QSLT_BK							0x2//0x01
+/*  */
+/*  Queue Select Value in TxDesc */
+/*  */
+#define QSLT_BK							0x2/* 0x01 */
 #define QSLT_BE							0x0
-#define QSLT_VI							0x5//0x4
-#define QSLT_VO							0x7//0x6
+#define QSLT_VI							0x5/* 0x4 */
+#define QSLT_VO							0x7/* 0x6 */
 #define QSLT_BEACON						0x10
 #define QSLT_HIGH						0x11
 #define QSLT_MGNT						0x12
@@ -34,7 +29,7 @@
 
 #define MAX_TID (15)
 
-//OFFSET 0
+/* OFFSET 0 */
 #define OFFSET_SZ	0
 #define OFFSET_SHT	16
 #define BMC		BIT(24)
@@ -43,7 +38,7 @@
 #define OWN		BIT(31)
 
 
-//OFFSET 4
+/* OFFSET 4 */
 #define PKT_OFFSET_SZ	0
 #define BK		BIT(6)
 #define QSEL_SHT	8
@@ -52,13 +47,13 @@
 #define PKT_OFFSET_SHT	26
 #define HWPC		BIT(31)
 
-//OFFSET 8
+/* OFFSET 8 */
 #define AGG_EN		BIT(29)
 
-//OFFSET 12
+/* OFFSET 12 */
 #define SEQ_SHT		16
 
-//OFFSET 16
+/* OFFSET 16 */
 #define QoS		BIT(6)
 #define HW_SEQ_EN	BIT(7)
 #define USERATE		BIT(8)
@@ -66,15 +61,15 @@
 #define DATA_SHORT	BIT(24)
 #define DATA_BW		BIT(25)
 
-//OFFSET 20
+/* OFFSET 20 */
 #define SGI		BIT(6)
 
-//
-//defined for TX DESC Operation
-//
+/*  */
+/* defined for TX DESC Operation */
+/*  */
 typedef struct txdesc_8723b
 {
-	// Offset 0
+	/*  Offset 0 */
 	u32 pktlen:16;
 	u32 offset:8;
 	u32 bmc:1;
@@ -86,7 +81,7 @@ typedef struct txdesc_8723b
 	u32 gf:1;
 	u32 rsvd0031:1;
 
-	// Offset 4
+	/*  Offset 4 */
 	u32 macid:7;
 	u32 rsvd0407:1;
 	u32 qsel:5;
@@ -96,12 +91,12 @@ typedef struct txdesc_8723b
 	u32 rate_id:5;
 	u32 en_desc_id:1;
 	u32 sectype:2;
-	u32 pkt_offset:5; // unit: 8 bytes
+	u32 pkt_offset:5; /*  unit: 8 bytes */
 	u32 moredata:1;
 	u32 txop_ps_cap:1;
 	u32 txop_ps_mode:1;
 
-	// Offset 8
+	/*  Offset 8 */
 	u32 p_aid:9;
 	u32 rsvd0809:1;
 	u32 cca_rts:2;
@@ -118,7 +113,7 @@ typedef struct txdesc_8723b
 	u32 g_id:6;
 	u32 rsvd0830:2;
 
-	// Offset 12
+	/*  Offset 12 */
 	u32 wheader_len:4;
 	u32 chk_en:1;
 	u32 early_rate:1;
@@ -136,7 +131,7 @@ typedef struct txdesc_8723b
 	u32 ndpa:2;
 	u32 ampdu_max_time:8;
 
-	// Offset 16
+	/*  Offset 16 */
 	u32 datarate:7;
 	u32 try_rate:1;
 	u32 data_ratefb_lmt:5;
@@ -147,7 +142,7 @@ typedef struct txdesc_8723b
 	u32 pcts_en:1;
 	u32 pcts_mask_idx:2;
 
-	// Offset 20
+	/*  Offset 20 */
 	u32 data_sc:4;
 	u32 data_short:1;
 	u32 data_bw:2;
@@ -161,7 +156,7 @@ typedef struct txdesc_8723b
 	u32 txpwr_offset:3;
 	u32 rsvd2031:1;
 
-	// Offset 24
+	/*  Offset 24 */
 	u32 sw_define:12;
 	u32 mbssid:4;
 	u32 antsel_A:3;
@@ -170,12 +165,12 @@ typedef struct txdesc_8723b
 	u32 antsel_D:3;
 	u32 rsvd2428:4;
 
-	// Offset 28
+	/*  Offset 28 */
 	u32 checksum:16;
 	u32 rsvd2816:8;
 	u32 usb_txagg_num:8;
 
-	// Offset 32
+	/*  Offset 32 */
 	u32 rts_rc:6;
 	u32 bar_rty_th:2;
 	u32 data_rc:6;
@@ -184,7 +179,7 @@ typedef struct txdesc_8723b
 	u32 nextneadpage:8;
 	u32 tailpage:8;
 
-	// Offset 36
+	/*  Offset 36 */
 	u32 padding_len:11;
 	u32 txbf_path:1;
 	u32 seq:12;
@@ -198,7 +193,7 @@ typedef struct txdesc_8723b
 #define RX_DRV_INFO_SIZE_UNIT_8723B 8
 
 
-//DWORD 0
+/* DWORD 0 */
 #define SET_RX_STATUS_DESC_PKT_LEN_8723B(__pRxStatusDesc, __Value)		SET_BITS_TO_LE_4BYTE( __pRxStatusDesc, 0, 14, __Value)
 #define SET_RX_STATUS_DESC_EOR_8723B(__pRxStatusDesc, __Value)		SET_BITS_TO_LE_4BYTE( __pRxStatusDesc, 30, 1, __Value)
 #define SET_RX_STATUS_DESC_OWN_8723B(__pRxStatusDesc, __Value)		SET_BITS_TO_LE_4BYTE( __pRxStatusDesc, 31, 1, __Value)
@@ -217,7 +212,7 @@ typedef struct txdesc_8723b
 #define GET_RX_STATUS_DESC_EOR_8723B(__pRxStatusDesc)				LE_BITS_TO_4BYTE( __pRxStatusDesc, 30, 1)
 #define GET_RX_STATUS_DESC_OWN_8723B(__pRxStatusDesc)				LE_BITS_TO_4BYTE( __pRxStatusDesc, 31, 1)
 
-//DWORD 1
+/* DWORD 1 */
 #define GET_RX_STATUS_DESC_MACID_8723B(__pRxDesc)					LE_BITS_TO_4BYTE(__pRxDesc+4, 0, 7)
 #define GET_RX_STATUS_DESC_TID_8723B(__pRxDesc)						LE_BITS_TO_4BYTE(__pRxDesc+4, 8, 4)
 #define GET_RX_STATUS_DESC_AMSDU_8723B(__pRxDesc)					LE_BITS_TO_4BYTE(__pRxDesc+4, 13, 1)
@@ -236,14 +231,14 @@ typedef struct txdesc_8723b
 #define GET_RX_STATUS_DESC_MC_8723B(__pRxDesc)				LE_BITS_TO_4BYTE( __pRxDesc+4, 30, 1)
 #define GET_RX_STATUS_DESC_BC_8723B(__pRxDesc)				LE_BITS_TO_4BYTE( __pRxDesc+4, 31, 1)
 
-//DWORD 2
+/* DWORD 2 */
 #define GET_RX_STATUS_DESC_SEQ_8723B(__pRxStatusDesc)					LE_BITS_TO_4BYTE( __pRxStatusDesc+8, 0, 12)
 #define GET_RX_STATUS_DESC_FRAG_8723B(__pRxStatusDesc)				LE_BITS_TO_4BYTE( __pRxStatusDesc+8, 12, 4)
 #define GET_RX_STATUS_DESC_RX_IS_QOS_8723B(__pRxStatusDesc)		LE_BITS_TO_4BYTE( __pRxStatusDesc+8, 16, 1)
 #define GET_RX_STATUS_DESC_WLANHD_IV_LEN_8723B(__pRxStatusDesc)		LE_BITS_TO_4BYTE( __pRxStatusDesc+8, 18, 6)
 #define GET_RX_STATUS_DESC_RPT_SEL_8723B(__pRxStatusDesc)			LE_BITS_TO_4BYTE( __pRxStatusDesc+8, 28, 1)
 
-//DWORD 3
+/* DWORD 3 */
 #define GET_RX_STATUS_DESC_RX_RATE_8723B(__pRxStatusDesc)				LE_BITS_TO_4BYTE( __pRxStatusDesc+12, 0, 7)
 #define GET_RX_STATUS_DESC_HTC_8723B(__pRxStatusDesc)					LE_BITS_TO_4BYTE( __pRxStatusDesc+12, 10, 1)
 #define GET_RX_STATUS_DESC_EOSP_8723B(__pRxStatusDesc)					LE_BITS_TO_4BYTE( __pRxStatusDesc+12, 11, 1)
@@ -255,13 +250,13 @@ typedef struct txdesc_8723b
 #define GET_RX_STATUS_DESC_UNICAST_MATCH_8723B(__pRxDesc)			LE_BITS_TO_4BYTE( __pRxDesc+12, 30, 1)
 #define GET_RX_STATUS_DESC_MAGIC_MATCH_8723B(__pRxDesc)			LE_BITS_TO_4BYTE( __pRxDesc+12, 31, 1)
 
-//DWORD 6
+/* DWORD 6 */
 #define GET_RX_STATUS_DESC_SPLCP_8723B(__pRxDesc)			LE_BITS_TO_4BYTE( __pRxDesc+16, 0, 1)
 #define GET_RX_STATUS_DESC_LDPC_8723B(__pRxDesc)			LE_BITS_TO_4BYTE( __pRxDesc+16, 1, 1)
 #define GET_RX_STATUS_DESC_STBC_8723B(__pRxDesc)			LE_BITS_TO_4BYTE( __pRxDesc+16, 2, 1)
 #define GET_RX_STATUS_DESC_BW_8723B(__pRxDesc)			LE_BITS_TO_4BYTE( __pRxDesc+16, 4, 2)
 
-//DWORD 5
+/* DWORD 5 */
 #define GET_RX_STATUS_DESC_TSFL_8723B(__pRxStatusDesc)				LE_BITS_TO_4BYTE( __pRxStatusDesc+20, 0, 32)
 
 #define GET_RX_STATUS_DESC_BUFF_ADDR_8723B(__pRxDesc)		LE_BITS_TO_4BYTE(__pRxDesc+24, 0, 32)
@@ -270,7 +265,7 @@ typedef struct txdesc_8723b
 #define SET_RX_STATUS_DESC_BUFF_ADDR_8723B(__pRxDesc, __Value)	SET_BITS_TO_LE_4BYTE(__pRxDesc+24, 0, 32, __Value)
 
 
-// Dword 0
+/*  Dword 0 */
 #define GET_TX_DESC_OWN_8723B(__pTxDesc)				LE_BITS_TO_4BYTE(__pTxDesc, 31, 1)
 
 #define SET_TX_DESC_PKT_SIZE_8723B(__pTxDesc, __Value) SET_BITS_TO_LE_4BYTE(__pTxDesc, 0, 16, __Value)
@@ -284,7 +279,7 @@ typedef struct txdesc_8723b
 #define SET_TX_DESC_GF_8723B(__pTxDesc, __Value) SET_BITS_TO_LE_4BYTE(__pTxDesc, 30, 1, __Value)
 #define SET_TX_DESC_OWN_8723B(__pTxDesc, __Value) SET_BITS_TO_LE_4BYTE(__pTxDesc, 31, 1, __Value)
 
-// Dword 1
+/*  Dword 1 */
 #define SET_TX_DESC_MACID_8723B(__pTxDesc, __Value) SET_BITS_TO_LE_4BYTE(__pTxDesc+4, 0, 7, __Value)
 #define SET_TX_DESC_QUEUE_SEL_8723B(__pTxDesc, __Value) SET_BITS_TO_LE_4BYTE(__pTxDesc+4, 8, 5, __Value)
 #define SET_TX_DESC_RDG_NAV_EXT_8723B(__pTxDesc, __Value) SET_BITS_TO_LE_4BYTE(__pTxDesc+4, 13, 1, __Value)
@@ -296,7 +291,7 @@ typedef struct txdesc_8723b
 #define SET_TX_DESC_PKT_OFFSET_8723B(__pTxDesc, __Value)		SET_BITS_TO_LE_4BYTE(__pTxDesc+4, 24, 5, __Value)
 
 
-// Dword 2
+/*  Dword 2 */
 #define SET_TX_DESC_PAID_8723B(__pTxDesc, __Value) SET_BITS_TO_LE_4BYTE(__pTxDesc+8, 0,  9, __Value)
 #define SET_TX_DESC_CCA_RTS_8723B(__pTxDesc, __Value) SET_BITS_TO_LE_4BYTE(__pTxDesc+8, 10, 2, __Value)
 #define SET_TX_DESC_AGG_ENABLE_8723B(__pTxDesc, __Value)		SET_BITS_TO_LE_4BYTE(__pTxDesc+8, 12, 1, __Value)
@@ -310,7 +305,7 @@ typedef struct txdesc_8723b
 #define SET_TX_DESC_GID_8723B(__pTxDesc, __Value)			SET_BITS_TO_LE_4BYTE(__pTxDesc+8, 24, 6, __Value)
 
 
-// Dword 3
+/*  Dword 3 */
 #define SET_TX_DESC_WHEADER_LEN_8723B(__pTxDesc, __Value) SET_BITS_TO_LE_4BYTE(__pTxDesc+12, 0, 4, __Value)
 #define SET_TX_DESC_CHK_EN_8723B(__pTxDesc, __Value) SET_BITS_TO_LE_4BYTE(__pTxDesc+12, 4, 1, __Value)
 #define SET_TX_DESC_EARLY_MODE_8723B(__pTxDesc, __Value) SET_BITS_TO_LE_4BYTE(__pTxDesc+12, 5, 1, __Value)
@@ -327,7 +322,7 @@ typedef struct txdesc_8723b
 #define SET_TX_DESC_NDPA_8723B(__pTxDesc, __Value)		SET_BITS_TO_LE_4BYTE(__pTxDesc+12, 22, 2, __Value)
 #define SET_TX_DESC_AMPDU_MAX_TIME_8723B(__pTxDesc, __Value)		SET_BITS_TO_LE_4BYTE(__pTxDesc+12, 24, 8, __Value)
 
-// Dword 4
+/*  Dword 4 */
 #define SET_TX_DESC_TX_RATE_8723B(__pTxDesc, __Value) SET_BITS_TO_LE_4BYTE(__pTxDesc+16, 0, 7, __Value)
 #define SET_TX_DESC_DATA_RATE_FB_LIMIT_8723B(__pTxDesc, __Value) SET_BITS_TO_LE_4BYTE(__pTxDesc+16, 8, 5, __Value)
 #define SET_TX_DESC_RTS_RATE_FB_LIMIT_8723B(__pTxDesc, __Value) SET_BITS_TO_LE_4BYTE(__pTxDesc+16, 13, 4, __Value)
@@ -336,7 +331,7 @@ typedef struct txdesc_8723b
 #define SET_TX_DESC_RTS_RATE_8723B(__pTxDesc, __Value) SET_BITS_TO_LE_4BYTE(__pTxDesc+16, 24, 5, __Value)
 
 
-// Dword 5
+/*  Dword 5 */
 #define SET_TX_DESC_DATA_SC_8723B(__pTxDesc, __Value) SET_BITS_TO_LE_4BYTE(__pTxDesc+20, 0, 4, __Value)
 #define SET_TX_DESC_DATA_SHORT_8723B(__pTxDesc, __Value)	SET_BITS_TO_LE_4BYTE(__pTxDesc+20, 4, 1, __Value)
 #define SET_TX_DESC_DATA_BW_8723B(__pTxDesc, __Value) SET_BITS_TO_LE_4BYTE(__pTxDesc+20, 5, 2, __Value)
@@ -347,29 +342,29 @@ typedef struct txdesc_8723b
 #define SET_TX_DESC_RTS_SC_8723B(__pTxDesc, __Value) SET_BITS_TO_LE_4BYTE(__pTxDesc+20, 13, 4, __Value)
 
 
-// Dword 6
+/*  Dword 6 */
 #define SET_TX_DESC_SW_DEFINE_8723B(__pTxDesc, __Value) SET_BITS_TO_LE_4BYTE(__pTxDesc+24, 0, 12, __Value)
 #define SET_TX_DESC_ANTSEL_A_8723B(__pTxDesc, __Value) SET_BITS_TO_LE_4BYTE(__pTxDesc+24, 16, 3, __Value)
 #define SET_TX_DESC_ANTSEL_B_8723B(__pTxDesc, __Value) SET_BITS_TO_LE_4BYTE(__pTxDesc+24, 19, 3, __Value)
 #define SET_TX_DESC_ANTSEL_C_8723B(__pTxDesc, __Value) SET_BITS_TO_LE_4BYTE(__pTxDesc+24, 22, 3, __Value)
 #define SET_TX_DESC_ANTSEL_D_8723B(__pTxDesc, __Value) SET_BITS_TO_LE_4BYTE(__pTxDesc+24, 25, 3, __Value)
 
-// Dword 7
+/*  Dword 7 */
 #define SET_TX_DESC_TX_DESC_CHECKSUM_8723B(__pTxDesc, __Value) SET_BITS_TO_LE_4BYTE(__pTxDesc+28, 0, 16, __Value)
 #define SET_TX_DESC_USB_TXAGG_NUM_8723B(__pTxDesc, __Value) SET_BITS_TO_LE_4BYTE(__pTxDesc+28, 24, 8, __Value)
 #define SET_TX_DESC_SDIO_TXSEQ_8723B(__pTxDesc, __Value)			SET_BITS_TO_LE_4BYTE(__pTxDesc+28, 16, 8, __Value)
 
-// Dword 8
+/*  Dword 8 */
 #define SET_TX_DESC_HWSEQ_EN_8723B(__pTxDesc, __Value)			SET_BITS_TO_LE_4BYTE(__pTxDesc+32, 15, 1, __Value)
 
-// Dword 9
+/*  Dword 9 */
 #define SET_TX_DESC_SEQ_8723B(__pTxDesc, __Value)					SET_BITS_TO_LE_4BYTE(__pTxDesc+36, 12, 12, __Value)
 
-// Dword 10
+/*  Dword 10 */
 #define SET_TX_DESC_TX_BUFFER_ADDRESS_8723B(__pTxDesc, __Value)		SET_BITS_TO_LE_4BYTE(__pTxDesc+40, 0, 32, __Value)
 #define GET_TX_DESC_TX_BUFFER_ADDRESS_8723B(__pTxDesc)	LE_BITS_TO_4BYTE(__pTxDesc+40, 0, 32)
 
-// Dword 11
+/*  Dword 11 */
 #define SET_TX_DESC_NEXT_DESC_ADDRESS_8723B(__pTxDesc, __Value)		SET_BITS_TO_LE_4BYTE(__pTxDesc+48, 0, 32, __Value)
 
 
@@ -381,18 +376,18 @@ typedef struct txdesc_8723b
 #define SET_EARLYMODE_LEN3_8723B(__pAddr, __Value)					SET_BITS_TO_LE_4BYTE(__pAddr+4, 17, 15, __Value)
 
 #endif
-//-----------------------------------------------------------
-//
-//	Rate
-//
-//-----------------------------------------------------------
-// CCK Rates, TxHT = 0
+/*  */
+/*  */
+/* 	Rate */
+/*  */
+/*  */
+/*  CCK Rates, TxHT = 0 */
 #define DESC8723B_RATE1M				0x00
 #define DESC8723B_RATE2M				0x01
 #define DESC8723B_RATE5_5M				0x02
 #define DESC8723B_RATE11M				0x03
 
-// OFDM Rates, TxHT = 0
+/*  OFDM Rates, TxHT = 0 */
 #define DESC8723B_RATE6M				0x04
 #define DESC8723B_RATE9M				0x05
 #define DESC8723B_RATE12M				0x06
@@ -402,7 +397,7 @@ typedef struct txdesc_8723b
 #define DESC8723B_RATE48M				0x0a
 #define DESC8723B_RATE54M				0x0b
 
-// MCS Rates, TxHT = 1
+/*  MCS Rates, TxHT = 1 */
 #define DESC8723B_RATEMCS0				0x0c
 #define DESC8723B_RATEMCS1				0x0d
 #define DESC8723B_RATEMCS2				0x0e

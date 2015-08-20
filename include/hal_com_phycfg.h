@@ -11,16 +11,11 @@
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
  * more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110, USA
- *
- *
  ******************************************************************************/
 #ifndef __HAL_COM_PHYCFG_H__
 #define __HAL_COM_PHYCFG_H__
 
-#define		PathA						0x0	// Useless
+#define		PathA						0x0	/*  Useless */
 #define		PathB						0x1
 #define		PathC						0x2
 #define		PathD						0x3
@@ -60,30 +55,30 @@ typedef enum _REGULATION_TXPWR_LMT {
 
 /*------------------------------Define structure----------------------------*/
 typedef struct _BB_REGISTER_DEFINITION{
-	u32 rfintfs;			// set software control:
-						//		0x870~0x877[8 bytes]
+	u32 rfintfs;			/*  set software control: */
+						/* 		0x870~0x877[8 bytes] */
 
-	u32 rfintfo;			// output data:
-						//		0x860~0x86f [16 bytes]
+	u32 rfintfo;			/*  output data: */
+						/* 		0x860~0x86f [16 bytes] */
 
-	u32 rfintfe;			// output enable:
-						//		0x860~0x86f [16 bytes]
+	u32 rfintfe;			/*  output enable: */
+						/* 		0x860~0x86f [16 bytes] */
 
-	u32 rf3wireOffset;	// LSSI data:
-						//		0x840~0x84f [16 bytes]
+	u32 rf3wireOffset;	/*  LSSI data: */
+						/* 		0x840~0x84f [16 bytes] */
 
-	u32 rfHSSIPara2;	// wire parameter control2 :
-						//		0x824~0x827,0x82c~0x82f, 0x834~0x837, 0x83c~0x83f [16 bytes]
+	u32 rfHSSIPara2;	/*  wire parameter control2 : */
+						/* 		0x824~0x827, 0x82c~0x82f, 0x834~0x837, 0x83c~0x83f [16 bytes] */
 
-	u32 rfLSSIReadBack;	//LSSI RF readback data SI mode
-						//		0x8a0~0x8af [16 bytes]
+	u32 rfLSSIReadBack;	/* LSSI RF readback data SI mode */
+						/* 		0x8a0~0x8af [16 bytes] */
 
-	u32 rfLSSIReadBackPi;	//LSSI RF readback data PI mode 0x8b8-8bc for Path A and B
+	u32 rfLSSIReadBackPi;	/* LSSI RF readback data PI mode 0x8b8-8bc for Path A and B */
 
 }BB_REGISTER_DEFINITION_T, *PBB_REGISTER_DEFINITION_T;
 
 
-//----------------------------------------------------------------------
+/*  */
 u8
 PHY_GetTxPowerByRateBase(
 	IN	PADAPTER		Adapter,
@@ -280,7 +275,7 @@ int PHY_ConfigRFWithTxPwrTrackParaFile(IN PADAPTER	Adapter, IN char*	pFileName);
 int PHY_ConfigRFWithPowerLimitTableParaFile(IN PADAPTER	Adapter, IN char*	pFileName);
 
 void phy_free_filebuf(_adapter *padapter);
-#endif //CONFIG_LOAD_PHY_PARA_FROM_FILE
+#endif /* CONFIG_LOAD_PHY_PARA_FROM_FILE */
 
 
-#endif //__HAL_COMMON_H__
+#endif /* __HAL_COMMON_H__ */

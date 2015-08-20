@@ -11,19 +11,14 @@
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
  * more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110, USA
- *
- *
  ******************************************************************************/
 #ifndef __INC_HAL8723BPHYCFG_H__
 #define __INC_HAL8723BPHYCFG_H__
 
 /*--------------------------Define Parameters-------------------------------*/
 #define LOOP_LIMIT				5
-#define MAX_STALL_TIME			50		//us
-#define AntennaDiversityValue	0x80	//(Adapter->bSoftwareAntennaDiversity ? 0x00:0x80)
+#define MAX_STALL_TIME			50		/* us */
+#define AntennaDiversityValue	0x80	/* Adapter->bSoftwareAntennaDiversity ? 0x00:0x80) */
 #define MAX_TXPWR_IDX_NMODE_92S	63
 #define Reset_Cnt_Limit			3
 
@@ -109,12 +104,12 @@ PHY_SetTxPowerLevel8723B(
 void
 PHY_SetBWMode8723B(
 	IN	PADAPTER				Adapter,
-	IN	CHANNEL_WIDTH			Bandwidth,	// 20M or 40M
-	IN	unsigned char				Offset		// Upper, Lower, or Don't care
+	IN	CHANNEL_WIDTH			Bandwidth,	/*  20M or 40M */
+	IN	unsigned char				Offset		/*  Upper, Lower, or Don't care */
 );
 
 void
-PHY_SwChnl8723B(	// Call after initialization
+PHY_SwChnl8723B(	/*  Call after initialization */
 	IN	PADAPTER	Adapter,
 	IN	u8		channel
 	);
