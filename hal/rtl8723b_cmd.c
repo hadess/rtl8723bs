@@ -95,7 +95,7 @@ s32 FillH2CCmd8723B(PADAPTER padapter, u8 ElementID, u32 CmdLen, u8 *pCmdBuffer)
 		{
 			memcpy((u8*)(&h2c_cmd)+1, pCmdBuffer, CmdLen);
 		}
-		else{
+		else {
 			memcpy((u8*)(&h2c_cmd)+1, pCmdBuffer, 3);
 			memcpy((u8*)(&h2c_cmd_ex), pCmdBuffer+3, CmdLen-3);
 /* 			*(u8*)(&h2c_cmd) |= BIT(7); */

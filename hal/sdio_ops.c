@@ -1250,7 +1250,7 @@ u8 RecvOnePkt(PADAPTER padapter, u32 size)
 			/* printk("Completed Recv One Pkt.\n"); */
 			sd_rxhandler(padapter, precvbuf);
 			res = true;
-		}else{
+		} else {
 			res = false;
 		}
 		sdio_release_host(func);

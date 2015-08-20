@@ -372,7 +372,7 @@ _InitNormalChipTwoOutEpPriority(
 		mgtQ	= valueHi;
 		hiQ		= valueHi;
 	}
-	else{/* for WMM , CONFIG_OUT_EP_WIFI_MODE */
+	else {/* for WMM , CONFIG_OUT_EP_WIFI_MODE */
 		beQ		= valueLow;
 		bkQ		= valueHi;
 		viQ		= valueHi;

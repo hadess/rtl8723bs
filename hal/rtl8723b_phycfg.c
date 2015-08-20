@@ -748,7 +748,7 @@ PHY_SetTxPowerLevel8723B(
 	if (pHalData->AntDivCfg){/*  antenna diversity Enable */
 		RFPath = ((pDM_FatTable->RxIdleAnt == MAIN_ANT) ? ODM_RF_PATH_A : ODM_RF_PATH_B);
 	}
-	else{ /*  antenna diversity disable */
+	else { /*  antenna diversity disable */
 		RFPath = pHalData->ant_path;
 	}
 

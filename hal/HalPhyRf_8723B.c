@@ -1423,7 +1423,7 @@ _PHY_PathADDAOn8723B(
 		pathOn = 0x01c00014;
 		PHY_SetBBReg(pDM_Odm->Adapter, ADDAReg[0], bMaskDWord, 0x01c00014);
 	}
-	else{
+	else {
 		PHY_SetBBReg(pDM_Odm->Adapter, ADDAReg[0], bMaskDWord, pathOn);
 	}
 

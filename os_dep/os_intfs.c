@@ -1774,7 +1774,7 @@ int rtw_resume_process_wow(_adapter *padapter)
 				rtw_netif_wake_queue(pnetdev);
 		}
 	}
-	else{
+	else {
 
 		DBG_871X_LEVEL(_drv_always_, "%s: ### ERROR ### wowlan_mode =%d\n", __FUNCTION__, pwrpriv->wowlan_mode);
 	}

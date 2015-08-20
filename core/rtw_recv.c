@@ -381,7 +381,7 @@ sint recvframe_chkmic(_adapter *adapter,  union recv_frame *precvframe){
 					goto exit;
 				}
 			}
-			else{
+			else {
 				mickey =&stainfo->dot11tkiprxmickey.skey[0];
 				RT_TRACE(_module_rtl871x_recv_c_, _drv_err_, ("\n recvframe_chkmic: unicast key \n"));
 			}
@@ -452,7 +452,7 @@ sint recvframe_chkmic(_adapter *adapter,  union recv_frame *precvframe){
 				res = _FAIL;
 
 			}
-			else{
+			else {
 				/* mic checked ok */
 				if ((psecuritypriv->bcheck_grpkey ==false) && (IS_MCAST(prxattrib->ra) ==true)){
 					psecuritypriv->bcheck_grpkey =true;
@@ -662,7 +662,7 @@ union recv_frame * portctrl(_adapter *adapter, union recv_frame * precv_frame)
 
 			/* 	prtnframe =precv_frame; */
 			/*  */
-			/* else{ */
+			/* else { */
 			/* 	RT_TRACE(_module_rtl871x_recv_c_, _drv_info_, ("########portctrl:ether_type = 0x%04x\n", ether_type)); */
 			/*  */
 		}

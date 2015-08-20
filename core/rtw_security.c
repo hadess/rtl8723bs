@@ -179,7 +179,7 @@ static void crc32_init(void)
 {
 	if (bcrc32initialized == 1)
 		return;
-	else{
+	else {
 		sint i, j;
 		u32 c;
 		u8 *p =(u8 *)&c, *p1;
@@ -451,7 +451,7 @@ void rtw_seccalctkipmic(u8 * key, u8 *header, u8 *data, u32 data_len, u8 *mic_co
 		else
 			rtw_secmicappend(&micdata, &header[10], 6);
 	}
-	else{	/* ToDS == 0 */
+	else {	/* ToDS == 0 */
 		rtw_secmicappend(&micdata, &header[4], 6);   /* DA */
 		if (header[1]&2)  /* From Ds == 1 */
 			rtw_secmicappend(&micdata, &header[16], 6);
@@ -760,7 +760,7 @@ u32	rtw_tkip_encrypt(_adapter *padapter, u8 *pxmitframe)
 					arcfour_encrypt(&mycontext, payload+length, crc, 4);
 
 				}
-				else{
+				else {
 					length =pxmitpriv->frag_len-pattrib->hdrlen-pattrib->iv_len-pattrib->icv_len ;
 					*((__le32 *)crc) = getcrc32(payload, length);/* modified by Amy*/
 					arcfour_init(&mycontext, rc4key, 16);
@@ -776,7 +776,7 @@ u32	rtw_tkip_encrypt(_adapter *padapter, u8 *pxmitframe)
 			TKIP_SW_ENC_CNT_INC(psecuritypriv, pattrib->ra);
 		}
 /*
-		else{
+		else {
 			RT_TRACE(_module_rtl871x_security_c_, _drv_err_, ("rtw_tkip_encrypt: stainfo ==NULL!!!\n"));
                         DBG_871X("%s, psta ==NUL\n", __func__);
 			res = _FAIL;
@@ -893,7 +893,7 @@ u32 rtw_tkip_decrypt(_adapter *padapter, u8 *precvframe)
 
 			TKIP_SW_DEC_CNT_INC(psecuritypriv, prxattrib->ra);
 		}
-		else{
+		else {
 			RT_TRACE(_module_rtl871x_security_c_, _drv_err_, ("rtw_tkip_decrypt: stainfo ==NULL!!!\n"));
 			res = _FAIL;
 		}
@@ -1608,7 +1608,7 @@ u32	rtw_aes_encrypt(_adapter *padapter, u8 *pxmitframe)
 
 				aes_cipher(prwskey, pattrib->hdrlen, pframe, length);
 			}
-			else{
+			else {
 				length =pxmitpriv->frag_len-pattrib->hdrlen-pattrib->iv_len-pattrib->icv_len ;
 
 				aes_cipher(prwskey, pattrib->hdrlen, pframe, length);

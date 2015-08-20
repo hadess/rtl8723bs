@@ -112,7 +112,7 @@ uint	 rtw_hal_init(_adapter *padapter)
 
 		rtw_bb_rf_gain_offset(padapter);
 	}
-	else{
+	else {
 		for (i = 0; i<dvobj->iface_nums; i++)
 			dvobj->padapters[i]->hw_init_completed = false;
 		DBG_871X("rtw_hal_init: hal__init fail\n");

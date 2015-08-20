@@ -1152,7 +1152,7 @@ u4Byte ODM_Get_Rate_Bitmap(
 					{
 						rate_bitmap = 0x000ff000;
 					}
-					else{
+					else {
 						if (*(pDM_Odm->pBandWidth) == ODM_BW40M)
 							rate_bitmap = 0x000ff015;
 						else

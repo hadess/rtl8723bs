@@ -447,7 +447,7 @@ _TwoOutPipeMapping(
 		pdvobjpriv->Queue2Pipe[7] = pdvobjpriv->RtOutPipe[0];/* TXCMD */
 
 	}
-	else{/* typical setting */
+	else {/* typical setting */
 
 
 		/* BK,	BE,	VI,	VO,	BCN,	CMD, MGT, HIGH, HCCA */
@@ -492,7 +492,7 @@ static void _ThreeOutPipeMapping(
 		pdvobjpriv->Queue2Pipe[7] = pdvobjpriv->RtOutPipe[0];/* TXCMD */
 
 	}
-	else{/* typical setting */
+	else {/* typical setting */
 
 
 		/* 	BK,	BE,	VI,	VO,	BCN,	CMD, MGT, HIGH, HCCA */
@@ -974,7 +974,7 @@ void SetHalODMVar(
 					DBG_8192C("### Set STA_(%d) info ###\n", psta->mac_id);
 					ODM_CmnInfoPtrArrayHook(podmpriv, ODM_CMNINFO_STA_STATUS, psta->mac_id, psta);
 				}
-				else{
+				else {
 					DBG_8192C("### Clean STA_(%d) info ###\n", psta->mac_id);
 					/* spin_lock_bh(&pHalData->odm_stainfo_lock); */
 					ODM_CmnInfoPtrArrayHook(podmpriv, ODM_CMNINFO_STA_STATUS, psta->mac_id, NULL);
@@ -1316,7 +1316,7 @@ void linked_info_dump(_adapter *padapter, u8 benable)
 		pwrctrlpriv->ips_org_mode = pwrctrlpriv->ips_mode;/* keep org value */
 		rtw_pm_set_ips(padapter, IPS_NONE);
 	}
-	else{
+	else {
 		rtw_pm_set_ips(padapter, pwrctrlpriv->ips_org_mode);
 
 		rtw_pm_set_lps(padapter, pwrctrlpriv->ips_org_mode);
@@ -1372,7 +1372,7 @@ void rtw_dump_raw_rssi_info(_adapter *padapter)
 		if (!isCCKrate){
 			printk(", rx_ofdm_pwr:%d(dBm), rx_ofdm_snr:%d(dB)\n",
 			psample_pkt_rssi->ofdm_pwr[rf_path], psample_pkt_rssi->ofdm_snr[rf_path]);
-		}else{
+		} else {
 			printk("\n");
 		}
 	}

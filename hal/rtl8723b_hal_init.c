@@ -2888,7 +2888,7 @@ Hal_EfuseParseBTCoexistInfo_8723B(
 			/*  EFUSE_0xC3[6] == 1, S0(Aux)-ODM_RF_PATH_B */
 			pHalData->ant_path = (tempval & BIT(6))?ODM_RF_PATH_B:ODM_RF_PATH_A;
 		}
-		else{
+		else {
 			pHalData->EEPROMBluetoothAntNum = Ant_x1;
 			pHalData->ant_path = ODM_RF_PATH_A;
 		}
@@ -3128,7 +3128,7 @@ void Hal_ReadRFGainOffset(
 		Adapter->eeprompriv.EEPROMRFGainVal =EFUSE_Read1Byte(Adapter, EEPROM_RF_GAIN_VAL);
 		DBG_871X("Adapter->eeprompriv.EEPROMRFGainVal =%x\n", Adapter->eeprompriv.EEPROMRFGainVal);
 	}
-	else{
+	else {
 		Adapter->eeprompriv.EEPROMRFGainOffset = 0;
 		Adapter->eeprompriv.EEPROMRFGainVal = 0xFF;
 		DBG_871X("else AutoloadFail =%x,\n", AutoloadFail);

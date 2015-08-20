@@ -71,7 +71,7 @@ ODM_RF_Saving(
 				else
 					pDM_PSTable->CurRFState = RF_Normal;
 			}
-			else{
+			else {
 				if (pDM_Odm->RSSI_Min <= Rssi_Low_bound)
 					pDM_PSTable->CurRFState = RF_Normal;
 				else

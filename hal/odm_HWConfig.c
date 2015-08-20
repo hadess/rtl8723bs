@@ -205,7 +205,7 @@ odm_RxPhyStatus92CSeries_Parsing(
 			if (pPhyInfo->RxPWDBAll > 40 && !pDM_Odm->bInHctTest){
 				SQ = 100;
 			}
-			else{
+			else {
 				SQ_rpt = pPhyStaRpt->cck_sig_qual_ofdm_pwdb_all;
 
 				if (SQ_rpt > 64)
