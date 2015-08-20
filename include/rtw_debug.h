@@ -187,24 +187,22 @@
 #define RTW_DBGDUMP NULL /* 'stream' for _dbgdump */
 
 /* dump message to selected 'stream' */
-#define DBG_871X_SEL(sel, fmt, arg...) \
-	do {\
-		if (sel == RTW_DBGDUMP)\
-			_DBG_871X_LEVEL(_drv_always_, fmt, ##arg); \
-		else {\
-			if (seq_printf(sel, fmt, ##arg)) /*rtw_warn_on(1)*/; \
-		} \
-	}while (0)
+#define DBG_871X_SEL(sel, fmt, arg...)					\
+	do {								\
+		if (sel == RTW_DBGDUMP)					\
+			_DBG_871X_LEVEL(_drv_always_, fmt, ##arg);	\
+		else							\
+			seq_printf(sel, fmt, ##arg);			\
+	} while (0)
 
 /* dump message to selected 'stream' with driver-defined prefix */
-#define DBG_871X_SEL_NL(sel, fmt, arg...) \
-	do {\
-		if (sel == RTW_DBGDUMP)\
-			DBG_871X_LEVEL(_drv_always_, fmt, ##arg); \
-		else {\
-			if (seq_printf(sel, fmt, ##arg)) /*rtw_warn_on(1)*/; \
-		} \
-	}while (0)
+#define DBG_871X_SEL_NL(sel, fmt, arg...)				\
+	do {								\
+		if (sel == RTW_DBGDUMP)					\
+			DBG_871X_LEVEL(_drv_always_, fmt, ##arg);	\
+		else							\
+			seq_printf(sel, fmt, ##arg);			\
+	} while (0)
 
 #endif /* defined(_dbgdump) */
 
