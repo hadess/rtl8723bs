@@ -273,7 +273,7 @@ int init_hw_mlme_ext(_adapter *padapter)
 	return _SUCCESS;
 }
 
-void init_mlme_default_rate_set(_adapter* padapter)
+void init_mlme_default_rate_set(_adapter * padapter)
 {
 	struct mlme_ext_priv *pmlmeext = &padapter->mlmeextpriv;
 
@@ -287,7 +287,7 @@ void init_mlme_default_rate_set(_adapter* padapter)
 	memcpy(pmlmeext->default_supported_mcs_set, supported_mcs_set, sizeof(pmlmeext->default_supported_mcs_set));
 }
 
-static void init_mlme_ext_priv_value(_adapter* padapter)
+static void init_mlme_ext_priv_value(_adapter * padapter)
 {
 	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
@@ -406,7 +406,7 @@ static void init_channel_list(_adapter *padapter, RT_CHANNEL_INFO *channel_set,
 
 }
 
-static u8 init_channel_set(_adapter* padapter, u8 ChannelPlan, RT_CHANNEL_INFO *channel_set)
+static u8 init_channel_set(_adapter * padapter, u8 ChannelPlan, RT_CHANNEL_INFO *channel_set)
 {
 	u8	index, chanset_size = 0;
 	u8	b5GBand = false, b2_4GBand = false;
@@ -482,7 +482,7 @@ static u8 init_channel_set(_adapter* padapter, u8 ChannelPlan, RT_CHANNEL_INFO *
 	return chanset_size;
 }
 
-int	init_mlme_ext_priv(_adapter* padapter)
+int	init_mlme_ext_priv(_adapter * padapter)
 {
 	int	res = _SUCCESS;
 	struct registry_priv* pregistrypriv = &padapter->registrypriv;
@@ -4915,7 +4915,7 @@ u8 collect_bss_info(_adapter *padapter, union recv_frame *precv_frame, WLAN_BSSI
 	return _SUCCESS;
 }
 
-void start_create_ibss(_adapter* padapter)
+void start_create_ibss(_adapter * padapter)
 {
 	unsigned short	caps;
 	u8	val8;
@@ -4978,7 +4978,7 @@ void start_create_ibss(_adapter* padapter)
 
 }
 
-void start_clnt_join(_adapter* padapter)
+void start_clnt_join(_adapter * padapter)
 {
 	unsigned short	caps;
 	u8	val8;
@@ -5042,7 +5042,7 @@ void start_clnt_join(_adapter* padapter)
 
 }
 
-void start_clnt_auth(_adapter* padapter)
+void start_clnt_auth(_adapter * padapter)
 {
 	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
@@ -5067,7 +5067,7 @@ void start_clnt_auth(_adapter* padapter)
 }
 
 
-void start_clnt_assoc(_adapter* padapter)
+void start_clnt_assoc(_adapter * padapter)
 {
 	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
@@ -7035,7 +7035,7 @@ u8 add_ba_hdl(_adapter *padapter, unsigned char *pbuf)
 }
 
 
-u8 chk_bmc_sleepq_cmd(_adapter* padapter)
+u8 chk_bmc_sleepq_cmd(_adapter * padapter)
 {
 	struct cmd_obj *ph2c;
 	struct cmd_priv *pcmdpriv = &(padapter->cmdpriv);
@@ -7055,7 +7055,7 @@ exit:
 	return res;
 }
 
-u8 set_tx_beacon_cmd(_adapter* padapter)
+u8 set_tx_beacon_cmd(_adapter * padapter)
 {
 	struct cmd_obj	*ph2c;
 	struct Tx_Beacon_param	*ptxBeacon_parm;

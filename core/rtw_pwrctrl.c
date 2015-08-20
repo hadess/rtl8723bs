@@ -166,7 +166,7 @@ exit:
  * ATTENTION:
  *	rtw_ps_processor() doesn't handle LPS.
  */
-void rtw_ps_processor(_adapter*padapter)
+void rtw_ps_processor(_adapter *padapter)
 {
 	struct pwrctrl_priv *pwrpriv = adapter_to_pwrctl(padapter);
 	struct dvobj_priv *psdpriv = padapter->dvobj;

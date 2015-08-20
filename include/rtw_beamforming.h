@@ -130,6 +130,6 @@ void	beamforming_check_sounding_success(PADAPTER Adapter, bool status);
 void	beamforming_watchdog(PADAPTER Adapter);
 
 void	beamforming_wk_hdl(_adapter *padapter, u8 type, u8 *pbuf);
-u8	beamforming_wk_cmd(_adapter*padapter, s32 type, u8 *pbuf, s32 size, u8 enqueue);
+u8	beamforming_wk_cmd(_adapter *padapter, s32 type, u8 *pbuf, s32 size, u8 enqueue);
 
 #endif

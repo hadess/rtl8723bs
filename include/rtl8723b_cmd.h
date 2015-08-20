@@ -178,7 +178,7 @@ void rtl8723b_Add_RateATid(PADAPTER pAdapter, u32 bitmap, u8* arg, u8 rssi_level
 void rtl8723b_fw_try_ap_cmd(PADAPTER padapter, u32 need_ack);
 /* s32 rtl8723b_set_lowpwr_lps_cmd(PADAPTER padapter, u8 enable); */
 void rtl8723b_set_FwPsTuneParam_cmd(PADAPTER padapter);
-void rtl8723b_set_FwMacIdConfig_cmd(_adapter* padapter, u8 mac_id, u8 raid, u8 bw, u8 sgi, u32 mask);
+void rtl8723b_set_FwMacIdConfig_cmd(_adapter * padapter, u8 mac_id, u8 raid, u8 bw, u8 sgi, u32 mask);
 void rtl8723b_set_FwMediaStatusRpt_cmd(PADAPTER	padapter, u8 mstatus, u8 macid);
 void rtl8723b_download_rsvd_page(PADAPTER padapter, u8 mstatus);
 void rtl8723b_download_BTCoex_AP_mode_rsvd_page(PADAPTER padapter);
@@ -186,9 +186,9 @@ void rtl8723b_download_BTCoex_AP_mode_rsvd_page(PADAPTER padapter);
 void CheckFwRsvdPageContent(PADAPTER padapter);
 
 #if defined(CONFIG_WOWLAN) || defined(CONFIG_AP_WOWLAN)
-void rtl8723b_set_wowlan_cmd(_adapter* padapter, u8 enable);
-void rtl8723b_set_ap_wowlan_cmd(_adapter* padapter, u8 enable);
-void SetFwRelatedForWoWLAN8723b(_adapter* padapter, u8 bHostIsGoingtoSleep);
+void rtl8723b_set_wowlan_cmd(_adapter * padapter, u8 enable);
+void rtl8723b_set_ap_wowlan_cmd(_adapter * padapter, u8 enable);
+void SetFwRelatedForWoWLAN8723b(_adapter * padapter, u8 bHostIsGoingtoSleep);
 #endif/* CONFIG_WOWLAN */
 
 void rtl8723b_set_FwPwrModeInIPS_cmd(PADAPTER padapter, u8 cmd_param);

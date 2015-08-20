@@ -3493,14 +3493,14 @@ int rtw_wdev_alloc(_adapter *padapter, struct device *dev)
 	DBG_8192C("%s(padapter =%p)\n", __func__, padapter);
 
 	/* wiphy */
-	wiphy = wiphy_new(&rtw_cfg80211_ops, sizeof(_adapter*));
+	wiphy = wiphy_new(&rtw_cfg80211_ops, sizeof(_adapter *));
 	if (!wiphy) {
 		DBG_8192C("Couldn't allocate wiphy device\n");
 		ret = -ENOMEM;
 		goto exit;
 	}
 	set_wiphy_dev(wiphy, dev);
-	*((_adapter**)wiphy_priv(wiphy)) = padapter;
+	*((_adapter **)wiphy_priv(wiphy)) = padapter;
 	rtw_cfg80211_preinit_wiphy(padapter, wiphy);
 
 	ret = wiphy_register(wiphy);

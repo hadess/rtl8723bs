@@ -728,7 +728,7 @@ exit:
 	return res;
 }
 
-void rtw_getbbrfreg_cmdrsp_callback(_adapter*	padapter,  struct cmd_obj *pcmd)
+void rtw_getbbrfreg_cmdrsp_callback(_adapter *	padapter,  struct cmd_obj *pcmd)
 {
 	/* rtw_free_cmd_obj(pcmd); */
 	kfree((unsigned char*) pcmd->parmbuf);
@@ -968,7 +968,7 @@ exit:
 	return res;
 }
 
-u8 rtw_disassoc_cmd(_adapter*padapter, u32 deauth_timeout_ms, bool enqueue) /* for sta_mode */
+u8 rtw_disassoc_cmd(_adapter *padapter, u32 deauth_timeout_ms, bool enqueue) /* for sta_mode */
 {
 	struct cmd_obj *cmdobj = NULL;
 	struct disconnect_parm *param = NULL;
@@ -1162,7 +1162,7 @@ exit:
 	return res;
 }
 
-u8 rtw_addbareq_cmd(_adapter*padapter, u8 tid, u8 *addr)
+u8 rtw_addbareq_cmd(_adapter *padapter, u8 tid, u8 *addr)
 {
 	struct cmd_priv		*pcmdpriv = &padapter->cmdpriv;
 	struct cmd_obj*		ph2c;
@@ -1197,7 +1197,7 @@ exit:
 	return res;
 }
 /* add for CONFIG_IEEE80211W, none 11w can use it */
-u8 rtw_reset_securitypriv_cmd(_adapter*padapter)
+u8 rtw_reset_securitypriv_cmd(_adapter *padapter)
 {
 	struct cmd_obj*		ph2c;
 	struct drvextra_cmd_parm  *pdrvextra_cmd_parm;
@@ -1232,7 +1232,7 @@ exit:
 	return res;
 }
 
-u8 rtw_free_assoc_resources_cmd(_adapter*padapter)
+u8 rtw_free_assoc_resources_cmd(_adapter *padapter)
 {
 	struct cmd_obj*		ph2c;
 	struct drvextra_cmd_parm  *pdrvextra_cmd_parm;
@@ -1267,7 +1267,7 @@ exit:
 	return res;
 }
 
-u8 rtw_dynamic_chk_wk_cmd(_adapter*padapter)
+u8 rtw_dynamic_chk_wk_cmd(_adapter *padapter)
 {
 	struct cmd_obj*		ph2c;
 	struct drvextra_cmd_parm  *pdrvextra_cmd_parm;
@@ -1302,7 +1302,7 @@ exit:
 	return res;
 }
 
-u8 rtw_set_chplan_cmd(_adapter*padapter, u8 chplan, u8 enqueue, u8 swconfig)
+u8 rtw_set_chplan_cmd(_adapter *padapter, u8 chplan, u8 enqueue, u8 swconfig)
 {
 	struct	cmd_obj*	pcmdobj;
 	struct	SetChannelPlan_param *setChannelPlan_param;
@@ -1637,7 +1637,7 @@ void lps_ctrl_wk_hdl(_adapter *padapter, u8 lps_ctrl_type)
 	}
 }
 
-u8 rtw_lps_ctrl_wk_cmd(_adapter*padapter, u8 lps_ctrl_type, u8 enqueue)
+u8 rtw_lps_ctrl_wk_cmd(_adapter *padapter, u8 lps_ctrl_type, u8 enqueue)
 {
 	struct cmd_obj	*ph2c;
 	struct drvextra_cmd_parm	*pdrvextra_cmd_parm;
@@ -1681,12 +1681,12 @@ exit:
 	return res;
 }
 
-static void rtw_dm_in_lps_hdl(_adapter*padapter)
+static void rtw_dm_in_lps_hdl(_adapter *padapter)
 {
 	rtw_hal_set_hwreg(padapter, HW_VAR_DM_IN_LPS, NULL);
 }
 
-u8 rtw_dm_in_lps_wk_cmd(_adapter*padapter)
+u8 rtw_dm_in_lps_wk_cmd(_adapter *padapter)
 {
 	struct cmd_obj	*ph2c;
 	struct drvextra_cmd_parm	*pdrvextra_cmd_parm;
@@ -1761,7 +1761,7 @@ static void rtw_dm_ra_mask_hdl(_adapter *padapter, struct sta_info *psta)
 	}
 }
 
-u8 rtw_dm_ra_mask_wk_cmd(_adapter*padapter, u8 *psta)
+u8 rtw_dm_ra_mask_wk_cmd(_adapter *padapter, u8 *psta)
 {
 	struct cmd_obj	*ph2c;
 	struct drvextra_cmd_parm	*pdrvextra_cmd_parm;
@@ -1813,7 +1813,7 @@ static void free_assoc_resources_hdl(_adapter *padapter)
 	 rtw_free_assoc_resources(padapter, 1);
 }
 
-u8 rtw_ps_cmd(_adapter*padapter)
+u8 rtw_ps_cmd(_adapter *padapter)
 {
 	struct cmd_obj		*ppscmd;
 	struct drvextra_cmd_parm	*pdrvextra_cmd_parm;
@@ -1888,7 +1888,7 @@ static void rtw_chk_hi_queue_hdl(_adapter *padapter)
 
 }
 
-u8 rtw_chk_hi_queue_cmd(_adapter*padapter)
+u8 rtw_chk_hi_queue_cmd(_adapter *padapter)
 {
 	struct cmd_obj	*ph2c;
 	struct drvextra_cmd_parm	*pdrvextra_cmd_parm;
@@ -2161,7 +2161,7 @@ u8 rtw_drvextra_cmd_hdl(_adapter *padapter, unsigned char *pbuf)
 	return H2C_SUCCESS;
 }
 
-void rtw_survey_cmd_callback(_adapter*	padapter ,  struct cmd_obj *pcmd)
+void rtw_survey_cmd_callback(_adapter *	padapter ,  struct cmd_obj *pcmd)
 {
 	struct	mlme_priv *pmlmepriv = &padapter->mlmepriv;
 
@@ -2180,7 +2180,7 @@ void rtw_survey_cmd_callback(_adapter*	padapter ,  struct cmd_obj *pcmd)
 	rtw_free_cmd_obj(pcmd);
 }
 
-void rtw_disassoc_cmd_callback(_adapter*	padapter,  struct cmd_obj *pcmd)
+void rtw_disassoc_cmd_callback(_adapter *	padapter,  struct cmd_obj *pcmd)
 {
 	struct	mlme_priv *pmlmepriv = &padapter->mlmepriv;
 
@@ -2197,7 +2197,7 @@ void rtw_disassoc_cmd_callback(_adapter*	padapter,  struct cmd_obj *pcmd)
 	rtw_free_cmd_obj(pcmd);
 }
 
-void rtw_joinbss_cmd_callback(_adapter*	padapter,  struct cmd_obj *pcmd)
+void rtw_joinbss_cmd_callback(_adapter *	padapter,  struct cmd_obj *pcmd)
 {
 	struct	mlme_priv *pmlmepriv = &padapter->mlmepriv;
 
@@ -2301,7 +2301,7 @@ exit:
 
 
 
-void rtw_setstaKey_cmdrsp_callback(_adapter*	padapter ,  struct cmd_obj *pcmd)
+void rtw_setstaKey_cmdrsp_callback(_adapter *	padapter ,  struct cmd_obj *pcmd)
 {
 
 	struct sta_priv * pstapriv = &padapter->stapriv;
@@ -2317,7 +2317,7 @@ exit:
 	rtw_free_cmd_obj(pcmd);
 }
 
-void rtw_setassocsta_cmdrsp_callback(_adapter*	padapter,  struct cmd_obj *pcmd)
+void rtw_setassocsta_cmdrsp_callback(_adapter *	padapter,  struct cmd_obj *pcmd)
 {
 	struct sta_priv * pstapriv = &padapter->stapriv;
 	struct mlme_priv	*pmlmepriv = &padapter->mlmepriv;

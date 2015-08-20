@@ -24,7 +24,7 @@
 
 extern u8 rtw_do_join(_adapter * padapter);
 
-sint	_rtw_init_mlme_priv (_adapter* padapter)
+sint	_rtw_init_mlme_priv (_adapter * padapter)
 {
 	sint	i;
 	u8	*pbuf;
@@ -413,7 +413,7 @@ void rtw_free_network_nolock(_adapter * padapter, struct wlan_network *pnetwork)
 }
 
 
-void rtw_free_network_queue(_adapter* dev, u8 isfreeall)
+void rtw_free_network_queue(_adapter * dev, u8 isfreeall)
 {
 	_rtw_free_network_queue(dev, isfreeall);
 }
@@ -2701,7 +2701,7 @@ sint rtw_restruct_sec_ie(_adapter *adapter, u8 *in_ie, u8 *out_ie, uint in_len)
 	return ielength;
 }
 
-void rtw_init_registrypriv_dev_network(	_adapter* adapter)
+void rtw_init_registrypriv_dev_network(	_adapter * adapter)
 {
 	struct registry_priv* pregistrypriv = &adapter->registrypriv;
 	struct eeprom_priv* peepriv = &adapter->eeprompriv;
@@ -2720,7 +2720,7 @@ void rtw_init_registrypriv_dev_network(	_adapter* adapter)
 	pdev_network->Configuration.FHConfig.DwellTime = 0;
 }
 
-void rtw_update_registrypriv_dev_network(_adapter* adapter)
+void rtw_update_registrypriv_dev_network(_adapter * adapter)
 {
 	int sz = 0;
 	struct registry_priv* pregistrypriv = &adapter->registrypriv;
@@ -2782,7 +2782,7 @@ void rtw_update_registrypriv_dev_network(_adapter* adapter)
 	/* pdev_network->IELength = cpu_to_le32(sz); */
 }
 
-void rtw_get_encrypt_decrypt_from_registrypriv(_adapter* adapter)
+void rtw_get_encrypt_decrypt_from_registrypriv(_adapter * adapter)
 {
 }
 

@@ -354,7 +354,7 @@ void ips_enter(_adapter * padapter);
 int _ips_leave(_adapter * padapter);
 int ips_leave(_adapter * padapter);
 
-void rtw_ps_processor(_adapter*padapter);
+void rtw_ps_processor(_adapter *padapter);
 
 s32 LPS_RF_ON_check(PADAPTER padapter, u32 delay_ms);
 void LPS_Enter(PADAPTER padapter, const char *msg);

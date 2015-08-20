@@ -191,7 +191,7 @@ exit:
 	return ret;
 }
 
-u8 rtw_set_802_11_bssid(_adapter* padapter, u8 *bssid)
+u8 rtw_set_802_11_bssid(_adapter * padapter, u8 *bssid)
 {
 	u8 status = _SUCCESS;
 
@@ -270,7 +270,7 @@ exit:
 	return status;
 }
 
-u8 rtw_set_802_11_ssid(_adapter* padapter, NDIS_802_11_SSID *ssid)
+u8 rtw_set_802_11_ssid(_adapter * padapter, NDIS_802_11_SSID *ssid)
 {
 	u8 status = _SUCCESS;
 
@@ -385,7 +385,7 @@ exit:
 	return status;
 }
 
-u8 rtw_set_802_11_connect(_adapter* padapter, u8 *bssid, NDIS_802_11_SSID *ssid)
+u8 rtw_set_802_11_connect(_adapter * padapter, u8 *bssid, NDIS_802_11_SSID *ssid)
 {
 	u8 status = _SUCCESS;
 	bool bssid_valid = true;
@@ -455,7 +455,7 @@ exit:
 	return status;
 }
 
-u8 rtw_set_802_11_infrastructure_mode(_adapter* padapter,
+u8 rtw_set_802_11_infrastructure_mode(_adapter * padapter,
 	NDIS_802_11_NETWORK_INFRASTRUCTURE networktype)
 {
 	struct	mlme_priv	*pmlmepriv = &padapter->mlmepriv;
@@ -556,7 +556,7 @@ u8 rtw_set_802_11_disassociate(_adapter *padapter)
 	return true;
 }
 
-u8 rtw_set_802_11_bssid_list_scan(_adapter* padapter, NDIS_802_11_SSID *pssid, int ssid_max_num)
+u8 rtw_set_802_11_bssid_list_scan(_adapter * padapter, NDIS_802_11_SSID *pssid, int ssid_max_num)
 {
 	struct	mlme_priv		*pmlmepriv = &padapter->mlmepriv;
 	u8	res =true;
@@ -603,7 +603,7 @@ exit:
 	return res;
 }
 
-u8 rtw_set_802_11_authentication_mode(_adapter* padapter, NDIS_802_11_AUTHENTICATION_MODE authmode)
+u8 rtw_set_802_11_authentication_mode(_adapter * padapter, NDIS_802_11_AUTHENTICATION_MODE authmode)
 {
 	struct security_priv *psecuritypriv = &padapter->securitypriv;
 	int res;
@@ -628,7 +628,7 @@ u8 rtw_set_802_11_authentication_mode(_adapter* padapter, NDIS_802_11_AUTHENTICA
 	return ret;
 }
 
-u8 rtw_set_802_11_add_wep(_adapter* padapter, NDIS_802_11_WEP *wep){
+u8 rtw_set_802_11_add_wep(_adapter * padapter, NDIS_802_11_WEP *wep){
 
 	u8		bdefaultkey;
 	u8		btransmitkey;

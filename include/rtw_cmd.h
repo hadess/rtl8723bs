@@ -851,25 +851,25 @@ extern u8 rtw_setdatarate_cmd(_adapter  *padapter, u8 *rateset);
 extern u8 rtw_setrfintfs_cmd(_adapter  *padapter, u8 mode);
 
 extern u8 rtw_gettssi_cmd(_adapter  *padapter, u8 offset, u8 *pval);
-extern u8 rtw_setfwdig_cmd(_adapter*padapter, u8 type);
-extern u8 rtw_setfwra_cmd(_adapter*padapter, u8 type);
+extern u8 rtw_setfwdig_cmd(_adapter *padapter, u8 type);
+extern u8 rtw_setfwra_cmd(_adapter *padapter, u8 type);
 
-extern u8 rtw_addbareq_cmd(_adapter*padapter, u8 tid, u8 *addr);
+extern u8 rtw_addbareq_cmd(_adapter *padapter, u8 tid, u8 *addr);
 /*  add for CONFIG_IEEE80211W, none 11w also can use */
-extern u8 rtw_reset_securitypriv_cmd(_adapter*padapter);
+extern u8 rtw_reset_securitypriv_cmd(_adapter *padapter);
 extern u8 rtw_free_assoc_resources_cmd(_adapter *padapter);
 extern u8 rtw_dynamic_chk_wk_cmd(_adapter *adapter);
 
-u8 rtw_lps_ctrl_wk_cmd(_adapter*padapter, u8 lps_ctrl_type, u8 enqueue);
-u8 rtw_dm_in_lps_wk_cmd(_adapter*padapter);
+u8 rtw_lps_ctrl_wk_cmd(_adapter *padapter, u8 lps_ctrl_type, u8 enqueue);
+u8 rtw_dm_in_lps_wk_cmd(_adapter *padapter);
 
-u8 rtw_dm_ra_mask_wk_cmd(_adapter*padapter, u8 *psta);
+u8 rtw_dm_ra_mask_wk_cmd(_adapter *padapter, u8 *psta);
 
-extern u8 rtw_ps_cmd(_adapter*padapter);
+extern u8 rtw_ps_cmd(_adapter *padapter);
 
-u8 rtw_chk_hi_queue_cmd(_adapter*padapter);
+u8 rtw_chk_hi_queue_cmd(_adapter *padapter);
 
-extern u8 rtw_set_chplan_cmd(_adapter*padapter, u8 chplan, u8 enqueue, u8 swconfig);
+extern u8 rtw_set_chplan_cmd(_adapter *padapter, u8 chplan, u8 enqueue, u8 swconfig);
 
 extern u8 rtw_c2h_packet_wk_cmd(PADAPTER padapter, u8 *pbuf, u16 length);
 extern u8 rtw_c2h_wk_cmd(PADAPTER padapter, u8 *c2h_evt);

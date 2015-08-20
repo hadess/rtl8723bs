@@ -97,7 +97,7 @@ struct rtw_wdev_priv
 	bool power_mgmt;
 };
 
-#define wiphy_to_adapter(x) (*((_adapter**)wiphy_priv(x)))
+#define wiphy_to_adapter(x) (*((_adapter **)wiphy_priv(x)))
 
 #define wdev_to_ndev(w) ((w)->netdev)
 

@@ -565,7 +565,7 @@ struct sta_info *rtw_get_stainfo(struct sta_priv *pstapriv, u8 *hwaddr)
 	return psta;
 }
 
-u32 rtw_init_bcmc_stainfo(_adapter* padapter)
+u32 rtw_init_bcmc_stainfo(_adapter * padapter)
 {
 
 	struct sta_info		*psta;
@@ -593,7 +593,7 @@ exit:
 }
 
 
-struct sta_info* rtw_get_bcmc_stainfo(_adapter* padapter)
+struct sta_info* rtw_get_bcmc_stainfo(_adapter * padapter)
 {
 	struct sta_info		*psta;
 	struct sta_priv		*pstapriv = &padapter->stapriv;

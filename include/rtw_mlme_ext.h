@@ -542,8 +542,8 @@ struct mlme_ext_priv
 
 };
 
-void init_mlme_default_rate_set(_adapter* padapter);
-int init_mlme_ext_priv(_adapter* padapter);
+void init_mlme_default_rate_set(_adapter * padapter);
+int init_mlme_ext_priv(_adapter * padapter);
 int init_hw_mlme_ext(_adapter *padapter);
 void free_mlme_ext_priv (struct mlme_ext_priv *pmlmeext);
 extern void init_mlme_ext_timer(_adapter *padapter);
@@ -660,8 +660,8 @@ bool rtw_port_switch_chk(_adapter *adapter);
 void report_wmm_edca_update(_adapter *padapter);
 
 void beacon_timing_control(_adapter *padapter);
-u8 chk_bmc_sleepq_cmd(_adapter* padapter);
-extern u8 set_tx_beacon_cmd(_adapter*padapter);
+u8 chk_bmc_sleepq_cmd(_adapter * padapter);
+extern u8 set_tx_beacon_cmd(_adapter *padapter);
 unsigned int setup_beacon_frame(_adapter *padapter, unsigned char *beacon_frame);
 void update_mgnt_tx_rate(_adapter *padapter, u8 rate);
 void update_mgntframe_attrib(_adapter *padapter, struct pkt_attrib *pattrib);
@@ -688,9 +688,9 @@ unsigned int send_delba(_adapter *padapter, u8 initiator, u8 *addr);
 unsigned int send_beacon(_adapter *padapter);
 
 void start_clnt_assoc(_adapter *padapter);
-void start_clnt_auth(_adapter* padapter);
-void start_clnt_join(_adapter* padapter);
-void start_create_ibss(_adapter* padapter);
+void start_clnt_auth(_adapter * padapter);
+void start_clnt_join(_adapter * padapter);
+void start_create_ibss(_adapter * padapter);
 
 unsigned int OnAssocReq(_adapter *padapter, union recv_frame *precv_frame);
 unsigned int OnAssocRsp(_adapter *padapter, union recv_frame *precv_frame);

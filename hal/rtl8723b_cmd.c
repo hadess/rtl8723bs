@@ -23,7 +23,7 @@
 #define RTL8723B_MAX_CMD_LEN	7
 #define RTL8723B_EX_MESSAGE_BOX_SIZE	4
 
-static u8 _is_fw_read_cmd_down(_adapter* padapter, u8 msgbox_num)
+static u8 _is_fw_read_cmd_down(_adapter * padapter, u8 msgbox_num)
 {
 	u8	read_down = false;
 	int	retry_cnts = 100;
@@ -1011,7 +1011,7 @@ static void rtl8723b_set_FwDisconDecision_cmd(PADAPTER padapter, u8 benable)
 }
 #endif /*  CONFIG_WOWLAN */
 
-void rtl8723b_set_FwMacIdConfig_cmd(_adapter* padapter, u8 mac_id, u8 raid, u8 bw, u8 sgi, u32 mask)
+void rtl8723b_set_FwMacIdConfig_cmd(_adapter * padapter, u8 mac_id, u8 raid, u8 bw, u8 sgi, u32 mask)
 {
 	u8 u1H2CMacIdConfigParm[H2C_MACID_CFG_LEN]={0};
 
@@ -1030,7 +1030,7 @@ void rtl8723b_set_FwMacIdConfig_cmd(_adapter* padapter, u8 mac_id, u8 raid, u8 b
 	FillH2CCmd8723B(padapter, H2C_8723B_MACID_CFG, H2C_MACID_CFG_LEN, u1H2CMacIdConfigParm);
 }
 
-static void rtl8723b_set_FwRssiSetting_cmd(_adapter*padapter, u8 *param)
+static void rtl8723b_set_FwRssiSetting_cmd(_adapter *padapter, u8 *param)
 {
 	u8 u1H2CRssiSettingParm[H2C_RSSI_SETTING_LEN]={0};
 	u8 mac_id = *param;
@@ -1358,7 +1358,7 @@ static void rtl8723b_set_FwScanOffloadInfo_cmd(PADAPTER padapter, PRSVDPAGE_LOC 
 }
 #endif /* CONFIG_PNO_SUPPORT */
 
-static void rtl8723b_set_FwWoWlanRelated_cmd(_adapter* padapter, u8 enable)
+static void rtl8723b_set_FwWoWlanRelated_cmd(_adapter * padapter, u8 enable)
 {
 	struct security_priv *psecpriv = &padapter->securitypriv;
 	struct pwrctrl_priv *ppwrpriv = adapter_to_pwrctl(padapter);
@@ -1409,7 +1409,7 @@ static void rtl8723b_set_FwWoWlanRelated_cmd(_adapter* padapter, u8 enable)
 	return ;
 }
 
-void rtl8723b_set_wowlan_cmd(_adapter* padapter, u8 enable)
+void rtl8723b_set_wowlan_cmd(_adapter * padapter, u8 enable)
 {
 	rtl8723b_set_FwWoWlanRelated_cmd(padapter, enable);
 }
@@ -1460,7 +1460,7 @@ static void rtl8723b_set_Fw_AP_Offload_Cmd(PADAPTER padapter, u8 bFuncEn)
 			H2C_AP_OFFLOAD_LEN, u1H2CAPOffloadCtrlParm);
 }
 
-static void rtl8723b_set_AP_FwWoWlan_cmd(_adapter* padapter, u8 enable)
+static void rtl8723b_set_AP_FwWoWlan_cmd(_adapter * padapter, u8 enable)
 {
 	struct security_priv *psecpriv = &padapter->securitypriv;
 	struct pwrctrl_priv *ppwrpriv = adapter_to_pwrctl(padapter);
@@ -1483,7 +1483,7 @@ static void rtl8723b_set_AP_FwWoWlan_cmd(_adapter* padapter, u8 enable)
 	return ;
 }
 
-void rtl8723b_set_ap_wowlan_cmd(_adapter* padapter, u8 enable)
+void rtl8723b_set_ap_wowlan_cmd(_adapter * padapter, u8 enable)
 {
 	rtl8723b_set_AP_FwWoWlan_cmd(padapter, enable);
 }
@@ -2108,7 +2108,7 @@ void rtl8723b_download_rsvd_page(PADAPTER padapter, u8 mstatus)
 	}
 }
 
-void rtl8723b_set_rssi_cmd(_adapter*padapter, u8 *param)
+void rtl8723b_set_rssi_cmd(_adapter *padapter, u8 *param)
 {
 	rtl8723b_set_FwRssiSetting_cmd(padapter, param);
 }
