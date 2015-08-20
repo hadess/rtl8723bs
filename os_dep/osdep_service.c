@@ -11,11 +11,6 @@
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
  * more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110, USA
- *
- *
  ******************************************************************************/
 
 
@@ -36,9 +31,9 @@ inline int RTW_STATUS_CODE(int error_code)
 
 u8* _rtw_malloc(u32 sz)
 {
-	u8	*pbuf=NULL;
+	u8	*pbuf =NULL;
 
-	pbuf = kmalloc(sz,in_interrupt() ? GFP_ATOMIC : GFP_KERNEL);
+	pbuf = kmalloc(sz, in_interrupt() ? GFP_ATOMIC : GFP_KERNEL);
 
 	return pbuf;
 }
@@ -101,13 +96,13 @@ static int openFile(struct file **fpp, char *path, int flag, int mode)
 {
 	struct file *fp;
 
-	fp=filp_open(path, flag, mode);
+	fp =filp_open(path, flag, mode);
 	if (IS_ERR(fp)) {
-		*fpp=NULL;
+		*fpp =NULL;
 		return PTR_ERR(fp);
 	}
 	else {
-		*fpp=fp;
+		*fpp =fp;
 		return 0;
 	}
 }
@@ -119,19 +114,19 @@ static int openFile(struct file **fpp, char *path, int flag, int mode)
 */
 static int closeFile(struct file *fp)
 {
-	filp_close(fp,NULL);
+	filp_close(fp, NULL);
 	return 0;
 }
 
-static int readFile(struct file *fp,char *buf,int len)
+static int readFile(struct file *fp, char *buf, int len)
 {
-	int rlen=0, sum=0;
+	int rlen =0, sum =0;
 
 	if (!fp->f_op || !fp->f_op->read)
 		return -EPERM;
 
 	while (sum<len) {
-		rlen=fp->f_op->read(fp,(char __force __user *)buf+sum,len-sum, &fp->f_pos);
+		rlen =fp->f_op->read(fp, (char __force __user *)buf+sum, len-sum, &fp->f_pos);
 		if (rlen>0)
 			sum+=rlen;
 		else if (0 != rlen)
@@ -156,7 +151,7 @@ static int isFileReadable(char *path)
 	mm_segment_t oldfs;
 	char buf;
 
-	fp=filp_open(path, O_RDONLY, 0);
+	fp =filp_open(path, O_RDONLY, 0);
 	if (IS_ERR(fp)) {
 		ret = PTR_ERR(fp);
 	}
@@ -167,7 +162,7 @@ static int isFileReadable(char *path)
 			ret = PTR_ERR(fp);
 
 		set_fs(oldfs);
-		filp_close(fp,NULL);
+		filp_close(fp, NULL);
 	}
 	return ret;
 }
@@ -186,21 +181,21 @@ static int retriveFromFile(char *path, u8* buf, u32 sz)
 	struct file *fp;
 
 	if (path && buf) {
-		if ( 0 == (ret=openFile(&fp,path, O_RDONLY, 0)) ){
-			DBG_871X("%s openFile path:%s fp=%p\n",__FUNCTION__, path ,fp);
+		if ( 0 == (ret =openFile(&fp, path, O_RDONLY, 0)) ){
+			DBG_871X("%s openFile path:%s fp =%p\n", __FUNCTION__, path , fp);
 
 			oldfs = get_fs(); set_fs(get_ds());
-			ret=readFile(fp, buf, sz);
+			ret =readFile(fp, buf, sz);
 			set_fs(oldfs);
 			closeFile(fp);
 
-			DBG_871X("%s readFile, ret:%d\n",__FUNCTION__, ret);
+			DBG_871X("%s readFile, ret:%d\n", __FUNCTION__, ret);
 
 		} else {
-			DBG_871X("%s openFile path:%s Fail, ret:%d\n",__FUNCTION__, path, ret);
+			DBG_871X("%s openFile path:%s Fail, ret:%d\n", __FUNCTION__, path, ret);
 		}
 	} else {
-		DBG_871X("%s NULL pointer\n",__FUNCTION__);
+		DBG_871X("%s NULL pointer\n", __FUNCTION__);
 		ret =  -EINVAL;
 	}
 	return ret;
@@ -242,8 +237,8 @@ struct net_device *rtw_alloc_etherdev_with_old_priv(int sizeof_priv, void *old_p
 		goto RETURN;
 
 	pnpi = netdev_priv(pnetdev);
-	pnpi->priv=old_priv;
-	pnpi->sizeof_priv=sizeof_priv;
+	pnpi->priv =old_priv;
+	pnpi->sizeof_priv =sizeof_priv;
 
 RETURN:
 	return pnetdev;
@@ -267,7 +262,7 @@ struct net_device *rtw_alloc_etherdev(int sizeof_priv)
 		goto RETURN;
 	}
 
-	pnpi->sizeof_priv=sizeof_priv;
+	pnpi->sizeof_priv =sizeof_priv;
 RETURN:
 	return pnetdev;
 }
@@ -304,7 +299,7 @@ int rtw_change_ifname(_adapter *padapter, const char *ifname)
 	cur_pnetdev = padapter->pnetdev;
 	rereg_priv = &padapter->rereg_nd_name_priv;
 
-	//free the old_pnetdev
+	/* free the old_pnetdev */
 	if (rereg_priv->old_pnetdev) {
 		free_netdev(rereg_priv->old_pnetdev);
 		rereg_priv->old_pnetdev = NULL;
@@ -315,7 +310,7 @@ int rtw_change_ifname(_adapter *padapter, const char *ifname)
 	else
 		unregister_netdevice(cur_pnetdev);
 
-	rereg_priv->old_pnetdev=cur_pnetdev;
+	rereg_priv->old_pnetdev =cur_pnetdev;
 
 	pnetdev = rtw_init_netdev(padapter);
 	if (!pnetdev)  {
@@ -335,7 +330,7 @@ int rtw_change_ifname(_adapter *padapter, const char *ifname)
 		ret = register_netdevice(pnetdev);
 
 	if ( ret != 0) {
-		RT_TRACE(_module_hci_intfs_c_,_drv_err_,("register_netdev() failed\n"));
+		RT_TRACE(_module_hci_intfs_c_, _drv_err_, ("register_netdev() failed\n"));
 		goto error;
 	}
 

@@ -11,11 +11,6 @@
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
  * more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110, USA
- *
- *
  ******************************************************************************/
 #define _RECV_OSDEP_C_
 
@@ -26,41 +21,41 @@ void rtw_os_free_recvframe(union recv_frame *precvframe)
 {
 	if (precvframe->u.hdr.pkt)
 	{
-		dev_kfree_skb_any(precvframe->u.hdr.pkt);//free skb by driver
+		dev_kfree_skb_any(precvframe->u.hdr.pkt);/* free skb by driver */
 
 		precvframe->u.hdr.pkt = NULL;
 	}
 }
 
-//alloc os related resource in union recv_frame
+/* alloc os related resource in union recv_frame */
 int rtw_os_recv_resource_alloc(_adapter *padapter, union recv_frame *precvframe)
 {
-	int	res=_SUCCESS;
+	int	res =_SUCCESS;
 
 	precvframe->u.hdr.pkt_newalloc = precvframe->u.hdr.pkt = NULL;
 
 	return res;
 }
 
-//free os related resource in union recv_frame
+/* free os related resource in union recv_frame */
 void rtw_os_recv_resource_free(struct recv_priv *precvpriv)
 {
 	sint i;
 	union recv_frame *precvframe;
 	precvframe = (union recv_frame*) precvpriv->precv_frame_buf;
 
-	for (i=0; i < NR_RECVFRAME; i++)
+	for (i =0; i < NR_RECVFRAME; i++)
 	{
 		if (precvframe->u.hdr.pkt)
 		{
-			dev_kfree_skb_any(precvframe->u.hdr.pkt);//free skb by driver
+			dev_kfree_skb_any(precvframe->u.hdr.pkt);/* free skb by driver */
 			precvframe->u.hdr.pkt = NULL;
 		}
 		precvframe++;
 	}
 }
 
-//free os related resource in struct recv_buf
+/* free os related resource in struct recv_buf */
 int rtw_os_recvbuf_resource_free(_adapter *padapter, struct recv_buf *precvbuf)
 {
 	int ret = _SUCCESS;
@@ -100,7 +95,7 @@ _pkt *rtw_os_alloc_msdu_pkt(union recv_frame *prframe, u16 nSubframe_Length, u8 
 		}
 		else
 		{
-			DBG_871X("%s(): rtw_skb_clone() Fail!!!\n",__FUNCTION__);
+			DBG_871X("%s(): rtw_skb_clone() Fail!!!\n", __FUNCTION__);
 			return NULL;
 		}
 	}
@@ -136,16 +131,16 @@ void rtw_os_recv_indicate_pkt(_adapter *padapter, _pkt *pkt, struct rx_pkt_attri
 	if (pkt) {
 		if (check_fwstate(pmlmepriv, WIFI_AP_STATE) == true)
 		{
-			_pkt *pskb2=NULL;
+			_pkt *pskb2 =NULL;
 			struct sta_info *psta = NULL;
 			struct sta_priv *pstapriv = &padapter->stapriv;
 			int bmcast = IS_MCAST(pattrib->dst);
 
-			//DBG_871X("bmcast=%d\n", bmcast);
+			/* DBG_871X("bmcast =%d\n", bmcast); */
 
 			if (memcmp(pattrib->dst, myid(&padapter->eeprompriv), ETH_ALEN))
 			{
-				//DBG_871X("not ap psta=%p, addr=%pM\n", psta, pattrib->dst);
+				/* DBG_871X("not ap psta =%p, addr =%pM\n", psta, pattrib->dst); */
 
 				if (bmcast)
 				{
@@ -157,11 +152,11 @@ void rtw_os_recv_indicate_pkt(_adapter *padapter, _pkt *pkt, struct rx_pkt_attri
 
 				if (psta)
 				{
-					struct net_device *pnetdev= (struct net_device*)padapter->pnetdev;
+					struct net_device *pnetdev = (struct net_device*)padapter->pnetdev;
 
-					//DBG_871X("directly forwarding to the rtw_xmit_entry\n");
+					/* DBG_871X("directly forwarding to the rtw_xmit_entry\n"); */
 
-					//skb->ip_summed = CHECKSUM_NONE;
+					/* skb->ip_summed = CHECKSUM_NONE; */
 					pkt->dev = pnetdev;
 					skb_set_queue_mapping(pkt, rtw_recv_select_queue(pkt));
 
@@ -176,9 +171,9 @@ void rtw_os_recv_indicate_pkt(_adapter *padapter, _pkt *pkt, struct rx_pkt_attri
 					}
 				}
 			}
-			else// to APself
+			else/*  to APself */
 			{
-				//DBG_871X("to APSelf\n");
+				/* DBG_871X("to APSelf\n"); */
 				DBG_COUNTER(padapter->rx_logs.os_indicate_ap_self);
 			}
 		}
@@ -194,7 +189,7 @@ void rtw_os_recv_indicate_pkt(_adapter *padapter, _pkt *pkt, struct rx_pkt_attri
 		}
 #else /* !CONFIG_TCP_CSUM_OFFLOAD_RX */
 		pkt->ip_summed = CHECKSUM_NONE;
-#endif //CONFIG_TCP_CSUM_OFFLOAD_RX
+#endif /* CONFIG_TCP_CSUM_OFFLOAD_RX */
 
 		ret = rtw_netif_rx(padapter->pnetdev, pkt);
 		if (ret == NET_RX_SUCCESS)
@@ -204,7 +199,7 @@ void rtw_os_recv_indicate_pkt(_adapter *padapter, _pkt *pkt, struct rx_pkt_attri
 	}
 }
 
-void rtw_handle_tkip_mic_err(_adapter *padapter,u8 bgroup)
+void rtw_handle_tkip_mic_err(_adapter *padapter, u8 bgroup)
 {
 	enum nl80211_key_type key_type = 0;
 	union iwreq_data wrqu;
@@ -269,7 +264,7 @@ static void rtw_os_ksocket_send(_adapter *padapter, union recv_frame *precv_fram
 	struct rx_pkt_attrib *pattrib = &precv_frame->u.hdr.attrib;
 	struct sta_info *psta = precv_frame->u.hdr.psta;
 
-	DBG_871X("eth rx: got eth_type=0x%x\n", pattrib->eth_type);
+	DBG_871X("eth rx: got eth_type =0x%x\n", pattrib->eth_type);
 
 	if (psta && psta->isrc && psta->pid>0)
 	{
@@ -277,21 +272,21 @@ static void rtw_os_ksocket_send(_adapter *padapter, union recv_frame *precv_fram
 
 		rx_pid = *(u16*)(skb->data+ETH_HLEN);
 
-		DBG_871X("eth rx(pid=0x%x): sta("MAC_FMT") pid=0x%x\n",
+		DBG_871X("eth rx(pid =0x%x): sta("MAC_FMT") pid =0x%x\n",
 			rx_pid, MAC_ARG(psta->hwaddr), psta->pid);
 
 		if (rx_pid == psta->pid)
 		{
 			int i;
 			u16 len = *(u16*)(skb->data+ETH_HLEN+2);
-			//u16 ctrl_type = *(u16*)(skb->data+ETH_HLEN+4);
+			/* u16 ctrl_type = *(u16*)(skb->data+ETH_HLEN+4); */
 
-			//DBG_871X("eth, RC: len=0x%x, ctrl_type=0x%x\n", len, ctrl_type);
-			DBG_871X("eth, RC: len=0x%x\n", len);
+			/* DBG_871X("eth, RC: len =0x%x, ctrl_type =0x%x\n", len, ctrl_type); */
+			DBG_871X("eth, RC: len =0x%x\n", len);
 
-			for (i=0;i<len;i++)
+			for (i =0;i<len;i++)
 				DBG_871X("0x%x\n", *(skb->data+ETH_HLEN+4+i));
-				//DBG_871X("0x%x\n", *(skb->data+ETH_HLEN+6+i));
+				/* DBG_871X("0x%x\n", *(skb->data+ETH_HLEN+6+i)); */
 
 			DBG_871X("eth, RC-end\n");
 		}
@@ -299,7 +294,7 @@ static void rtw_os_ksocket_send(_adapter *padapter, union recv_frame *precv_fram
 	}
 
 }
-#endif //CONFIG_AUTO_AP_MODE
+#endif /* CONFIG_AUTO_AP_MODE */
 
 int rtw_recv_indicatepkt(_adapter *padapter, union recv_frame *precv_frame)
 {
@@ -316,13 +311,13 @@ int rtw_recv_indicatepkt(_adapter *padapter, union recv_frame *precv_frame)
 	skb = precv_frame->u.hdr.pkt;
 	if (skb == NULL)
 	{
-		RT_TRACE(_module_recv_osdep_c_,_drv_err_,("rtw_recv_indicatepkt():skb==NULL something wrong!!!!\n"));
+		RT_TRACE(_module_recv_osdep_c_, _drv_err_, ("rtw_recv_indicatepkt():skb ==NULL something wrong!!!!\n"));
 		goto _recv_indicatepkt_drop;
 	}
 
-	RT_TRACE(_module_recv_osdep_c_,_drv_info_,("rtw_recv_indicatepkt():skb != NULL !!!\n"));
-	RT_TRACE(_module_recv_osdep_c_,_drv_info_,("rtw_recv_indicatepkt():precv_frame->u.hdr.rx_head=%p  precv_frame->hdr.rx_data=%p\n", precv_frame->u.hdr.rx_head, precv_frame->u.hdr.rx_data));
-	RT_TRACE(_module_recv_osdep_c_,_drv_info_,("precv_frame->hdr.rx_tail=%p precv_frame->u.hdr.rx_end=%p precv_frame->hdr.len=%d \n", precv_frame->u.hdr.rx_tail, precv_frame->u.hdr.rx_end, precv_frame->u.hdr.len));
+	RT_TRACE(_module_recv_osdep_c_, _drv_info_, ("rtw_recv_indicatepkt():skb != NULL !!!\n"));
+	RT_TRACE(_module_recv_osdep_c_, _drv_info_, ("rtw_recv_indicatepkt():precv_frame->u.hdr.rx_head =%p  precv_frame->hdr.rx_data =%p\n", precv_frame->u.hdr.rx_head, precv_frame->u.hdr.rx_data));
+	RT_TRACE(_module_recv_osdep_c_, _drv_info_, ("precv_frame->hdr.rx_tail =%p precv_frame->u.hdr.rx_end =%p precv_frame->hdr.len =%d \n", precv_frame->u.hdr.rx_tail, precv_frame->u.hdr.rx_end, precv_frame->u.hdr.len));
 
 	skb->data = precv_frame->u.hdr.rx_data;
 
@@ -330,30 +325,30 @@ int rtw_recv_indicatepkt(_adapter *padapter, union recv_frame *precv_frame)
 
 	skb->len = precv_frame->u.hdr.len;
 
-	RT_TRACE(_module_recv_osdep_c_,_drv_info_,("\n skb->head=%p skb->data=%p skb->tail=%p skb->end=%p skb->len=%d\n", skb->head, skb->data, skb_tail_pointer(skb), skb_end_pointer(skb), skb->len));
+	RT_TRACE(_module_recv_osdep_c_, _drv_info_, ("\n skb->head =%p skb->data =%p skb->tail =%p skb->end =%p skb->len =%d\n", skb->head, skb->data, skb_tail_pointer(skb), skb_end_pointer(skb), skb->len));
 
 #ifdef CONFIG_AUTO_AP_MODE
 	if (0x8899 == pattrib->eth_type)
 	{
 		rtw_os_ksocket_send(padapter, precv_frame);
 
-		//goto _recv_indicatepkt_drop;
+		/* goto _recv_indicatepkt_drop; */
 	}
-#endif //CONFIG_AUTO_AP_MODE
+#endif /* CONFIG_AUTO_AP_MODE */
 
 	rtw_os_recv_indicate_pkt(padapter, skb, pattrib);
 
-	precv_frame->u.hdr.pkt = NULL; // pointers to NULL before rtw_free_recvframe()
+	precv_frame->u.hdr.pkt = NULL; /*  pointers to NULL before rtw_free_recvframe() */
 
 	rtw_free_recvframe(precv_frame, pfree_recv_queue);
 
-	RT_TRACE(_module_recv_osdep_c_,_drv_info_,("\n rtw_recv_indicatepkt :after rtw_os_recv_indicate_pkt!!!!\n"));
+	RT_TRACE(_module_recv_osdep_c_, _drv_info_, ("\n rtw_recv_indicatepkt :after rtw_os_recv_indicate_pkt!!!!\n"));
 
         return _SUCCESS;
 
 _recv_indicatepkt_drop:
 
-	 //enqueue back to free_recv_queue
+	 /* enqueue back to free_recv_queue */
 	 if (precv_frame)
 		 rtw_free_recvframe(precv_frame, pfree_recv_queue);
 
