@@ -61,15 +61,4 @@ ODM_ReadFirmware_MP_8723B_FW_WoWLAN(
      OUT  u4Byte       *pFirmwareSize
 );
 
-/******************************************************************************
-*							FW_MP.TXT
-******************************************************************************/
-
-void
-ODM_ReadFirmware_MP_8723B_FW_MP(
-	 IN   PDM_ODM_T    pDM_Odm,
-	 OUT  u1Byte	   *pFirmware,
-	 OUT  u4Byte	   *pFirmwareSize
-);
-
 #endif

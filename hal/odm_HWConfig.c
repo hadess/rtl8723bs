@@ -652,9 +652,5 @@ ODM_ConfigFWWithHeaderFile(
 	{
 		READ_FIRMWARE_MP(8723B, _FW_BT);
 	}
-	else if (ConfigType == CONFIG_FW_MP)
-	{
-		READ_FIRMWARE_MP(8723B, _FW_MP);
-	}
 	return HAL_STATUS_SUCCESS;
 }
