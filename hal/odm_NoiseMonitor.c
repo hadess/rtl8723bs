@@ -128,7 +128,7 @@ static s16 odm_InbandNoise_Monitor_NSeries(PDM_ODM_T	pDM_Odm, u8 bPauseDIG, u8 I
 		{
 			for (rf_path = ODM_RF_PATH_A; rf_path < max_rf_path; rf_path++)
 			{
-				/* printk("%s PATH_%d - sum = %d, valid_cnt = %d \n", __FUNCTION__, rf_path, noise_data.sum[rf_path], noise_data.valid_cnt[rf_path]); */
+				/* printk("%s PATH_%d - sum = %d, valid_cnt = %d \n", __func__, rf_path, noise_data.sum[rf_path], noise_data.valid_cnt[rf_path]); */
 				if (noise_data.valid_cnt[rf_path])
 					noise_data.sum[rf_path] /= noise_data.valid_cnt[rf_path];
 				else
@@ -164,7 +164,7 @@ static s16 odm_InbandNoise_Monitor_NSeries(PDM_ODM_T	pDM_Odm, u8 bPauseDIG, u8 I
 		odm_PauseDIG(pDM_Odm, ODM_RESUME_DIG, IGIValue);
 	}
 	func_end = jiffies_to_msecs(jiffies - func_start) ;
-	/* printk("%s noise_a = %d, noise_b = %d noise_all:%d (%d ms)\n", __FUNCTION__, */
+	/* printk("%s noise_a = %d, noise_b = %d noise_all:%d (%d ms)\n", __func__, */
 	/* 	pDM_Odm->noise_level.noise[ODM_RF_PATH_A], */
 	/* 	pDM_Odm->noise_level.noise[ODM_RF_PATH_B], */
 	/* 	pDM_Odm->noise_level.noise_all, func_end); */

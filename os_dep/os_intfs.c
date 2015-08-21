@@ -1003,7 +1003,7 @@ static int _rtw_drv_register_netdev(_adapter *padapter, char *name)
 		goto error_register_netdev;
 	}
 
-	DBG_871X("%s, MAC Address (if%d) = " MAC_FMT "\n", __FUNCTION__, (padapter->iface_id+1), MAC_ARG(pnetdev->dev_addr));
+	DBG_871X("%s, MAC Address (if%d) = " MAC_FMT "\n", __func__, (padapter->iface_id+1), MAC_ARG(pnetdev->dev_addr));
 
 	return ret;
 
@@ -1157,7 +1157,7 @@ static int  ips_netdrv_open(_adapter *padapter)
 
 	padapter->net_closed = false;
 
-	DBG_871X("===> %s.........\n", __FUNCTION__);
+	DBG_871X("===> %s.........\n", __func__);
 
 
 	padapter->bDriverStopped = false;
@@ -1214,7 +1214,7 @@ void rtw_ips_pwr_down(_adapter *padapter)
 
 void rtw_ips_dev_unload(_adapter *padapter)
 {
-	DBG_871X("====> %s...\n", __FUNCTION__);
+	DBG_871X("====> %s...\n", __func__);
 
 
 	if (padapter->bSurpriseRemoved == false)
@@ -1318,11 +1318,11 @@ void rtw_dev_unload(PADAPTER padapter)
 	struct cmd_priv *pcmdpriv = &padapter->cmdpriv;
 	u8 cnt = 0;
 
-	RT_TRACE(_module_hci_intfs_c_, _drv_notice_, ("+%s\n", __FUNCTION__));
+	RT_TRACE(_module_hci_intfs_c_, _drv_notice_, ("+%s\n", __func__));
 
 	if (padapter->bup == true)
 	{
-		DBG_871X("===> %s\n", __FUNCTION__);
+		DBG_871X("===> %s\n", __func__);
 
 		padapter->bDriverStopped = true;
 		if (padapter->xmitpriv.ack_tx)
@@ -1347,7 +1347,7 @@ void rtw_dev_unload(PADAPTER padapter)
 			}
 		}
 
-		RT_TRACE(_module_hci_intfs_c_, _drv_notice_, ("@ %s: stop thread complete!\n", __FUNCTION__));
+		RT_TRACE(_module_hci_intfs_c_, _drv_notice_, ("@ %s: stop thread complete!\n", __func__));
 
 		/* check the status of IPS */
 		if (rtw_hal_check_ips_status(padapter) == true || pwrctl->rf_pwrstate == rf_off) { /* check HW status and SW state */
@@ -1364,7 +1364,7 @@ void rtw_dev_unload(PADAPTER padapter)
 #ifdef CONFIG_WOWLAN
 			if (pwrctl->bSupportRemoteWakeup == true &&
 				pwrctl->wowlan_mode ==true) {
-				DBG_871X_LEVEL(_drv_always_, "%s bSupportRemoteWakeup ==true  do not run rtw_hal_deinit()\n", __FUNCTION__);
+				DBG_871X_LEVEL(_drv_always_, "%s bSupportRemoteWakeup ==true  do not run rtw_hal_deinit()\n", __func__);
 			}
 			else
 #endif
@@ -1374,18 +1374,18 @@ void rtw_dev_unload(PADAPTER padapter)
 			}
 			padapter->bSurpriseRemoved = true;
 		}
-		RT_TRACE(_module_hci_intfs_c_, _drv_notice_, ("@ %s: deinit hal complelt!\n", __FUNCTION__));
+		RT_TRACE(_module_hci_intfs_c_, _drv_notice_, ("@ %s: deinit hal complelt!\n", __func__));
 
 		padapter->bup = false;
 
-		DBG_871X("<=== %s\n", __FUNCTION__);
+		DBG_871X("<=== %s\n", __func__);
 	}
 	else {
-		RT_TRACE(_module_hci_intfs_c_, _drv_notice_, ("%s: bup ==false\n", __FUNCTION__));
-		DBG_871X("%s: bup ==false\n", __FUNCTION__);
+		RT_TRACE(_module_hci_intfs_c_, _drv_notice_, ("%s: bup ==false\n", __func__));
+		DBG_871X("%s: bup ==false\n", __func__);
 	}
 
-	RT_TRACE(_module_hci_intfs_c_, _drv_notice_, ("-%s\n", __FUNCTION__));
+	RT_TRACE(_module_hci_intfs_c_, _drv_notice_, ("-%s\n", __func__));
 }
 
 static int rtw_suspend_free_assoc_resource(_adapter *padapter)
@@ -1398,7 +1398,7 @@ static int rtw_suspend_free_assoc_resource(_adapter *padapter)
 		if (check_fwstate(pmlmepriv, WIFI_STATION_STATE)
 			&& check_fwstate(pmlmepriv, _FW_LINKED))
 		{
-			DBG_871X("%s %s(" MAC_FMT "), length:%d assoc_ssid.length:%d\n", __FUNCTION__,
+			DBG_871X("%s %s(" MAC_FMT "), length:%d assoc_ssid.length:%d\n", __func__,
 					pmlmepriv->cur_network.network.Ssid.Ssid,
 					MAC_ARG(pmlmepriv->cur_network.network.MacAddress),
 					pmlmepriv->cur_network.network.Ssid.SsidLength,
@@ -1429,7 +1429,7 @@ static int rtw_suspend_free_assoc_resource(_adapter *padapter)
 
 	if (check_fwstate(pmlmepriv, _FW_UNDER_LINKING) == true)
 	{
-		DBG_871X_LEVEL(_drv_always_, "%s: fw_under_linking\n", __FUNCTION__);
+		DBG_871X_LEVEL(_drv_always_, "%s: fw_under_linking\n", __func__);
 		rtw_indicate_disconnect(padapter);
 	}
 
@@ -1484,7 +1484,7 @@ int rtw_suspend_wow(_adapter *padapter)
 			if (check_fwstate(pmlmepriv, WIFI_STATION_STATE)
 				&& check_fwstate(pmlmepriv, _FW_LINKED))
 			{
-				DBG_871X("%s %s(" MAC_FMT "), length:%d assoc_ssid.length:%d\n", __FUNCTION__,
+				DBG_871X("%s %s(" MAC_FMT "), length:%d assoc_ssid.length:%d\n", __func__,
 						pmlmepriv->cur_network.network.Ssid.Ssid,
 						MAC_ARG(pmlmepriv->cur_network.network.MacAddress),
 						pmlmepriv->cur_network.network.Ssid.SsidLength,
@@ -1517,7 +1517,7 @@ int rtw_suspend_wow(_adapter *padapter)
 	}
 	else
 	{
-		DBG_871X_LEVEL(_drv_always_, "%s: ### ERROR ### wowlan_mode =%d\n", __FUNCTION__, pwrpriv->wowlan_mode);
+		DBG_871X_LEVEL(_drv_always_, "%s: ### ERROR ### wowlan_mode =%d\n", __func__, pwrpriv->wowlan_mode);
 	}
 	DBG_871X("<== "FUNC_ADPT_FMT" exit....\n", FUNC_ADPT_ARG(padapter));
 	return ret;
@@ -1598,7 +1598,7 @@ static int rtw_suspend_normal(_adapter *padapter)
 	if ((rtw_hal_check_ips_status(padapter) == true)
 		|| (adapter_to_pwrctl(padapter)->rf_pwrstate == rf_off))
 	{
-		DBG_871X_LEVEL(_drv_always_, "%s: ### ERROR #### driver in IPS ####ERROR###!!!\n", __FUNCTION__);
+		DBG_871X_LEVEL(_drv_always_, "%s: ### ERROR #### driver in IPS ####ERROR###!!!\n", __func__);
 
 	}
 
@@ -1623,7 +1623,7 @@ int rtw_suspend_common(_adapter *padapter)
 	unsigned long start_time = jiffies;
 
 	DBG_871X_LEVEL(_drv_always_, " suspend start\n");
-	DBG_871X("==> %s (%s:%d)\n", __FUNCTION__, current->comm, current->pid);
+	DBG_871X("==> %s (%s:%d)\n", __func__, current->comm, current->pid);
 	pdbgpriv->dbg_suspend_cnt++;
 
 	pwrpriv->bInSuspend = true;
@@ -1633,7 +1633,7 @@ int rtw_suspend_common(_adapter *padapter)
 
 	if ((!padapter->bup) || (padapter->bDriverStopped)||(padapter->bSurpriseRemoved))
 	{
-		DBG_871X("%s bup =%d bDriverStopped =%d bSurpriseRemoved = %d\n", __FUNCTION__
+		DBG_871X("%s bup =%d bDriverStopped =%d bSurpriseRemoved = %d\n", __func__
 			, padapter->bup, padapter->bDriverStopped, padapter->bSurpriseRemoved);
 		pdbgpriv->dbg_suspend_error_cnt++;
 		goto exit;
@@ -1687,7 +1687,7 @@ int rtw_suspend_common(_adapter *padapter)
 		jiffies_to_msecs(jiffies - start_time));
 
 exit:
-	DBG_871X("<===  %s return %d.............. in %dms\n", __FUNCTION__
+	DBG_871X("<===  %s return %d.............. in %dms\n", __func__
 		, ret, jiffies_to_msecs(jiffies - start_time));
 
 	return ret;
@@ -1720,7 +1720,7 @@ int rtw_resume_process_wow(_adapter *padapter)
 
 	if (padapter->bDriverStopped || padapter->bSurpriseRemoved) {
 		DBG_871X("%s pdapter %p bDriverStopped %d bSurpriseRemoved %d\n",
-				__FUNCTION__, padapter, padapter->bDriverStopped,
+				__func__, padapter, padapter->bDriverStopped,
 				padapter->bSurpriseRemoved);
 		goto exit;
 	}
@@ -1744,7 +1744,7 @@ int rtw_resume_process_wow(_adapter *padapter)
 		/* if (sdio_alloc_irq(adapter_to_dvobj(padapter)) != _SUCCESS) { */
 		if ((padapter->intf_alloc_irq) && (padapter->intf_alloc_irq(adapter_to_dvobj(padapter)) != _SUCCESS)){
 			ret = -1;
-			RT_TRACE(_module_hci_intfs_c_, _drv_err_, ("%s: sdio_alloc_irq Failed!!\n", __FUNCTION__));
+			RT_TRACE(_module_hci_intfs_c_, _drv_err_, ("%s: sdio_alloc_irq Failed!!\n", __func__));
 			goto exit;
 		}
 
@@ -1776,7 +1776,7 @@ int rtw_resume_process_wow(_adapter *padapter)
 	}
 	else {
 
-		DBG_871X_LEVEL(_drv_always_, "%s: ### ERROR ### wowlan_mode =%d\n", __FUNCTION__, pwrpriv->wowlan_mode);
+		DBG_871X_LEVEL(_drv_always_, "%s: ### ERROR ### wowlan_mode =%d\n", __func__, pwrpriv->wowlan_mode);
 	}
 
 	if (padapter->pid[1]!= 0) {
@@ -1859,7 +1859,7 @@ int rtw_resume_process_ap_wow(_adapter *padapter)
 	/* if (sdio_alloc_irq(adapter_to_dvobj(padapter)) != _SUCCESS) { */
 	if ((padapter->intf_alloc_irq) && (padapter->intf_alloc_irq(adapter_to_dvobj(padapter)) != _SUCCESS)){
 		ret = -1;
-		RT_TRACE(_module_hci_intfs_c_, _drv_err_, ("%s: sdio_alloc_irq Failed!!\n", __FUNCTION__));
+		RT_TRACE(_module_hci_intfs_c_, _drv_err_, ("%s: sdio_alloc_irq Failed!!\n", __func__));
 		goto exit;
 	}
 
@@ -1928,7 +1928,7 @@ static int rtw_resume_process_normal(_adapter *padapter)
 	if ((padapter->intf_init) && (padapter->intf_init(adapter_to_dvobj(padapter)) != _SUCCESS))
 	{
 		ret = -1;
-		RT_TRACE(_module_hci_intfs_c_, _drv_err_, ("%s: initialize SDIO Failed!!\n", __FUNCTION__));
+		RT_TRACE(_module_hci_intfs_c_, _drv_err_, ("%s: initialize SDIO Failed!!\n", __func__));
 		goto exit;
 	}
 	rtw_hal_disable_interrupt(padapter);
@@ -1936,7 +1936,7 @@ static int rtw_resume_process_normal(_adapter *padapter)
 	if ((padapter->intf_alloc_irq) && (padapter->intf_alloc_irq(adapter_to_dvobj(padapter)) != _SUCCESS))
 	{
 		ret = -1;
-		RT_TRACE(_module_hci_intfs_c_, _drv_err_, ("%s: sdio_alloc_irq Failed!!\n", __FUNCTION__));
+		RT_TRACE(_module_hci_intfs_c_, _drv_err_, ("%s: sdio_alloc_irq Failed!!\n", __func__));
 		goto exit;
 	}
 
@@ -1988,7 +1988,7 @@ int rtw_resume_common(_adapter *padapter)
 	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
 
 	DBG_871X_LEVEL(_drv_always_, "resume start\n");
-	DBG_871X("==> %s (%s:%d)\n", __FUNCTION__, current->comm, current->pid);
+	DBG_871X("==> %s (%s:%d)\n", __func__, current->comm, current->pid);
 
 	if (check_fwstate(pmlmepriv, WIFI_STATION_STATE) == true) {
 	#ifdef CONFIG_WOWLAN
@@ -2018,7 +2018,7 @@ int rtw_resume_common(_adapter *padapter)
 		pwrpriv->pno_in_resume = false;
 	#endif
 	}
-	DBG_871X_LEVEL(_drv_always_, "%s:%d in %d ms\n", __FUNCTION__ , ret,
+	DBG_871X_LEVEL(_drv_always_, "%s:%d in %d ms\n", __func__ , ret,
 		jiffies_to_msecs(jiffies - start_time));
 
 	return ret;

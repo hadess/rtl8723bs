@@ -136,7 +136,7 @@ static void ConstructBeacon(_adapter *padapter, u8 *pframe, u32 *pLength)
 	u8	bc_addr[] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
 
 
-	/* DBG_871X("%s\n", __FUNCTION__); */
+	/* DBG_871X("%s\n", __func__); */
 
 	pwlanhdr = (struct ieee80211_hdr *)pframe;
 
@@ -223,7 +223,7 @@ _ConstructBeacon:
 
 	*pLength = pktlen;
 
-	/* DBG_871X("%s bcn_sz =%d\n", __FUNCTION__, pktlen); */
+	/* DBG_871X("%s bcn_sz =%d\n", __func__, pktlen); */
 
 }
 
@@ -234,7 +234,7 @@ static void ConstructPSPoll(_adapter *padapter, u8 *pframe, u32 *pLength)
 	struct mlme_ext_priv	*pmlmeext = &(padapter->mlmeextpriv);
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 
-	/* DBG_871X("%s\n", __FUNCTION__); */
+	/* DBG_871X("%s\n", __func__); */
 
 	pwlanhdr = (struct ieee80211_hdr *)pframe;
 
@@ -275,7 +275,7 @@ static void ConstructNullFunctionData(
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 
 
-	/* DBG_871X("%s:%d\n", __FUNCTION__, bForcePowerSave); */
+	/* DBG_871X("%s:%d\n", __func__, bForcePowerSave); */
 
 	pwlanhdr = (struct ieee80211_hdr*)pframe;
 
@@ -355,7 +355,7 @@ static void ConstructARPResponse(
 	/* for TKIP Cal MIC */
 	u8				*payload = pframe;
 	u8			EncryptionHeadOverhead = 0;
-	/* DBG_871X("%s:%d\n", __FUNCTION__, bForcePowerSave); */
+	/* DBG_871X("%s:%d\n", __func__, bForcePowerSave); */
 
 	pwlanhdr = (struct ieee80211_hdr*)pframe;
 
@@ -433,8 +433,8 @@ static void ConstructARPResponse(
 	{
 		SET_ARP_PKT_TARGET_MAC_ADDR(pARPRspPkt, get_my_bssid(&(pmlmeinfo->network)));
 		SET_ARP_PKT_TARGET_IP_ADDR(pARPRspPkt, pIPAddress);
-		DBG_871X("%s Target Mac Addr:" MAC_FMT "\n", __FUNCTION__, MAC_ARG(get_my_bssid(&(pmlmeinfo->network))));
-		DBG_871X("%s Target IP Addr" IP_FMT "\n", __FUNCTION__, IP_ARG(pIPAddress));
+		DBG_871X("%s Target Mac Addr:" MAC_FMT "\n", __func__, MAC_ARG(get_my_bssid(&(pmlmeinfo->network))));
+		DBG_871X("%s Target IP Addr" IP_FMT "\n", __func__, IP_ARG(pIPAddress));
 	}
 
 	*pLength += 28;
@@ -447,12 +447,12 @@ static void ConstructARPResponse(
 		u8	priority[4]={0x0, 0x0, 0x0, 0x0};
 		u8	null_key[16]={0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
 
-		DBG_871X("%s(): Add MIC\n", __FUNCTION__);
+		DBG_871X("%s(): Add MIC\n", __func__);
 
 		psta = rtw_get_stainfo(&padapter->stapriv, get_my_bssid(&(pmlmeinfo->network)));
 		if (psta != NULL) {
 			if (!memcmp(&psta->dot11tkiptxmickey.skey[0], null_key, 16)){
-				DBG_871X("%s(): STA dot11tkiptxmickey == 0\n", __FUNCTION__);
+				DBG_871X("%s(): STA dot11tkiptxmickey == 0\n", __func__);
 			}
 			/* start to calculate the mic code */
 			rtw_secmicsetkey(&micdata, &psta->dot11tkiptxmickey.skey[0]);
@@ -621,7 +621,7 @@ static void ConstructGTKResponse(
 	static u8			GTKbody_a[11] ={0x01, 0x03, 0x00, 0x5F, 0x02, 0x03, 0x12, 0x00, 0x10, 0x42, 0x0B};
 	u8				*pGTKRspPkt = pframe;
 	u8			EncryptionHeadOverhead = 0;
-	/* DBG_871X("%s:%d\n", __FUNCTION__, bForcePowerSave); */
+	/* DBG_871X("%s:%d\n", __func__, bForcePowerSave); */
 
 	pwlanhdr = (struct ieee80211_hdr*)pframe;
 
@@ -760,7 +760,7 @@ static void ConstructProbeRsp(_adapter *padapter, u8 *pframe, u32 *pLength, u8 *
 	uint wps_ielen;
 	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
 
-	/* DBG_871X("%s\n", __FUNCTION__); */
+	/* DBG_871X("%s\n", __func__); */
 
 	pwlanhdr = (struct ieee80211_hdr *)pframe;
 
@@ -773,8 +773,8 @@ static void ConstructProbeRsp(_adapter *padapter, u8 *pframe, u32 *pLength, u8 *
 	memcpy(pwlanhdr->addr2, mac, ETH_ALEN);
 	memcpy(pwlanhdr->addr3, bssid, ETH_ALEN);
 
-	DBG_871X("%s FW Mac Addr:" MAC_FMT "\n", __FUNCTION__, MAC_ARG(mac));
-	DBG_871X("%s FW IP Addr" IP_FMT "\n", __FUNCTION__, IP_ARG(StaAddr));
+	DBG_871X("%s FW Mac Addr:" MAC_FMT "\n", __func__, MAC_ARG(mac));
+	DBG_871X("%s FW IP Addr" IP_FMT "\n", __func__, IP_ARG(StaAddr));
 
 	SetSeqNum(pwlanhdr, 0);
 	SetFrameSubType(fctrl, WIFI_PROBERSP);
@@ -1379,7 +1379,7 @@ static void rtl8723b_set_FwWoWlanRelated_cmd(_adapter * padapter, u8 enable)
 				rtl8723b_set_FwMediaStatusRpt_cmd(padapter, RT_MEDIA_CONNECT, psta->mac_id);
 		}
 		else
-			DBG_871X("%s(): Disconnected, no FwMediaStatusRpt CONNECT\n", __FUNCTION__);
+			DBG_871X("%s(): Disconnected, no FwMediaStatusRpt CONNECT\n", __func__);
 
 		msleep(2);
 
@@ -1531,7 +1531,7 @@ static void rtl8723b_set_FwRsvdPagePkt(PADAPTER padapter, bool bDLFinished)
 #endif
 #endif
 
-	/* DBG_871X("%s---->\n", __FUNCTION__); */
+	/* DBG_871X("%s---->\n", __func__); */
 
 	pHalData = GET_HAL_DATA(padapter);
 	pxmitpriv = &padapter->xmitpriv;
@@ -1544,7 +1544,7 @@ static void rtl8723b_set_FwRsvdPagePkt(PADAPTER padapter, bool bDLFinished)
 
 	pcmdframe = rtw_alloc_cmdxmitframe(pxmitpriv);
 	if (pcmdframe == NULL) {
-		DBG_871X("%s: alloc ReservedPagePacket fail!\n", __FUNCTION__);
+		DBG_871X("%s: alloc ReservedPagePacket fail!\n", __func__);
 		return;
 	}
 
@@ -1573,7 +1573,7 @@ static void rtl8723b_set_FwRsvdPagePkt(PADAPTER padapter, bool bDLFinished)
 	rtl8723b_fill_fake_txdesc(padapter, &ReservedPagePacket[BufIndex-TxDescLen], PSPollLength, true, false, false);
 
 	/* DBG_871X("%s(): HW_VAR_SET_TX_CMD: PS-POLL %p %d\n", */
-	/* 	__FUNCTION__, &ReservedPagePacket[BufIndex-TxDescLen], (PSPollLength+TxDescLen)); */
+	/* 	__func__, &ReservedPagePacket[BufIndex-TxDescLen], (PSPollLength+TxDescLen)); */
 
 	CurtPktPageNum = (u8)PageNum_128(TxDescLen + PSPollLength);
 
@@ -1592,7 +1592,7 @@ static void rtl8723b_set_FwRsvdPagePkt(PADAPTER padapter, bool bDLFinished)
 	rtl8723b_fill_fake_txdesc(padapter, &ReservedPagePacket[BufIndex-TxDescLen], NullDataLength, false, false, false);
 
 	/* DBG_871X("%s(): HW_VAR_SET_TX_CMD: NULL DATA %p %d\n", */
-	/* 	__FUNCTION__, &ReservedPagePacket[BufIndex-TxDescLen], (NullDataLength+TxDescLen)); */
+	/* 	__func__, &ReservedPagePacket[BufIndex-TxDescLen], (NullDataLength+TxDescLen)); */
 
 	CurtPktPageNum = (u8)PageNum_128(TxDescLen + NullDataLength);
 
@@ -1611,7 +1611,7 @@ static void rtl8723b_set_FwRsvdPagePkt(PADAPTER padapter, bool bDLFinished)
 	rtl8723b_fill_fake_txdesc(padapter, &ReservedPagePacket[BufIndex-TxDescLen], QosNullLength, false, false, false);
 
 	/* DBG_871X("%s(): HW_VAR_SET_TX_CMD: QOS NULL DATA %p %d\n", */
-	/* 	__FUNCTION__, &ReservedPagePacket[BufIndex-TxDescLen], (QosNullLength+TxDescLen)); */
+	/* 	__func__, &ReservedPagePacket[BufIndex-TxDescLen], (QosNullLength+TxDescLen)); */
 
 	CurtPktPageNum = (u8)PageNum_128(TxDescLen + QosNullLength);
 
@@ -1630,7 +1630,7 @@ static void rtl8723b_set_FwRsvdPagePkt(PADAPTER padapter, bool bDLFinished)
 	rtl8723b_fill_fake_txdesc(padapter, &ReservedPagePacket[BufIndex-TxDescLen], BTQosNullLength, false, true, false);
 
 	/* DBG_871X("%s(): HW_VAR_SET_TX_CMD: BT QOS NULL DATA %p %d\n", */
-	/* 	__FUNCTION__, &ReservedPagePacket[BufIndex-TxDescLen], (BTQosNullLength+TxDescLen)); */
+	/* 	__func__, &ReservedPagePacket[BufIndex-TxDescLen], (BTQosNullLength+TxDescLen)); */
 
 	CurtPktPageNum = (u8)PageNum_128(TxDescLen + BTQosNullLength);
 
@@ -1656,7 +1656,7 @@ static void rtl8723b_set_FwRsvdPagePkt(PADAPTER padapter, bool bDLFinished)
 	rtl8723b_fill_fake_txdesc(padapter, &ReservedPagePacket[BufIndex-TxDescLen], ARPLegnth, false, false, true);
 
 	/* DBG_871X("%s(): HW_VAR_SET_TX_CMD: ARP RSP %p %d\n", */
-	/* 	__FUNCTION__, &ReservedPagePacket[BufIndex-TxDescLen], (ARPLegnth+TxDescLen)); */
+	/* 	__func__, &ReservedPagePacket[BufIndex-TxDescLen], (ARPLegnth+TxDescLen)); */
 
 	CurtPktPageNum = (u8)PageNum_128(TxDescLen + ARPLegnth);
 	}
@@ -1670,7 +1670,7 @@ static void rtl8723b_set_FwRsvdPagePkt(PADAPTER padapter, bool bDLFinished)
 	memcpy(ReservedPagePacket+BufIndex-TxDescLen, cur_dot11txpn, _AES_IV_LEN_);
 
 	/* DBG_871X("%s(): HW_VAR_SET_TX_CMD: SEC IV %p %d\n", */
-	/* 	__FUNCTION__, &ReservedPagePacket[BufIndex-TxDescLen], _AES_IV_LEN_); */
+	/* 	__func__, &ReservedPagePacket[BufIndex-TxDescLen], _AES_IV_LEN_); */
 
 	CurtPktPageNum = (u8)PageNum_128(_AES_IV_LEN_);
 
@@ -1699,7 +1699,7 @@ static void rtl8723b_set_FwRsvdPagePkt(PADAPTER padapter, bool bDLFinished)
 	memcpy(ReservedPagePacket+BufIndex-TxDescLen+RTW_KCK_LEN, kek, RTW_KEK_LEN);
 
 	/* DBG_871X("%s(): HW_VAR_SET_TX_CMD: KEK KCK %p %d\n", */
-	/* 	__FUNCTION__, &ReservedPagePacket[BufIndex-TxDescLen], (TxDescLen + RTW_KCK_LEN + RTW_KEK_LEN)); */
+	/* 	__func__, &ReservedPagePacket[BufIndex-TxDescLen], (TxDescLen + RTW_KCK_LEN + RTW_KEK_LEN)); */
 
 	CurtPktPageNum = (u8)PageNum_128(TxDescLen + RTW_KCK_LEN + RTW_KEK_LEN);
 
@@ -1717,7 +1717,7 @@ static void rtl8723b_set_FwRsvdPagePkt(PADAPTER padapter, bool bDLFinished)
 
 	rtl8723b_fill_fake_txdesc(padapter, &ReservedPagePacket[BufIndex-TxDescLen], GTKLegnth, false, false, true);
 	/* DBG_871X("%s(): HW_VAR_SET_TX_CMD: GTK RSP %p %d\n", */
-	/* 	__FUNCTION__, &ReservedPagePacket[BufIndex-TxDescLen], (TxDescLen + GTKLegnth)); */
+	/* 	__func__, &ReservedPagePacket[BufIndex-TxDescLen], (TxDescLen + GTKLegnth)); */
 
 	CurtPktPageNum = (u8)PageNum_128(TxDescLen + GTKLegnth);
 
@@ -1840,7 +1840,7 @@ static void rtl8723b_set_FwRsvdPagePkt(PADAPTER padapter, bool bDLFinished)
 
 	if (TotalPacketLen > MaxRsvdPageBufSize)
 	{
-		DBG_871X("%s(): ERROR: The rsvd page size is not enough!!TotalPacketLen %d, MaxRsvdPageBufSize %d\n", __FUNCTION__,
+		DBG_871X("%s(): ERROR: The rsvd page size is not enough!!TotalPacketLen %d, MaxRsvdPageBufSize %d\n", __func__,
 			TotalPacketLen, MaxRsvdPageBufSize);
 		goto error;
 	}
@@ -1854,7 +1854,7 @@ static void rtl8723b_set_FwRsvdPagePkt(PADAPTER padapter, bool bDLFinished)
 		dump_mgntframe_and_wait(padapter, pcmdframe, 100);
 	}
 
-	DBG_871X("%s: Set RSVD page location to Fw , TotalPacketLen(%d), TotalPageNum(%d)\n", __FUNCTION__, TotalPacketLen, TotalPageNum);
+	DBG_871X("%s: Set RSVD page location to Fw , TotalPacketLen(%d), TotalPageNum(%d)\n", __func__, TotalPacketLen, TotalPageNum);
 	if (check_fwstate(pmlmepriv, _FW_LINKED)) {
 		rtl8723b_set_FwRsvdPage_cmd(padapter, &RsvdPageLoc);
 		rtl8723b_set_FwAoacRsvdPage_cmd(padapter, &RsvdPageLoc);
@@ -1909,7 +1909,7 @@ static void rtl8723b_set_AP_FwRsvdPagePkt(PADAPTER padapter,
 	u32	TotalPacketLen = 0, MaxRsvdPageBufSize = 0;
 	RSVDPAGE_LOC	RsvdPageLoc;
 
-	/* DBG_871X("%s---->\n", __FUNCTION__); */
+	/* DBG_871X("%s---->\n", __func__); */
 	DBG_8192C("+" FUNC_ADPT_FMT ": iface_type =%d\n",
 		FUNC_ADPT_ARG(padapter), get_iface_type(padapter));
 
@@ -1924,7 +1924,7 @@ static void rtl8723b_set_AP_FwRsvdPagePkt(PADAPTER padapter,
 
 	pcmdframe = rtw_alloc_cmdxmitframe(pxmitpriv);
 	if (pcmdframe == NULL) {
-		DBG_871X("%s: alloc ReservedPagePacket fail!\n", __FUNCTION__);
+		DBG_871X("%s: alloc ReservedPagePacket fail!\n", __func__);
 		return;
 	}
 
@@ -1990,7 +1990,7 @@ static void rtl8723b_set_AP_FwRsvdPagePkt(PADAPTER padapter,
 		dump_mgntframe_and_wait(padapter, pcmdframe, 100);
 	}
 
-	DBG_871X("%s: Set RSVD page location to Fw , TotalPacketLen(%d), TotalPageNum(%d)\n", __FUNCTION__, TotalPacketLen, TotalPageNum);
+	DBG_871X("%s: Set RSVD page location to Fw , TotalPacketLen(%d), TotalPageNum(%d)\n", __func__, TotalPacketLen, TotalPageNum);
 	rtl8723b_set_ap_wow_rsvdpage_cmd(padapter, &RsvdPageLoc);
 
 	return;
@@ -2249,7 +2249,7 @@ static void SetFwRsvdPagePkt_BTCoex(PADAPTER padapter)
 
 	pcmdframe = rtw_alloc_cmdxmitframe(pxmitpriv);
 	if (pcmdframe == NULL) {
-		DBG_8192C("%s: alloc ReservedPagePacket fail!\n", __FUNCTION__);
+		DBG_8192C("%s: alloc ReservedPagePacket fail!\n", __func__);
 		return;
 	}
 

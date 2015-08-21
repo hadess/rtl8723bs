@@ -1220,7 +1220,7 @@ u4Byte ODM_Get_Rate_Bitmap(
 
 	}
 
-	/* printk("%s ==> rssi_level:0x%02x, WirelessMode:0x%02x, rate_bitmap:0x%08x \n", __FUNCTION__, rssi_level, WirelessMode, rate_bitmap); */
+	/* printk("%s ==> rssi_level:0x%02x, WirelessMode:0x%02x, rate_bitmap:0x%08x \n", __func__, rssi_level, WirelessMode, rate_bitmap); */
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_RA_MASK, ODM_DBG_LOUD, (" ==> rssi_level:0x%02x, WirelessMode:0x%02x, rate_bitmap:0x%08x \n", rssi_level, WirelessMode, rate_bitmap));
 
 	return (ra_mask&rate_bitmap);
@@ -1278,7 +1278,7 @@ odm_RefreshRateAdaptiveMaskCE(
 		return;
 	}
 
-	/* printk("==> %s \n", __FUNCTION__); */
+	/* printk("==> %s \n", __func__); */
 
 	for (i = 0; i<ODM_ASSOCIATE_ENTRY_NUM; i++){
 		PSTA_INFO_T pstat = pDM_Odm->pODM_StaInfo[i];
@@ -1345,7 +1345,7 @@ ODM_RAStateCheck(
 		RATRState = DM_RATR_STA_MIDDLE;
 	else
 		RATRState = DM_RATR_STA_LOW;
-	/* printk("==>%s, RATRState:0x%02x , RSSI:%d \n", __FUNCTION__, RATRState, RSSI); */
+	/* printk("==>%s, RATRState:0x%02x , RSSI:%d \n", __func__, RATRState, RSSI); */
 
 	if (*pRATRState!=RATRState || bForceUpdate)
 	{
@@ -1415,7 +1415,7 @@ IN	PADAPTER	pAdapter
 		pdmpriv->MinUndecoratedPWDBForDM = pdmpriv->EntryMinUndecoratedSmoothedPWDB;
 	}
 
-	/* DBG_8192C("%s =>MinUndecoratedPWDBForDM(%d)\n", __FUNCTION__, pdmpriv->MinUndecoratedPWDBForDM); */
+	/* DBG_8192C("%s =>MinUndecoratedPWDBForDM(%d)\n", __func__, pdmpriv->MinUndecoratedPWDBForDM); */
 	/* ODM_RT_TRACE(pDM_Odm, COMP_DIG, DBG_LOUD, ("MinUndecoratedPWDBForDM =%d\n", pHalData->MinUndecoratedPWDBForDM)); */
 }
 
@@ -1465,7 +1465,7 @@ odm_RSSIMonitorCheckCE(
 			}
 		}
 
-		/* printk("%s ==> sta_cnt(%d)\n", __FUNCTION__, sta_cnt); */
+		/* printk("%s ==> sta_cnt(%d)\n", __func__, sta_cnt); */
 
 		for (i = 0; i< sta_cnt; i++)
 		{

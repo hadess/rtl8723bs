@@ -1295,7 +1295,7 @@ static struct sta_info *rtw_joinbss_update_stainfo(_adapter *padapter, struct wl
 
 	if (psta) /* update ptarget_sta */
 	{
-		DBG_871X("%s\n", __FUNCTION__);
+		DBG_871X("%s\n", __func__);
 
 		psta->aid  = pnetwork->join_res;
 
@@ -1354,7 +1354,7 @@ static struct sta_info *rtw_joinbss_update_stainfo(_adapter *padapter, struct wl
 			preorder_ctrl->enable = false;
 			preorder_ctrl->indicate_seq = 0xffff;
 			#ifdef DBG_RX_SEQ
-			DBG_871X("DBG_RX_SEQ %s:%d indicate_seq:%u \n", __FUNCTION__, __LINE__,
+			DBG_871X("DBG_RX_SEQ %s:%d indicate_seq:%u \n", __func__, __LINE__,
 				preorder_ctrl->indicate_seq);
 			#endif
 			preorder_ctrl->wend_b = 0xffff;
@@ -1372,7 +1372,7 @@ static struct sta_info *rtw_joinbss_update_stainfo(_adapter *padapter, struct wl
 				preorder_ctrl->enable = false;
 				preorder_ctrl->indicate_seq = 0xffff;
 				#ifdef DBG_RX_SEQ
-				DBG_871X("DBG_RX_SEQ %s:%d indicate_seq:%u \n", __FUNCTION__, __LINE__,
+				DBG_871X("DBG_RX_SEQ %s:%d indicate_seq:%u \n", __func__, __LINE__,
 					preorder_ctrl->indicate_seq);
 				#endif
 				preorder_ctrl->wend_b = 0xffff;
@@ -1392,7 +1392,7 @@ static void rtw_joinbss_update_network(_adapter *padapter, struct wlan_network *
 	struct mlme_priv	*pmlmepriv = &(padapter->mlmepriv);
 	struct wlan_network  *cur_network = &(pmlmepriv->cur_network);
 
-	DBG_871X("%s\n", __FUNCTION__);
+	DBG_871X("%s\n", __func__);
 
 	RT_TRACE(_module_rtl871x_mlme_c_, _drv_info_, ("\nfw_state:%x, BSSID:"MAC_FMT"\n"
 		, get_fwstate(pmlmepriv), MAC_ARG(pnetwork->network.MacAddress)));
@@ -1745,7 +1745,7 @@ void rtw_stassoc_event_callback(_adapter *adapter, u8 *pbuf)
 	psta->qos_option = 0;
 	psta->mac_id = (uint)pstassoc->cam_id;
 	/* psta->aid = (uint)pstassoc->cam_id; */
-	DBG_871X("%s\n", __FUNCTION__);
+	DBG_871X("%s\n", __func__);
 	/* for ad-hoc mode */
 	rtw_hal_set_odm_var(adapter, HAL_ODM_STA_INFO, psta, true);
 
@@ -1950,7 +1950,7 @@ void _rtw_join_timeout_handler (_adapter *adapter)
 {
 	struct	mlme_priv *pmlmepriv = &adapter->mlmepriv;
 
-	DBG_871X("%s, fw_state =%x\n", __FUNCTION__, get_fwstate(pmlmepriv));
+	DBG_871X("%s, fw_state =%x\n", __func__, get_fwstate(pmlmepriv));
 
 	if (adapter->bDriverStopped ||adapter->bSurpriseRemoved)
 		return;
@@ -1962,9 +1962,9 @@ void _rtw_join_timeout_handler (_adapter *adapter)
 			rtw_dec_to_roam(adapter);
 			if (rtw_to_roam(adapter) != 0) { /* try another */
 				int do_join_r;
-				DBG_871X("%s try another roaming\n", __FUNCTION__);
+				DBG_871X("%s try another roaming\n", __func__);
 				if (_SUCCESS!=(do_join_r =rtw_do_join(adapter))) {
-					DBG_871X("%s roaming do_join return %d\n", __FUNCTION__ , do_join_r);
+					DBG_871X("%s roaming do_join return %d\n", __func__ , do_join_r);
 					continue;
 				}
 				break;
@@ -1977,7 +1977,7 @@ void _rtw_join_timeout_handler (_adapter *adapter)
 					DBG_871X("change to widi listen\n");
 				}
 #endif /*  CONFIG_INTEL_WIDI */
-				DBG_871X("%s We've try roaming but fail\n", __FUNCTION__);
+				DBG_871X("%s We've try roaming but fail\n", __func__);
 				rtw_indicate_disconnect(adapter);
 				break;
 			}
@@ -2223,7 +2223,7 @@ int rtw_select_roaming_candidate(struct mlme_priv *mlme)
 
 		pnetwork = LIST_CONTAINOR(mlme->pscanned, struct wlan_network, list);
 		if (pnetwork ==NULL){
-			RT_TRACE(_module_rtl871x_mlme_c_, _drv_err_, ("%s return _FAIL:(pnetwork ==NULL)\n", __FUNCTION__));
+			RT_TRACE(_module_rtl871x_mlme_c_, _drv_err_, ("%s return _FAIL:(pnetwork ==NULL)\n", __func__));
 			ret = _FAIL;
 			goto exit;
 		}
@@ -2241,11 +2241,11 @@ int rtw_select_roaming_candidate(struct mlme_priv *mlme)
 	}
 
 	if (candidate == NULL) {
-		DBG_871X("%s: return _FAIL(candidate == NULL)\n", __FUNCTION__);
+		DBG_871X("%s: return _FAIL(candidate == NULL)\n", __func__);
 		ret = _FAIL;
 		goto exit;
 	} else {
-		DBG_871X("%s: candidate: %s("MAC_FMT", ch:%u)\n", __FUNCTION__,
+		DBG_871X("%s: candidate: %s("MAC_FMT", ch:%u)\n", __func__,
 			candidate->network.Ssid.Ssid, MAC_ARG(candidate->network.MacAddress),
 			candidate->network.Configuration.DSConfig);
 
@@ -2359,7 +2359,7 @@ int rtw_select_and_join_from_scanned_queue(struct mlme_priv *pmlmepriv)
 
 		pnetwork = LIST_CONTAINOR(pmlmepriv->pscanned, struct wlan_network, list);
 		if (pnetwork ==NULL){
-			RT_TRACE(_module_rtl871x_mlme_c_, _drv_err_, ("%s return _FAIL:(pnetwork ==NULL)\n", __FUNCTION__));
+			RT_TRACE(_module_rtl871x_mlme_c_, _drv_err_, ("%s return _FAIL:(pnetwork ==NULL)\n", __func__));
 			ret = _FAIL;
 			goto exit;
 		}
@@ -2377,14 +2377,14 @@ int rtw_select_and_join_from_scanned_queue(struct mlme_priv *pmlmepriv)
 	}
 
 	if (candidate == NULL) {
-		DBG_871X("%s: return _FAIL(candidate == NULL)\n", __FUNCTION__);
+		DBG_871X("%s: return _FAIL(candidate == NULL)\n", __func__);
 #ifdef CONFIG_WOWLAN
 		_clr_fwstate_(pmlmepriv, _FW_LINKED|_FW_UNDER_LINKING);
 #endif
 		ret = _FAIL;
 		goto exit;
 	} else {
-		DBG_871X("%s: candidate: %s("MAC_FMT", ch:%u)\n", __FUNCTION__,
+		DBG_871X("%s: candidate: %s("MAC_FMT", ch:%u)\n", __func__,
 			candidate->network.Ssid.Ssid, MAC_ARG(candidate->network.MacAddress),
 			candidate->network.Configuration.DSConfig);
 		goto candidate_exist;
@@ -2395,7 +2395,7 @@ candidate_exist:
 	/*  check for situation of  _FW_LINKED */
 	if (check_fwstate(pmlmepriv, _FW_LINKED) == true)
 	{
-		DBG_871X("%s: _FW_LINKED while ask_for_joinbss!!!\n", __FUNCTION__);
+		DBG_871X("%s: _FW_LINKED while ask_for_joinbss!!!\n", __func__);
 
                 rtw_disassoc_cmd(adapter, 0, true);
                 rtw_indicate_disconnect(adapter);
@@ -3023,7 +3023,7 @@ unsigned int rtw_restructure_ht_ie(_adapter *padapter, u8 *in_ie, u8 *out_ie, ui
 		rtw_hal_get_def_var(padapter, HAL_DEF_RX_PACKET_OFFSET, &rx_packet_offset);
 		rtw_hal_get_def_var(padapter, HAL_DEF_MAX_RECVBUF_SZ, &max_recvbuf_sz);
 		/* if (max_recvbuf_sz-rx_packet_offset>(8191-256)) { */
-		/* 	DBG_871X("%s IEEE80211_HT_CAP_MAX_AMSDU is set\n", __FUNCTION__); */
+		/* 	DBG_871X("%s IEEE80211_HT_CAP_MAX_AMSDU is set\n", __func__); */
 		/* 	ht_capie.cap_info = ht_capie.cap_info |IEEE80211_HT_CAP_MAX_AMSDU; */
 		/*  */
 	}
@@ -3205,7 +3205,7 @@ void rtw_update_ht_cap(_adapter *padapter, u8 *pie, uint ie_len, u8 channel)
 		 0x0C) >> 2;
 	if (pmlmeinfo->SM_PS == WLAN_HT_CAP_SM_PS_STATIC)
 	{
-		DBG_871X("%s(): WLAN_HT_CAP_SM_PS_STATIC\n", __FUNCTION__);
+		DBG_871X("%s(): WLAN_HT_CAP_SM_PS_STATIC\n", __func__);
 	}
 
 	/*  */
@@ -3331,7 +3331,7 @@ void _rtw_roaming(_adapter *padapter, struct wlan_network *tgt_network)
 				if (rtw_to_roam(padapter) > 0) {
 					continue;
 				} else {
-					DBG_871X("%s(%d) -to roaming fail, indicate_disconnect\n", __FUNCTION__, __LINE__);
+					DBG_871X("%s(%d) -to roaming fail, indicate_disconnect\n", __func__, __LINE__);
 					rtw_indicate_disconnect(padapter);
 					break;
 				}

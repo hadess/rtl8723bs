@@ -269,7 +269,7 @@ static struct dvobj_priv *sdio_dvobj_init(struct sdio_func *func)
 	psdio->func = func;
 
 	if (sdio_init(dvobj) != _SUCCESS) {
-		RT_TRACE(_module_hci_intfs_c_, _drv_err_, ("%s: initialize SDIO Failed!\n", __FUNCTION__));
+		RT_TRACE(_module_hci_intfs_c_, _drv_err_, ("%s: initialize SDIO Failed!\n", __func__));
 		goto free_dvobj;
 	}
 	rtw_reset_continual_io_error(dvobj);
@@ -578,13 +578,13 @@ static int rtw_sdio_suspend(struct device *dev)
 
 	if (padapter->bDriverStopped == true)
 	{
-		DBG_871X("%s bDriverStopped = %d\n", __FUNCTION__, padapter->bDriverStopped);
+		DBG_871X("%s bDriverStopped = %d\n", __func__, padapter->bDriverStopped);
 		goto exit;
 	}
 
 	if (pwrpriv->bInSuspend == true)
 	{
-		DBG_871X("%s bInSuspend = %d\n", __FUNCTION__, pwrpriv->bInSuspend);
+		DBG_871X("%s bInSuspend = %d\n", __func__, pwrpriv->bInSuspend);
 		pdbgpriv->dbg_suspend_error_cnt++;
 		goto exit;
 	}
@@ -623,7 +623,7 @@ static int rtw_resume_process(_adapter *padapter)
 	if (pwrpriv->bInSuspend == false)
 	{
 		pdbgpriv->dbg_resume_error_cnt++;
-		DBG_871X("%s bInSuspend = %d\n", __FUNCTION__, pwrpriv->bInSuspend);
+		DBG_871X("%s bInSuspend = %d\n", __func__, pwrpriv->bInSuspend);
 		return -1;
 	}
 
@@ -640,7 +640,7 @@ static int rtw_sdio_resume(struct device *dev)
 	int ret = 0;
 	struct debug_priv *pdbgpriv = &psdpriv->drv_dbg;
 
-	DBG_871X("==> %s (%s:%d)\n", __FUNCTION__, current->comm, current->pid);
+	DBG_871X("==> %s (%s:%d)\n", __func__, current->comm, current->pid);
 
 	pdbgpriv->dbg_resume_cnt++;
 
@@ -660,7 +660,7 @@ static int rtw_sdio_resume(struct device *dev)
 		}
 	}
 	pmlmeext->last_scan_time = jiffies;
-	DBG_871X("<========  %s return %d\n", __FUNCTION__, ret);
+	DBG_871X("<========  %s return %d\n", __func__, ret);
 	return ret;
 
 }
@@ -685,7 +685,7 @@ static int __init rtw_drv_entry(void)
 		sdio_drvpriv.drv_registered = false;
 		rtw_drv_proc_deinit();
 		rtw_ndev_notifier_unregister();
-		DBG_871X("%s: register driver failed!!(%d)\n", __FUNCTION__, ret);
+		DBG_871X("%s: register driver failed!!(%d)\n", __func__, ret);
 		goto exit;
 	}
 

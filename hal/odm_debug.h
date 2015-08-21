@@ -93,7 +93,7 @@
 
 /*------------------------Export Marco Definition---------------------------*/
 	#define DbgPrint	printk
-	#define RT_PRINTK(fmt, args...)	DbgPrint("%s(): " fmt, __FUNCTION__, ## args);
+	#define RT_PRINTK(fmt, args...)	DbgPrint("%s(): " fmt, __func__, ## args);
 	#define	RT_DISP(dbgtype, dbgflag, printstr)
 
 #ifndef ASSERT
@@ -116,13 +116,13 @@
 #define ODM_RT_ASSERT(pDM_Odm, expr, fmt)											\
 		if (!(expr)) {																	\
 			DbgPrint("Assertion failed! %s at ......\n", #expr);								\
-			DbgPrint("      ......%s,%s, line =%d\n", __FILE__, __FUNCTION__, __LINE__);			\
+			DbgPrint("      ......%s,%s, line =%d\n", __FILE__, __func__, __LINE__);			\
 			RT_PRINTK fmt;															\
 			ASSERT(false);															\
 		}
-#define ODM_dbg_enter() { DbgPrint("==> %s\n", __FUNCTION__); }
-#define ODM_dbg_exit() { DbgPrint("<== %s\n", __FUNCTION__); }
-#define ODM_dbg_trace(str) { DbgPrint("%s:%s\n", __FUNCTION__, str); }
+#define ODM_dbg_enter() { DbgPrint("==> %s\n", __func__); }
+#define ODM_dbg_exit() { DbgPrint("<== %s\n", __func__); }
+#define ODM_dbg_trace(str) { DbgPrint("%s:%s\n", __func__, str); }
 
 #define ODM_PRINT_ADDR(pDM_Odm, comp, level, title_str, ptr)							\
 			if (((comp) & pDM_Odm->DebugComponents) && (level <= pDM_Odm->DebugLevel))	\

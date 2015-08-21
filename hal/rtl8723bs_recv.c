@@ -127,7 +127,7 @@ static void update_recvframe_phyinfo(
 	if (psta)
 	{
 		pkt_info.StationID = psta->mac_id;
-		/* DBG_8192C("%s ==> StationID(%d)\n", __FUNCTION__, pkt_info.StationID); */
+		/* DBG_8192C("%s ==> StationID(%d)\n", __func__, pkt_info.StationID); */
 	}
 	pkt_info.DataRate = pattrib->data_rate;
 
@@ -214,7 +214,7 @@ static void rtl8723bs_recv_tasklet(void *priv)
 			precvframe = rtw_alloc_recvframe(&precvpriv->free_recv_queue);
 			if (precvframe == NULL)
 			{
-				DBG_8192C("%s: no enough recv frame!\n", __FUNCTION__);
+				DBG_8192C("%s: no enough recv frame!\n", __func__);
 				rtw_enqueue_recvbuf_to_head(precvbuf, &precvpriv->recv_buf_pending_queue);
 
 				/*  The case of can't allocte recvframe should be temporary, */
@@ -231,7 +231,7 @@ static void rtl8723bs_recv_tasklet(void *priv)
 			/*  fix Hardware RX data error, drop whole recv_buffer */
 			if ((!(pHalData->ReceiveConfig & RCR_ACRC32)) && pattrib->crc_err)
 			{
-				DBG_8192C("%s()-%d: RX Warning! rx CRC ERROR !!\n", __FUNCTION__, __LINE__);
+				DBG_8192C("%s()-%d: RX Warning! rx CRC ERROR !!\n", __func__, __LINE__);
 				rtw_free_recvframe(precvframe, &precvpriv->free_recv_queue);
 				break;
 			}
@@ -240,7 +240,7 @@ static void rtl8723bs_recv_tasklet(void *priv)
 			pkt_offset = rx_report_sz + pattrib->shift_sz + pattrib->pkt_len;
 
 			if ((ptr + pkt_offset) > precvbuf->ptail) {
-				DBG_8192C("%s()-%d: : next pkt len(%p,%d) exceed ptail(%p)!\n", __FUNCTION__, __LINE__, ptr, pkt_offset, precvbuf->ptail);
+				DBG_8192C("%s()-%d: : next pkt len(%p,%d) exceed ptail(%p)!\n", __func__, __LINE__, ptr, pkt_offset, precvbuf->ptail);
 				rtw_free_recvframe(precvframe, &precvpriv->free_recv_queue);
 				break;
 			}
@@ -248,7 +248,7 @@ static void rtl8723bs_recv_tasklet(void *priv)
 			if ((pattrib->crc_err) || (pattrib->icv_err))
 			{
 				{
-					DBG_8192C("%s: crc_err =%d icv_err =%d, skip!\n", __FUNCTION__, pattrib->crc_err, pattrib->icv_err);
+					DBG_8192C("%s: crc_err =%d icv_err =%d, skip!\n", __func__, pattrib->crc_err, pattrib->icv_err);
 				}
 				rtw_free_recvframe(precvframe, &precvpriv->free_recv_queue);
 			}
@@ -299,7 +299,7 @@ static void rtl8723bs_recv_tasklet(void *priv)
 				{
 					if ((pattrib->mfrag == 1) && (pattrib->frag_num == 0))
 					{
-						DBG_8192C("%s: alloc_skb fail, drop frag frame\n", __FUNCTION__);
+						DBG_8192C("%s: alloc_skb fail, drop frag frame\n", __func__);
 						rtw_free_recvframe(precvframe, &precvpriv->free_recv_queue);
 						break;
 					}
@@ -317,7 +317,7 @@ static void rtl8723bs_recv_tasklet(void *priv)
 					}
 					else
 					{
-						DBG_8192C("%s: rtw_skb_clone fail\n", __FUNCTION__);
+						DBG_8192C("%s: rtw_skb_clone fail\n", __func__);
 						rtw_free_recvframe(precvframe, &precvpriv->free_recv_queue);
 						break;
 					}
@@ -345,7 +345,7 @@ static void rtl8723bs_recv_tasklet(void *priv)
 
 					if (rtw_recv_entry(precvframe) != _SUCCESS)
 					{
-						RT_TRACE(_module_rtl871x_recv_c_, _drv_dump_, ("%s: rtw_recv_entry(precvframe) != _SUCCESS\n", __FUNCTION__));
+						RT_TRACE(_module_rtl871x_recv_c_, _drv_dump_, ("%s: rtw_recv_entry(precvframe) != _SUCCESS\n", __func__));
 					}
 				}
 				else if (pattrib->pkt_rpt_type == C2H_PACKET)
@@ -442,7 +442,7 @@ s32 rtl8723bs_init_recv_priv(PADAPTER padapter)
 			}
 
 			if (precvbuf->pskb == NULL) {
-				DBG_871X("%s: alloc_skb fail!\n", __FUNCTION__);
+				DBG_871X("%s: alloc_skb fail!\n", __func__);
 			}
 		}
 

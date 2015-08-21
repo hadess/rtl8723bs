@@ -120,7 +120,7 @@ extern u4Byte					GLBtcDbgType[];
 {\
 	if (GLBtcDbgType[dbgtype] & dbgflag)\
 	{\
-		DbgPrint("%s(): ", __FUNCTION__);\
+		DbgPrint("%s(): ", __func__);\
 		DbgPrint printstr;\
 	}\
 }

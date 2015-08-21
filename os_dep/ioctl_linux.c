@@ -1456,11 +1456,11 @@ static int rtw_wx_set_mlme(struct net_device *dev,
 	if (mlme ==NULL)
 		return -1;
 
-	DBG_871X("%s\n", __FUNCTION__);
+	DBG_871X("%s\n", __func__);
 
 	reason = mlme->reason_code;
 
-	DBG_871X("%s, cmd =%d, reason =%d\n", __FUNCTION__, mlme->cmd, reason);
+	DBG_871X("%s, cmd =%d, reason =%d\n", __func__, mlme->cmd, reason);
 
 	switch (mlme->cmd)
 	{
@@ -1490,7 +1490,7 @@ static int rtw_wx_set_scan(struct net_device *dev, struct iw_request_info *a,
 	RT_TRACE(_module_rtl871x_mlme_c_, _drv_info_, ("rtw_wx_set_scan\n"));
 
 	#ifdef DBG_IOCTL
-	DBG_871X("DBG_IOCTL %s:%d\n", __FUNCTION__, __LINE__);
+	DBG_871X("DBG_IOCTL %s:%d\n", __func__, __LINE__);
 	#endif
 
 	rtw_ps_deny(padapter, PS_DENY_SCAN);
@@ -1569,7 +1569,7 @@ static int rtw_wx_set_scan(struct net_device *dev, struct iw_request_info *a,
 		char sec_len;
 		int ssid_index = 0;
 
-		/* DBG_871X("%s COMBO_SCAN header is recognized\n", __FUNCTION__); */
+		/* DBG_871X("%s COMBO_SCAN header is recognized\n", __func__); */
 
 		while (len >= 1) {
 			section = *(pos++); len-= 1;
@@ -1587,7 +1587,7 @@ static int rtw_wx_set_scan(struct net_device *dev, struct iw_request_info *a,
 					if (sec_len>0 && sec_len<=len) {
 						ssid[ssid_index].SsidLength = sec_len;
 						memcpy(ssid[ssid_index].Ssid, pos, ssid[ssid_index].SsidLength);
-						/* DBG_871X("%s COMBO_SCAN with specific ssid:%s, %d\n", __FUNCTION__ */
+						/* DBG_871X("%s COMBO_SCAN with specific ssid:%s, %d\n", __func__ */
 						/* 	, ssid[ssid_index].Ssid, ssid[ssid_index].SsidLength); */
 						ssid_index++;
 					}
@@ -1641,7 +1641,7 @@ exit:
 	rtw_ps_deny_cancel(padapter, PS_DENY_SCAN);
 
 	#ifdef DBG_IOCTL
-	DBG_871X("DBG_IOCTL %s:%d return %d\n", __FUNCTION__, __LINE__, ret);
+	DBG_871X("DBG_IOCTL %s:%d return %d\n", __func__, __LINE__, ret);
 	#endif
 
 	return ret;
@@ -1664,7 +1664,7 @@ static int rtw_wx_get_scan(struct net_device *dev, struct iw_request_info *a,
 	RT_TRACE(_module_rtl871x_ioctl_os_c, _drv_info_, (" Start of Query SIOCGIWSCAN .\n"));
 
 	#ifdef DBG_IOCTL
-	DBG_871X("DBG_IOCTL %s:%d\n", __FUNCTION__, __LINE__);
+	DBG_871X("DBG_IOCTL %s:%d\n", __func__, __LINE__);
 	#endif
 
 	if (adapter_to_pwrctl(padapter)->brfoffbyhw && padapter->bDriverStopped)
@@ -1716,7 +1716,7 @@ static int rtw_wx_get_scan(struct net_device *dev, struct iw_request_info *a,
 exit:
 
 	#ifdef DBG_IOCTL
-	DBG_871X("DBG_IOCTL %s:%d return %d\n", __FUNCTION__, __LINE__, ret);
+	DBG_871X("DBG_IOCTL %s:%d return %d\n", __func__, __LINE__, ret);
 	#endif
 
 	return ret ;
@@ -1744,7 +1744,7 @@ static int rtw_wx_set_essid(struct net_device *dev,
 	uint ret = 0, len;
 
 	#ifdef DBG_IOCTL
-	DBG_871X("DBG_IOCTL %s:%d\n", __FUNCTION__, __LINE__);
+	DBG_871X("DBG_IOCTL %s:%d\n", __func__, __LINE__);
 	#endif
 
 	RT_TRACE(_module_rtl871x_ioctl_os_c, _drv_info_,
@@ -1773,7 +1773,7 @@ static int rtw_wx_set_essid(struct net_device *dev,
 	}
 
 	authmode = padapter->securitypriv.ndisauthtype;
-	DBG_871X("=>%s\n", __FUNCTION__);
+	DBG_871X("=>%s\n", __func__);
 	if (wrqu->essid.flags && wrqu->essid.length)
 	{
 		len = (wrqu->essid.length < IW_ESSID_MAX_SIZE) ? wrqu->essid.length : IW_ESSID_MAX_SIZE;
@@ -1847,10 +1847,10 @@ exit:
 
 	rtw_ps_deny_cancel(padapter, PS_DENY_JOIN);
 
-	DBG_871X("<=%s, ret %d\n", __FUNCTION__, ret);
+	DBG_871X("<=%s, ret %d\n", __func__, ret);
 
 	#ifdef DBG_IOCTL
-	DBG_871X("DBG_IOCTL %s:%d return %d\n", __FUNCTION__, __LINE__, ret);
+	DBG_871X("DBG_IOCTL %s:%d return %d\n", __func__, __LINE__, ret);
 	#endif
 
 	return ret;
@@ -2393,7 +2393,7 @@ static int rtw_wx_set_auth(struct net_device *dev,
 		if (check_fwstate(&padapter->mlmepriv, _FW_LINKED)) {
 			LeaveAllPowerSaveMode(padapter);
 			rtw_disassoc_cmd(padapter, 500, false);
-			DBG_871X("%s...call rtw_indicate_disconnect\n ", __FUNCTION__);
+			DBG_871X("%s...call rtw_indicate_disconnect\n ", __func__);
 			rtw_indicate_disconnect(padapter);
 			rtw_free_assoc_resources(padapter, 1);
 		}
@@ -2868,10 +2868,10 @@ static int rtw_set_pid(struct net_device *dev,
 	selector = *pdata;
 	if (selector < 3 && selector >= 0) {
 		padapter->pid[selector] = *(pdata+1);
-		DBG_871X("%s set pid[%d]=%d\n", __FUNCTION__, selector , padapter->pid[selector]);
+		DBG_871X("%s set pid[%d]=%d\n", __func__, selector , padapter->pid[selector]);
 	}
 	else
-		DBG_871X("%s selector %d error\n", __FUNCTION__, selector);
+		DBG_871X("%s selector %d error\n", __func__, selector);
 
 exit:
 
@@ -2902,7 +2902,7 @@ static int rtw_wps_start(struct net_device *dev,
 		u32wps_start = *extra;
 	}
 
-	DBG_871X("[%s] wps_start = %d\n", __FUNCTION__, u32wps_start);
+	DBG_871X("[%s] wps_start = %d\n", __func__, u32wps_start);
 
 #ifdef CONFIG_INTEL_WIDI
 	process_intel_widi_wps_status(padapter, u32wps_start);
@@ -2964,7 +2964,7 @@ static int rtw_rereg_nd_name(struct net_device *dev,
 		rereg_priv->old_ifname[IFNAMSIZ-1] = 0;
 	}
 
-	/* DBG_871X("%s wrqu->data.length:%d\n", __FUNCTION__, wrqu->data.length); */
+	/* DBG_871X("%s wrqu->data.length:%d\n", __func__, wrqu->data.length); */
 	if (wrqu->data.length > IFNAMSIZ)
 		return -EFAULT;
 
@@ -2976,7 +2976,7 @@ static int rtw_rereg_nd_name(struct net_device *dev,
 		return ret;
 	}
 
-	DBG_871X("%s new_ifname:%s\n", __FUNCTION__, new_ifname);
+	DBG_871X("%s new_ifname:%s\n", __func__, new_ifname);
 	if (0 != (ret = rtw_change_ifname(padapter, new_ifname))) {
 		goto exit;
 	}
@@ -2986,7 +2986,7 @@ static int rtw_rereg_nd_name(struct net_device *dev,
 
 	if (!memcmp(new_ifname, "disable%d", 9)) {
 
-		DBG_871X("%s disable\n", __FUNCTION__);
+		DBG_871X("%s disable\n", __func__);
 		/*  free network queue for Android's timming issue */
 		rtw_free_network_queue(padapter, true);
 
@@ -3252,7 +3252,7 @@ static int rtw_dbg_port(struct net_device *dev,
 					{
 						int max_mac_id = 0;
 						max_mac_id = rtw_search_max_mac_id(padapter);
-						printk("%s ==> max_mac_id = %d \n", __FUNCTION__, max_mac_id);
+						printk("%s ==> max_mac_id = %d \n", __func__, max_mac_id);
 					}
 					break;
 				case 0x0b: /* Enable = 1, Disable = 0 driver control vrtl_carrier_sense. */
@@ -3826,7 +3826,7 @@ static int rtw_set_encryption(struct net_device *dev, struct ieee_param *param, 
 	struct security_priv* psecuritypriv =&(padapter->securitypriv);
 	struct sta_priv *pstapriv = &padapter->stapriv;
 
-	DBG_871X("%s\n", __FUNCTION__);
+	DBG_871X("%s\n", __func__);
 
 	param->u.crypt.err = 0;
 	param->u.crypt.alg[IEEE_CRYPT_ALG_NAME_LEN - 1] = '\0';
@@ -3961,7 +3961,7 @@ static int rtw_set_encryption(struct net_device *dev, struct ieee_param *param, 
 		{
 			if (strcmp(param->u.crypt.alg, "WEP") == 0)
 			{
-				DBG_871X("%s, set group_key, WEP\n", __FUNCTION__);
+				DBG_871X("%s, set group_key, WEP\n", __func__);
 
 				memcpy(psecuritypriv->dot118021XGrpKey[param->u.crypt.idx].skey,  param->u.crypt.key, (param->u.crypt.key_len>16 ?16:param->u.crypt.key_len));
 
@@ -3974,7 +3974,7 @@ static int rtw_set_encryption(struct net_device *dev, struct ieee_param *param, 
 			}
 			else if (strcmp(param->u.crypt.alg, "TKIP") == 0)
 			{
-				DBG_871X("%s, set group_key, TKIP\n", __FUNCTION__);
+				DBG_871X("%s, set group_key, TKIP\n", __func__);
 
 				psecuritypriv->dot118021XGrpPrivacy = _TKIP_;
 
@@ -3990,7 +3990,7 @@ static int rtw_set_encryption(struct net_device *dev, struct ieee_param *param, 
 			}
 			else if (strcmp(param->u.crypt.alg, "CCMP") == 0)
 			{
-				DBG_871X("%s, set group_key, CCMP\n", __FUNCTION__);
+				DBG_871X("%s, set group_key, CCMP\n", __func__);
 
 				psecuritypriv->dot118021XGrpPrivacy = _AES_;
 
@@ -3998,7 +3998,7 @@ static int rtw_set_encryption(struct net_device *dev, struct ieee_param *param, 
 			}
 			else
 			{
-				DBG_871X("%s, set group_key, none\n", __FUNCTION__);
+				DBG_871X("%s, set group_key, none\n", __func__);
 
 				psecuritypriv->dot118021XGrpPrivacy = _NO_PRIVACY_;
 			}
@@ -4034,7 +4034,7 @@ static int rtw_set_encryption(struct net_device *dev, struct ieee_param *param, 
 
 				if (strcmp(param->u.crypt.alg, "WEP") == 0)
 				{
-					DBG_871X("%s, set pairwise key, WEP\n", __FUNCTION__);
+					DBG_871X("%s, set pairwise key, WEP\n", __func__);
 
 					psta->dot118021XPrivacy = _WEP40_;
 					if (param->u.crypt.key_len == 13)
@@ -4044,7 +4044,7 @@ static int rtw_set_encryption(struct net_device *dev, struct ieee_param *param, 
 				}
 				else if (strcmp(param->u.crypt.alg, "TKIP") == 0)
 				{
-					DBG_871X("%s, set pairwise key, TKIP\n", __FUNCTION__);
+					DBG_871X("%s, set pairwise key, TKIP\n", __func__);
 
 					psta->dot118021XPrivacy = _TKIP_;
 
@@ -4059,13 +4059,13 @@ static int rtw_set_encryption(struct net_device *dev, struct ieee_param *param, 
 				else if (strcmp(param->u.crypt.alg, "CCMP") == 0)
 				{
 
-					DBG_871X("%s, set pairwise key, CCMP\n", __FUNCTION__);
+					DBG_871X("%s, set pairwise key, CCMP\n", __func__);
 
 					psta->dot118021XPrivacy = _AES_;
 				}
 				else
 				{
-					DBG_871X("%s, set pairwise key, none\n", __FUNCTION__);
+					DBG_871X("%s, set pairwise key, none\n", __func__);
 
 					psta->dot118021XPrivacy = _NO_PRIVACY_;
 				}
@@ -4153,7 +4153,7 @@ static int rtw_set_beacon(struct net_device *dev, struct ieee_param *param, int 
 	unsigned char *pbuf = param->u.bcn_ie.buf;
 
 
-	DBG_871X("%s, len =%d\n", __FUNCTION__, len);
+	DBG_871X("%s, len =%d\n", __func__, len);
 
 	if (check_fwstate(pmlmepriv, WIFI_AP_STATE) != true)
 		return -EINVAL;
@@ -4183,7 +4183,7 @@ static int rtw_hostapd_sta_flush(struct net_device *dev)
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
 	/* struct sta_priv *pstapriv = &padapter->stapriv; */
 
-	DBG_871X("%s\n", __FUNCTION__);
+	DBG_871X("%s\n", __func__);
 
 	flush_all_cam_entry(padapter);	/* clear CAM */
 
@@ -4464,7 +4464,7 @@ static int rtw_set_wps_beacon(struct net_device *dev, struct ieee_param *param, 
 	struct mlme_ext_priv	*pmlmeext = &(padapter->mlmeextpriv);
 	int ie_len;
 
-	DBG_871X("%s, len =%d\n", __FUNCTION__, len);
+	DBG_871X("%s, len =%d\n", __func__, len);
 
 	if (check_fwstate(pmlmepriv, WIFI_AP_STATE) != true)
 		return -EINVAL;
@@ -4483,7 +4483,7 @@ static int rtw_set_wps_beacon(struct net_device *dev, struct ieee_param *param, 
 		pmlmepriv->wps_beacon_ie = rtw_malloc(ie_len);
 		pmlmepriv->wps_beacon_ie_len = ie_len;
 		if (pmlmepriv->wps_beacon_ie == NULL) {
-			DBG_871X("%s()-%d: rtw_malloc() ERROR!\n", __FUNCTION__, __LINE__);
+			DBG_871X("%s()-%d: rtw_malloc() ERROR!\n", __func__, __LINE__);
 			return -EINVAL;
 		}
 
@@ -4507,7 +4507,7 @@ static int rtw_set_wps_probe_resp(struct net_device *dev, struct ieee_param *par
 	struct mlme_priv *pmlmepriv = &(padapter->mlmepriv);
 	int ie_len;
 
-	DBG_871X("%s, len =%d\n", __FUNCTION__, len);
+	DBG_871X("%s, len =%d\n", __func__, len);
 
 	if (check_fwstate(pmlmepriv, WIFI_AP_STATE) != true)
 		return -EINVAL;
@@ -4526,7 +4526,7 @@ static int rtw_set_wps_probe_resp(struct net_device *dev, struct ieee_param *par
 		pmlmepriv->wps_probe_resp_ie = rtw_malloc(ie_len);
 		pmlmepriv->wps_probe_resp_ie_len = ie_len;
 		if (pmlmepriv->wps_probe_resp_ie == NULL) {
-			DBG_871X("%s()-%d: rtw_malloc() ERROR!\n", __FUNCTION__, __LINE__);
+			DBG_871X("%s()-%d: rtw_malloc() ERROR!\n", __func__, __LINE__);
 			return -EINVAL;
 		}
 		memcpy(pmlmepriv->wps_probe_resp_ie, param->u.bcn_ie.buf, ie_len);
@@ -4544,7 +4544,7 @@ static int rtw_set_wps_assoc_resp(struct net_device *dev, struct ieee_param *par
 	struct mlme_priv *pmlmepriv = &(padapter->mlmepriv);
 	int ie_len;
 
-	DBG_871X("%s, len =%d\n", __FUNCTION__, len);
+	DBG_871X("%s, len =%d\n", __func__, len);
 
 	if (check_fwstate(pmlmepriv, WIFI_AP_STATE) != true)
 		return -EINVAL;
@@ -4563,7 +4563,7 @@ static int rtw_set_wps_assoc_resp(struct net_device *dev, struct ieee_param *par
 		pmlmepriv->wps_assoc_resp_ie = rtw_malloc(ie_len);
 		pmlmepriv->wps_assoc_resp_ie_len = ie_len;
 		if (pmlmepriv->wps_assoc_resp_ie == NULL) {
-			DBG_871X("%s()-%d: rtw_malloc() ERROR!\n", __FUNCTION__, __LINE__);
+			DBG_871X("%s()-%d: rtw_malloc() ERROR!\n", __func__, __LINE__);
 			return -EINVAL;
 		}
 
@@ -4693,7 +4693,7 @@ static int rtw_hostapd_ioctl(struct net_device *dev, struct iw_point *p)
 	int ret = 0;
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
 
-	/* DBG_871X("%s\n", __FUNCTION__); */
+	/* DBG_871X("%s\n", __func__); */
 
 	/*
 	* this function is expect to call in master mode, which allows no power saving
@@ -4726,7 +4726,7 @@ static int rtw_hostapd_ioctl(struct net_device *dev, struct iw_point *p)
 		goto out;
 	}
 
-	/* DBG_871X("%s, cmd =%d\n", __FUNCTION__, param->cmd); */
+	/* DBG_871X("%s, cmd =%d\n", __func__, param->cmd); */
 
 	switch (param->cmd)
 	{
@@ -4901,7 +4901,7 @@ static int rtw_wx_set_priv(struct net_device *dev,
 
 			pmlmepriv->wps_probe_req_ie = rtw_malloc(cp_sz);
 			if (pmlmepriv->wps_probe_req_ie == NULL) {
-				printk("%s()-%d: rtw_malloc() ERROR!\n", __FUNCTION__, __LINE__);
+				printk("%s()-%d: rtw_malloc() ERROR!\n", __func__, __LINE__);
 				ret =  -EINVAL;
 				goto FREE_EXT;
 
@@ -4945,7 +4945,7 @@ static int rtw_pm_set(struct net_device *dev,
 	unsigned	mode = 0;
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
 
-	DBG_871X("[%s] extra = %s\n", __FUNCTION__, extra);
+	DBG_871X("[%s] extra = %s\n", __func__, extra);
 
 	if (!memcmp(extra, "lps =", 4))
 	{

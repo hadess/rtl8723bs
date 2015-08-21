@@ -715,7 +715,7 @@ PHY_GetTxPowerIndex_8723B(
 	s8					txPower = 0, powerDiffByRate = 0, limit = 0;
 	bool				bIn24G = false;
 
-	/* DBG_871X("===>%s\n", __FUNCTION__); */
+	/* DBG_871X("===>%s\n", __func__); */
 
 	txPower = (s8) PHY_GetTxPowerIndexBase(pAdapter, RFPath, Rate, BandWidth, Channel, &bIn24G);
 	powerDiffByRate = PHY_GetTxPowerByRate(pAdapter, BAND_ON_2_4G, ODM_RF_PATH_A, RF_1TX, Rate);
@@ -937,7 +937,7 @@ phy_SwChnlAndSetBwMode8723B(
 	if (Adapter->bNotifyChannelChange)
 	{
 		DBG_871X("[%s] bSwChnl =%d, ch =%d, bSetChnlBW =%d, bw =%d\n",
-			__FUNCTION__,
+			__func__,
 			pHalData->bSwChnl,
 			pHalData->CurrentChannel,
 			pHalData->bSetChnlBW,
@@ -1082,9 +1082,9 @@ PHY_SetSwChnlBWMode8723B(
 	IN	u8					Offset80
 )
 {
-	/* DBG_871X("%s() ===>\n", __FUNCTION__); */
+	/* DBG_871X("%s() ===>\n", __func__); */
 
 	PHY_HandleSwChnlAndSetBW8723B(Adapter, true, true, channel, Bandwidth, Offset40, Offset80, channel);
 
-	/* DBG_871X("<==%s()\n", __FUNCTION__); */
+	/* DBG_871X("<==%s()\n", __func__); */
 }

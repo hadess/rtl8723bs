@@ -192,7 +192,7 @@ void rtw_hal_enable_interrupt(_adapter *padapter)
 	if (padapter->HalFunc.enable_interrupt)
 		padapter->HalFunc.enable_interrupt(padapter);
 	else
-		DBG_871X("%s: HalFunc.enable_interrupt is NULL!\n", __FUNCTION__);
+		DBG_871X("%s: HalFunc.enable_interrupt is NULL!\n", __func__);
 
 }
 void rtw_hal_disable_interrupt(_adapter *padapter)
@@ -200,7 +200,7 @@ void rtw_hal_disable_interrupt(_adapter *padapter)
 	if (padapter->HalFunc.disable_interrupt)
 		padapter->HalFunc.disable_interrupt(padapter);
 	else
-		DBG_871X("%s: HalFunc.disable_interrupt is NULL!\n", __FUNCTION__);
+		DBG_871X("%s: HalFunc.disable_interrupt is NULL!\n", __func__);
 
 }
 
@@ -210,7 +210,7 @@ u8 rtw_hal_check_ips_status(_adapter *padapter)
 	if (padapter->HalFunc.check_ips_status)
 		val = padapter->HalFunc.check_ips_status(padapter);
 	else
-		DBG_871X("%s: HalFunc.check_ips_status is NULL!\n", __FUNCTION__);
+		DBG_871X("%s: HalFunc.check_ips_status is NULL!\n", __func__);
 
 	return val;
 }
@@ -221,7 +221,7 @@ void rtw_hal_clear_interrupt(_adapter *padapter)
     if (padapter->HalFunc.clear_interrupt)
         padapter->HalFunc.clear_interrupt(padapter);
     else
-        DBG_871X("%s: HalFunc.clear_interrupt is NULL!\n", __FUNCTION__);
+        DBG_871X("%s: HalFunc.clear_interrupt is NULL!\n", __func__);
 
 }
 #endif
@@ -489,7 +489,7 @@ s32 rtw_hal_fill_h2c_cmd(PADAPTER padapter, u8 ElementID, u32 CmdLen, u8 *pCmdBu
 		ret = padapter->HalFunc.fill_h2c_cmd(padapter, ElementID, CmdLen, pCmdBuffer);
 	else
 	{
-		DBG_871X("%s:  func[fill_h2c_cmd] not defined!\n", __FUNCTION__);
+		DBG_871X("%s:  func[fill_h2c_cmd] not defined!\n", __func__);
 	}
 
 	return ret;

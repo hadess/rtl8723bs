@@ -640,10 +640,10 @@ s32 sdio_local_write(
 	u8 *ptmpbuf;
 
 	if (addr & 0x3)
-		DBG_8192C("%s, address must be 4 bytes alignment\n", __FUNCTION__);
+		DBG_8192C("%s, address must be 4 bytes alignment\n", __func__);
 
 	if (cnt  & 0x3)
-		DBG_8192C("%s, size must be the multiple of 4 \n", __FUNCTION__);
+		DBG_8192C("%s, size must be the multiple of 4 \n", __func__);
 
 	pintfhdl =&padapter->iopriv.intf;
 
@@ -875,14 +875,14 @@ void EnableInterrupt8723BSdio(PADAPTER padapter)
 	sdio_local_write(padapter, SDIO_REG_HIMR, 4, (u8 *)&himr);
 
 	RT_TRACE(_module_hci_ops_c_, _drv_notice_,
-		("%s: enable SDIO HIMR = 0x%08X\n", __FUNCTION__, pHalData->sdio_himr));
+		("%s: enable SDIO HIMR = 0x%08X\n", __func__, pHalData->sdio_himr));
 
 	/*  Update current system IMR settings */
 	tmp = rtw_read32(padapter, REG_HSIMR);
 	rtw_write32(padapter, REG_HSIMR, tmp | pHalData->SysIntrMask);
 
 	RT_TRACE(_module_hci_ops_c_, _drv_notice_,
-		("%s: enable HSIMR = 0x%08X\n", __FUNCTION__, pHalData->SysIntrMask));
+		("%s: enable HSIMR = 0x%08X\n", __func__, pHalData->SysIntrMask));
 
 	/*  */
 	/*  <Roger_Notes> There are some C2H CMDs have been sent before system interrupt is enabled, e.g., C2H, CPWM. */
@@ -945,7 +945,7 @@ static struct recv_buf* sd_recv_rxfifo(PADAPTER padapter, u32 size)
 	precvpriv = &padapter->recvpriv;
 	precvbuf = rtw_dequeue_recvbuf(&precvpriv->free_recv_buf_queue);
 	if (precvbuf == NULL) {
-		DBG_871X_LEVEL(_drv_err_, "%s: alloc recvbuf FAIL!\n", __FUNCTION__);
+		DBG_871X_LEVEL(_drv_err_, "%s: alloc recvbuf FAIL!\n", __func__);
 		return NULL;
 	}
 
@@ -966,7 +966,7 @@ static struct recv_buf* sd_recv_rxfifo(PADAPTER padapter, u32 size)
 		}
 
 		if (precvbuf->pskb == NULL) {
-			DBG_871X("%s: alloc_skb fail! read =%d\n", __FUNCTION__, readsize);
+			DBG_871X("%s: alloc_skb fail! read =%d\n", __func__, readsize);
 			return NULL;
 		}
 	}
@@ -975,7 +975,7 @@ static struct recv_buf* sd_recv_rxfifo(PADAPTER padapter, u32 size)
 	preadbuf = precvbuf->pskb->data;
 	ret = sdio_read_port(&padapter->iopriv.intf, WLAN_RX0FF_DEVICE_ID, readsize, preadbuf);
 	if (ret == _FAIL) {
-		RT_TRACE(_module_hci_ops_os_c_, _drv_err_, ("%s: read port FAIL!\n", __FUNCTION__));
+		RT_TRACE(_module_hci_ops_os_c_, _drv_err_, ("%s: read port FAIL!\n", __func__));
 		return NULL;
 	}
 
@@ -1171,7 +1171,7 @@ void sd_int_hdl(PADAPTER padapter)
 	} else {
 		RT_TRACE(_module_hci_ops_c_, _drv_err_,
 				("%s: HISR(0x%08x) and HIMR(0x%08x) not match!\n",
-				__FUNCTION__, phal->sdio_hisr, phal->sdio_himr));
+				__func__, phal->sdio_hisr, phal->sdio_himr));
 	}
 }
 
@@ -1200,7 +1200,7 @@ u8 HalQueryTxBufferStatus8723BSdio(PADAPTER padapter)
 	memcpy(phal->SdioTxFIFOFreePage, &NumOfFreePage, 4);
 	RT_TRACE(_module_hci_ops_c_, _drv_notice_,
 			("%s: Free page for HIQ(%#x), MIDQ(%#x), LOWQ(%#x), PUBQ(%#x)\n",
-			__FUNCTION__,
+			__func__,
 			phal->SdioTxFIFOFreePage[HI_QUEUE_IDX],
 			phal->SdioTxFIFOFreePage[MID_QUEUE_IDX],
 			phal->SdioTxFIFOFreePage[LOW_QUEUE_IDX],

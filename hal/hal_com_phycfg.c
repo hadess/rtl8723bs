@@ -225,7 +225,7 @@ phy_StoreTxPowerByRateBase(
 {
 	u8	path, base;
 
-	/* DBG_871X("===>%s\n", __FUNCTION__); */
+	/* DBG_871X("===>%s\n", __func__); */
 
 	for (path = ODM_RF_PATH_A; path <= ODM_RF_PATH_B; ++path)
 	{
@@ -290,7 +290,7 @@ phy_StoreTxPowerByRateBase(
 		/* DBG_871X("Power index base of 5G path %d 3Tx VHT3SS = > 0x%x\n", path, base); */
 	}
 
-	/* DBG_871X("<===%s\n", __FUNCTION__); */
+	/* DBG_871X("<===%s\n", __func__); */
 }
 
 u8
@@ -750,7 +750,7 @@ PHY_GetRateValuesOfTxPowerByRate(
 			break;
 
 		default:
-			DBG_871X("Invalid RegAddr 0x%x in %s()\n", RegAddr, __FUNCTION__);
+			DBG_871X("Invalid RegAddr 0x%x in %s()\n", RegAddr, __func__);
 			break;
 	};
 }
@@ -1062,7 +1062,7 @@ PHY_SetTxPowerIndexByRateSection(
 	}
 	else
 	{
-		DBG_871X("Invalid RateSection %d in %s", RateSection, __FUNCTION__);
+		DBG_871X("Invalid RateSection %d in %s", RateSection, __func__);
 	}
 }
 
@@ -1402,7 +1402,7 @@ PHY_GetRateIndexOfTxPowerByRate(
 		case MGN_VHT4SS_MCS8: index = 82; break;
 		case MGN_VHT4SS_MCS9: index = 83; break;
 		default:
-			DBG_871X("Invalid rate 0x%x in %s\n", Rate, __FUNCTION__);
+			DBG_871X("Invalid rate 0x%x in %s\n", Rate, __func__);
 			break;
 	};
 
@@ -1428,22 +1428,22 @@ PHY_GetTxPowerByRate(
 
 	if (Band != BAND_ON_2_4G && Band != BAND_ON_5G)
 	{
-		DBG_871X("Invalid band %d in %s\n", Band, __FUNCTION__);
+		DBG_871X("Invalid band %d in %s\n", Band, __func__);
 		return value;
 	}
 	if (RFPath > ODM_RF_PATH_D)
 	{
-		DBG_871X("Invalid RfPath %d in %s\n", RFPath, __FUNCTION__);
+		DBG_871X("Invalid RfPath %d in %s\n", RFPath, __func__);
 		return value;
 	}
 	if (TxNum >= RF_MAX_TX_NUM)
 	{
-		DBG_871X("Invalid TxNum %d in %s\n", TxNum, __FUNCTION__);
+		DBG_871X("Invalid TxNum %d in %s\n", TxNum, __func__);
 		return value;
 	}
 	if (rateIndex >= TX_PWR_BY_RATE_NUM_RATE)
 	{
-		DBG_871X("Invalid RateIndex %d in %s\n", rateIndex, __FUNCTION__);
+		DBG_871X("Invalid RateIndex %d in %s\n", rateIndex, __func__);
 		return value;
 	}
 
@@ -1468,22 +1468,22 @@ PHY_SetTxPowerByRate(
 
 	if (Band != BAND_ON_2_4G && Band != BAND_ON_5G)
 	{
-		DBG_871X("Invalid band %d in %s\n", Band, __FUNCTION__);
+		DBG_871X("Invalid band %d in %s\n", Band, __func__);
 		return;
 	}
 	if (RFPath > ODM_RF_PATH_D)
 	{
-		DBG_871X("Invalid RfPath %d in %s\n", RFPath, __FUNCTION__);
+		DBG_871X("Invalid RfPath %d in %s\n", RFPath, __func__);
 		return;
 	}
 	if (TxNum >= RF_MAX_TX_NUM)
 	{
-		DBG_871X("Invalid TxNum %d in %s\n", TxNum, __FUNCTION__);
+		DBG_871X("Invalid TxNum %d in %s\n", TxNum, __func__);
 		return;
 	}
 	if (rateIndex >= TX_PWR_BY_RATE_NUM_RATE)
 	{
-		DBG_871X("Invalid RateIndex %d in %s\n", rateIndex, __FUNCTION__);
+		DBG_871X("Invalid RateIndex %d in %s\n", rateIndex, __func__);
 		return;
 	}
 
@@ -1577,11 +1577,11 @@ phy_GetChannelIndexOfTxPowerLimit(
 	}
 	else
 	{
-		DBG_871X("Invalid Band %d in %s", Band, __FUNCTION__);
+		DBG_871X("Invalid Band %d in %s", Band, __func__);
 	}
 
 	if (channelIndex == -1)
-		DBG_871X("Invalid Channel %d of Band %d in %s", Channel, Band, __FUNCTION__);
+		DBG_871X("Invalid Channel %d of Band %d in %s", Channel, Band, __func__);
 
 	return channelIndex;
 }
@@ -2283,7 +2283,7 @@ phy_ConfigMACWithParaFile(
 					pHalData->mac_reg_len = rlen;
 				}
 				else {
-					DBG_871X("%s mac_reg alloc fail !\n", __FUNCTION__);
+					DBG_871X("%s mac_reg alloc fail !\n", __func__);
 				}
 			}
 		}
@@ -2295,7 +2295,7 @@ phy_ConfigMACWithParaFile(
 			rtStatus = _SUCCESS;
 		}
 		else {
-			DBG_871X("%s(): Critical Error !!!\n", __FUNCTION__);
+			DBG_871X("%s(): Critical Error !!!\n", __func__);
 		}
 	}
 
@@ -2326,7 +2326,7 @@ phy_ConfigMACWithParaFile(
 	}
 	else
 	{
-		DBG_871X("%s(): No File %s, Load from HWImg Array!\n", __FUNCTION__, pFileName);
+		DBG_871X("%s(): No File %s, Load from HWImg Array!\n", __func__, pFileName);
 	}
 
 	return rtStatus;
@@ -2392,7 +2392,7 @@ phy_ConfigBBWithParaFile(
 					}
 				}
 				else {
-					DBG_871X("%s(): ConfigType %d  alloc fail !\n", __FUNCTION__, ConfigType);
+					DBG_871X("%s(): ConfigType %d  alloc fail !\n", __func__, ConfigType);
 				}
 			}
 		}
@@ -2404,7 +2404,7 @@ phy_ConfigBBWithParaFile(
 			rtStatus = _SUCCESS;
 		}
 		else {
-			DBG_871X("%s(): Critical Error !!!\n", __FUNCTION__);
+			DBG_871X("%s(): Critical Error !!!\n", __func__);
 		}
 	}
 
@@ -2466,7 +2466,7 @@ phy_ConfigBBWithParaFile(
 	}
 	else
 	{
-		DBG_871X("%s(): No File %s, Load from HWImg Array!\n", __FUNCTION__, pFileName);
+		DBG_871X("%s(): No File %s, Load from HWImg Array!\n", __func__, pFileName);
 	}
 
 	return rtStatus;
@@ -2831,7 +2831,7 @@ phy_ConfigBBWithPgParaFile(
 					pHalData->bb_phy_reg_pg_len = rlen;
 				}
 				else {
-					DBG_871X("%s bb_phy_reg_pg alloc fail !\n", __FUNCTION__);
+					DBG_871X("%s bb_phy_reg_pg alloc fail !\n", __func__);
 				}
 			}
 		}
@@ -2843,7 +2843,7 @@ phy_ConfigBBWithPgParaFile(
 			rtStatus = _SUCCESS;
 		}
 		else {
-			DBG_871X("%s(): Critical Error !!!\n", __FUNCTION__);
+			DBG_871X("%s(): Critical Error !!!\n", __func__);
 		}
 	}
 
@@ -2854,7 +2854,7 @@ phy_ConfigBBWithPgParaFile(
 	}
 	else
 	{
-		DBG_871X("%s(): No File %s, Load from HWImg Array!\n", __FUNCTION__, pFileName);
+		DBG_871X("%s(): No File %s, Load from HWImg Array!\n", __func__, pFileName);
 	}
 
 	return rtStatus;
@@ -2921,7 +2921,7 @@ PHY_ConfigRFWithParaFile(
 					}
 				}
 				else {
-					DBG_871X("%s(): eRFPath =%d  alloc fail !\n", __FUNCTION__, eRFPath);
+					DBG_871X("%s(): eRFPath =%d  alloc fail !\n", __func__, eRFPath);
 				}
 			}
 		}
@@ -2933,13 +2933,13 @@ PHY_ConfigRFWithParaFile(
 			rtStatus = _SUCCESS;
 		}
 		else {
-			DBG_871X("%s(): Critical Error !!!\n", __FUNCTION__);
+			DBG_871X("%s(): Critical Error !!!\n", __func__);
 		}
 	}
 
 	if (rtStatus == _SUCCESS)
 	{
-		/* DBG_871X("%s(): read %s successfully\n", __FUNCTION__, pFileName); */
+		/* DBG_871X("%s(): read %s successfully\n", __func__, pFileName); */
 
 		ptmp = pHalData->para_file_buf;
 		for (szLine = GetLineFromBuffer(ptmp); szLine != NULL; szLine = GetLineFromBuffer(ptmp))
@@ -3004,7 +3004,7 @@ PHY_ConfigRFWithParaFile(
 	}
 	else
 	{
-		DBG_871X("%s(): No File %s, Load from HWImg Array!\n", __FUNCTION__, pFileName);
+		DBG_871X("%s(): No File %s, Load from HWImg Array!\n", __func__, pFileName);
 	}
 
 	return rtStatus;
@@ -3182,7 +3182,7 @@ PHY_ConfigRFWithTxPwrTrackParaFile(
 					pHalData->rf_tx_pwr_track_len = rlen;
 				}
 				else {
-					DBG_871X("%s rf_tx_pwr_track alloc fail !\n", __FUNCTION__);
+					DBG_871X("%s rf_tx_pwr_track alloc fail !\n", __func__);
 				}
 			}
 		}
@@ -3194,13 +3194,13 @@ PHY_ConfigRFWithTxPwrTrackParaFile(
 			rtStatus = _SUCCESS;
 		}
 		else {
-			DBG_871X("%s(): Critical Error !!!\n", __FUNCTION__);
+			DBG_871X("%s(): Critical Error !!!\n", __func__);
 		}
 	}
 
 	if (rtStatus == _SUCCESS)
 	{
-		/* DBG_871X("%s(): read %s successfully\n", __FUNCTION__, pFileName); */
+		/* DBG_871X("%s(): read %s successfully\n", __func__, pFileName); */
 
 		ptmp = pHalData->para_file_buf;
 		for (szLine = GetLineFromBuffer(ptmp); szLine != NULL; szLine = GetLineFromBuffer(ptmp))
@@ -3237,7 +3237,7 @@ PHY_ConfigRFWithTxPwrTrackParaFile(
 	}
 	else
 	{
-		DBG_871X("%s(): No File %s, Load from HWImg Array!\n", __FUNCTION__, pFileName);
+		DBG_871X("%s(): No File %s, Load from HWImg Array!\n", __func__, pFileName);
 	}
 
 	return rtStatus;
@@ -3530,7 +3530,7 @@ PHY_ConfigRFWithPowerLimitTableParaFile(
 					pHalData->rf_tx_pwr_lmt_len = rlen;
 				}
 				else {
-					DBG_871X("%s rf_tx_pwr_lmt alloc fail !\n", __FUNCTION__);
+					DBG_871X("%s rf_tx_pwr_lmt alloc fail !\n", __func__);
 				}
 			}
 		}
@@ -3542,18 +3542,18 @@ PHY_ConfigRFWithPowerLimitTableParaFile(
 			rtStatus = _SUCCESS;
 		}
 		else {
-			DBG_871X("%s(): Critical Error !!!\n", __FUNCTION__);
+			DBG_871X("%s(): Critical Error !!!\n", __func__);
 		}
 	}
 
 	if (rtStatus == _SUCCESS)
 	{
-		/* DBG_871X("%s(): read %s ok\n", __FUNCTION__, pFileName); */
+		/* DBG_871X("%s(): read %s ok\n", __func__, pFileName); */
 		rtStatus = phy_ParsePowerLimitTableFile(Adapter, pHalData->para_file_buf);
 	}
 	else
 	{
-		DBG_871X("%s(): No File %s, Load from HWImg Array!\n", __FUNCTION__, pFileName);
+		DBG_871X("%s(): No File %s, Load from HWImg Array!\n", __func__, pFileName);
 	}
 
 	return rtStatus;

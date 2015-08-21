@@ -138,7 +138,7 @@ u8 _InitPowerOn_8723BS(PADAPTER padapter)
 	ret = CardEnable(padapter);
 	if (ret == false) {
 		RT_TRACE(_module_hci_hal_init_c_, _drv_emerg_,
-				("%s: run power on flow fail\n", __FUNCTION__));
+				("%s: run power on flow fail\n", __func__));
 		return _FAIL;
 	}
 
@@ -176,17 +176,17 @@ u8 _InitPowerOn_8723BS(PADAPTER padapter)
 	/*  Switch the control of EESK, EECS to RFC for DPDT or Antenna switch */
 	value16 |= BIT(11); /*  BIT_EEPRPAD_RFE_CTRL_EN */
 	rtw_write16(padapter, REG_PWR_DATA, value16);
-/* 	DBG_8192C("%s: REG_PWR_DATA(0x%x) = 0x%04X\n", __FUNCTION__, REG_PWR_DATA, rtw_read16(padapter, REG_PWR_DATA)); */
+/* 	DBG_8192C("%s: REG_PWR_DATA(0x%x) = 0x%04X\n", __func__, REG_PWR_DATA, rtw_read16(padapter, REG_PWR_DATA)); */
 
 	value32 = rtw_read32(padapter, REG_LEDCFG0);
 	value32 |= BIT(23); /*  DPDT_SEL_EN, 1 for SW control */
 	rtw_write32(padapter, REG_LEDCFG0, value32);
-/* 	DBG_8192C("%s: REG_LEDCFG0(0x%x) = 0x%08X\n", __FUNCTION__, REG_LEDCFG0, rtw_read32(padapter, REG_LEDCFG0)); */
+/* 	DBG_8192C("%s: REG_LEDCFG0(0x%x) = 0x%08X\n", __func__, REG_LEDCFG0, rtw_read32(padapter, REG_LEDCFG0)); */
 
 	value8 = rtw_read8(padapter, REG_PAD_CTRL1_8723B);
 	value8 &= ~BIT(0); /*  BIT_SW_DPDT_SEL_DATA, DPDT_SEL default configuration */
 	rtw_write8(padapter, REG_PAD_CTRL1_8723B, value8);
-/* 	DBG_8192C("%s: REG_PAD_CTRL1(0x%x) = 0x%02X\n", __FUNCTION__, REG_PAD_CTRL1_8723B, rtw_read8(padapter, REG_PAD_CTRL1_8723B)); */
+/* 	DBG_8192C("%s: REG_PAD_CTRL1(0x%x) = 0x%02X\n", __func__, REG_PAD_CTRL1_8723B, rtw_read8(padapter, REG_PAD_CTRL1_8723B)); */
 
 #ifdef CONFIG_GPIO_WAKEUP
 	HostWakeUpGpioClear(padapter);
@@ -212,7 +212,7 @@ static void _init_available_page_threshold(PADAPTER padapter, u8 numHQ, u8 numNQ
 	rtw_write16(padapter, 0x218, HQ_threshold);
 	rtw_write16(padapter, 0x21A, NQ_threshold);
 	rtw_write16(padapter, 0x21C, LQ_threshold);
-	DBG_8192C("%s(): Enable Tx FIFO Page Threshold H:0x%x, N:0x%x, L:0x%x\n", __FUNCTION__, HQ_threshold, NQ_threshold, LQ_threshold);
+	DBG_8192C("%s(): Enable Tx FIFO Page Threshold H:0x%x, N:0x%x, L:0x%x\n", __func__, HQ_threshold, NQ_threshold, LQ_threshold);
 }
 
 static void _InitQueueReservedPage(PADAPTER padapter)
@@ -773,7 +773,7 @@ static u32 rtl8723bs_hal_init(PADAPTER padapter)
 		u8 cpwm_orig, cpwm_now;
 		u8 val8, bMacPwrCtrlOn = true;
 
-		DBG_871X("%s: Leaving IPS in FWLPS state\n", __FUNCTION__);
+		DBG_871X("%s: Leaving IPS in FWLPS state\n", __func__);
 
 		/* for polling cpwm */
 		cpwm_orig = 0;
@@ -785,7 +785,7 @@ static u32 rtl8723bs_hal_init(PADAPTER padapter)
 		val8 += 0x80;
 		val8 |= BIT(6);
 		rtw_write8(padapter, SDIO_LOCAL_BASE|SDIO_REG_HRPWM1, val8);
-		DBG_871X("%s: write rpwm =%02x\n", __FUNCTION__, val8);
+		DBG_871X("%s: write rpwm =%02x\n", __func__, val8);
 		adapter_to_pwrctl(padapter)->tog = (val8 + 0x80) & 0x80;
 
 		/* do polling cpwm */
@@ -802,7 +802,7 @@ static u32 rtl8723bs_hal_init(PADAPTER padapter)
 
 			if (jiffies_to_msecs(jiffies - start_time) > 100)
 			{
-				DBG_871X("%s: polling cpwm timeout when leaving IPS in FWLPS state\n", __FUNCTION__);
+				DBG_871X("%s: polling cpwm timeout when leaving IPS in FWLPS state\n", __func__);
 				break;
 			}
 		} while (1);
@@ -853,7 +853,7 @@ static u32 rtl8723bs_hal_init(PADAPTER padapter)
 
 	ret = rtl8723b_FirmwareDownload(padapter, false);
 	if (ret != _SUCCESS) {
-		RT_TRACE(_module_hci_hal_init_c_, _drv_err_, ("%s: Download Firmware failed!!\n", __FUNCTION__));
+		RT_TRACE(_module_hci_hal_init_c_, _drv_err_, ("%s: Download Firmware failed!!\n", __func__));
 		padapter->bFWReady = false;
 		pHalData->fw_ractrl = false;
 		return ret;
@@ -927,7 +927,7 @@ static u32 rtl8723bs_hal_init(PADAPTER padapter)
 	/*  init LLT after tx buffer boundary is defined */
 	ret = rtl8723b_InitLLTTable(padapter);
 	if (_SUCCESS != ret) {
-		DBG_8192C("%s: Failed to init LLT Table!\n", __FUNCTION__);
+		DBG_8192C("%s: Failed to init LLT Table!\n", __func__);
 		return _FAIL;
 	}
 	/*  */
@@ -1058,7 +1058,7 @@ static u32 rtl8723bs_hal_init(PADAPTER padapter)
 	/*  Init BT hw config. */
 	rtw_btcoex_HAL_Initialize(padapter, false);
 
-	RT_TRACE(_module_hci_hal_init_c_, _drv_info_, ("-%s\n", __FUNCTION__));
+	RT_TRACE(_module_hci_hal_init_c_, _drv_info_, ("-%s\n", __func__));
 
 	return _SUCCESS;
 }
@@ -1129,14 +1129,14 @@ static u32 rtl8723bs_hal_deinit(PADAPTER padapter)
 				int cnt = 0;
 				u8 val8 = 0;
 
-				DBG_871X("%s: issue H2C to FW when entering IPS\n", __FUNCTION__);
+				DBG_871X("%s: issue H2C to FW when entering IPS\n", __func__);
 
 				rtl8723b_set_FwPwrModeInIPS_cmd(padapter, 0x3);
 				/* poll 0x1cc to make sure H2C command already finished by FW; MAC_0x1cc = 0 means H2C done by FW. */
 				do{
 					val8 = rtw_read8(padapter, REG_HMETFR);
 					cnt++;
-					DBG_871X("%s  polling REG_HMETFR = 0x%x, cnt =%d \n", __FUNCTION__, val8, cnt);
+					DBG_871X("%s  polling REG_HMETFR = 0x%x, cnt =%d \n", __func__, val8, cnt);
 					mdelay(10);
 				}while (cnt<100 && (val8!= 0));
 				/* H2C done, enter 32k */
@@ -1147,13 +1147,13 @@ static u32 rtl8723bs_hal_deinit(PADAPTER padapter)
 					val8 += 0x80;
 					val8 |= BIT(0);
 					rtw_write8(padapter, SDIO_LOCAL_BASE|SDIO_REG_HRPWM1, val8);
-					DBG_871X("%s: write rpwm =%02x\n", __FUNCTION__, val8);
+					DBG_871X("%s: write rpwm =%02x\n", __func__, val8);
 					adapter_to_pwrctl(padapter)->tog = (val8 + 0x80) & 0x80;
 					cnt = val8 = 0;
 					do{
 						val8 = rtw_read8(padapter, REG_CR);
 						cnt++;
-						DBG_871X("%s  polling 0x100 = 0x%x, cnt =%d \n", __FUNCTION__, val8, cnt);
+						DBG_871X("%s  polling 0x100 = 0x%x, cnt =%d \n", __func__, val8, cnt);
 						mdelay(10);
 					}while (cnt<100 && (val8!= 0xEA));
 				}
@@ -1405,7 +1405,7 @@ static void _ReadPROMContent(
 
 	RT_TRACE(_module_hci_hal_init_c_, _drv_info_,
 		 ("%s: 9346CR = 0x%02X, Boot from %s, Autoload %s\n",
-		  __FUNCTION__, eeValue,
+		  __func__, eeValue,
 		  (pEEPROM->EepromOrEfuse ? "EEPROM" : "EFUSE"),
 		  (pEEPROM->bautoload_fail_flag ? "Fail" : "OK")));
 

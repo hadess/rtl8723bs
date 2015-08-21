@@ -95,7 +95,7 @@ _pkt *rtw_os_alloc_msdu_pkt(union recv_frame *prframe, u16 nSubframe_Length, u8 
 		}
 		else
 		{
-			DBG_871X("%s(): rtw_skb_clone() Fail!!!\n", __FUNCTION__);
+			DBG_871X("%s(): rtw_skb_clone() Fail!!!\n", __func__);
 			return NULL;
 		}
 	}

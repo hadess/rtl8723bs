@@ -107,7 +107,7 @@ query_free_page:
 	if ((padapter->bSurpriseRemoved == true)
 		|| (padapter->bDriverStopped == true)){
 		RT_TRACE(_module_hal_xmit_c_, _drv_notice_,
-			 ("%s: bSurpriseRemoved(wirte port)\n", __FUNCTION__));
+			 ("%s: bSurpriseRemoved(wirte port)\n", __func__));
 		goto free_xmitbuf;
 	}
 
@@ -152,7 +152,7 @@ s32 rtl8723bs_xmit_buf_handler(PADAPTER padapter)
 	pxmitpriv = &padapter->xmitpriv;
 
 	if (down_interruptible(&pxmitpriv->xmit_sema)) {
-		DBG_871X_LEVEL(_drv_emerg_, "%s: down SdioXmitBufSema fail!\n", __FUNCTION__);
+		DBG_871X_LEVEL(_drv_emerg_, "%s: down SdioXmitBufSema fail!\n", __func__);
 		return _FAIL;
 	}
 
@@ -160,7 +160,7 @@ s32 rtl8723bs_xmit_buf_handler(PADAPTER padapter)
 	if (ret) {
 		RT_TRACE(_module_hal_xmit_c_, _drv_err_,
 				 ("%s: bDriverStopped(%d) bSurpriseRemoved(%d)!\n",
-				  __FUNCTION__, padapter->bDriverStopped, padapter->bSurpriseRemoved));
+				  __func__, padapter->bDriverStopped, padapter->bSurpriseRemoved));
 		return _FAIL;
 	}
 
@@ -294,7 +294,7 @@ static s32 xmit_xmitframes(PADAPTER padapter, struct xmit_priv *pxmitpriv)
 					pxmitbuf = rtw_alloc_xmitbuf(pxmitpriv);
 					if (pxmitbuf == NULL) {
 #ifdef DBG_XMIT_BUF
-						DBG_871X_LEVEL(_drv_err_, "%s: xmit_buf is not enough!\n", __FUNCTION__);
+						DBG_871X_LEVEL(_drv_err_, "%s: xmit_buf is not enough!\n", __func__);
 #endif
 						err = -2;
 						up(&(pxmitpriv->xmit_sema));
@@ -328,7 +328,7 @@ static s32 xmit_xmitframes(PADAPTER padapter, struct xmit_priv *pxmitpriv)
 
 				ret = rtw_xmitframe_coalesce(padapter, pxmitframe->pkt, pxmitframe);
 				if (ret == _FAIL) {
-					DBG_871X_LEVEL(_drv_err_, "%s: coalesce FAIL!", __FUNCTION__);
+					DBG_871X_LEVEL(_drv_err_, "%s: coalesce FAIL!", __func__);
 					/*  Todo: error handler */
 				} else {
 					k++;
@@ -401,7 +401,7 @@ static s32 rtl8723bs_xmit_handler(PADAPTER padapter)
 	pxmitpriv = &padapter->xmitpriv;
 
 	if (down_interruptible(&pxmitpriv->SdioXmitSema)) {
-		DBG_871X_LEVEL(_drv_emerg_, "%s: down sema fail!\n", __FUNCTION__);
+		DBG_871X_LEVEL(_drv_emerg_, "%s: down sema fail!\n", __func__);
 		return _FAIL;
 	}
 
@@ -410,7 +410,7 @@ next:
 		(padapter->bSurpriseRemoved == true)) {
 		RT_TRACE(_module_hal_xmit_c_, _drv_notice_,
 				 ("%s: bDriverStopped(%d) bSurpriseRemoved(%d)\n",
-				  __FUNCTION__, padapter->bDriverStopped, padapter->bSurpriseRemoved));
+				  __func__, padapter->bDriverStopped, padapter->bSurpriseRemoved));
 		return _FAIL;
 	}
 
@@ -474,7 +474,7 @@ int rtl8723bs_xmit_thread(void * context)
 
 	up(&pxmitpriv->SdioXmitTerminateSema);
 
-	RT_TRACE(_module_hal_xmit_c_, _drv_notice_, ("-%s\n", __FUNCTION__));
+	RT_TRACE(_module_hal_xmit_c_, _drv_notice_, ("-%s\n", __func__));
 
 	thread_exit();
 }
@@ -489,7 +489,7 @@ s32 rtl8723bs_mgnt_xmit(PADAPTER padapter, struct xmit_frame *pmgntframe)
 	u8 *pframe = (u8 *)(pmgntframe->buf_addr) + TXDESC_OFFSET;
 	u8 txdesc_size = TXDESC_SIZE;
 
-	RT_TRACE(_module_hal_xmit_c_, _drv_info_, ("+%s\n", __FUNCTION__));
+	RT_TRACE(_module_hal_xmit_c_, _drv_info_, ("+%s\n", __func__));
 
 	pattrib = &pmgntframe->attrib;
 	pxmitbuf = pmgntframe->pxmitbuf;

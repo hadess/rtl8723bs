@@ -548,7 +548,7 @@ u8 rtw_set_802_11_disassociate(_adapter *padapter)
 		/* modify for CONFIG_IEEE80211W, none 11w can use it */
 		rtw_free_assoc_resources_cmd(padapter);
 		if (_FAIL == rtw_pwr_wakeup(padapter))
-			DBG_871X("%s(): rtw_pwr_wakeup fail !!!\n", __FUNCTION__);
+			DBG_871X("%s(): rtw_pwr_wakeup fail !!!\n", __func__);
 	}
 
 	spin_unlock_bh(&pmlmepriv->lock);

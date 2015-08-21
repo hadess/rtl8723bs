@@ -496,7 +496,7 @@ void set_channel_bwmode(_adapter *padapter, unsigned char channel, unsigned char
 
 	if (padapter->bNotifyChannelChange)
 	{
-		DBG_871X("[%s] ch = %d, offset = %d, bwmode = %d\n", __FUNCTION__, channel, channel_offset, bwmode);
+		DBG_871X("[%s] ch = %d, offset = %d, bwmode = %d\n", __func__, channel, channel_offset, bwmode);
 	}
 
 	center_ch = rtw_get_center_ch(channel, bwmode, channel_offset);
@@ -1324,7 +1324,7 @@ void HTOnAssocRsp(_adapter *padapter)
 	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 
-	DBG_871X("%s\n", __FUNCTION__);
+	DBG_871X("%s\n", __func__);
 
 	if ((pmlmeinfo->HT_info_enable) && (pmlmeinfo->HT_caps_enable))
 	{
@@ -2124,7 +2124,7 @@ void process_addba_req(_adapter *padapter, u8 *paddba_req, u8 *addr)
 		#ifdef CONFIG_UPDATE_INDICATE_SEQ_WHILE_PROCESS_ADDBA_REQ
 		preorder_ctrl->indicate_seq = start_seq;
 		#ifdef DBG_RX_SEQ
-		DBG_871X("DBG_RX_SEQ %s:%d IndicateSeq: %d, start_seq: %d\n", __FUNCTION__, __LINE__,
+		DBG_871X("DBG_RX_SEQ %s:%d IndicateSeq: %d, start_seq: %d\n", __func__, __LINE__,
 			preorder_ctrl->indicate_seq, start_seq);
 		#endif
 		#else
@@ -2294,7 +2294,7 @@ void rtw_alloc_macid(_adapter *padapter, struct sta_info *psta)
 	else
 	{
 		psta->mac_id = i;
-		DBG_871X("%s = %d\n", __FUNCTION__, psta->mac_id);
+		DBG_871X("%s = %d\n", __func__, psta->mac_id);
 	}
 
 }
@@ -2318,7 +2318,7 @@ void rtw_release_macid(_adapter *padapter, struct sta_info *psta)
 	{
 		if (pdvobj->macid[psta->mac_id] == true)
 		{
-			DBG_871X("%s = %d\n", __FUNCTION__, psta->mac_id);
+			DBG_871X("%s = %d\n", __func__, psta->mac_id);
 			pdvobj->macid[psta->mac_id]  = false;
 			psta->mac_id = NUM_STA;
 		}
@@ -2388,7 +2388,7 @@ int rtw_get_gpio(struct net_device *netdev, int gpio_num)
 		value =  (rtw_read8(adapter, REG_GPIO_PIN_CTRL)& BIT(gpio_num)) >> gpio_num;
 
 	rtw_ps_deny_cancel(adapter, PS_DENY_IOCTL);
-	DBG_871X("%s direction =%d value =%d\n", __FUNCTION__, direction, value);
+	DBG_871X("%s direction =%d value =%d\n", __func__, direction, value);
 
 	return value;
 }
@@ -2403,7 +2403,7 @@ int  rtw_set_gpio_output_value(struct net_device *netdev, int gpio_num, bool isH
 	/* Check GPIO is 4~7 */
 	if (gpio_num > 7 || gpio_num < 4)
 	{
-		DBG_871X("%s The gpio number does not included 4~7.\n", __FUNCTION__);
+		DBG_871X("%s The gpio number does not included 4~7.\n", __func__);
 		return -1;
 	}
 
@@ -2422,12 +2422,12 @@ int  rtw_set_gpio_output_value(struct net_device *netdev, int gpio_num, bool isH
 		else
 			rtw_write8(adapter, REG_GPIO_PIN_CTRL + 1, rtw_read8(adapter, REG_GPIO_PIN_CTRL + 1) & ~BIT(gpio_num));
 
-		DBG_871X("%s Set gpio %x[%d]=%d\n", __FUNCTION__, REG_GPIO_PIN_CTRL+1, gpio_num, isHigh);
+		DBG_871X("%s Set gpio %x[%d]=%d\n", __func__, REG_GPIO_PIN_CTRL+1, gpio_num, isHigh);
 		res = 0;
 	}
 	else
 	{
-		DBG_871X("%s The gpio is input, not be set!\n", __FUNCTION__);
+		DBG_871X("%s The gpio is input, not be set!\n", __func__);
 		res = -1;
 	}
 
@@ -2442,11 +2442,11 @@ int rtw_config_gpio(struct net_device *netdev, int gpio_num, bool isOutput)
 
 	if (gpio_num > 7 || gpio_num < 4)
 	{
-		DBG_871X("%s The gpio number does not included 4~7.\n", __FUNCTION__);
+		DBG_871X("%s The gpio number does not included 4~7.\n", __func__);
 		return -1;
 	}
 
-	DBG_871X("%s gpio_num =%d direction =%d\n", __FUNCTION__, gpio_num, isOutput);
+	DBG_871X("%s gpio_num =%d direction =%d\n", __func__, gpio_num, isOutput);
 
 	rtw_ps_deny(adapter, PS_DENY_IOCTL);
 

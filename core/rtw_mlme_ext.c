@@ -472,13 +472,13 @@ static u8 init_channel_set(_adapter * padapter, u8 ChannelPlan, RT_CHANNEL_INFO 
 					channel_set[chanset_size].ScanType = SCAN_PASSIVE;
 				else
 					channel_set[chanset_size].ScanType = SCAN_ACTIVE;
-				DBG_871X("%s(): channel_set[%d].ChannelNum = %d\n", __FUNCTION__, chanset_size, channel_set[chanset_size].ChannelNum);
+				DBG_871X("%s(): channel_set[%d].ChannelNum = %d\n", __func__, chanset_size, channel_set[chanset_size].ChannelNum);
 				chanset_size++;
 			}
 		}
 	}
 
-	DBG_871X("%s ChannelPlan ID %x Chan num:%d  \n", __FUNCTION__, ChannelPlan, chanset_size);
+	DBG_871X("%s ChannelPlan ID %x Chan num:%d  \n", __func__, ChannelPlan, chanset_size);
 	return chanset_size;
 }
 
@@ -688,13 +688,13 @@ unsigned int OnProbeReq(_adapter *padapter, union recv_frame *precv_frame)
 
 		if (memcmp(p+6, get_sa(pframe), ETH_ALEN))
 		{
-			DBG_871X("%s, do rc pairing ("MAC_FMT"), but mac addr mismatch!("MAC_FMT")\n", __FUNCTION__,
+			DBG_871X("%s, do rc pairing ("MAC_FMT"), but mac addr mismatch!("MAC_FMT")\n", __func__,
 				MAC_ARG(get_sa(pframe)), MAC_ARG(p+6));
 
 			goto _non_rc_device;
 		}
 
-		DBG_871X("%s, got the pairing device("MAC_FMT")\n", __FUNCTION__,  MAC_ARG(get_sa(pframe)));
+		DBG_871X("%s, got the pairing device("MAC_FMT")\n", __func__,  MAC_ARG(get_sa(pframe)));
 
 		/* new a station */
 		psta = rtw_get_stainfo(pstapriv, get_sa(pframe));
@@ -1194,7 +1194,7 @@ unsigned int OnAuthClient(_adapter *padapter, union recv_frame *precv_frame)
 	u8 *pframe = precv_frame->u.hdr.rx_data;
 	uint pkt_len = precv_frame->u.hdr.len;
 
-	DBG_871X("%s\n", __FUNCTION__);
+	DBG_871X("%s\n", __func__);
 
 	/* check A1 matches or not */
 	if (memcmp(myid(&(padapter->eeprompriv)), get_da(pframe), ETH_ALEN))
@@ -1344,7 +1344,7 @@ unsigned int OnAssocReq(_adapter *padapter, union recv_frame *precv_frame)
 	pos = pframe + (IEEE80211_3ADDR_LEN + ie_offset);
 
 
-	DBG_871X("%s\n", __FUNCTION__);
+	DBG_871X("%s\n", __func__);
 
 	/*  check if this stat has been successfully authenticated/assocated */
 	if (!((pstat->state) & WIFI_FW_AUTH_SUCCESS))
@@ -1815,7 +1815,7 @@ unsigned int OnAssocRsp(_adapter *padapter, union recv_frame *precv_frame)
 	u8 *pframe = precv_frame->u.hdr.rx_data;
 	uint pkt_len = precv_frame->u.hdr.len;
 
-	DBG_871X("%s\n", __FUNCTION__);
+	DBG_871X("%s\n", __func__);
 
 	/* check A1 matches or not */
 	if (memcmp(myid(&(padapter->eeprompriv)), get_da(pframe), ETH_ALEN))
@@ -1913,7 +1913,7 @@ unsigned int OnDeAuth(_adapter *padapter, union recv_frame *precv_frame)
 
 	reason = le16_to_cpu(*(__le16 *)(pframe + WLAN_HDR_A3_LEN));
 
-	DBG_871X("%s Reason code(%d)\n", __FUNCTION__, reason);
+	DBG_871X("%s Reason code(%d)\n", __func__, reason);
 
 	if (check_fwstate(pmlmepriv, WIFI_AP_STATE) == true)
 	{
@@ -1996,7 +1996,7 @@ unsigned int OnDisassoc(_adapter *padapter, union recv_frame *precv_frame)
 
 	reason = le16_to_cpu(*(__le16 *)(pframe + WLAN_HDR_A3_LEN));
 
-        DBG_871X("%s Reason code(%d)\n", __FUNCTION__, reason);
+        DBG_871X("%s Reason code(%d)\n", __func__, reason);
 
 	if (check_fwstate(pmlmepriv, WIFI_AP_STATE) == true)
 	{
@@ -2044,7 +2044,7 @@ unsigned int OnDisassoc(_adapter *padapter, union recv_frame *precv_frame)
 
 unsigned int OnAtim(_adapter *padapter, union recv_frame *precv_frame)
 {
-	DBG_871X("%s\n", __FUNCTION__);
+	DBG_871X("%s\n", __func__);
 	return _SUCCESS;
 }
 
@@ -2098,7 +2098,7 @@ unsigned int OnAction_back(_adapter *padapter, union recv_frame *precv_frame)
 	u8 *pframe = precv_frame->u.hdr.rx_data;
 	struct sta_priv *pstapriv = &padapter->stapriv;
 
-	DBG_871X("%s\n", __FUNCTION__);
+	DBG_871X("%s\n", __func__);
 
 	/* check RA matches or not */
 	if (memcmp(myid(&(padapter->eeprompriv)), GetAddr1Ptr(pframe), ETH_ALEN))/* for if1, sta/ap mode */
@@ -2125,7 +2125,7 @@ unsigned int OnAction_back(_adapter *padapter, union recv_frame *precv_frame)
 		}
 
 		action = frame_body[1];
-		DBG_871X("%s, action =%d\n", __FUNCTION__, action);
+		DBG_871X("%s, action =%d\n", __func__, action);
 		switch (action)
 		{
 			case RTW_WLAN_ACTION_ADDBA_REQ: /* ADDBA request */
@@ -2188,12 +2188,12 @@ unsigned int OnAction_back(_adapter *padapter, union recv_frame *precv_frame)
 					preorder_ctrl->enable = false;
 					preorder_ctrl->indicate_seq = 0xffff;
 					#ifdef DBG_RX_SEQ
-					DBG_871X("DBG_RX_SEQ %s:%d indicate_seq:%u \n", __FUNCTION__, __LINE__,
+					DBG_871X("DBG_RX_SEQ %s:%d indicate_seq:%u \n", __func__, __LINE__,
 						preorder_ctrl->indicate_seq);
 					#endif
 				}
 
-				DBG_871X("%s(): DELBA: %x(%x)\n", __FUNCTION__, pmlmeinfo->agg_enable_bitmap, reason_code);
+				DBG_871X("%s(): DELBA: %x(%x)\n", __func__, pmlmeinfo->agg_enable_bitmap, reason_code);
 				/* todo: how to notify the host while receiving DELETE BA */
 				break;
 
@@ -2465,7 +2465,7 @@ void update_mgnt_tx_rate(_adapter *padapter, u8 rate)
 	struct mlme_ext_priv	*pmlmeext = &(padapter->mlmeextpriv);
 
 	pmlmeext->tx_rate = rate;
-	/* DBG_871X("%s(): rate = %x\n", __FUNCTION__, rate); */
+	/* DBG_871X("%s(): rate = %x\n", __func__, rate); */
 }
 
 void update_mgntframe_attrib(_adapter *padapter, struct pkt_attrib *pattrib)
@@ -2600,7 +2600,7 @@ static int update_hidden_ssid(u8 *ies, u32 ies_len, u8 hidden_ssid_mode)
 
 	ssid_ie = rtw_get_ie(ies,  WLAN_EID_SSID, &ssid_len_ori, ies_len);
 
-	/* DBG_871X("%s hidden_ssid_mode:%u, ssid_ie:%p, ssid_len_ori:%d\n", __FUNCTION__, hidden_ssid_mode, ssid_ie, ssid_len_ori); */
+	/* DBG_871X("%s hidden_ssid_mode:%u, ssid_ie:%p, ssid_len_ori:%d\n", __func__, hidden_ssid_mode, ssid_ie, ssid_len_ori); */
 
 	if (ssid_ie && ssid_len_ori>0)
 	{
@@ -2645,11 +2645,11 @@ void issue_beacon(_adapter *padapter, int timeout_ms)
 	WLAN_BSSID_EX		*cur_network = &(pmlmeinfo->network);
 	u8	bc_addr[] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
 
-	/* DBG_871X("%s\n", __FUNCTION__); */
+	/* DBG_871X("%s\n", __func__); */
 
 	if ((pmgntframe = alloc_mgtxmitframe(pxmitpriv)) == NULL)
 	{
-		DBG_871X("%s, alloc mgnt frame fail\n", __FUNCTION__);
+		DBG_871X("%s, alloc mgnt frame fail\n", __func__);
 		return;
 	}
 
@@ -2807,14 +2807,14 @@ void issue_probersp(_adapter *padapter, unsigned char *da, u8 is_valid_p2p_probe
 	WLAN_BSSID_EX		*cur_network = &(pmlmeinfo->network);
 	unsigned int	rate_len;
 
-	/* DBG_871X("%s\n", __FUNCTION__); */
+	/* DBG_871X("%s\n", __func__); */
 
 	if (da == NULL)
 		return;
 
 	if ((pmgntframe = alloc_mgtxmitframe(pxmitpriv)) == NULL)
 	{
-		DBG_871X("%s, alloc mgnt frame fail\n", __FUNCTION__);
+		DBG_871X("%s, alloc mgnt frame fail\n", __func__);
 		return;
 	}
 
@@ -2987,7 +2987,7 @@ void issue_probersp(_adapter *padapter, unsigned char *da, u8 is_valid_p2p_probe
 	struct sta_info	*psta;
 	struct sta_priv *pstapriv = &padapter->stapriv;
 
-	DBG_871X("(%s)\n", __FUNCTION__);
+	DBG_871X("(%s)\n", __func__);
 
 	/* check rc station */
 	psta = rtw_get_stainfo(pstapriv, da);
@@ -2998,7 +2998,7 @@ void issue_probersp(_adapter *padapter, unsigned char *da, u8 is_valid_p2p_probe
 		/* EID[1] + EID_LEN[1] + RC_OUI[4] + MAC[6] + PairingID[2] + ChannelNum[2] */
 		u16 cu_ch = (u16)cur_network->Configuration.DSConfig;
 
-		DBG_871X("%s, reply rc(pid = 0x%x) device "MAC_FMT" in ch =%d\n", __FUNCTION__,
+		DBG_871X("%s, reply rc(pid = 0x%x) device "MAC_FMT" in ch =%d\n", __func__,
 			psta->pid, MAC_ARG(psta->hwaddr), cu_ch);
 
 		/* append vendor specific ie */
@@ -3260,7 +3260,7 @@ void issue_auth(_adapter *padapter, struct sta_info *psta, unsigned short status
 			use_shared_key = 1;
 		}
 		le_tmp = cpu_to_le16(val16);
-		/* DBG_871X("%s auth_algo = %s auth_seq =%d\n", __FUNCTION__, (pmlmeinfo->auth_algo == 0)?"OPEN":"SHARED", pmlmeinfo->auth_seq); */
+		/* DBG_871X("%s auth_algo = %s auth_seq =%d\n", __func__, (pmlmeinfo->auth_algo == 0)?"OPEN":"SHARED", pmlmeinfo->auth_seq); */
 
 		/* setting IV for auth seq #3 */
 		if ((pmlmeinfo->auth_seq == 3) && (pmlmeinfo->state & WIFI_FW_AUTH_STATE) && (use_shared_key == 1))
@@ -3308,7 +3308,7 @@ void issue_auth(_adapter *padapter, struct sta_info *psta, unsigned short status
 	pattrib->last_txcmdsz = pattrib->pktlen;
 
 	rtw_wep_encrypt(padapter, (u8 *)pmgntframe);
-	DBG_871X("%s\n", __FUNCTION__);
+	DBG_871X("%s\n", __func__);
 	dump_mgntframe(padapter, pmgntframe);
 
 	return;
@@ -3331,7 +3331,7 @@ void issue_asocrsp(_adapter *padapter, unsigned short status, struct sta_info *p
 	u8 *ie = pnetwork->IEs;
 	__le16 lestatus, le_tmp;
 
-	DBG_871X("%s\n", __FUNCTION__);
+	DBG_871X("%s\n", __func__);
 
 	if ((pmgntframe = alloc_mgtxmitframe(pxmitpriv)) == NULL)
 	{
@@ -3561,7 +3561,7 @@ void issue_assocreq(_adapter *padapter)
 
 		if (j == sta_bssrate_len) {
 			/*  the rate is not supported by STA */
-			DBG_871X("%s(): the rate[%d]=%02X is not supported by STA!\n", __FUNCTION__, i, pmlmeinfo->network.SupportedRates[i]);
+			DBG_871X("%s(): the rate[%d]=%02X is not supported by STA!\n", __func__, i, pmlmeinfo->network.SupportedRates[i]);
 		} else {
 			/*  the rate is supported by STA */
 			bssrate[index++] = pmlmeinfo->network.SupportedRates[i];
@@ -3672,7 +3672,7 @@ static int _issue_nulldata(_adapter *padapter, unsigned char *da, unsigned int p
 	struct mlme_ext_priv	*pmlmeext;
 	struct mlme_ext_info	*pmlmeinfo;
 
-	/* DBG_871X("%s:%d\n", __FUNCTION__, power_mode); */
+	/* DBG_871X("%s:%d\n", __func__, power_mode); */
 
 	if (!padapter)
 		goto exit;
@@ -3844,7 +3844,7 @@ static int _issue_qos_nulldata(_adapter *padapter, unsigned char *da, u16 tid, i
 	struct mlme_ext_priv	*pmlmeext = &(padapter->mlmeextpriv);
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 
-	DBG_871X("%s\n", __FUNCTION__);
+	DBG_871X("%s\n", __func__);
 
 	if ((pmgntframe = alloc_mgtxmitframe(pxmitpriv)) == NULL)
 	{
@@ -4088,11 +4088,11 @@ void issue_action_SA_Query(_adapter *padapter, unsigned char *raddr, unsigned ch
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 	__le16 le_tmp;
 
-	DBG_871X("%s\n", __FUNCTION__);
+	DBG_871X("%s\n", __func__);
 
 	if ((pmgntframe = alloc_mgtxmitframe(pxmitpriv)) == NULL)
 	{
-		DBG_871X("%s: alloc_mgtxmitframe fail\n", __FUNCTION__);
+		DBG_871X("%s: alloc_mgtxmitframe fail\n", __func__);
 		return;
 	}
 
@@ -4169,7 +4169,7 @@ void issue_action_BA(_adapter *padapter, unsigned char *raddr, unsigned char act
 	struct registry_priv		*pregpriv = &padapter->registrypriv;
 	__le16 le_tmp;
 
-	DBG_871X("%s, category =%d, action =%d, status =%d\n", __FUNCTION__, category, action, status);
+	DBG_871X("%s, category =%d, action =%d, status =%d\n", __func__, category, action, status);
 
 	if ((pmgntframe = alloc_mgtxmitframe(pxmitpriv)) == NULL)
 	{
@@ -4332,7 +4332,7 @@ static void issue_action_BSSCoexistPacket(_adapter *padapter)
 		return;
 
 
-	DBG_871X("%s\n", __FUNCTION__);
+	DBG_871X("%s\n", __func__);
 
 
 	category = RTW_WLAN_CATEGORY_PUBLIC;
@@ -4480,7 +4480,7 @@ unsigned int send_delba(_adapter *padapter, u8 initiator, u8 *addr)
 	if (psta ==NULL)
 		return _SUCCESS;
 
-	/* DBG_871X("%s:%s\n", __FUNCTION__, (initiator == 0)?"RX_DIR":"TX_DIR"); */
+	/* DBG_871X("%s:%s\n", __func__, (initiator == 0)?"RX_DIR":"TX_DIR"); */
 
 	if (initiator == 0) /*  recipient */
 	{
@@ -4493,7 +4493,7 @@ unsigned int send_delba(_adapter *padapter, u8 initiator, u8 *addr)
 				psta->recvreorder_ctrl[tid].enable = false;
 				psta->recvreorder_ctrl[tid].indicate_seq = 0xffff;
 				#ifdef DBG_RX_SEQ
-				DBG_871X("DBG_RX_SEQ %s:%d indicate_seq:%u \n", __FUNCTION__, __LINE__,
+				DBG_871X("DBG_RX_SEQ %s:%d indicate_seq:%u \n", __func__, __LINE__,
 					psta->recvreorder_ctrl[tid].indicate_seq);
 				#endif
 			}
@@ -4547,7 +4547,7 @@ unsigned int send_beacon(_adapter *padapter)
 
 	if (false == bxmitok)
 	{
-		DBG_871X("%s fail! %u ms\n", __FUNCTION__, jiffies_to_msecs(jiffies - start));
+		DBG_871X("%s fail! %u ms\n", __func__, jiffies_to_msecs(jiffies - start));
 		return _FAIL;
 	}
 	else
@@ -4555,9 +4555,9 @@ unsigned int send_beacon(_adapter *padapter)
 		unsigned long passing_time = jiffies_to_msecs(jiffies - start);
 
 		if (passing_time > 100 || issue > 3)
-			DBG_871X("%s success, issue:%d, poll:%d, %lu ms\n", __FUNCTION__, issue, poll, passing_time);
+			DBG_871X("%s success, issue:%d, poll:%d, %lu ms\n", __func__, issue, poll, passing_time);
 		/* else */
-		/* 	DBG_871X("%s success, issue:%d, poll:%d, %u ms\n", __FUNCTION__, issue, poll, passing_time); */
+		/* 	DBG_871X("%s success, issue:%d, poll:%d, %u ms\n", __func__, issue, poll, passing_time); */
 
 		return _SUCCESS;
 	}
@@ -4782,7 +4782,7 @@ u8 collect_bss_info(_adapter *padapter, union recv_frame *precv_frame, WLAN_BSSI
 	{
 		if (len > NDIS_802_11_LENGTH_SSID)
 		{
-			DBG_871X("%s()-%d: IE too long (%d) for survey event\n", __FUNCTION__, __LINE__, len);
+			DBG_871X("%s()-%d: IE too long (%d) for survey event\n", __func__, __LINE__, len);
 			return _FAIL;
 		}
 		memcpy(bssid->Ssid.Ssid, (p + 2), *(p + 1));
@@ -4802,7 +4802,7 @@ u8 collect_bss_info(_adapter *padapter, union recv_frame *precv_frame, WLAN_BSSI
 	{
 		if (len > NDIS_802_11_LENGTH_RATES_EX)
 		{
-			DBG_871X("%s()-%d: IE too long (%d) for survey event\n", __FUNCTION__, __LINE__, len);
+			DBG_871X("%s()-%d: IE too long (%d) for survey event\n", __func__, __LINE__, len);
 			return _FAIL;
 		}
 		memcpy(bssid->SupportedRates, (p + 2), len);
@@ -4814,7 +4814,7 @@ u8 collect_bss_info(_adapter *padapter, union recv_frame *precv_frame, WLAN_BSSI
 	{
 		if (len > (NDIS_802_11_LENGTH_RATES_EX-i))
 		{
-			DBG_871X("%s()-%d: IE too long (%d) for survey event\n", __FUNCTION__, __LINE__, len);
+			DBG_871X("%s()-%d: IE too long (%d) for survey event\n", __func__, __LINE__, len);
 			return _FAIL;
 		}
 		memcpy(bssid->SupportedRates + i, (p + 2), len);
@@ -5091,7 +5091,7 @@ unsigned int receive_disconnect(_adapter *padapter, unsigned char *MacAddr, unsi
 	if (!(!memcmp(MacAddr, get_my_bssid(&pmlmeinfo->network), ETH_ALEN)))
 		return _SUCCESS;
 
-	DBG_871X("%s\n", __FUNCTION__);
+	DBG_871X("%s\n", __func__);
 
 	if ((pmlmeinfo->state&0x03) == WIFI_FW_STATION_STATE)
 	{
@@ -5148,7 +5148,7 @@ static void process_80211d(PADAPTER padapter, WLAN_BSSID_EX *bssid)
 		memcpy(country, p, 3);
 		p += 3;
 		RT_TRACE(_module_rtl871x_mlme_c_, _drv_notice_,
-				("%s: 802.11d country =%s\n", __FUNCTION__, country));
+				("%s: 802.11d country =%s\n", __func__, country));
 
 		i = 0;
 		while ((ie - p) >= 3)
@@ -5169,7 +5169,7 @@ static void process_80211d(PADAPTER padapter, WLAN_BSSID_EX *bssid)
 
 #ifdef CONFIG_DEBUG_RTL871X
 		i = 0;
-		DBG_871X("%s: AP[%s] channel plan {", __FUNCTION__, bssid->Ssid.Ssid);
+		DBG_871X("%s: AP[%s] channel plan {", __func__, bssid->Ssid.Ssid);
 		while ((i < chplan_ap.Len) && (chplan_ap.Channel[i] != 0))
 		{
 			DBG_8192C("%02d,", chplan_ap.Channel[i]);
@@ -5181,7 +5181,7 @@ static void process_80211d(PADAPTER padapter, WLAN_BSSID_EX *bssid)
 		memcpy(chplan_sta, pmlmeext->channel_set, sizeof(chplan_sta));
 #ifdef CONFIG_DEBUG_RTL871X
 		i = 0;
-		DBG_871X("%s: STA channel plan {", __FUNCTION__);
+		DBG_871X("%s: STA channel plan {", __func__);
 		while ((i < MAX_CHANNEL_NUM) && (chplan_sta[i].ChannelNum != 0))
 		{
 			DBG_871X("%02d(%c),", chplan_sta[i].ChannelNum, chplan_sta[i].ScanType ==SCAN_PASSIVE?'p':'a');
@@ -5341,7 +5341,7 @@ static void process_80211d(PADAPTER padapter, WLAN_BSSID_EX *bssid)
 
 #ifdef CONFIG_DEBUG_RTL871X
 		k = 0;
-		DBG_871X("%s: new STA channel plan {", __FUNCTION__);
+		DBG_871X("%s: new STA channel plan {", __func__);
 		while ((k < MAX_CHANNEL_NUM) && (chplan_new[k].ChannelNum != 0))
 		{
 			DBG_871X("%02d(%c),", chplan_new[k].ChannelNum, chplan_new[k].ScanType ==SCAN_PASSIVE?'p':'c');
@@ -5368,7 +5368,7 @@ static void process_80211d(PADAPTER padapter, WLAN_BSSID_EX *bssid)
 				chplan_new[i].ScanType = SCAN_ACTIVE;
 				RT_TRACE(_module_rtl871x_mlme_c_, _drv_notice_,
 						 ("%s: change channel %d scan type from passive to active\n",
-						  __FUNCTION__, channel));
+						  __func__, channel));
 			}
 			break;
 		}
@@ -5918,7 +5918,7 @@ void mlmeext_joinbss_event_callback(_adapter *padapter, int join_res)
 
 exit_mlmeext_joinbss_event_callback:
 
-	DBG_871X("=>%s\n", __FUNCTION__);
+	DBG_871X("=>%s\n", __func__);
 
 }
 
@@ -5929,7 +5929,7 @@ void mlmeext_sta_add_event_callback(_adapter *padapter, struct sta_info *psta)
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 	u8	join_type;
 
-	DBG_871X("%s\n", __FUNCTION__);
+	DBG_871X("%s\n", __func__);
 
 	if ((pmlmeinfo->state&0x03) == WIFI_FW_ADHOC_STATE)
 	{
@@ -6146,7 +6146,7 @@ void linked_status_chk(_adapter *padapter)
 
 				if (tx_chk != _SUCCESS && pmlmeinfo->link_count++ == link_count_limit) {
 					#ifdef DBG_EXPIRATION_CHK
-					DBG_871X("%s issue_nulldata 0\n", __FUNCTION__);
+					DBG_871X("%s issue_nulldata 0\n", __func__);
 					#endif
 					tx_chk = issue_nulldata_in_interrupt(padapter, NULL);
 				}
@@ -6237,7 +6237,7 @@ void survey_timer_hdl(_adapter *padapter)
 		{
 			{
 				pmlmeext->sitesurvey_res.channel_idx = pmlmeext->sitesurvey_res.ch_num;
-				DBG_871X("%s idx:%d\n", __FUNCTION__
+				DBG_871X("%s idx:%d\n", __func__
 					, pmlmeext->sitesurvey_res.channel_idx
 				);
 			}
@@ -6445,7 +6445,7 @@ static int rtw_auto_ap_start_beacon(_adapter *adapter)
 		ie = rtw_set_ie(ie, _EXT_SUPPORTEDRATES_IE_, (rateLen - 8), (supportRate + 8), &sz);
 	}
 
-	DBG_871X("%s, start auto ap beacon sz =%d\n", __FUNCTION__, sz);
+	DBG_871X("%s, start auto ap beacon sz =%d\n", __func__, sz);
 
 	/* lunch ap mode & start to issue beacon */
 	if (rtw_check_beacon_data(adapter, pbuf,  sz) == _SUCCESS)

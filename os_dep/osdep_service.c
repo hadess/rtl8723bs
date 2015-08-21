@@ -182,20 +182,20 @@ static int retriveFromFile(char *path, u8* buf, u32 sz)
 
 	if (path && buf) {
 		if (0 == (ret =openFile(&fp, path, O_RDONLY, 0))){
-			DBG_871X("%s openFile path:%s fp =%p\n", __FUNCTION__, path , fp);
+			DBG_871X("%s openFile path:%s fp =%p\n", __func__, path , fp);
 
 			oldfs = get_fs(); set_fs(get_ds());
 			ret =readFile(fp, buf, sz);
 			set_fs(oldfs);
 			closeFile(fp);
 
-			DBG_871X("%s readFile, ret:%d\n", __FUNCTION__, ret);
+			DBG_871X("%s readFile, ret:%d\n", __func__, ret);
 
 		} else {
-			DBG_871X("%s openFile path:%s Fail, ret:%d\n", __FUNCTION__, path, ret);
+			DBG_871X("%s openFile path:%s Fail, ret:%d\n", __func__, path, ret);
 		}
 	} else {
-		DBG_871X("%s NULL pointer\n", __FUNCTION__);
+		DBG_871X("%s NULL pointer\n", __func__);
 		ret =  -EINVAL;
 	}
 	return ret;
