@@ -15,6 +15,7 @@
 #define _RECV_OSDEP_C_
 
 #include <drv_types.h>
+#include <rtw_debug.h>
 #include <linux/jiffies.h>
 
 void rtw_os_free_recvframe(union recv_frame *precvframe)
@@ -28,7 +29,7 @@ void rtw_os_free_recvframe(union recv_frame *precvframe)
 }
 
 /* alloc os related resource in union recv_frame */
-int rtw_os_recv_resource_alloc(_adapter *padapter, union recv_frame *precvframe)
+int rtw_os_recv_resource_alloc(struct adapter *padapter, union recv_frame *precvframe)
 {
 	int	res = _SUCCESS;
 
@@ -56,7 +57,7 @@ void rtw_os_recv_resource_free(struct recv_priv *precvpriv)
 }
 
 /* free os related resource in struct recv_buf */
-int rtw_os_recvbuf_resource_free(_adapter *padapter, struct recv_buf *precvbuf)
+int rtw_os_recvbuf_resource_free(struct adapter *padapter, struct recv_buf *precvbuf)
 {
 	int ret = _SUCCESS;
 
@@ -122,7 +123,7 @@ _pkt *rtw_os_alloc_msdu_pkt(union recv_frame *prframe, u16 nSubframe_Length, u8 
 	return sub_skb;
 }
 
-void rtw_os_recv_indicate_pkt(_adapter *padapter, _pkt *pkt, struct rx_pkt_attrib *pattrib)
+void rtw_os_recv_indicate_pkt(struct adapter *padapter, _pkt *pkt, struct rx_pkt_attrib *pattrib)
 {
 	struct mlme_priv*pmlmepriv = &padapter->mlmepriv;
 	int ret;
@@ -199,7 +200,7 @@ void rtw_os_recv_indicate_pkt(_adapter *padapter, _pkt *pkt, struct rx_pkt_attri
 	}
 }
 
-void rtw_handle_tkip_mic_err(_adapter *padapter, u8 bgroup)
+void rtw_handle_tkip_mic_err(struct adapter *padapter, u8 bgroup)
 {
 	enum nl80211_key_type key_type = 0;
 	union iwreq_data wrqu;
@@ -258,7 +259,7 @@ void rtw_handle_tkip_mic_err(_adapter *padapter, u8 bgroup)
 }
 
 #ifdef CONFIG_AUTO_AP_MODE
-static void rtw_os_ksocket_send(_adapter *padapter, union recv_frame *precv_frame)
+static void rtw_os_ksocket_send(struct adapter *padapter, union recv_frame *precv_frame)
 {
 	_pkt *skb = precv_frame->u.hdr.pkt;
 	struct rx_pkt_attrib *pattrib = &precv_frame->u.hdr.attrib;
@@ -296,7 +297,7 @@ static void rtw_os_ksocket_send(_adapter *padapter, union recv_frame *precv_fram
 }
 #endif /* CONFIG_AUTO_AP_MODE */
 
-int rtw_recv_indicatepkt(_adapter *padapter, union recv_frame *precv_frame)
+int rtw_recv_indicatepkt(struct adapter *padapter, union recv_frame *precv_frame)
 {
 	struct recv_priv *precvpriv;
 	_queue	*pfree_recv_queue;
@@ -358,7 +359,7 @@ _recv_indicatepkt_drop:
 
 void rtw_init_recv_timer(struct recv_reorder_ctrl *preorder_ctrl)
 {
-	_adapter *padapter = preorder_ctrl->padapter;
+	struct adapter *padapter = preorder_ctrl->padapter;
 
 	_init_timer(&(preorder_ctrl->reordering_ctrl_timer), padapter->pnetdev, rtw_reordering_ctrl_timeout_handler, preorder_ctrl);
 

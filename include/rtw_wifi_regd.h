@@ -19,7 +19,7 @@ enum country_code_type_t {
 	COUNTRY_CODE_MAX
 };
 
-int rtw_regd_init(_adapter *padapter,
+int rtw_regd_init(struct adapter *padapter,
 	void (*reg_notifier)(struct wiphy *wiphy,
 		struct regulatory_request *request));
 void rtw_reg_notifier(struct wiphy *wiphy, struct regulatory_request *request);

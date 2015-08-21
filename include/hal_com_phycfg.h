@@ -81,7 +81,7 @@ typedef struct _BB_REGISTER_DEFINITION{
 /*  */
 u8
 PHY_GetTxPowerByRateBase(
-	IN	PADAPTER		Adapter,
+	IN	struct adapter *		Adapter,
 	IN	u8				Band,
 	IN	u8				RfPath,
 	IN	u8				TxNum,
@@ -90,14 +90,14 @@ PHY_GetTxPowerByRateBase(
 
 u8
 PHY_GetRateSectionIndexOfTxPowerByRate(
-	IN	PADAPTER	pAdapter,
+	IN	struct adapter *	pAdapter,
 	IN	u32			RegAddr,
 	IN	u32			BitMask
 	);
 
 void
 PHY_GetRateValuesOfTxPowerByRate(
-	IN	PADAPTER	pAdapter,
+	IN	struct adapter *	pAdapter,
 	IN	u32			RegAddr,
 	IN	u32			BitMask,
 	IN	u32			Value,
@@ -113,7 +113,7 @@ PHY_GetRateIndexOfTxPowerByRate(
 
 void
 PHY_SetTxPowerIndexByRateSection(
-	IN	PADAPTER		pAdapter,
+	IN	struct adapter *		pAdapter,
 	IN	u8				RFPath,
 	IN	u8				Channel,
 	IN	u8				RateSection
@@ -121,7 +121,7 @@ PHY_SetTxPowerIndexByRateSection(
 
 s8
 PHY_GetTxPowerByRate(
-	IN	PADAPTER	pAdapter,
+	IN	struct adapter *	pAdapter,
 	IN	u8			Band,
 	IN	u8			RFPath,
 	IN	u8			TxNum,
@@ -130,7 +130,7 @@ PHY_GetTxPowerByRate(
 
 void
 PHY_SetTxPowerByRate(
-	IN	PADAPTER	pAdapter,
+	IN	struct adapter *	pAdapter,
 	IN	u8			Band,
 	IN	u8			RFPath,
 	IN	u8			TxNum,
@@ -140,14 +140,14 @@ PHY_SetTxPowerByRate(
 
 void
 PHY_SetTxPowerLevelByPath(
-	IN	PADAPTER	Adapter,
+	IN	struct adapter *	Adapter,
 	IN	u8			channel,
 	IN	u8			path
 	);
 
 void
 PHY_SetTxPowerIndexByRateArray(
-	IN	PADAPTER		pAdapter,
+	IN	struct adapter *		pAdapter,
 	IN	u8				RFPath,
 	IN	CHANNEL_WIDTH	BandWidth,
 	IN	u8				Channel,
@@ -157,12 +157,12 @@ PHY_SetTxPowerIndexByRateArray(
 
 void
 PHY_InitTxPowerByRate(
-	IN	PADAPTER	pAdapter
+	IN	struct adapter *	pAdapter
 	);
 
 void
 PHY_StoreTxPowerByRate(
-	IN	PADAPTER	pAdapter,
+	IN	struct adapter *	pAdapter,
 	IN	u32			Band,
 	IN	u32			RfPath,
 	IN	u32			TxNum,
@@ -173,12 +173,12 @@ PHY_StoreTxPowerByRate(
 
 void
 PHY_TxPowerByRateConfiguration(
-	IN  PADAPTER			pAdapter
+	IN  struct adapter *			pAdapter
 	);
 
 u8
 PHY_GetTxPowerIndexBase(
-	IN	PADAPTER		pAdapter,
+	IN	struct adapter *		pAdapter,
 	IN	u8				RFPath,
 	IN	u8				Rate,
 	IN	CHANNEL_WIDTH	BandWidth,
@@ -188,7 +188,7 @@ PHY_GetTxPowerIndexBase(
 
 s8
 PHY_GetTxPowerLimit(
-	IN	PADAPTER		Adapter,
+	IN	struct adapter *		Adapter,
 	IN	u32				RegPwrTblSel,
 	IN	BAND_TYPE		Band,
 	IN	CHANNEL_WIDTH	Bandwidth,
@@ -199,7 +199,7 @@ PHY_GetTxPowerLimit(
 
 void
 PHY_SetTxPowerLimit(
-	IN	PADAPTER			Adapter,
+	IN	struct adapter *			Adapter,
 	IN	u8					*Regulation,
 	IN	u8					*Band,
 	IN	u8					*Bandwidth,
@@ -211,24 +211,24 @@ PHY_SetTxPowerLimit(
 
 void
 PHY_ConvertTxPowerLimitToPowerIndex(
-	IN	PADAPTER			Adapter
+	IN	struct adapter *			Adapter
 	);
 
 void
 PHY_InitTxPowerLimit(
-	IN	PADAPTER			Adapter
+	IN	struct adapter *			Adapter
 	);
 
 s8
 PHY_GetTxPowerTrackingOffset(
-	PADAPTER	pAdapter,
+	struct adapter *	pAdapter,
 	u8			Rate,
 	u8			RFPath
 	);
 
 u8
 PHY_GetTxPowerIndex(
-	IN	PADAPTER			pAdapter,
+	IN	struct adapter *			pAdapter,
 	IN	u8					RFPath,
 	IN	u8					Rate,
 	IN	CHANNEL_WIDTH		BandWidth,
@@ -237,7 +237,7 @@ PHY_GetTxPowerIndex(
 
 void
 PHY_SetTxPowerIndex(
-	IN	PADAPTER		pAdapter,
+	IN	struct adapter *		pAdapter,
 	IN	u32				PowerIndex,
 	IN	u8				RFPath,
 	IN	u8				Rate
@@ -245,7 +245,7 @@ PHY_SetTxPowerIndex(
 
 void
 Hal_ChannelPlanToRegulation(
-	IN	PADAPTER		Adapter,
+	IN	struct adapter *		Adapter,
 	IN	u16				ChannelPlan
 	);
 
@@ -260,21 +260,21 @@ Hal_ChannelPlanToRegulation(
 #define LOAD_RF_TXPWR_TRACK_PARA_FILE	BIT5
 #define LOAD_RF_TXPWR_LMT_PARA_FILE		BIT6
 
-int phy_ConfigMACWithParaFile(IN PADAPTER	Adapter, IN char*	pFileName);
+int phy_ConfigMACWithParaFile(IN struct adapter *	Adapter, IN char*	pFileName);
 
-int phy_ConfigBBWithParaFile(IN PADAPTER	Adapter, IN char*	pFileName, IN u32	ConfigType);
+int phy_ConfigBBWithParaFile(IN struct adapter *	Adapter, IN char*	pFileName, IN u32	ConfigType);
 
-int phy_ConfigBBWithPgParaFile(IN PADAPTER	Adapter, IN char*	pFileName);
+int phy_ConfigBBWithPgParaFile(IN struct adapter *	Adapter, IN char*	pFileName);
 
-int phy_ConfigBBWithMpParaFile(IN PADAPTER	Adapter, IN char*	pFileName);
+int phy_ConfigBBWithMpParaFile(IN struct adapter *	Adapter, IN char*	pFileName);
 
-int PHY_ConfigRFWithParaFile(IN	PADAPTER	Adapter, IN char*	pFileName, IN u8	eRFPath);
+int PHY_ConfigRFWithParaFile(IN	struct adapter *	Adapter, IN char*	pFileName, IN u8	eRFPath);
 
-int PHY_ConfigRFWithTxPwrTrackParaFile(IN PADAPTER	Adapter, IN char*	pFileName);
+int PHY_ConfigRFWithTxPwrTrackParaFile(IN struct adapter *	Adapter, IN char*	pFileName);
 
-int PHY_ConfigRFWithPowerLimitTableParaFile(IN PADAPTER	Adapter, IN char*	pFileName);
+int PHY_ConfigRFWithPowerLimitTableParaFile(IN struct adapter *	Adapter, IN char*	pFileName);
 
-void phy_free_filebuf(_adapter *padapter);
+void phy_free_filebuf(struct adapter *padapter);
 #endif /* CONFIG_LOAD_PHY_PARA_FROM_FILE */
 
 

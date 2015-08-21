@@ -20,6 +20,7 @@
 #define _RTW_DEBUG_C_
 
 #include <drv_types.h>
+#include <rtw_debug.h>
 
 u32 GlobalDebugLevel = _drv_err_;
 
@@ -70,7 +71,7 @@ void dump_log_level(void *sel)
 	DBG_871X_SEL_NL(sel, "log_level:%d\n", GlobalDebugLevel);
 }
 
-void sd_f0_reg_dump(void *sel, _adapter *adapter)
+void sd_f0_reg_dump(void *sel, struct adapter *adapter)
 {
 	int i;
 
@@ -88,7 +89,7 @@ void sd_f0_reg_dump(void *sel, _adapter *adapter)
 	}
 }
 
-void mac_reg_dump(void *sel, _adapter *adapter)
+void mac_reg_dump(void *sel, struct adapter *adapter)
 {
 	int i, j = 1;
 
@@ -104,7 +105,7 @@ void mac_reg_dump(void *sel, _adapter *adapter)
 	}
 }
 
-void bb_reg_dump(void *sel, _adapter *adapter)
+void bb_reg_dump(void *sel, struct adapter *adapter)
 {
 	int i, j = 1;
 
@@ -119,7 +120,7 @@ void bb_reg_dump(void *sel, _adapter *adapter)
 	}
 }
 
-void rf_reg_dump(void *sel, _adapter *adapter)
+void rf_reg_dump(void *sel, struct adapter *adapter)
 {
 	int i, j = 1, path;
 	u32 value;
@@ -152,7 +153,7 @@ void rf_reg_dump(void *sel, _adapter *adapter)
 ssize_t proc_set_write_reg(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
 {
 	struct net_device *dev = data;
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
+	struct adapter *padapter = (struct adapter *)rtw_netdev_priv(dev);
 	char tmp[32];
 	u32 addr, val, len;
 
@@ -199,7 +200,7 @@ static u32 proc_get_read_len = 0x4;
 int proc_get_read_reg(struct seq_file *m, void *v)
 {
 	struct net_device *dev = m->private;
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
+	struct adapter *padapter = (struct adapter *)rtw_netdev_priv(dev);
 
 	if (proc_get_read_addr == 0xeeeeeeee) {
 		DBG_871X_SEL_NL(m, "address not initialized\n");
@@ -257,7 +258,7 @@ ssize_t proc_set_read_reg(struct file *file, const char __user *buffer, size_t c
 int proc_get_fwstate(struct seq_file *m, void *v)
 {
 	struct net_device *dev = m->private;
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
+	struct adapter *padapter = (struct adapter *)rtw_netdev_priv(dev);
 	struct mlme_priv *pmlmepriv = &(padapter->mlmepriv);
 
 	DBG_871X_SEL_NL(m, "fwstate = 0x%x\n", get_fwstate(pmlmepriv));
@@ -268,7 +269,7 @@ int proc_get_fwstate(struct seq_file *m, void *v)
 int proc_get_sec_info(struct seq_file *m, void *v)
 {
 	struct net_device *dev = m->private;
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
+	struct adapter *padapter = (struct adapter *)rtw_netdev_priv(dev);
 	struct security_priv *sec = &padapter->securitypriv;
 
 	DBG_871X_SEL_NL(m, "auth_alg = 0x%x, enc_alg = 0x%x, auth_type = 0x%x, enc_type = 0x%x\n",
@@ -300,7 +301,7 @@ int proc_get_sec_info(struct seq_file *m, void *v)
 int proc_get_mlmext_state(struct seq_file *m, void *v)
 {
 	struct net_device *dev = m->private;
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
+	struct adapter *padapter = (struct adapter *)rtw_netdev_priv(dev);
 	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 
@@ -312,7 +313,7 @@ int proc_get_mlmext_state(struct seq_file *m, void *v)
 int proc_get_roam_flags(struct seq_file *m, void *v)
 {
 	struct net_device *dev = m->private;
-	_adapter *adapter = (_adapter *)rtw_netdev_priv(dev);
+	struct adapter *adapter = (struct adapter *)rtw_netdev_priv(dev);
 
 	DBG_871X_SEL_NL(m, "0x%02x\n", rtw_roam_flags(adapter));
 
@@ -322,7 +323,7 @@ int proc_get_roam_flags(struct seq_file *m, void *v)
 ssize_t proc_set_roam_flags(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
 {
 	struct net_device *dev = data;
-	_adapter *adapter = (_adapter *)rtw_netdev_priv(dev);
+	struct adapter *adapter = (struct adapter *)rtw_netdev_priv(dev);
 
 	char tmp[32];
 	u8 flags;
@@ -345,7 +346,7 @@ ssize_t proc_set_roam_flags(struct file *file, const char __user *buffer, size_t
 int proc_get_roam_param(struct seq_file *m, void *v)
 {
 	struct net_device *dev = m->private;
-	_adapter *adapter = (_adapter *)rtw_netdev_priv(dev);
+	struct adapter *adapter = (struct adapter *)rtw_netdev_priv(dev);
 	struct mlme_priv *mlme = &adapter->mlmepriv;
 
 	DBG_871X_SEL_NL(m, "%12s %12s %11s\n", "rssi_diff_th", "scanr_exp_ms", "scan_int_ms");
@@ -361,7 +362,7 @@ int proc_get_roam_param(struct seq_file *m, void *v)
 ssize_t proc_set_roam_param(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
 {
 	struct net_device *dev = data;
-	_adapter *adapter = (_adapter *)rtw_netdev_priv(dev);
+	struct adapter *adapter = (struct adapter *)rtw_netdev_priv(dev);
 	struct mlme_priv *mlme = &adapter->mlmepriv;
 
 	char tmp[32];
@@ -391,7 +392,7 @@ ssize_t proc_set_roam_param(struct file *file, const char __user *buffer, size_t
 ssize_t proc_set_roam_tgt_addr(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
 {
 	struct net_device *dev = data;
-	_adapter *adapter = (_adapter *)rtw_netdev_priv(dev);
+	struct adapter *adapter = (struct adapter *)rtw_netdev_priv(dev);
 
 	char tmp[32];
 	u8 addr[ETH_ALEN];
@@ -414,7 +415,7 @@ ssize_t proc_set_roam_tgt_addr(struct file *file, const char __user *buffer, siz
 int proc_get_qos_option(struct seq_file *m, void *v)
 {
 	struct net_device *dev = m->private;
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
+	struct adapter *padapter = (struct adapter *)rtw_netdev_priv(dev);
 	struct mlme_priv *pmlmepriv = &(padapter->mlmepriv);
 
 	DBG_871X_SEL_NL(m, "qos_option =%d\n", pmlmepriv->qospriv.qos_option);
@@ -425,7 +426,7 @@ int proc_get_qos_option(struct seq_file *m, void *v)
 int proc_get_ht_option(struct seq_file *m, void *v)
 {
 	struct net_device *dev = m->private;
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
+	struct adapter *padapter = (struct adapter *)rtw_netdev_priv(dev);
 	struct mlme_priv *pmlmepriv = &(padapter->mlmepriv);
 
 	DBG_871X_SEL_NL(m, "ht_option =%d\n", pmlmepriv->htpriv.ht_option);
@@ -436,7 +437,7 @@ int proc_get_ht_option(struct seq_file *m, void *v)
 int proc_get_rf_info(struct seq_file *m, void *v)
 {
 	struct net_device *dev = m->private;
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
+	struct adapter *padapter = (struct adapter *)rtw_netdev_priv(dev);
 	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
 
 	DBG_871X_SEL_NL(m, "cur_ch =%d, cur_bw =%d, cur_ch_offet =%d\n",
@@ -451,7 +452,7 @@ int proc_get_rf_info(struct seq_file *m, void *v)
 int proc_get_survey_info(struct seq_file *m, void *v)
 {
 	struct net_device *dev = m->private;
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
+	struct adapter *padapter = (struct adapter *)rtw_netdev_priv(dev);
 	struct mlme_priv	*pmlmepriv = &(padapter->mlmepriv);
 	_queue	*queue	= &(pmlmepriv->scanned_queue);
 	struct wlan_network	*pnetwork = NULL;
@@ -511,7 +512,7 @@ int proc_get_ap_info(struct seq_file *m, void *v)
 {
 	struct net_device *dev = m->private;
 	struct sta_info *psta;
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
+	struct adapter *padapter = (struct adapter *)rtw_netdev_priv(dev);
 	struct mlme_priv *pmlmepriv = &(padapter->mlmepriv);
 	struct mlme_ext_priv *pmlmeext = &padapter->mlmeextpriv;
 	struct wlan_network *cur_network = &(pmlmepriv->cur_network);
@@ -555,7 +556,7 @@ int proc_get_ap_info(struct seq_file *m, void *v)
 int proc_get_adapter_state(struct seq_file *m, void *v)
 {
 	struct net_device *dev = m->private;
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
+	struct adapter *padapter = (struct adapter *)rtw_netdev_priv(dev);
 
 	DBG_871X_SEL_NL(m, "name =%s, bSurpriseRemoved =%d, bDriverStopped =%d\n",
 					dev->name, padapter->bSurpriseRemoved, padapter->bDriverStopped);
@@ -567,7 +568,7 @@ int proc_get_trx_info(struct seq_file *m, void *v)
 {
 	struct net_device *dev = m->private;
 	int i;
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
+	struct adapter *padapter = (struct adapter *)rtw_netdev_priv(dev);
 	struct xmit_priv *pxmitpriv = &padapter->xmitpriv;
 	struct recv_priv  *precvpriv = &padapter->recvpriv;
 	struct hw_xmit *phwxmit;
@@ -591,7 +592,7 @@ int proc_get_trx_info(struct seq_file *m, void *v)
 int proc_get_rate_ctl(struct seq_file *m, void *v)
 {
 	struct net_device *dev = m->private;
-	_adapter *adapter = (_adapter *)rtw_netdev_priv(dev);
+	struct adapter *adapter = (struct adapter *)rtw_netdev_priv(dev);
 
 	if (adapter->fix_rate != 0xff) {
 		DBG_871X_SEL_NL(m, "FIX\n");
@@ -606,7 +607,7 @@ int proc_get_rate_ctl(struct seq_file *m, void *v)
 ssize_t proc_set_rate_ctl(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
 {
 	struct net_device *dev = data;
-	_adapter *adapter = (_adapter *)rtw_netdev_priv(dev);
+	struct adapter *adapter = (struct adapter *)rtw_netdev_priv(dev);
 	char tmp[32];
 	u8 fix_rate;
 
@@ -660,7 +661,7 @@ ssize_t proc_set_wait_hiq_empty(struct file *file, const char __user *buffer, si
 int proc_get_suspend_resume_info(struct seq_file *m, void *v)
 {
 	struct net_device *dev = m->private;
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
+	struct adapter *padapter = (struct adapter *)rtw_netdev_priv(dev);
 	struct dvobj_priv *dvobj = padapter->dvobj;
 	struct debug_priv *pdbgpriv = &dvobj->drv_dbg;
 
@@ -700,7 +701,7 @@ int proc_get_suspend_resume_info(struct seq_file *m, void *v)
 int proc_get_rx_logs(struct seq_file *m, void *v)
 {
 	struct net_device *dev = m->private;
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
+	struct adapter *padapter = (struct adapter *)rtw_netdev_priv(dev);
 	struct rx_logs *rx_logs = &padapter->rx_logs;
 
 	DBG_871X_SEL_NL(m,
@@ -798,7 +799,7 @@ int proc_get_rx_logs(struct seq_file *m, void *v)
 int proc_get_tx_logs(struct seq_file *m, void *v)
 {
 	struct net_device *dev = m->private;
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
+	struct adapter *padapter = (struct adapter *)rtw_netdev_priv(dev);
 	struct tx_logs *tx_logs = &padapter->tx_logs;
 
 	DBG_871X_SEL_NL(m,
@@ -914,7 +915,7 @@ int proc_get_tx_logs(struct seq_file *m, void *v)
 int proc_get_int_logs(struct seq_file *m, void *v)
 {
 	struct net_device *dev = m->private;
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
+	struct adapter *padapter = (struct adapter *)rtw_netdev_priv(dev);
 
 	DBG_871X_SEL_NL(m,
 		"all =%d\n"
@@ -961,7 +962,7 @@ int proc_get_int_logs(struct seq_file *m, void *v)
 int proc_get_rx_signal(struct seq_file *m, void *v)
 {
 	struct net_device *dev = m->private;
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
+	struct adapter *padapter = (struct adapter *)rtw_netdev_priv(dev);
 
 	DBG_871X_SEL_NL(m, "rssi:%d\n", padapter->recvpriv.rssi);
 	//DBG_871X_SEL_NL(m, "rxpwdb:%d\n", padapter->recvpriv.rxpwdb);
@@ -979,7 +980,7 @@ int proc_get_rx_signal(struct seq_file *m, void *v)
 int proc_get_hw_status(struct seq_file *m, void *v)
 {
 	struct net_device *dev = m->private;
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
+	struct adapter *padapter = (struct adapter *)rtw_netdev_priv(dev);
 	struct dvobj_priv *dvobj = padapter->dvobj;
 	struct debug_priv *pdbgpriv = &dvobj->drv_dbg;
 
@@ -992,7 +993,7 @@ int proc_get_hw_status(struct seq_file *m, void *v)
 ssize_t proc_set_rx_signal(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
 {
 	struct net_device *dev = data;
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
+	struct adapter *padapter = (struct adapter *)rtw_netdev_priv(dev);
 	char tmp[32];
 	u32 is_signal_dbg, signal_strength;
 
@@ -1027,7 +1028,7 @@ ssize_t proc_set_rx_signal(struct file *file, const char __user *buffer, size_t 
 int proc_get_ht_enable(struct seq_file *m, void *v)
 {
 	struct net_device *dev = m->private;
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
+	struct adapter *padapter = (struct adapter *)rtw_netdev_priv(dev);
 	struct registry_priv	*pregpriv = &padapter->registrypriv;
 
 	if (pregpriv)
@@ -1039,7 +1040,7 @@ int proc_get_ht_enable(struct seq_file *m, void *v)
 ssize_t proc_set_ht_enable(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
 {
 	struct net_device *dev = data;
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
+	struct adapter *padapter = (struct adapter *)rtw_netdev_priv(dev);
 	struct registry_priv	*pregpriv = &padapter->registrypriv;
 	char tmp[32];
 	u32 mode;
@@ -1064,7 +1065,7 @@ ssize_t proc_set_ht_enable(struct file *file, const char __user *buffer, size_t 
 int proc_get_bw_mode(struct seq_file *m, void *v)
 {
 	struct net_device *dev = m->private;
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
+	struct adapter *padapter = (struct adapter *)rtw_netdev_priv(dev);
 	struct registry_priv	*pregpriv = &padapter->registrypriv;
 
 	if (pregpriv)
@@ -1076,7 +1077,7 @@ int proc_get_bw_mode(struct seq_file *m, void *v)
 ssize_t proc_set_bw_mode(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
 {
 	struct net_device *dev = data;
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
+	struct adapter *padapter = (struct adapter *)rtw_netdev_priv(dev);
 	struct registry_priv	*pregpriv = &padapter->registrypriv;
 	char tmp[32];
 	u32 mode;
@@ -1103,7 +1104,7 @@ ssize_t proc_set_bw_mode(struct file *file, const char __user *buffer, size_t co
 int proc_get_ampdu_enable(struct seq_file *m, void *v)
 {
 	struct net_device *dev = m->private;
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
+	struct adapter *padapter = (struct adapter *)rtw_netdev_priv(dev);
 	struct registry_priv	*pregpriv = &padapter->registrypriv;
 
 	if (pregpriv)
@@ -1115,7 +1116,7 @@ int proc_get_ampdu_enable(struct seq_file *m, void *v)
 ssize_t proc_set_ampdu_enable(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
 {
 	struct net_device *dev = data;
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
+	struct adapter *padapter = (struct adapter *)rtw_netdev_priv(dev);
 	struct registry_priv	*pregpriv = &padapter->registrypriv;
 	char tmp[32];
 	u32 mode;
@@ -1142,7 +1143,7 @@ ssize_t proc_set_ampdu_enable(struct file *file, const char __user *buffer, size
 int proc_get_rx_ampdu(struct seq_file *m, void *v)
 {
 	struct net_device *dev = m->private;
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
+	struct adapter *padapter = (struct adapter *)rtw_netdev_priv(dev);
 	struct registry_priv	*pregpriv = &padapter->registrypriv;
 	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
@@ -1158,7 +1159,7 @@ int proc_get_rx_ampdu(struct seq_file *m, void *v)
 ssize_t proc_set_rx_ampdu(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
 {
 	struct net_device *dev = data;
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
+	struct adapter *padapter = (struct adapter *)rtw_netdev_priv(dev);
 	struct registry_priv	*pregpriv = &padapter->registrypriv;
 	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
@@ -1191,7 +1192,7 @@ ssize_t proc_set_rx_ampdu(struct file *file, const char __user *buffer, size_t c
 int proc_get_en_fwps(struct seq_file *m, void *v)
 {
 	struct net_device *dev = m->private;
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
+	struct adapter *padapter = (struct adapter *)rtw_netdev_priv(dev);
 	struct registry_priv	*pregpriv = &padapter->registrypriv;
 
 	if (pregpriv)
@@ -1204,7 +1205,7 @@ int proc_get_en_fwps(struct seq_file *m, void *v)
 ssize_t proc_set_en_fwps(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
 {
 	struct net_device *dev = data;
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
+	struct adapter *padapter = (struct adapter *)rtw_netdev_priv(dev);
 	struct registry_priv	*pregpriv = &padapter->registrypriv;
 	char tmp[32];
 	u32 mode;
@@ -1226,7 +1227,7 @@ ssize_t proc_set_en_fwps(struct file *file, const char __user *buffer, size_t co
 int proc_get_rx_stbc(struct seq_file *m, void *v)
 {
 	struct net_device *dev = m->private;
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
+	struct adapter *padapter = (struct adapter *)rtw_netdev_priv(dev);
 	struct registry_priv	*pregpriv = &padapter->registrypriv;
 
 	if (pregpriv)
@@ -1238,7 +1239,7 @@ int proc_get_rx_stbc(struct seq_file *m, void *v)
 ssize_t proc_set_rx_stbc(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
 {
 	struct net_device *dev = data;
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
+	struct adapter *padapter = (struct adapter *)rtw_netdev_priv(dev);
 	struct registry_priv	*pregpriv = &padapter->registrypriv;
 	char tmp[32];
 	u32 mode;
@@ -1268,7 +1269,7 @@ int proc_get_rssi_disp(struct seq_file *m, void *v)
 ssize_t proc_set_rssi_disp(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
 {
 	struct net_device *dev = data;
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
+	struct adapter *padapter = (struct adapter *)rtw_netdev_priv(dev);
 	char tmp[32];
 	u32 enable = 0;
 
@@ -1300,7 +1301,7 @@ int proc_get_all_sta_info(struct seq_file *m, void *v)
 {
 	struct net_device *dev = m->private;
 	struct sta_info *psta;
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
+	struct adapter *padapter = (struct adapter *)rtw_netdev_priv(dev);
 	struct sta_priv *pstapriv = &padapter->stapriv;
 	int i, j;
 	_list	*plist, *phead;
@@ -1381,9 +1382,9 @@ int proc_get_all_sta_info(struct seq_file *m, void *v)
 int proc_get_btcoex_dbg(struct seq_file *m, void *v)
 {
 	struct net_device *dev = m->private;
-	PADAPTER padapter;
+	struct adapter * padapter;
 	char buf[512] = {0};
-	padapter = (PADAPTER)rtw_netdev_priv(dev);
+	padapter = (struct adapter *)rtw_netdev_priv(dev);
 
 	rtw_btcoex_GetDBG(padapter, buf, 512);
 
@@ -1395,12 +1396,12 @@ int proc_get_btcoex_dbg(struct seq_file *m, void *v)
 ssize_t proc_set_btcoex_dbg(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
 {
 	struct net_device *dev = data;
-	PADAPTER padapter;
+	struct adapter * padapter;
 	u8 tmp[80] = {0};
 	u32 module[2] = {0};
 	u32 num;
 
-	padapter = (PADAPTER)rtw_netdev_priv(dev);
+	padapter = (struct adapter *)rtw_netdev_priv(dev);
 
 //	DBG_871X("+" FUNC_ADPT_FMT "\n", FUNC_ADPT_ARG(padapter));
 
@@ -1459,11 +1460,11 @@ ssize_t proc_set_btcoex_dbg(struct file *file, const char __user *buffer, size_t
 int proc_get_btcoex_info(struct seq_file *m, void *v)
 {
 	struct net_device *dev = m->private;
-	PADAPTER padapter;
+	struct adapter * padapter;
 	const u32 bufsize = 30*100;
 	u8 *pbuf = NULL;
 
-	padapter = (PADAPTER)rtw_netdev_priv(dev);
+	padapter = (struct adapter *)rtw_netdev_priv(dev);
 
 	pbuf = rtw_zmalloc(bufsize);
 	if (NULL == pbuf) {

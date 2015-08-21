@@ -24,6 +24,8 @@
 /*  */
 /*  include files */
 /*  */
+#include <drv_types.h>
+#include <rtw_debug.h>
 #include <rtl8723b_hal.h>
 
 /*  */
@@ -33,14 +35,14 @@
 
 static void
 dm_CheckStatistics(
-	IN	PADAPTER	Adapter
+	IN	struct adapter *	Adapter
 	)
 {
 }
 /*  */
 /*  functions */
 /*  */
-static void Init_ODM_ComInfo_8723b(PADAPTER	Adapter)
+static void Init_ODM_ComInfo_8723b(struct adapter *	Adapter)
 {
 
 	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(Adapter);
@@ -90,7 +92,7 @@ static void Init_ODM_ComInfo_8723b(PADAPTER	Adapter)
 	ODM_CmnInfoUpdate(pDM_Odm, ODM_CMNINFO_ABILITY, pdmpriv->InitODMFlag);
 }
 
-static void Update_ODM_ComInfo_8723b(PADAPTER	Adapter)
+static void Update_ODM_ComInfo_8723b(struct adapter *	Adapter)
 {
 	struct mlme_ext_priv	*pmlmeext = &Adapter->mlmeextpriv;
 	struct mlme_priv		*pmlmepriv = &Adapter->mlmepriv;
@@ -149,7 +151,7 @@ static void Update_ODM_ComInfo_8723b(PADAPTER	Adapter)
 
 void
 rtl8723b_InitHalDm(
-	IN	PADAPTER	Adapter
+	IN	struct adapter *	Adapter
 	)
 {
 	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(Adapter);
@@ -172,7 +174,7 @@ rtl8723b_InitHalDm(
 
 void
 rtl8723b_HalDmWatchDog(
-	IN	PADAPTER	Adapter
+	IN	struct adapter *	Adapter
 	)
 {
 	bool		bFwCurrentInPSMode = false;
@@ -227,7 +229,7 @@ skip_dm:
 	return;
 }
 
-void rtl8723b_hal_dm_in_lps(PADAPTER padapter)
+void rtl8723b_hal_dm_in_lps(struct adapter * padapter)
 {
 	u32	PWDB_rssi = 0;
 	struct mlme_priv	*pmlmepriv = &padapter->mlmepriv;
@@ -253,7 +255,7 @@ void rtl8723b_hal_dm_in_lps(PADAPTER padapter)
 
 }
 
-void rtl8723b_HalDmWatchDog_in_LPS(IN	PADAPTER	Adapter)
+void rtl8723b_HalDmWatchDog_in_LPS(IN	struct adapter *	Adapter)
 {
 	u8	bLinked =false;
 	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(Adapter);
@@ -314,7 +316,7 @@ skip_lps_dm:
 
 }
 
-void rtl8723b_init_dm_priv(IN PADAPTER Adapter)
+void rtl8723b_init_dm_priv(IN struct adapter * Adapter)
 {
 	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(Adapter);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;

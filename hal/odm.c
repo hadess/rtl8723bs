@@ -727,7 +727,7 @@ ODM_CmnInfoHook(
 			break;
 
 		case	ODM_CMNINFO_BUDDY_ADAPTOR:
-			pDM_Odm->pBuddyAdapter = (PADAPTER *)pValue;
+			pDM_Odm->pBuddyAdapter = (struct adapter * *)pValue;
 			break;
 
 		case	ODM_CMNINFO_DMSP_IS_MASTER:
@@ -1264,7 +1264,7 @@ odm_RefreshRateAdaptiveMaskCE(
 	)
 {
 	u1Byte	i;
-	PADAPTER	pAdapter	 =  pDM_Odm->Adapter;
+	struct adapter *	pAdapter	 =  pDM_Odm->Adapter;
 
 	if (pAdapter->bDriverStopped)
 	{
@@ -1395,7 +1395,7 @@ odm_RSSIMonitorCheck(
 
 static void
 FindMinimumRSSI(
-IN	PADAPTER	pAdapter
+IN	struct adapter *	pAdapter
 	)
 {
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
@@ -1424,7 +1424,7 @@ odm_RSSIMonitorCheckCE(
 	IN		PDM_ODM_T		pDM_Odm
 	)
 {
-	PADAPTER	Adapter = pDM_Odm->Adapter;
+	struct adapter *	Adapter = pDM_Odm->Adapter;
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
 	int	i;
@@ -1521,7 +1521,7 @@ getSwingIndex(
 	IN	PDM_ODM_T	pDM_Odm
 	)
 {
-	PADAPTER		Adapter = pDM_Odm->Adapter;
+	struct adapter *		Adapter = pDM_Odm->Adapter;
 	u1Byte			i = 0;
 	u4Byte			bbSwing;
 	u4Byte			swingTableSize;
@@ -1550,7 +1550,7 @@ odm_TXPowerTrackingThermalMeterInit(
 {
 	u1Byte defaultSwingIndex = getSwingIndex(pDM_Odm);
 	u1Byte			p = 0;
-	PADAPTER			Adapter = pDM_Odm->Adapter;
+	struct adapter *			Adapter = pDM_Odm->Adapter;
 	HAL_DATA_TYPE		*pHalData = GET_HAL_DATA(Adapter);
 
 
@@ -1605,7 +1605,7 @@ odm_TXPowerTrackingCheckCE(
 	IN		PDM_ODM_T		pDM_Odm
 	)
 {
-	PADAPTER	Adapter = pDM_Odm->Adapter;
+	struct adapter *	Adapter = pDM_Odm->Adapter;
 
 	if (!(pDM_Odm->SupportAbility & ODM_RF_TX_PWR_TRACK))
 	{

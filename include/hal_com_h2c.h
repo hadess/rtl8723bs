@@ -287,7 +287,7 @@ typedef struct _RSVDPAGE_LOC {
 
 #endif
 #if defined(CONFIG_WOWLAN) || defined(CONFIG_AP_WOWLAN)
-void rtw_get_current_ip_address(PADAPTER padapter, u8 *pcurrentip);
-void rtw_get_sec_iv(PADAPTER padapter, u8*pcur_dot11txpn, u8 *StaAddr);
-void rtw_set_sec_pn(_adapter *padapter);
+void rtw_get_current_ip_address(struct adapter * padapter, u8 *pcurrentip);
+void rtw_get_sec_iv(struct adapter * padapter, u8*pcur_dot11txpn, u8 *StaAddr);
+void rtw_set_sec_pn(struct adapter *padapter);
 #endif

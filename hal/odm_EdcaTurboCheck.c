@@ -40,7 +40,7 @@ static u4Byte edca_setting_DL[HT_IOT_PEER_MAX] = {
 void ODM_EdcaTurboInit(void *pDM_VOID)
 {
 	PDM_ODM_T	pDM_Odm = (PDM_ODM_T)pDM_VOID;
-	PADAPTER	Adapter = pDM_Odm->Adapter;
+	struct adapter *	Adapter = pDM_Odm->Adapter;
 
 	pDM_Odm->DM_EDCA_Table.bCurrentTurboEDCA = false;
 	pDM_Odm->DM_EDCA_Table.bIsCurRDLState = false;
@@ -82,7 +82,7 @@ void odm_EdcaTurboCheck(void *pDM_VOID)
 void odm_EdcaTurboCheckCE(void *pDM_VOID)
 {
 	PDM_ODM_T		pDM_Odm = (PDM_ODM_T)pDM_VOID;
-	PADAPTER	       Adapter = pDM_Odm->Adapter;
+	struct adapter *	       Adapter = pDM_Odm->Adapter;
 	struct dvobj_priv	*pdvobjpriv = adapter_to_dvobj(Adapter);
 	struct recv_priv	*precvpriv = &(Adapter->recvpriv);
 	struct registry_priv	*pregpriv = &Adapter->registrypriv;

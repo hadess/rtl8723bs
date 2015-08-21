@@ -39,9 +39,6 @@ enum _NIC_VERSION {
 
 };
 
-typedef struct _ADAPTER _adapter, ADAPTER,*PADAPTER;
-
-#include <rtw_debug.h>
 #include <rtw_rf.h>
 
 #include <rtw_ht.h>
@@ -232,20 +229,18 @@ struct registry_priv
 #define BSSID_OFT(field) ((u32)FIELD_OFFSET(WLAN_BSSID_EX, field))
 #define BSSID_SZ(field)   sizeof(((PWLAN_BSSID_EX) 0)->field)
 
-
-
 #include <drv_types_sdio.h>
 #define INTF_DATA SDIO_DATA
 
 #define is_primary_adapter(adapter) (1)
 #define get_iface_type(adapter) (IFACE_PORT0)
-#define GET_PRIMARY_ADAPTER(padapter) (((_adapter *)padapter)->dvobj->if1)
-#define GET_IFACE_NUMS(padapter) (((_adapter *)padapter)->dvobj->iface_nums)
-#define GET_ADAPTER(padapter, iface_id) (((_adapter *)padapter)->dvobj->padapters[iface_id])
+#define GET_PRIMARY_ADAPTER(padapter) (((struct adapter *)padapter)->dvobj->if1)
+#define GET_IFACE_NUMS(padapter) (((struct adapter *)padapter)->dvobj->iface_nums)
+#define GET_ADAPTER(padapter, iface_id) (((struct adapter *)padapter)->dvobj->padapters[iface_id])
 
 enum _IFACE_ID {
-	IFACE_ID0, /* maping to PRIMARY_ADAPTER */
-	IFACE_ID1, /* maping to SECONDARY_ADAPTER */
+	IFACE_ID0, /* mapping to PRIMARY ADAPTER */
+	IFACE_ID1, /* mapping to SECONDARY ADAPTER */
 	IFACE_ID2,
 	IFACE_ID3,
 	IFACE_ID_MAX,
@@ -452,8 +447,8 @@ struct cam_entry_cache {
 struct dvobj_priv
 {
 	/*-------- below is common data --------*/
-	_adapter *if1; /* PRIMARY_ADAPTER */
-	_adapter *if2; /* SECONDARY_ADAPTER */
+	struct adapter *if1; /* PRIMARY_ADAPTER */
+	struct adapter *if2; /* SECONDARY_ADAPTER */
 
 	s32	processing_dev_remove;
 
@@ -477,7 +472,7 @@ struct dvobj_priv
 	/* extend to support mulitu interface */
 	/* padapters[IFACE_ID0] == if1 */
 	/* padapters[IFACE_ID1] == if2 */
-	_adapter *padapters[IFACE_ID_MAX];
+	struct adapter *padapters[IFACE_ID_MAX];
 	u8 iface_nums; /*  total number of ifaces used runtime */
 
 	struct cam_ctl_t cam_ctl;
@@ -520,7 +515,7 @@ __inline static struct device *dvobj_to_dev(struct dvobj_priv *dvobj)
 	return &dvobj->intf_data.func->dev;
 }
 
-_adapter *dvobj_get_port0_adapter(struct dvobj_priv *dvobj);
+struct adapter *dvobj_get_port0_adapter(struct dvobj_priv *dvobj);
 
 enum _IFACE_TYPE {
 	IFACE_PORT0, /* mapping to port0 for C/D series chips */
@@ -528,7 +523,7 @@ enum _IFACE_TYPE {
 	MAX_IFACE_PORT,
 };
 
-enum _ADAPTER_TYPE {
+enum ADAPTER_TYPE {
 	PRIMARY_ADAPTER,
 	SECONDARY_ADAPTER,
 	MAX_ADAPTER = 0xFF,
@@ -540,7 +535,7 @@ typedef enum _DRIVER_STATE{
 	DRIVER_REPLACE_DONGLE = 2,
 }DRIVER_STATE;
 
-struct _ADAPTER{
+struct adapter {
 	int	DriverState;/*  for disable driver using module, use dongle to replace module. */
 	int	pid[3];/* process id from UI, 0:wps, 1:hostapd, 2:dhcpcd */
 	int	bDongle;/* build-in module or external dongle */
@@ -592,8 +587,8 @@ struct _ADAPTER{
 	void (*intf_free_irq)(struct dvobj_priv *dvobj);
 
 
-	void (*intf_start)(_adapter * adapter);
-	void (*intf_stop)(_adapter * adapter);
+	void (*intf_start)(struct adapter * adapter);
+	void (*intf_stop)(struct adapter * adapter);
 
 	_nic_hdl pnetdev;
 	char old_ifname[IFNAMSIZ];
@@ -627,13 +622,13 @@ struct _ADAPTER{
 	/* 	The driver will show up the desired channel number when this flag is 1. */
 	u8 bNotifyChannelChange;
 
-	/* pbuddy_adapter is used only in  two inteface case, (iface_nums =2 in struct dvobj_priv) */
-	/* PRIMARY_ADAPTER's buddy is SECONDARY_ADAPTER */
+	/* pbuddystruct adapter is used only in  two inteface case, (iface_nums =2 in struct dvobj_priv) */
+	/* PRIMARY ADAPTER's buddy is SECONDARY_ADAPTER */
 	/* SECONDARY_ADAPTER's buddy is PRIMARY_ADAPTER */
 	/* for iface_id > SECONDARY_ADAPTER(IFACE_ID1), refer to padapters[iface_id]  in struct dvobj_priv */
-	/* and their pbuddy_adapter is PRIMARY_ADAPTER. */
+	/* and their pbuddystruct adapter is PRIMARY_ADAPTER. */
 	/* for PRIMARY_ADAPTER(IFACE_ID0) can directly refer to if1 in struct dvobj_priv */
-	_adapter *pbuddy_adapter;
+	struct adapter *pbuddy_adapter;
 
 	/* extend to support multi interface */
        /* IFACE_ID0 is equals to PRIMARY_ADAPTER */
@@ -669,14 +664,14 @@ struct _ADAPTER{
 
 /* define RTW_DISABLE_FUNC(padapter, func) (atomic_add(&adapter_to_dvobj(padapter)->disable_func, (func))) */
 /* define RTW_ENABLE_FUNC(padapter, func) (atomic_sub(&adapter_to_dvobj(padapter)->disable_func, (func))) */
-__inline static void RTW_DISABLE_FUNC(_adapter *padapter, int func_bit)
+__inline static void RTW_DISABLE_FUNC(struct adapter *padapter, int func_bit)
 {
 	int	df = atomic_read(&adapter_to_dvobj(padapter)->disable_func);
 	df |= func_bit;
 	atomic_set(&adapter_to_dvobj(padapter)->disable_func, df);
 }
 
-__inline static void RTW_ENABLE_FUNC(_adapter *padapter, int func_bit)
+__inline static void RTW_ENABLE_FUNC(struct adapter *padapter, int func_bit)
 {
 	int	df = atomic_read(&adapter_to_dvobj(padapter)->disable_func);
 	df &= ~(func_bit);
@@ -706,8 +701,8 @@ int rtw_config_gpio(struct net_device *netdev, int gpio_num, bool isOutput);
 #endif
 
 #ifdef CONFIG_WOWLAN
-int rtw_suspend_wow(_adapter *padapter);
-int rtw_resume_process_wow(_adapter *padapter);
+int rtw_suspend_wow(struct adapter *padapter);
+int rtw_resume_process_wow(struct adapter *padapter);
 #endif
 
 __inline static u8 *myid(struct eeprom_priv *peepriv)
@@ -722,11 +717,11 @@ __inline static u8 *myid(struct eeprom_priv *peepriv)
 
 #include <rtw_btcoex.h>
 
-void rtw_indicate_wx_disassoc_event(_adapter *padapter);
-void rtw_indicate_wx_assoc_event(_adapter *padapter);
-void rtw_indicate_wx_disassoc_event(_adapter *padapter);
-void indicate_wx_scan_complete_event(_adapter *padapter);
-int rtw_change_ifname(_adapter *padapter, const char *ifname);
+void rtw_indicate_wx_disassoc_event(struct adapter *padapter);
+void rtw_indicate_wx_assoc_event(struct adapter *padapter);
+void rtw_indicate_wx_disassoc_event(struct adapter *padapter);
+void indicate_wx_scan_complete_event(struct adapter *padapter);
+int rtw_change_ifname(struct adapter *padapter, const char *ifname);
 
 extern char *rtw_phy_file_path;
 extern char *rtw_initmac;

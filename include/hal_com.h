@@ -199,14 +199,14 @@ typedef enum _FIRMWARE_SOURCE {
 #define PageNum(_Len, _Size)		(u32)(((_Len)/(_Size)) + ((_Len)&((_Size) - 1) ? 1:0))
 
 
-u8 rtw_hal_data_init(_adapter *padapter);
-void rtw_hal_data_deinit(_adapter *padapter);
+u8 rtw_hal_data_init(struct adapter *padapter);
+void rtw_hal_data_deinit(struct adapter *padapter);
 
 void dump_chip_info(HAL_VERSION	ChipVersion);
 
 u8	/* return the final channel plan decision */
 hal_com_config_channel_plan(
-	IN	PADAPTER	padapter,
+	IN	struct adapter *	padapter,
 	IN	u8			hw_channel_plan,	/* channel plan from HW (efuse/eeprom) */
 	IN	u8			sw_channel_plan,	/* channel plan from SW (registry/module param) */
 	IN	u8			def_channel_plan,	/* channel plan used when the former two is invalid */
@@ -215,7 +215,7 @@ hal_com_config_channel_plan(
 
 bool
 HAL_IsLegalChannel(
-	IN	PADAPTER	Adapter,
+	IN	struct adapter *	Adapter,
 	IN	u32			Channel
 	);
 
@@ -224,35 +224,35 @@ u8	MRateToHwRate(u8 rate);
 u8	HwRateToMRate(u8 rate);
 
 void	HalSetBrateCfg(
-	IN PADAPTER		Adapter,
+	IN struct adapter *		Adapter,
 	IN u8			*mBratesOS,
 	OUT u16			*pBrateCfg);
 
 bool
 Hal_MappingOutPipe(
-	IN	PADAPTER	pAdapter,
+	IN	struct adapter *	pAdapter,
 	IN	u8		NumOutPipe
 	);
 
-void hal_init_macaddr(_adapter *adapter);
+void hal_init_macaddr(struct adapter *adapter);
 
-void rtw_init_hal_com_default_value(PADAPTER Adapter);
+void rtw_init_hal_com_default_value(struct adapter * Adapter);
 
-void c2h_evt_clear(_adapter *adapter);
-s32 c2h_evt_read_88xx(_adapter *adapter, u8 *buf);
+void c2h_evt_clear(struct adapter *adapter);
+s32 c2h_evt_read_88xx(struct adapter *adapter, u8 *buf);
 
-u8  rtw_hal_networktype_to_raid(_adapter *adapter, struct sta_info *psta);
-u8 rtw_get_mgntframe_raid(_adapter *adapter, unsigned char network_type);
-void rtw_hal_update_sta_rate_mask(PADAPTER padapter, struct sta_info *psta);
+u8  rtw_hal_networktype_to_raid(struct adapter *adapter, struct sta_info *psta);
+u8 rtw_get_mgntframe_raid(struct adapter *adapter, unsigned char network_type);
+void rtw_hal_update_sta_rate_mask(struct adapter * padapter, struct sta_info *psta);
 
-void hw_var_port_switch (_adapter *adapter);
+void hw_var_port_switch (struct adapter *adapter);
 
-void SetHwReg(PADAPTER padapter, u8 variable, u8 *val);
-void GetHwReg(PADAPTER padapter, u8 variable, u8 *val);
-void rtw_hal_check_rxfifo_full(_adapter *adapter);
+void SetHwReg(struct adapter * padapter, u8 variable, u8 *val);
+void GetHwReg(struct adapter * padapter, u8 variable, u8 *val);
+void rtw_hal_check_rxfifo_full(struct adapter *adapter);
 
-u8 SetHalDefVar(_adapter *adapter, HAL_DEF_VARIABLE variable, void *value);
-u8 GetHalDefVar(_adapter *adapter, HAL_DEF_VARIABLE variable, void *value);
+u8 SetHalDefVar(struct adapter *adapter, HAL_DEF_VARIABLE variable, void *value);
+u8 GetHalDefVar(struct adapter *adapter, HAL_DEF_VARIABLE variable, void *value);
 
 bool
 eqNByte(
@@ -312,24 +312,24 @@ isAllSpaceOrTab(
 	u8	size
 	);
 
-void linked_info_dump(_adapter *padapter, u8 benable);
+void linked_info_dump(struct adapter *padapter, u8 benable);
 #ifdef DBG_RX_SIGNAL_DISPLAY_RAW_DATA
-void rtw_get_raw_rssi_info(void *sel, _adapter *padapter);
-void rtw_store_phy_info(_adapter *padapter, union recv_frame *prframe);
-void rtw_dump_raw_rssi_info(_adapter *padapter);
+void rtw_get_raw_rssi_info(void *sel, struct adapter *padapter);
+void rtw_store_phy_info(struct adapter *padapter, union recv_frame *prframe);
+void rtw_dump_raw_rssi_info(struct adapter *padapter);
 #endif
 
 #define		HWSET_MAX_SIZE			512
 
-void rtw_bb_rf_gain_offset(_adapter *padapter);
+void rtw_bb_rf_gain_offset(struct adapter *padapter);
 
 void GetHalODMVar(
-	PADAPTER				Adapter,
+	struct adapter *				Adapter,
 	HAL_ODM_VARIABLE		eVariable,
 	void *					pValue1,
 	void *					pValue2);
 void SetHalODMVar(
-	PADAPTER				Adapter,
+	struct adapter *				Adapter,
 	HAL_ODM_VARIABLE		eVariable,
 	void *					pValue1,
 	bool					bSet);

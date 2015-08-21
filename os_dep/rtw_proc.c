@@ -14,6 +14,7 @@
  ******************************************************************************/
 
 #include <drv_types.h>
+#include <rtw_debug.h>
 #include "rtw_proc.h"
 
 #ifdef CONFIG_PROC_DEBUG
@@ -171,7 +172,7 @@ void rtw_drv_proc_deinit(void)
 static int proc_get_sd_f0_reg_dump(struct seq_file *m, void *v)
 {
 	struct net_device *dev = m->private;
-	_adapter *adapter = (_adapter *)rtw_netdev_priv(dev);
+	struct adapter *adapter = (struct adapter *)rtw_netdev_priv(dev);
 
 	sd_f0_reg_dump(m, adapter);
 
@@ -181,7 +182,7 @@ static int proc_get_sd_f0_reg_dump(struct seq_file *m, void *v)
 static int proc_get_mac_reg_dump(struct seq_file *m, void *v)
 {
 	struct net_device *dev = m->private;
-	_adapter *adapter = (_adapter *)rtw_netdev_priv(dev);
+	struct adapter *adapter = (struct adapter *)rtw_netdev_priv(dev);
 
 	mac_reg_dump(m, adapter);
 
@@ -191,7 +192,7 @@ static int proc_get_mac_reg_dump(struct seq_file *m, void *v)
 static int proc_get_bb_reg_dump(struct seq_file *m, void *v)
 {
 	struct net_device *dev = m->private;
-	_adapter *adapter = (_adapter *)rtw_netdev_priv(dev);
+	struct adapter *adapter = (struct adapter *)rtw_netdev_priv(dev);
 
 	bb_reg_dump(m, adapter);
 
@@ -201,7 +202,7 @@ static int proc_get_bb_reg_dump(struct seq_file *m, void *v)
 static int proc_get_rf_reg_dump(struct seq_file *m, void *v)
 {
 	struct net_device *dev = m->private;
-	_adapter *adapter = (_adapter *)rtw_netdev_priv(dev);
+	struct adapter *adapter = (struct adapter *)rtw_netdev_priv(dev);
 
 	rf_reg_dump(m, adapter);
 
@@ -210,7 +211,7 @@ static int proc_get_rf_reg_dump(struct seq_file *m, void *v)
 static int proc_get_linked_info_dump(struct seq_file *m, void *v)
 {
 	struct net_device *dev = m->private;
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
+	struct adapter *padapter = (struct adapter *)rtw_netdev_priv(dev);
 
 	if (padapter)
 		DBG_871X_SEL_NL(m, "linked_info_dump :%s \n", (padapter->bLinkInfoDump)?"enable":"disable");
@@ -221,7 +222,7 @@ static int proc_get_linked_info_dump(struct seq_file *m, void *v)
 static ssize_t proc_set_linked_info_dump(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
 {
 	struct net_device *dev = data;
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
+	struct adapter *padapter = (struct adapter *)rtw_netdev_priv(dev);
 
 	char tmp[2];
 	int mode = 0;
@@ -246,7 +247,7 @@ static ssize_t proc_set_linked_info_dump(struct file *file, const char __user *b
 static int proc_get_rx_info(struct seq_file *m, void *v)
 {
 	struct net_device *dev = m->private;
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
+	struct adapter *padapter = (struct adapter *)rtw_netdev_priv(dev);
 	struct dvobj_priv *psdpriv = padapter->dvobj;
 	struct debug_priv *pdbgpriv = &psdpriv->drv_dbg;
 
@@ -265,7 +266,7 @@ static int proc_get_rx_info(struct seq_file *m, void *v)
 static ssize_t proc_reset_rx_info(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
 {
 	struct net_device *dev = data;
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
+	struct adapter *padapter = (struct adapter *)rtw_netdev_priv(dev);
 	struct dvobj_priv *psdpriv = padapter->dvobj;
 	struct debug_priv *pdbgpriv = &psdpriv->drv_dbg;
 	char cmd[32];
@@ -290,13 +291,13 @@ static int proc_get_cam(struct seq_file *m, void *v)
 static ssize_t proc_set_cam(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
 {
 	struct net_device *dev = data;
-	_adapter *adapter;
+	struct adapter *adapter;
 
 	char tmp[32];
 	char cmd[4];
 	u8 id;
 
-	adapter = (_adapter *)rtw_netdev_priv(dev);
+	adapter = (struct adapter *)rtw_netdev_priv(dev);
 	if (!adapter)
 		return -EFAULT;
 
@@ -324,7 +325,7 @@ static ssize_t proc_set_cam(struct file *file, const char __user *buffer, size_t
 static int proc_get_cam_cache(struct seq_file *m, void *v)
 {
 	struct net_device *dev = m->private;
-	_adapter *adapter = (_adapter *)rtw_netdev_priv(dev);
+	struct adapter *adapter = (struct adapter *)rtw_netdev_priv(dev);
 	struct dvobj_priv *dvobj = adapter_to_dvobj(adapter);
 	u8 i;
 
@@ -454,7 +455,7 @@ static const struct file_operations rtw_adapter_proc_fops = {
 int proc_get_odm_dbg_comp(struct seq_file *m, void *v)
 {
 	struct net_device *dev = m->private;
-	_adapter *adapter = (_adapter *)rtw_netdev_priv(dev);
+	struct adapter *adapter = (struct adapter *)rtw_netdev_priv(dev);
 
 	rtw_odm_dbg_comp_msg(m, adapter);
 
@@ -464,7 +465,7 @@ int proc_get_odm_dbg_comp(struct seq_file *m, void *v)
 ssize_t proc_set_odm_dbg_comp(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
 {
 	struct net_device *dev = data;
-	_adapter *adapter = (_adapter *)rtw_netdev_priv(dev);
+	struct adapter *adapter = (struct adapter *)rtw_netdev_priv(dev);
 	char tmp[32];
 
 	u64 dbg_comp;
@@ -488,7 +489,7 @@ ssize_t proc_set_odm_dbg_comp(struct file *file, const char __user *buffer, size
 int proc_get_odm_dbg_level(struct seq_file *m, void *v)
 {
 	struct net_device *dev = m->private;
-	_adapter *adapter = (_adapter *)rtw_netdev_priv(dev);
+	struct adapter *adapter = (struct adapter *)rtw_netdev_priv(dev);
 
 	rtw_odm_dbg_level_msg(m, adapter);
 
@@ -498,7 +499,7 @@ int proc_get_odm_dbg_level(struct seq_file *m, void *v)
 ssize_t proc_set_odm_dbg_level(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
 {
 	struct net_device *dev = data;
-	_adapter *adapter = (_adapter *)rtw_netdev_priv(dev);
+	struct adapter *adapter = (struct adapter *)rtw_netdev_priv(dev);
 	char tmp[32];
 
 	u32 dbg_level;
@@ -522,7 +523,7 @@ ssize_t proc_set_odm_dbg_level(struct file *file, const char __user *buffer, siz
 static int proc_get_odm_ability(struct seq_file *m, void *v)
 {
 	struct net_device *dev = m->private;
-	_adapter *adapter = (_adapter *)rtw_netdev_priv(dev);
+	struct adapter *adapter = (struct adapter *)rtw_netdev_priv(dev);
 
 	rtw_odm_ability_msg(m, adapter);
 
@@ -532,7 +533,7 @@ static int proc_get_odm_ability(struct seq_file *m, void *v)
 static ssize_t proc_set_odm_ability(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
 {
 	struct net_device *dev = data;
-	_adapter *adapter = (_adapter *)rtw_netdev_priv(dev);
+	struct adapter *adapter = (struct adapter *)rtw_netdev_priv(dev);
 	char tmp[32];
 
 	u32 ability;
@@ -556,7 +557,7 @@ static ssize_t proc_set_odm_ability(struct file *file, const char __user *buffer
 int proc_get_odm_adaptivity(struct seq_file *m, void *v)
 {
 	struct net_device *dev = m->private;
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
+	struct adapter *padapter = (struct adapter *)rtw_netdev_priv(dev);
 
 	rtw_odm_adaptivity_parm_msg(m, padapter);
 
@@ -566,7 +567,7 @@ int proc_get_odm_adaptivity(struct seq_file *m, void *v)
 ssize_t proc_set_odm_adaptivity(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
 {
 	struct net_device *dev = data;
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
+	struct adapter *padapter = (struct adapter *)rtw_netdev_priv(dev);
 	char tmp[32];
 	u32 TH_L2H_ini;
 	s8 TH_EDCCA_HL_diff;
@@ -638,7 +639,7 @@ static struct proc_dir_entry *rtw_odm_proc_init(struct net_device *dev)
 {
 	struct proc_dir_entry *dir_odm = NULL;
 	struct proc_dir_entry *entry = NULL;
-	_adapter	*adapter = rtw_netdev_priv(dev);
+	struct adapter	*adapter = rtw_netdev_priv(dev);
 	ssize_t i;
 
 	if (adapter->dir_dev == NULL) {
@@ -671,7 +672,7 @@ exit:
 	return dir_odm;
 }
 
-static void rtw_odm_proc_deinit(_adapter	*adapter)
+static void rtw_odm_proc_deinit(struct adapter	*adapter)
 {
 	struct proc_dir_entry *dir_odm = NULL;
 	int i;
@@ -696,7 +697,7 @@ struct proc_dir_entry *rtw_adapter_proc_init(struct net_device *dev)
 	struct proc_dir_entry *drv_proc = rtw_proc;
 	struct proc_dir_entry *dir_dev = NULL;
 	struct proc_dir_entry *entry = NULL;
-	_adapter *adapter = rtw_netdev_priv(dev);
+	struct adapter *adapter = rtw_netdev_priv(dev);
 	ssize_t i;
 
 	if (drv_proc == NULL) {
@@ -735,7 +736,7 @@ void rtw_adapter_proc_deinit(struct net_device *dev)
 {
 	struct proc_dir_entry *drv_proc = rtw_proc;
 	struct proc_dir_entry *dir_dev = NULL;
-	_adapter *adapter = rtw_netdev_priv(dev);
+	struct adapter *adapter = rtw_netdev_priv(dev);
 	int i;
 
 	dir_dev = adapter->dir_dev;
@@ -759,7 +760,7 @@ void rtw_adapter_proc_replace(struct net_device *dev)
 {
 	struct proc_dir_entry *drv_proc = rtw_proc;
 	struct proc_dir_entry *dir_dev = NULL;
-	_adapter *adapter = rtw_netdev_priv(dev);
+	struct adapter *adapter = rtw_netdev_priv(dev);
 	int i;
 
 	dir_dev = adapter->dir_dev;

@@ -47,7 +47,7 @@ ODM_TxPwrTrackSetPwr_8723B(
 
 void
 PHY_IQCalibrate_8723B(
-	IN PADAPTER	Adapter,
+	IN struct adapter *	Adapter,
 	IN bool	bReCovery,
 	IN bool	bRestore,
 	IN bool	Is2ant,
@@ -71,12 +71,12 @@ PHY_LCCalibrate_8723B(
 /*  AP calibrate */
 /*  */
 void
-PHY_DigitalPredistortion_8723B(		IN	PADAPTER	pAdapter);
+PHY_DigitalPredistortion_8723B(		IN	struct adapter *	pAdapter);
 
 
 void
 _PHY_SaveADDARegisters_8723B(
-	IN	PADAPTER	pAdapter,
+	IN	struct adapter *	pAdapter,
 	IN	pu4Byte		ADDAReg,
 	IN	pu4Byte		ADDABackup,
 	IN	u4Byte		RegisterNum
@@ -84,7 +84,7 @@ _PHY_SaveADDARegisters_8723B(
 
 void
 _PHY_PathADDAOn_8723B(
-	IN	PADAPTER	pAdapter,
+	IN	struct adapter *	pAdapter,
 	IN	pu4Byte		ADDAReg,
 	IN	bool		isPathAOn,
 	IN	bool		is2T
@@ -92,7 +92,7 @@ _PHY_PathADDAOn_8723B(
 
 void
 _PHY_MACSettingCalibration_8723B(
-	IN	PADAPTER	pAdapter,
+	IN	struct adapter *	pAdapter,
 	IN	pu4Byte		MACReg,
 	IN	pu4Byte		MACBackup
 	);

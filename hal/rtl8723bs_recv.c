@@ -14,10 +14,12 @@
  ******************************************************************************/
 #define _RTL8723BS_RECV_C_
 
+#include <drv_types.h>
+#include <rtw_debug.h>
 #include <rtl8723b_hal.h>
 
 
-static s32 initrecvbuf(struct recv_buf *precvbuf, PADAPTER padapter)
+static s32 initrecvbuf(struct recv_buf *precvbuf, struct adapter * padapter)
 {
 	INIT_LIST_HEAD(&precvbuf->list);
 	spin_lock_init(&precvbuf->recvbuf_lock);
@@ -28,7 +30,7 @@ static s32 initrecvbuf(struct recv_buf *precvbuf, PADAPTER padapter)
 }
 
 static void update_recvframe_attrib(
-	PADAPTER padapter,
+	struct adapter * padapter,
 	union recv_frame *precvframe,
 	struct recv_stat *prxstat)
 {
@@ -91,7 +93,7 @@ static void update_recvframe_phyinfo(
 	union recv_frame	*precvframe,
 	struct phy_stat *pphy_status)
 {
-	PADAPTER			padapter = precvframe->u.hdr.adapter;
+	struct adapter *			padapter = precvframe->u.hdr.adapter;
 	struct rx_pkt_attrib	*pattrib = &precvframe->u.hdr.attrib;
 	HAL_DATA_TYPE		*pHalData = GET_HAL_DATA(padapter);
 	PODM_PHY_INFO_T		pPHYInfo = (PODM_PHY_INFO_T)(&pattrib->phy_info);
@@ -159,7 +161,7 @@ static void update_recvframe_phyinfo(
 	}
 }
 
-static void rtl8723bs_c2h_packet_handler(PADAPTER padapter, u8 *pbuf, u16 length)
+static void rtl8723bs_c2h_packet_handler(struct adapter * padapter, u8 *pbuf, u16 length)
 {
 	u8 *tmpBuf =NULL;
 	u8 res = false;
@@ -187,7 +189,7 @@ static void rtl8723bs_c2h_packet_handler(PADAPTER padapter, u8 *pbuf, u16 length
 
 static void rtl8723bs_recv_tasklet(void *priv)
 {
-	PADAPTER			padapter;
+	struct adapter *			padapter;
 	PHAL_DATA_TYPE		pHalData;
 	struct recv_priv		*precvpriv;
 	struct recv_buf		*precvbuf;
@@ -199,7 +201,7 @@ static void rtl8723bs_recv_tasklet(void *priv)
 	u8		shift_sz = 0, rx_report_sz = 0;
 
 
-	padapter = (PADAPTER)priv;
+	padapter = (struct adapter *)priv;
 	pHalData = GET_HAL_DATA(padapter);
 	precvpriv = &padapter->recvpriv;
 
@@ -393,7 +395,7 @@ static void rtl8723bs_recv_tasklet(void *priv)
  * 2. recv tasklet
  *
  */
-s32 rtl8723bs_init_recv_priv(PADAPTER padapter)
+s32 rtl8723bs_init_recv_priv(struct adapter * padapter)
 {
 	s32			res;
 	u32			i, n;
@@ -492,7 +494,7 @@ exit:
  * 2. recv tasklet
  *
  */
-void rtl8723bs_free_recv_priv(PADAPTER padapter)
+void rtl8723bs_free_recv_priv(struct adapter * padapter)
 {
 	u32			i, n;
 	struct recv_priv	*precvpriv;

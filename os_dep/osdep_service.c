@@ -17,6 +17,7 @@
 #define _OSDEP_SERVICE_C_
 
 #include <drv_types.h>
+#include <rtw_debug.h>
 
 /*
 * Translate the OS dependent @param error_code to OS independent RTW_STATUS_CODE
@@ -72,7 +73,7 @@ inline int _rtw_netif_rx(_nic_hdl ndev, struct sk_buff *skb)
 
 void rtw_init_timer(_timer *ptimer, void *padapter, void *pfunc)
 {
-	_adapter *adapter = (_adapter *)padapter;
+	struct adapter *adapter = (struct adapter *)padapter;
 
 	_init_timer(ptimer, adapter->pnetdev, pfunc, adapter);
 }
@@ -286,7 +287,7 @@ RETURN:
 	return;
 }
 
-int rtw_change_ifname(_adapter *padapter, const char *ifname)
+int rtw_change_ifname(struct adapter *padapter, const char *ifname)
 {
 	struct net_device *pnetdev;
 	struct net_device *cur_pnetdev;

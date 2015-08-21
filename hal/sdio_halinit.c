@@ -14,6 +14,8 @@
  ******************************************************************************/
 #define _SDIO_HALINIT_C_
 
+#include <drv_types.h>
+#include <rtw_debug.h>
 #include <rtl8723b_hal.h>
 
 #include "hal_com_h2c.h"
@@ -25,7 +27,7 @@
  *	_SUCCESS	enable success
  *	_FAIL		enable fail
  */
-static u8 CardEnable(PADAPTER padapter)
+static u8 CardEnable(struct adapter * padapter)
 {
 	u8 bMacPwrCtrlOn;
 	u8 ret = _FAIL;
@@ -52,7 +54,7 @@ static u8 CardEnable(PADAPTER padapter)
 #ifdef CONFIG_GPIO_WAKEUP
 /* we set it high under init and fw will */
 /* give us Low Pulse when host wake up */
-void HostWakeUpGpioClear(PADAPTER Adapter)
+void HostWakeUpGpioClear(struct adapter * Adapter)
 {
 	u32	value32;
 
@@ -66,7 +68,7 @@ void HostWakeUpGpioClear(PADAPTER Adapter)
 	rtw_write32(Adapter, REG_GPIO_PIN_CTRL_2, value32);
 } /* HostWakeUpGpioClear */
 
-void HalSetOutPutGPIO(PADAPTER padapter, u8 index, u8 OutPutValue)
+void HalSetOutPutGPIO(struct adapter * padapter, u8 index, u8 OutPutValue)
 {
 	if (index <= 7) {
 		/* config GPIO mode */
@@ -109,7 +111,7 @@ void HalSetOutPutGPIO(PADAPTER padapter, u8 index, u8 OutPutValue)
 #endif
 
 static
-u8 _InitPowerOn_8723BS(PADAPTER padapter)
+u8 _InitPowerOn_8723BS(struct adapter * padapter)
 {
 	u8 value8;
 	u16 value16;
@@ -196,7 +198,7 @@ u8 _InitPowerOn_8723BS(PADAPTER padapter)
 }
 
 /* Tx Page FIFO threshold */
-static void _init_available_page_threshold(PADAPTER padapter, u8 numHQ, u8 numNQ, u8 numLQ, u8 numPubQ)
+static void _init_available_page_threshold(struct adapter * padapter, u8 numHQ, u8 numNQ, u8 numLQ, u8 numPubQ)
 {
 	u16	HQ_threshold, NQ_threshold, LQ_threshold;
 
@@ -215,7 +217,7 @@ static void _init_available_page_threshold(PADAPTER padapter, u8 numHQ, u8 numNQ
 	DBG_8192C("%s(): Enable Tx FIFO Page Threshold H:0x%x, N:0x%x, L:0x%x\n", __func__, HQ_threshold, NQ_threshold, LQ_threshold);
 }
 
-static void _InitQueueReservedPage(PADAPTER padapter)
+static void _InitQueueReservedPage(struct adapter * padapter)
 {
 	HAL_DATA_TYPE		*pHalData = GET_HAL_DATA(padapter);
 	struct registry_priv	*pregistrypriv = &padapter->registrypriv;
@@ -256,7 +258,7 @@ static void _InitQueueReservedPage(PADAPTER padapter)
 	_init_available_page_threshold(padapter, numHQ, numNQ, numLQ, numPubQ);
 }
 
-static void _InitTxBufferBoundary(PADAPTER padapter)
+static void _InitTxBufferBoundary(struct adapter * padapter)
 {
 	struct registry_priv *pregistrypriv = &padapter->registrypriv;
 
@@ -279,7 +281,7 @@ static void _InitTxBufferBoundary(PADAPTER padapter)
 
 static void
 _InitNormalChipRegPriority(
-	IN	PADAPTER	Adapter,
+	IN	struct adapter *	Adapter,
 	IN	u16		beQ,
 	IN	u16		bkQ,
 	IN	u16		viQ,
@@ -299,7 +301,7 @@ _InitNormalChipRegPriority(
 
 static void
 _InitNormalChipOneOutEpPriority(
-	IN	PADAPTER Adapter
+	IN	struct adapter * Adapter
 	)
 {
 	HAL_DATA_TYPE	*pHalData	= GET_HAL_DATA(Adapter);
@@ -334,7 +336,7 @@ _InitNormalChipOneOutEpPriority(
 
 static void
 _InitNormalChipTwoOutEpPriority(
-	IN	PADAPTER Adapter
+	IN	struct adapter * Adapter
 	)
 {
 	HAL_DATA_TYPE	*pHalData	= GET_HAL_DATA(Adapter);
@@ -387,7 +389,7 @@ _InitNormalChipTwoOutEpPriority(
 
 static void
 _InitNormalChipThreeOutEpPriority(
-	IN	PADAPTER padapter
+	IN	struct adapter * padapter
 	)
 {
 	struct registry_priv *pregistrypriv = &padapter->registrypriv;
@@ -414,7 +416,7 @@ _InitNormalChipThreeOutEpPriority(
 
 static void
 _InitNormalChipQueuePriority(
-	IN	PADAPTER Adapter
+	IN	struct adapter * Adapter
 	)
 {
 	HAL_DATA_TYPE	*pHalData	= GET_HAL_DATA(Adapter);
@@ -438,12 +440,12 @@ _InitNormalChipQueuePriority(
 
 }
 
-static void _InitQueuePriority(PADAPTER padapter)
+static void _InitQueuePriority(struct adapter * padapter)
 {
 	_InitNormalChipQueuePriority(padapter);
 }
 
-static void _InitPageBoundary(PADAPTER padapter)
+static void _InitPageBoundary(struct adapter * padapter)
 {
 	/*  RX Page Boundary */
 	u16 rxff_bndy = RX_DMA_BOUNDARY_8723B;
@@ -451,7 +453,7 @@ static void _InitPageBoundary(PADAPTER padapter)
 	rtw_write16(padapter, (REG_TRXFF_BNDY + 2), rxff_bndy);
 }
 
-static void _InitTransferPageSize(PADAPTER padapter)
+static void _InitTransferPageSize(struct adapter * padapter)
 {
 	/*  Tx page size is always 128. */
 
@@ -460,12 +462,12 @@ static void _InitTransferPageSize(PADAPTER padapter)
 	rtw_write8(padapter, REG_PBP, value8);
 }
 
-static void _InitDriverInfoSize(PADAPTER padapter, u8 drvInfoSize)
+static void _InitDriverInfoSize(struct adapter * padapter, u8 drvInfoSize)
 {
 	rtw_write8(padapter, REG_RX_DRVINFO_SZ, drvInfoSize);
 }
 
-static void _InitNetworkType(PADAPTER padapter)
+static void _InitNetworkType(struct adapter * padapter)
 {
 	u32 value32;
 
@@ -478,7 +480,7 @@ static void _InitNetworkType(PADAPTER padapter)
 	rtw_write32(padapter, REG_CR, value32);
 }
 
-static void _InitWMACSetting(PADAPTER padapter)
+static void _InitWMACSetting(struct adapter * padapter)
 {
 	PHAL_DATA_TYPE pHalData;
 	u16 value16;
@@ -512,7 +514,7 @@ static void _InitWMACSetting(PADAPTER padapter)
 	rtw_write16(padapter, REG_RXFLTMAP0, value16);
 }
 
-static void _InitAdaptiveCtrl(PADAPTER padapter)
+static void _InitAdaptiveCtrl(struct adapter * padapter)
 {
 	u16	value16;
 	u32	value32;
@@ -535,7 +537,7 @@ static void _InitAdaptiveCtrl(PADAPTER padapter)
 	rtw_write16(padapter, REG_RL, value16);
 }
 
-static void _InitEDCA(PADAPTER padapter)
+static void _InitEDCA(struct adapter * padapter)
 {
 	/*  Set Spec SIFS (used in NAV) */
 	rtw_write16(padapter, REG_SPEC_SIFS, 0x100a);
@@ -554,7 +556,7 @@ static void _InitEDCA(PADAPTER padapter)
 	rtw_write32(padapter, REG_EDCA_VO_PARAM, 0x002FA226);
 }
 
-static void _InitRetryFunction(PADAPTER padapter)
+static void _InitRetryFunction(struct adapter * padapter)
 {
 	u8	value8;
 
@@ -566,7 +568,7 @@ static void _InitRetryFunction(PADAPTER padapter)
 	rtw_write8(padapter, REG_ACKTO, 0x40);
 }
 
-static void HalRxAggr8723BSdio(PADAPTER padapter)
+static void HalRxAggr8723BSdio(struct adapter * padapter)
 {
 	struct registry_priv *pregistrypriv;
 	u8	valueDMATimeout;
@@ -595,7 +597,7 @@ static void HalRxAggr8723BSdio(PADAPTER padapter)
 	rtw_write8(padapter, REG_RXDMA_AGG_PG_TH, valueDMAPageCount);
 }
 
-static void sdio_AggSettingRxUpdate(PADAPTER padapter)
+static void sdio_AggSettingRxUpdate(struct adapter * padapter)
 {
 	HAL_DATA_TYPE *pHalData;
 	u8 valueDMA;
@@ -615,7 +617,7 @@ static void sdio_AggSettingRxUpdate(PADAPTER padapter)
 	rtw_write8(padapter, REG_RXDMA_MODE_CTRL_8723B, valueRxAggCtrl);/* RxAggLowThresh = 4*1K */
 }
 
-static void _initSdioAggregationSetting(PADAPTER padapter)
+static void _initSdioAggregationSetting(struct adapter * padapter)
 {
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
 
@@ -631,7 +633,7 @@ static void _initSdioAggregationSetting(PADAPTER padapter)
 	pHalData->UsbRxHighSpeedMode = false;
 }
 
-static void _InitOperationMode(PADAPTER padapter)
+static void _InitOperationMode(struct adapter * padapter)
 {
 	PHAL_DATA_TYPE pHalData;
 	struct mlme_ext_priv *pmlmeext;
@@ -687,7 +689,7 @@ static void _InitOperationMode(PADAPTER padapter)
 
 }
 
-static void _InitInterrupt(PADAPTER padapter)
+static void _InitInterrupt(struct adapter * padapter)
 {
 	/*  HISR - turn all off */
 	rtw_write32(padapter, REG_HISR, 0);
@@ -706,7 +708,7 @@ static void _InitInterrupt(PADAPTER padapter)
 	InitSysInterrupt8723BSdio(padapter);
 }
 
-static void _InitRFType(PADAPTER padapter)
+static void _InitRFType(struct adapter * padapter)
 {
 	HAL_DATA_TYPE *pHalData = GET_HAL_DATA(padapter);
 
@@ -721,7 +723,7 @@ static void _InitRFType(PADAPTER padapter)
 	DBG_8192C("Set RF Chip ID to RF_6052 and RF type to 1T1R.\n");
 }
 
-static void _RfPowerSave(PADAPTER padapter)
+static void _RfPowerSave(struct adapter * padapter)
 {
 /* YJ, TODO */
 }
@@ -729,7 +731,7 @@ static void _RfPowerSave(PADAPTER padapter)
 /*  */
 /*  2010/08/09 MH Add for power down check. */
 /*  */
-static bool HalDetectPwrDownMode(PADAPTER Adapter)
+static bool HalDetectPwrDownMode(struct adapter * Adapter)
 {
 	u8 tmpvalue;
 	HAL_DATA_TYPE *pHalData = GET_HAL_DATA(Adapter);
@@ -753,7 +755,7 @@ static bool HalDetectPwrDownMode(PADAPTER Adapter)
 	return pHalData->pwrdown;
 }	/*  HalDetectPwrDownMode */
 
-static u32 rtl8723bs_hal_init(PADAPTER padapter)
+static u32 rtl8723bs_hal_init(struct adapter * padapter)
 {
 	s32 ret;
 	PHAL_DATA_TYPE pHalData;
@@ -1069,7 +1071,7 @@ static u32 rtl8723bs_hal_init(PADAPTER padapter)
 /*  */
 /*  First created by tynli. 2011.01.28. */
 /*  */
-static void CardDisableRTL8723BSdio(PADAPTER padapter)
+static void CardDisableRTL8723BSdio(struct adapter * padapter)
 {
 	u8		u1bTmp;
 	u8		bMacPwrCtrlOn;
@@ -1115,7 +1117,7 @@ static void CardDisableRTL8723BSdio(PADAPTER padapter)
 	}
 }
 
-static u32 rtl8723bs_hal_deinit(PADAPTER padapter)
+static u32 rtl8723bs_hal_deinit(struct adapter * padapter)
 {
         struct dvobj_priv *psdpriv = padapter->dvobj;
 	struct debug_priv *pdbgpriv = &psdpriv->drv_dbg;
@@ -1192,12 +1194,12 @@ static u32 rtl8723bs_hal_deinit(PADAPTER padapter)
 	return _SUCCESS;
 }
 
-static u32 rtl8723bs_inirp_init(PADAPTER padapter)
+static u32 rtl8723bs_inirp_init(struct adapter * padapter)
 {
 	return _SUCCESS;
 }
 
-static u32 rtl8723bs_inirp_deinit(PADAPTER padapter)
+static u32 rtl8723bs_inirp_deinit(struct adapter * padapter)
 {
 	RT_TRACE(_module_hci_hal_init_c_, _drv_info_, ("+rtl8723bs_inirp_deinit\n"));
 
@@ -1206,7 +1208,7 @@ static u32 rtl8723bs_inirp_deinit(PADAPTER padapter)
 	return _SUCCESS;
 }
 
-static void rtl8723bs_init_default_value(PADAPTER padapter)
+static void rtl8723bs_init_default_value(struct adapter * padapter)
 {
 	PHAL_DATA_TYPE pHalData;
 
@@ -1219,7 +1221,7 @@ static void rtl8723bs_init_default_value(PADAPTER padapter)
 	pHalData->SdioRxFIFOCnt = 0;
 }
 
-static void rtl8723bs_interface_configure(PADAPTER padapter)
+static void rtl8723bs_interface_configure(struct adapter * padapter)
 {
 	HAL_DATA_TYPE		*pHalData = GET_HAL_DATA(padapter);
 	struct dvobj_priv		*pdvobjpriv = adapter_to_dvobj(padapter);
@@ -1264,7 +1266,7 @@ static void rtl8723bs_interface_configure(PADAPTER padapter)
 /*  */
 static void
 _EfuseCellSel(
-	IN	PADAPTER	padapter
+	IN	struct adapter *	padapter
 	)
 {
 	u32			value32;
@@ -1276,7 +1278,7 @@ _EfuseCellSel(
 
 static void
 _ReadRFType(
-	IN	PADAPTER	Adapter
+	IN	struct adapter *	Adapter
 	)
 {
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
@@ -1291,7 +1293,7 @@ _ReadRFType(
 
 static void
 Hal_EfuseParseMACAddr_8723BS(
-	IN	PADAPTER		padapter,
+	IN	struct adapter *		padapter,
 	IN	u8*			hwinfo,
 	IN	bool			AutoLoadFail
 	)
@@ -1322,7 +1324,7 @@ Hal_EfuseParseMACAddr_8723BS(
 
 static void
 Hal_EfuseParseBoardType_8723BS(
-	IN	PADAPTER		pAdapter,
+	IN	struct adapter *		pAdapter,
 	IN	u8*			hwinfo,
 	IN	bool			AutoLoadFail
 	)
@@ -1342,7 +1344,7 @@ Hal_EfuseParseBoardType_8723BS(
 
 static void
 _ReadEfuseInfo8723BS(
-	IN PADAPTER			padapter
+	IN struct adapter *			padapter
 	)
 {
 	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(padapter);
@@ -1392,7 +1394,7 @@ _ReadEfuseInfo8723BS(
 }
 
 static void _ReadPROMContent(
-	IN PADAPTER		padapter
+	IN struct adapter *		padapter
 	)
 {
 	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(padapter);
@@ -1416,7 +1418,7 @@ static void _ReadPROMContent(
 
 static void
 _InitOtherVariable(
-	IN PADAPTER		Adapter
+	IN struct adapter *		Adapter
 	)
 {
 }
@@ -1429,7 +1431,7 @@ _InitOtherVariable(
 /* 		PASSIVE_LEVEL (SDIO interface) */
 /*  */
 /*  */
-static s32 _ReadAdapterInfo8723BS(PADAPTER padapter)
+static s32 _ReadAdapterInfo8723BS(struct adapter * padapter)
 {
 	u8 val8;
 	unsigned long start;
@@ -1466,7 +1468,7 @@ static s32 _ReadAdapterInfo8723BS(PADAPTER padapter)
 	return _SUCCESS;
 }
 
-static void ReadAdapterInfo8723BS(PADAPTER padapter)
+static void ReadAdapterInfo8723BS(struct adapter * padapter)
 {
 	/*  Read EEPROM size before call any EEPROM function */
 	padapter->EepromAddressSize = GetEEPROMSize8723B(padapter);
@@ -1478,7 +1480,7 @@ static void ReadAdapterInfo8723BS(PADAPTER padapter)
  * If variable not handled here,
  * some variables will be processed in SetHwReg8723B()
  */
-static void SetHwReg8723BS(PADAPTER padapter, u8 variable, u8 *val)
+static void SetHwReg8723BS(struct adapter * padapter, u8 variable, u8 *val)
 {
 	PHAL_DATA_TYPE pHalData;
 	u8 val8;
@@ -1838,7 +1840,7 @@ static void SetHwReg8723BS(PADAPTER padapter, u8 variable, u8 *val)
  * If variable not handled here,
  * some variables will be processed in GetHwReg8723B()
  */
-static void GetHwReg8723BS(PADAPTER padapter, u8 variable, u8 *val)
+static void GetHwReg8723BS(struct adapter * padapter, u8 variable, u8 *val)
 {
 	switch (variable) {
 	case HW_VAR_CPWM:
@@ -1857,7 +1859,7 @@ static void GetHwReg8723BS(PADAPTER padapter, u8 variable, u8 *val)
 	}
 }
 
-static void SetHwRegWithBuf8723B(PADAPTER padapter, u8 variable, u8 *pbuf, int len)
+static void SetHwRegWithBuf8723B(struct adapter * padapter, u8 variable, u8 *pbuf, int len)
 {
 	switch (variable) {
 	case HW_VAR_C2H_HANDLE:
@@ -1875,7 +1877,7 @@ static void SetHwRegWithBuf8723B(PADAPTER padapter, u8 variable, u8 *pbuf, int l
 /*  */
 static u8
 GetHalDefVar8723BSDIO(
-	IN	PADAPTER				Adapter,
+	IN	struct adapter *				Adapter,
 	IN	HAL_DEF_VARIABLE		eVariable,
 	IN	void *					pValue
 	)
@@ -1907,7 +1909,7 @@ GetHalDefVar8723BSDIO(
 /*  */
 static u8
 SetHalDefVar8723BSDIO(
-	IN	PADAPTER				Adapter,
+	IN	struct adapter *				Adapter,
 	IN	HAL_DEF_VARIABLE		eVariable,
 	IN	void *					pValue
 	)
@@ -1915,7 +1917,7 @@ SetHalDefVar8723BSDIO(
 	return SetHalDefVar8723B(Adapter, eVariable, pValue);
 }
 
-void rtl8723bs_set_hal_ops(PADAPTER padapter)
+void rtl8723bs_set_hal_ops(struct adapter * padapter)
 {
 	struct hal_ops *pHalFunc = &padapter->HalFunc;
 

@@ -138,10 +138,10 @@ typedef enum tag_DIG_Connect_Definition
 
 #define DM_MultiSTA_InitGainChangeNotify(Event) {DM_DigTable.CurMultiSTAConnectState = Event;}
 
-#define DM_MultiSTA_InitGainChangeNotify_CONNECT(_ADAPTER)	\
+#define DM_MultiSTA_InitGainChangeNotify_CONNECT(_struct adapter)	\
 	DM_MultiSTA_InitGainChangeNotify(DIG_MultiSTA_CONNECT)
 
-#define DM_MultiSTA_InitGainChangeNotify_DISCONNECT(_ADAPTER)	\
+#define DM_MultiSTA_InitGainChangeNotify_DISCONNECT(_struct adapter)	\
 	DM_MultiSTA_InitGainChangeNotify(DIG_MultiSTA_DISCONNECT)
 */
 #define		DM_DIG_THRESH_HIGH			40

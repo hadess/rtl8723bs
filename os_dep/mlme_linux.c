@@ -17,10 +17,11 @@
 #define _MLME_OSDEP_C_
 
 #include <drv_types.h>
+#include <rtw_debug.h>
 
 static void _dynamic_check_timer_handlder (void *FunctionContext)
 {
-	_adapter *adapter = (_adapter *)FunctionContext;
+	struct adapter *adapter = (struct adapter *)FunctionContext;
 
 	rtw_dynamic_check_timer_handlder(adapter);
 
@@ -29,11 +30,11 @@ static void _dynamic_check_timer_handlder (void *FunctionContext)
 
 static void _rtw_set_scan_deny_timer_hdl(void *FunctionContext)
 {
-	_adapter *adapter = (_adapter *)FunctionContext;
+	struct adapter *adapter = (struct adapter *)FunctionContext;
 	rtw_set_scan_deny_timer_hdl(adapter);
 }
 
-void rtw_init_mlme_timer(_adapter *padapter)
+void rtw_init_mlme_timer(struct adapter *padapter)
 {
 	struct	mlme_priv *pmlmepriv = &padapter->mlmepriv;
 
@@ -46,7 +47,7 @@ void rtw_init_mlme_timer(_adapter *padapter)
 	_init_timer(&(pmlmepriv->set_scan_deny_timer), padapter->pnetdev, _rtw_set_scan_deny_timer_hdl, padapter);
 }
 
-void rtw_os_indicate_connect(_adapter *adapter)
+void rtw_os_indicate_connect(struct adapter *adapter)
 {
 	struct mlme_priv *pmlmepriv = &(adapter->mlmepriv);
 
@@ -65,14 +66,14 @@ void rtw_os_indicate_connect(_adapter *adapter)
 		rtw_signal_process(adapter->pid[2], SIGALRM);
 }
 
-void rtw_os_indicate_scan_done(_adapter *padapter, bool aborted)
+void rtw_os_indicate_scan_done(struct adapter *padapter, bool aborted)
 {
 	rtw_cfg80211_indicate_scan_done(padapter, aborted);
 	indicate_wx_scan_complete_event(padapter);
 }
 
 static RT_PMKID_LIST   backupPMKIDList[ NUM_PMKID_CACHE ];
-void rtw_reset_securitypriv(_adapter *adapter)
+void rtw_reset_securitypriv(struct adapter *adapter)
 {
 	u8	backupPMKIDIndex = 0;
 	u8	backupTKIPCountermeasure = 0x00;
@@ -134,7 +135,7 @@ void rtw_reset_securitypriv(_adapter *adapter)
 	spin_unlock_bh(&adapter->security_key_mutex);
 }
 
-void rtw_os_indicate_disconnect(_adapter *adapter)
+void rtw_os_indicate_disconnect(struct adapter *adapter)
 {
 	/* RT_PMKID_LIST   backupPMKIDList[ NUM_PMKID_CACHE ]; */
 
@@ -148,7 +149,7 @@ void rtw_os_indicate_disconnect(_adapter *adapter)
 	 rtw_reset_securitypriv_cmd(adapter);
 }
 
-void rtw_report_sec_ie(_adapter *adapter, u8 authmode, u8 *sec_ie)
+void rtw_report_sec_ie(struct adapter *adapter, u8 authmode, u8 *sec_ie)
 {
 	uint	len;
 	u8	*buff,*p, i;
@@ -190,12 +191,12 @@ void rtw_report_sec_ie(_adapter *adapter, u8 authmode, u8 *sec_ie)
 	}
 }
 
-void init_addba_retry_timer(_adapter *padapter, struct sta_info *psta)
+void init_addba_retry_timer(struct adapter *padapter, struct sta_info *psta)
 {
 	_init_timer(&psta->addba_retry_timer, padapter->pnetdev, addba_timer_hdl, psta);
 }
 
-void init_mlme_ext_timer(_adapter *padapter)
+void init_mlme_ext_timer(struct adapter *padapter)
 {
 	struct	mlme_ext_priv *pmlmeext = &padapter->mlmeextpriv;
 

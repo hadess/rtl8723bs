@@ -117,19 +117,19 @@ struct rtw_ndpa_sta_info {
 };
 
 BEAMFORMING_CAP beamforming_get_entry_beam_cap_by_mac_id(void * pmlmepriv , u8 mac_id);
-void	beamforming_notify(PADAPTER adapter);
+void	beamforming_notify(struct adapter * adapter);
 BEAMFORMING_CAP beamforming_get_beamform_cap(struct beamforming_info	*pBeamInfo);
 
-u32	beamforming_get_report_frame(PADAPTER	 Adapter, union recv_frame *precv_frame);
+u32	beamforming_get_report_frame(struct adapter *	 Adapter, union recv_frame *precv_frame);
 
-bool	beamforming_send_ht_ndpa_packet(PADAPTER Adapter, u8 *ra, CHANNEL_WIDTH bw, u8 qidx);
-bool	beamforming_send_vht_ndpa_packet(PADAPTER Adapter, u8 *ra, u16 aid, CHANNEL_WIDTH bw, u8 qidx);
+bool	beamforming_send_ht_ndpa_packet(struct adapter * Adapter, u8 *ra, CHANNEL_WIDTH bw, u8 qidx);
+bool	beamforming_send_vht_ndpa_packet(struct adapter * Adapter, u8 *ra, u16 aid, CHANNEL_WIDTH bw, u8 qidx);
 
-void	beamforming_check_sounding_success(PADAPTER Adapter, bool status);
+void	beamforming_check_sounding_success(struct adapter * Adapter, bool status);
 
-void	beamforming_watchdog(PADAPTER Adapter);
+void	beamforming_watchdog(struct adapter * Adapter);
 
-void	beamforming_wk_hdl(_adapter *padapter, u8 type, u8 *pbuf);
-u8	beamforming_wk_cmd(_adapter *padapter, s32 type, u8 *pbuf, s32 size, u8 enqueue);
+void	beamforming_wk_hdl(struct adapter *padapter, u8 type, u8 *pbuf);
+u8	beamforming_wk_cmd(struct adapter *padapter, s32 type, u8 *pbuf, s32 size, u8 enqueue);
 
 #endif

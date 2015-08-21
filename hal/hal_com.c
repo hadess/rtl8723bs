@@ -15,11 +15,12 @@
 #define _HAL_COM_C_
 
 #include <drv_types.h>
+#include <rtw_debug.h>
 #include "hal_com_h2c.h"
 
 #include "odm_precomp.h"
 
-u8 rtw_hal_data_init(_adapter *padapter)
+u8 rtw_hal_data_init(struct adapter *padapter)
 {
 	if (is_primary_adapter(padapter))	/* if (padapter->isprimary) */
 	{
@@ -33,7 +34,7 @@ u8 rtw_hal_data_init(_adapter *padapter)
 	return _SUCCESS;
 }
 
-void rtw_hal_data_deinit(_adapter *padapter)
+void rtw_hal_data_deinit(struct adapter *padapter)
 {
 	if (is_primary_adapter(padapter))	/* if (padapter->isprimary) */
 	{
@@ -107,7 +108,7 @@ void dump_chip_info(HAL_VERSION	ChipVersion)
  */
 u8
 hal_com_config_channel_plan(
-	IN	PADAPTER	padapter,
+	IN	struct adapter *	padapter,
 	IN	u8			hw_channel_plan,
 	IN	u8			sw_channel_plan,
 	IN	u8			def_channel_plan,
@@ -151,7 +152,7 @@ hal_com_config_channel_plan(
 
 bool
 HAL_IsLegalChannel(
-	IN	PADAPTER	Adapter,
+	IN	struct adapter *	Adapter,
 	IN	u32			Channel
 	)
 {
@@ -372,7 +373,7 @@ u8	HwRateToMRate(u8 rate)
 }
 
 void	HalSetBrateCfg(
-	IN PADAPTER		Adapter,
+	IN struct adapter *		Adapter,
 	IN u8			*mBratesOS,
 	OUT u16			*pBrateCfg)
 {
@@ -406,7 +407,7 @@ void	HalSetBrateCfg(
 
 static void
 _OneOutPipeMapping(
-	IN	PADAPTER	pAdapter
+	IN	struct adapter *	pAdapter
 	)
 {
 	struct dvobj_priv	*pdvobjpriv = adapter_to_dvobj(pAdapter);
@@ -424,7 +425,7 @@ _OneOutPipeMapping(
 
 static void
 _TwoOutPipeMapping(
-	IN	PADAPTER	pAdapter,
+	IN	struct adapter *	pAdapter,
 	IN	bool		bWIFICfg
 	)
 {
@@ -469,7 +470,7 @@ _TwoOutPipeMapping(
 }
 
 static void _ThreeOutPipeMapping(
-	IN	PADAPTER	pAdapter,
+	IN	struct adapter *	pAdapter,
 	IN	bool		bWIFICfg
 	)
 {
@@ -514,7 +515,7 @@ static void _ThreeOutPipeMapping(
 
 bool
 Hal_MappingOutPipe(
-	IN	PADAPTER	pAdapter,
+	IN	struct adapter *	pAdapter,
 	IN	u8		NumOutPipe
 	)
 {
@@ -545,12 +546,12 @@ Hal_MappingOutPipe(
 
 }
 
-void hal_init_macaddr(_adapter *adapter)
+void hal_init_macaddr(struct adapter *adapter)
 {
 	rtw_hal_set_hwreg(adapter, HW_VAR_MAC_ADDR, adapter->eeprompriv.mac_addr);
 }
 
-void rtw_init_hal_com_default_value(PADAPTER Adapter)
+void rtw_init_hal_com_default_value(struct adapter * Adapter)
 {
 	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(Adapter);
 
@@ -563,7 +564,7 @@ void rtw_init_hal_com_default_value(PADAPTER Adapter)
 * BITS	 [127:120]	[119:16]      [15:8]		  [7:4]		   [3:0]
 */
 
-void c2h_evt_clear(_adapter *adapter)
+void c2h_evt_clear(struct adapter *adapter)
 {
 	rtw_write8(adapter, REG_C2HEVT_CLEAR, C2H_EVT_HOST_CLOSE);
 }
@@ -573,7 +574,7 @@ void c2h_evt_clear(_adapter *adapter)
 * Field    TRIGGER    CMD_LEN    CONTENT    CMD_SEQ    CMD_ID
 * BITS    [127:120]   [119:112]    [111:16]	     [15:8]         [7:0]
 */
-s32 c2h_evt_read_88xx(_adapter *adapter, u8 *buf)
+s32 c2h_evt_read_88xx(struct adapter *adapter, u8 *buf)
 {
 	s32 ret = _FAIL;
 	struct c2h_evt_hdr_88xx *c2h_evt;
@@ -625,11 +626,11 @@ exit:
 }
 
 
-u8  rtw_hal_networktype_to_raid(_adapter *adapter, struct sta_info *psta)
+u8  rtw_hal_networktype_to_raid(struct adapter *adapter, struct sta_info *psta)
 {
 	return networktype_to_raid_ex(adapter, psta);
 }
-u8 rtw_get_mgntframe_raid(_adapter *adapter, unsigned char network_type)
+u8 rtw_get_mgntframe_raid(struct adapter *adapter, unsigned char network_type)
 {
 
 	u8 raid;
@@ -638,7 +639,7 @@ u8 rtw_get_mgntframe_raid(_adapter *adapter, unsigned char network_type)
 	return raid;
 }
 
-void rtw_hal_update_sta_rate_mask(PADAPTER padapter, struct sta_info *psta)
+void rtw_hal_update_sta_rate_mask(struct adapter * padapter, struct sta_info *psta)
 {
 	u8	i, rf_type, limit;
 	u32	tx_ra_bitmap;
@@ -676,11 +677,11 @@ void rtw_hal_update_sta_rate_mask(PADAPTER padapter, struct sta_info *psta)
 	psta->init_rate = get_highest_rate_idx(tx_ra_bitmap)&0x3f;
 }
 
-void hw_var_port_switch (_adapter *adapter)
+void hw_var_port_switch (struct adapter *adapter)
 {
 }
 
-void SetHwReg(_adapter *adapter, u8 variable, u8 *val)
+void SetHwReg(struct adapter *adapter, u8 variable, u8 *val)
 {
 	HAL_DATA_TYPE *hal_data = GET_HAL_DATA(adapter);
 	DM_ODM_T *odm = &(hal_data->odmpriv);
@@ -760,7 +761,7 @@ void SetHwReg(_adapter *adapter, u8 variable, u8 *val)
 	}
 }
 
-void GetHwReg(_adapter *adapter, u8 variable, u8 *val)
+void GetHwReg(struct adapter *adapter, u8 variable, u8 *val)
 {
 	HAL_DATA_TYPE *hal_data = GET_HAL_DATA(adapter);
 	DM_ODM_T *odm = &(hal_data->odmpriv);
@@ -786,7 +787,7 @@ void GetHwReg(_adapter *adapter, u8 variable, u8 *val)
 
 
 u8
-SetHalDefVar(_adapter *adapter, HAL_DEF_VARIABLE variable, void *value)
+SetHalDefVar(struct adapter *adapter, HAL_DEF_VARIABLE variable, void *value)
 {
 	HAL_DATA_TYPE *hal_data = GET_HAL_DATA(adapter);
 	DM_ODM_T *odm = &(hal_data->odmpriv);
@@ -876,7 +877,7 @@ SetHalDefVar(_adapter *adapter, HAL_DEF_VARIABLE variable, void *value)
 }
 
 u8
-GetHalDefVar(_adapter *adapter, HAL_DEF_VARIABLE variable, void *value)
+GetHalDefVar(struct adapter *adapter, HAL_DEF_VARIABLE variable, void *value)
 {
 	HAL_DATA_TYPE *hal_data = GET_HAL_DATA(adapter);
 	DM_ODM_T *odm = &(hal_data->odmpriv);
@@ -932,7 +933,7 @@ GetHalDefVar(_adapter *adapter, HAL_DEF_VARIABLE variable, void *value)
 }
 
 void GetHalODMVar(
-	PADAPTER				Adapter,
+	struct adapter *				Adapter,
 	HAL_ODM_VARIABLE		eVariable,
 	void *pValue1,
 	void *pValue2)
@@ -958,7 +959,7 @@ void GetHalODMVar(
 }
 
 void SetHalODMVar(
-	PADAPTER				Adapter,
+	struct adapter *				Adapter,
 	HAL_ODM_VARIABLE		eVariable,
 	void *					pValue1,
 	bool					bSet)
@@ -1279,7 +1280,7 @@ isAllSpaceOrTab(
 }
 
 
-void rtw_hal_check_rxfifo_full(_adapter *adapter)
+void rtw_hal_check_rxfifo_full(struct adapter *adapter)
 {
 	struct dvobj_priv *psdpriv = adapter->dvobj;
 	struct debug_priv *pdbgpriv = &psdpriv->drv_dbg;
@@ -1300,7 +1301,7 @@ void rtw_hal_check_rxfifo_full(_adapter *adapter)
 	}
 }
 
-void linked_info_dump(_adapter *padapter, u8 benable)
+void linked_info_dump(struct adapter *padapter, u8 benable)
 {
 	struct pwrctrl_priv *pwrctrlpriv = adapter_to_pwrctl(padapter);
 
@@ -1325,7 +1326,7 @@ void linked_info_dump(_adapter *padapter, u8 benable)
 }
 
 #ifdef DBG_RX_SIGNAL_DISPLAY_RAW_DATA
-void rtw_get_raw_rssi_info(void *sel, _adapter *padapter)
+void rtw_get_raw_rssi_info(void *sel, struct adapter *padapter)
 {
 	u8 isCCKrate, rf_path;
 	PHAL_DATA_TYPE	pHalData =  GET_HAL_DATA(padapter);
@@ -1350,7 +1351,7 @@ void rtw_get_raw_rssi_info(void *sel, _adapter *padapter)
 	}
 }
 
-void rtw_dump_raw_rssi_info(_adapter *padapter)
+void rtw_dump_raw_rssi_info(struct adapter *padapter)
 {
 	u8 isCCKrate, rf_path;
 	PHAL_DATA_TYPE	pHalData =  GET_HAL_DATA(padapter);
@@ -1378,7 +1379,7 @@ void rtw_dump_raw_rssi_info(_adapter *padapter)
 	}
 }
 
-void rtw_store_phy_info(_adapter *padapter, union recv_frame *prframe)
+void rtw_store_phy_info(struct adapter *padapter, union recv_frame *prframe)
 {
 	u8 isCCKrate, rf_path;
 	PHAL_DATA_TYPE	pHalData =  GET_HAL_DATA(padapter);
@@ -1418,7 +1419,7 @@ static u32 Array_kfreemap[] = {
 0xfc, 0x0,
 };
 
-void rtw_bb_rf_gain_offset(_adapter *padapter)
+void rtw_bb_rf_gain_offset(struct adapter *padapter)
 {
 	u8		value = padapter->eeprompriv.EEPROMRFGainOffset;
 	u32	res, i = 0;

@@ -20,6 +20,7 @@
 #define _RTW_IOCTL_SET_C_
 
 #include <drv_types.h>
+#include <rtw_debug.h>
 
 #define IS_MAC_ADDRESS_BROADCAST(addr) \
 (\
@@ -68,8 +69,8 @@ exit:
 	return ret;
 }
 
-u8 rtw_do_join(_adapter * padapter);
-u8 rtw_do_join(_adapter * padapter)
+u8 rtw_do_join(struct adapter * padapter);
+u8 rtw_do_join(struct adapter * padapter)
 {
 	_list	*plist, *phead;
 	u8* pibss = NULL;
@@ -191,7 +192,7 @@ exit:
 	return ret;
 }
 
-u8 rtw_set_802_11_bssid(_adapter * padapter, u8 *bssid)
+u8 rtw_set_802_11_bssid(struct adapter * padapter, u8 *bssid)
 {
 	u8 status = _SUCCESS;
 
@@ -270,7 +271,7 @@ exit:
 	return status;
 }
 
-u8 rtw_set_802_11_ssid(_adapter * padapter, NDIS_802_11_SSID *ssid)
+u8 rtw_set_802_11_ssid(struct adapter * padapter, NDIS_802_11_SSID *ssid)
 {
 	u8 status = _SUCCESS;
 
@@ -385,7 +386,7 @@ exit:
 	return status;
 }
 
-u8 rtw_set_802_11_connect(_adapter * padapter, u8 *bssid, NDIS_802_11_SSID *ssid)
+u8 rtw_set_802_11_connect(struct adapter * padapter, u8 *bssid, NDIS_802_11_SSID *ssid)
 {
 	u8 status = _SUCCESS;
 	bool bssid_valid = true;
@@ -455,7 +456,7 @@ exit:
 	return status;
 }
 
-u8 rtw_set_802_11_infrastructure_mode(_adapter * padapter,
+u8 rtw_set_802_11_infrastructure_mode(struct adapter * padapter,
 	NDIS_802_11_NETWORK_INFRASTRUCTURE networktype)
 {
 	struct	mlme_priv	*pmlmepriv = &padapter->mlmepriv;
@@ -533,7 +534,7 @@ u8 rtw_set_802_11_infrastructure_mode(_adapter * padapter,
 }
 
 
-u8 rtw_set_802_11_disassociate(_adapter *padapter)
+u8 rtw_set_802_11_disassociate(struct adapter *padapter)
 {
 	struct mlme_priv * pmlmepriv = &padapter->mlmepriv;
 
@@ -556,7 +557,7 @@ u8 rtw_set_802_11_disassociate(_adapter *padapter)
 	return true;
 }
 
-u8 rtw_set_802_11_bssid_list_scan(_adapter * padapter, NDIS_802_11_SSID *pssid, int ssid_max_num)
+u8 rtw_set_802_11_bssid_list_scan(struct adapter * padapter, NDIS_802_11_SSID *pssid, int ssid_max_num)
 {
 	struct	mlme_priv		*pmlmepriv = &padapter->mlmepriv;
 	u8	res =true;
@@ -603,7 +604,7 @@ exit:
 	return res;
 }
 
-u8 rtw_set_802_11_authentication_mode(_adapter * padapter, NDIS_802_11_AUTHENTICATION_MODE authmode)
+u8 rtw_set_802_11_authentication_mode(struct adapter * padapter, NDIS_802_11_AUTHENTICATION_MODE authmode)
 {
 	struct security_priv *psecuritypriv = &padapter->securitypriv;
 	int res;
@@ -628,7 +629,7 @@ u8 rtw_set_802_11_authentication_mode(_adapter * padapter, NDIS_802_11_AUTHENTIC
 	return ret;
 }
 
-u8 rtw_set_802_11_add_wep(_adapter * padapter, NDIS_802_11_WEP *wep){
+u8 rtw_set_802_11_add_wep(struct adapter * padapter, NDIS_802_11_WEP *wep){
 
 	u8		bdefaultkey;
 	u8		btransmitkey;
@@ -689,11 +690,11 @@ exit:
 
 /*
 * rtw_get_cur_max_rate -
-* @adapter: pointer to _adapter structure
+* @adapter: pointer to struct adapter structure
 *
 * Return 0 or 100Kbps
 */
-u16 rtw_get_cur_max_rate(_adapter *adapter)
+u16 rtw_get_cur_max_rate(struct adapter *adapter)
 {
 	int	i = 0;
 	u16	rate = 0, max_rate = 0;

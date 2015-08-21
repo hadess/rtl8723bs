@@ -428,16 +428,16 @@ void rtw_seccalctkipmic(
 	u8 *Miccode,
 	u8   priority);
 
-u32 rtw_aes_encrypt(_adapter *padapter, u8 *pxmitframe);
-u32 rtw_tkip_encrypt(_adapter *padapter, u8 *pxmitframe);
-void rtw_wep_encrypt(_adapter *padapter, u8  *pxmitframe);
+u32 rtw_aes_encrypt(struct adapter *padapter, u8 *pxmitframe);
+u32 rtw_tkip_encrypt(struct adapter *padapter, u8 *pxmitframe);
+void rtw_wep_encrypt(struct adapter *padapter, u8  *pxmitframe);
 
-u32 rtw_aes_decrypt(_adapter *padapter, u8  *precvframe);
-u32 rtw_tkip_decrypt(_adapter *padapter, u8  *precvframe);
-void rtw_wep_decrypt(_adapter *padapter, u8  *precvframe);
-u32	rtw_BIP_verify(_adapter *padapter, u8 *precvframe);
+u32 rtw_aes_decrypt(struct adapter *padapter, u8  *precvframe);
+u32 rtw_tkip_decrypt(struct adapter *padapter, u8  *precvframe);
+void rtw_wep_decrypt(struct adapter *padapter, u8  *precvframe);
+u32	rtw_BIP_verify(struct adapter *padapter, u8 *precvframe);
 
-void rtw_sec_restore_wep_key(_adapter *adapter);
-u8 rtw_handle_tkip_countermeasure(_adapter * adapter, const char *caller);
+void rtw_sec_restore_wep_key(struct adapter *adapter);
+u8 rtw_handle_tkip_countermeasure(struct adapter * adapter, const char *caller);
 
 #endif	/* __RTL871X_SECURITY_H_ */

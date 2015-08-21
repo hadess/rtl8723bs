@@ -18,6 +18,8 @@
  *
  ******************************************************************************/
 
+#include <drv_types.h>
+#include <rtw_debug.h>
 #include <rtw_odm.h>
 #include <hal_data.h>
 
@@ -101,7 +103,7 @@ static const char *odm_dbg_level_str[] = {
 
 #define RTW_ODM_DBG_LEVEL_NUM 6
 
-void rtw_odm_dbg_comp_msg(void *sel, _adapter *adapter)
+void rtw_odm_dbg_comp_msg(void *sel, struct adapter *adapter)
 {
 	u64 dbg_comp;
 	int i;
@@ -115,12 +117,12 @@ void rtw_odm_dbg_comp_msg(void *sel, _adapter *adapter)
 	}
 }
 
-inline void rtw_odm_dbg_comp_set(_adapter *adapter, u64 comps)
+inline void rtw_odm_dbg_comp_set(struct adapter *adapter, u64 comps)
 {
 	rtw_hal_set_def_var(adapter, HW_DEF_ODM_DBG_FLAG, &comps);
 }
 
-void rtw_odm_dbg_level_msg(void *sel, _adapter *adapter)
+void rtw_odm_dbg_level_msg(void *sel, struct adapter *adapter)
 {
 	u32 dbg_level;
 	int i;
@@ -133,12 +135,12 @@ void rtw_odm_dbg_level_msg(void *sel, _adapter *adapter)
 	}
 }
 
-inline void rtw_odm_dbg_level_set(_adapter *adapter, u32 level)
+inline void rtw_odm_dbg_level_set(struct adapter *adapter, u32 level)
 {
 	rtw_hal_set_def_var(adapter, HW_DEF_ODM_DBG_LEVEL, &level);
 }
 
-void rtw_odm_ability_msg(void *sel, _adapter *adapter)
+void rtw_odm_ability_msg(void *sel, struct adapter *adapter)
 {
 	u32 ability = 0;
 	int i;
@@ -152,12 +154,12 @@ void rtw_odm_ability_msg(void *sel, _adapter *adapter)
 	}
 }
 
-inline void rtw_odm_ability_set(_adapter *adapter, u32 ability)
+inline void rtw_odm_ability_set(struct adapter *adapter, u32 ability)
 {
 	rtw_hal_set_hwreg(adapter, HW_VAR_DM_FLAG, (u8 *)&ability);
 }
 
-void rtw_odm_adaptivity_parm_msg(void *sel, _adapter *adapter)
+void rtw_odm_adaptivity_parm_msg(void *sel, struct adapter *adapter)
 {
 	HAL_DATA_TYPE *pHalData = GET_HAL_DATA(adapter);
 	DM_ODM_T *odm = &pHalData->odmpriv;
@@ -174,7 +176,7 @@ void rtw_odm_adaptivity_parm_msg(void *sel, _adapter *adapter)
 	);
 }
 
-void rtw_odm_adaptivity_parm_set(_adapter *adapter, s8 TH_L2H_ini, s8 TH_EDCCA_HL_diff,
+void rtw_odm_adaptivity_parm_set(struct adapter *adapter, s8 TH_L2H_ini, s8 TH_EDCCA_HL_diff,
 	s8 IGI_Base, bool ForceEDCCA, u8 AdapEn_RSSI, u8 IGI_LowerBound)
 {
 	HAL_DATA_TYPE *pHalData = GET_HAL_DATA(adapter);
@@ -188,7 +190,7 @@ void rtw_odm_adaptivity_parm_set(_adapter *adapter, s8 TH_L2H_ini, s8 TH_EDCCA_H
 	odm->IGI_LowerBound = IGI_LowerBound;
 }
 
-void rtw_odm_get_perpkt_rssi(void *sel, _adapter *adapter)
+void rtw_odm_get_perpkt_rssi(void *sel, struct adapter *adapter)
 {
 	HAL_DATA_TYPE *hal_data = GET_HAL_DATA(adapter);
 	DM_ODM_T *odm = &(hal_data->odmpriv);

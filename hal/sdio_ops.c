@@ -14,6 +14,8 @@
  *******************************************************************************/
 #define _SDIO_OPS_C_
 
+#include <drv_types.h>
+#include <rtw_debug.h>
 #include <rtl8723b_hal.h>
 
 /* define SDIO_DEBUG_IO 1 */
@@ -26,7 +28,7 @@
 /*  Creadted by Roger, 2011.01.31. */
 /*  */
 static void HalSdioGetCmdAddr8723BSdio(
-	IN	PADAPTER			padapter,
+	IN	struct adapter *			padapter,
 	IN	u8				DeviceID,
 	IN	u32				Addr,
 	OUT	u32*				pCmdAddr
@@ -177,7 +179,7 @@ static u16 sdio_read16(struct intf_hdl *pintfhdl, u32 addr)
 
 static u32 sdio_read32(struct intf_hdl *pintfhdl, u32 addr)
 {
-	PADAPTER padapter;
+	struct adapter * padapter;
 	u8 bMacPwrCtrlOn;
 	u8 deviceId;
 	u16 offset;
@@ -234,7 +236,7 @@ static u32 sdio_read32(struct intf_hdl *pintfhdl, u32 addr)
 
 static s32 sdio_readN(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, u8 *pbuf)
 {
-	PADAPTER padapter;
+	struct adapter * padapter;
 	u8 bMacPwrCtrlOn;
 	u8 deviceId;
 	u16 offset;
@@ -302,7 +304,7 @@ static s32 sdio_write16(struct intf_hdl *pintfhdl, u32 addr, u16 val)
 
 static s32 sdio_write32(struct intf_hdl *pintfhdl, u32 addr, u32 val)
 {
-	PADAPTER padapter;
+	struct adapter * padapter;
 	u8 bMacPwrCtrlOn;
 	u8 deviceId;
 	u16 offset;
@@ -338,7 +340,7 @@ static s32 sdio_write32(struct intf_hdl *pintfhdl, u32 addr, u32 val)
 
 static s32 sdio_writeN(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, u8* pbuf)
 {
-	PADAPTER padapter;
+	struct adapter * padapter;
 	u8 bMacPwrCtrlOn;
 	u8 deviceId;
 	u16 offset;
@@ -423,7 +425,7 @@ static u32 sdio_read_port(
 	u32 cnt,
 	u8 *mem)
 {
-	PADAPTER padapter;
+	struct adapter * padapter;
 	PSDIO_DATA psdio;
 	PHAL_DATA_TYPE phal;
 	u32 oldcnt;
@@ -494,7 +496,7 @@ static u32 sdio_write_port(
 	u32 cnt,
 	u8 *mem)
 {
-	PADAPTER padapter;
+	struct adapter * padapter;
 	PSDIO_DATA psdio;
 	s32 err;
 	struct xmit_buf *xmitbuf = (struct xmit_buf *)mem;
@@ -523,7 +525,7 @@ static u32 sdio_write_port(
 	return _SUCCESS;
 }
 
-void sdio_set_intf_ops(_adapter *padapter, struct _io_ops *pops)
+void sdio_set_intf_ops(struct adapter *padapter, struct _io_ops *pops)
 {
 	pops->_read8 = &sdio_read8;
 	pops->_read16 = &sdio_read16;
@@ -545,7 +547,7 @@ void sdio_set_intf_ops(_adapter *padapter, struct _io_ops *pops)
  * Todo: align address to 4 bytes.
  */
 static s32 _sdio_local_read(
-	PADAPTER	padapter,
+	struct adapter *	padapter,
 	u32			addr,
 	u32			cnt,
 	u8			*pbuf)
@@ -587,7 +589,7 @@ static s32 _sdio_local_read(
  * Todo: align address to 4 bytes.
  */
 s32 sdio_local_read(
-	PADAPTER	padapter,
+	struct adapter *	padapter,
 	u32			addr,
 	u32			cnt,
 	u8			*pbuf)
@@ -629,7 +631,7 @@ s32 sdio_local_read(
  * Todo: align address to 4 bytes.
  */
 s32 sdio_local_write(
-	PADAPTER	padapter,
+	struct adapter *	padapter,
 	u32		addr,
 	u32		cnt,
 	u8		*pbuf)
@@ -670,7 +672,7 @@ s32 sdio_local_write(
 	return err;
 }
 
-u8 SdioLocalCmd52Read1Byte(PADAPTER padapter, u32 addr)
+u8 SdioLocalCmd52Read1Byte(struct adapter * padapter, u32 addr)
 {
 	u8 val = 0;
 	struct intf_hdl * pintfhdl =&padapter->iopriv.intf;
@@ -681,7 +683,7 @@ u8 SdioLocalCmd52Read1Byte(PADAPTER padapter, u32 addr)
 	return val;
 }
 
-static u16 SdioLocalCmd52Read2Byte(PADAPTER padapter, u32 addr)
+static u16 SdioLocalCmd52Read2Byte(struct adapter * padapter, u32 addr)
 {
 	__le16 val = 0;
 	struct intf_hdl * pintfhdl =&padapter->iopriv.intf;
@@ -692,7 +694,7 @@ static u16 SdioLocalCmd52Read2Byte(PADAPTER padapter, u32 addr)
 	return le16_to_cpu(val);
 }
 
-static u32 SdioLocalCmd53Read4Byte(PADAPTER padapter, u32 addr)
+static u32 SdioLocalCmd53Read4Byte(struct adapter * padapter, u32 addr)
 {
 
 	u8 bMacPwrCtrlOn;
@@ -711,7 +713,7 @@ static u32 SdioLocalCmd53Read4Byte(PADAPTER padapter, u32 addr)
 	return val;
 }
 
-void SdioLocalCmd52Write1Byte(PADAPTER padapter, u32 addr, u8 v)
+void SdioLocalCmd52Write1Byte(struct adapter * padapter, u32 addr, u8 v)
 {
 	struct intf_hdl * pintfhdl =&padapter->iopriv.intf;
 
@@ -719,7 +721,7 @@ void SdioLocalCmd52Write1Byte(PADAPTER padapter, u32 addr, u8 v)
 	sd_cmd52_write(pintfhdl, addr, 1, &v);
 }
 
-static void SdioLocalCmd52Write4Byte(PADAPTER padapter, u32 addr, u32 v)
+static void SdioLocalCmd52Write4Byte(struct adapter * padapter, u32 addr, u32 v)
 {
 	struct intf_hdl * pintfhdl =&padapter->iopriv.intf;
 	__le32 le_tmp;
@@ -729,7 +731,7 @@ static void SdioLocalCmd52Write4Byte(PADAPTER padapter, u32 addr, u32 v)
 	sd_cmd52_write(pintfhdl, addr, 4, (u8 *)&le_tmp);
 }
 
-static s32 ReadInterrupt8723BSdio(PADAPTER padapter, u32 *phisr)
+static s32 ReadInterrupt8723BSdio(struct adapter * padapter, u32 *phisr)
 {
 	u32 hisr, himr;
 	u8 val8, hisr_len;
@@ -770,7 +772,7 @@ static s32 ReadInterrupt8723BSdio(PADAPTER padapter, u32 *phisr)
 /*  */
 /* 	Created by Roger, 2011.02.11. */
 /*  */
-void InitInterrupt8723BSdio(PADAPTER padapter)
+void InitInterrupt8723BSdio(struct adapter * padapter)
 {
 	PHAL_DATA_TYPE pHalData;
 
@@ -804,7 +806,7 @@ void InitInterrupt8723BSdio(PADAPTER padapter)
 /*  */
 /* 	Created by Roger, 2011.08.03. */
 /*  */
-void InitSysInterrupt8723BSdio(PADAPTER padapter)
+void InitSysInterrupt8723BSdio(struct adapter * padapter)
 {
 	PHAL_DATA_TYPE pHalData;
 
@@ -830,7 +832,7 @@ void InitSysInterrupt8723BSdio(PADAPTER padapter)
 /*  */
 /* 	Created by Roger, 2011.02.11. */
 /*  */
-void ClearInterrupt8723BSdio(PADAPTER padapter)
+void ClearInterrupt8723BSdio(struct adapter * padapter)
 {
 	PHAL_DATA_TYPE pHalData;
 	u8 *clear;
@@ -863,7 +865,7 @@ void ClearInterrupt8723BSdio(PADAPTER padapter)
 /*  */
 /* 	Created by Roger, 2011.02.11. */
 /*  */
-void EnableInterrupt8723BSdio(PADAPTER padapter)
+void EnableInterrupt8723BSdio(struct adapter * padapter)
 {
 	PHAL_DATA_TYPE pHalData;
 	__le32 himr;
@@ -901,7 +903,7 @@ void EnableInterrupt8723BSdio(PADAPTER padapter)
 /*  */
 /* 	Created by Roger, 2011.02.11. */
 /*  */
-void DisableInterrupt8723BSdio(PADAPTER padapter)
+void DisableInterrupt8723BSdio(struct adapter * padapter)
 {
 	__le32 himr;
 
@@ -918,7 +920,7 @@ void DisableInterrupt8723BSdio(PADAPTER padapter)
 /*  */
 /* 	Created by Isaac, 2013.09.10. */
 /*  */
-u8 CheckIPSStatus(PADAPTER padapter)
+u8 CheckIPSStatus(struct adapter * padapter)
 {
 	DBG_871X("%s(): Read 0x100 = 0x%02x 0x86 = 0x%02x\n", __func__,
 		rtw_read8(padapter, 0x100), rtw_read8(padapter, 0x86));
@@ -929,7 +931,7 @@ u8 CheckIPSStatus(PADAPTER padapter)
 		return false;
 }
 
-static struct recv_buf* sd_recv_rxfifo(PADAPTER padapter, u32 size)
+static struct recv_buf* sd_recv_rxfifo(struct adapter * padapter, u32 size)
 {
 	u32 readsize, ret;
 	u8 *preadbuf;
@@ -991,7 +993,7 @@ static struct recv_buf* sd_recv_rxfifo(PADAPTER padapter, u32 size)
 	return precvbuf;
 }
 
-static void sd_rxhandler(PADAPTER padapter, struct recv_buf *precvbuf)
+static void sd_rxhandler(struct adapter * padapter, struct recv_buf *precvbuf)
 {
 	struct recv_priv *precvpriv;
 	_queue *ppending_queue;
@@ -1007,7 +1009,7 @@ static void sd_rxhandler(PADAPTER padapter, struct recv_buf *precvbuf)
 	tasklet_schedule(&precvpriv->recv_tasklet);
 }
 
-void sd_int_dpc(PADAPTER padapter)
+void sd_int_dpc(struct adapter * padapter)
 {
 	PHAL_DATA_TYPE phal;
 	struct dvobj_priv *dvobj;
@@ -1141,7 +1143,7 @@ void sd_int_dpc(PADAPTER padapter)
 	}
 }
 
-void sd_int_hdl(PADAPTER padapter)
+void sd_int_hdl(struct adapter * padapter)
 {
 	PHAL_DATA_TYPE phal;
 
@@ -1185,7 +1187,7 @@ void sd_int_hdl(PADAPTER padapter)
 /*  */
 /* 	Created by Roger, 2011.01.28. */
 /*  */
-u8 HalQueryTxBufferStatus8723BSdio(PADAPTER padapter)
+u8 HalQueryTxBufferStatus8723BSdio(struct adapter * padapter)
 {
 	PHAL_DATA_TYPE phal;
 	u32 NumOfFreePage;
@@ -1214,7 +1216,7 @@ u8 HalQueryTxBufferStatus8723BSdio(PADAPTER padapter)
 /* 	Description: */
 /* 		Query SDIO Local register to get the current number of TX OQT Free Space. */
 /*  */
-u8 HalQueryTxOQTBufferStatus8723BSdio(PADAPTER padapter)
+u8 HalQueryTxOQTBufferStatus8723BSdio(struct adapter * padapter)
 {
 	HAL_DATA_TYPE *pHalData = GET_HAL_DATA(padapter);
 	pHalData->SdioTxOQTFreeSpace = SdioLocalCmd52Read1Byte(padapter, SDIO_REG_OQT_FREE_PG);
@@ -1222,7 +1224,7 @@ u8 HalQueryTxOQTBufferStatus8723BSdio(PADAPTER padapter)
 }
 
 #if defined(CONFIG_WOWLAN) || defined(CONFIG_AP_WOWLAN)
-u8 RecvOnePkt(PADAPTER padapter, u32 size)
+u8 RecvOnePkt(struct adapter * padapter, u32 size)
 {
 	struct recv_buf *precvbuf;
 	struct dvobj_priv *psddev;

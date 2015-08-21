@@ -15,6 +15,7 @@
 #define _SDIO_OPS_LINUX_C_
 
 #include <drv_types.h>
+#include <rtw_debug.h>
 
 static bool rtw_sdio_claim_host_needed(struct sdio_func *func)
 {
@@ -35,7 +36,7 @@ inline void rtw_sdio_set_irq_thd(struct dvobj_priv *dvobj, void * thd_hdl)
 
 u8 sd_f0_read8(struct intf_hdl *pintfhdl, u32 addr, s32 *err)
 {
-	PADAPTER padapter;
+	struct adapter * padapter;
 	struct dvobj_priv *psdiodev;
 	PSDIO_DATA psdio;
 
@@ -72,7 +73,7 @@ u8 sd_f0_read8(struct intf_hdl *pintfhdl, u32 addr, s32 *err)
  */
 s32 _sd_cmd52_read(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, u8 *pdata)
 {
-	PADAPTER padapter;
+	struct adapter * padapter;
 	struct dvobj_priv *psdiodev;
 	PSDIO_DATA psdio;
 
@@ -107,7 +108,7 @@ s32 _sd_cmd52_read(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, u8 *pdata)
  */
 s32 sd_cmd52_read(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, u8 *pdata)
 {
-	PADAPTER padapter;
+	struct adapter * padapter;
 	struct dvobj_priv *psdiodev;
 	PSDIO_DATA psdio;
 
@@ -142,7 +143,7 @@ s32 sd_cmd52_read(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, u8 *pdata)
  */
 s32 _sd_cmd52_write(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, u8 *pdata)
 {
-	PADAPTER padapter;
+	struct adapter * padapter;
 	struct dvobj_priv *psdiodev;
 	PSDIO_DATA psdio;
 
@@ -177,7 +178,7 @@ s32 _sd_cmd52_write(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, u8 *pdata)
  */
 s32 sd_cmd52_write(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, u8 *pdata)
 {
-	PADAPTER padapter;
+	struct adapter * padapter;
 	struct dvobj_priv *psdiodev;
 	PSDIO_DATA psdio;
 
@@ -207,7 +208,7 @@ s32 sd_cmd52_write(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, u8 *pdata)
 
 u8 sd_read8(struct intf_hdl *pintfhdl, u32 addr, s32 *err)
 {
-	PADAPTER padapter;
+	struct adapter * padapter;
 	struct dvobj_priv *psdiodev;
 	PSDIO_DATA psdio;
 
@@ -239,7 +240,7 @@ u8 sd_read8(struct intf_hdl *pintfhdl, u32 addr, s32 *err)
 
 u32 sd_read32(struct intf_hdl *pintfhdl, u32 addr, s32 *err)
 {
-	PADAPTER padapter;
+	struct adapter * padapter;
 	struct dvobj_priv *psdiodev;
 	PSDIO_DATA psdio;
 	u32 v = 0;
@@ -304,7 +305,7 @@ u32 sd_read32(struct intf_hdl *pintfhdl, u32 addr, s32 *err)
 
 void sd_write8(struct intf_hdl *pintfhdl, u32 addr, u8 v, s32 *err)
 {
-	PADAPTER padapter;
+	struct adapter * padapter;
 	struct dvobj_priv *psdiodev;
 	PSDIO_DATA psdio;
 	struct sdio_func *func;
@@ -333,7 +334,7 @@ void sd_write8(struct intf_hdl *pintfhdl, u32 addr, u8 v, s32 *err)
 
 void sd_write32(struct intf_hdl *pintfhdl, u32 addr, u32 v, s32 *err)
 {
-	PADAPTER padapter;
+	struct adapter * padapter;
 	struct dvobj_priv *psdiodev;
 	PSDIO_DATA psdio;
 	struct sdio_func *func;
@@ -409,7 +410,7 @@ void sd_write32(struct intf_hdl *pintfhdl, u32 addr, u32 v, s32 *err)
  */
 s32 _sd_read(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, void *pdata)
 {
-	PADAPTER padapter;
+	struct adapter * padapter;
 	struct dvobj_priv *psdiodev;
 	PSDIO_DATA psdio;
 
@@ -466,7 +467,7 @@ s32 _sd_read(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, void *pdata)
  */
 s32 sd_read(struct intf_hdl * pintfhdl, u32 addr, u32 cnt, void *pdata)
 {
-	PADAPTER padapter;
+	struct adapter * padapter;
 	struct dvobj_priv *psdiodev;
 	PSDIO_DATA psdio;
 
@@ -510,7 +511,7 @@ s32 sd_read(struct intf_hdl * pintfhdl, u32 addr, u32 cnt, void *pdata)
  */
 s32 _sd_write(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, void *pdata)
 {
-	PADAPTER padapter;
+	struct adapter * padapter;
 	struct dvobj_priv *psdiodev;
 	PSDIO_DATA psdio;
 
@@ -570,7 +571,7 @@ s32 _sd_write(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, void *pdata)
  */
 s32 sd_write(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, void *pdata)
 {
-	PADAPTER padapter;
+	struct adapter * padapter;
 	struct dvobj_priv *psdiodev;
 	PSDIO_DATA psdio;
 	struct sdio_func *func;

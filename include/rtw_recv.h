@@ -52,7 +52,7 @@ extern u8 rtw_bridge_tunnel_header[];
 /* for Rx reordering buffer control */
 struct recv_reorder_ctrl
 {
-	_adapter	*padapter;
+	struct adapter	*padapter;
 	u8 enable;
 	u16 indicate_seq;/* wstart_b, init_value = 0xffff */
 	u16 wend_b;
@@ -239,7 +239,7 @@ struct recv_priv
 
 	uint free_recvframe_cnt;
 
-	_adapter	*adapter;
+	struct adapter	*adapter;
 
 	u32	bIsAnyNonBEPkts;
 	u64	rx_bytes;
@@ -318,7 +318,7 @@ struct recv_buf
 
 	u32	ref_cnt;
 
-	PADAPTER adapter;
+	struct adapter * adapter;
 
 	u8	*pbuf;
 	u8	*pallocated_buf;
@@ -360,7 +360,7 @@ struct recv_frame_hdr
 	_pkt *pkt_newalloc;
 #endif /*  CONFIG_BSD_RX_USE_MBUF */
 
-	_adapter  *adapter;
+	struct adapter  *adapter;
 
 	u8 fragcnt;
 
@@ -414,7 +414,7 @@ extern int _rtw_enqueue_recvframe(union recv_frame *precvframe, _queue *queue);
 extern int rtw_enqueue_recvframe(union recv_frame *precvframe, _queue *queue);
 
 extern void rtw_free_recvframe_queue(_queue *pframequeue,  _queue *pfree_recv_queue);
-u32 rtw_free_uc_swdec_pending_queue(_adapter *adapter);
+u32 rtw_free_uc_swdec_pending_queue(struct adapter *adapter);
 
 sint rtw_enqueue_recvbuf_to_head(struct recv_buf *precvbuf, _queue *queue);
 sint rtw_enqueue_recvbuf(struct recv_buf *precvbuf, _queue *queue);
@@ -557,6 +557,6 @@ struct sta_info;
 
 extern void _rtw_init_sta_recv_priv(struct sta_recv_priv *psta_recvpriv);
 
-extern void  mgt_dispatcher(_adapter *padapter, union recv_frame *precv_frame);
+extern void  mgt_dispatcher(struct adapter *padapter, union recv_frame *precv_frame);
 
 #endif

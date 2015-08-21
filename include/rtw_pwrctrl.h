@@ -335,43 +335,43 @@ struct pwrctrl_priv
 #define rtw_set_pwr_state_check_timer(pwrctl) \
 	_rtw_set_pwr_state_check_timer((pwrctl), (pwrctl)->pwr_state_check_interval)
 
-extern void rtw_init_pwrctrl_priv(_adapter *adapter);
-extern void rtw_free_pwrctrl_priv(_adapter * adapter);
+extern void rtw_init_pwrctrl_priv(struct adapter *adapter);
+extern void rtw_free_pwrctrl_priv(struct adapter * adapter);
 
-s32 rtw_register_task_alive(PADAPTER, u32 task);
-void rtw_unregister_task_alive(PADAPTER, u32 task);
-extern s32 rtw_register_tx_alive(PADAPTER padapter);
-extern void rtw_unregister_tx_alive(PADAPTER padapter);
-extern s32 rtw_register_cmd_alive(PADAPTER padapter);
-extern void rtw_unregister_cmd_alive(PADAPTER padapter);
-extern void cpwm_int_hdl(PADAPTER padapter, struct reportpwrstate_parm *preportpwrstate);
-extern void LPS_Leave_check(PADAPTER padapter);
+s32 rtw_register_task_alive(struct adapter *, u32 task);
+void rtw_unregister_task_alive(struct adapter *, u32 task);
+extern s32 rtw_register_tx_alive(struct adapter * padapter);
+extern void rtw_unregister_tx_alive(struct adapter * padapter);
+extern s32 rtw_register_cmd_alive(struct adapter * padapter);
+extern void rtw_unregister_cmd_alive(struct adapter * padapter);
+extern void cpwm_int_hdl(struct adapter * padapter, struct reportpwrstate_parm *preportpwrstate);
+extern void LPS_Leave_check(struct adapter * padapter);
 
-extern void LeaveAllPowerSaveMode(PADAPTER Adapter);
-extern void LeaveAllPowerSaveModeDirect(PADAPTER Adapter);
-void _ips_enter(_adapter * padapter);
-void ips_enter(_adapter * padapter);
-int _ips_leave(_adapter * padapter);
-int ips_leave(_adapter * padapter);
+extern void LeaveAllPowerSaveMode(struct adapter * Adapter);
+extern void LeaveAllPowerSaveModeDirect(struct adapter * Adapter);
+void _ips_enter(struct adapter * padapter);
+void ips_enter(struct adapter * padapter);
+int _ips_leave(struct adapter * padapter);
+int ips_leave(struct adapter * padapter);
 
-void rtw_ps_processor(_adapter *padapter);
+void rtw_ps_processor(struct adapter *padapter);
 
-s32 LPS_RF_ON_check(PADAPTER padapter, u32 delay_ms);
-void LPS_Enter(PADAPTER padapter, const char *msg);
-void LPS_Leave(PADAPTER padapter, const char *msg);
-void traffic_check_for_leave_lps(PADAPTER padapter, u8 tx, u32 tx_packets);
-void rtw_set_ps_mode(PADAPTER padapter, u8 ps_mode, u8 smart_ps, u8 bcn_ant_mode, const char *msg);
-void rtw_set_rpwm(_adapter * padapter, u8 val8);
+s32 LPS_RF_ON_check(struct adapter * padapter, u32 delay_ms);
+void LPS_Enter(struct adapter * padapter, const char *msg);
+void LPS_Leave(struct adapter * padapter, const char *msg);
+void traffic_check_for_leave_lps(struct adapter * padapter, u8 tx, u32 tx_packets);
+void rtw_set_ps_mode(struct adapter * padapter, u8 ps_mode, u8 smart_ps, u8 bcn_ant_mode, const char *msg);
+void rtw_set_rpwm(struct adapter * padapter, u8 val8);
 
-void rtw_set_ips_deny(_adapter *padapter, u32 ms);
-int _rtw_pwr_wakeup(_adapter *padapter, u32 ips_deffer_ms, const char *caller);
+void rtw_set_ips_deny(struct adapter *padapter, u32 ms);
+int _rtw_pwr_wakeup(struct adapter *padapter, u32 ips_deffer_ms, const char *caller);
 #define rtw_pwr_wakeup(adapter) _rtw_pwr_wakeup(adapter, RTW_PWR_STATE_CHK_INTERVAL, __func__)
 #define rtw_pwr_wakeup_ex(adapter, ips_deffer_ms) _rtw_pwr_wakeup(adapter, ips_deffer_ms, __func__)
-int rtw_pm_set_ips(_adapter *padapter, u8 mode);
-int rtw_pm_set_lps(_adapter *padapter, u8 mode);
+int rtw_pm_set_ips(struct adapter *padapter, u8 mode);
+int rtw_pm_set_lps(struct adapter *padapter, u8 mode);
 
-void rtw_ps_deny(PADAPTER padapter, PS_DENY_REASON reason);
-void rtw_ps_deny_cancel(PADAPTER padapter, PS_DENY_REASON reason);
-u32 rtw_ps_deny_get(PADAPTER padapter);
+void rtw_ps_deny(struct adapter * padapter, PS_DENY_REASON reason);
+void rtw_ps_deny_cancel(struct adapter * padapter, PS_DENY_REASON reason);
+u32 rtw_ps_deny_get(struct adapter * padapter);
 
 #endif  /* __RTL871X_PWRCTRL_H_ */

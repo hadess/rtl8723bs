@@ -28,6 +28,8 @@ Major Change History:
 	2011-07-07 Roger            Create.
 
 --*/
+#include <drv_types.h>
+#include <rtw_debug.h>
 #include <HalPwrSeqCmd.h>
 
 
@@ -41,7 +43,7 @@ Major Change History:
 /* 	2011.07.07, added by Roger. */
 /*  */
 u8 HalPwrSeqCmdParsing(
-	PADAPTER		padapter,
+	struct adapter *		padapter,
 	u8				CutVersion,
 	u8				FabVersion,
 	u8				InterfaceType,

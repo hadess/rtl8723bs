@@ -15,6 +15,7 @@
 #define _HCI_INTF_C_
 
 #include <drv_types.h>
+#include <rtw_debug.h>
 #include <linux/jiffies.h>
 
 #ifndef dev_to_sdio_func
@@ -139,7 +140,7 @@ static void sdio_free_irq(struct dvobj_priv *dvobj)
 extern unsigned int oob_irq;
 static irqreturn_t gpio_hostwakeup_irq_thread(int irq, void *data)
 {
-	PADAPTER padapter = (PADAPTER)data;
+	struct adapter * padapter = (struct adapter *)data;
 	DBG_871X_LEVEL(_drv_always_, "gpio_hostwakeup_irq_thread\n");
 	/* Disable interrupt before calling handler */
 	/* disable_irq_nosync(oob_irq); */
@@ -147,7 +148,7 @@ static irqreturn_t gpio_hostwakeup_irq_thread(int irq, void *data)
 	return IRQ_HANDLED;
 }
 
-static u8 gpio_hostwakeup_alloc_irq(PADAPTER padapter)
+static u8 gpio_hostwakeup_alloc_irq(struct adapter * padapter)
 {
 	int err;
 	if (oob_irq == 0) {
@@ -173,7 +174,7 @@ static u8 gpio_hostwakeup_alloc_irq(PADAPTER padapter)
 	return _SUCCESS;
 }
 
-static void gpio_hostwakeup_free_irq(PADAPTER padapter)
+static void gpio_hostwakeup_free_irq(struct adapter * padapter)
 {
 	if (oob_irq == 0)
 		return;
@@ -299,7 +300,7 @@ static void sdio_dvobj_deinit(struct sdio_func *func)
 	return;
 }
 
-void rtw_set_hal_ops(PADAPTER padapter)
+void rtw_set_hal_ops(struct adapter * padapter)
 {
 	/* alloc memory for HAL DATA */
 	rtw_hal_data_init(padapter);
@@ -307,7 +308,7 @@ void rtw_set_hal_ops(PADAPTER padapter)
 	rtl8723bs_set_hal_ops(padapter);
 }
 
-static void sd_intf_start(PADAPTER padapter)
+static void sd_intf_start(struct adapter * padapter)
 {
 	if (padapter == NULL) {
 		DBG_8192C(KERN_ERR "%s: padapter is NULL!\n", __func__);
@@ -318,7 +319,7 @@ static void sd_intf_start(PADAPTER padapter)
 	rtw_hal_enable_interrupt(padapter);
 }
 
-static void sd_intf_stop(PADAPTER padapter)
+static void sd_intf_stop(struct adapter * padapter)
 {
 	if (padapter == NULL) {
 		DBG_8192C(KERN_ERR "%s: padapter is NULL!\n", __func__);
@@ -330,13 +331,13 @@ static void sd_intf_stop(PADAPTER padapter)
 }
 
 
-static _adapter *rtw_sdio_if1_init(struct dvobj_priv *dvobj, const struct sdio_device_id  *pdid)
+static struct adapter *rtw_sdio_if1_init(struct dvobj_priv *dvobj, const struct sdio_device_id  *pdid)
 {
 	int status = _FAIL;
 	struct net_device *pnetdev;
-	PADAPTER padapter = NULL;
+	struct adapter * padapter = NULL;
 
-	if ((padapter = (_adapter *)vzalloc(sizeof(*padapter))) == NULL) {
+	if ((padapter = (struct adapter *)vzalloc(sizeof(*padapter))) == NULL) {
 		goto exit;
 	}
 
@@ -433,7 +434,7 @@ exit:
 	return padapter;
 }
 
-static void rtw_sdio_if1_deinit(_adapter *if1)
+static void rtw_sdio_if1_deinit(struct adapter *if1)
 {
 	struct net_device *pnetdev = if1->pnetdev;
 	struct mlme_priv *pmlmepriv = &if1->mlmepriv;
@@ -478,7 +479,7 @@ static int rtw_drv_init(
 	const struct sdio_device_id *id)
 {
 	int status = _FAIL;
-	PADAPTER if1 = NULL, if2 = NULL;
+	struct adapter *if1 = NULL, *if2 = NULL;
 	struct dvobj_priv *dvobj;
 
 	RT_TRACE(_module_hci_intfs_c_, _drv_info_,
@@ -491,7 +492,7 @@ static int rtw_drv_init(
 	}
 
 	if ((if1 = rtw_sdio_if1_init(dvobj, id)) == NULL) {
-		DBG_871X("rtw_init_primary_adapter Failed!\n");
+		DBG_871X("rtw_init_primarystruct adapter Failed!\n");
 		goto free_dvobj;
 	}
 
@@ -527,7 +528,7 @@ exit:
 static void rtw_dev_remove(struct sdio_func *func)
 {
 	struct dvobj_priv *dvobj = sdio_get_drvdata(func);
-	PADAPTER padapter = dvobj->if1;
+	struct adapter * padapter = dvobj->if1;
 
 	RT_TRACE(_module_hci_intfs_c_, _drv_notice_, ("+rtw_dev_remove\n"));
 
@@ -572,7 +573,7 @@ static int rtw_sdio_suspend(struct device *dev)
 	struct sdio_func *func =dev_to_sdio_func(dev);
 	struct dvobj_priv *psdpriv = sdio_get_drvdata(func);
 	struct pwrctrl_priv *pwrpriv = dvobj_to_pwrctl(psdpriv);
-	_adapter *padapter = psdpriv->if1;
+	struct adapter *padapter = psdpriv->if1;
 	struct debug_priv *pdbgpriv = &psdpriv->drv_dbg;
 	int ret = 0;
 
@@ -614,7 +615,7 @@ exit:
 #endif
 	return ret;
 }
-static int rtw_resume_process(_adapter *padapter)
+static int rtw_resume_process(struct adapter *padapter)
 {
 	struct pwrctrl_priv *pwrpriv = adapter_to_pwrctl(padapter);
 	struct dvobj_priv *psdpriv = padapter->dvobj;
@@ -635,7 +636,7 @@ static int rtw_sdio_resume(struct device *dev)
 	struct sdio_func *func =dev_to_sdio_func(dev);
 	struct dvobj_priv *psdpriv = sdio_get_drvdata(func);
 	struct pwrctrl_priv *pwrpriv = dvobj_to_pwrctl(psdpriv);
-	_adapter *padapter = psdpriv->if1;
+	struct adapter *padapter = psdpriv->if1;
 	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
 	int ret = 0;
 	struct debug_priv *pdbgpriv = &psdpriv->drv_dbg;

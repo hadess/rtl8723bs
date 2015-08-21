@@ -20,6 +20,7 @@
 #define  _RTW_SECURITY_C_
 
 #include <drv_types.h>
+#include <rtw_debug.h>
 
 static const char *_security_type_str[] = {
 	"N/A",
@@ -224,7 +225,7 @@ static __le32 getcrc32(u8 *buf, sint len)
 /*
 	Need to consider the fragment  situation
 */
-void rtw_wep_encrypt(_adapter *padapter, u8 *pxmitframe)
+void rtw_wep_encrypt(struct adapter *padapter, u8 *pxmitframe)
 {																	/*  exclude ICV */
 
 	unsigned char	crc[4];
@@ -289,7 +290,7 @@ void rtw_wep_encrypt(_adapter *padapter, u8 *pxmitframe)
 	}
 }
 
-void rtw_wep_decrypt(_adapter  *padapter, u8 *precvframe)
+void rtw_wep_decrypt(struct adapter  *padapter, u8 *precvframe)
 {
 	/*  exclude ICV */
 	u8	crc[4];
@@ -674,7 +675,7 @@ static void phase2(u8 *rc4key, const u8 *tk, const u16 *p1k, u16 iv16)
 
 
 /* The hlen isn't include the IV */
-u32	rtw_tkip_encrypt(_adapter *padapter, u8 *pxmitframe)
+u32	rtw_tkip_encrypt(struct adapter *padapter, u8 *pxmitframe)
 {																	/*  exclude ICV */
 	u16	pnl;
 	u32	pnh;
@@ -789,7 +790,7 @@ u32	rtw_tkip_encrypt(_adapter *padapter, u8 *pxmitframe)
 
 
 /* The hlen isn't include the IV */
-u32 rtw_tkip_decrypt(_adapter *padapter, u8 *precvframe)
+u32 rtw_tkip_decrypt(struct adapter *padapter, u8 *precvframe)
 {																	/*  exclude ICV */
 	u16 pnl;
 	u32 pnh;
@@ -1559,7 +1560,7 @@ static sint aes_cipher(u8 *key, uint	hdrlen,
 	return _SUCCESS;
 }
 
-u32	rtw_aes_encrypt(_adapter *padapter, u8 *pxmitframe)
+u32	rtw_aes_encrypt(struct adapter *padapter, u8 *pxmitframe)
 {	/*  exclude ICV */
 
 
@@ -1896,7 +1897,7 @@ static sint aes_decipher(u8 *key, uint	hdrlen,
 	return res;
 }
 
-u32	rtw_aes_decrypt(_adapter *padapter, u8 *precvframe)
+u32	rtw_aes_decrypt(struct adapter *padapter, u8 *precvframe)
 {	/*  exclude ICV */
 
 
@@ -1992,7 +1993,7 @@ exit:
 	return res;
 }
 
-u32	rtw_BIP_verify(_adapter *padapter, u8 *precvframe)
+u32	rtw_BIP_verify(struct adapter *padapter, u8 *precvframe)
 {
 	struct rx_pkt_attrib *pattrib = &((union recv_frame *)precvframe)->u.hdr.attrib;
 	u8 *pframe;
@@ -2450,7 +2451,7 @@ int omac1_aes_128(u8 *key, u8 *data, size_t data_len, u8 *mac)
 }
 
 /* Restore HW wep key setting according to key_mask */
-void rtw_sec_restore_wep_key(_adapter *adapter)
+void rtw_sec_restore_wep_key(struct adapter *adapter)
 {
 	struct security_priv* securitypriv =&(adapter->securitypriv);
 	sint keyid;
@@ -2467,7 +2468,7 @@ void rtw_sec_restore_wep_key(_adapter *adapter)
 	}
 }
 
-u8 rtw_handle_tkip_countermeasure(_adapter * adapter, const char *caller)
+u8 rtw_handle_tkip_countermeasure(struct adapter * adapter, const char *caller)
 {
 	struct security_priv* securitypriv =&(adapter->securitypriv);
 	u8 status = _SUCCESS;

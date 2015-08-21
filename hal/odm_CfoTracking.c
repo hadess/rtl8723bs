@@ -24,7 +24,7 @@ odm_SetCrystalCap(
 	PDM_ODM_T					pDM_Odm = (PDM_ODM_T)pDM_VOID;
 	PCFO_TRACKING				pCfoTrack = &pDM_Odm->DM_CfoTrack;
 	bool					bEEPROMCheck;
-	PADAPTER					Adapter = pDM_Odm->Adapter;
+	struct adapter *					Adapter = pDM_Odm->Adapter;
 	HAL_DATA_TYPE				*pHalData = GET_HAL_DATA(Adapter);
 
 	bEEPROMCheck = (pHalData->EEPROMVersion >= 0x01)?true:false;
@@ -49,7 +49,7 @@ odm_GetDefaultCrytaltalCap(
 	PDM_ODM_T					pDM_Odm = (PDM_ODM_T)pDM_VOID;
 	u1Byte						CrystalCap = 0x20;
 
-	PADAPTER					Adapter = pDM_Odm->Adapter;
+	struct adapter *					Adapter = pDM_Odm->Adapter;
 	HAL_DATA_TYPE				*pHalData = GET_HAL_DATA(Adapter);
 
 	CrystalCap = pHalData->CrystalCap;

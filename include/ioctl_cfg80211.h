@@ -77,7 +77,7 @@ struct rtw_wdev_priv
 {
 	struct wireless_dev *rtw_wdev;
 
-	_adapter *padapter;
+	struct adapter *padapter;
 
 	struct cfg80211_scan_request *scan_request;
 	_lock scan_req_lock;
@@ -97,31 +97,31 @@ struct rtw_wdev_priv
 	bool power_mgmt;
 };
 
-#define wiphy_to_adapter(x) (*((_adapter **)wiphy_priv(x)))
+#define wiphy_to_adapter(x) (*((struct adapter **)wiphy_priv(x)))
 
 #define wdev_to_ndev(w) ((w)->netdev)
 
-int rtw_wdev_alloc(_adapter *padapter, struct device *dev);
+int rtw_wdev_alloc(struct adapter *padapter, struct device *dev);
 void rtw_wdev_free(struct wireless_dev *wdev);
 void rtw_wdev_unregister(struct wireless_dev *wdev);
 
-void rtw_cfg80211_init_wiphy(_adapter *padapter);
+void rtw_cfg80211_init_wiphy(struct adapter *padapter);
 
-void rtw_cfg80211_unlink_bss(_adapter *padapter, struct wlan_network *pnetwork);
-void rtw_cfg80211_surveydone_event_callback(_adapter *padapter);
-struct cfg80211_bss *rtw_cfg80211_inform_bss(_adapter *padapter, struct wlan_network *pnetwork);
-int rtw_cfg80211_check_bss(_adapter *padapter);
-void rtw_cfg80211_ibss_indicate_connect(_adapter *padapter);
-void rtw_cfg80211_indicate_connect(_adapter *padapter);
-void rtw_cfg80211_indicate_disconnect(_adapter *padapter);
-void rtw_cfg80211_indicate_scan_done(_adapter *adapter, bool aborted);
+void rtw_cfg80211_unlink_bss(struct adapter *padapter, struct wlan_network *pnetwork);
+void rtw_cfg80211_surveydone_event_callback(struct adapter *padapter);
+struct cfg80211_bss *rtw_cfg80211_inform_bss(struct adapter *padapter, struct wlan_network *pnetwork);
+int rtw_cfg80211_check_bss(struct adapter *padapter);
+void rtw_cfg80211_ibss_indicate_connect(struct adapter *padapter);
+void rtw_cfg80211_indicate_connect(struct adapter *padapter);
+void rtw_cfg80211_indicate_disconnect(struct adapter *padapter);
+void rtw_cfg80211_indicate_scan_done(struct adapter *adapter, bool aborted);
 
-void rtw_cfg80211_indicate_sta_assoc(_adapter *padapter, u8 *pmgmt_frame, uint frame_len);
-void rtw_cfg80211_indicate_sta_disassoc(_adapter *padapter, unsigned char *da, unsigned short reason);
+void rtw_cfg80211_indicate_sta_assoc(struct adapter *padapter, u8 *pmgmt_frame, uint frame_len);
+void rtw_cfg80211_indicate_sta_disassoc(struct adapter *padapter, unsigned char *da, unsigned short reason);
 
-void rtw_cfg80211_rx_action(_adapter *adapter, u8 *frame, uint frame_len, const char*msg);
+void rtw_cfg80211_rx_action(struct adapter *adapter, u8 *frame, uint frame_len, const char*msg);
 
-bool rtw_cfg80211_pwr_mgmt(_adapter *adapter);
+bool rtw_cfg80211_pwr_mgmt(struct adapter *adapter);
 
 #define rtw_cfg80211_rx_mgmt(adapter, freq, sig_dbm, buf, len, gfp) cfg80211_rx_mgmt((adapter)->rtw_wdev, freq, sig_dbm, buf, len, 0)
 #define rtw_cfg80211_send_rx_assoc(adapter, bss, buf, len) cfg80211_send_rx_assoc((adapter)->pnetdev, bss, buf, len)

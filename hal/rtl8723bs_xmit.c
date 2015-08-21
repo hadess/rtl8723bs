@@ -14,9 +14,11 @@
  ******************************************************************************/
 #define _RTL8723BS_XMIT_C_
 
+#include <drv_types.h>
+#include <rtw_debug.h>
 #include <rtl8723b_hal.h>
 
-static u8 rtw_sdio_wait_enough_TxOQT_space(PADAPTER padapter, u8 agg_num)
+static u8 rtw_sdio_wait_enough_TxOQT_space(struct adapter * padapter, u8 agg_num)
 {
 	u32 n = 0;
 	HAL_DATA_TYPE *pHalData = GET_HAL_DATA(padapter);
@@ -49,13 +51,13 @@ static u8 rtw_sdio_wait_enough_TxOQT_space(PADAPTER padapter, u8 agg_num)
 	return true;
 }
 
-static s32 rtl8723_dequeue_writeport(PADAPTER padapter)
+static s32 rtl8723_dequeue_writeport(struct adapter * padapter)
 {
 	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
 	struct xmit_priv *pxmitpriv = &padapter->xmitpriv;
 	struct dvobj_priv	*pdvobjpriv = adapter_to_dvobj(padapter);
 	struct xmit_buf *pxmitbuf;
-	PADAPTER pri_padapter = padapter;
+	struct adapter * pri_padapter = padapter;
 	s32 ret = 0;
 	u8	PageIdx = 0;
 	u32	deviceId;
@@ -142,7 +144,7 @@ free_xmitbuf:
  *	_SUCCESS	ok
  *	_FAIL		something error
  */
-s32 rtl8723bs_xmit_buf_handler(PADAPTER padapter)
+s32 rtl8723bs_xmit_buf_handler(struct adapter * padapter)
 {
 	struct xmit_priv *pxmitpriv;
 	u8	queue_empty, queue_pending;
@@ -193,7 +195,7 @@ s32 rtl8723bs_xmit_buf_handler(PADAPTER padapter)
  *	-1	Hardware resource(TX FIFO) not ready
  *	-2	Software resource(xmitbuf) not ready
  */
-static s32 xmit_xmitframes(PADAPTER padapter, struct xmit_priv *pxmitpriv)
+static s32 xmit_xmitframes(struct adapter * padapter, struct xmit_priv *pxmitpriv)
 {
 	s32 err, ret;
 	u32 k = 0;
@@ -392,7 +394,7 @@ static s32 xmit_xmitframes(PADAPTER padapter, struct xmit_priv *pxmitpriv)
  *	_SUCCESS	ok
  *	_FAIL		something error
  */
-static s32 rtl8723bs_xmit_handler(PADAPTER padapter)
+static s32 rtl8723bs_xmit_handler(struct adapter * padapter)
 {
 	struct xmit_priv *pxmitpriv;
 	s32 ret;
@@ -447,13 +449,13 @@ next:
 int rtl8723bs_xmit_thread(void * context)
 {
 	s32 ret;
-	PADAPTER padapter;
+	struct adapter * padapter;
 	struct xmit_priv *pxmitpriv;
 	u8 thread_name[20] = "RTWHALXT";
 
 
 	ret = _SUCCESS;
-	padapter = (PADAPTER)context;
+	padapter = (struct adapter *)context;
 	pxmitpriv = &padapter->xmitpriv;
 
 	rtw_sprintf(thread_name, 20, "%s-"ADPT_FMT, thread_name, ADPT_ARG(padapter));
@@ -479,7 +481,7 @@ int rtl8723bs_xmit_thread(void * context)
 	thread_exit();
 }
 
-s32 rtl8723bs_mgnt_xmit(PADAPTER padapter, struct xmit_frame *pmgntframe)
+s32 rtl8723bs_mgnt_xmit(struct adapter * padapter, struct xmit_frame *pmgntframe)
 {
 	s32 ret = _SUCCESS;
 	struct pkt_attrib *pattrib;
@@ -531,7 +533,7 @@ s32 rtl8723bs_mgnt_xmit(PADAPTER padapter, struct xmit_frame *pmgntframe)
  *	true	dump packet directly ok
  *	false	enqueue, temporary can't transmit packets to hardware
  */
-s32 rtl8723bs_hal_xmit(PADAPTER padapter, struct xmit_frame *pxmitframe)
+s32 rtl8723bs_hal_xmit(struct adapter * padapter, struct xmit_frame *pxmitframe)
 {
 	struct xmit_priv *pxmitpriv;
 	s32 err;
@@ -565,7 +567,7 @@ s32 rtl8723bs_hal_xmit(PADAPTER padapter, struct xmit_frame *pxmitframe)
 	return false;
 }
 
-s32	rtl8723bs_hal_xmitframe_enqueue(_adapter *padapter, struct xmit_frame *pxmitframe)
+s32	rtl8723bs_hal_xmitframe_enqueue(struct adapter *padapter, struct xmit_frame *pxmitframe)
 {
 	struct xmit_priv	*pxmitpriv = &padapter->xmitpriv;
 	s32 err;
@@ -595,7 +597,7 @@ s32	rtl8723bs_hal_xmitframe_enqueue(_adapter *padapter, struct xmit_frame *pxmit
  *	_FAIL		start thread fail
  *
  */
-s32 rtl8723bs_init_xmit_priv(PADAPTER padapter)
+s32 rtl8723bs_init_xmit_priv(struct adapter * padapter)
 {
 	struct xmit_priv *xmitpriv = &padapter->xmitpriv;
 	PHAL_DATA_TYPE phal;
@@ -610,7 +612,7 @@ s32 rtl8723bs_init_xmit_priv(PADAPTER padapter)
 	return _SUCCESS;
 }
 
-void rtl8723bs_free_xmit_priv(PADAPTER padapter)
+void rtl8723bs_free_xmit_priv(struct adapter * padapter)
 {
 	PHAL_DATA_TYPE phal;
 	struct xmit_priv *pxmitpriv;

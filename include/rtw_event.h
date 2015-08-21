@@ -84,7 +84,7 @@ struct wmm_event
 
 struct fwevent {
 	u32	parmsize;
-	void (*event_callback)(_adapter *dev, u8 *pbuf);
+	void (*event_callback)(struct adapter *dev, u8 *pbuf);
 };
 
 

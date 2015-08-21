@@ -269,11 +269,11 @@
 void dump_drv_version(void *sel);
 void dump_log_level(void *sel);
 
-void sd_f0_reg_dump(void *sel, _adapter *adapter);
+void sd_f0_reg_dump(void *sel, struct adapter *adapter);
 
-void mac_reg_dump(void *sel, _adapter *adapter);
-void bb_reg_dump(void *sel, _adapter *adapter);
-void rf_reg_dump(void *sel, _adapter *adapter);
+void mac_reg_dump(void *sel, struct adapter *adapter);
+void bb_reg_dump(void *sel, struct adapter *adapter);
+void rf_reg_dump(void *sel, struct adapter *adapter);
 
 #ifdef CONFIG_PROC_DEBUG
 ssize_t proc_set_write_reg(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data);

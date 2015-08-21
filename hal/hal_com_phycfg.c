@@ -15,11 +15,12 @@
 #define _HAL_COM_PHYCFG_C_
 
 #include <drv_types.h>
+#include <rtw_debug.h>
 #include <hal_data.h>
 
 u8
 PHY_GetTxPowerByRateBase(
-	IN	PADAPTER		Adapter,
+	IN	struct adapter *		Adapter,
 	IN	u8				Band,
 	IN	u8				RfPath,
 	IN	u8				TxNum,
@@ -121,7 +122,7 @@ PHY_GetTxPowerByRateBase(
 
 static void
 phy_SetTxPowerByRateBase(
-	IN	PADAPTER		Adapter,
+	IN	struct adapter *		Adapter,
 	IN	u8				Band,
 	IN	u8				RfPath,
 	IN	RATE_SECTION	RateSection,
@@ -220,7 +221,7 @@ phy_SetTxPowerByRateBase(
 
 static void
 phy_StoreTxPowerByRateBase(
-	IN	PADAPTER	pAdapter
+	IN	struct adapter *	pAdapter
 	)
 {
 	u8	path, base;
@@ -295,7 +296,7 @@ phy_StoreTxPowerByRateBase(
 
 u8
 PHY_GetRateSectionIndexOfTxPowerByRate(
-	IN	PADAPTER	pAdapter,
+	IN	struct adapter *	pAdapter,
 	IN	u32			RegAddr,
 	IN	u32			BitMask
 	)
@@ -340,7 +341,7 @@ PHY_GetRateSectionIndexOfTxPowerByRate(
 
 void
 PHY_GetRateValuesOfTxPowerByRate(
-	IN	PADAPTER	pAdapter,
+	IN	struct adapter *	pAdapter,
 	IN	u32			RegAddr,
 	IN	u32			BitMask,
 	IN	u32			Value,
@@ -757,7 +758,7 @@ PHY_GetRateValuesOfTxPowerByRate(
 
 static void
 PHY_StoreTxPowerByRateNew(
-	IN	PADAPTER	pAdapter,
+	IN	struct adapter *	pAdapter,
 	IN	u32			Band,
 	IN	u32			RfPath,
 	IN	u32			TxNum,
@@ -804,7 +805,7 @@ PHY_StoreTxPowerByRateNew(
 
 static void
 PHY_StoreTxPowerByRateOld(
-	IN	PADAPTER		pAdapter,
+	IN	struct adapter *		pAdapter,
 	IN	u32				RegAddr,
 	IN	u32				BitMask,
 	IN	u32				Data
@@ -820,7 +821,7 @@ PHY_StoreTxPowerByRateOld(
 
 void
 PHY_InitTxPowerByRate(
-	IN	PADAPTER	pAdapter
+	IN	struct adapter *	pAdapter
 	)
 {
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
@@ -835,7 +836,7 @@ PHY_InitTxPowerByRate(
 
 void
 PHY_StoreTxPowerByRate(
-	IN	PADAPTER	pAdapter,
+	IN	struct adapter *	pAdapter,
 	IN	u32			Band,
 	IN	u32			RfPath,
 	IN	u32			TxNum,
@@ -867,7 +868,7 @@ PHY_StoreTxPowerByRate(
 
 static void
 phy_ConvertTxPowerByRateInDbmToRelativeValues(
-	IN	PADAPTER	pAdapter
+	IN	struct adapter *	pAdapter
 	)
 {
 	u8			base = 0, i = 0, value = 0,
@@ -968,7 +969,7 @@ phy_ConvertTxPowerByRateInDbmToRelativeValues(
   */
 void
 PHY_TxPowerByRateConfiguration(
-	IN  PADAPTER			pAdapter
+	IN  struct adapter *			pAdapter
 	)
 {
 	phy_StoreTxPowerByRateBase(pAdapter);
@@ -977,7 +978,7 @@ PHY_TxPowerByRateConfiguration(
 
 void
 PHY_SetTxPowerIndexByRateSection(
-	IN	PADAPTER		pAdapter,
+	IN	struct adapter *		pAdapter,
 	IN	u8				RFPath,
 	IN	u8				Channel,
 	IN	u8				RateSection
@@ -1102,7 +1103,7 @@ phy_GetChnlIndex(
 
 u8
 PHY_GetTxPowerIndexBase(
-	IN	PADAPTER		pAdapter,
+	IN	struct adapter *		pAdapter,
 	IN	u8				RFPath,
 	IN	u8				Rate,
 	IN	CHANNEL_WIDTH	BandWidth,
@@ -1282,7 +1283,7 @@ PHY_GetTxPowerIndexBase(
 
 s8
 PHY_GetTxPowerTrackingOffset(
-	PADAPTER	pAdapter,
+	struct adapter *	pAdapter,
 	u8			RFPath,
 	u8			Rate
 	)
@@ -1411,7 +1412,7 @@ PHY_GetRateIndexOfTxPowerByRate(
 
 s8
 PHY_GetTxPowerByRate(
-	IN	PADAPTER	pAdapter,
+	IN	struct adapter *	pAdapter,
 	IN	u8			Band,
 	IN	u8			RFPath,
 	IN	u8			TxNum,
@@ -1455,7 +1456,7 @@ PHY_GetTxPowerByRate(
 
 void
 PHY_SetTxPowerByRate(
-	IN	PADAPTER	pAdapter,
+	IN	struct adapter *	pAdapter,
 	IN	u8			Band,
 	IN	u8			RFPath,
 	IN	u8			TxNum,
@@ -1492,7 +1493,7 @@ PHY_SetTxPowerByRate(
 
 void
 PHY_SetTxPowerLevelByPath(
-	IN	PADAPTER	Adapter,
+	IN	struct adapter *	Adapter,
 	IN	u8			channel,
 	IN	u8			path
 	)
@@ -1517,7 +1518,7 @@ PHY_SetTxPowerLevelByPath(
 
 void
 PHY_SetTxPowerIndexByRateArray(
-	IN	PADAPTER			pAdapter,
+	IN	struct adapter *			pAdapter,
 	IN	u8					RFPath,
 	IN	CHANNEL_WIDTH		BandWidth,
 	IN	u8					Channel,
@@ -1588,7 +1589,7 @@ phy_GetChannelIndexOfTxPowerLimit(
 
 s8
 PHY_GetTxPowerLimit(
-	IN	PADAPTER			Adapter,
+	IN	struct adapter *			Adapter,
 	IN	u32					RegPwrTblSel,
 	IN	BAND_TYPE			Band,
 	IN	CHANNEL_WIDTH		Bandwidth,
@@ -1787,7 +1788,7 @@ PHY_GetTxPowerLimit(
 
 static void
 phy_CrossReferenceHTAndVHTTxPowerLimit(
-	IN	PADAPTER			pAdapter
+	IN	struct adapter *			pAdapter
 	)
 {
 	HAL_DATA_TYPE		*pHalData = GET_HAL_DATA(pAdapter);
@@ -1865,7 +1866,7 @@ phy_CrossReferenceHTAndVHTTxPowerLimit(
 
 void
 PHY_ConvertTxPowerLimitToPowerIndex(
-	IN	PADAPTER			Adapter
+	IN	struct adapter *			Adapter
 	)
 {
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
@@ -1923,7 +1924,7 @@ PHY_ConvertTxPowerLimitToPowerIndex(
 
 void
 PHY_InitTxPowerLimit(
-	IN	PADAPTER		Adapter
+	IN	struct adapter *		Adapter
 	)
 {
 	HAL_DATA_TYPE		*pHalData = GET_HAL_DATA(Adapter);
@@ -1954,7 +1955,7 @@ PHY_InitTxPowerLimit(
 
 void
 PHY_SetTxPowerLimit(
-	IN	PADAPTER		Adapter,
+	IN	struct adapter *		Adapter,
 	IN	u8				*Regulation,
 	IN	u8				*Band,
 	IN	u8				*Bandwidth,
@@ -2056,7 +2057,7 @@ PHY_SetTxPowerLimit(
 
 u8
 PHY_GetTxPowerIndex(
-	IN	PADAPTER			pAdapter,
+	IN	struct adapter *			pAdapter,
 	IN	u8					RFPath,
 	IN	u8					Rate,
 	IN	CHANNEL_WIDTH		BandWidth,
@@ -2068,7 +2069,7 @@ PHY_GetTxPowerIndex(
 
 void
 PHY_SetTxPowerIndex(
-	IN	PADAPTER		pAdapter,
+	IN	struct adapter *		pAdapter,
 	IN	u32				PowerIndex,
 	IN	u8				RFPath,
 	IN	u8				Rate
@@ -2079,7 +2080,7 @@ PHY_SetTxPowerIndex(
 
 void
 Hal_ChannelPlanToRegulation(
-	IN	PADAPTER		Adapter,
+	IN	struct adapter *		Adapter,
 	IN	u16				ChannelPlan
 	)
 {
@@ -2253,7 +2254,7 @@ static char	file_path_bs[PATH_MAX];
 
 int
 phy_ConfigMACWithParaFile(
-	IN	PADAPTER	Adapter,
+	IN	struct adapter *	Adapter,
 	IN	char*		pFileName
 )
 {
@@ -2334,7 +2335,7 @@ phy_ConfigMACWithParaFile(
 
 int
 phy_ConfigBBWithParaFile(
-	IN	PADAPTER	Adapter,
+	IN	struct adapter *	Adapter,
 	IN	char*		pFileName,
 	IN	u32			ConfigType
 )
@@ -2474,7 +2475,7 @@ phy_ConfigBBWithParaFile(
 
 static void
 phy_DecryptBBPgParaFile(
-	PADAPTER		Adapter,
+	struct adapter *		Adapter,
 	char*			buffer
 	)
 {
@@ -2514,7 +2515,7 @@ phy_DecryptBBPgParaFile(
 
 static int
 phy_ParseBBPgParaFile(
-	PADAPTER		Adapter,
+	struct adapter *		Adapter,
 	char*			buffer
 	)
 {
@@ -2804,7 +2805,7 @@ phy_ParseBBPgParaFile(
 
 int
 phy_ConfigBBWithPgParaFile(
-	IN	PADAPTER	Adapter,
+	IN	struct adapter *	Adapter,
 	IN	char*		pFileName)
 {
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
@@ -2862,7 +2863,7 @@ phy_ConfigBBWithPgParaFile(
 
 int
 PHY_ConfigRFWithParaFile(
-	IN	PADAPTER	Adapter,
+	IN	struct adapter *	Adapter,
 	IN	char*		pFileName,
 	IN	u8			eRFPath
 )
@@ -3012,7 +3013,7 @@ PHY_ConfigRFWithParaFile(
 
 static void
 initDeltaSwingIndexTables(
-	PADAPTER	Adapter,
+	struct adapter *	Adapter,
 	char*		Band,
 	char*		Path,
 	char*		Sign,
@@ -3152,7 +3153,7 @@ initDeltaSwingIndexTables(
 
 int
 PHY_ConfigRFWithTxPwrTrackParaFile(
-	IN	PADAPTER		Adapter,
+	IN	struct adapter *		Adapter,
 	IN	char*			pFileName
 )
 {
@@ -3245,7 +3246,7 @@ PHY_ConfigRFWithTxPwrTrackParaFile(
 
 static int
 phy_ParsePowerLimitTableFile(
-  PADAPTER		Adapter,
+  struct adapter *		Adapter,
   char*			buffer
 )
 {
@@ -3502,7 +3503,7 @@ phy_ParsePowerLimitTableFile(
 
 int
 PHY_ConfigRFWithPowerLimitTableParaFile(
-	IN	PADAPTER	Adapter,
+	IN	struct adapter *	Adapter,
 	IN	char*		pFileName
 )
 {
@@ -3559,7 +3560,7 @@ PHY_ConfigRFWithPowerLimitTableParaFile(
 	return rtStatus;
 }
 
-void phy_free_filebuf(_adapter *padapter)
+void phy_free_filebuf(struct adapter *padapter)
 {
 	HAL_DATA_TYPE		*pHalData = GET_HAL_DATA(padapter);
 

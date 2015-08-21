@@ -5,6 +5,7 @@
  *****************************************************************************/
 
 #include <drv_types.h>
+#include <rtw_debug.h>
 
 #include <rtw_wifi_regd.h>
 
@@ -115,7 +116,7 @@ static int rtw_ieee80211_channel_to_frequency(int chan, int band)
 
 static void _rtw_reg_apply_flags(struct wiphy *wiphy)
 {
-	_adapter *padapter = wiphy_to_adapter(wiphy);
+	struct adapter *padapter = wiphy_to_adapter(wiphy);
 	struct mlme_ext_priv *pmlmeext = &padapter->mlmeextpriv;
 	RT_CHANNEL_INFO *channel_set = pmlmeext->channel_set;
 	u8 max_chan_nums = pmlmeext->max_chan_nums;
@@ -196,7 +197,7 @@ static void _rtw_regd_init_wiphy(struct rtw_regulatory *reg,
 	_rtw_reg_apply_flags(wiphy);
 }
 
-int rtw_regd_init(_adapter * padapter,
+int rtw_regd_init(struct adapter * padapter,
 		  void (*reg_notifier) (struct wiphy * wiphy,
 				       struct regulatory_request * request))
 {

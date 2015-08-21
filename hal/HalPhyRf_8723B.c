@@ -13,6 +13,8 @@
  *
  ******************************************************************************/
 
+#include <drv_types.h>
+#include <rtw_debug.h>
 #include "odm_precomp.h"
 
 
@@ -204,7 +206,7 @@ ODM_TxPwrTrackSetPwr_8723B(
 	u1Byte				ChannelMappedIndex
 	)
 {
-	PADAPTER	Adapter = pDM_Odm->Adapter;
+	struct adapter *	Adapter = pDM_Odm->Adapter;
 	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(Adapter);
 	u1Byte		PwrTrackingLimit_OFDM = 34; /* 0dB */
 	u1Byte		PwrTrackingLimit_CCK = 28;	/* 2dB */
@@ -253,7 +255,7 @@ ODM_TxPwrTrackSetPwr_8723B(
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("TxRate = 0x%x, PwrTrackingLimit =%d\n", TxRate, PwrTrackingLimit_OFDM));
 
 	if (Method == TXAGC) {
-		PADAPTER Adapter = pDM_Odm->Adapter;
+		struct adapter * Adapter = pDM_Odm->Adapter;
 
 		ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("odm_TxPwrTrackSetPwr8723B CH =%d\n", *(pDM_Odm->pChannel)));
 
@@ -402,7 +404,7 @@ GetDeltaSwingTable_8723B(
 	OUT pu1Byte			*TemperatureDOWN_B
 	)
 {
-	PADAPTER		Adapter			 = pDM_Odm->Adapter;
+	struct adapter *		Adapter			 = pDM_Odm->Adapter;
 	PODM_RF_CAL_T	pRFCalibrateInfo = &(pDM_Odm->RFCalibrateInfo);
 	HAL_DATA_TYPE	*pHalData		 = GET_HAL_DATA(Adapter);
 	u2Byte			rate			 = *(pDM_Odm->pForcedDataRate);
@@ -469,7 +471,7 @@ void ConfigureTxpowerTrack_8723B(
 
 static u1Byte			/* bit0 = 1 => Tx OK, bit1 = 1 => Rx OK */
 phy_PathA_IQK_8723B(
-	IN	PADAPTER	pAdapter,
+	IN	struct adapter *	pAdapter,
 	IN	bool		configPathB,
 	IN	u1Byte		RF_Path
 	)
@@ -581,7 +583,7 @@ phy_PathA_IQK_8723B(
 
 static u1Byte			/* bit0 = 1 => Tx OK, bit1 = 1 => Rx OK */
 phy_PathA_RxIQK8723B(
-	IN	PADAPTER	pAdapter,
+	IN	struct adapter *	pAdapter,
 	IN	bool		configPathB,
 	IN	u1Byte		RF_Path
 	)
@@ -795,7 +797,7 @@ phy_PathA_RxIQK8723B(
 
 static u1Byte				/* bit0 = 1 => Tx OK, bit1 = 1 => Rx OK */
 phy_PathB_IQK_8723B(
-	IN	PADAPTER	pAdapter
+	IN	struct adapter *	pAdapter
 	)
 {
 	u4Byte regEAC, regE94, regE9C, tmp, Path_SEL_BB/*, regEC4, regECC, Path_SEL_BB*/;
@@ -902,7 +904,7 @@ phy_PathB_IQK_8723B(
 
 static u1Byte			/* bit0 = 1 => Tx OK, bit1 = 1 => Rx OK */
 phy_PathB_RxIQK8723B(
-	IN	PADAPTER	pAdapter,
+	IN	struct adapter *	pAdapter,
 	IN	bool	configPathB
 	)
 {
@@ -1119,7 +1121,7 @@ phy_PathB_RxIQK8723B(
 
 static void
 _PHY_PathAFillIQKMatrix8723B(
-	IN	PADAPTER	pAdapter,
+	IN	struct adapter *	pAdapter,
 	IN	bool	bIQKOK,
 	IN	s4Byte		result[][8],
 	IN	u1Byte		final_candidate,
@@ -1202,7 +1204,7 @@ _PHY_PathAFillIQKMatrix8723B(
 
 static void
 _PHY_PathBFillIQKMatrix8723B(
-	IN	PADAPTER	pAdapter,
+	IN	struct adapter *	pAdapter,
 	IN	bool	bIQKOK,
 	IN	s4Byte		result[][8],
 	IN	u1Byte		final_candidate,
@@ -1321,14 +1323,14 @@ ODM_SetIQCbyRFpath(PDM_ODM_T pDM_Odm, u4Byte RFpath)
 
 static bool
 ODM_CheckPowerStatus(
-	PADAPTER		Adapter)
+	struct adapter *		Adapter)
 {
 	return	true;
 }
 
 static void
 _PHY_SaveADDARegisters8723B(
-	IN	PADAPTER	pAdapter,
+	IN	struct adapter *	pAdapter,
 	IN	pu4Byte		ADDAReg,
 	IN	pu4Byte		ADDABackup,
 	IN	u4Byte		RegisterNum
@@ -1350,7 +1352,7 @@ _PHY_SaveADDARegisters8723B(
 
 static void
 _PHY_SaveMACRegisters8723B(
-	IN	PADAPTER	pAdapter,
+	IN	struct adapter *	pAdapter,
 	IN	pu4Byte		MACReg,
 	IN	pu4Byte		MACBackup
 	)
@@ -1370,7 +1372,7 @@ _PHY_SaveMACRegisters8723B(
 
 static void
 _PHY_ReloadADDARegisters8723B(
-	IN	PADAPTER	pAdapter,
+	IN	struct adapter *	pAdapter,
 	IN	pu4Byte		ADDAReg,
 	IN	pu4Byte		ADDABackup,
 	IN	u4Byte		RegiesterNum
@@ -1389,7 +1391,7 @@ _PHY_ReloadADDARegisters8723B(
 
 static void
 _PHY_ReloadMACRegisters8723B(
-	IN	PADAPTER	pAdapter,
+	IN	struct adapter *	pAdapter,
 	IN	pu4Byte		MACReg,
 	IN	pu4Byte		MACBackup
 	)
@@ -1405,7 +1407,7 @@ _PHY_ReloadMACRegisters8723B(
 
 static void
 _PHY_PathADDAOn8723B(
-	IN	PADAPTER	pAdapter,
+	IN	struct adapter *	pAdapter,
 	IN	pu4Byte		ADDAReg,
 	IN	bool	isPathAOn,
 	IN	bool	is2T
@@ -1435,7 +1437,7 @@ _PHY_PathADDAOn8723B(
 
 static void
 _PHY_MACSettingCalibration8723B(
-	IN	PADAPTER	pAdapter,
+	IN	struct adapter *	pAdapter,
 	IN	pu4Byte		MACReg,
 	IN	pu4Byte		MACBackup
 	)
@@ -1457,7 +1459,7 @@ _PHY_MACSettingCalibration8723B(
 
 static bool
 phy_SimularityCompare_8723B(
-	IN	PADAPTER	pAdapter,
+	IN	struct adapter *	pAdapter,
 	IN	s4Byte		result[][8],
 	IN	u1Byte		 c1,
 	IN	u1Byte		 c2
@@ -1562,7 +1564,7 @@ phy_SimularityCompare_8723B(
 
 static void
 phy_IQCalibrate_8723B(
-	IN	PADAPTER	pAdapter,
+	IN	struct adapter *	pAdapter,
 	IN	s4Byte		result[][8],
 	IN	u1Byte		t,
 	IN	bool		is2T,
@@ -1772,7 +1774,7 @@ phy_LCCalibrate_8723B(
 {
 	u1Byte	tmpReg;
 	u4Byte	RF_Amode = 0, RF_Bmode = 0, LC_Cal;
-	PADAPTER pAdapter = pDM_Odm->Adapter;
+	struct adapter * pAdapter = pDM_Odm->Adapter;
 
 	/* Check continuous TX and Packet TX */
 	tmpReg = rtw_read8(pDM_Odm->Adapter, 0xd03);
@@ -1853,7 +1855,7 @@ phy_LCCalibrate_8723B(
 /* IQK is controlled by Is2ant, RF path */
 void
 PHY_IQCalibrate_8723B(
-	IN	PADAPTER	pAdapter,
+	IN	struct adapter *	pAdapter,
 	IN	bool		bReCovery,
 	IN bool	bRestore,
 	IN bool	Is2ant,	/* false:1ant, true:2-ant */

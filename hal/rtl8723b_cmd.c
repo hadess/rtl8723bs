@@ -14,6 +14,8 @@
  ******************************************************************************/
 #define _RTL8723B_CMD_C_
 
+#include <drv_types.h>
+#include <rtw_debug.h>
 #include <rtl8723b_hal.h>
 #include "hal_com_h2c.h"
 
@@ -23,7 +25,7 @@
 #define RTL8723B_MAX_CMD_LEN	7
 #define RTL8723B_EX_MESSAGE_BOX_SIZE	4
 
-static u8 _is_fw_read_cmd_down(_adapter * padapter, u8 msgbox_num)
+static u8 _is_fw_read_cmd_down(struct adapter * padapter, u8 msgbox_num)
 {
 	u8	read_down = false;
 	int	retry_cnts = 100;
@@ -56,7 +58,7 @@ static u8 _is_fw_read_cmd_down(_adapter * padapter, u8 msgbox_num)
 *| Ext msg					|
 *
 ******************************************/
-s32 FillH2CCmd8723B(PADAPTER padapter, u8 ElementID, u32 CmdLen, u8 *pCmdBuffer)
+s32 FillH2CCmd8723B(struct adapter * padapter, u8 ElementID, u32 CmdLen, u8 *pCmdBuffer)
 {
 	u8 h2c_box_num;
 	u32	msgbox_addr;
@@ -125,7 +127,7 @@ exit:
 	return ret;
 }
 
-static void ConstructBeacon(_adapter *padapter, u8 *pframe, u32 *pLength)
+static void ConstructBeacon(struct adapter *padapter, u8 *pframe, u32 *pLength)
 {
 	struct ieee80211_hdr	*pwlanhdr;
 	__le16 *fctrl;
@@ -227,7 +229,7 @@ _ConstructBeacon:
 
 }
 
-static void ConstructPSPoll(_adapter *padapter, u8 *pframe, u32 *pLength)
+static void ConstructPSPoll(struct adapter *padapter, u8 *pframe, u32 *pLength)
 {
 	struct ieee80211_hdr	*pwlanhdr;
 	__le16 *fctrl;
@@ -257,7 +259,7 @@ static void ConstructPSPoll(_adapter *padapter, u8 *pframe, u32 *pLength)
 }
 
 static void ConstructNullFunctionData(
-	PADAPTER padapter,
+	struct adapter * padapter,
 	u8		*pframe,
 	u32		*pLength,
 	u8		*StaAddr,
@@ -336,7 +338,7 @@ static void ConstructNullFunctionData(
 /* 	Construct the ARP response packet to support ARP offload. */
 /*  */
 static void ConstructARPResponse(
-	PADAPTER padapter,
+	struct adapter * padapter,
 	u8			*pframe,
 	u32			*pLength,
 	u8			*pIPAddress
@@ -478,7 +480,7 @@ static void ConstructARPResponse(
 
 #ifdef CONFIG_PNO_SUPPORT
 static void ConstructPnoInfo(
-	PADAPTER padapter,
+	struct adapter * padapter,
 	u8			*pframe,
 	u32			*pLength
 	)
@@ -522,7 +524,7 @@ static void ConstructPnoInfo(
 }
 
 static void ConstructSSIDList(
-	PADAPTER padapter,
+	struct adapter * padapter,
 	u8			*pframe,
 	u32			*pLength
 	)
@@ -543,7 +545,7 @@ static void ConstructSSIDList(
 }
 
 static void ConstructScanInfo(
-	PADAPTER padapter,
+	struct adapter * padapter,
 	u8			*pframe,
 	u32			*pLength
 	)
@@ -604,7 +606,7 @@ static void ConstructScanInfo(
 
 #ifdef CONFIG_GTK_OL
 static void ConstructGTKResponse(
-	PADAPTER padapter,
+	struct adapter * padapter,
 	u8			*pframe,
 	u32			*pLength
 	)
@@ -695,7 +697,7 @@ static void ConstructGTKResponse(
 #endif /* CONFIG_GTK_OL */
 
 #ifdef CONFIG_PNO_SUPPORT
-static void ConstructProbeReq(_adapter *padapter, u8 *pframe, u32 *pLength)
+static void ConstructProbeReq(struct adapter *padapter, u8 *pframe, u32 *pLength)
 {
 	struct ieee80211_hdr	*pwlanhdr;
 	u16				*fctrl;
@@ -747,7 +749,7 @@ static void ConstructProbeReq(_adapter *padapter, u8 *pframe, u32 *pLength)
 #endif /* CONFIG_WOWLAN */
 
 #ifdef CONFIG_AP_WOWLAN
-static void ConstructProbeRsp(_adapter *padapter, u8 *pframe, u32 *pLength, u8 *StaAddr, bool bHideSSID)
+static void ConstructProbeRsp(struct adapter *padapter, u8 *pframe, u32 *pLength, u8 *StaAddr, bool bHideSSID)
 {
 	struct ieee80211_hdr	*pwlanhdr;
 	u16					*fctrl;
@@ -863,12 +865,12 @@ static void ConstructProbeRsp(_adapter *padapter, u8 *pframe, u32 *pLength, u8 *
 /*  2010.06.23. Added by tynli. */
 void
 CheckFwRsvdPageContent(
-	IN	PADAPTER		Adapter
+	IN	struct adapter *		Adapter
 )
 {
 }
 
-static void rtl8723b_set_FwRsvdPage_cmd(PADAPTER padapter, PRSVDPAGE_LOC rsvdpageloc)
+static void rtl8723b_set_FwRsvdPage_cmd(struct adapter * padapter, PRSVDPAGE_LOC rsvdpageloc)
 {
 	u8 u1H2CRsvdPageParm[H2C_RSVDPAGE_LOC_LEN]={0};
 
@@ -887,7 +889,7 @@ static void rtl8723b_set_FwRsvdPage_cmd(PADAPTER padapter, PRSVDPAGE_LOC rsvdpag
 	FillH2CCmd8723B(padapter, H2C_8723B_RSVD_PAGE, H2C_RSVDPAGE_LOC_LEN, u1H2CRsvdPageParm);
 }
 
-static void rtl8723b_set_FwAoacRsvdPage_cmd(PADAPTER padapter, PRSVDPAGE_LOC rsvdpageloc)
+static void rtl8723b_set_FwAoacRsvdPage_cmd(struct adapter * padapter, PRSVDPAGE_LOC rsvdpageloc)
 {
 #ifdef CONFIG_WOWLAN
 	u8 u1H2CAoacRsvdPageParm[H2C_AOAC_RSVDPAGE_LOC_LEN]={0};
@@ -925,7 +927,7 @@ static void rtl8723b_set_FwAoacRsvdPage_cmd(PADAPTER padapter, PRSVDPAGE_LOC rsv
 }
 
 #ifdef CONFIG_AP_WOWLAN
-static void rtl8723b_set_ap_wow_rsvdpage_cmd(PADAPTER padapter,
+static void rtl8723b_set_ap_wow_rsvdpage_cmd(struct adapter * padapter,
 		PRSVDPAGE_LOC rsvdpageloc)
 {
 	struct	pwrctrl_priv *pwrpriv = adapter_to_pwrctl(padapter);
@@ -961,7 +963,7 @@ static void rtl8723b_set_ap_wow_rsvdpage_cmd(PADAPTER padapter,
 }
 #endif /* CONFIG_AP_WOWLAN */
 
-void rtl8723b_set_FwMediaStatusRpt_cmd(PADAPTER	padapter, u8 mstatus, u8 macid)
+void rtl8723b_set_FwMediaStatusRpt_cmd(struct adapter *	padapter, u8 mstatus, u8 macid)
 {
 	u8 u1H2CMediaStatusRptParm[H2C_MEDIA_STATUS_RPT_LEN]={0};
 	u8 macid_end = 0;
@@ -978,7 +980,7 @@ void rtl8723b_set_FwMediaStatusRpt_cmd(PADAPTER	padapter, u8 mstatus, u8 macid)
 }
 
 #ifdef CONFIG_WOWLAN
-static void rtl8723b_set_FwKeepAlive_cmd(PADAPTER padapter, u8 benable, u8 pkt_type)
+static void rtl8723b_set_FwKeepAlive_cmd(struct adapter * padapter, u8 benable, u8 pkt_type)
 {
 	u8 u1H2CKeepAliveParm[H2C_KEEP_ALIVE_CTRL_LEN]={0};
 	u8 adopt = 1, check_period = 5;
@@ -994,7 +996,7 @@ static void rtl8723b_set_FwKeepAlive_cmd(PADAPTER padapter, u8 benable, u8 pkt_t
 	FillH2CCmd8723B(padapter, H2C_8723B_KEEP_ALIVE, H2C_KEEP_ALIVE_CTRL_LEN, u1H2CKeepAliveParm);
 }
 
-static void rtl8723b_set_FwDisconDecision_cmd(PADAPTER padapter, u8 benable)
+static void rtl8723b_set_FwDisconDecision_cmd(struct adapter * padapter, u8 benable)
 {
 	u8 u1H2CDisconDecisionParm[H2C_DISCON_DECISION_LEN]={0};
 	u8 adopt = 1, check_period = 10, trypkt_num = 0;
@@ -1011,7 +1013,7 @@ static void rtl8723b_set_FwDisconDecision_cmd(PADAPTER padapter, u8 benable)
 }
 #endif /*  CONFIG_WOWLAN */
 
-void rtl8723b_set_FwMacIdConfig_cmd(_adapter * padapter, u8 mac_id, u8 raid, u8 bw, u8 sgi, u32 mask)
+void rtl8723b_set_FwMacIdConfig_cmd(struct adapter * padapter, u8 mac_id, u8 raid, u8 bw, u8 sgi, u32 mask)
 {
 	u8 u1H2CMacIdConfigParm[H2C_MACID_CFG_LEN]={0};
 
@@ -1030,7 +1032,7 @@ void rtl8723b_set_FwMacIdConfig_cmd(_adapter * padapter, u8 mac_id, u8 raid, u8 
 	FillH2CCmd8723B(padapter, H2C_8723B_MACID_CFG, H2C_MACID_CFG_LEN, u1H2CMacIdConfigParm);
 }
 
-static void rtl8723b_set_FwRssiSetting_cmd(_adapter *padapter, u8 *param)
+static void rtl8723b_set_FwRssiSetting_cmd(struct adapter *padapter, u8 *param)
 {
 	u8 u1H2CRssiSettingParm[H2C_RSSI_SETTING_LEN]={0};
 	u8 mac_id = *param;
@@ -1048,7 +1050,7 @@ static void rtl8723b_set_FwRssiSetting_cmd(_adapter *padapter, u8 *param)
 	FillH2CCmd8723B(padapter, H2C_8723B_RSSI_SETTING, H2C_RSSI_SETTING_LEN, u1H2CRssiSettingParm);
 }
 
-void rtl8723b_set_FwPwrMode_cmd(PADAPTER padapter, u8 psmode)
+void rtl8723b_set_FwPwrMode_cmd(struct adapter * padapter, u8 psmode)
 {
 	int i;
 	struct pwrctrl_priv *pwrpriv = adapter_to_pwrctl(padapter);
@@ -1190,7 +1192,7 @@ void rtl8723b_set_FwPwrMode_cmd(PADAPTER padapter, u8 psmode)
 	FillH2CCmd8723B(padapter, H2C_8723B_SET_PWR_MODE, H2C_PWRMODE_LEN, u1H2CPwrModeParm);
 }
 
-void rtl8723b_set_FwPsTuneParam_cmd(PADAPTER padapter)
+void rtl8723b_set_FwPsTuneParam_cmd(struct adapter * padapter)
 {
 	u8 u1H2CPsTuneParm[H2C_PSTUNEPARAM_LEN]={0};
 	u8 bcn_to_limit = 10; /* 10 * 100 * awakeinterval (ms) */
@@ -1211,7 +1213,7 @@ void rtl8723b_set_FwPsTuneParam_cmd(PADAPTER padapter)
 	FillH2CCmd8723B(padapter, H2C_8723B_PS_TUNING_PARA, H2C_PSTUNEPARAM_LEN, u1H2CPsTuneParm);
 }
 
-void rtl8723b_set_FwPwrModeInIPS_cmd(PADAPTER padapter, u8 cmd_param)
+void rtl8723b_set_FwPwrModeInIPS_cmd(struct adapter * padapter, u8 cmd_param)
 {
 	/* BIT0:enable, BIT1:NoConnect32k */
 
@@ -1221,7 +1223,7 @@ void rtl8723b_set_FwPwrModeInIPS_cmd(PADAPTER padapter, u8 cmd_param)
 }
 
 #ifdef CONFIG_WOWLAN
-static void rtl8723b_set_FwWoWlanCtrl_Cmd(PADAPTER padapter, u8 bFuncEn)
+static void rtl8723b_set_FwWoWlanCtrl_Cmd(struct adapter * padapter, u8 bFuncEn)
 {
 	struct security_priv *psecpriv = &padapter->securitypriv;
 	struct pwrctrl_priv *ppwrpriv = adapter_to_pwrctl(padapter);
@@ -1265,7 +1267,7 @@ static void rtl8723b_set_FwWoWlanCtrl_Cmd(PADAPTER padapter, u8 bFuncEn)
 	FillH2CCmd8723B(padapter, H2C_8723B_WOWLAN, H2C_WOWLAN_LEN, u1H2CWoWlanCtrlParm);
 }
 
-static void rtl8723b_set_FwRemoteWakeCtrl_Cmd(PADAPTER padapter, u8 benable)
+static void rtl8723b_set_FwRemoteWakeCtrl_Cmd(struct adapter * padapter, u8 benable)
 {
 	u8 u1H2CRemoteWakeCtrlParm[H2C_REMOTE_WAKE_CTRL_LEN]={0};
 	struct security_priv* psecuritypriv =&(padapter->securitypriv);
@@ -1322,7 +1324,7 @@ exit:
 #endif /* CONFIG_PNO_SUPPORT */
 }
 
-static void rtl8723b_set_FwAOACGlobalInfo_Cmd(PADAPTER padapter,  u8 group_alg, u8 pairwise_alg)
+static void rtl8723b_set_FwAOACGlobalInfo_Cmd(struct adapter * padapter,  u8 group_alg, u8 pairwise_alg)
 {
 	u8 u1H2CAOACGlobalInfoParm[H2C_AOAC_GLOBAL_INFO_LEN]={0};
 
@@ -1337,7 +1339,7 @@ static void rtl8723b_set_FwAOACGlobalInfo_Cmd(PADAPTER padapter,  u8 group_alg, 
 }
 
 #ifdef CONFIG_PNO_SUPPORT
-static void rtl8723b_set_FwScanOffloadInfo_cmd(PADAPTER padapter, PRSVDPAGE_LOC rsvdpageloc, u8 enable)
+static void rtl8723b_set_FwScanOffloadInfo_cmd(struct adapter * padapter, PRSVDPAGE_LOC rsvdpageloc, u8 enable)
 {
 	u8 u1H2CScanOffloadInfoParm[H2C_SCAN_OFFLOAD_CTRL_LEN]={0};
 	u8 res = 0, count = 0;
@@ -1358,7 +1360,7 @@ static void rtl8723b_set_FwScanOffloadInfo_cmd(PADAPTER padapter, PRSVDPAGE_LOC 
 }
 #endif /* CONFIG_PNO_SUPPORT */
 
-static void rtl8723b_set_FwWoWlanRelated_cmd(_adapter * padapter, u8 enable)
+static void rtl8723b_set_FwWoWlanRelated_cmd(struct adapter * padapter, u8 enable)
 {
 	struct security_priv *psecpriv = &padapter->securitypriv;
 	struct pwrctrl_priv *ppwrpriv = adapter_to_pwrctl(padapter);
@@ -1409,14 +1411,14 @@ static void rtl8723b_set_FwWoWlanRelated_cmd(_adapter * padapter, u8 enable)
 	return ;
 }
 
-void rtl8723b_set_wowlan_cmd(_adapter * padapter, u8 enable)
+void rtl8723b_set_wowlan_cmd(struct adapter * padapter, u8 enable)
 {
 	rtl8723b_set_FwWoWlanRelated_cmd(padapter, enable);
 }
 #endif /* CONFIG_WOWLAN */
 
 #ifdef CONFIG_AP_WOWLAN
-static void rtl8723b_set_FwAPWoWlanCtrl_Cmd(PADAPTER padapter, u8 bFuncEn)
+static void rtl8723b_set_FwAPWoWlanCtrl_Cmd(struct adapter * padapter, u8 bFuncEn)
 {
 	u8 u1H2CAPWoWlanCtrlParm[H2C_WOWLAN_LEN]={0};
 	u8 discont_wake = 1, gpionum = 0, gpio_dur = 0;
@@ -1448,7 +1450,7 @@ static void rtl8723b_set_FwAPWoWlanCtrl_Cmd(PADAPTER padapter, u8 bFuncEn)
 			H2C_AP_WOW_GPIO_CTRL_LEN, u1H2CAPWoWlanCtrlParm);
 }
 
-static void rtl8723b_set_Fw_AP_Offload_Cmd(PADAPTER padapter, u8 bFuncEn)
+static void rtl8723b_set_Fw_AP_Offload_Cmd(struct adapter * padapter, u8 bFuncEn)
 {
 	u8 u1H2CAPOffloadCtrlParm[H2C_WOWLAN_LEN]={0};
 
@@ -1460,7 +1462,7 @@ static void rtl8723b_set_Fw_AP_Offload_Cmd(PADAPTER padapter, u8 bFuncEn)
 			H2C_AP_OFFLOAD_LEN, u1H2CAPOffloadCtrlParm);
 }
 
-static void rtl8723b_set_AP_FwWoWlan_cmd(_adapter * padapter, u8 enable)
+static void rtl8723b_set_AP_FwWoWlan_cmd(struct adapter * padapter, u8 enable)
 {
 	struct security_priv *psecpriv = &padapter->securitypriv;
 	struct pwrctrl_priv *ppwrpriv = adapter_to_pwrctl(padapter);
@@ -1483,7 +1485,7 @@ static void rtl8723b_set_AP_FwWoWlan_cmd(_adapter * padapter, u8 enable)
 	return ;
 }
 
-void rtl8723b_set_ap_wowlan_cmd(_adapter * padapter, u8 enable)
+void rtl8723b_set_ap_wowlan_cmd(struct adapter * padapter, u8 enable)
 {
 	rtl8723b_set_AP_FwWoWlan_cmd(padapter, enable);
 }
@@ -1499,7 +1501,7 @@ void rtl8723b_set_ap_wowlan_cmd(_adapter * padapter, u8 enable)
 /* 			      true: At the second time, we should send the first packet (default:beacon) */
 /* 						to Hw again and set the lengh in descriptor to the real beacon lengh. */
 /*  2009.10.15 by tynli. */
-static void rtl8723b_set_FwRsvdPagePkt(PADAPTER padapter, bool bDLFinished)
+static void rtl8723b_set_FwRsvdPagePkt(struct adapter * padapter, bool bDLFinished)
 {
 	PHAL_DATA_TYPE pHalData;
 	struct xmit_frame	*pcmdframe;
@@ -1889,7 +1891,7 @@ error:
 /* true: At the second time, we should send the first packet (default:beacon) */
 /* 	to Hw again and set the lengh in descriptor to the real beacon lengh. */
 /*  2009.10.15 by tynli. */
-static void rtl8723b_set_AP_FwRsvdPagePkt(PADAPTER padapter,
+static void rtl8723b_set_AP_FwRsvdPagePkt(struct adapter * padapter,
 		bool bDLFinished)
 {
 	PHAL_DATA_TYPE pHalData;
@@ -1999,7 +2001,7 @@ error:
 }
 #endif /* CONFIG_AP_WOWLAN */
 
-void rtl8723b_download_rsvd_page(PADAPTER padapter, u8 mstatus)
+void rtl8723b_download_rsvd_page(struct adapter * padapter, u8 mstatus)
 {
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
 	struct mlme_ext_priv	*pmlmeext = &(padapter->mlmeextpriv);
@@ -2108,12 +2110,12 @@ void rtl8723b_download_rsvd_page(PADAPTER padapter, u8 mstatus)
 	}
 }
 
-void rtl8723b_set_rssi_cmd(_adapter *padapter, u8 *param)
+void rtl8723b_set_rssi_cmd(struct adapter *padapter, u8 *param)
 {
 	rtl8723b_set_FwRssiSetting_cmd(padapter, param);
 }
 
-void rtl8723b_set_FwJoinBssRpt_cmd(PADAPTER padapter, u8 mstatus)
+void rtl8723b_set_FwJoinBssRpt_cmd(struct adapter * padapter, u8 mstatus)
 {
 	if (mstatus == 1)
 		rtl8723b_download_rsvd_page(padapter, RT_MEDIA_CONNECT);
@@ -2123,7 +2125,7 @@ void rtl8723b_set_FwJoinBssRpt_cmd(PADAPTER padapter, u8 mstatus)
 /* arg[1] = raid */
 /* arg[2] = shortGIrate */
 /* arg[3] = init_rate */
-void rtl8723b_Add_RateATid(PADAPTER pAdapter, u32 bitmap, u8* arg, u8 rssi_level)
+void rtl8723b_Add_RateATid(struct adapter * pAdapter, u32 bitmap, u8* arg, u8 rssi_level)
 {
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
 	struct mlme_ext_priv	*pmlmeext = &pAdapter->mlmeextpriv;
@@ -2151,7 +2153,7 @@ void rtl8723b_Add_RateATid(PADAPTER pAdapter, u32 bitmap, u8* arg, u8 rssi_level
 }
 
 static void ConstructBtNullFunctionData(
-	PADAPTER padapter,
+	struct adapter * padapter,
 	u8 *pframe,
 	u32 *pLength,
 	u8 *StaAddr,
@@ -2216,7 +2218,7 @@ static void ConstructBtNullFunctionData(
 	*pLength = pktlen;
 }
 
-static void SetFwRsvdPagePkt_BTCoex(PADAPTER padapter)
+static void SetFwRsvdPagePkt_BTCoex(struct adapter * padapter)
 {
 	PHAL_DATA_TYPE pHalData;
 	struct xmit_frame *pcmdframe;
@@ -2319,7 +2321,7 @@ error:
 	rtw_free_xmitframe(pxmitpriv, pcmdframe);
 }
 
-void rtl8723b_download_BTCoex_AP_mode_rsvd_page(PADAPTER padapter)
+void rtl8723b_download_BTCoex_AP_mode_rsvd_page(struct adapter * padapter)
 {
 	PHAL_DATA_TYPE pHalData;
 	struct mlme_ext_priv *pmlmeext;

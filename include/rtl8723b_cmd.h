@@ -171,29 +171,29 @@ enum h2c_cmd_8723B{
 /*  */
 
 /*  host message to firmware cmd */
-void rtl8723b_set_FwPwrMode_cmd(PADAPTER padapter, u8 Mode);
-void rtl8723b_set_FwJoinBssRpt_cmd(PADAPTER padapter, u8 mstatus);
-void rtl8723b_set_rssi_cmd(PADAPTER padapter, u8 *param);
-void rtl8723b_Add_RateATid(PADAPTER pAdapter, u32 bitmap, u8* arg, u8 rssi_level);
-void rtl8723b_fw_try_ap_cmd(PADAPTER padapter, u32 need_ack);
-/* s32 rtl8723b_set_lowpwr_lps_cmd(PADAPTER padapter, u8 enable); */
-void rtl8723b_set_FwPsTuneParam_cmd(PADAPTER padapter);
-void rtl8723b_set_FwMacIdConfig_cmd(_adapter * padapter, u8 mac_id, u8 raid, u8 bw, u8 sgi, u32 mask);
-void rtl8723b_set_FwMediaStatusRpt_cmd(PADAPTER	padapter, u8 mstatus, u8 macid);
-void rtl8723b_download_rsvd_page(PADAPTER padapter, u8 mstatus);
-void rtl8723b_download_BTCoex_AP_mode_rsvd_page(PADAPTER padapter);
+void rtl8723b_set_FwPwrMode_cmd(struct adapter * padapter, u8 Mode);
+void rtl8723b_set_FwJoinBssRpt_cmd(struct adapter * padapter, u8 mstatus);
+void rtl8723b_set_rssi_cmd(struct adapter * padapter, u8 *param);
+void rtl8723b_Add_RateATid(struct adapter * pAdapter, u32 bitmap, u8* arg, u8 rssi_level);
+void rtl8723b_fw_try_ap_cmd(struct adapter * padapter, u32 need_ack);
+/* s32 rtl8723b_set_lowpwr_lps_cmd(struct adapter * padapter, u8 enable); */
+void rtl8723b_set_FwPsTuneParam_cmd(struct adapter * padapter);
+void rtl8723b_set_FwMacIdConfig_cmd(struct adapter * padapter, u8 mac_id, u8 raid, u8 bw, u8 sgi, u32 mask);
+void rtl8723b_set_FwMediaStatusRpt_cmd(struct adapter *	padapter, u8 mstatus, u8 macid);
+void rtl8723b_download_rsvd_page(struct adapter * padapter, u8 mstatus);
+void rtl8723b_download_BTCoex_AP_mode_rsvd_page(struct adapter * padapter);
 
-void CheckFwRsvdPageContent(PADAPTER padapter);
+void CheckFwRsvdPageContent(struct adapter * padapter);
 
 #if defined(CONFIG_WOWLAN) || defined(CONFIG_AP_WOWLAN)
-void rtl8723b_set_wowlan_cmd(_adapter * padapter, u8 enable);
-void rtl8723b_set_ap_wowlan_cmd(_adapter * padapter, u8 enable);
-void SetFwRelatedForWoWLAN8723b(_adapter * padapter, u8 bHostIsGoingtoSleep);
+void rtl8723b_set_wowlan_cmd(struct adapter * padapter, u8 enable);
+void rtl8723b_set_ap_wowlan_cmd(struct adapter * padapter, u8 enable);
+void SetFwRelatedForWoWLAN8723b(struct adapter * padapter, u8 bHostIsGoingtoSleep);
 #endif/* CONFIG_WOWLAN */
 
-void rtl8723b_set_FwPwrModeInIPS_cmd(PADAPTER padapter, u8 cmd_param);
+void rtl8723b_set_FwPwrModeInIPS_cmd(struct adapter * padapter, u8 cmd_param);
 
-s32 FillH2CCmd8723B(PADAPTER padapter, u8 ElementID, u32 CmdLen, u8 *pCmdBuffer);
+s32 FillH2CCmd8723B(struct adapter * padapter, u8 ElementID, u32 CmdLen, u8 *pCmdBuffer);
 
 #define FillH2CCmd FillH2CCmd8723B
 #endif

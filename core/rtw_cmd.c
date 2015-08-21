@@ -20,6 +20,7 @@
 #define _RTW_CMD_C_
 
 #include <drv_types.h>
+#include <rtw_debug.h>
 #include <linux/jiffies.h>
 
 static struct _cmd_callback rtw_cmd_callback[] =
@@ -370,7 +371,7 @@ int rtw_cmd_filter(struct cmd_priv *pcmdpriv, struct cmd_obj *cmd_obj)
 u32 rtw_enqueue_cmd(struct cmd_priv *pcmdpriv, struct cmd_obj *cmd_obj)
 {
 	int res = _FAIL;
-	PADAPTER padapter = pcmdpriv->padapter;
+	struct adapter * padapter = pcmdpriv->padapter;
 
 	if (cmd_obj == NULL) {
 		goto exit;
@@ -421,7 +422,7 @@ void rtw_free_cmd_obj(struct cmd_obj *pcmd)
 }
 
 
-void rtw_stop_cmd_thread(_adapter *adapter)
+void rtw_stop_cmd_thread(struct adapter *adapter)
 {
 	if (adapter->cmdThread &&
 		atomic_read(&(adapter->cmdpriv.cmdthd_running)) == true &&
@@ -440,9 +441,9 @@ int rtw_cmd_thread(void * context)
 	u8 *pcmdbuf, *prspbuf;
 	unsigned long cmd_start_time;
 	unsigned long cmd_process_time;
-	u8 (*cmd_hdl)(_adapter *padapter, u8* pbuf);
-	void (*pcmd_callback)(_adapter *dev, struct cmd_obj *pcmd);
-	PADAPTER padapter = (PADAPTER)context;
+	u8 (*cmd_hdl)(struct adapter *padapter, u8* pbuf);
+	void (*pcmd_callback)(struct adapter *dev, struct cmd_obj *pcmd);
+	struct adapter * padapter = (struct adapter *)context;
 	struct cmd_priv *pcmdpriv = &(padapter->cmdpriv);
 	struct drvextra_cmd_parm *extra_parm = NULL;
 
@@ -625,7 +626,7 @@ rtw_sitesurvey_cmd(~)
 	### NOTE:#### (!!!!)
 	MUST TAKE CARE THAT BEFORE CALLING THIS FUNC, YOU SHOULD HAVE LOCKED pmlmepriv->lock
 */
-u8 rtw_sitesurvey_cmd(_adapter  *padapter, NDIS_802_11_SSID *ssid, int ssid_num,
+u8 rtw_sitesurvey_cmd(struct adapter  *padapter, NDIS_802_11_SSID *ssid, int ssid_num,
 	struct rtw_ieee80211_channel *ch, int ch_num)
 {
 	u8 res = _FAIL;
@@ -699,7 +700,7 @@ u8 rtw_sitesurvey_cmd(_adapter  *padapter, NDIS_802_11_SSID *ssid, int ssid_num,
 	return res;
 }
 
-u8 rtw_setdatarate_cmd(_adapter *padapter, u8 *rateset)
+u8 rtw_setdatarate_cmd(struct adapter *padapter, u8 *rateset)
 {
 	struct cmd_obj*			ph2c;
 	struct setdatarate_parm*	pbsetdataratepara;
@@ -728,14 +729,14 @@ exit:
 	return res;
 }
 
-void rtw_getbbrfreg_cmdrsp_callback(_adapter *	padapter,  struct cmd_obj *pcmd)
+void rtw_getbbrfreg_cmdrsp_callback(struct adapter *	padapter,  struct cmd_obj *pcmd)
 {
 	/* rtw_free_cmd_obj(pcmd); */
 	kfree((unsigned char*) pcmd->parmbuf);
 	kfree((unsigned char*) pcmd);
 }
 
-u8 rtw_createbss_cmd(_adapter  *padapter)
+u8 rtw_createbss_cmd(struct adapter  *padapter)
 {
 	struct cmd_obj*			pcmd;
 	struct cmd_priv				*pcmdpriv =&padapter->cmdpriv;
@@ -770,7 +771,7 @@ exit:
 	return res;
 }
 
-u8 rtw_startbss_cmd(_adapter  *padapter, int flags)
+u8 rtw_startbss_cmd(struct adapter  *padapter, int flags)
 {
 	struct cmd_obj* pcmd;
 	struct cmd_priv  *pcmdpriv =&padapter->cmdpriv;
@@ -816,7 +817,7 @@ exit:
 	return res;
 }
 
-u8 rtw_joinbss_cmd(_adapter  *padapter, struct wlan_network* pnetwork)
+u8 rtw_joinbss_cmd(struct adapter  *padapter, struct wlan_network* pnetwork)
 {
 	u8	*auth, res = _SUCCESS;
 	uint	t_len = 0;
@@ -968,7 +969,7 @@ exit:
 	return res;
 }
 
-u8 rtw_disassoc_cmd(_adapter *padapter, u32 deauth_timeout_ms, bool enqueue) /* for sta_mode */
+u8 rtw_disassoc_cmd(struct adapter *padapter, u32 deauth_timeout_ms, bool enqueue) /* for sta_mode */
 {
 	struct cmd_obj *cmdobj = NULL;
 	struct disconnect_parm *param = NULL;
@@ -1006,7 +1007,7 @@ exit:
 	return res;
 }
 
-u8 rtw_setopmode_cmd(_adapter  *padapter, NDIS_802_11_NETWORK_INFRASTRUCTURE networktype, bool enqueue)
+u8 rtw_setopmode_cmd(struct adapter  *padapter, NDIS_802_11_NETWORK_INFRASTRUCTURE networktype, bool enqueue)
 {
 	struct	cmd_obj*	ph2c;
 	struct	setopmode_parm* psetop;
@@ -1041,7 +1042,7 @@ exit:
 	return res;
 }
 
-u8 rtw_setstakey_cmd(_adapter *padapter, struct sta_info *sta, u8 unicast_key, bool enqueue)
+u8 rtw_setstakey_cmd(struct adapter *padapter, struct sta_info *sta, u8 unicast_key, bool enqueue)
 {
 	struct cmd_obj*			ph2c;
 	struct set_stakey_parm	*psetstakey_para;
@@ -1106,7 +1107,7 @@ exit:
 	return res;
 }
 
-u8 rtw_clearstakey_cmd(_adapter *padapter, struct sta_info *sta, u8 enqueue)
+u8 rtw_clearstakey_cmd(struct adapter *padapter, struct sta_info *sta, u8 enqueue)
 {
 	struct cmd_obj*			ph2c;
 	struct set_stakey_parm	*psetstakey_para;
@@ -1162,7 +1163,7 @@ exit:
 	return res;
 }
 
-u8 rtw_addbareq_cmd(_adapter *padapter, u8 tid, u8 *addr)
+u8 rtw_addbareq_cmd(struct adapter *padapter, u8 tid, u8 *addr)
 {
 	struct cmd_priv		*pcmdpriv = &padapter->cmdpriv;
 	struct cmd_obj*		ph2c;
@@ -1197,7 +1198,7 @@ exit:
 	return res;
 }
 /* add for CONFIG_IEEE80211W, none 11w can use it */
-u8 rtw_reset_securitypriv_cmd(_adapter *padapter)
+u8 rtw_reset_securitypriv_cmd(struct adapter *padapter)
 {
 	struct cmd_obj*		ph2c;
 	struct drvextra_cmd_parm  *pdrvextra_cmd_parm;
@@ -1232,7 +1233,7 @@ exit:
 	return res;
 }
 
-u8 rtw_free_assoc_resources_cmd(_adapter *padapter)
+u8 rtw_free_assoc_resources_cmd(struct adapter *padapter)
 {
 	struct cmd_obj*		ph2c;
 	struct drvextra_cmd_parm  *pdrvextra_cmd_parm;
@@ -1267,7 +1268,7 @@ exit:
 	return res;
 }
 
-u8 rtw_dynamic_chk_wk_cmd(_adapter *padapter)
+u8 rtw_dynamic_chk_wk_cmd(struct adapter *padapter)
 {
 	struct cmd_obj*		ph2c;
 	struct drvextra_cmd_parm  *pdrvextra_cmd_parm;
@@ -1302,7 +1303,7 @@ exit:
 	return res;
 }
 
-u8 rtw_set_chplan_cmd(_adapter *padapter, u8 chplan, u8 enqueue, u8 swconfig)
+u8 rtw_set_chplan_cmd(struct adapter *padapter, u8 chplan, u8 enqueue, u8 swconfig)
 {
 	struct	cmd_obj*	pcmdobj;
 	struct	SetChannelPlan_param *setChannelPlan_param;
@@ -1363,7 +1364,7 @@ exit:
 	return res;
 }
 
-static void collect_traffic_statistics(_adapter *padapter)
+static void collect_traffic_statistics(struct adapter *padapter)
 {
 	struct dvobj_priv	*pdvobjpriv = adapter_to_dvobj(padapter);
 
@@ -1387,7 +1388,7 @@ static void collect_traffic_statistics(_adapter *padapter)
 	pdvobjpriv->traffic_stat.cur_rx_tp = (u32)(pdvobjpriv->traffic_stat.cur_rx_bytes *8/2/1024/1024);
 }
 
-u8 traffic_status_watchdog(_adapter *padapter, u8 from_timer)
+u8 traffic_status_watchdog(struct adapter *padapter, u8 from_timer)
 {
 	u8	bEnterPS = false;
 	u16	BusyThresholdHigh = 25;
@@ -1541,7 +1542,7 @@ u8 traffic_status_watchdog(_adapter *padapter, u8 from_timer)
 
 }
 
-static void dynamic_chk_wk_hdl(_adapter *padapter)
+static void dynamic_chk_wk_hdl(struct adapter *padapter)
 {
 	struct mlme_priv *pmlmepriv;
 	pmlmepriv = &(padapter->mlmepriv);
@@ -1576,8 +1577,8 @@ static void dynamic_chk_wk_hdl(_adapter *padapter)
 		rtw_ps_processor(padapter);
 }
 
-void lps_ctrl_wk_hdl(_adapter *padapter, u8 lps_ctrl_type);
-void lps_ctrl_wk_hdl(_adapter *padapter, u8 lps_ctrl_type)
+void lps_ctrl_wk_hdl(struct adapter *padapter, u8 lps_ctrl_type);
+void lps_ctrl_wk_hdl(struct adapter *padapter, u8 lps_ctrl_type)
 {
 	struct pwrctrl_priv *pwrpriv = adapter_to_pwrctl(padapter);
 	struct mlme_priv *pmlmepriv = &(padapter->mlmepriv);
@@ -1637,7 +1638,7 @@ void lps_ctrl_wk_hdl(_adapter *padapter, u8 lps_ctrl_type)
 	}
 }
 
-u8 rtw_lps_ctrl_wk_cmd(_adapter *padapter, u8 lps_ctrl_type, u8 enqueue)
+u8 rtw_lps_ctrl_wk_cmd(struct adapter *padapter, u8 lps_ctrl_type, u8 enqueue)
 {
 	struct cmd_obj	*ph2c;
 	struct drvextra_cmd_parm	*pdrvextra_cmd_parm;
@@ -1681,12 +1682,12 @@ exit:
 	return res;
 }
 
-static void rtw_dm_in_lps_hdl(_adapter *padapter)
+static void rtw_dm_in_lps_hdl(struct adapter *padapter)
 {
 	rtw_hal_set_hwreg(padapter, HW_VAR_DM_IN_LPS, NULL);
 }
 
-u8 rtw_dm_in_lps_wk_cmd(_adapter *padapter)
+u8 rtw_dm_in_lps_wk_cmd(struct adapter *padapter)
 {
 	struct cmd_obj	*ph2c;
 	struct drvextra_cmd_parm	*pdrvextra_cmd_parm;
@@ -1722,7 +1723,7 @@ exit:
 
 }
 
-static void rtw_lps_change_dtim_hdl(_adapter *padapter, u8 dtim)
+static void rtw_lps_change_dtim_hdl(struct adapter *padapter, u8 dtim)
 {
 	struct pwrctrl_priv *pwrpriv = adapter_to_pwrctl(padapter);
 
@@ -1754,14 +1755,14 @@ static void rtw_lps_change_dtim_hdl(_adapter *padapter, u8 dtim)
 	up(&pwrpriv->lock);
 }
 
-static void rtw_dm_ra_mask_hdl(_adapter *padapter, struct sta_info *psta)
+static void rtw_dm_ra_mask_hdl(struct adapter *padapter, struct sta_info *psta)
 {
 	if (psta) {
 		set_sta_rate(padapter, psta);
 	}
 }
 
-u8 rtw_dm_ra_mask_wk_cmd(_adapter *padapter, u8 *psta)
+u8 rtw_dm_ra_mask_wk_cmd(struct adapter *padapter, u8 *psta)
 {
 	struct cmd_obj	*ph2c;
 	struct drvextra_cmd_parm	*pdrvextra_cmd_parm;
@@ -1797,23 +1798,23 @@ exit:
 
 }
 
-static void power_saving_wk_hdl(_adapter *padapter)
+static void power_saving_wk_hdl(struct adapter *padapter)
 {
 	 rtw_ps_processor(padapter);
 }
 
 /* add for CONFIG_IEEE80211W, none 11w can use it */
-static void reset_securitypriv_hdl(_adapter *padapter)
+static void reset_securitypriv_hdl(struct adapter *padapter)
 {
 	 rtw_reset_securitypriv(padapter);
 }
 
-static void free_assoc_resources_hdl(_adapter *padapter)
+static void free_assoc_resources_hdl(struct adapter *padapter)
 {
 	 rtw_free_assoc_resources(padapter, 1);
 }
 
-u8 rtw_ps_cmd(_adapter *padapter)
+u8 rtw_ps_cmd(struct adapter *padapter)
 {
 	struct cmd_obj		*ppscmd;
 	struct drvextra_cmd_parm	*pdrvextra_cmd_parm;
@@ -1845,7 +1846,7 @@ exit:
 	return res;
 }
 
-static void rtw_chk_hi_queue_hdl(_adapter *padapter)
+static void rtw_chk_hi_queue_hdl(struct adapter *padapter)
 {
 	struct sta_info *psta_bmc;
 	struct sta_priv *pstapriv = &padapter->stapriv;
@@ -1888,7 +1889,7 @@ static void rtw_chk_hi_queue_hdl(_adapter *padapter)
 
 }
 
-u8 rtw_chk_hi_queue_cmd(_adapter *padapter)
+u8 rtw_chk_hi_queue_cmd(struct adapter *padapter)
 {
 	struct cmd_obj	*ph2c;
 	struct drvextra_cmd_parm	*pdrvextra_cmd_parm;
@@ -1957,7 +1958,7 @@ struct btinfo {
 	u8 rsvd_7;
 };
 
-static void rtw_btinfo_hdl(_adapter *adapter, u8 *buf, u16 buf_len)
+static void rtw_btinfo_hdl(struct adapter *adapter, u8 *buf, u16 buf_len)
 {
 	#define BTINFO_WIFI_FETCH 0x23
 	#define BTINFO_BT_AUTO_RPT 0x27
@@ -1987,7 +1988,7 @@ static void rtw_btinfo_hdl(_adapter *adapter, u8 *buf, u16 buf_len)
 	rtw_btcoex_BtInfoNotify(adapter , len+1, &buf[1]);
 }
 
-u8 rtw_c2h_packet_wk_cmd(PADAPTER padapter, u8 *pbuf, u16 length)
+u8 rtw_c2h_packet_wk_cmd(struct adapter * padapter, u8 *pbuf, u16 length)
 {
 	struct cmd_obj *ph2c;
 	struct drvextra_cmd_parm *pdrvextra_cmd_parm;
@@ -2022,7 +2023,7 @@ exit:
 
 /* dont call R/W in this function, beucase SDIO interrupt have claim host */
 /* or deadlock will happen and cause special-systemserver-died in android */
-u8 rtw_c2h_wk_cmd(PADAPTER padapter, u8 *c2h_evt)
+u8 rtw_c2h_wk_cmd(struct adapter * padapter, u8 *c2h_evt)
 {
 	struct cmd_obj *ph2c;
 	struct drvextra_cmd_parm *pdrvextra_cmd_parm;
@@ -2059,7 +2060,7 @@ exit:
 static void c2h_wk_callback(_workitem *work)
 {
 	struct evt_priv *evtpriv = container_of(work, struct evt_priv, c2h_wk);
-	_adapter *adapter = container_of(evtpriv, _adapter, evtpriv);
+	struct adapter *adapter = container_of(evtpriv, struct adapter, evtpriv);
 	u8 *c2h_evt;
 	c2h_id_filter ccx_id_filter = rtw_hal_c2h_id_filter_ccx(adapter);
 
@@ -2099,7 +2100,7 @@ static void c2h_wk_callback(_workitem *work)
 	evtpriv->c2h_wk_alive = false;
 }
 
-u8 rtw_drvextra_cmd_hdl(_adapter *padapter, unsigned char *pbuf)
+u8 rtw_drvextra_cmd_hdl(struct adapter *padapter, unsigned char *pbuf)
 {
 	struct drvextra_cmd_parm *pdrvextra_cmd;
 
@@ -2161,7 +2162,7 @@ u8 rtw_drvextra_cmd_hdl(_adapter *padapter, unsigned char *pbuf)
 	return H2C_SUCCESS;
 }
 
-void rtw_survey_cmd_callback(_adapter *	padapter ,  struct cmd_obj *pcmd)
+void rtw_survey_cmd_callback(struct adapter *	padapter ,  struct cmd_obj *pcmd)
 {
 	struct	mlme_priv *pmlmepriv = &padapter->mlmepriv;
 
@@ -2180,7 +2181,7 @@ void rtw_survey_cmd_callback(_adapter *	padapter ,  struct cmd_obj *pcmd)
 	rtw_free_cmd_obj(pcmd);
 }
 
-void rtw_disassoc_cmd_callback(_adapter *	padapter,  struct cmd_obj *pcmd)
+void rtw_disassoc_cmd_callback(struct adapter *	padapter,  struct cmd_obj *pcmd)
 {
 	struct	mlme_priv *pmlmepriv = &padapter->mlmepriv;
 
@@ -2197,7 +2198,7 @@ void rtw_disassoc_cmd_callback(_adapter *	padapter,  struct cmd_obj *pcmd)
 	rtw_free_cmd_obj(pcmd);
 }
 
-void rtw_joinbss_cmd_callback(_adapter *	padapter,  struct cmd_obj *pcmd)
+void rtw_joinbss_cmd_callback(struct adapter *	padapter,  struct cmd_obj *pcmd)
 {
 	struct	mlme_priv *pmlmepriv = &padapter->mlmepriv;
 
@@ -2215,7 +2216,7 @@ void rtw_joinbss_cmd_callback(_adapter *	padapter,  struct cmd_obj *pcmd)
 	rtw_free_cmd_obj(pcmd);
 }
 
-void rtw_createbss_cmd_callback(_adapter *padapter, struct cmd_obj *pcmd)
+void rtw_createbss_cmd_callback(struct adapter *padapter, struct cmd_obj *pcmd)
 {
 	u8 timer_cancelled;
 	struct sta_info *psta = NULL;
@@ -2301,7 +2302,7 @@ exit:
 
 
 
-void rtw_setstaKey_cmdrsp_callback(_adapter *	padapter ,  struct cmd_obj *pcmd)
+void rtw_setstaKey_cmdrsp_callback(struct adapter *	padapter ,  struct cmd_obj *pcmd)
 {
 
 	struct sta_priv * pstapriv = &padapter->stapriv;
@@ -2317,7 +2318,7 @@ exit:
 	rtw_free_cmd_obj(pcmd);
 }
 
-void rtw_setassocsta_cmdrsp_callback(_adapter *	padapter,  struct cmd_obj *pcmd)
+void rtw_setassocsta_cmdrsp_callback(struct adapter *	padapter,  struct cmd_obj *pcmd)
 {
 	struct sta_priv * pstapriv = &padapter->stapriv;
 	struct mlme_priv	*pmlmepriv = &padapter->mlmepriv;

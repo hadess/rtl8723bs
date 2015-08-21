@@ -20,6 +20,7 @@
 #define _RTW_STA_MGT_C_
 
 #include <drv_types.h>
+#include <rtw_debug.h>
 
 void _rtw_init_stainfo(struct sta_info *psta);
 void _rtw_init_stainfo(struct sta_info *psta)
@@ -319,7 +320,7 @@ exit:
 }
 
 /*  using pstapriv->sta_hash_lock to protect */
-u32	rtw_free_stainfo(_adapter *padapter , struct sta_info *psta)
+u32	rtw_free_stainfo(struct adapter *padapter , struct sta_info *psta)
 {
 	int i;
 	_queue *pfree_sta_queue;
@@ -486,7 +487,7 @@ exit:
 }
 
 /*  free all stainfo which in sta_hash[all] */
-void rtw_free_all_stainfo(_adapter *padapter)
+void rtw_free_all_stainfo(struct adapter *padapter)
 {
 	_list	*plist, *phead;
 	s32	index;
@@ -565,7 +566,7 @@ struct sta_info *rtw_get_stainfo(struct sta_priv *pstapriv, u8 *hwaddr)
 	return psta;
 }
 
-u32 rtw_init_bcmc_stainfo(_adapter * padapter)
+u32 rtw_init_bcmc_stainfo(struct adapter * padapter)
 {
 
 	struct sta_info		*psta;
@@ -593,7 +594,7 @@ exit:
 }
 
 
-struct sta_info* rtw_get_bcmc_stainfo(_adapter * padapter)
+struct sta_info* rtw_get_bcmc_stainfo(struct adapter * padapter)
 {
 	struct sta_info		*psta;
 	struct sta_priv		*pstapriv = &padapter->stapriv;
@@ -603,7 +604,7 @@ struct sta_info* rtw_get_bcmc_stainfo(_adapter * padapter)
 	return psta;
 }
 
-u8 rtw_access_ctrl(_adapter *padapter, u8 *mac_addr)
+u8 rtw_access_ctrl(struct adapter *padapter, u8 *mac_addr)
 {
 	u8 res = true;
 	_list	*plist, *phead;

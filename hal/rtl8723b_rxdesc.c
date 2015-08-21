@@ -16,7 +16,7 @@
 
 #include <rtl8723b_hal.h>
 
-static void process_rssi(_adapter *padapter, union recv_frame *prframe)
+static void process_rssi(struct adapter *padapter, union recv_frame *prframe)
 {
 	struct rx_pkt_attrib *pattrib = &prframe->u.hdr.attrib;
 	struct signal_stat * signal_stat = &padapter->recvpriv.signal_strength_data;
@@ -37,7 +37,7 @@ static void process_rssi(_adapter *padapter, union recv_frame *prframe)
 
 }/*  Process_UI_RSSI_8192C */
 
-static void process_link_qual(_adapter *padapter, union recv_frame *prframe)
+static void process_link_qual(struct adapter *padapter, union recv_frame *prframe)
 {
 	struct rx_pkt_attrib *pattrib;
 	struct signal_stat * signal_stat;
@@ -63,7 +63,7 @@ static void process_link_qual(_adapter *padapter, union recv_frame *prframe)
 }/*  Process_UiLinkQuality8192S */
 
 
-void rtl8723b_process_phy_info(_adapter *padapter, void *prframe)
+void rtl8723b_process_phy_info(struct adapter *padapter, void *prframe)
 {
 	union recv_frame *precvframe = (union recv_frame *)prframe;
 	/*  */
