@@ -124,7 +124,6 @@ struct registry_priv
 	u8	short_retry_lmt;
 	u16	busy_thresh;
 	u8	ack_policy;
-	u8	mp_mode;
 	u8  mp_dm;
 	u8	software_encrypt;
 	u8	software_decrypt;

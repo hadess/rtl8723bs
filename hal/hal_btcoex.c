@@ -501,14 +501,7 @@ static u8 halbtcoutsrc_Get(void *pBtcContext, u8 getType, void *pOutBuf)
 			break;
 
 		case BTC_GET_BL_WIFI_IS_IN_MP_MODE:
-			if (padapter->registrypriv.mp_mode == 0)
-			{
-				*pu8 = false;
-			}
-			else
-			{
-				*pu8 = true;
-			}
+			*pu8 = false;
 			break;
 
 		case BTC_GET_BL_EXT_SWITCH:

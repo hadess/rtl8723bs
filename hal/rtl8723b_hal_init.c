@@ -461,18 +461,9 @@ s32 rtl8723b_FirmwareDownload(struct adapter * padapter, bool  bUsedWoWLANFw)
 		} else
 #endif /*  CONFIG_WOWLAN */
 			{
-				if (padapter->registrypriv.mp_mode == 0)
-				{
-					ODM_ConfigFWWithHeaderFile(&pHalData->odmpriv, CONFIG_FW_NIC,
+				ODM_ConfigFWWithHeaderFile(&pHalData->odmpriv, CONFIG_FW_NIC,
 						(u8 *)&pFirmware->szFwBuffer, &pFirmware->ulFwLength);
-					DBG_8192C("%s fw: %s, size: %d\n", __func__, "FW_NIC", pFirmware->ulFwLength);
-				}
-				else
-				{
-					ODM_ConfigFWWithHeaderFile(&pHalData->odmpriv, CONFIG_FW_MP,
-						(u8 *)&pFirmware->szFwBuffer, &pFirmware->ulFwLength);
-					DBG_8192C("%s fw: %s, size: %d\n", __func__, "FW_MP", pFirmware->ulFwLength);
-				}
+				DBG_8192C("%s fw: %s, size: %d\n", __func__, "FW_NIC", pFirmware->ulFwLength);
 			}
 			break;
 	}

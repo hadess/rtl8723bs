@@ -136,7 +136,6 @@ static void Update_ODM_ComInfo_8723b(struct adapter *	Adapter)
 	ODM_CmnInfoHook(pDM_Odm, ODM_CMNINFO_BW,&(pHalData->CurrentChannelBW));
 	ODM_CmnInfoHook(pDM_Odm, ODM_CMNINFO_CHNL,&(pHalData->CurrentChannel));
 	ODM_CmnInfoHook(pDM_Odm, ODM_CMNINFO_NET_CLOSED,&(Adapter->net_closed));
-	ODM_CmnInfoHook(pDM_Odm, ODM_CMNINFO_MP_MODE,&(Adapter->registrypriv.mp_mode));
 	ODM_CmnInfoHook(pDM_Odm, ODM_CMNINFO_BAND,&(pHalData->CurrentBandType));
 	ODM_CmnInfoHook(pDM_Odm, ODM_CMNINFO_FORCED_IGI_LB,&(pHalData->u1ForcedIgiLb));
 	ODM_CmnInfoHook(pDM_Odm, ODM_CMNINFO_FORCED_RATE,&(pHalData->ForcedDataRate));
@@ -167,9 +166,7 @@ rtl8723b_InitHalDm(
 
 	Update_ODM_ComInfo_8723b(Adapter);
 
-	if (Adapter->registrypriv.mp_mode == 0)
-		ODM_DMInit(pDM_Odm);
-
+	ODM_DMInit(pDM_Odm);
 }
 
 void

@@ -228,10 +228,6 @@ int _rtw_xmit_entry(_pkt *pkt, _nic_hdl pnetdev)
 	struct mlme_priv	*pmlmepriv = &padapter->mlmepriv;
 	s32 res = 0;
 
-	if (padapter->registrypriv.mp_mode) {
-		DBG_871X("MP_TX_DROP_OS_FRAME\n");
-		goto drop_packet;
-	}
 	DBG_COUNTER(padapter->tx_logs.os_tx);
 	RT_TRACE(_module_rtl871x_mlme_c_, _drv_info_, ("+xmit_enry\n"));
 
