@@ -102,6 +102,7 @@ static void Update_ODM_ComInfo_8723b(struct adapter *	Adapter)
 	PDM_ODM_T		pDM_Odm = &(pHalData->odmpriv);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
 	int i;
+	u8 zero = 0;
 
 	pdmpriv->InitODMFlag = 0
 		| ODM_BB_DIG
@@ -136,6 +137,7 @@ static void Update_ODM_ComInfo_8723b(struct adapter *	Adapter)
 	ODM_CmnInfoHook(pDM_Odm, ODM_CMNINFO_BW,&(pHalData->CurrentChannelBW));
 	ODM_CmnInfoHook(pDM_Odm, ODM_CMNINFO_CHNL,&(pHalData->CurrentChannel));
 	ODM_CmnInfoHook(pDM_Odm, ODM_CMNINFO_NET_CLOSED,&(Adapter->net_closed));
+	ODM_CmnInfoHook(pDM_Odm, ODM_CMNINFO_MP_MODE,&zero);
 	ODM_CmnInfoHook(pDM_Odm, ODM_CMNINFO_BAND,&(pHalData->CurrentBandType));
 	ODM_CmnInfoHook(pDM_Odm, ODM_CMNINFO_FORCED_IGI_LB,&(pHalData->u1ForcedIgiLb));
 	ODM_CmnInfoHook(pDM_Odm, ODM_CMNINFO_FORCED_RATE,&(pHalData->ForcedDataRate));
