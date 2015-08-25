@@ -676,20 +676,28 @@ static int __init rtw_drv_entry(void)
 	DBG_871X_LEVEL(_drv_always_, "rtl8723bs BT-Coex version = %s\n", BTCOEXVERSION);
 #endif /*  BTCOEXVERSION */
 
-	sdio_drvpriv.drv_registered = true;
-	rtw_drv_proc_init();
-	rtw_ndev_notifier_register();
+	if (rtw_drv_proc_init() == _FAIL) {
+		pr_err("Unable to open proc entries\n");
+		return -ENODEV;
+	}
+	ret = rtw_ndev_notifier_register();
+	if (ret) {
+		pr_err("ERROR %d - Failure to register net device\n", ret);
+		rtw_drv_proc_deinit();
+		sdio_drvpriv.drv_registered = false;
+		return -ENODEV;
+	};
 
 	ret = sdio_register_driver(&sdio_drvpriv.r871xs_drv);
-	if (ret != 0)
-	{
+	if (ret) {
 		sdio_drvpriv.drv_registered = false;
 		rtw_drv_proc_deinit();
 		rtw_ndev_notifier_unregister();
-		DBG_871X("%s: register driver failed!!(%d)\n", __func__, ret);
+		pr_err("%s: register driver failed!!(%d)\n", __func__, ret);
 		goto exit;
 	}
 
+	sdio_drvpriv.drv_registered = true;
 	goto exit;
 
 exit:
