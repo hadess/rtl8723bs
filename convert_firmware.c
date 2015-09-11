@@ -26,7 +26,7 @@ int main(int argc, char **argv)
 	int i;
 
 	/* convert firmware */
-	outb = fopen("rtl8723bs_ap_wowlan", "w");
+	outb = fopen("rtl8723bs_ap_wowlan.bin", "w");
 	if (!outb) {
 		fprintf(stderr, "File open error\n");
 		return 1;
@@ -35,7 +35,7 @@ int main(int argc, char **argv)
 		   ArrayLength_MP_8723B_FW_AP_WoWLAN);
 	fclose(outb);
 
-	outb = fopen("rtl8723bs_bt", "w");
+	outb = fopen("rtl8723bs_bt.bin", "w");
 	if (!outb) {
 		fprintf(stderr, "File open error\n");
 		return 1;
@@ -44,7 +44,7 @@ int main(int argc, char **argv)
 		   ArrayLength_MP_8723B_FW_BT);
 	fclose(outb);
 
-	outb = fopen("rtl8723bs_nic", "w");
+	outb = fopen("rtl8723bs_nic.bin", "w");
 	if (!outb) {
 		fprintf(stderr, "File open error\n");
 		return 1;
@@ -53,7 +53,7 @@ int main(int argc, char **argv)
 		   ArrayLength_MP_8723B_FW_NIC);
 	fclose(outb);
 
-	outb = fopen("rtl8723bs_wowlan", "w");
+	outb = fopen("rtl8723bs_wowlan.bin", "w");
 	if (!outb) {
 		fprintf(stderr, "File open error\n");
 		return 1;
