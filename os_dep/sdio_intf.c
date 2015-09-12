@@ -479,7 +479,7 @@ static int rtw_drv_init(
 	const struct sdio_device_id *id)
 {
 	int status = _FAIL;
-	struct adapter *if1 = NULL, *if2 = NULL;
+	struct adapter *if1 = NULL;
 	struct dvobj_priv *dvobj;
 
 	RT_TRACE(_module_hci_intfs_c_, _drv_info_,
@@ -492,17 +492,23 @@ static int rtw_drv_init(
 	}
 
 	if ((if1 = rtw_sdio_if1_init(dvobj, id)) == NULL) {
-		DBG_871X("rtw_init_primarystruct adapter Failed!\n");
+		DBG_871X("Failure to initialize adapter\n");
 		goto free_dvobj;
 	}
 
 	/* dev_alloc_name && register_netdev */
 	if ((status = rtw_drv_register_netdev(if1)) != _SUCCESS) {
-		goto free_if2;
+		pr_err("ERROR %d - Failure to register net device\n", status);
+		goto free_iface;
 	}
 
+	status = rtw_ndev_notifier_register();
+	if (status) {
+		pr_err("ERROR %d - Failure to register net device notifier\n", status);
+		goto free_device;
+	};
 	if (sdio_alloc_irq(dvobj) != _SUCCESS)
-		goto free_if2;
+		goto free_notifier;
 
 #ifdef	CONFIG_GPIO_WAKEUP
 	gpio_hostwakeup_alloc_irq(if1);
@@ -510,19 +516,18 @@ static int rtw_drv_init(
 
 	RT_TRACE(_module_hci_intfs_c_, _drv_err_, ("-871x_drv - drv_init, success!\n"));
 
-	status = _SUCCESS;
+	return _SUCCESS;
 
-free_if2:
-	if (status != _SUCCESS && if2) {
-	}
-	if (status != _SUCCESS && if1) {
-		rtw_sdio_if1_deinit(if1);
-	}
+free_notifier:
+	rtw_ndev_notifier_unregister();
+free_device:
+	rtw_ndev_notifier_unregister();
+free_iface:
+	rtw_sdio_if1_deinit(if1);
 free_dvobj:
-	if (status != _SUCCESS)
-		sdio_dvobj_deinit(func);
+	sdio_dvobj_deinit(func);
 exit:
-	return status == _SUCCESS?0:-ENODEV;
+	return -ENODEV;
 }
 
 static void rtw_dev_remove(struct sdio_func *func)
@@ -680,13 +685,6 @@ static int __init rtw_drv_entry(void)
 		pr_err("Unable to open proc entries\n");
 		return -ENODEV;
 	}
-	ret = rtw_ndev_notifier_register();
-	if (ret) {
-		pr_err("ERROR %d - Failure to register net device\n", ret);
-		rtw_drv_proc_deinit();
-		sdio_drvpriv.drv_registered = false;
-		return -ENODEV;
-	};
 
 	ret = sdio_register_driver(&sdio_drvpriv.r871xs_drv);
 	if (ret) {

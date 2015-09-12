@@ -191,17 +191,6 @@ static uint rtw_max_roaming_times =2;
 module_param(rtw_max_roaming_times, uint, 0644);
 MODULE_PARM_DESC(rtw_max_roaming_times,"The max roaming times to try");
 
-#ifdef CONFIG_FILE_FWIMG
-static char *rtw_fw_file_path = "/system/etc/firmware/rtlwifi/FW_NIC.BIN";
-module_param(rtw_fw_file_path, charp, 0644);
-MODULE_PARM_DESC(rtw_fw_file_path, "The path of fw image");
-
-static char *rtw_fw_wow_file_path = "/system/etc/firmware/rtlwifi/FW_WoWLAN.BIN";
-module_param(rtw_fw_wow_file_path, charp, 0644);
-MODULE_PARM_DESC(rtw_fw_wow_file_path, "The path of fw for Wake on Wireless image");
-
-#endif /*  CONFIG_FILE_FWIMG */
-
 module_param(rtw_mc2u_disable, int, 0644);
 
 module_param(rtw_80211d, int, 0644);

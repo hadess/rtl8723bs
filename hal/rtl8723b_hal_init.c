@@ -14,6 +14,8 @@
  ******************************************************************************/
 #define _HAL_INIT_C_
 
+#include <linux/firmware.h>
+#include <linux/slab.h>
 #include <drv_types.h>
 #include <rtw_debug.h>
 #include <rtl8723b_hal.h>
@@ -340,134 +342,88 @@ void rtl8723b_FirmwareSelfReset(struct adapter * padapter)
 	}
 }
 
-#ifdef CONFIG_FILE_FWIMG
-extern char *rtw_fw_file_path;
-extern char *rtw_fw_wow_file_path;
-u8 FwBuffer[FW_8723B_SIZE];
-#endif /*  CONFIG_FILE_FWIMG */
-
 /*  */
 /* 	Description: */
 /* 		Download 8192C firmware code. */
 /*  */
 /*  */
-s32 rtl8723b_FirmwareDownload(struct adapter * padapter, bool  bUsedWoWLANFw)
+s32 rtl8723b_FirmwareDownload(struct adapter *padapter, bool  bUsedWoWLANFw)
 {
 	s32	rtStatus = _SUCCESS;
 	u8 write_fw = 0;
 	unsigned long fwdl_start_time;
-	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(padapter);
-#ifdef CONFIG_WOWLAN
-	u8			*FwImageWoWLAN;
-	u32			FwImageWoWLANLen;
-#endif
-	PRT_FIRMWARE_8723B	pFirmware = NULL;
-	PRT_FIRMWARE_8723B	pBTFirmware = NULL;
-	PRT_8723B_FIRMWARE_HDR		pFwHdr = NULL;
-	u8			*pFirmwareBuf;
-	u32			FirmwareLen;
-#ifdef CONFIG_FILE_FWIMG
+	struct hal_com_data *pHalData = GET_HAL_DATA(padapter);
+	struct rt_firmware *pFirmware;
+	struct rt_firmware *pBTFirmware;
+	struct rt_firmware_hdr *pFwHdr = NULL;
+	u8 	*pFirmwareBuf;
+	u32 		FirmwareLen;
+	const struct firmware *fw;
+	struct device *device = dvobj_to_dev(padapter->dvobj);
 	u8 *fwfilepath;
-#endif /*  CONFIG_FILE_FWIMG */
 	struct dvobj_priv *psdpriv = padapter->dvobj;
 	struct debug_priv *pdbgpriv = &psdpriv->drv_dbg;
+	u8 tmp_ps;
 
 	RT_TRACE(_module_hal_init_c_, _drv_info_, ("+%s\n", __func__));
 #ifdef CONFIG_WOWLAN
 	RT_TRACE(_module_hal_init_c_, _drv_notice_, ("+%s, bUsedWoWLANFw:%d\n", __func__, bUsedWoWLANFw));
 #endif
-	pFirmware = (PRT_FIRMWARE_8723B)rtw_zmalloc(sizeof(RT_FIRMWARE_8723B));
-	pBTFirmware = (PRT_FIRMWARE_8723B)rtw_zmalloc(sizeof(RT_FIRMWARE_8723B));
+	pFirmware = kzalloc(sizeof(struct rt_firmware), GFP_KERNEL);
+	pBTFirmware = kzalloc(sizeof(struct rt_firmware), GFP_KERNEL);
 
-	if (!pFirmware||!pBTFirmware)
-	{
+	if (!pFirmware||!pBTFirmware) {
 		rtStatus = _FAIL;
 		goto exit;
 	}
 
-	{
-			u8 tmp_ps = 0;
-			tmp_ps =rtw_read8(padapter, 0xa3);
-			tmp_ps&= 0xf8;
-			tmp_ps|= 0x02;
-			/* 1. write 0xA3[:2:0] = 3b'010 */
-			rtw_write8(padapter, 0xa3, tmp_ps);
-			/* 2. read power_state = 0xA0[1:0] */
-			tmp_ps =rtw_read8(padapter, 0xa0);
-			tmp_ps&= 0x03;
-			if (tmp_ps != 0x01)
-			{
-				DBG_871X(FUNC_ADPT_FMT" tmp_ps =%x \n", FUNC_ADPT_ARG(padapter), tmp_ps);
-				pdbgpriv->dbg_downloadfw_pwr_state_cnt++;
-			}
+	tmp_ps = rtw_read8(padapter, 0xa3);
+	tmp_ps &= 0xf8;
+	tmp_ps |= 0x02;
+	/* 1. write 0xA3[:2:0] = 3b'010 */
+	rtw_write8(padapter, 0xa3, tmp_ps);
+	/* 2. read power_state = 0xA0[1:0] */
+	tmp_ps = rtw_read8(padapter, 0xa0);
+	tmp_ps &= 0x03;
+	if (tmp_ps != 0x01) {
+		DBG_871X(FUNC_ADPT_FMT" tmp_ps =%x\n", FUNC_ADPT_ARG(padapter), tmp_ps);
+		pdbgpriv->dbg_downloadfw_pwr_state_cnt++;
 	}
-#ifdef CONFIG_FILE_FWIMG
 #ifdef CONFIG_WOWLAN
 	if (bUsedWoWLANFw)
-	{
-		fwfilepath = rtw_fw_wow_file_path;
-	}
+		fwfilepath = "rtlwifi/rtl8723bs_wowlan.bin";
 	else
 #endif /*  CONFIG_WOWLAN */
-	{
-		fwfilepath = rtw_fw_file_path;
+		fwfilepath = "rtlwifi/rtl8723bs_nic.bin";
+
+	pr_info("rtl8723bs: accquire FW from file:%s\n", fwfilepath);
+
+	rtStatus = request_firmware(&fw, fwfilepath, device);
+	if (rtStatus) {
+		pr_err("Request firmware failed with error 0x%x\n", rtStatus);
+		rtStatus = _FAIL;
+		goto exit;
 	}
-#endif /*  CONFIG_FILE_FWIMG */
-
-#ifdef CONFIG_FILE_FWIMG
-	if (rtw_is_file_readable(fwfilepath) == true)
-	{
-		DBG_8192C("%s accquire FW from file:%s\n", __func__, fwfilepath);
-		pFirmware->eFWSource = FW_SOURCE_IMG_FILE;
+	if (!fw) {
+		pr_err("Firmware %s not available\n", fwfilepath);
+		rtStatus = _FAIL;
+		goto exit;
 	}
-	else
-#endif /*  CONFIG_FILE_FWIMG */
-	{
-		pFirmware->eFWSource = FW_SOURCE_HEADER_FILE;
+	if (fw->size > FW_8723B_SIZE) {
+		rtStatus = _FAIL;
+		RT_TRACE(_module_hal_init_c_, _drv_err_,
+			 ("Firmware size exceed 0x%X. Check it.\n",
+			  FW_8188E_SIZE));
+		goto exit;
 	}
-
-	switch (pFirmware->eFWSource)
-	{
-		case FW_SOURCE_IMG_FILE:
-#ifdef CONFIG_FILE_FWIMG
-			rtStatus = rtw_retrive_from_file(fwfilepath, FwBuffer, FW_8723B_SIZE);
-			pFirmware->ulFwLength = rtStatus>= 0?rtStatus:0;
-			pFirmware->szFwBuffer = FwBuffer;
-#endif /*  CONFIG_FILE_FWIMG */
-			break;
-
-		case FW_SOURCE_HEADER_FILE:
-#if defined(CONFIG_WOWLAN) || defined(CONFIG_AP_WOWLAN)
-		if (bUsedWoWLANFw) {
-			if (!pwrpriv->wowlan_ap_mode) {
-				ODM_ConfigFWWithHeaderFile(&pHalData->odmpriv,
-						CONFIG_FW_WoWLAN,
-						(u8 *)&pFirmware->szFwBuffer,
-						&pFirmware->ulFwLength);
-
-				DBG_8192C(" ===> %s fw: %s, size: %d\n",
-						__func__, "WoWLAN",
-						pFirmware->ulFwLength);
-			} else {
-				ODM_ConfigFWWithHeaderFile(&pHalData->odmpriv,
-						CONFIG_FW_AP_WoWLAN,
-						(u8 *)&pFirmware->szFwBuffer,
-						&pFirmware->ulFwLength);
-
-				DBG_8192C(" ===> %s fw: %s, size: %d\n",
-						__func__, "AP_WoWLAN",
-						pFirmware->ulFwLength);
-			}
-		} else
-#endif /*  CONFIG_WOWLAN */
-			{
-				ODM_ConfigFWWithHeaderFile(&pHalData->odmpriv, CONFIG_FW_NIC,
-						(u8 *)&pFirmware->szFwBuffer, &pFirmware->ulFwLength);
-				DBG_8192C("%s fw: %s, size: %d\n", __func__, "FW_NIC", pFirmware->ulFwLength);
-			}
-			break;
-	}
-
+	pFirmware->szFwBuffer = kzalloc(fw->size, GFP_KERNEL);
+	if (! pFirmware->szFwBuffer) {
+		rtStatus = _FAIL;
+		goto exit;
+	}	
+	memcpy(pFirmware->szFwBuffer, fw->data, fw->size);
+	pFirmware->ulFwLength = fw->size;
+	release_firmware(fw);
 	if (pFirmware->ulFwLength > FW_8723B_SIZE) {
 		rtStatus = _FAIL;
 		DBG_871X_LEVEL(_drv_emerg_, "Firmware size:%u exceed %u\n", pFirmware->ulFwLength, FW_8723B_SIZE);
@@ -478,7 +434,7 @@ s32 rtl8723b_FirmwareDownload(struct adapter * padapter, bool  bUsedWoWLANFw)
 	FirmwareLen = pFirmware->ulFwLength;
 
 	/*  To Check Fw header. Added by tynli. 2009.12.04. */
-	pFwHdr = (PRT_8723B_FIRMWARE_HDR)pFirmwareBuf;
+	pFwHdr = (struct rt_firmware_hdr *)pFirmwareBuf;
 
 	pHalData->FirmwareVersion =  le16_to_cpu(pFwHdr->Version);
 	pHalData->FirmwareSubVersion = le16_to_cpu(pFwHdr->Subversion);
@@ -536,10 +492,9 @@ fwdl_stat:
 	);
 
 exit:
-	if (pFirmware)
-		kfree((u8 *)pFirmware);
-	if (pBTFirmware)
-		kfree((u8 *)pBTFirmware);
+	kfree(pFirmware->szFwBuffer);
+	kfree(pFirmware);
+	kfree(pBTFirmware);
 	DBG_871X(" <=== rtl8723b_FirmwareDownload()\n");
 	return rtStatus;
 }

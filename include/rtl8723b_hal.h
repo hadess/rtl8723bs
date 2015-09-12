@@ -53,22 +53,20 @@
 
 #define IS_FW_HEADER_EXIST_8723B(_pFwHdr)	((le16_to_cpu(_pFwHdr->Signature)&0xFFF0) == 0x5300)
 
-typedef struct _RT_FIRMWARE {
-	FIRMWARE_SOURCE	eFWSource;
+struct rt_firmware {
 	u8*			szFwBuffer;
 	u32			ulFwLength;
 
 	u8*			szBTFwBuffer;
 	u8			myBTFwBuffer[FW_8723B_SIZE];
 	u32			ulBTFwLength;
-} RT_FIRMWARE_8723B, *PRT_FIRMWARE_8723B;
+};
 
 /*  */
 /*  This structure must be cared byte-ordering */
 /*  */
 /*  Added by tynli. 2009.12.04. */
-typedef struct _RT_8723B_FIRMWARE_HDR
-{
+struct rt_firmware_hdr {
 	/*  8-byte alinment required */
 
 	/*  LONG WORD 0 ---- */
@@ -93,7 +91,7 @@ typedef struct _RT_8723B_FIRMWARE_HDR
 	/*  LONG WORD 3 ---- */
 	__le32		Rsvd4;
 	__le32		Rsvd5;
-}RT_8723B_FIRMWARE_HDR, *PRT_8723B_FIRMWARE_HDR;
+};
 
 #define DRIVER_EARLY_INT_TIME_8723B		0x05
 #define BCN_DMA_ATIME_INT_TIME_8723B		0x02

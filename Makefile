@@ -94,12 +94,11 @@ _HAL_INTFS_FILES +=	\
 _HAL_INTFS_FILES += hal/sdio_ops.o
 
 _OUTSRC_FILES += hal/HalHWImg8723B_BB.o\
-								hal/HalHWImg8723B_MAC.o\
-								hal/HalHWImg8723B_RF.o\
-								hal/HalHWImg8723B_FW.o\
-								hal/odm_RegConfig8723B.o\
-								hal/HalPhyRf_8723B.o\
-								hal/odm_RTL8723B.o
+			hal/HalHWImg8723B_MAC.o\
+			hal/HalHWImg8723B_RF.o\
+			hal/odm_RegConfig8723B.o\
+			hal/HalPhyRf_8723B.o\
+			hal/odm_RTL8723B.o
 
 ########### END OF PATH  #################################
 
@@ -166,7 +165,6 @@ EXTRA_CFLAGS += -DCONFIG_RTW_SDIO_PM_KEEP_POWER
 endif
 
 ifeq ($(CONFIG_PLATFORM_I386_PC), y)
-EXTRA_CFLAGS += -DCONFIG_LITTLE_ENDIAN
 SUBARCH := $(shell uname -m | sed -e s/i.86/i386/)
 ARCH ?= $(SUBARCH)
 CROSS_COMPILE ?=
@@ -222,6 +220,8 @@ strip:
 
 install:
 	install -p -m 644 $(MODULE_NAME).ko  $(MODDESTDIR)
+	@cp -n rtl8723bs_nic.bin /lib/firmware/rtlwifi/rtl8723bs_nic.bin
+	@cp -n rtl8723bs_wowlan.bin /lib/firmware/rtlwifi/rtl8723bs_wowlan.bin
 	/sbin/depmod -a ${KVER}
 
 uninstall:
@@ -236,7 +236,7 @@ cppcheck: cppcheck.log
 
 cppcheck.log:
 	@echo "Creating cppcheck.log"
-	cppcheck -f --enable=all -Iinclude -Ihal -Ios_dep -DCONFIG_LITTLE_ENDIAN . 2> cppcheck.log
+	cppcheck -f --enable=all -Iinclude -Ihal -Ios_dep  . 2> cppcheck.log
 
 .PHONY: modules clean
 

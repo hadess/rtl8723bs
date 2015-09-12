@@ -94,9 +94,9 @@ typedef enum _RT_SPINLOCK_TYPE{
 	#define s8Byte		s64
 	#define	ps8Byte		s64*
 
-	#if defined(CONFIG_LITTLE_ENDIAN)
+	#if defined(__LITTLE_ENDIAN)
 		#define	ODM_ENDIAN_TYPE			ODM_ENDIAN_LITTLE
-	#elif defined (CONFIG_BIG_ENDIAN)
+	#elif defined (__BIG_ENDIAN)
 		#define	ODM_ENDIAN_TYPE			ODM_ENDIAN_BIG
 	#endif
 

@@ -624,33 +624,3 @@ ODM_ConfigMACWithHeaderFile(
 
 	return result;
 }
-
-HAL_STATUS
-ODM_ConfigFWWithHeaderFile(
-	IN	PDM_ODM_T			pDM_Odm,
-	IN	ODM_FW_Config_Type	ConfigType,
-	OUT u1Byte				*pFirmware,
-	OUT u4Byte				*pSize
-	)
-{
-
-	if (ConfigType == CONFIG_FW_NIC)
-	{
-		READ_FIRMWARE(8723B, _FW_NIC);
-	}
-	else if (ConfigType == CONFIG_FW_WoWLAN)
-	{
-		READ_FIRMWARE(8723B, _FW_WoWLAN);
-	}
-#ifdef CONFIG_AP_WOWLAN
-	else if (ConfigType == CONFIG_FW_AP_WoWLAN)
-	{
-		READ_FIRMWARE(8723B, _FW_AP_WoWLAN);
-	}
-#endif
-	else if (ConfigType == CONFIG_FW_BT)
-	{
-		READ_FIRMWARE_MP(8723B, _FW_BT);
-	}
-	return HAL_STATUS_SUCCESS;
-}
