@@ -482,9 +482,9 @@ static int rtw_drv_init(
 	struct adapter *if1 = NULL;
 	struct dvobj_priv *dvobj;
 
-	RT_TRACE(_module_hci_intfs_c_, _drv_info_,
-		("+rtw_drv_init: vendor = 0x%04x device = 0x%04x class = 0x%02x\n",
-		func->vendor, func->device, func->class));
+	DBG_871X_LEVEL(_drv_always_,
+		       "module probe start: vendor 0x%x, device 0x%x, class 0x%x\n",
+		       func->vendor, func->device, func->class);
 
 	if ((dvobj = sdio_dvobj_init(func)) == NULL) {
 		RT_TRACE(_module_hci_intfs_c_, _drv_err_, ("initialize device object priv Failed!\n"));
