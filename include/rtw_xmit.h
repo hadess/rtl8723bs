@@ -137,7 +137,7 @@ union txdesc {
 struct	hw_xmit	{
 	/* _lock xmit_lock; */
 	/* struct list_head pending; */
-	_queue *sta_queue;
+	struct __queue *sta_queue;
 	/* struct hw_txqueue *phwtxqueue; */
 	/* sint	txcmdcnt; */
 	int	accnt;
@@ -316,7 +316,7 @@ struct xmit_frame
 
 struct tx_servq {
 	struct list_head tx_pending;
-	_queue	sta_pending;
+	struct __queue	sta_pending;
 	int qcnt;
 };
 
@@ -375,20 +375,20 @@ struct	xmit_priv	{
 	_sema	xmit_sema;
 	_sema	terminate_xmitthread_sema;
 
-	/* _queue	blk_strms[MAX_NUMBLKS]; */
-	_queue	be_pending;
-	_queue	bk_pending;
-	_queue	vi_pending;
-	_queue	vo_pending;
-	_queue	bm_pending;
+	/* struct __queue	blk_strms[MAX_NUMBLKS]; */
+	struct __queue	be_pending;
+	struct __queue	bk_pending;
+	struct __queue	vi_pending;
+	struct __queue	vo_pending;
+	struct __queue	bm_pending;
 
-	/* _queue	legacy_dz_queue; */
-	/* _queue	apsd_queue; */
+	/* struct __queue	legacy_dz_queue; */
+	/* struct _queue	apsd_queue; */
 
 	u8 *pallocated_frame_buf;
 	u8 *pxmit_frame_buf;
 	uint free_xmitframe_cnt;
-	_queue	free_xmit_queue;
+	struct __queue	free_xmit_queue;
 
 	/* uint mapping_addr; */
 	/* uint pkt_sz; */
@@ -396,7 +396,7 @@ struct	xmit_priv	{
 	u8 *xframe_ext_alloc_addr;
 	u8 *xframe_ext;
 	uint free_xframe_ext_cnt;
-	_queue free_xframe_ext_queue;
+	struct __queue free_xframe_ext_queue;
 
 	/* struct	hw_txqueue	be_txqueue; */
 	/* struct	hw_txqueue	bk_txqueue; */
@@ -431,13 +431,13 @@ struct	xmit_priv	{
 	_sema		SdioXmitTerminateSema;
 #endif /* CONFIG_SDIO_TX_TASKLET */
 
-	_queue free_xmitbuf_queue;
-	_queue pending_xmitbuf_queue;
+	struct __queue free_xmitbuf_queue;
+	struct __queue pending_xmitbuf_queue;
 	u8 *pallocated_xmitbuf;
 	u8 *pxmitbuf;
 	uint free_xmitbuf_cnt;
 
-	_queue free_xmit_extbuf_queue;
+	struct __queue free_xmit_extbuf_queue;
 	u8 *pallocated_xmit_extbuf;
 	u8 *pxmit_extbuf;
 	uint free_xmit_extbuf_cnt;
@@ -473,7 +473,7 @@ extern struct xmit_frame *rtw_alloc_xmitframe(struct xmit_priv *pxmitpriv);
 struct xmit_frame *rtw_alloc_xmitframe_ext(struct xmit_priv *pxmitpriv);
 struct xmit_frame *rtw_alloc_xmitframe_once(struct xmit_priv *pxmitpriv);
 extern s32 rtw_free_xmitframe(struct xmit_priv *pxmitpriv, struct xmit_frame *pxmitframe);
-extern void rtw_free_xmitframe_queue(struct xmit_priv *pxmitpriv, _queue *pframequeue);
+extern void rtw_free_xmitframe_queue(struct xmit_priv *pxmitpriv, struct __queue *pframequeue);
 struct tx_servq *rtw_get_sta_pending(struct adapter *padapter, struct sta_info *psta, sint up, u8 *ac);
 extern s32 rtw_xmitframe_enqueue(struct adapter *padapter, struct xmit_frame *pxmitframe);
 

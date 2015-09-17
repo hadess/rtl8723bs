@@ -123,7 +123,7 @@ void _rtw_free_recv_priv (struct recv_priv *precvpriv)
 	rtw_hal_free_recv_priv(padapter);
 }
 
-union recv_frame *_rtw_alloc_recvframe (_queue *pfree_recv_queue)
+union recv_frame *_rtw_alloc_recvframe (struct __queue *pfree_recv_queue)
 {
 
 	union recv_frame  *precvframe;
@@ -154,7 +154,7 @@ union recv_frame *_rtw_alloc_recvframe (_queue *pfree_recv_queue)
 	return precvframe;
 }
 
-union recv_frame *rtw_alloc_recvframe (_queue *pfree_recv_queue)
+union recv_frame *rtw_alloc_recvframe(struct __queue *pfree_recv_queue)
 {
 	union recv_frame  *precvframe;
 
@@ -167,7 +167,7 @@ union recv_frame *rtw_alloc_recvframe (_queue *pfree_recv_queue)
 	return precvframe;
 }
 
-int rtw_free_recvframe(union recv_frame *precvframe, _queue *pfree_recv_queue)
+int rtw_free_recvframe(union recv_frame *precvframe, struct __queue *pfree_recv_queue)
 {
 	struct adapter *padapter =precvframe->u.hdr.adapter;
 	struct recv_priv *precvpriv = &padapter->recvpriv;
@@ -194,7 +194,7 @@ int rtw_free_recvframe(union recv_frame *precvframe, _queue *pfree_recv_queue)
 
 
 
-sint _rtw_enqueue_recvframe(union recv_frame *precvframe, _queue *queue)
+sint _rtw_enqueue_recvframe(union recv_frame *precvframe, struct __queue *queue)
 {
 
 	struct adapter *padapter =precvframe->u.hdr.adapter;
@@ -213,7 +213,7 @@ sint _rtw_enqueue_recvframe(union recv_frame *precvframe, _queue *queue)
 	return _SUCCESS;
 }
 
-sint rtw_enqueue_recvframe(union recv_frame *precvframe, _queue *queue)
+sint rtw_enqueue_recvframe(union recv_frame *precvframe, struct __queue *queue)
 {
 	sint ret;
 
@@ -227,7 +227,7 @@ sint rtw_enqueue_recvframe(union recv_frame *precvframe, _queue *queue)
 }
 
 /*
-sint	rtw_enqueue_recvframe(union recv_frame *precvframe, _queue *queue)
+sint	rtw_enqueue_recvframe(union recv_frame *precvframe, struct __queue *queue)
 {
 	return rtw_free_recvframe(precvframe, queue);
 }
@@ -244,7 +244,7 @@ using spinlock to protect
 
 */
 
-void rtw_free_recvframe_queue(_queue *pframequeue,  _queue *pfree_recv_queue)
+void rtw_free_recvframe_queue(struct __queue *pframequeue,  struct __queue *pfree_recv_queue)
 {
 	union	recv_frame	*precvframe;
 	struct list_head *plist, *phead;
@@ -282,7 +282,7 @@ u32 rtw_free_uc_swdec_pending_queue(struct adapter *adapter)
 }
 
 
-sint rtw_enqueue_recvbuf_to_head(struct recv_buf *precvbuf, _queue *queue)
+sint rtw_enqueue_recvbuf_to_head(struct recv_buf *precvbuf, struct __queue *queue)
 {
 	spin_lock_bh(&queue->lock);
 
@@ -294,7 +294,7 @@ sint rtw_enqueue_recvbuf_to_head(struct recv_buf *precvbuf, _queue *queue)
 	return _SUCCESS;
 }
 
-sint rtw_enqueue_recvbuf(struct recv_buf *precvbuf, _queue *queue)
+sint rtw_enqueue_recvbuf(struct recv_buf *precvbuf, struct __queue *queue)
 {
 	spin_lock_bh(&queue->lock);
 
@@ -306,7 +306,7 @@ sint rtw_enqueue_recvbuf(struct recv_buf *precvbuf, _queue *queue)
 
 }
 
-struct recv_buf *rtw_dequeue_recvbuf (_queue *queue)
+struct recv_buf *rtw_dequeue_recvbuf (struct __queue *queue)
 {
 	struct recv_buf *precvbuf;
 	struct list_head *plist, *phead;
@@ -1875,15 +1875,14 @@ sint wlanhdr_to_ethhdr (union recv_frame *precvframe)
 }
 
 /* perform defrag */
-union recv_frame * recvframe_defrag(struct adapter *adapter, _queue *defrag_q);
-union recv_frame * recvframe_defrag(struct adapter *adapter, _queue *defrag_q)
+union recv_frame * recvframe_defrag(struct adapter *adapter, struct __queue *defrag_q)
 {
 	struct list_head *plist, *phead;
 	u8	*data, wlanhdr_offset;
 	u8	curfragnum;
 	struct recv_frame_hdr *pfhdr,*pnfhdr;
 	union recv_frame* prframe, *pnextrframe;
-	_queue	*pfree_recv_queue;
+	struct __queue	*pfree_recv_queue;
 
 	curfragnum = 0;
 	pfree_recv_queue =&adapter->recvpriv.free_recv_queue;
@@ -1970,7 +1969,7 @@ union recv_frame* recvframe_chk_defrag(struct adapter * padapter, union recv_fra
 	struct sta_priv *pstapriv;
 	struct list_head *phead;
 	union recv_frame *prtnframe = NULL;
-	_queue *pfree_recv_queue, *pdefrag_q;
+	struct __queue *pfree_recv_queue, *pdefrag_q;
 
 	pstapriv = &padapter->stapriv;
 
@@ -2089,7 +2088,7 @@ static int amsdu_to_msdu(struct adapter *padapter, union recv_frame *prframe)
 	u8	*pdata;
 	_pkt *sub_pkt,*subframes[MAX_SUBFRAME_COUNT];
 	struct recv_priv *precvpriv = &padapter->recvpriv;
-	_queue *pfree_recv_queue = &(precvpriv->free_recv_queue);
+	struct __queue *pfree_recv_queue = &(precvpriv->free_recv_queue);
 	int	ret = _SUCCESS;
 
 	nr_subframes = 0;
@@ -2242,7 +2241,7 @@ int enqueue_reorder_recvframe(struct recv_reorder_ctrl *preorder_ctrl, union rec
 int enqueue_reorder_recvframe(struct recv_reorder_ctrl *preorder_ctrl, union recv_frame *prframe)
 {
 	struct rx_pkt_attrib *pattrib = &prframe->u.hdr.attrib;
-	_queue *ppending_recvframe_queue = &preorder_ctrl->pending_recvframe_queue;
+	struct __queue *ppending_recvframe_queue = &preorder_ctrl->pending_recvframe_queue;
 	struct list_head *phead, *plist;
 	union recv_frame *pnextrframe;
 	struct rx_pkt_attrib *pnextattrib;
@@ -2322,7 +2321,7 @@ int recv_indicatepkts_in_order(struct adapter *padapter, struct recv_reorder_ctr
 	/* u8 index = 0; */
 	int bPktInBuf = false;
 	struct recv_priv *precvpriv = &padapter->recvpriv;
-	_queue *ppending_recvframe_queue = &preorder_ctrl->pending_recvframe_queue;
+	struct __queue *ppending_recvframe_queue = &preorder_ctrl->pending_recvframe_queue;
 	struct dvobj_priv *psdpriv = padapter->dvobj;
 	struct debug_priv *pdbgpriv = &psdpriv->drv_dbg;
 
@@ -2445,7 +2444,7 @@ int recv_indicatepkt_reorder(struct adapter *padapter, union recv_frame *prframe
 	int retval = _SUCCESS;
 	struct rx_pkt_attrib *pattrib = &prframe->u.hdr.attrib;
 	struct recv_reorder_ctrl *preorder_ctrl = prframe->u.hdr.preorder_ctrl;
-	_queue *ppending_recvframe_queue = &preorder_ctrl->pending_recvframe_queue;
+	struct __queue *ppending_recvframe_queue = &preorder_ctrl->pending_recvframe_queue;
 	struct dvobj_priv *psdpriv = padapter->dvobj;
 	struct debug_priv *pdbgpriv = &psdpriv->drv_dbg;
 
@@ -2590,7 +2589,7 @@ void rtw_reordering_ctrl_timeout_handler(void *pcontext)
 {
 	struct recv_reorder_ctrl *preorder_ctrl = (struct recv_reorder_ctrl *)pcontext;
 	struct adapter *padapter = preorder_ctrl->padapter;
-	_queue *ppending_recvframe_queue = &preorder_ctrl->pending_recvframe_queue;
+	struct __queue *ppending_recvframe_queue = &preorder_ctrl->pending_recvframe_queue;
 
 
 	if (padapter->bDriverStopped ||padapter->bSurpriseRemoved)
@@ -2678,7 +2677,7 @@ int process_recv_indicatepkts(struct adapter *padapter, union recv_frame *prfram
 static int recv_func_prehandle(struct adapter *padapter, union recv_frame *rframe)
 {
 	int ret = _SUCCESS;
-	_queue *pfree_recv_queue = &padapter->recvpriv.free_recv_queue;
+	struct __queue *pfree_recv_queue = &padapter->recvpriv.free_recv_queue;
 
 	DBG_COUNTER(padapter->rx_logs.core_rx_pre);
 
@@ -2700,7 +2699,7 @@ static int recv_func_posthandle(struct adapter *padapter, union recv_frame *prfr
 	int ret = _SUCCESS;
 	union recv_frame *orig_prframe = prframe;
 	struct recv_priv *precvpriv = &padapter->recvpriv;
-	_queue *pfree_recv_queue = &padapter->recvpriv.free_recv_queue;
+	struct __queue *pfree_recv_queue = &padapter->recvpriv.free_recv_queue;
 
 	DBG_COUNTER(padapter->rx_logs.core_rx_post);
 

@@ -116,7 +116,7 @@ int _rtw_netif_rx(_nic_hdl ndev, struct sk_buff *skb);
 #define rtw_skb_clone_f(skb, mstat_f)	_rtw_skb_clone((skb))
 #define rtw_netif_rx(ndev, skb) _rtw_netif_rx(ndev, skb)
 
-extern void	_rtw_init_queue(_queue	*pqueue);
+extern void	_rtw_init_queue(struct __queue	*pqueue);
 
 extern void rtw_init_timer(_timer *ptimer, void *padapter, void *pfunc);
 

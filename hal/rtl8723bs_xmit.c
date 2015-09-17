@@ -204,7 +204,7 @@ static s32 xmit_xmitframes(struct adapter * padapter, struct xmit_priv *pxmitpri
 	struct tx_servq *ptxservq;
 	struct list_head *sta_plist, *sta_phead, *frame_plist, *frame_phead;
 	struct xmit_frame *pxmitframe;
-	_queue *pframe_queue;
+	struct __queue *pframe_queue;
 	struct xmit_buf *pxmitbuf;
 	u32 txlen, max_xmit_len;
 	u8 txdesc_size = TXDESC_SIZE;
@@ -617,7 +617,7 @@ void rtl8723bs_free_xmit_priv(struct adapter * padapter)
 	PHAL_DATA_TYPE phal;
 	struct xmit_priv *pxmitpriv;
 	struct xmit_buf *pxmitbuf;
-	_queue *pqueue;
+	struct __queue *pqueue;
 	struct list_head *plist, *phead;
 	struct list_head tmplist;
 

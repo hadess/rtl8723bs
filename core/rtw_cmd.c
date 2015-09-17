@@ -275,7 +275,7 @@ ISR/Call-Back functions can't call this sub-function.
 
 */
 
-sint	_rtw_enqueue_cmd(_queue *queue, struct cmd_obj *obj)
+sint	_rtw_enqueue_cmd(struct __queue *queue, struct cmd_obj *obj)
 {
 	_irqL irqL;
 
@@ -294,7 +294,7 @@ exit:
 	return _SUCCESS;
 }
 
-struct	cmd_obj	*_rtw_dequeue_cmd(_queue *queue)
+struct	cmd_obj	*_rtw_dequeue_cmd(struct __queue *queue)
 {
 	_irqL irqL;
 	struct cmd_obj *obj;

@@ -300,7 +300,7 @@ static void rtw_os_ksocket_send(struct adapter *padapter, union recv_frame *prec
 int rtw_recv_indicatepkt(struct adapter *padapter, union recv_frame *precv_frame)
 {
 	struct recv_priv *precvpriv;
-	_queue	*pfree_recv_queue;
+	struct __queue	*pfree_recv_queue;
 	_pkt *skb;
 	struct rx_pkt_attrib *pattrib = &precv_frame->u.hdr.attrib;
 

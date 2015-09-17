@@ -78,7 +78,7 @@ void rtw_init_timer(_timer *ptimer, void *padapter, void *pfunc)
 	_init_timer(ptimer, adapter->pnetdev, pfunc, adapter);
 }
 
-void	_rtw_init_queue(_queue	*pqueue)
+void	_rtw_init_queue(struct __queue	*pqueue)
 {
 	INIT_LIST_HEAD(&(pqueue->queue));
 

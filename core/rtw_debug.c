@@ -454,7 +454,7 @@ int proc_get_survey_info(struct seq_file *m, void *v)
 	struct net_device *dev = m->private;
 	struct adapter *padapter = (struct adapter *)rtw_netdev_priv(dev);
 	struct mlme_priv	*pmlmepriv = &(padapter->mlmepriv);
-	_queue	*queue	= &(pmlmepriv->scanned_queue);
+	struct __queue	*queue	= &(pmlmepriv->scanned_queue);
 	struct wlan_network	*pnetwork = NULL;
 	struct list_head *plist, *phead;
 	s32 notify_signal;

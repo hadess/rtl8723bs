@@ -357,8 +357,8 @@ struct mlme_priv {
 
 	u8	not_indic_disco;
 	struct list_head *pscanned;
-	_queue	free_bss_pool;
-	_queue	scanned_queue;
+	struct __queue	free_bss_pool;
+	struct __queue	scanned_queue;
 	u8		*free_bss_buf;
 	u32	num_of_scanned;
 
@@ -600,9 +600,9 @@ extern u16 rtw_get_capability(struct wlan_bssid_ex *bss);
 extern void rtw_update_scanned_network(struct adapter *adapter, struct wlan_bssid_ex *target);
 extern void rtw_disconnect_hdl_under_linked(struct adapter * adapter, struct sta_info *psta, u8 free_assoc);
 extern void rtw_generate_random_ibss(u8 *pibss);
-extern struct wlan_network* rtw_find_network(_queue *scanned_queue, u8 *addr);
-extern struct wlan_network* rtw_get_oldest_wlan_network(_queue *scanned_queue);
-struct wlan_network *_rtw_find_same_network(_queue *scanned_queue, struct wlan_network *network);
+extern struct wlan_network* rtw_find_network(struct __queue *scanned_queue, u8 *addr);
+extern struct wlan_network* rtw_get_oldest_wlan_network(struct __queue *scanned_queue);
+struct wlan_network *_rtw_find_same_network(struct __queue *scanned_queue, struct wlan_network *network);
 
 extern void rtw_free_assoc_resources(struct adapter * adapter, int lock_scanned_queue);
 extern void rtw_indicate_disconnect(struct adapter * adapter);
@@ -633,7 +633,7 @@ void rtw_free_mlme_priv_ie_data(struct mlme_priv *pmlmepriv);
 
 extern void _rtw_free_mlme_priv(struct mlme_priv *pmlmepriv);
 
-/* extern struct wlan_network* _rtw_dequeue_network(_queue *queue); */
+/* extern struct wlan_network* _rtw_dequeue_network(struct __queue *queue); */
 
 extern struct wlan_network* _rtw_alloc_network(struct mlme_priv *pmlmepriv);
 
@@ -642,7 +642,7 @@ extern void _rtw_free_network(struct mlme_priv *pmlmepriv, struct wlan_network *
 extern void _rtw_free_network_nolock(struct mlme_priv *pmlmepriv, struct wlan_network *pnetwork);
 
 
-extern struct wlan_network* _rtw_find_network(_queue *scanned_queue, u8 *addr);
+extern struct wlan_network* _rtw_find_network(struct __queue *scanned_queue, u8 *addr);
 
 extern void _rtw_free_network_queue(struct adapter * padapter, u8 isfreeall);
 

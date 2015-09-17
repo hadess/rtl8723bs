@@ -1449,7 +1449,7 @@ void rtw_cfg80211_surveydone_event_callback(struct adapter *padapter)
 {
 	struct list_head *plist, *phead;
 	struct	mlme_priv	*pmlmepriv = &(padapter->mlmepriv);
-	_queue				*queue	= &(pmlmepriv->scanned_queue);
+	struct __queue *queue	= &(pmlmepriv->scanned_queue);
 	struct	wlan_network	*pnetwork = NULL;
 
 #ifdef CONFIG_DEBUG_CFG80211

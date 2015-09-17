@@ -164,7 +164,7 @@ struct	wlan_network *_rtw_dequeue_network(_queue *queue)
 struct	wlan_network *_rtw_alloc_network(struct	mlme_priv *pmlmepriv)/* _queue *free_queue) */
 {
 	struct	wlan_network	*pnetwork;
-	_queue *free_queue = &pmlmepriv->free_bss_pool;
+	struct __queue *free_queue = &pmlmepriv->free_bss_pool;
 	struct list_head *plist = NULL;
 
 	spin_lock_bh(&free_queue->lock);
@@ -199,7 +199,7 @@ void _rtw_free_network(struct	mlme_priv *pmlmepriv , struct wlan_network *pnetwo
 	unsigned int delta_time;
 	u32 lifetime = SCANQUEUE_LIFETIME;
 /* 	_irqL irqL; */
-	_queue *free_queue = &(pmlmepriv->free_bss_pool);
+	struct __queue *free_queue = &(pmlmepriv->free_bss_pool);
 
 	if (pnetwork == NULL)
 		return;
@@ -235,7 +235,7 @@ void _rtw_free_network(struct	mlme_priv *pmlmepriv , struct wlan_network *pnetwo
 void _rtw_free_network_nolock(struct	mlme_priv *pmlmepriv, struct wlan_network *pnetwork)
 {
 
-	_queue *free_queue = &(pmlmepriv->free_bss_pool);
+	struct __queue *free_queue = &(pmlmepriv->free_bss_pool);
 
 	if (pnetwork == NULL)
 		return;
@@ -259,7 +259,7 @@ void _rtw_free_network_nolock(struct	mlme_priv *pmlmepriv, struct wlan_network *
 
 	Shall be calle under atomic context... to avoid possible racing condition...
 */
-struct wlan_network *_rtw_find_network(_queue *scanned_queue, u8 *addr)
+struct wlan_network *_rtw_find_network(struct __queue *scanned_queue, u8 *addr)
 {
 	struct list_head *phead, *plist;
 	struct	wlan_network *pnetwork = NULL;
@@ -299,7 +299,7 @@ void _rtw_free_network_queue(struct adapter *padapter, u8 isfreeall)
 	struct list_head *phead, *plist;
 	struct wlan_network *pnetwork;
 	struct mlme_priv* pmlmepriv = &padapter->mlmepriv;
-	_queue *scanned_queue = &pmlmepriv->scanned_queue;
+	struct __queue *scanned_queue = &pmlmepriv->scanned_queue;
 
 	spin_lock_bh(&scanned_queue->lock);
 
@@ -424,7 +424,7 @@ void rtw_free_network_queue(struct adapter * dev, u8 isfreeall)
 
 	Shall be calle under atomic context... to avoid possible racing condition...
 */
-struct	wlan_network *rtw_find_network(_queue *scanned_queue, u8 *addr)
+struct	wlan_network *rtw_find_network(struct __queue *scanned_queue, u8 *addr)
 {
 	struct	wlan_network *pnetwork = _rtw_find_network(scanned_queue, addr);
 
@@ -489,7 +489,7 @@ int is_same_network(struct wlan_bssid_ex *src, struct wlan_bssid_ex *dst, u8 fea
 
 }
 
-struct wlan_network *_rtw_find_same_network(_queue *scanned_queue, struct wlan_network *network)
+struct wlan_network *_rtw_find_same_network(struct __queue *scanned_queue, struct wlan_network *network)
 {
 	struct list_head *phead, *plist;
 	struct wlan_network *found = NULL;
@@ -512,7 +512,7 @@ struct wlan_network *_rtw_find_same_network(_queue *scanned_queue, struct wlan_n
 	return found;
 }
 
-struct	wlan_network	* rtw_get_oldest_wlan_network(_queue *scanned_queue)
+struct	wlan_network	* rtw_get_oldest_wlan_network(struct __queue *scanned_queue)
 {
 	struct list_head *plist, *phead;
 
@@ -644,7 +644,7 @@ void rtw_update_scanned_network(struct adapter *adapter, struct wlan_bssid_ex *t
 	struct list_head *plist, *phead;
 	u32	bssid_ex_sz;
 	struct mlme_priv	*pmlmepriv = &(adapter->mlmepriv);
-	_queue	*queue	= &(pmlmepriv->scanned_queue);
+	struct __queue	*queue	= &(pmlmepriv->scanned_queue);
 	struct wlan_network	*pnetwork = NULL;
 	struct wlan_network	*oldest = NULL;
 	int target_find = 0;
@@ -763,7 +763,7 @@ exit:
 void rtw_add_network(struct adapter *adapter, struct wlan_bssid_ex *pnetwork);
 void rtw_add_network(struct adapter *adapter, struct wlan_bssid_ex *pnetwork)
 {
-	/* _queue	*queue	= &(pmlmepriv->scanned_queue); */
+	/* struct __queue	*queue	= &(pmlmepriv->scanned_queue); */
 
 	/* spin_lock_bh(&queue->lock); */
 
@@ -1063,8 +1063,8 @@ void rtw_fwdbg_event_callback(struct adapter *adapter , u8 *pbuf)
 
 static void free_scanqueue(struct	mlme_priv *pmlmepriv)
 {
-	_queue *free_queue = &pmlmepriv->free_bss_pool;
-	_queue *scan_queue = &pmlmepriv->scanned_queue;
+	struct __queue *free_queue = &pmlmepriv->free_bss_pool;
+	struct __queue *scan_queue = &pmlmepriv->scanned_queue;
 	struct list_head *plist, *phead, *ptemp;
 
 	RT_TRACE(_module_rtl871x_mlme_c_, _drv_notice_, ("+free_scanqueue\n"));
@@ -2205,7 +2205,7 @@ int rtw_select_roaming_candidate(struct mlme_priv *mlme)
 	int ret = _FAIL;
 	struct list_head *phead;
 	struct adapter *adapter;
-	_queue	*queue	= &(mlme->scanned_queue);
+	struct __queue	*queue	= &(mlme->scanned_queue);
 	struct	wlan_network	*pnetwork = NULL;
 	struct	wlan_network	*candidate = NULL;
 
@@ -2339,7 +2339,7 @@ int rtw_select_and_join_from_scanned_queue(struct mlme_priv *pmlmepriv)
 	int ret;
 	struct list_head *phead;
 	struct adapter *adapter;
-	_queue	*queue	= &(pmlmepriv->scanned_queue);
+	struct __queue	*queue	= &(pmlmepriv->scanned_queue);
 	struct	wlan_network	*pnetwork = NULL;
 	struct	wlan_network	*candidate = NULL;
 

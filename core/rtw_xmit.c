@@ -1787,7 +1787,7 @@ struct xmit_buf *rtw_alloc_xmitbuf_ext(struct xmit_priv *pxmitpriv)
 	_irqL irqL;
 	struct xmit_buf *pxmitbuf =  NULL;
 	struct list_head *plist, *phead;
-	_queue *pfree_queue = &pxmitpriv->free_xmit_extbuf_queue;
+	struct __queue *pfree_queue = &pxmitpriv->free_xmit_extbuf_queue;
 
 	spin_lock_irqsave(&pfree_queue->lock, irqL);
 
@@ -1833,7 +1833,7 @@ struct xmit_buf *rtw_alloc_xmitbuf_ext(struct xmit_priv *pxmitpriv)
 s32 rtw_free_xmitbuf_ext(struct xmit_priv *pxmitpriv, struct xmit_buf *pxmitbuf)
 {
 	_irqL irqL;
-	_queue *pfree_queue = &pxmitpriv->free_xmit_extbuf_queue;
+	struct __queue *pfree_queue = &pxmitpriv->free_xmit_extbuf_queue;
 
 	if (pxmitbuf ==NULL)
 	{
@@ -1860,7 +1860,7 @@ struct xmit_buf *rtw_alloc_xmitbuf(struct xmit_priv *pxmitpriv)
 	_irqL irqL;
 	struct xmit_buf *pxmitbuf =  NULL;
 	struct list_head *plist, *phead;
-	_queue *pfree_xmitbuf_queue = &pxmitpriv->free_xmitbuf_queue;
+	struct __queue *pfree_xmitbuf_queue = &pxmitpriv->free_xmitbuf_queue;
 
 	/* DBG_871X("+rtw_alloc_xmitbuf\n"); */
 
@@ -1914,7 +1914,7 @@ struct xmit_buf *rtw_alloc_xmitbuf(struct xmit_priv *pxmitpriv)
 s32 rtw_free_xmitbuf(struct xmit_priv *pxmitpriv, struct xmit_buf *pxmitbuf)
 {
 	_irqL irqL;
-	_queue *pfree_xmitbuf_queue = &pxmitpriv->free_xmitbuf_queue;
+	struct __queue *pfree_xmitbuf_queue = &pxmitpriv->free_xmitbuf_queue;
 
 	/* DBG_871X("+rtw_free_xmitbuf\n"); */
 
@@ -1990,7 +1990,7 @@ struct xmit_frame *rtw_alloc_xmitframe(struct xmit_priv *pxmitpriv)/* _queue *pf
 
 	struct xmit_frame *pxframe = NULL;
 	struct list_head *plist, *phead;
-	_queue *pfree_xmit_queue = &pxmitpriv->free_xmit_queue;
+	struct __queue *pfree_xmit_queue = &pxmitpriv->free_xmit_queue;
 
 	spin_lock_bh(&pfree_xmit_queue->lock);
 
@@ -2019,7 +2019,7 @@ struct xmit_frame *rtw_alloc_xmitframe_ext(struct xmit_priv *pxmitpriv)
 {
 	struct xmit_frame *pxframe = NULL;
 	struct list_head *plist, *phead;
-	_queue *queue = &pxmitpriv->free_xframe_ext_queue;
+	struct __queue *queue = &pxmitpriv->free_xframe_ext_queue;
 
 	spin_lock_bh(&queue->lock);
 
@@ -2074,7 +2074,7 @@ exit:
 
 s32 rtw_free_xmitframe(struct xmit_priv *pxmitpriv, struct xmit_frame *pxmitframe)
 {
-	_queue *queue = NULL;
+	struct __queue *queue = NULL;
 	struct adapter *padapter = pxmitpriv->adapter;
 	_pkt *pndis_pkt = NULL;
 
@@ -2125,7 +2125,7 @@ exit:
 	return _SUCCESS;
 }
 
-void rtw_free_xmitframe_queue(struct xmit_priv *pxmitpriv, _queue *pframequeue)
+void rtw_free_xmitframe_queue(struct xmit_priv *pxmitpriv, struct __queue *pframequeue)
 {
 	struct list_head *plist, *phead;
 	struct	xmit_frame	*pxmitframe;
@@ -2703,7 +2703,7 @@ sint xmitframe_enqueue_for_sleeping_sta(struct adapter *padapter, struct xmit_fr
 
 }
 
-static void dequeue_xmitframes_to_sleeping_queue(struct adapter *padapter, struct sta_info *psta, _queue *pframequeue)
+static void dequeue_xmitframes_to_sleeping_queue(struct adapter *padapter, struct sta_info *psta, struct __queue *pframequeue)
 {
 	sint ret;
 	struct list_head *plist, *phead;
@@ -3048,7 +3048,7 @@ void enqueue_pending_xmitbuf(
 	struct xmit_priv *pxmitpriv,
 	struct xmit_buf *pxmitbuf)
 {
-	_queue *pqueue;
+	struct __queue *pqueue;
 	struct adapter *pri_adapter = pxmitpriv->adapter;
 
 	pqueue = &pxmitpriv->pending_xmitbuf_queue;
@@ -3065,7 +3065,7 @@ void enqueue_pending_xmitbuf_to_head(
 	struct xmit_priv *pxmitpriv,
 	struct xmit_buf *pxmitbuf)
 {
-	_queue *pqueue;
+	struct __queue *pqueue;
 
 	pqueue = &pxmitpriv->pending_xmitbuf_queue;
 
@@ -3079,7 +3079,7 @@ struct xmit_buf* dequeue_pending_xmitbuf(
 	struct xmit_priv *pxmitpriv)
 {
 	struct xmit_buf *pxmitbuf;
-	_queue *pqueue;
+	struct __queue *pqueue;
 
 
 	pxmitbuf = NULL;
@@ -3106,8 +3106,7 @@ struct xmit_buf* dequeue_pending_xmitbuf_under_survey(
 	struct xmit_priv *pxmitpriv)
 {
 	struct xmit_buf *pxmitbuf;
-	_queue *pqueue;
-
+	struct __queue *pqueue;
 
 	pxmitbuf = NULL;
 	pqueue = &pxmitpriv->pending_xmitbuf_queue;
@@ -3148,7 +3147,7 @@ struct xmit_buf* dequeue_pending_xmitbuf_under_survey(
 sint check_pending_xmitbuf(
 	struct xmit_priv *pxmitpriv)
 {
-	_queue *pqueue;
+	struct __queue *pqueue;
 	sint	ret = false;
 
 	pqueue = &pxmitpriv->pending_xmitbuf_queue;

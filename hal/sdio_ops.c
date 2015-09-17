@@ -996,8 +996,7 @@ static struct recv_buf* sd_recv_rxfifo(struct adapter * padapter, u32 size)
 static void sd_rxhandler(struct adapter * padapter, struct recv_buf *precvbuf)
 {
 	struct recv_priv *precvpriv;
-	_queue *ppending_queue;
-
+	struct __queue *ppending_queue;
 
 	precvpriv = &padapter->recvpriv;
 	ppending_queue = &precvpriv->recv_buf_pending_queue;
