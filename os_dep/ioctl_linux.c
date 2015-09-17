@@ -103,7 +103,7 @@ void rtw_indicate_wx_assoc_event(struct adapter *padapter)
 	struct	mlme_priv *pmlmepriv = &padapter->mlmepriv;
 	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
-	WLAN_BSSID_EX		*pnetwork = (WLAN_BSSID_EX*)(&(pmlmeinfo->network));
+	struct wlan_bssid_ex		*pnetwork = (struct wlan_bssid_ex*)(&(pmlmeinfo->network));
 
 	memset(&wrqu, 0, sizeof(union iwreq_data));
 
@@ -940,7 +940,7 @@ static int rtw_wx_get_name(struct net_device *dev,
 	char *p;
 	u8 ht_cap =false, vht_cap =false;
 	struct	mlme_priv	*pmlmepriv = &(padapter->mlmepriv);
-	WLAN_BSSID_EX  *pcur_bss = &pmlmepriv->cur_network.network;
+	struct wlan_bssid_ex  *pcur_bss = &pmlmepriv->cur_network.network;
 	NDIS_802_11_RATES_EX* prates = NULL;
 
 	RT_TRACE(_module_rtl871x_mlme_c_, _drv_info_, ("cmd_code =%x\n", info->cmd));
@@ -1013,7 +1013,7 @@ static int rtw_wx_get_freq(struct net_device *dev,
 {
 	struct adapter *padapter = (struct adapter *)rtw_netdev_priv(dev);
 	struct	mlme_priv	*pmlmepriv = &(padapter->mlmepriv);
-	WLAN_BSSID_EX  *pcur_bss = &pmlmepriv->cur_network.network;
+	struct wlan_bssid_ex  *pcur_bss = &pmlmepriv->cur_network.network;
 
 	if (check_fwstate(pmlmepriv, _FW_LINKED) == true)
 	{
@@ -1344,7 +1344,7 @@ static int rtw_wx_set_wap(struct net_device *dev,
 	struct adapter *padapter = (struct adapter *)rtw_netdev_priv(dev);
 	struct sockaddr *temp = (struct sockaddr *)awrq;
 	struct	mlme_priv	*pmlmepriv = &(padapter->mlmepriv);
-	_list	*phead;
+	struct list_head	*phead;
 	u8 *dst_bssid, *src_bssid;
 	_queue	*queue	= &(pmlmepriv->scanned_queue);
 	struct	wlan_network	*pnetwork = NULL;
@@ -1421,7 +1421,7 @@ static int rtw_wx_get_wap(struct net_device *dev,
 
 	struct adapter *padapter = (struct adapter *)rtw_netdev_priv(dev);
 	struct	mlme_priv	*pmlmepriv = &(padapter->mlmepriv);
-	WLAN_BSSID_EX  *pcur_bss = &pmlmepriv->cur_network.network;
+	struct wlan_bssid_ex  *pcur_bss = &pmlmepriv->cur_network.network;
 
 	wrqu->ap_addr.sa_family = ARPHRD_ETHER;
 
@@ -1651,7 +1651,7 @@ exit:
 static int rtw_wx_get_scan(struct net_device *dev, struct iw_request_info *a,
 			     union iwreq_data *wrqu, char *extra)
 {
-	_list					*plist, *phead;
+	struct list_head *plist, *phead;
 	struct adapter *padapter = (struct adapter *)rtw_netdev_priv(dev);
 	struct	mlme_priv	*pmlmepriv = &(padapter->mlmepriv);
 	_queue				*queue	= &(pmlmepriv->scanned_queue);
@@ -1736,7 +1736,7 @@ static int rtw_wx_set_essid(struct net_device *dev,
 	struct adapter *padapter = (struct adapter *)rtw_netdev_priv(dev);
 	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
 	_queue *queue = &pmlmepriv->scanned_queue;
-	_list *phead;
+	struct list_head *phead;
 	struct wlan_network *pnetwork = NULL;
 	NDIS_802_11_AUTHENTICATION_MODE authmode;
 	NDIS_802_11_SSID ndis_ssid;
@@ -1864,7 +1864,7 @@ static int rtw_wx_get_essid(struct net_device *dev,
 	u32 len, ret = 0;
 	struct adapter *padapter = (struct adapter *)rtw_netdev_priv(dev);
 	struct	mlme_priv	*pmlmepriv = &(padapter->mlmepriv);
-	WLAN_BSSID_EX  *pcur_bss = &pmlmepriv->cur_network.network;
+	struct wlan_bssid_ex  *pcur_bss = &pmlmepriv->cur_network.network;
 
 	RT_TRACE(_module_rtl871x_mlme_c_, _drv_info_, ("rtw_wx_get_essid\n"));
 
@@ -2744,7 +2744,7 @@ static int rtw_get_ap_info(struct net_device *dev,
 {
 	int ret = 0;
 	u32 cnt = 0, wpa_ielen;
-	_list	*plist, *phead;
+	struct list_head *plist, *phead;
 	unsigned char *pbuf;
 	u8 bssid[ETH_ALEN];
 	char data[32];
@@ -3194,7 +3194,7 @@ static int rtw_dbg_port(struct net_device *dev,
 				case 0x09:
 					{
 						int i, j;
-						_list	*plist, *phead;
+						struct list_head *plist, *phead;
 						struct recv_reorder_ctrl *preorder_ctrl;
 
 						DBG_871X("sta_dz_bitmap = 0x%x, tim_bitmap = 0x%x\n", pstapriv->sta_dz_bitmap, pstapriv->tim_bitmap);
@@ -4601,8 +4601,8 @@ static int rtw_set_hidden_ssid(struct net_device *dev, struct ieee_param *param,
 	ssid_ie = rtw_get_ie(param->u.bcn_ie.buf,  WLAN_EID_SSID, &ssid_len, ie_len);
 
 	if (ssid_ie && ssid_len > 0 && ssid_len <= NDIS_802_11_LENGTH_SSID) {
-		WLAN_BSSID_EX *pbss_network = &mlmepriv->cur_network.network;
-		WLAN_BSSID_EX *pbss_network_ext = &mlmeinfo->network;
+		struct wlan_bssid_ex *pbss_network = &mlmepriv->cur_network.network;
+		struct wlan_bssid_ex *pbss_network_ext = &mlmeinfo->network;
 
 		memcpy(ssid, ssid_ie+2, ssid_len);
 		ssid[ssid_len] = 0x0;

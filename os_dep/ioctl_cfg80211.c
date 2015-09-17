@@ -412,7 +412,7 @@ exit:
 */
 int rtw_cfg80211_check_bss(struct adapter *padapter)
 {
-	WLAN_BSSID_EX  *pnetwork = &(padapter->mlmeextpriv.mlmext_info.network);
+	struct wlan_bssid_ex  *pnetwork = &(padapter->mlmeextpriv.mlmext_info.network);
 	struct cfg80211_bss *bss = NULL;
 	struct ieee80211_channel *notify_channel = NULL;
 	u32 freq;
@@ -449,13 +449,13 @@ void rtw_cfg80211_ibss_indicate_connect(struct adapter *padapter)
 	}
 
 	if (!rtw_cfg80211_check_bss(padapter)) {
-		WLAN_BSSID_EX  *pnetwork = &(padapter->mlmeextpriv.mlmext_info.network);
+		struct wlan_bssid_ex  *pnetwork = &(padapter->mlmeextpriv.mlmext_info.network);
 		struct wlan_network *scanned = pmlmepriv->cur_network_scanned;
 
 		if (check_fwstate(pmlmepriv, WIFI_ADHOC_MASTER_STATE) ==true)
 		{
 
-			memcpy(&cur_network->network, pnetwork, sizeof(WLAN_BSSID_EX));
+			memcpy(&cur_network->network, pnetwork, sizeof(struct wlan_bssid_ex));
 			if (!rtw_cfg80211_inform_bss(padapter, cur_network))
 				DBG_871X(FUNC_ADPT_FMT" inform fail !!\n", FUNC_ADPT_ARG(padapter));
 			else
@@ -505,7 +505,7 @@ void rtw_cfg80211_indicate_connect(struct adapter *padapter)
 		return;
 
 	{
-		WLAN_BSSID_EX  *pnetwork = &(padapter->mlmeextpriv.mlmext_info.network);
+		struct wlan_bssid_ex  *pnetwork = &(padapter->mlmeextpriv.mlmext_info.network);
 		struct wlan_network *scanned = pmlmepriv->cur_network_scanned;
 
 		/* DBG_871X(FUNC_ADPT_FMT" BSS not found\n", FUNC_ADPT_ARG(padapter)); */
@@ -1430,7 +1430,7 @@ void rtw_cfg80211_unlink_bss(struct adapter *padapter, struct wlan_network *pnet
 	struct wireless_dev *pwdev = padapter->rtw_wdev;
 	struct wiphy *wiphy = pwdev->wiphy;
 	struct cfg80211_bss *bss = NULL;
-	WLAN_BSSID_EX select_network = pnetwork->network;
+	struct wlan_bssid_ex select_network = pnetwork->network;
 
 	bss = cfg80211_get_bss(wiphy, NULL/*notify_channel*/,
 		select_network.MacAddress, select_network.Ssid.Ssid,
@@ -1447,7 +1447,7 @@ void rtw_cfg80211_unlink_bss(struct adapter *padapter, struct wlan_network *pnet
 
 void rtw_cfg80211_surveydone_event_callback(struct adapter *padapter)
 {
-	_list					*plist, *phead;
+	struct list_head *plist, *phead;
 	struct	mlme_priv	*pmlmepriv = &(padapter->mlmepriv);
 	_queue				*queue	= &(pmlmepriv->scanned_queue);
 	struct	wlan_network	*pnetwork = NULL;
@@ -2847,8 +2847,8 @@ static int cfg80211_rtw_start_ap(struct wiphy *wiphy, struct net_device *ndev,
 	adapter->mlmeextpriv.mlmext_info.hidden_ssid_mode = settings->hidden_ssid;
 
 	if (settings->ssid && settings->ssid_len) {
-		WLAN_BSSID_EX *pbss_network = &adapter->mlmepriv.cur_network.network;
-		WLAN_BSSID_EX *pbss_network_ext = &adapter->mlmeextpriv.mlmext_info.network;
+		struct wlan_bssid_ex *pbss_network = &adapter->mlmepriv.cur_network.network;
+		struct wlan_bssid_ex *pbss_network_ext = &adapter->mlmeextpriv.mlmext_info.network;
 
 		if (0)
 		DBG_871X(FUNC_ADPT_FMT" ssid:(%s,%zu), from ie:(%s,%d)\n", FUNC_ADPT_ARG(adapter),
@@ -2901,7 +2901,7 @@ static int cfg80211_rtw_del_station(struct wiphy *wiphy, struct net_device *ndev
 				    struct station_del_parameters *params)
 {
 	int ret = 0;
-	_list	*phead, *plist;
+	struct list_head *phead, *plist;
 	u8 updated = false;
 	struct sta_info *psta = NULL;
 	struct adapter *padapter = (struct adapter *)rtw_netdev_priv(ndev);
@@ -2997,7 +2997,7 @@ static int cfg80211_rtw_change_station(struct wiphy *wiphy, struct net_device *n
 static struct sta_info *rtw_sta_info_get_by_idx(const int idx, struct sta_priv *pstapriv)
 
 {
-	_list	*phead, *plist;
+	struct list_head *phead, *plist;
 	struct sta_info *psta = NULL;
 	int i = 0;
 

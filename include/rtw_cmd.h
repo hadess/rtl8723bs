@@ -36,7 +36,7 @@
 		u32	rspsz;
 		struct submit_ctx *sctx;
 		/* _sema		cmd_sem; */
-		_list	list;
+		struct list_head list;
 	};
 
 	/* cmd flags */
@@ -217,7 +217,7 @@ Command Event Mode
 
 */
 struct joinbss_parm {
-	WLAN_BSSID_EX network;
+	struct wlan_bssid_ex network;
 };
 
 /*
@@ -240,7 +240,7 @@ Notes: To create a BSS
 Command Mode
 */
 struct createbss_parm {
-	WLAN_BSSID_EX network;
+	struct wlan_bssid_ex network;
 };
 
 /*
@@ -543,7 +543,7 @@ struct getrfintfs_parm {
 
 struct Tx_Beacon_param
 {
-	WLAN_BSSID_EX network;
+	struct wlan_bssid_ex network;
 };
 
 /*

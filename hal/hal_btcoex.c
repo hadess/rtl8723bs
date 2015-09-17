@@ -702,7 +702,7 @@ static u8 halbtcoutsrc_Set(void *pBtcContext, u8 setType, void *pInBuf)
 			if (check_fwstate(&padapter->mlmepriv, WIFI_ASOC_STATE) == true)
 			{
 				struct sta_info *psta;
-				PWLAN_BSSID_EX cur_network;
+				struct wlan_bssid_ex * cur_network;
 
 				cur_network = &padapter->mlmeextpriv.mlmext_info.network;
 				psta = rtw_get_stainfo(&padapter->stapriv, cur_network->MacAddress);

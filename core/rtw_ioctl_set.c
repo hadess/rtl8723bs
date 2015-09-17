@@ -72,7 +72,7 @@ exit:
 u8 rtw_do_join(struct adapter * padapter);
 u8 rtw_do_join(struct adapter * padapter)
 {
-	_list	*plist, *phead;
+	struct list_head *plist, *phead;
 	u8* pibss = NULL;
 	struct	mlme_priv	*pmlmepriv = &(padapter->mlmepriv);
 	_queue	*queue	= &(pmlmepriv->scanned_queue);
@@ -135,7 +135,7 @@ u8 rtw_do_join(struct adapter * padapter)
 				/*  submit createbss_cmd to change to a ADHOC_MASTER */
 
 				/* pmlmepriv->lock has been acquired by caller... */
-				WLAN_BSSID_EX    *pdev_network = &(padapter->registrypriv.dev_network);
+				struct wlan_bssid_ex    *pdev_network = &(padapter->registrypriv.dev_network);
 
 				pmlmepriv->fw_state = WIFI_ADHOC_MASTER_STATE;
 
@@ -699,7 +699,7 @@ u16 rtw_get_cur_max_rate(struct adapter *adapter)
 	int	i = 0;
 	u16	rate = 0, max_rate = 0;
 	struct mlme_priv	*pmlmepriv = &adapter->mlmepriv;
-	WLAN_BSSID_EX	*pcur_bss = &pmlmepriv->cur_network.network;
+	struct wlan_bssid_ex	*pcur_bss = &pmlmepriv->cur_network.network;
 	struct sta_info *psta = NULL;
 	u8	short_GI = 0;
 	u8	rf_type = 0;

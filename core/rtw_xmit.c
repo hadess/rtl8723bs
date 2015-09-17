@@ -1786,7 +1786,7 @@ struct xmit_buf *rtw_alloc_xmitbuf_ext(struct xmit_priv *pxmitpriv)
 {
 	_irqL irqL;
 	struct xmit_buf *pxmitbuf =  NULL;
-	_list *plist, *phead;
+	struct list_head *plist, *phead;
 	_queue *pfree_queue = &pxmitpriv->free_xmit_extbuf_queue;
 
 	spin_lock_irqsave(&pfree_queue->lock, irqL);
@@ -1859,7 +1859,7 @@ struct xmit_buf *rtw_alloc_xmitbuf(struct xmit_priv *pxmitpriv)
 {
 	_irqL irqL;
 	struct xmit_buf *pxmitbuf =  NULL;
-	_list *plist, *phead;
+	struct list_head *plist, *phead;
 	_queue *pfree_xmitbuf_queue = &pxmitpriv->free_xmitbuf_queue;
 
 	/* DBG_871X("+rtw_alloc_xmitbuf\n"); */
@@ -1989,7 +1989,7 @@ struct xmit_frame *rtw_alloc_xmitframe(struct xmit_priv *pxmitpriv)/* _queue *pf
 	*/
 
 	struct xmit_frame *pxframe = NULL;
-	_list *plist, *phead;
+	struct list_head *plist, *phead;
 	_queue *pfree_xmit_queue = &pxmitpriv->free_xmit_queue;
 
 	spin_lock_bh(&pfree_xmit_queue->lock);
@@ -2018,7 +2018,7 @@ struct xmit_frame *rtw_alloc_xmitframe(struct xmit_priv *pxmitpriv)/* _queue *pf
 struct xmit_frame *rtw_alloc_xmitframe_ext(struct xmit_priv *pxmitpriv)
 {
 	struct xmit_frame *pxframe = NULL;
-	_list *plist, *phead;
+	struct list_head *plist, *phead;
 	_queue *queue = &pxmitpriv->free_xframe_ext_queue;
 
 	spin_lock_bh(&queue->lock);
@@ -2127,7 +2127,7 @@ exit:
 
 void rtw_free_xmitframe_queue(struct xmit_priv *pxmitpriv, _queue *pframequeue)
 {
-	_list	*plist, *phead;
+	struct list_head *plist, *phead;
 	struct	xmit_frame	*pxmitframe;
 
 	spin_lock_bh(&(pframequeue->lock));
@@ -2706,7 +2706,7 @@ sint xmitframe_enqueue_for_sleeping_sta(struct adapter *padapter, struct xmit_fr
 static void dequeue_xmitframes_to_sleeping_queue(struct adapter *padapter, struct sta_info *psta, _queue *pframequeue)
 {
 	sint ret;
-	_list	*plist, *phead;
+	struct list_head *plist, *phead;
 	u8	ac_index;
 	struct tx_servq	*ptxservq;
 	struct pkt_attrib	*pattrib;
@@ -2792,7 +2792,7 @@ void wakeup_sta_to_xmit(struct adapter *padapter, struct sta_info *psta)
 {
 	u8 update_mask = 0, wmmps_ac = 0;
 	struct sta_info *psta_bmc;
-	_list	*xmitframe_plist, *xmitframe_phead;
+	struct list_head *xmitframe_plist, *xmitframe_phead;
 	struct xmit_frame *pxmitframe =NULL;
 	struct sta_priv *pstapriv = &padapter->stapriv;
 	struct xmit_priv *pxmitpriv = &padapter->xmitpriv;
@@ -2964,7 +2964,7 @@ _exit:
 void xmit_delivery_enabled_frames(struct adapter *padapter, struct sta_info *psta)
 {
 	u8 wmmps_ac = 0;
-	_list	*xmitframe_plist, *xmitframe_phead;
+	struct list_head *xmitframe_plist, *xmitframe_phead;
 	struct xmit_frame *pxmitframe =NULL;
 	struct sta_priv *pstapriv = &padapter->stapriv;
 	struct xmit_priv *pxmitpriv = &padapter->xmitpriv;
@@ -3089,7 +3089,7 @@ struct xmit_buf* dequeue_pending_xmitbuf(
 
 	if (!list_empty(&pqueue->queue))
 	{
-		_list *plist, *phead;
+		struct list_head *plist, *phead;
 
 		phead = get_list_head(pqueue);
 		plist = get_next(phead);
@@ -3116,7 +3116,7 @@ struct xmit_buf* dequeue_pending_xmitbuf_under_survey(
 
 	if (!list_empty(&pqueue->queue))
 	{
-		_list *plist, *phead;
+		struct list_head *plist, *phead;
 		u8 type;
 
 		phead = get_list_head(pqueue);

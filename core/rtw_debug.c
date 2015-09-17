@@ -456,7 +456,7 @@ int proc_get_survey_info(struct seq_file *m, void *v)
 	struct mlme_priv	*pmlmepriv = &(padapter->mlmepriv);
 	_queue	*queue	= &(pmlmepriv->scanned_queue);
 	struct wlan_network	*pnetwork = NULL;
-	_list	*plist, *phead;
+	struct list_head *plist, *phead;
 	s32 notify_signal;
 	s16 notify_noise = 0;
 	u16  index = 0;
@@ -1304,7 +1304,7 @@ int proc_get_all_sta_info(struct seq_file *m, void *v)
 	struct adapter *padapter = (struct adapter *)rtw_netdev_priv(dev);
 	struct sta_priv *pstapriv = &padapter->stapriv;
 	int i, j;
-	_list	*plist, *phead;
+	struct list_head *plist, *phead;
 	struct recv_reorder_ctrl *preorder_ctrl;
 
 	DBG_871X_SEL_NL(m, "sta_dz_bitmap = 0x%x, tim_bitmap = 0x%x\n", pstapriv->sta_dz_bitmap, pstapriv->tim_bitmap);

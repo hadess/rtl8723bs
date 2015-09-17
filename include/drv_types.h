@@ -137,7 +137,7 @@ struct registry_priv
 	u8	uapsd_acvi_en;
 	u8	uapsd_acvo_en;
 
-	WLAN_BSSID_EX    dev_network;
+	struct wlan_bssid_ex    dev_network;
 
 	u8	ht_enable;
 	/*  0: 20 MHz, 1: 40 MHz, 2: 80 MHz, 3: 160MHz */
@@ -225,8 +225,8 @@ struct registry_priv
 /* For registry parameters */
 #define RGTRY_OFT(field) ((u32)FIELD_OFFSET(struct registry_priv, field))
 #define RGTRY_SZ(field)   sizeof(((struct registry_priv*) 0)->field)
-#define BSSID_OFT(field) ((u32)FIELD_OFFSET(WLAN_BSSID_EX, field))
-#define BSSID_SZ(field)   sizeof(((PWLAN_BSSID_EX) 0)->field)
+#define BSSID_OFT(field) ((u32)FIELD_OFFSET(struct wlan_bssid_ex, field))
+#define BSSID_SZ(field)   sizeof(((struct wlan_bssid_ex *) 0)->field)
 
 #include <drv_types_sdio.h>
 #define INTF_DATA SDIO_DATA

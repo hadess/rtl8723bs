@@ -127,7 +127,7 @@ union recv_frame *_rtw_alloc_recvframe (_queue *pfree_recv_queue)
 {
 
 	union recv_frame  *precvframe;
-	_list	*plist, *phead;
+	struct list_head *plist, *phead;
 	struct adapter *padapter;
 	struct recv_priv *precvpriv;
 
@@ -247,7 +247,7 @@ using spinlock to protect
 void rtw_free_recvframe_queue(_queue *pframequeue,  _queue *pfree_recv_queue)
 {
 	union	recv_frame	*precvframe;
-	_list	*plist, *phead;
+	struct list_head *plist, *phead;
 
 	spin_lock(&pframequeue->lock);
 
@@ -309,16 +309,13 @@ sint rtw_enqueue_recvbuf(struct recv_buf *precvbuf, _queue *queue)
 struct recv_buf *rtw_dequeue_recvbuf (_queue *queue)
 {
 	struct recv_buf *precvbuf;
-	_list	*plist, *phead;
+	struct list_head *plist, *phead;
 
 	spin_lock_bh(&queue->lock);
 
-	if (list_empty(&queue->queue))
-	{
+	if (list_empty(&queue->queue)) {
 		precvbuf = NULL;
-	}
-	else
-	{
+	} else {
 		phead = get_list_head(queue);
 
 		plist = get_next(phead);
@@ -1263,7 +1260,7 @@ sint validate_recv_ctrl_frame(struct adapter *padapter, union recv_frame *precv_
 
 		if ((psta->state&WIFI_SLEEP_STATE) && (pstapriv->sta_dz_bitmap&BIT(psta->aid)))
 		{
-			_list	*xmitframe_plist, *xmitframe_phead;
+			struct list_head *xmitframe_plist, *xmitframe_phead;
 			struct xmit_frame *pxmitframe =NULL;
 			struct xmit_priv *pxmitpriv = &padapter->xmitpriv;
 
@@ -1881,7 +1878,7 @@ sint wlanhdr_to_ethhdr (union recv_frame *precvframe)
 union recv_frame * recvframe_defrag(struct adapter *adapter, _queue *defrag_q);
 union recv_frame * recvframe_defrag(struct adapter *adapter, _queue *defrag_q)
 {
-	_list	 *plist, *phead;
+	struct list_head *plist, *phead;
 	u8	*data, wlanhdr_offset;
 	u8	curfragnum;
 	struct recv_frame_hdr *pfhdr,*pnfhdr;
@@ -1971,7 +1968,7 @@ union recv_frame* recvframe_chk_defrag(struct adapter * padapter, union recv_fra
 	struct recv_frame_hdr *pfhdr;
 	struct sta_info *psta;
 	struct sta_priv *pstapriv;
-	_list *phead;
+	struct list_head *phead;
 	union recv_frame *prtnframe = NULL;
 	_queue *pfree_recv_queue, *pdefrag_q;
 
@@ -2246,7 +2243,7 @@ int enqueue_reorder_recvframe(struct recv_reorder_ctrl *preorder_ctrl, union rec
 {
 	struct rx_pkt_attrib *pattrib = &prframe->u.hdr.attrib;
 	_queue *ppending_recvframe_queue = &preorder_ctrl->pending_recvframe_queue;
-	_list	*phead, *plist;
+	struct list_head *phead, *plist;
 	union recv_frame *pnextrframe;
 	struct rx_pkt_attrib *pnextattrib;
 
@@ -2319,7 +2316,7 @@ void recv_indicatepkts_pkt_loss_cnt(struct debug_priv *pdbgpriv, u64 prev_seq, u
 int recv_indicatepkts_in_order(struct adapter *padapter, struct recv_reorder_ctrl *preorder_ctrl, int bforced);
 int recv_indicatepkts_in_order(struct adapter *padapter, struct recv_reorder_ctrl *preorder_ctrl, int bforced)
 {
-	_list	*phead, *plist;
+	struct list_head *phead, *plist;
 	union recv_frame *prframe;
 	struct rx_pkt_attrib *pattrib;
 	/* u8 index = 0; */

@@ -202,7 +202,7 @@ static s32 xmit_xmitframes(struct adapter * padapter, struct xmit_priv *pxmitpri
 	struct hw_xmit *hwxmits, *phwxmit;
 	u8 no_res, idx, hwentry;
 	struct tx_servq *ptxservq;
-	_list *sta_plist, *sta_phead, *frame_plist, *frame_phead;
+	struct list_head *sta_plist, *sta_phead, *frame_plist, *frame_phead;
 	struct xmit_frame *pxmitframe;
 	_queue *pframe_queue;
 	struct xmit_buf *pxmitbuf;
@@ -618,8 +618,8 @@ void rtl8723bs_free_xmit_priv(struct adapter * padapter)
 	struct xmit_priv *pxmitpriv;
 	struct xmit_buf *pxmitbuf;
 	_queue *pqueue;
-	_list *plist, *phead;
-	_list tmplist;
+	struct list_head *plist, *phead;
+	struct list_head tmplist;
 
 
 	phal = GET_HAL_DATA(padapter);

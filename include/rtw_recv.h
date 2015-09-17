@@ -310,9 +310,8 @@ struct sta_recv_priv {
 };
 
 
-struct recv_buf
-{
-	_list list;
+struct recv_buf {
+	struct list_head list;
 
 	_lock recvbuf_lock;
 
@@ -349,9 +348,8 @@ struct recv_buf
 	len = (unsigned int)(tail - data);
 
 */
-struct recv_frame_hdr
-{
-	_list	list;
+struct recv_frame_hdr {
+	struct list_head list;
 #ifndef CONFIG_BSD_RX_USE_MBUF
 	struct sk_buff	 *pkt;
 	struct sk_buff	 *pkt_newalloc;
@@ -388,7 +386,7 @@ struct recv_frame_hdr
 union recv_frame{
 
 	union{
-		_list list;
+		struct list_head list;
 		struct recv_frame_hdr hdr;
 		uint mem[RECVFRAME_HDR_ALIGN>>2];
 	}u;

@@ -356,7 +356,7 @@ struct mlme_priv {
 	u8	*nic_hdl;
 
 	u8	not_indic_disco;
-	_list		*pscanned;
+	struct list_head *pscanned;
 	_queue	free_bss_pool;
 	_queue	scanned_queue;
 	u8		*free_bss_buf;
@@ -596,8 +596,8 @@ __inline static void set_scanned_network_val(struct mlme_priv *pmlmepriv, sint v
 	spin_unlock_bh(&pmlmepriv->lock);
 }
 
-extern u16 rtw_get_capability(WLAN_BSSID_EX *bss);
-extern void rtw_update_scanned_network(struct adapter *adapter, WLAN_BSSID_EX *target);
+extern u16 rtw_get_capability(struct wlan_bssid_ex *bss);
+extern void rtw_update_scanned_network(struct adapter *adapter, struct wlan_bssid_ex *target);
 extern void rtw_disconnect_hdl_under_linked(struct adapter * adapter, struct sta_info *psta, u8 free_assoc);
 extern void rtw_generate_random_ibss(u8 *pibss);
 extern struct wlan_network* rtw_find_network(_queue *scanned_queue, u8 *addr);
@@ -664,7 +664,7 @@ void rtw_issue_addbareq_cmd(struct adapter *padapter, struct xmit_frame *pxmitfr
 void rtw_append_exented_cap(struct adapter *padapter, u8 *out_ie, uint *pout_len);
 
 int rtw_is_same_ibss(struct adapter *adapter, struct wlan_network *pnetwork);
-int is_same_network(WLAN_BSSID_EX *src, WLAN_BSSID_EX *dst, u8 feature);
+int is_same_network(struct wlan_bssid_ex *src, struct wlan_bssid_ex *dst, u8 feature);
 
 #define rtw_roam_flags(adapter) ((adapter)->mlmepriv.roam_flags)
 #define rtw_chk_roam_flags(adapter, flags) ((adapter)->mlmepriv.roam_flags & flags)

@@ -20,7 +20,7 @@
 
 struct mp_xmit_frame
 {
-	_list	list;
+	struct list_head list;
 
 	struct pkt_attrib attrib;
 

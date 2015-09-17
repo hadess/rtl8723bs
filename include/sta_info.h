@@ -24,7 +24,7 @@
 /* if mode == 0, then the sta is allowed once the addr is hit. */
 /* if mode == 1, then the sta is rejected once the addr is non-hit. */
 struct rtw_wlan_acl_node {
-        _list		        list;
+        struct list_head list;
         u8       addr[ETH_ALEN];
         u8       valid;
 };
@@ -78,8 +78,8 @@ struct	stainfo_stats	{
 struct sta_info {
 
 	_lock	lock;
-	_list	list; /* free_sta_queue */
-	_list	hash_list; /* sta_hash */
+	struct list_head list; /* free_sta_queue */
+	struct list_head hash_list; /* sta_hash */
 	struct adapter *padapter;
 
 	struct sta_xmit_priv sta_xmitpriv;
@@ -150,8 +150,8 @@ struct sta_info {
 	/* curr_network(mlme_priv/security_priv/qos/ht) : AP CAP/INFO */
 	/* sta_info: (AP & STA) CAP/INFO */
 
-	_list asoc_list;
-	_list auth_list;
+	struct list_head asoc_list;
+	struct list_head auth_list;
 
 	unsigned int expire_to;
 	unsigned int auth_seq;
@@ -323,15 +323,15 @@ struct	sta_priv {
 	_queue	free_sta_queue;
 
 	_lock sta_hash_lock;
-	_list   sta_hash[NUM_STA];
+	struct list_head sta_hash[NUM_STA];
 	int asoc_sta_count;
 	_queue sleep_q;
 	_queue wakeup_q;
 
 	struct adapter *padapter;
 
-	_list asoc_list;
-	_list auth_list;
+	struct list_head asoc_list;
+	struct list_head auth_list;
 	_lock asoc_list_lock;
 	_lock auth_list_lock;
 	u8 asoc_list_cnt;
