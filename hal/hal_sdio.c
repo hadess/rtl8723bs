@@ -20,7 +20,7 @@
 
 u8 rtw_hal_sdio_max_txoqt_free_space(struct adapter *padapter)
 {
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
+	struct hal_com_data	*pHalData = GET_HAL_DATA(padapter);
 
 	if (pHalData->SdioTxOQTMaxFreeSpace < 8)
 		pHalData->SdioTxOQTMaxFreeSpace = 8;
@@ -30,7 +30,7 @@ u8 rtw_hal_sdio_max_txoqt_free_space(struct adapter *padapter)
 
 u8 rtw_hal_sdio_query_tx_freepage(struct adapter *padapter, u8 PageIdx, u8 RequiredPageNum)
 {
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
+	struct hal_com_data	*pHalData = GET_HAL_DATA(padapter);
 
 	if ((pHalData->SdioTxFIFOFreePage[PageIdx]+pHalData->SdioTxFIFOFreePage[PUBLIC_QUEUE_IDX]) >= (RequiredPageNum))
 		return true;
@@ -40,7 +40,7 @@ u8 rtw_hal_sdio_query_tx_freepage(struct adapter *padapter, u8 PageIdx, u8 Requi
 
 void rtw_hal_sdio_update_tx_freepage(struct adapter *padapter, u8 PageIdx, u8 RequiredPageNum)
 {
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
+	struct hal_com_data	*pHalData = GET_HAL_DATA(padapter);
 	u8	DedicatedPgNum = 0;
 	u8	RequiredPublicFreePgNum = 0;
 	/* _irqL irql; */
@@ -61,7 +61,7 @@ void rtw_hal_sdio_update_tx_freepage(struct adapter *padapter, u8 PageIdx, u8 Re
 
 void rtw_hal_set_sdio_tx_max_length(struct adapter * padapter, u8 numHQ, u8 numNQ, u8 numLQ, u8 numPubQ)
 {
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
+	struct hal_com_data	*pHalData = GET_HAL_DATA(padapter);
 	u32	page_size;
 	u32	lenHQ, lenNQ, lenLQ;
 
@@ -79,7 +79,7 @@ void rtw_hal_set_sdio_tx_max_length(struct adapter * padapter, u8 numHQ, u8 numN
 u32 rtw_hal_get_sdio_tx_max_length(struct adapter * padapter, u8 queue_idx)
 {
 	struct dvobj_priv	*pdvobjpriv = adapter_to_dvobj(padapter);
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
+	struct hal_com_data	*pHalData = GET_HAL_DATA(padapter);
 	u32	deviceId, max_len;
 
 

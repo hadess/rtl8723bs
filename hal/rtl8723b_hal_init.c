@@ -309,7 +309,7 @@ exit:
 
 void rtl8723b_FirmwareSelfReset(struct adapter * padapter)
 {
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
+	struct hal_com_data	*pHalData = GET_HAL_DATA(padapter);
 	u8	u1bTmp;
 	u8	Delay = 100;
 
@@ -501,7 +501,7 @@ exit:
 
 void rtl8723b_InitializeFirmwareVars(struct adapter * padapter)
 {
-	PHAL_DATA_TYPE pHalData = GET_HAL_DATA(padapter);
+	struct hal_com_data * pHalData = GET_HAL_DATA(padapter);
 
 	/*  Init Fw LPS related. */
 	adapter_to_pwrctl(padapter)->bFwCurrentInPSMode = false;
@@ -534,7 +534,7 @@ SetFwRelatedForWoWLAN8723b(
 )
 {
 		int				status = _FAIL;
-		HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
+		struct hal_com_data	*pHalData = GET_HAL_DATA(padapter);
 		u8				bRecover = false;
 	/*  */
 	/*  1. Before WoWLAN we need to re-download WoWLAN Fw. */
@@ -569,7 +569,7 @@ hal_EfuseSwitchToBank(
 	u8 bRet = false;
 	u32 value32 = 0;
 #ifdef HAL_EFUSE_MEMORY
-	PHAL_DATA_TYPE pHalData = GET_HAL_DATA(padapter);
+	struct hal_com_data * pHalData = GET_HAL_DATA(padapter);
 	PEFUSE_HAL pEfuseHal = &pHalData->EfuseHal;
 #endif
 
@@ -869,7 +869,7 @@ hal_ReadEFuse_WiFi(
 	bool			bPseudoTest)
 {
 #ifdef HAL_EFUSE_MEMORY
-	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(padapter);
+	struct hal_com_data *	pHalData = GET_HAL_DATA(padapter);
 	PEFUSE_HAL		pEfuseHal = &pHalData->EfuseHal;
 #endif
 	u8	*efuseTbl = NULL;
@@ -1031,7 +1031,7 @@ hal_ReadEFuse_BT(
 	)
 {
 #ifdef HAL_EFUSE_MEMORY
-	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(padapter);
+	struct hal_com_data *	pHalData = GET_HAL_DATA(padapter);
 	PEFUSE_HAL		pEfuseHal = &pHalData->EfuseHal;
 #endif
 	u8	*efuseTbl;
@@ -1192,7 +1192,7 @@ hal_EfuseGetCurrentSize_WiFi(
 	bool			bPseudoTest)
 {
 #ifdef HAL_EFUSE_MEMORY
-	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(padapter);
+	struct hal_com_data *	pHalData = GET_HAL_DATA(padapter);
 	PEFUSE_HAL		pEfuseHal = &pHalData->EfuseHal;
 #endif
 	u16	efuse_addr = 0;
@@ -1309,7 +1309,7 @@ hal_EfuseGetCurrentSize_BT(
 	u8			bPseudoTest)
 {
 #ifdef HAL_EFUSE_MEMORY
-	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(padapter);
+	struct hal_com_data *	pHalData = GET_HAL_DATA(padapter);
 	PEFUSE_HAL		pEfuseHal = &pHalData->EfuseHal;
 #endif
 	u16 btusedbytes;
@@ -1674,7 +1674,7 @@ hal_EfusePartialWriteCheck(
 	PPGPKT_STRUCT	pTargetPkt,
 	u8				bPseudoTest)
 {
-	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(padapter);
+	struct hal_com_data *	pHalData = GET_HAL_DATA(padapter);
 	PEFUSE_HAL		pEfuseHal = &pHalData->EfuseHal;
 	u8	bRet =false;
 	u16	startAddr = 0, efuse_max_available_len = 0, efuse_max = 0;
@@ -2028,7 +2028,7 @@ struct adapter *padapter
 {
 	u32				value32;
 	HAL_VERSION		ChipVersion;
-	HAL_DATA_TYPE	*pHalData;
+	struct hal_com_data	*pHalData;
 
 /* YJ, TODO, move read chip type here */
 	pHalData = GET_HAL_DATA(padapter);
@@ -2076,7 +2076,7 @@ static void rtl8723b_read_chip_version(struct adapter * padapter)
 
 void rtl8723b_InitBeaconParameters(struct adapter * padapter)
 {
-	PHAL_DATA_TYPE pHalData = GET_HAL_DATA(padapter);
+	struct hal_com_data * pHalData = GET_HAL_DATA(padapter);
 	u16 val16;
 	u8 val8;
 
@@ -2110,7 +2110,7 @@ void rtl8723b_InitBeaconParameters(struct adapter * padapter)
 
 void	_InitBurstPktLen_8723BS(struct adapter * Adapter)
 {
-	HAL_DATA_TYPE		*pHalData = GET_HAL_DATA(Adapter);
+	struct hal_com_data		*pHalData = GET_HAL_DATA(Adapter);
 
 	rtw_write8(Adapter, 0x4c7, rtw_read8(Adapter, 0x4c7)|BIT(7)); /* enable single pkt ampdu */
 	rtw_write8(Adapter, REG_RX_PKT_LIMIT_8723B, 0x18);		/* for VHT packet length 11K */
@@ -2137,7 +2137,7 @@ void	_InitBurstPktLen_8723BS(struct adapter * Adapter)
 
 static void ResumeTxBeacon(struct adapter * padapter)
 {
-	PHAL_DATA_TYPE pHalData = GET_HAL_DATA(padapter);
+	struct hal_com_data * pHalData = GET_HAL_DATA(padapter);
 
 
 	/*  2010.03.01. Marked by tynli. No need to call workitem beacause we record the value */
@@ -2154,7 +2154,7 @@ static void ResumeTxBeacon(struct adapter * padapter)
 
 static void StopTxBeacon(struct adapter * padapter)
 {
-	PHAL_DATA_TYPE pHalData = GET_HAL_DATA(padapter);
+	struct hal_com_data * pHalData = GET_HAL_DATA(padapter);
 
 
 	/*  2010.03.01. Marked by tynli. No need to call workitem beacause we record the value */
@@ -2273,7 +2273,7 @@ static void UpdateHalRAMask8723B(struct adapter * padapter, u32 mac_id, u8 rssi_
 	u32	mask, rate_bitmap;
 	u8	shortGIrate = false;
 	struct sta_info	*psta;
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
+	struct hal_com_data	*pHalData = GET_HAL_DATA(padapter);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
 	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
@@ -2384,7 +2384,7 @@ void rtl8723b_set_hal_ops(struct hal_ops *pHalFunc)
 
 void rtl8723b_InitAntenna_Selection(struct adapter * padapter)
 {
-	PHAL_DATA_TYPE pHalData;
+	struct hal_com_data * pHalData;
 	u8 val;
 
 
@@ -2398,7 +2398,7 @@ void rtl8723b_InitAntenna_Selection(struct adapter * padapter)
 
 void rtl8723b_init_default_value(struct adapter * padapter)
 {
-	PHAL_DATA_TYPE pHalData;
+	struct hal_com_data * pHalData;
 	struct dm_priv *pdmpriv;
 	u8 i;
 
@@ -2583,7 +2583,7 @@ u8			*hwinfo
 	)
 {
 	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(padapter);
-/* 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter); */
+/* 	struct hal_com_data	*pHalData = GET_HAL_DATA(padapter); */
 	u16			EEPROMId;
 
 
@@ -2610,7 +2610,7 @@ u8				* PROMContent,
 bool			AutoLoadFail
 	)
 {
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
+	struct hal_com_data	*pHalData = GET_HAL_DATA(Adapter);
 	u4Byte rfPath, eeAddr =EEPROM_TX_PWR_INX_8723B, group, TxCount = 0;
 
 	memset(pwrInfo24G, 0, sizeof(TxPowerInfo24G));
@@ -2745,7 +2745,7 @@ u8*	PROMContent,
 bool			AutoLoadFail
 	)
 {
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
+	struct hal_com_data	*pHalData = GET_HAL_DATA(padapter);
 	TxPowerInfo24G	pwrInfo24G;
 	u8			rfPath, ch, TxCount = 1;
 
@@ -2814,7 +2814,7 @@ u8*	hwinfo,
 bool			AutoLoadFail
 	)
 {
-	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(padapter);
+	struct hal_com_data *	pHalData = GET_HAL_DATA(padapter);
 	u8			tempval;
 	u32			tmpu4;
 
@@ -2890,7 +2890,7 @@ u8*	hwinfo,
 bool			AutoLoadFail
 	)
 {
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
+	struct hal_com_data	*pHalData = GET_HAL_DATA(padapter);
 
 /* 	RT_TRACE(_module_hci_hal_init_c_, _drv_notice_, ("%s(): AutoLoadFail = %d\n", __func__, AutoLoadFail)); */
 	if (!AutoLoadFail)
@@ -2910,7 +2910,7 @@ u8*		hwinfo,
 bool	AutoLoadFail
 	)
 {
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
+	struct hal_com_data	*pHalData = GET_HAL_DATA(padapter);
 	u1Byte			package;
 	u8 efuseContent;
 
@@ -2986,7 +2986,7 @@ u8*	hwinfo,
 bool			AutoLoadFail
 	)
 {
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
+	struct hal_com_data	*pHalData = GET_HAL_DATA(padapter);
 
 /* 	RT_TRACE(_module_hci_hal_init_c_, _drv_notice_, ("%s(): AutoLoadFail = %d\n", __func__, AutoLoadFail)); */
 	if (!AutoLoadFail)
@@ -3016,7 +3016,7 @@ u8			* hwinfo,
 bool		AutoLoadFail
 	)
 {
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
+	struct hal_com_data	*pHalData = GET_HAL_DATA(padapter);
 
 /* 	RT_TRACE(_module_hci_hal_init_c_, _drv_notice_, ("%s(): AutoLoadFail = %d\n", __func__, AutoLoadFail)); */
 	if (!AutoLoadFail)
@@ -3040,7 +3040,7 @@ Hal_EfuseParseThermalMeter_8723B(
 	u8			AutoLoadFail
 	)
 {
-	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(padapter);
+	struct hal_com_data *	pHalData = GET_HAL_DATA(padapter);
 
 /* 	RT_TRACE(_module_hci_hal_init_c_, _drv_notice_, ("%s(): AutoLoadFail = %d\n", __func__, AutoLoadFail)); */
 	/*  */
@@ -3091,7 +3091,7 @@ struct pkt_attrib	*pattrib
 )
 {
 	u8	BWSettingOfDesc = 0;
-	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(Adapter);
+	struct hal_com_data *	pHalData = GET_HAL_DATA(Adapter);
 
 	/* DBG_871X("BWMapping pHalData->CurrentChannelBW %d, pattrib->bwmode %d \n", pHalData->CurrentChannelBW, pattrib->bwmode); */
 
@@ -3123,7 +3123,7 @@ struct pkt_attrib	*pattrib
 u8	SCMapping_8723B(struct adapter * Adapter, struct pkt_attrib *pattrib)
 {
 	u8	SCSettingOfDesc = 0;
-	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(Adapter);
+	struct hal_com_data *	pHalData = GET_HAL_DATA(Adapter);
 
 	/* DBG_871X("SCMapping: pHalData->CurrentChannelBW %d, pHalData->nCur80MhzPrimeSC %d, pHalData->nCur40MhzPrimeSC %d \n", pHalData->CurrentChannelBW, pHalData->nCur80MhzPrimeSC, pHalData->nCur40MhzPrimeSC); */
 
@@ -3292,7 +3292,7 @@ static void rtl8723b_fill_default_txdesc(
 	u8 *pbuf)
 {
 	struct adapter * padapter;
-	HAL_DATA_TYPE *pHalData;
+	struct hal_com_data *pHalData;
 	struct dm_priv *pdmpriv;
 	struct mlme_ext_priv *pmlmeext;
 	struct mlme_ext_info *pmlmeinfo;
@@ -3784,7 +3784,7 @@ static void hw_var_set_mlme_sitesurvey(struct adapter * padapter, u8 variable, u
 	u32	value_rcr, rcr_clear_bit, reg_bcn_ctl;
 	u16	value_rxfltmap2;
 	u8 val8;
-	PHAL_DATA_TYPE pHalData;
+	struct hal_com_data * pHalData;
 	struct mlme_priv *pmlmepriv;
 
 
@@ -3855,7 +3855,7 @@ static void hw_var_set_mlme_join(struct adapter * padapter, u8 variable, u8 *val
 	u32 val32;
 	u8 RetryLimit;
 	u8 type;
-	PHAL_DATA_TYPE pHalData;
+	struct hal_com_data * pHalData;
 	struct mlme_priv *pmlmepriv;
 	EEPROM_EFUSE_PRIV *pEEPROM;
 
@@ -4073,7 +4073,7 @@ void C2HPacketHandler_8723B(struct adapter * padapter, u8 *pbuffer, u16 length)
 
 void SetHwReg8723B(struct adapter * padapter, u8 variable, u8 *val)
 {
-	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(padapter);
+	struct hal_com_data *	pHalData = GET_HAL_DATA(padapter);
 	u8 val8;
 	u32 val32;
 
@@ -4555,7 +4555,7 @@ void SetHwReg8723B(struct adapter * padapter, u8 variable, u8 *val)
 
 void GetHwReg8723B(struct adapter * padapter, u8 variable, u8 *val)
 {
-	PHAL_DATA_TYPE pHalData = GET_HAL_DATA(padapter);
+	struct hal_com_data * pHalData = GET_HAL_DATA(padapter);
 	u8 val8;
 	u16 val16;
 
@@ -4650,7 +4650,7 @@ void GetHwReg8723B(struct adapter * padapter, u8 variable, u8 *val)
  */
 u8 SetHalDefVar8723B(struct adapter * padapter, HAL_DEF_VARIABLE variable, void *pval)
 {
-	PHAL_DATA_TYPE pHalData;
+	struct hal_com_data * pHalData;
 	u8 bResult;
 
 
@@ -4673,7 +4673,7 @@ u8 SetHalDefVar8723B(struct adapter * padapter, HAL_DEF_VARIABLE variable, void 
  */
 u8 GetHalDefVar8723B(struct adapter * padapter, HAL_DEF_VARIABLE variable, void *pval)
 {
-	PHAL_DATA_TYPE pHalData;
+	struct hal_com_data * pHalData;
 	u8 bResult;
 
 

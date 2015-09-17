@@ -207,7 +207,7 @@ ODM_TxPwrTrackSetPwr_8723B(
 	)
 {
 	struct adapter *Adapter = pDM_Odm->Adapter;
-	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(Adapter);
+	struct hal_com_data *	pHalData = GET_HAL_DATA(Adapter);
 	u1Byte		PwrTrackingLimit_OFDM = 34; /* 0dB */
 	u1Byte		PwrTrackingLimit_CCK = 28;	/* 2dB */
 	u1Byte		TxRate = 0xFF;
@@ -406,7 +406,7 @@ pu1Byte			*TemperatureDOWN_B
 {
 	struct adapter *Adapter			 = pDM_Odm->Adapter;
 	PODM_RF_CAL_T	pRFCalibrateInfo = &(pDM_Odm->RFCalibrateInfo);
-	HAL_DATA_TYPE	*pHalData		 = GET_HAL_DATA(Adapter);
+	struct hal_com_data	*pHalData		 = GET_HAL_DATA(Adapter);
 	u2Byte			rate			 = *(pDM_Odm->pForcedDataRate);
 	u1Byte			channel			 = pHalData->CurrentChannel;
 
@@ -479,7 +479,7 @@ u1Byte		RF_Path
 	u4Byte regEAC, regE94, regE9C, tmp, Path_SEL_BB /*, regEA4*/;
 	u1Byte result = 0x00;
 
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
+	struct hal_com_data	*pHalData = GET_HAL_DATA(padapter);
 	PDM_ODM_T		pDM_Odm = &pHalData->odmpriv;
 
 	/*  Save RF Path */
@@ -590,7 +590,7 @@ u1Byte		RF_Path
 {
 	u4Byte regEAC, regE94, regE9C, regEA4, u4tmp, tmp, Path_SEL_BB;
 	u1Byte result = 0x00;
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
+	struct hal_com_data	*pHalData = GET_HAL_DATA(padapter);
 	PDM_ODM_T		pDM_Odm = &pHalData->odmpriv;
 
 /* 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("Path A Rx IQK!\n")); */
@@ -802,7 +802,7 @@ struct adapter *padapter
 {
 	u4Byte regEAC, regE94, regE9C, tmp, Path_SEL_BB/*, regEC4, regECC, Path_SEL_BB*/;
 	u1Byte	result = 0x00;
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
+	struct hal_com_data	*pHalData = GET_HAL_DATA(padapter);
 	PDM_ODM_T		pDM_Odm = &pHalData->odmpriv;
 
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD,  ("Path B IQK!\n"));
@@ -910,7 +910,7 @@ bool	configPathB
 {
 	u4Byte regE94, regE9C, regEA4, regEAC, u4tmp, tmp, Path_SEL_BB;
 	u1Byte result = 0x00;
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
+	struct hal_com_data	*pHalData = GET_HAL_DATA(padapter);
 	PDM_ODM_T		pDM_Odm = &pHalData->odmpriv;
 
 /* 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("Path B Rx IQK!\n")); */
@@ -1130,7 +1130,7 @@ bool	bTxOnly
 {
 	u4Byte	Oldval_0, X, TX0_A, reg;
 	s4Byte	Y, TX0_C;
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
+	struct hal_com_data	*pHalData = GET_HAL_DATA(padapter);
 	PDM_ODM_T		pDM_Odm = &pHalData->odmpriv;
 
 	PODM_RF_CAL_T	pRFCalibrateInfo = &(pDM_Odm->RFCalibrateInfo);
@@ -1213,7 +1213,7 @@ bool	bTxOnly			/* do Tx only */
 {
 	u4Byte	Oldval_1, X, TX1_A, reg;
 	s4Byte	Y, TX1_C;
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
+	struct hal_com_data	*pHalData = GET_HAL_DATA(padapter);
 	PDM_ODM_T		pDM_Odm = &pHalData->odmpriv;
 
 	PODM_RF_CAL_T	pRFCalibrateInfo = &(pDM_Odm->RFCalibrateInfo);
@@ -1337,7 +1337,7 @@ u4Byte		RegisterNum
 	)
 {
 	u4Byte	i;
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
+	struct hal_com_data	*pHalData = GET_HAL_DATA(padapter);
 	PDM_ODM_T		pDM_Odm = &pHalData->odmpriv;
 
 	if (ODM_CheckPowerStatus(padapter) == false)
@@ -1358,7 +1358,7 @@ pu4Byte		MACBackup
 	)
 {
 	u4Byte	i;
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
+	struct hal_com_data	*pHalData = GET_HAL_DATA(padapter);
 	PDM_ODM_T		pDM_Odm = &pHalData->odmpriv;
 
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("Save MAC parameters.\n"));
@@ -1379,7 +1379,7 @@ u4Byte		RegiesterNum
 	)
 {
 	u4Byte	i;
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
+	struct hal_com_data	*pHalData = GET_HAL_DATA(padapter);
 	PDM_ODM_T		pDM_Odm = &pHalData->odmpriv;
 
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("Reload ADDA power saving parameters !\n"));
@@ -1415,7 +1415,7 @@ bool	is2T
 {
 	u4Byte	pathOn;
 	u4Byte	i;
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
+	struct hal_com_data	*pHalData = GET_HAL_DATA(padapter);
 	PDM_ODM_T		pDM_Odm = &pHalData->odmpriv;
 
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("ADDA ON.\n"));
@@ -1443,7 +1443,7 @@ pu4Byte		MACBackup
 	)
 {
 	u4Byte	i = 0;
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
+	struct hal_com_data	*pHalData = GET_HAL_DATA(padapter);
 	PDM_ODM_T		pDM_Odm = &pHalData->odmpriv;
 
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("MAC settings for Calibration.\n"));
@@ -1571,7 +1571,7 @@ bool		is2T,
 u1Byte		RF_Path
 	)
 {
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
+	struct hal_com_data	*pHalData = GET_HAL_DATA(padapter);
 	PDM_ODM_T		pDM_Odm = &pHalData->odmpriv;
 
 	u4Byte			i;
@@ -1862,7 +1862,7 @@ bool	Is2ant,	/* false:1ant, true:2-ant */
 u1Byte	RF_Path	/* 0:S1, 1:S0 */
 	)
 {
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
+	struct hal_com_data	*pHalData = GET_HAL_DATA(padapter);
 
 	PDM_ODM_T		pDM_Odm = &pHalData->odmpriv;
 

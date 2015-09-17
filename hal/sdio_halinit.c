@@ -219,7 +219,7 @@ static void _init_available_page_threshold(struct adapter * padapter, u8 numHQ, 
 
 static void _InitQueueReservedPage(struct adapter * padapter)
 {
-	HAL_DATA_TYPE		*pHalData = GET_HAL_DATA(padapter);
+	struct hal_com_data		*pHalData = GET_HAL_DATA(padapter);
 	struct registry_priv	*pregistrypriv = &padapter->registrypriv;
 	u32			numHQ		= 0;
 	u32			numLQ		= 0;
@@ -304,7 +304,7 @@ _InitNormalChipOneOutEpPriority(
 struct adapter * Adapter
 	)
 {
-	HAL_DATA_TYPE	*pHalData	= GET_HAL_DATA(Adapter);
+	struct hal_com_data	*pHalData	= GET_HAL_DATA(Adapter);
 
 	u16	value = 0;
 	switch (pHalData->OutEpQueueSel)
@@ -339,7 +339,7 @@ _InitNormalChipTwoOutEpPriority(
 struct adapter * Adapter
 	)
 {
-	HAL_DATA_TYPE	*pHalData	= GET_HAL_DATA(Adapter);
+	struct hal_com_data	*pHalData	= GET_HAL_DATA(Adapter);
 	struct registry_priv *pregistrypriv = &Adapter->registrypriv;
 	u16			beQ, bkQ, viQ, voQ, mgtQ, hiQ;
 
@@ -419,7 +419,7 @@ _InitNormalChipQueuePriority(
 struct adapter * Adapter
 	)
 {
-	HAL_DATA_TYPE	*pHalData	= GET_HAL_DATA(Adapter);
+	struct hal_com_data	*pHalData	= GET_HAL_DATA(Adapter);
 
 	switch (pHalData->OutEpNumber)
 	{
@@ -482,7 +482,7 @@ static void _InitNetworkType(struct adapter * padapter)
 
 static void _InitWMACSetting(struct adapter * padapter)
 {
-	PHAL_DATA_TYPE pHalData;
+	struct hal_com_data * pHalData;
 	u16 value16;
 
 
@@ -599,7 +599,7 @@ static void HalRxAggr8723BSdio(struct adapter * padapter)
 
 static void sdio_AggSettingRxUpdate(struct adapter * padapter)
 {
-	HAL_DATA_TYPE *pHalData;
+	struct hal_com_data *pHalData;
 	u8 valueDMA;
 	u8 valueRxAggCtrl = 0;
 	u8 aggBurstNum = 3;  /* 0:1, 1:2, 2:3, 3:4 */
@@ -619,7 +619,7 @@ static void sdio_AggSettingRxUpdate(struct adapter * padapter)
 
 static void _initSdioAggregationSetting(struct adapter * padapter)
 {
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
+	struct hal_com_data	*pHalData = GET_HAL_DATA(padapter);
 
 	/*  Tx aggregation setting */
 /* 	sdio_AggSettingTxUpdate(padapter); */
@@ -635,7 +635,7 @@ static void _initSdioAggregationSetting(struct adapter * padapter)
 
 static void _InitOperationMode(struct adapter * padapter)
 {
-	PHAL_DATA_TYPE pHalData;
+	struct hal_com_data * pHalData;
 	struct mlme_ext_priv *pmlmeext;
 	u8				regBwOpMode = 0;
 	u32				regRATR = 0, regRRSR = 0;
@@ -710,7 +710,7 @@ static void _InitInterrupt(struct adapter * padapter)
 
 static void _InitRFType(struct adapter * padapter)
 {
-	HAL_DATA_TYPE *pHalData = GET_HAL_DATA(padapter);
+	struct hal_com_data *pHalData = GET_HAL_DATA(padapter);
 
 #if	DISABLE_BB_RF
 	pHalData->rf_chip	= RF_PSEUDO_11N;
@@ -734,7 +734,7 @@ static void _RfPowerSave(struct adapter * padapter)
 static bool HalDetectPwrDownMode(struct adapter * Adapter)
 {
 	u8 tmpvalue;
-	HAL_DATA_TYPE *pHalData = GET_HAL_DATA(Adapter);
+	struct hal_com_data *pHalData = GET_HAL_DATA(Adapter);
 	struct pwrctrl_priv *pwrctrlpriv = adapter_to_pwrctl(Adapter);
 
 
@@ -758,7 +758,7 @@ static bool HalDetectPwrDownMode(struct adapter * Adapter)
 static u32 rtl8723bs_hal_init(struct adapter * padapter)
 {
 	s32 ret;
-	PHAL_DATA_TYPE pHalData;
+	struct hal_com_data * pHalData;
 	struct pwrctrl_priv *pwrctrlpriv;
 	struct registry_priv *pregistrypriv;
 	u32 NavUpper = WiFiNavUpperUs;
@@ -1210,7 +1210,7 @@ static u32 rtl8723bs_inirp_deinit(struct adapter * padapter)
 
 static void rtl8723bs_init_default_value(struct adapter * padapter)
 {
-	PHAL_DATA_TYPE pHalData;
+	struct hal_com_data * pHalData;
 
 
 	pHalData = GET_HAL_DATA(padapter);
@@ -1223,7 +1223,7 @@ static void rtl8723bs_init_default_value(struct adapter * padapter)
 
 static void rtl8723bs_interface_configure(struct adapter * padapter)
 {
-	HAL_DATA_TYPE		*pHalData = GET_HAL_DATA(padapter);
+	struct hal_com_data		*pHalData = GET_HAL_DATA(padapter);
 	struct dvobj_priv		*pdvobjpriv = adapter_to_dvobj(padapter);
 	struct registry_priv	*pregistrypriv = &padapter->registrypriv;
 	bool		bWiFiConfig	= pregistrypriv->wifi_spec;
@@ -1281,7 +1281,7 @@ _ReadRFType(
 struct adapter *Adapter
 	)
 {
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
+	struct hal_com_data	*pHalData = GET_HAL_DATA(Adapter);
 
 #if DISABLE_BB_RF
 	pHalData->rf_chip = RF_PSEUDO_11N;
@@ -1329,7 +1329,7 @@ u8*	hwinfo,
 bool			AutoLoadFail
 	)
 {
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
+	struct hal_com_data	*pHalData = GET_HAL_DATA(padapter);
 
 	if (!AutoLoadFail)
 	{
@@ -1482,7 +1482,7 @@ static void ReadAdapterInfo8723BS(struct adapter * padapter)
  */
 static void SetHwReg8723BS(struct adapter * padapter, u8 variable, u8 *val)
 {
-	PHAL_DATA_TYPE pHalData;
+	struct hal_com_data * pHalData;
 	u8 val8;
 
 #if defined(CONFIG_WOWLAN)

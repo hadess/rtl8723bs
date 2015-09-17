@@ -98,7 +98,7 @@ void odm_EdcaTurboCheckCE(void *pDM_VOID)
 	u64	cur_rx_bytes = 0;
 	u8	bbtchange = false;
 	u8	biasonrx = false;
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
+	struct hal_com_data	*pHalData = GET_HAL_DATA(Adapter);
 
 	if (!pDM_Odm->bLinked) {
 		precvpriv->bIsAnyNonBEPkts = false;

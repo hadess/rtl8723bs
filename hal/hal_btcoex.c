@@ -213,7 +213,7 @@ static void halbtcoutsrc_NormalLps(PBTC_COEXIST pBtCoexist)
 static void halbtcoutsrc_LeaveLowPower(PBTC_COEXIST pBtCoexist)
 {
 	struct adapter * padapter;
-	PHAL_DATA_TYPE pHalData;
+	struct hal_com_data * pHalData;
 	s32 ready;
 	unsigned long stime;
 	unsigned long utime;
@@ -389,7 +389,7 @@ static u32 halbtcoutsrc_GetBtPatchVer(PBTC_COEXIST pBtCoexist)
 
 static s32 halbtcoutsrc_GetWifiRssi(struct adapter * padapter)
 {
-	PHAL_DATA_TYPE pHalData;
+	struct hal_com_data * pHalData;
 	s32 UndecoratedSmoothedPWDB = 0;
 
 
@@ -421,7 +421,7 @@ static u8 halbtcoutsrc_Get(void *pBtcContext, u8 getType, void *pOutBuf)
 {
 	PBTC_COEXIST pBtCoexist;
 	struct adapter * padapter;
-	PHAL_DATA_TYPE pHalData;
+	struct hal_com_data * pHalData;
 	struct mlme_ext_priv *mlmeext;
 	u8 *pu8;
 	s32 *pS4Tmp;
@@ -594,7 +594,7 @@ static u8 halbtcoutsrc_Set(void *pBtcContext, u8 setType, void *pInBuf)
 {
 	PBTC_COEXIST pBtCoexist;
 	struct adapter * padapter;
-	PHAL_DATA_TYPE pHalData;
+	struct hal_com_data * pHalData;
 	u8 *pu8;
 	u8 *pU1Tmp;
 	u32	*pU4Tmp;
@@ -1383,7 +1383,7 @@ void EXhalbtcoutsrc_DisplayBtCoexInfo(PBTC_COEXIST pBtCoexist)
  */
 void hal_btcoex_SetBTCoexist(struct adapter * padapter, u8 bBtExist)
 {
-	PHAL_DATA_TYPE	pHalData;
+	struct hal_com_data *	pHalData;
 
 
 	pHalData = GET_HAL_DATA(padapter);
@@ -1400,7 +1400,7 @@ void hal_btcoex_SetBTCoexist(struct adapter * padapter, u8 bBtExist)
  */
 u8 hal_btcoex_IsBtExist(struct adapter * padapter)
 {
-	PHAL_DATA_TYPE	pHalData;
+	struct hal_com_data *	pHalData;
 
 
 	pHalData = GET_HAL_DATA(padapter);
@@ -1420,7 +1420,7 @@ u8 hal_btcoex_IsBtDisabled(struct adapter * padapter)
 
 void hal_btcoex_SetChipType(struct adapter * padapter, u8 chipType)
 {
-	PHAL_DATA_TYPE	pHalData;
+	struct hal_com_data *	pHalData;
 
 
 	pHalData = GET_HAL_DATA(padapter);
@@ -1431,7 +1431,7 @@ void hal_btcoex_SetChipType(struct adapter * padapter, u8 chipType)
 
 void hal_btcoex_SetPgAntNum(struct adapter * padapter, u8 antNum)
 {
-	PHAL_DATA_TYPE	pHalData;
+	struct hal_com_data *	pHalData;
 
 
 	pHalData = GET_HAL_DATA(padapter);

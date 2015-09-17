@@ -95,7 +95,7 @@ static void update_recvframe_phyinfo(
 {
 	struct adapter *	padapter = precvframe->u.hdr.adapter;
 	struct rx_pkt_attrib	*pattrib = &precvframe->u.hdr.attrib;
-	HAL_DATA_TYPE		*pHalData = GET_HAL_DATA(padapter);
+	struct hal_com_data		*pHalData = GET_HAL_DATA(padapter);
 	PODM_PHY_INFO_T		pPHYInfo = (PODM_PHY_INFO_T)(&pattrib->phy_info);
 
 	u8			*wlanhdr;
@@ -190,7 +190,7 @@ static void rtl8723bs_c2h_packet_handler(struct adapter * padapter, u8 *pbuf, u1
 static void rtl8723bs_recv_tasklet(void *priv)
 {
 	struct adapter *	padapter;
-	PHAL_DATA_TYPE		pHalData;
+	struct hal_com_data *		pHalData;
 	struct recv_priv		*precvpriv;
 	struct recv_buf		*precvbuf;
 	union recv_frame		*precvframe;

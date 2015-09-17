@@ -21,7 +21,7 @@
 static u8 rtw_sdio_wait_enough_TxOQT_space(struct adapter * padapter, u8 agg_num)
 {
 	u32 n = 0;
-	HAL_DATA_TYPE *pHalData = GET_HAL_DATA(padapter);
+	struct hal_com_data *pHalData = GET_HAL_DATA(padapter);
 
 	while (pHalData->SdioTxOQTFreeSpace < agg_num)
 	{
@@ -600,7 +600,7 @@ s32	rtl8723bs_hal_xmitframe_enqueue(struct adapter *padapter, struct xmit_frame 
 s32 rtl8723bs_init_xmit_priv(struct adapter * padapter)
 {
 	struct xmit_priv *xmitpriv = &padapter->xmitpriv;
-	PHAL_DATA_TYPE phal;
+	struct hal_com_data * phal;
 
 
 	phal = GET_HAL_DATA(padapter);
@@ -614,7 +614,7 @@ s32 rtl8723bs_init_xmit_priv(struct adapter * padapter)
 
 void rtl8723bs_free_xmit_priv(struct adapter * padapter)
 {
-	PHAL_DATA_TYPE phal;
+	struct hal_com_data * phal;
 	struct xmit_priv *pxmitpriv;
 	struct xmit_buf *pxmitbuf;
 	struct __queue *pqueue;

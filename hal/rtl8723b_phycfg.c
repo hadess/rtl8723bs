@@ -168,7 +168,7 @@ u32				Offset
 	)
 {
 	u32						retValue = 0;
-	HAL_DATA_TYPE				*pHalData = GET_HAL_DATA(Adapter);
+	struct hal_com_data				*pHalData = GET_HAL_DATA(Adapter);
 	BB_REGISTER_DEFINITION_T	*pPhyReg = &pHalData->PHYRegDef[eRFPath];
 	u32						NewOffset;
 	u32 tmplong2;
@@ -279,7 +279,7 @@ u32				Data
 	)
 {
 	u32						DataAndAddr = 0;
-	HAL_DATA_TYPE				*pHalData = GET_HAL_DATA(Adapter);
+	struct hal_com_data				*pHalData = GET_HAL_DATA(Adapter);
 	BB_REGISTER_DEFINITION_T	*pPhyReg = &pHalData->PHYRegDef[eRFPath];
 	u32						NewOffset;
 
@@ -412,7 +412,7 @@ u32				Data
 s32 PHY_MACConfig8723B(struct adapter * Adapter)
 {
 	int		rtStatus = _SUCCESS;
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
+	struct hal_com_data	*pHalData = GET_HAL_DATA(Adapter);
 	s8			*pszMACRegFile;
 	s8			sz8723MACRegFile[] = RTL8723B_PHY_MACREG;
 
@@ -451,7 +451,7 @@ phy_InitBBRFRegisterDefinition(
 struct adapter *Adapter
 )
 {
-	HAL_DATA_TYPE		*pHalData = GET_HAL_DATA(Adapter);
+	struct hal_com_data		*pHalData = GET_HAL_DATA(Adapter);
 
 	/*  RF Interface Sowrtware Control */
 	pHalData->PHYRegDef[ODM_RF_PATH_A].rfintfs = rFPGA0_XAB_RFInterfaceSW; /*  16 LSBs if read 32-bit from 0x870 */
@@ -484,7 +484,7 @@ phy_BB8723b_Config_ParaFile(
 struct adapter *Adapter
 	)
 {
-	HAL_DATA_TYPE		*pHalData = GET_HAL_DATA(Adapter);
+	struct hal_com_data		*pHalData = GET_HAL_DATA(Adapter);
 	int			rtStatus = _SUCCESS;
 	u8	sz8723BBRegFile[] = RTL8723B_PHY_REG;
 	u8	sz8723AGCTableFile[] = RTL8723B_AGC_TAB;
@@ -587,7 +587,7 @@ struct adapter *Adapter
 	)
 {
 	int	rtStatus = _SUCCESS;
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
+	struct hal_com_data	*pHalData = GET_HAL_DATA(Adapter);
 	u32	RegVal;
 	u8	CrystalCap;
 
@@ -713,7 +713,7 @@ CHANNEL_WIDTH		BandWidth,
 u8					Channel
 	)
 {
-	PHAL_DATA_TYPE		pHalData = GET_HAL_DATA(padapter);
+	struct hal_com_data *		pHalData = GET_HAL_DATA(padapter);
 	s8					txPower = 0, powerDiffByRate = 0, limit = 0;
 	bool				bIn24G = false;
 
@@ -742,7 +742,7 @@ struct adapter *Adapter,
 u8				Channel
 	)
 {
-	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(Adapter);
+	struct hal_com_data *	pHalData = GET_HAL_DATA(Adapter);
 	PDM_ODM_T		pDM_Odm = &pHalData->odmpriv;
 	pFAT_T			pDM_FatTable = &pDM_Odm->DM_FatTable;
 	u8				RFPath = ODM_RF_PATH_A;
@@ -806,7 +806,7 @@ struct adapter *Adapter
 )
 {
 	u8	SCSettingOf40 = 0, SCSettingOf20 = 0;
-	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(Adapter);
+	struct hal_com_data *	pHalData = GET_HAL_DATA(Adapter);
 
 	RT_TRACE(_module_hal_init_c_, _drv_info_, ("SCMapping: VHT Case: pHalData->CurrentChannelBW %d, pHalData->nCur80MhzPrimeSC %d, pHalData->nCur40MhzPrimeSC %d \n", pHalData->CurrentChannelBW, pHalData->nCur80MhzPrimeSC, pHalData->nCur40MhzPrimeSC));
 	if (pHalData->CurrentChannelBW == CHANNEL_WIDTH_80)
@@ -851,7 +851,7 @@ struct adapter *Adapter
 )
 {
 	u1Byte			SubChnlNum = 0;
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
+	struct hal_com_data	*pHalData = GET_HAL_DATA(Adapter);
 
 
 	/* 3 Set Reg668 Reg440 BW */
@@ -913,7 +913,7 @@ phy_SwChnl8723B(
 struct adapter *			padapter
 	)
 {
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
+	struct hal_com_data	*pHalData = GET_HAL_DATA(padapter);
 	u8			channelToSW = pHalData->CurrentChannel;
 
 	if (pHalData->rf_chip == RF_PSEUDO_11N)
@@ -933,7 +933,7 @@ phy_SwChnlAndSetBwMode8723B(
  struct adapter *Adapter
 )
 {
-	HAL_DATA_TYPE		*pHalData = GET_HAL_DATA(Adapter);
+	struct hal_com_data		*pHalData = GET_HAL_DATA(Adapter);
 
 	/* RT_TRACE(COMP_SCAN, DBG_LOUD, ("phy_SwChnlAndSetBwMode8723B(): bSwChnl %d, bSetChnlBW %d \n", pHalData->bSwChnl, pHalData->bSetChnlBW)); */
 	if (Adapter->bNotifyChannelChange)
@@ -979,7 +979,7 @@ u8					CenterFrequencyIndex1
 )
 {
 	/* static bool		bInitialzed = false; */
-	PHAL_DATA_TYPE		pHalData = GET_HAL_DATA(Adapter);
+	struct hal_com_data *		pHalData = GET_HAL_DATA(Adapter);
 	u8					tmpChannel = pHalData->CurrentChannel;
 	CHANNEL_WIDTH	tmpBW = pHalData->CurrentChannelBW;
 	u8					tmpnCur40MhzPrimeSC = pHalData->nCur40MhzPrimeSC;
@@ -1061,7 +1061,7 @@ CHANNEL_WIDTH	Bandwidth,	/*  20M or 40M */
 unsigned char	Offset		/*  Upper, Lower, or Don't care */
 )
 {
-	PHAL_DATA_TYPE		pHalData = GET_HAL_DATA(Adapter);
+	struct hal_com_data *		pHalData = GET_HAL_DATA(Adapter);
 
 	PHY_HandleSwChnlAndSetBW8723B(Adapter, false, true, pHalData->CurrentChannel, Bandwidth, Offset, Offset, pHalData->CurrentChannel);
 }

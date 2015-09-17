@@ -427,7 +427,7 @@ static u32 sdio_read_port(
 {
 	struct adapter * padapter;
 	PSDIO_DATA psdio;
-	PHAL_DATA_TYPE phal;
+	struct hal_com_data * phal;
 	u32 oldcnt;
 #ifdef SDIO_DYNAMIC_ALLOC_MEM
 	u8 *oldmem;
@@ -774,7 +774,7 @@ static s32 ReadInterrupt8723BSdio(struct adapter * padapter, u32 *phisr)
 /*  */
 void InitInterrupt8723BSdio(struct adapter * padapter)
 {
-	PHAL_DATA_TYPE pHalData;
+	struct hal_com_data * pHalData;
 
 
 	pHalData = GET_HAL_DATA(padapter);
@@ -808,7 +808,7 @@ void InitInterrupt8723BSdio(struct adapter * padapter)
 /*  */
 void InitSysInterrupt8723BSdio(struct adapter * padapter)
 {
-	PHAL_DATA_TYPE pHalData;
+	struct hal_com_data * pHalData;
 
 
 	pHalData = GET_HAL_DATA(padapter);
@@ -834,7 +834,7 @@ void InitSysInterrupt8723BSdio(struct adapter * padapter)
 /*  */
 void ClearInterrupt8723BSdio(struct adapter * padapter)
 {
-	PHAL_DATA_TYPE pHalData;
+	struct hal_com_data * pHalData;
 	u8 *clear;
 
 
@@ -867,7 +867,7 @@ void ClearInterrupt8723BSdio(struct adapter * padapter)
 /*  */
 void EnableInterrupt8723BSdio(struct adapter * padapter)
 {
-	PHAL_DATA_TYPE pHalData;
+	struct hal_com_data * pHalData;
 	__le32 himr;
 	u32 tmp;
 
@@ -1010,7 +1010,7 @@ static void sd_rxhandler(struct adapter * padapter, struct recv_buf *precvbuf)
 
 void sd_int_dpc(struct adapter * padapter)
 {
-	PHAL_DATA_TYPE phal;
+	struct hal_com_data * phal;
 	struct dvobj_priv *dvobj;
 	struct intf_hdl * pintfhdl =&padapter->iopriv.intf;
 	struct pwrctrl_priv *pwrctl;
@@ -1144,7 +1144,7 @@ void sd_int_dpc(struct adapter * padapter)
 
 void sd_int_hdl(struct adapter * padapter)
 {
-	PHAL_DATA_TYPE phal;
+	struct hal_com_data * phal;
 
 
 	if ((padapter->bDriverStopped == true) ||
@@ -1188,7 +1188,7 @@ void sd_int_hdl(struct adapter * padapter)
 /*  */
 u8 HalQueryTxBufferStatus8723BSdio(struct adapter * padapter)
 {
-	PHAL_DATA_TYPE phal;
+	struct hal_com_data * phal;
 	u32 NumOfFreePage;
 	/* _irqL irql; */
 
@@ -1217,7 +1217,7 @@ u8 HalQueryTxBufferStatus8723BSdio(struct adapter * padapter)
 /*  */
 u8 HalQueryTxOQTBufferStatus8723BSdio(struct adapter * padapter)
 {
-	HAL_DATA_TYPE *pHalData = GET_HAL_DATA(padapter);
+	struct hal_com_data *pHalData = GET_HAL_DATA(padapter);
 	pHalData->SdioTxOQTFreeSpace = SdioLocalCmd52Read1Byte(padapter, SDIO_REG_OQT_FREE_PG);
 	return true;
 }

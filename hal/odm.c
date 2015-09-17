@@ -1398,7 +1398,7 @@ FindMinimumRSSI(
 IN	struct adapter *padapter
 	)
 {
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
+	struct hal_com_data	*pHalData = GET_HAL_DATA(padapter);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
 	PDM_ODM_T		pDM_Odm = &(pHalData->odmpriv);
 
@@ -1425,7 +1425,7 @@ odm_RSSIMonitorCheckCE(
 	)
 {
 	struct adapter *Adapter = pDM_Odm->Adapter;
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
+	struct hal_com_data	*pHalData = GET_HAL_DATA(Adapter);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
 	int	i;
 	int	tmpEntryMaxPWDB = 0, tmpEntryMinPWDB = 0xff;
@@ -1551,7 +1551,7 @@ PDM_ODM_T	pDM_Odm
 	u1Byte defaultSwingIndex = getSwingIndex(pDM_Odm);
 	u1Byte			p = 0;
 	struct adapter *	Adapter = pDM_Odm->Adapter;
-	HAL_DATA_TYPE		*pHalData = GET_HAL_DATA(Adapter);
+	struct hal_com_data		*pHalData = GET_HAL_DATA(Adapter);
 
 
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;

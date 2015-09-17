@@ -455,7 +455,7 @@ static char *translate_scan(struct adapter *padapter,
 	{
 		/* Do signal scale mapping when using percentage as the unit of signal strength, since the scale mapping is skipped in odm */
 
-		HAL_DATA_TYPE *pHal = GET_HAL_DATA(padapter);
+		struct hal_com_data *pHal = GET_HAL_DATA(padapter);
 
 		iwe.u.qual.level = (u8)odm_SignalScaleMapping(&pHal->odmpriv, ss);
 	}
@@ -3463,7 +3463,7 @@ static int rtw_dbg_port(struct net_device *dev,
 #ifdef CONFIG_BACKGROUND_NOISE_MONITOR
 				case 0x1e:
 					{
-						HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
+						struct hal_com_data	*pHalData = GET_HAL_DATA(padapter);
 						PDM_ODM_T pDM_Odm = &pHalData->odmpriv;
 						u8 chan = rtw_get_oper_ch(padapter);
 						DBG_871X("===========================================\n");
@@ -5374,7 +5374,7 @@ static struct iw_statistics *rtw_get_wireless_stats(struct net_device *dev)
 		{
 			/* Do signal scale mapping when using percentage as the unit of signal strength, since the scale mapping is skipped in odm */
 
-			HAL_DATA_TYPE *pHal = GET_HAL_DATA(padapter);
+			struct hal_com_data *pHal = GET_HAL_DATA(padapter);
 
 			tmp_level = (u8)odm_SignalScaleMapping(&pHal->odmpriv, padapter->recvpriv.signal_strength);
 		}

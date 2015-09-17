@@ -63,7 +63,7 @@ s32 FillH2CCmd8723B(struct adapter * padapter, u8 ElementID, u32 CmdLen, u8 *pCm
 	u8 h2c_box_num;
 	u32	msgbox_addr;
 	u32 msgbox_ex_addr = 0;
-	PHAL_DATA_TYPE pHalData;
+	struct hal_com_data * pHalData;
 	u32	h2c_cmd = 0;
 	u32	h2c_cmd_ex = 0;
 	s32 ret = _FAIL;
@@ -1503,7 +1503,7 @@ void rtl8723b_set_ap_wowlan_cmd(struct adapter * padapter, u8 enable)
 /*  2009.10.15 by tynli. */
 static void rtl8723b_set_FwRsvdPagePkt(struct adapter * padapter, bool bDLFinished)
 {
-	PHAL_DATA_TYPE pHalData;
+	struct hal_com_data * pHalData;
 	struct xmit_frame	*pcmdframe;
 	struct pkt_attrib	*pattrib;
 	struct xmit_priv	*pxmitpriv;
@@ -1894,7 +1894,7 @@ error:
 static void rtl8723b_set_AP_FwRsvdPagePkt(struct adapter * padapter,
 		bool bDLFinished)
 {
-	PHAL_DATA_TYPE pHalData;
+	struct hal_com_data * pHalData;
 	struct xmit_frame	*pcmdframe;
 	struct pkt_attrib	*pattrib;
 	struct xmit_priv	*pxmitpriv;
@@ -2003,7 +2003,7 @@ error:
 
 void rtl8723b_download_rsvd_page(struct adapter * padapter, u8 mstatus)
 {
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
+	struct hal_com_data	*pHalData = GET_HAL_DATA(padapter);
 	struct mlme_ext_priv	*pmlmeext = &(padapter->mlmeextpriv);
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 	bool		bcn_valid = false;
@@ -2127,7 +2127,7 @@ void rtl8723b_set_FwJoinBssRpt_cmd(struct adapter * padapter, u8 mstatus)
 /* arg[3] = init_rate */
 void rtl8723b_Add_RateATid(struct adapter * padapter, u32 bitmap, u8* arg, u8 rssi_level)
 {
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
+	struct hal_com_data	*pHalData = GET_HAL_DATA(padapter);
 	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 	struct sta_info	*psta;
@@ -2220,7 +2220,7 @@ static void ConstructBtNullFunctionData(
 
 static void SetFwRsvdPagePkt_BTCoex(struct adapter * padapter)
 {
-	PHAL_DATA_TYPE pHalData;
+	struct hal_com_data * pHalData;
 	struct xmit_frame *pcmdframe;
 	struct pkt_attrib *pattrib;
 	struct xmit_priv *pxmitpriv;
@@ -2323,7 +2323,7 @@ error:
 
 void rtl8723b_download_BTCoex_AP_mode_rsvd_page(struct adapter * padapter)
 {
-	PHAL_DATA_TYPE pHalData;
+	struct hal_com_data * pHalData;
 	struct mlme_ext_priv *pmlmeext;
 	struct mlme_ext_info *pmlmeinfo;
 	u8 bRecover = false;

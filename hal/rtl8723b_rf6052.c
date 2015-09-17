@@ -67,7 +67,7 @@ PHY_RF6052SetBandwidth8723B(
 struct adapter *		Adapter,
 CHANNEL_WIDTH		Bandwidth)	/* 20M or 40M */
 {
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
+	struct hal_com_data	*pHalData = GET_HAL_DATA(Adapter);
 
 	switch (Bandwidth)
 	{
@@ -100,7 +100,7 @@ struct adapter *Adapter
 	BB_REGISTER_DEFINITION_T	*pPhyReg;
 
 	int					rtStatus = _SUCCESS;
-	HAL_DATA_TYPE		*pHalData = GET_HAL_DATA(Adapter);
+	struct hal_com_data		*pHalData = GET_HAL_DATA(Adapter);
 
 	static char			sz8723RadioAFile[] = RTL8723B_PHY_RADIO_A;
 	static char			sz8723RadioBFile[] = RTL8723B_PHY_RADIO_B;
@@ -218,7 +218,7 @@ int
 PHY_RF6052_Config8723B(
 struct adapter *Adapter)
 {
-	HAL_DATA_TYPE				*pHalData = GET_HAL_DATA(Adapter);
+	struct hal_com_data				*pHalData = GET_HAL_DATA(Adapter);
 	int					rtStatus = _SUCCESS;
 
 	/*  */

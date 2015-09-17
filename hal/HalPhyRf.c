@@ -54,7 +54,7 @@ ODM_ClearTxPowerTrackingState(
 PDM_ODM_T		pDM_Odm
 	)
 {
-	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(pDM_Odm->Adapter);
+	struct hal_com_data *	pHalData = GET_HAL_DATA(pDM_Odm->Adapter);
 	u1Byte			p = 0;
 
 	pDM_Odm->BbSwingIdxCckBase = pDM_Odm->DefaultCckIndex;
@@ -90,7 +90,7 @@ struct adapter *Adapter
 	)
 {
 
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
+	struct hal_com_data	*pHalData = GET_HAL_DATA(Adapter);
 	PDM_ODM_T		pDM_Odm = &pHalData->odmpriv;
 
 	u1Byte			ThermalValue = 0, delta, delta_LCK, delta_IQK, p = 0, i = 0;

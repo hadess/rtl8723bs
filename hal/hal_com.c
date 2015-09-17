@@ -24,7 +24,7 @@ u8 rtw_hal_data_init(struct adapter *padapter)
 {
 	if (is_primary_adapter(padapter))	/* if (padapter->isprimary) */
 	{
-		padapter->hal_data_sz = sizeof(HAL_DATA_TYPE);
+		padapter->hal_data_sz = sizeof(struct hal_com_data);
 		padapter->HalData = vzalloc(padapter->hal_data_sz);
 		if (padapter->HalData == NULL){
 			DBG_8192C("cant not alloc memory for HAL DATA \n");
@@ -115,7 +115,7 @@ u8			def_channel_plan,
 bool		AutoLoadFail
 	)
 {
-	PHAL_DATA_TYPE	pHalData;
+	struct hal_com_data *	pHalData;
 	u8 chnlPlan;
 
 	pHalData = GET_HAL_DATA(padapter);
@@ -553,7 +553,7 @@ void hal_init_macaddr(struct adapter *adapter)
 
 void rtw_init_hal_com_default_value(struct adapter * Adapter)
 {
-	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(Adapter);
+	struct hal_com_data *	pHalData = GET_HAL_DATA(Adapter);
 
 	pHalData->AntDetection = 1;
 }
@@ -683,7 +683,7 @@ void hw_var_port_switch (struct adapter *adapter)
 
 void SetHwReg(struct adapter *adapter, u8 variable, u8 *val)
 {
-	HAL_DATA_TYPE *hal_data = GET_HAL_DATA(adapter);
+	struct hal_com_data *hal_data = GET_HAL_DATA(adapter);
 	DM_ODM_T *odm = &(hal_data->odmpriv);
 
 	switch (variable) {
@@ -763,7 +763,7 @@ void SetHwReg(struct adapter *adapter, u8 variable, u8 *val)
 
 void GetHwReg(struct adapter *adapter, u8 variable, u8 *val)
 {
-	HAL_DATA_TYPE *hal_data = GET_HAL_DATA(adapter);
+	struct hal_com_data *hal_data = GET_HAL_DATA(adapter);
 	DM_ODM_T *odm = &(hal_data->odmpriv);
 
 	switch (variable) {
@@ -789,7 +789,7 @@ void GetHwReg(struct adapter *adapter, u8 variable, u8 *val)
 u8
 SetHalDefVar(struct adapter *adapter, HAL_DEF_VARIABLE variable, void *value)
 {
-	HAL_DATA_TYPE *hal_data = GET_HAL_DATA(adapter);
+	struct hal_com_data *hal_data = GET_HAL_DATA(adapter);
 	DM_ODM_T *odm = &(hal_data->odmpriv);
 	u8 bResult = _SUCCESS;
 
@@ -879,7 +879,7 @@ SetHalDefVar(struct adapter *adapter, HAL_DEF_VARIABLE variable, void *value)
 u8
 GetHalDefVar(struct adapter *adapter, HAL_DEF_VARIABLE variable, void *value)
 {
-	HAL_DATA_TYPE *hal_data = GET_HAL_DATA(adapter);
+	struct hal_com_data *hal_data = GET_HAL_DATA(adapter);
 	DM_ODM_T *odm = &(hal_data->odmpriv);
 	u8 bResult = _SUCCESS;
 
@@ -942,7 +942,7 @@ void GetHalODMVar(
 #if defined(CONFIG_SIGNAL_DISPLAY_DBM) && defined(CONFIG_BACKGROUND_NOISE_MONITOR)
 	case HAL_ODM_NOISE_MONITOR:
 		{
-			HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
+			struct hal_com_data	*pHalData = GET_HAL_DATA(Adapter);
 			u8 chan = *(u8 *)pValue1;
 			*(s16 *)pValue2 = pHalData->noise[chan];
 			#ifdef DBG_NOISE_MONITOR
@@ -964,7 +964,7 @@ void SetHalODMVar(
 	void *			pValue1,
 	bool					bSet)
 {
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
+	struct hal_com_data	*pHalData = GET_HAL_DATA(Adapter);
 	PDM_ODM_T podmpriv = &pHalData->odmpriv;
 	/* _irqL irqL; */
 	switch (eVariable){
@@ -1329,7 +1329,7 @@ void linked_info_dump(struct adapter *padapter, u8 benable)
 void rtw_get_raw_rssi_info(void *sel, struct adapter *padapter)
 {
 	u8 isCCKrate, rf_path;
-	PHAL_DATA_TYPE	pHalData =  GET_HAL_DATA(padapter);
+	struct hal_com_data *	pHalData =  GET_HAL_DATA(padapter);
 	struct rx_raw_rssi *psample_pkt_rssi = &padapter->recvpriv.raw_rssi_info;
 
 	DBG_871X_SEL_NL(sel,"RxRate = %s, PWDBALL = %d(%%), rx_pwr_all = %d(dBm)\n",
@@ -1354,7 +1354,7 @@ void rtw_get_raw_rssi_info(void *sel, struct adapter *padapter)
 void rtw_dump_raw_rssi_info(struct adapter *padapter)
 {
 	u8 isCCKrate, rf_path;
-	PHAL_DATA_TYPE	pHalData =  GET_HAL_DATA(padapter);
+	struct hal_com_data *	pHalData =  GET_HAL_DATA(padapter);
 	struct rx_raw_rssi *psample_pkt_rssi = &padapter->recvpriv.raw_rssi_info;
 	DBG_871X("============ RAW Rx Info dump ===================\n");
 	DBG_871X("RxRate = %s, PWDBALL = %d(%%), rx_pwr_all = %d(dBm)\n",
@@ -1382,7 +1382,7 @@ void rtw_dump_raw_rssi_info(struct adapter *padapter)
 void rtw_store_phy_info(struct adapter *padapter, union recv_frame *prframe)
 {
 	u8 isCCKrate, rf_path;
-	PHAL_DATA_TYPE	pHalData =  GET_HAL_DATA(padapter);
+	struct hal_com_data *	pHalData =  GET_HAL_DATA(padapter);
 	struct rx_pkt_attrib *pattrib = &prframe->u.hdr.attrib;
 
 	PODM_PHY_INFO_T pPhyInfo  = (PODM_PHY_INFO_T)(&pattrib->phy_info);
