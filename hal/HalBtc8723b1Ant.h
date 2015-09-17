@@ -165,67 +165,67 @@ typedef struct _COEX_STA_8723B_1ANT{
 /*  */
 void
 EXhalbtc8723b1ant_PowerOnSetting(
-	IN	PBTC_COEXIST		pBtCoexist
+PBTC_COEXIST		pBtCoexist
 	);
 void
 EXhalbtc8723b1ant_InitHwConfig(
-	IN	PBTC_COEXIST		pBtCoexist,
-	IN	bool				bWifiOnly
+PBTC_COEXIST		pBtCoexist,
+bool				bWifiOnly
 	);
 void
 EXhalbtc8723b1ant_InitCoexDm(
-	IN	PBTC_COEXIST		pBtCoexist
+PBTC_COEXIST		pBtCoexist
 	);
 void
 EXhalbtc8723b1ant_IpsNotify(
-	IN	PBTC_COEXIST		pBtCoexist,
-	IN	u1Byte			type
+PBTC_COEXIST		pBtCoexist,
+u1Byte			type
 	);
 void
 EXhalbtc8723b1ant_LpsNotify(
-	IN	PBTC_COEXIST		pBtCoexist,
-	IN	u1Byte			type
+PBTC_COEXIST		pBtCoexist,
+u1Byte			type
 	);
 void
 EXhalbtc8723b1ant_ScanNotify(
-	IN	PBTC_COEXIST		pBtCoexist,
-	IN	u1Byte			type
+PBTC_COEXIST		pBtCoexist,
+u1Byte			type
 	);
 void
 EXhalbtc8723b1ant_ConnectNotify(
-	IN	PBTC_COEXIST		pBtCoexist,
-	IN	u1Byte			type
+PBTC_COEXIST		pBtCoexist,
+u1Byte			type
 	);
 void
 EXhalbtc8723b1ant_MediaStatusNotify(
-	IN	PBTC_COEXIST			pBtCoexist,
-	IN	u1Byte				type
+PBTC_COEXIST			pBtCoexist,
+u1Byte				type
 	);
 void
 EXhalbtc8723b1ant_SpecialPacketNotify(
-	IN	PBTC_COEXIST			pBtCoexist,
-	IN	u1Byte				type
+PBTC_COEXIST			pBtCoexist,
+u1Byte				type
 	);
 void
 EXhalbtc8723b1ant_BtInfoNotify(
-	IN	PBTC_COEXIST		pBtCoexist,
-	IN	pu1Byte			tmpBuf,
-	IN	u1Byte			length
+PBTC_COEXIST		pBtCoexist,
+pu1Byte			tmpBuf,
+u1Byte			length
 	);
 void
 EXhalbtc8723b1ant_HaltNotify(
-	IN	PBTC_COEXIST			pBtCoexist
+PBTC_COEXIST			pBtCoexist
 	);
 void
 EXhalbtc8723b1ant_PnpNotify(
-	IN	PBTC_COEXIST			pBtCoexist,
-	IN	u1Byte				pnpState
+PBTC_COEXIST			pBtCoexist,
+u1Byte				pnpState
 	);
 void
 EXhalbtc8723b1ant_Periodical(
-	IN	PBTC_COEXIST			pBtCoexist
+PBTC_COEXIST			pBtCoexist
 	);
 void
 EXhalbtc8723b1ant_DisplayCoexInfo(
-	IN	PBTC_COEXIST		pBtCoexist
+PBTC_COEXIST		pBtCoexist
 	);

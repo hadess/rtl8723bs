@@ -19,7 +19,7 @@
 #define	ODM_ENDIAN_BIG	0
 #define	ODM_ENDIAN_LITTLE	1
 
-#define GET_ODM(__pAdapter)	((PDM_ODM_T)(&((GET_HAL_DATA(__pAdapter))->odmpriv)))
+#define GET_ODM(__padapter)	((PDM_ODM_T)(&((GET_HAL_DATA(__padapter))->odmpriv)))
 
 typedef enum _HAL_STATUS{
 	HAL_STATUS_SUCCESS,
@@ -101,7 +101,7 @@ typedef enum _RT_SPINLOCK_TYPE{
 	#endif
 
 	typedef struct timer_list		RT_TIMER, *PRT_TIMER;
-	typedef  void *				RT_TIMER_CALL_BACK;
+	typedef  void *		RT_TIMER_CALL_BACK;
 	#define	STA_INFO_T			struct sta_info
 	#define	PSTA_INFO_T		struct sta_info *
 

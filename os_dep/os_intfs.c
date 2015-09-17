@@ -1246,7 +1246,7 @@ static int netdev_close(struct net_device *pnetdev)
 	padapter->net_closed = true;
 	padapter->netif_up = false;
 
-/*	if (!padapter->hw_init_completed)
+/*if (!padapter->hw_init_completed)
 	{
 		DBG_871X("(1)871x_drv - drv_close, bup =%d, hw_init_completed =%d\n", padapter->bup, padapter->hw_init_completed);
 

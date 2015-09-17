@@ -702,9 +702,9 @@ u8 rtw_sitesurvey_cmd(struct adapter  *padapter, NDIS_802_11_SSID *ssid, int ssi
 
 u8 rtw_setdatarate_cmd(struct adapter *padapter, u8 *rateset)
 {
-	struct cmd_obj*			ph2c;
-	struct setdatarate_parm*	pbsetdataratepara;
-	struct cmd_priv*		pcmdpriv = &padapter->cmdpriv;
+	struct cmd_obj*	ph2c;
+	struct setdatarate_parm*pbsetdataratepara;
+	struct cmd_priv*pcmdpriv = &padapter->cmdpriv;
 	u8	res = _SUCCESS;
 
 	ph2c = (struct cmd_obj*)rtw_zmalloc(sizeof(struct cmd_obj));
@@ -729,7 +729,7 @@ exit:
 	return res;
 }
 
-void rtw_getbbrfreg_cmdrsp_callback(struct adapter *	padapter,  struct cmd_obj *pcmd)
+void rtw_getbbrfreg_cmdrsp_callback(struct adapter *padapter,  struct cmd_obj *pcmd)
 {
 	/* rtw_free_cmd_obj(pcmd); */
 	kfree((unsigned char*) pcmd->parmbuf);
@@ -738,7 +738,7 @@ void rtw_getbbrfreg_cmdrsp_callback(struct adapter *	padapter,  struct cmd_obj *
 
 u8 rtw_createbss_cmd(struct adapter  *padapter)
 {
-	struct cmd_obj*			pcmd;
+	struct cmd_obj*	pcmd;
 	struct cmd_priv				*pcmdpriv =&padapter->cmdpriv;
 	struct mlme_priv			*pmlmepriv = &padapter->mlmepriv;
 	struct wlan_bssid_ex		*pdev_network = &padapter->registrypriv.dev_network;
@@ -1009,7 +1009,7 @@ exit:
 
 u8 rtw_setopmode_cmd(struct adapter  *padapter, NDIS_802_11_NETWORK_INFRASTRUCTURE networktype, bool enqueue)
 {
-	struct	cmd_obj*	ph2c;
+	struct	cmd_obj*ph2c;
 	struct	setopmode_parm* psetop;
 
 	struct	cmd_priv   *pcmdpriv = &padapter->cmdpriv;
@@ -1044,7 +1044,7 @@ exit:
 
 u8 rtw_setstakey_cmd(struct adapter *padapter, struct sta_info *sta, u8 unicast_key, bool enqueue)
 {
-	struct cmd_obj*			ph2c;
+	struct cmd_obj*	ph2c;
 	struct set_stakey_parm	*psetstakey_para;
 	struct cmd_priv				*pcmdpriv =&padapter->cmdpriv;
 	struct set_stakey_rsp		*psetstakey_rsp = NULL;
@@ -1109,7 +1109,7 @@ exit:
 
 u8 rtw_clearstakey_cmd(struct adapter *padapter, struct sta_info *sta, u8 enqueue)
 {
-	struct cmd_obj*			ph2c;
+	struct cmd_obj*	ph2c;
 	struct set_stakey_parm	*psetstakey_para;
 	struct cmd_priv				*pcmdpriv =&padapter->cmdpriv;
 	struct set_stakey_rsp		*psetstakey_rsp = NULL;
@@ -1166,7 +1166,7 @@ exit:
 u8 rtw_addbareq_cmd(struct adapter *padapter, u8 tid, u8 *addr)
 {
 	struct cmd_priv		*pcmdpriv = &padapter->cmdpriv;
-	struct cmd_obj*		ph2c;
+	struct cmd_obj*ph2c;
 	struct addBaReq_parm	*paddbareq_parm;
 
 	u8	res = _SUCCESS;
@@ -1200,7 +1200,7 @@ exit:
 /* add for CONFIG_IEEE80211W, none 11w can use it */
 u8 rtw_reset_securitypriv_cmd(struct adapter *padapter)
 {
-	struct cmd_obj*		ph2c;
+	struct cmd_obj*ph2c;
 	struct drvextra_cmd_parm  *pdrvextra_cmd_parm;
 	struct cmd_priv	*pcmdpriv =&padapter->cmdpriv;
 	u8	res = _SUCCESS;
@@ -1235,7 +1235,7 @@ exit:
 
 u8 rtw_free_assoc_resources_cmd(struct adapter *padapter)
 {
-	struct cmd_obj*		ph2c;
+	struct cmd_obj*ph2c;
 	struct drvextra_cmd_parm  *pdrvextra_cmd_parm;
 	struct cmd_priv	*pcmdpriv =&padapter->cmdpriv;
 	u8	res = _SUCCESS;
@@ -1270,7 +1270,7 @@ exit:
 
 u8 rtw_dynamic_chk_wk_cmd(struct adapter *padapter)
 {
-	struct cmd_obj*		ph2c;
+	struct cmd_obj*ph2c;
 	struct drvextra_cmd_parm  *pdrvextra_cmd_parm;
 	struct cmd_priv	*pcmdpriv =&padapter->cmdpriv;
 	u8	res = _SUCCESS;
@@ -1305,7 +1305,7 @@ exit:
 
 u8 rtw_set_chplan_cmd(struct adapter *padapter, u8 chplan, u8 enqueue, u8 swconfig)
 {
-	struct	cmd_obj*	pcmdobj;
+	struct	cmd_obj*pcmdobj;
 	struct	SetChannelPlan_param *setChannelPlan_param;
 	struct	cmd_priv   *pcmdpriv = &padapter->cmdpriv;
 
@@ -2162,7 +2162,7 @@ u8 rtw_drvextra_cmd_hdl(struct adapter *padapter, unsigned char *pbuf)
 	return H2C_SUCCESS;
 }
 
-void rtw_survey_cmd_callback(struct adapter *	padapter ,  struct cmd_obj *pcmd)
+void rtw_survey_cmd_callback(struct adapter *padapter ,  struct cmd_obj *pcmd)
 {
 	struct	mlme_priv *pmlmepriv = &padapter->mlmepriv;
 
@@ -2181,7 +2181,7 @@ void rtw_survey_cmd_callback(struct adapter *	padapter ,  struct cmd_obj *pcmd)
 	rtw_free_cmd_obj(pcmd);
 }
 
-void rtw_disassoc_cmd_callback(struct adapter *	padapter,  struct cmd_obj *pcmd)
+void rtw_disassoc_cmd_callback(struct adapter *padapter,  struct cmd_obj *pcmd)
 {
 	struct	mlme_priv *pmlmepriv = &padapter->mlmepriv;
 
@@ -2198,7 +2198,7 @@ void rtw_disassoc_cmd_callback(struct adapter *	padapter,  struct cmd_obj *pcmd)
 	rtw_free_cmd_obj(pcmd);
 }
 
-void rtw_joinbss_cmd_callback(struct adapter *	padapter,  struct cmd_obj *pcmd)
+void rtw_joinbss_cmd_callback(struct adapter *padapter,  struct cmd_obj *pcmd)
 {
 	struct	mlme_priv *pmlmepriv = &padapter->mlmepriv;
 
@@ -2302,12 +2302,12 @@ exit:
 
 
 
-void rtw_setstaKey_cmdrsp_callback(struct adapter *	padapter ,  struct cmd_obj *pcmd)
+void rtw_setstaKey_cmdrsp_callback(struct adapter *padapter ,  struct cmd_obj *pcmd)
 {
 
 	struct sta_priv * pstapriv = &padapter->stapriv;
 	struct set_stakey_rsp* psetstakey_rsp = (struct set_stakey_rsp*) (pcmd->rsp);
-	struct sta_info*	psta = rtw_get_stainfo(pstapriv, psetstakey_rsp->addr);
+	struct sta_info*psta = rtw_get_stainfo(pstapriv, psetstakey_rsp->addr);
 
 	if (psta ==NULL)
 	{
@@ -2318,13 +2318,13 @@ exit:
 	rtw_free_cmd_obj(pcmd);
 }
 
-void rtw_setassocsta_cmdrsp_callback(struct adapter *	padapter,  struct cmd_obj *pcmd)
+void rtw_setassocsta_cmdrsp_callback(struct adapter *padapter,  struct cmd_obj *pcmd)
 {
 	struct sta_priv * pstapriv = &padapter->stapriv;
 	struct mlme_priv	*pmlmepriv = &padapter->mlmepriv;
 	struct set_assocsta_parm* passocsta_parm = (struct set_assocsta_parm*)(pcmd->parmbuf);
 	struct set_assocsta_rsp* passocsta_rsp = (struct set_assocsta_rsp*) (pcmd->rsp);
-	struct sta_info*	psta = rtw_get_stainfo(pstapriv, passocsta_parm->addr);
+	struct sta_info*psta = rtw_get_stainfo(pstapriv, passocsta_parm->addr);
 
 	if (psta ==NULL)
 	{

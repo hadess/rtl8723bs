@@ -345,8 +345,8 @@ int rtw_generate_ie(struct registry_priv *pregistrypriv)
 {
 	u8	wireless_mode;
 	int	sz = 0, rateLen;
-	struct wlan_bssid_ex*	pdev_network = &pregistrypriv->dev_network;
-	u8*	ie = pdev_network->IEs;
+	struct wlan_bssid_ex*pdev_network = &pregistrypriv->dev_network;
+	u8*ie = pdev_network->IEs;
 
 	/* timestamp will be inserted by hardware */
 	sz += 8;

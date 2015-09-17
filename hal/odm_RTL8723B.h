@@ -19,8 +19,8 @@
 
 s8
 odm_CCKRSSI_8723B(
-	IN		u1Byte	LNA_idx,
-	IN		u1Byte	VGA_idx
+	u1Byte	LNA_idx,
+	u1Byte	VGA_idx
 	);
 
 

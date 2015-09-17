@@ -298,8 +298,8 @@ void set_mcs_rate_by_mask(u8 *mcs_set, u32 mask)
 }
 
 void UpdateBrateTbl(
-	IN struct adapter *		Adapter,
-	IN u8			*mBratesOS
+struct adapter *Adapter,
+u8			*mBratesOS
 )
 {
 	u8	i;

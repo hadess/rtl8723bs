@@ -317,23 +317,23 @@ u4Byte TxScalingTable_Jaguar[TXSCALE_TABLE_SIZE] =
 /* START------------COMMON INFO RELATED--------------- */
 void
 odm_CommonInfoSelfInit(
-	IN		PDM_ODM_T		pDM_Odm
+	PDM_ODM_T		pDM_Odm
 	);
 
 void
 odm_CommonInfoSelfUpdate(
-	IN		PDM_ODM_T		pDM_Odm
+	PDM_ODM_T		pDM_Odm
 	);
 
 void
 odm_CmnInfoInit_Debug(
-	IN		PDM_ODM_T		pDM_Odm
+	PDM_ODM_T		pDM_Odm
 	);
 
 void
 odm_BasicDbgMessage
 (
-	IN		PDM_ODM_T		pDM_Odm
+	PDM_ODM_T		pDM_Odm
 	);
 
 /* END------------COMMON INFO RELATED--------------- */
@@ -350,29 +350,29 @@ odm_BasicDbgMessage
 
 void
 odm_RefreshRateAdaptiveMaskCE(
-	IN		PDM_ODM_T		pDM_Odm
+	PDM_ODM_T		pDM_Odm
 	);
 
 /* Remove by YuChen */
 
 void
 odm_RSSIMonitorInit(
-	IN	PDM_ODM_T	pDM_Odm
+PDM_ODM_T	pDM_Odm
 	);
 
 void
 odm_RSSIMonitorCheckCE(
-	IN		PDM_ODM_T		pDM_Odm
+	PDM_ODM_T		pDM_Odm
 	);
 
 void
 odm_RSSIMonitorCheck(
-	IN		PDM_ODM_T		pDM_Odm
+	PDM_ODM_T		pDM_Odm
 	);
 
 void
 odm_SwAntDetectInit(
-	IN		PDM_ODM_T		pDM_Odm
+	PDM_ODM_T		pDM_Odm
 	);
 
 void odm_SwAntDivChkAntSwitchCallback(void *FunctionContext);
@@ -381,38 +381,38 @@ void odm_SwAntDivChkAntSwitchCallback(void *FunctionContext);
 
 void
 odm_GlobalAdapterCheck(
-	IN		void
+	void
 	);
 
 void
 odm_RefreshRateAdaptiveMask(
-	IN		PDM_ODM_T		pDM_Odm
+	PDM_ODM_T		pDM_Odm
 	);
 
 void
 ODM_TXPowerTrackingCheck(
-	IN		PDM_ODM_T		pDM_Odm
+	PDM_ODM_T		pDM_Odm
 	);
 
 void
 odm_RateAdaptiveMaskInit(
-	IN	PDM_ODM_T	pDM_Odm
+PDM_ODM_T	pDM_Odm
 	);
 
 void
 odm_TXPowerTrackingThermalMeterInit(
-	IN	PDM_ODM_T	pDM_Odm
+PDM_ODM_T	pDM_Odm
 	);
 
 
 void
 odm_TXPowerTrackingInit(
-	IN	PDM_ODM_T	pDM_Odm
+PDM_ODM_T	pDM_Odm
 	);
 
 void
 odm_TXPowerTrackingCheckCE(
-	IN	PDM_ODM_T	pDM_Odm
+PDM_ODM_T	pDM_Odm
 	);
 
 /* Remove Edca by Yu Chen */
@@ -423,31 +423,31 @@ odm_TXPowerTrackingCheckCE(
 
 void
 odm_InitHybridAntDiv(
-	IN PDM_ODM_T	pDM_Odm
+PDM_ODM_T	pDM_Odm
 	);
 
 bool
 odm_StaDefAntSel(
-	IN PDM_ODM_T	pDM_Odm,
-	IN u4Byte		OFDM_Ant1_Cnt,
-	IN u4Byte		OFDM_Ant2_Cnt,
-	IN u4Byte		CCK_Ant1_Cnt,
-	IN u4Byte		CCK_Ant2_Cnt,
-	OUT u1Byte		*pDefAnt
+PDM_ODM_T	pDM_Odm,
+u4Byte		OFDM_Ant1_Cnt,
+u4Byte		OFDM_Ant2_Cnt,
+u4Byte		CCK_Ant1_Cnt,
+u4Byte		CCK_Ant2_Cnt,
+u1Byte		*pDefAnt
 	);
 
 void
 odm_SetRxIdleAnt(
-	IN	PDM_ODM_T	pDM_Odm,
-	IN	u1Byte	Ant,
-	IN   bool   bDualPath
+PDM_ODM_T	pDM_Odm,
+u1Byte	Ant,
+  bool   bDualPath
 );
 
 
 
 void
 odm_HwAntDiv(
-	IN	PDM_ODM_T	pDM_Odm
+PDM_ODM_T	pDM_Odm
 );
 
 
@@ -460,7 +460,7 @@ odm_HwAntDiv(
 /*  */
 void
 ODM_DMInit(
-	IN		PDM_ODM_T		pDM_Odm
+	PDM_ODM_T		pDM_Odm
 	)
 {
 
@@ -493,7 +493,7 @@ ODM_DMInit(
 /*  */
 void
 ODM_DMWatchdog(
-	IN		PDM_ODM_T		pDM_Odm
+	PDM_ODM_T		pDM_Odm
 	)
 {
 	odm_CommonInfoSelfUpdate(pDM_Odm);
@@ -554,9 +554,9 @@ ODM_DMWatchdog(
 /*  */
 void
 ODM_CmnInfoInit(
-	IN		PDM_ODM_T		pDM_Odm,
-	IN		ODM_CMNINFO_E	CmnInfo,
-	IN		u4Byte			Value
+	PDM_ODM_T		pDM_Odm,
+	ODM_CMNINFO_E	CmnInfo,
+	u4Byte			Value
 	)
 {
 	/*  */
@@ -673,9 +673,9 @@ ODM_CmnInfoInit(
 
 void
 ODM_CmnInfoHook(
-	IN		PDM_ODM_T		pDM_Odm,
-	IN		ODM_CMNINFO_E	CmnInfo,
-	IN		void *			pValue
+	PDM_ODM_T		pDM_Odm,
+	ODM_CMNINFO_E	CmnInfo,
+	void *	pValue
 	)
 {
 	/*  */
@@ -808,10 +808,10 @@ ODM_CmnInfoHook(
 
 void
 ODM_CmnInfoPtrArrayHook(
-	IN		PDM_ODM_T		pDM_Odm,
-	IN		ODM_CMNINFO_E	CmnInfo,
-	IN		u2Byte			Index,
-	IN		void *			pValue
+	PDM_ODM_T		pDM_Odm,
+	ODM_CMNINFO_E	CmnInfo,
+	u2Byte			Index,
+	void *	pValue
 	)
 {
 	/*  */
@@ -839,9 +839,9 @@ ODM_CmnInfoPtrArrayHook(
 /*  */
 void
 ODM_CmnInfoUpdate(
-	IN		PDM_ODM_T		pDM_Odm,
-	IN		u4Byte			CmnInfo,
-	IN		u8Byte			Value
+	PDM_ODM_T		pDM_Odm,
+	u4Byte			CmnInfo,
+	u8Byte			Value
 	)
 {
 	/*  */
@@ -959,7 +959,7 @@ ODM_CmnInfoUpdate(
 
 void
 odm_CommonInfoSelfInit(
-	IN		PDM_ODM_T		pDM_Odm
+	PDM_ODM_T		pDM_Odm
 	)
 {
 	pDM_Odm->bCckHighPower = (bool) PHY_QueryBBReg(pDM_Odm->Adapter, ODM_REG(CCK_RPT_FORMAT, pDM_Odm), ODM_BIT(CCK_RPT_FORMAT, pDM_Odm));
@@ -972,7 +972,7 @@ odm_CommonInfoSelfInit(
 
 void
 odm_CommonInfoSelfUpdate(
-	IN		PDM_ODM_T		pDM_Odm
+	PDM_ODM_T		pDM_Odm
 	)
 {
 	u1Byte	EntryCnt = 0;
@@ -1003,7 +1003,7 @@ odm_CommonInfoSelfUpdate(
 
 void
 odm_CmnInfoInit_Debug(
-	IN		PDM_ODM_T		pDM_Odm
+	PDM_ODM_T		pDM_Odm
 	)
 {
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_COMMON, ODM_DBG_LOUD, ("odm_CmnInfoInit_Debug ==>\n"));
@@ -1028,7 +1028,7 @@ odm_CmnInfoInit_Debug(
 void
 odm_BasicDbgMessage
 (
-	IN		PDM_ODM_T		pDM_Odm
+	PDM_ODM_T		pDM_Odm
 	)
 {
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_COMMON, ODM_DBG_LOUD, ("odm_BasicDbgMsg ==>\n"));
@@ -1053,7 +1053,7 @@ odm_BasicDbgMessage
  * Return:		NONE
  *
  * Revised History:
- *	When		Who		Remark
+ *When		Who		Remark
  *
  *---------------------------------------------------------------------------*/
 
@@ -1077,7 +1077,7 @@ odm_BasicDbgMessage
 
 void
 odm_RateAdaptiveMaskInit(
-	IN	PDM_ODM_T	pDM_Odm
+PDM_ODM_T	pDM_Odm
 	)
 {
 	PODM_RATE_ADAPTIVE	pOdmRA = &pDM_Odm->RateAdaptive;
@@ -1096,10 +1096,10 @@ odm_RateAdaptiveMaskInit(
 }
 
 u4Byte ODM_Get_Rate_Bitmap(
-	IN	PDM_ODM_T	pDM_Odm,
-	IN	u4Byte		macid,
-	IN	u4Byte		ra_mask,
-	IN	u1Byte		rssi_level)
+PDM_ODM_T	pDM_Odm,
+u4Byte		macid,
+u4Byte		ra_mask,
+u1Byte		rssi_level)
 {
 	PSTA_INFO_T	pEntry;
 	u4Byte	rate_bitmap = 0;
@@ -1239,13 +1239,13 @@ u4Byte ODM_Get_Rate_Bitmap(
  * Return:		NONE
  *
  * Revised History:
- *	When		Who		Remark
- *	05/27/2009	hpfan	Create Version 0.
+ *When		Who		Remark
+ *05/27/2009	hpfan	Create Version 0.
  *
  *---------------------------------------------------------------------------*/
 void
 odm_RefreshRateAdaptiveMask(
-	IN		PDM_ODM_T		pDM_Odm
+	PDM_ODM_T		pDM_Odm
 	)
 {
 
@@ -1260,13 +1260,13 @@ odm_RefreshRateAdaptiveMask(
 
 void
 odm_RefreshRateAdaptiveMaskCE(
-	IN		PDM_ODM_T		pDM_Odm
+	PDM_ODM_T		pDM_Odm
 	)
 {
 	u1Byte	i;
-	struct adapter *	pAdapter	 =  pDM_Odm->Adapter;
+	struct adapter *padapter	 =  pDM_Odm->Adapter;
 
-	if (pAdapter->bDriverStopped)
+	if (padapter->bDriverStopped)
 	{
 		ODM_RT_TRACE(pDM_Odm, ODM_COMP_RA_MASK, ODM_DBG_TRACE, ("<---- odm_RefreshRateAdaptiveMask(): driver is going to unload\n"));
 		return;
@@ -1303,10 +1303,10 @@ odm_RefreshRateAdaptiveMaskCE(
 /*  - true: RATRState is changed. */
 bool
 ODM_RAStateCheck(
-	IN		PDM_ODM_T		pDM_Odm,
-	IN		s4Byte			RSSI,
-	IN		bool			bForceUpdate,
-	OUT		pu1Byte			pRATRState
+	PDM_ODM_T		pDM_Odm,
+	s4Byte			RSSI,
+	bool			bForceUpdate,
+	pu1Byte			pRATRState
 	)
 {
 	PODM_RATE_ADAPTIVE pRA = &pDM_Odm->RateAdaptive;
@@ -1372,7 +1372,7 @@ ODM_RAStateCheck(
 
 void
 odm_RSSIMonitorInit(
-	IN	PDM_ODM_T	pDM_Odm
+PDM_ODM_T	pDM_Odm
 	)
 {
 	pRA_T		pRA_Table = &pDM_Odm->DM_RA_Table;
@@ -1383,7 +1383,7 @@ odm_RSSIMonitorInit(
 
 void
 odm_RSSIMonitorCheck(
-	IN		PDM_ODM_T		pDM_Odm
+	PDM_ODM_T		pDM_Odm
 	)
 {
 	if (!(pDM_Odm->SupportAbility & ODM_BB_RSSI_MONITOR))
@@ -1395,10 +1395,10 @@ odm_RSSIMonitorCheck(
 
 static void
 FindMinimumRSSI(
-IN	struct adapter *	pAdapter
+IN	struct adapter *padapter
 	)
 {
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
+	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
 	PDM_ODM_T		pDM_Odm = &(pHalData->odmpriv);
 
@@ -1421,10 +1421,10 @@ IN	struct adapter *	pAdapter
 
 void
 odm_RSSIMonitorCheckCE(
-	IN		PDM_ODM_T		pDM_Odm
+	PDM_ODM_T		pDM_Odm
 	)
 {
-	struct adapter *	Adapter = pDM_Odm->Adapter;
+	struct adapter *Adapter = pDM_Odm->Adapter;
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
 	int	i;
@@ -1510,7 +1510,7 @@ odm_RSSIMonitorCheckCE(
 
 void
 odm_TXPowerTrackingInit(
-	IN	PDM_ODM_T	pDM_Odm
+PDM_ODM_T	pDM_Odm
 	)
 {
 	odm_TXPowerTrackingThermalMeterInit(pDM_Odm);
@@ -1518,10 +1518,10 @@ odm_TXPowerTrackingInit(
 
 static u1Byte
 getSwingIndex(
-	IN	PDM_ODM_T	pDM_Odm
+PDM_ODM_T	pDM_Odm
 	)
 {
-	struct adapter *		Adapter = pDM_Odm->Adapter;
+	struct adapter *Adapter = pDM_Odm->Adapter;
 	u1Byte			i = 0;
 	u4Byte			bbSwing;
 	u4Byte			swingTableSize;
@@ -1545,12 +1545,12 @@ getSwingIndex(
 
 void
 odm_TXPowerTrackingThermalMeterInit(
-	IN	PDM_ODM_T	pDM_Odm
+PDM_ODM_T	pDM_Odm
 	)
 {
 	u1Byte defaultSwingIndex = getSwingIndex(pDM_Odm);
 	u1Byte			p = 0;
-	struct adapter *			Adapter = pDM_Odm->Adapter;
+	struct adapter *	Adapter = pDM_Odm->Adapter;
 	HAL_DATA_TYPE		*pHalData = GET_HAL_DATA(Adapter);
 
 
@@ -1594,7 +1594,7 @@ odm_TXPowerTrackingThermalMeterInit(
 
 void
 ODM_TXPowerTrackingCheck(
-	IN		PDM_ODM_T		pDM_Odm
+	PDM_ODM_T		pDM_Odm
 	)
 {
 	odm_TXPowerTrackingCheckCE(pDM_Odm);
@@ -1602,10 +1602,10 @@ ODM_TXPowerTrackingCheck(
 
 void
 odm_TXPowerTrackingCheckCE(
-	IN		PDM_ODM_T		pDM_Odm
+	PDM_ODM_T		pDM_Odm
 	)
 {
-	struct adapter *	Adapter = pDM_Odm->Adapter;
+	struct adapter *Adapter = pDM_Odm->Adapter;
 
 	if (!(pDM_Odm->SupportAbility & ODM_RF_TX_PWR_TRACK))
 	{
@@ -1634,7 +1634,7 @@ odm_TXPowerTrackingCheckCE(
 /* 3 ============================================================ */
 void
 odm_SwAntDetectInit(
-	IN		PDM_ODM_T		pDM_Odm
+	PDM_ODM_T		pDM_Odm
 	)
 {
 	pSWAT_T		pDM_SWAT_Table = &pDM_Odm->DM_SWAT_Table;

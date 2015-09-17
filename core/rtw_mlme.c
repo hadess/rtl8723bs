@@ -2726,7 +2726,7 @@ void rtw_update_registrypriv_dev_network(struct adapter * adapter)
 	int sz = 0;
 	struct registry_priv* pregistrypriv = &adapter->registrypriv;
 	struct wlan_bssid_ex    *pdev_network = &pregistrypriv->dev_network;
-	struct	security_priv*	psecuritypriv = &adapter->securitypriv;
+	struct	security_priv*psecuritypriv = &adapter->securitypriv;
 	struct	wlan_network	*cur_network = &adapter->mlmepriv.cur_network;
 	/* struct	xmit_priv	*pxmitpriv = &adapter->xmitpriv; */
 

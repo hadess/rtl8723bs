@@ -531,9 +531,9 @@ typedef struct hal_com_data
 
 
 typedef struct hal_com_data HAL_DATA_TYPE, *PHAL_DATA_TYPE;
-#define GET_HAL_DATA(__pAdapter)	((HAL_DATA_TYPE *)((__pAdapter)->HalData))
-#define GET_HAL_RFPATH_NUM(__pAdapter) (((HAL_DATA_TYPE *)((__pAdapter)->HalData))->NumTotalRFPath)
+#define GET_HAL_DATA(__padapter)	((HAL_DATA_TYPE *)((__padapter)->HalData))
+#define GET_HAL_RFPATH_NUM(__padapter) (((HAL_DATA_TYPE *)((__padapter)->HalData))->NumTotalRFPath)
 #define RT_GetInterfaceSelection(_Adapter)	(GET_HAL_DATA(_Adapter)->InterfaceSel)
-#define GET_RF_TYPE(__pAdapter)		(GET_HAL_DATA(__pAdapter)->rf_type)
+#define GET_RF_TYPE(__padapter)		(GET_HAL_DATA(__padapter)->rf_type)
 
 #endif /* __HAL_DATA_H__ */

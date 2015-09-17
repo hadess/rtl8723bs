@@ -90,29 +90,29 @@ void dump_chip_info(HAL_VERSION	ChipVersion)
 
 /*
  * Description:
- *	Use hardware(efuse), driver parameter(registry) and default channel plan
- *	to decide which one should be used.
+ *Use hardware(efuse), driver parameter(registry) and default channel plan
+ *to decide which one should be used.
  *
  * Parameters:
- *	padapter			pointer of adapter
- *	hw_channel_plan		channel plan from HW (efuse/eeprom)
- *						BIT[7] software configure mode; 0:Enable, 1:disable
- *						BIT[6:0] Channel Plan
- *	sw_channel_plan		channel plan from SW (registry/module param)
- *	def_channel_plan	channel plan used when HW/SW both invalid
- *	AutoLoadFail		efuse autoload fail or not
+ *padapter			pointer of adapter
+ *hw_channel_plan		channel plan from HW (efuse/eeprom)
+ *				BIT[7] software configure mode; 0:Enable, 1:disable
+ *				BIT[6:0] Channel Plan
+ *sw_channel_plan		channel plan from SW (registry/module param)
+ *def_channel_plan	channel plan used when HW/SW both invalid
+ *AutoLoadFail		efuse autoload fail or not
  *
  * Return:
- *	Final channel plan decision
+ *Final channel plan decision
  *
  */
 u8
 hal_com_config_channel_plan(
-	IN	struct adapter *	padapter,
-	IN	u8			hw_channel_plan,
-	IN	u8			sw_channel_plan,
-	IN	u8			def_channel_plan,
-	IN	bool		AutoLoadFail
+struct adapter *padapter,
+u8			hw_channel_plan,
+u8			sw_channel_plan,
+u8			def_channel_plan,
+bool		AutoLoadFail
 	)
 {
 	PHAL_DATA_TYPE	pHalData;
@@ -152,8 +152,8 @@ hal_com_config_channel_plan(
 
 bool
 HAL_IsLegalChannel(
-	IN	struct adapter *	Adapter,
-	IN	u32			Channel
+struct adapter *Adapter,
+u32			Channel
 	)
 {
 	bool bLegalChannel = true;
@@ -373,9 +373,9 @@ u8	HwRateToMRate(u8 rate)
 }
 
 void	HalSetBrateCfg(
-	IN struct adapter *		Adapter,
-	IN u8			*mBratesOS,
-	OUT u16			*pBrateCfg)
+struct adapter *Adapter,
+u8			*mBratesOS,
+u16			*pBrateCfg)
 {
 	u8	i, is_brate, brate;
 
@@ -407,10 +407,10 @@ void	HalSetBrateCfg(
 
 static void
 _OneOutPipeMapping(
-	IN	struct adapter *	pAdapter
+struct adapter *padapter
 	)
 {
-	struct dvobj_priv	*pdvobjpriv = adapter_to_dvobj(pAdapter);
+	struct dvobj_priv	*pdvobjpriv = adapter_to_dvobj(padapter);
 
 	pdvobjpriv->Queue2Pipe[0] = pdvobjpriv->RtOutPipe[0];/* VO */
 	pdvobjpriv->Queue2Pipe[1] = pdvobjpriv->RtOutPipe[0];/* VI */
@@ -425,11 +425,11 @@ _OneOutPipeMapping(
 
 static void
 _TwoOutPipeMapping(
-	IN	struct adapter *	pAdapter,
-	IN	bool		bWIFICfg
+struct adapter *padapter,
+bool		bWIFICfg
 	)
 {
-	struct dvobj_priv	*pdvobjpriv = adapter_to_dvobj(pAdapter);
+	struct dvobj_priv	*pdvobjpriv = adapter_to_dvobj(padapter);
 
 	if (bWIFICfg){ /* WMM */
 
@@ -470,11 +470,11 @@ _TwoOutPipeMapping(
 }
 
 static void _ThreeOutPipeMapping(
-	IN	struct adapter *	pAdapter,
-	IN	bool		bWIFICfg
+struct adapter *padapter,
+bool		bWIFICfg
 	)
 {
-	struct dvobj_priv	*pdvobjpriv = adapter_to_dvobj(pAdapter);
+	struct dvobj_priv	*pdvobjpriv = adapter_to_dvobj(padapter);
 
 	if (bWIFICfg){/* for WMM */
 
@@ -515,11 +515,11 @@ static void _ThreeOutPipeMapping(
 
 bool
 Hal_MappingOutPipe(
-	IN	struct adapter *	pAdapter,
-	IN	u8		NumOutPipe
+struct adapter *padapter,
+u8		NumOutPipe
 	)
 {
-	struct registry_priv *pregistrypriv = &pAdapter->registrypriv;
+	struct registry_priv *pregistrypriv = &padapter->registrypriv;
 
 	bool	 bWIFICfg = (pregistrypriv->wifi_spec) ?true:false;
 
@@ -528,14 +528,14 @@ Hal_MappingOutPipe(
 	switch (NumOutPipe)
 	{
 		case 2:
-			_TwoOutPipeMapping(pAdapter, bWIFICfg);
+			_TwoOutPipeMapping(padapter, bWIFICfg);
 			break;
 		case 3:
 		case 4:
-			_ThreeOutPipeMapping(pAdapter, bWIFICfg);
+			_ThreeOutPipeMapping(padapter, bWIFICfg);
 			break;
 		case 1:
-			_OneOutPipeMapping(pAdapter);
+			_OneOutPipeMapping(padapter);
 			break;
 		default:
 			result = false;
@@ -933,7 +933,7 @@ GetHalDefVar(struct adapter *adapter, HAL_DEF_VARIABLE variable, void *value)
 }
 
 void GetHalODMVar(
-	struct adapter *				Adapter,
+	struct adapter *		Adapter,
 	HAL_ODM_VARIABLE		eVariable,
 	void *pValue1,
 	void *pValue2)
@@ -959,9 +959,9 @@ void GetHalODMVar(
 }
 
 void SetHalODMVar(
-	struct adapter *				Adapter,
+	struct adapter *		Adapter,
 	HAL_ODM_VARIABLE		eVariable,
-	void *					pValue1,
+	void *			pValue1,
 	bool					bSet)
 {
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
@@ -1020,8 +1020,8 @@ void SetHalODMVar(
 
 bool
 eqNByte(
-	u8*	str1,
-	u8*	str2,
+	u8*str1,
+	u8*str2,
 	u32	num
 	)
 {
@@ -1044,7 +1044,7 @@ eqNByte(
 /*  */
 bool
 IsHexDigit(
-	IN		char		chTmp
+	char		chTmp
 )
 {
 	if ((chTmp >= '0' && chTmp <= '9') ||
@@ -1066,7 +1066,7 @@ IsHexDigit(
 /*  */
 u32
 MapCharToHexDigit(
-	IN		char		chTmp
+	char		chTmp
 )
 {
 	if (chTmp >= '0' && chTmp <= '9')
@@ -1087,12 +1087,12 @@ MapCharToHexDigit(
 /*  */
 bool
 GetHexValueFromString(
-	IN		char*			szStr,
-	IN OUT	u32*			pu4bVal,
-	IN OUT	u32*			pu4bMove
+	char*	szStr,
+OUT	u32*	pu4bVal,
+OUT	u32*	pu4bMove
 )
 {
-	char*		szScan = szStr;
+	char*szScan = szStr;
 
 	/*  Check input parameter. */
 	if (szStr == NULL || pu4bVal == NULL || pu4bMove == NULL)
@@ -1142,10 +1142,10 @@ GetHexValueFromString(
 
 bool
 GetFractionValueFromString(
-	IN		char*			szStr,
-	IN OUT	u8*				pInteger,
-	IN OUT	u8*				pFraction,
-	IN OUT	u32*			pu4bMove
+	char*	szStr,
+OUT	u8*		pInteger,
+OUT	u8*		pFraction,
+OUT	u32*	pu4bMove
 )
 {
 	char	*szScan = szStr;
@@ -1194,7 +1194,7 @@ GetFractionValueFromString(
 /*  */
 bool
 IsCommentString(
-	IN		char			*szStr
+	char			*szStr
 )
 {
 	if (*szStr == '/' && *(szStr+1) == '/')
@@ -1209,8 +1209,8 @@ IsCommentString(
 
 bool
 GetU1ByteIntegerFromStringInDecimal(
-	IN		char*	Str,
-	IN OUT	u8*		pInt
+	char*Str,
+OUT	u8*pInt
 	)
 {
 	u16 i = 0;
@@ -1238,9 +1238,9 @@ GetU1ByteIntegerFromStringInDecimal(
 /*  If RightQualifier does not exist, it will hang on in the while loop */
 bool
 ParseQualifiedString(
-    IN		char*	In,
-    IN OUT	u32*	Start,
-    OUT		char*	Out,
+    IN		char*In,
+   OUT	u32*Start,
+    OUT		char*Out,
     IN		char		LeftQualifier,
     IN		char		RightQualifier
    )
@@ -1262,7 +1262,7 @@ ParseQualifiedString(
 
 bool
 isAllSpaceOrTab(
-	u8*	data,
+	u8*data,
 	u8	size
 	)
 {

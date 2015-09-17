@@ -21,7 +21,7 @@
 
 void
 odm_DynamicBBPowerSavingInit(
-	IN		void *					pDM_VOID
+	void *			pDM_VOID
 	)
 {
 	PDM_ODM_T		pDM_Odm = (PDM_ODM_T)pDM_VOID;
@@ -37,8 +37,8 @@ odm_DynamicBBPowerSavingInit(
 
 void
 ODM_RF_Saving(
-	IN		void *					pDM_VOID,
-	IN	u1Byte		bForceInNormal
+	void *			pDM_VOID,
+u1Byte		bForceInNormal
 	)
 {
 	PDM_ODM_T		pDM_Odm = (PDM_ODM_T)pDM_VOID;
@@ -56,7 +56,7 @@ ODM_RF_Saving(
 		pDM_PSTable->RegC70 = (PHY_QueryBBReg(pDM_Odm->Adapter, 0xc70, bMaskDWord)&BIT3)>>3;
 		pDM_PSTable->Reg85C = (PHY_QueryBBReg(pDM_Odm->Adapter, 0x85c, bMaskDWord)&0xFF000000)>>24;
 		pDM_PSTable->RegA74 = (PHY_QueryBBReg(pDM_Odm->Adapter, 0xa74, bMaskDWord)&0xF000)>>12;
-		/* Reg818 = PHY_QueryBBReg(pAdapter, 0x818, bMaskDWord); */
+		/* Reg818 = PHY_QueryBBReg(padapter, 0x818, bMaskDWord); */
 		pDM_PSTable->initialize = 1;
 	}
 

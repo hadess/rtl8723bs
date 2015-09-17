@@ -558,7 +558,7 @@ struct adapter {
 
 	u32	setband;
 
-	void *			HalData;
+	void *	HalData;
 	u32 hal_data_sz;
 	struct hal_ops	HalFunc;
 

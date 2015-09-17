@@ -2722,8 +2722,8 @@ typedef int (*iw_handler)(struct net_device *dev, struct iw_request_info *info,
 			  union iwreq_data *wrqu, char *extra);
 */
 /*
- *	For all data larger than 16 octets, we need to use a
- *	pointer to memory allocated in user space.
+ *For all data larger than 16 octets, we need to use a
+ *pointer to memory allocated in user space.
  */
 static  int rtw_drvext_hdl(struct net_device *dev, struct iw_request_info *info,
 						union iwreq_data *wrqu, char *extra)
@@ -3564,7 +3564,7 @@ static int rtw_dbg_port(struct net_device *dev,
 							DBG_871X("extra_arg = 6  - enable all dynamic func \n");
 						}
 						else {
-							/*	extra_arg = 0  - disable all dynamic func
+							/*extra_arg = 0  - disable all dynamic func
 								extra_arg = 1  - disable DIG
 								extra_arg = 2  - disable tx power tracking
 								extra_arg = 3  - turn on all dynamic func

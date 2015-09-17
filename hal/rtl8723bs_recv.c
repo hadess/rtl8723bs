@@ -86,14 +86,14 @@ static void update_recvframe_attrib(
 
 /*
  * Notice:
- *	Before calling this function,
- *	precvframe->u.hdr.rx_data should be ready!
+ *Before calling this function,
+ *precvframe->u.hdr.rx_data should be ready!
  */
 static void update_recvframe_phyinfo(
 	union recv_frame	*precvframe,
 	struct phy_stat *pphy_status)
 {
-	struct adapter *			padapter = precvframe->u.hdr.adapter;
+	struct adapter *	padapter = precvframe->u.hdr.adapter;
 	struct rx_pkt_attrib	*pattrib = &precvframe->u.hdr.attrib;
 	HAL_DATA_TYPE		*pHalData = GET_HAL_DATA(padapter);
 	PODM_PHY_INFO_T		pPHYInfo = (PODM_PHY_INFO_T)(&pattrib->phy_info);
@@ -189,7 +189,7 @@ static void rtl8723bs_c2h_packet_handler(struct adapter * padapter, u8 *pbuf, u1
 
 static void rtl8723bs_recv_tasklet(void *priv)
 {
-	struct adapter *			padapter;
+	struct adapter *	padapter;
 	PHAL_DATA_TYPE		pHalData;
 	struct recv_priv		*precvpriv;
 	struct recv_buf		*precvbuf;

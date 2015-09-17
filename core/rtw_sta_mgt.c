@@ -169,7 +169,7 @@ u32	_rtw_free_sta_priv(struct	sta_priv *pstapriv)
 
 	if (pstapriv){
 
-		/*	delete all reordering_ctrl_timer		*/
+		/*delete all reordering_ctrl_timer		*/
 		spin_lock_bh(&pstapriv->sta_hash_lock);
 		for (index = 0; index < NUM_STA; index++)
 		{

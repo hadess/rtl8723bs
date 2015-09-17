@@ -865,7 +865,7 @@ static void ConstructProbeRsp(struct adapter *padapter, u8 *pframe, u32 *pLength
 /*  2010.06.23. Added by tynli. */
 void
 CheckFwRsvdPageContent(
-	IN	struct adapter *		Adapter
+struct adapter *Adapter
 )
 {
 }
@@ -963,7 +963,7 @@ static void rtl8723b_set_ap_wow_rsvdpage_cmd(struct adapter * padapter,
 }
 #endif /* CONFIG_AP_WOWLAN */
 
-void rtl8723b_set_FwMediaStatusRpt_cmd(struct adapter *	padapter, u8 mstatus, u8 macid)
+void rtl8723b_set_FwMediaStatusRpt_cmd(struct adapter *padapter, u8 mstatus, u8 macid)
 {
 	u8 u1H2CMediaStatusRptParm[H2C_MEDIA_STATUS_RPT_LEN]={0};
 	u8 macid_end = 0;
@@ -2125,10 +2125,10 @@ void rtl8723b_set_FwJoinBssRpt_cmd(struct adapter * padapter, u8 mstatus)
 /* arg[1] = raid */
 /* arg[2] = shortGIrate */
 /* arg[3] = init_rate */
-void rtl8723b_Add_RateATid(struct adapter * pAdapter, u32 bitmap, u8* arg, u8 rssi_level)
+void rtl8723b_Add_RateATid(struct adapter * padapter, u32 bitmap, u8* arg, u8 rssi_level)
 {
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
-	struct mlme_ext_priv	*pmlmeext = &pAdapter->mlmeextpriv;
+	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
+	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 	struct sta_info	*psta;
 	u8 mac_id = arg[0];
@@ -2149,7 +2149,7 @@ void rtl8723b_Add_RateATid(struct adapter * pAdapter, u32 bitmap, u8* arg, u8 rs
 		mask = ODM_Get_Rate_Bitmap(&pHalData->odmpriv, mac_id, mask, rssi_level);
 
 	DBG_871X("%s(): mac_id =%d raid = 0x%x bw =%d mask = 0x%x\n", __func__, mac_id, raid, bw, mask);
-	rtl8723b_set_FwMacIdConfig_cmd(pAdapter, mac_id, raid, bw, shortGI, mask);
+	rtl8723b_set_FwMacIdConfig_cmd(padapter, mac_id, raid, bw, shortGI, mask);
 }
 
 static void ConstructBtNullFunctionData(

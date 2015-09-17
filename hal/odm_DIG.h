@@ -185,115 +185,115 @@ typedef enum tag_DIG_Connect_Definition
 
 void
 odm_NHMCounterStatisticsInit(
-	IN		void *					pDM_VOID
+	void *			pDM_VOID
 	);
 
 void
 odm_NHMCounterStatistics(
-	IN		void *					pDM_VOID
+	void *			pDM_VOID
 	);
 
 void
 odm_NHMBBInit(
-	IN		void *					pDM_VOID
+	void *			pDM_VOID
 );
 
 void
 odm_NHMBB(
-	IN		void *					pDM_VOID
+	void *			pDM_VOID
 );
 
 void
 odm_NHMCounterStatisticsReset(
-	IN		void *			pDM_VOID
+	void *	pDM_VOID
 );
 
 void
 odm_GetNHMCounterStatistics(
-	IN		void *			pDM_VOID
+	void *	pDM_VOID
 );
 
 void
 odm_SearchPwdBLowerBound(
-	IN		void *					pDM_VOID,
-	IN		u1Byte					IGI_target
+	void *			pDM_VOID,
+	u1Byte					IGI_target
 );
 
 void
 odm_AdaptivityInit(
-	IN		void *					pDM_VOID
+	void *			pDM_VOID
 	);
 
 void
 odm_Adaptivity(
-	IN		void *					pDM_VOID,
-	IN		u1Byte					IGI
+	void *			pDM_VOID,
+	u1Byte					IGI
 	);
 
 void
 ODM_Write_DIG(
-	IN		void *					pDM_VOID,
-	IN		u1Byte					CurrentIGI
+	void *			pDM_VOID,
+	u1Byte					CurrentIGI
 	);
 
 void
 odm_PauseDIG(
-	IN		void *					pDM_VOID,
-	IN		ODM_Pause_DIG_TYPE		PauseType,
-	IN		u1Byte					IGIValue
+	void *			pDM_VOID,
+	ODM_Pause_DIG_TYPE		PauseType,
+	u1Byte					IGIValue
 	);
 
 void
 odm_DIGInit(
-	IN		void *					pDM_VOID
+	void *			pDM_VOID
 	);
 
 void
 odm_DIG(
-	IN		void *					pDM_VOID
+	void *			pDM_VOID
 	);
 
 void
 odm_DIGbyRSSI_LPS(
-	IN		void *					pDM_VOID
+	void *			pDM_VOID
 	);
 
 void
 odm_FalseAlarmCounterStatistics(
-	IN		void *					pDM_VOID
+	void *			pDM_VOID
 	);
 
 void
 odm_FAThresholdCheck(
-	IN		void *					pDM_VOID,
-	IN		bool					bDFSBand,
-	IN		bool					bPerformance,
-	IN		u4Byte					RxTp,
-	IN		u4Byte					TxTp,
-	OUT		u4Byte*					dm_FA_thres
+	void *			pDM_VOID,
+	bool					bDFSBand,
+	bool					bPerformance,
+	u4Byte					RxTp,
+	u4Byte					TxTp,
+	u4Byte*			dm_FA_thres
 	);
 
 u1Byte
 odm_ForbiddenIGICheck(
-	IN		void *					pDM_VOID,
-	IN		u1Byte					DIG_Dynamic_MIN,
-	IN		u1Byte					CurrentIGI
+	void *			pDM_VOID,
+	u1Byte					DIG_Dynamic_MIN,
+	u1Byte					CurrentIGI
 	);
 
 bool
 odm_DigAbort(
-	IN		void *					pDM_VOID
+	void *			pDM_VOID
 	);
 
 void
 odm_CCKPacketDetectionThresh(
-	IN		void *					pDM_VOID
+	void *			pDM_VOID
 	);
 
 void
 ODM_Write_CCK_CCA_Thres(
-	IN		void *					pDM_VOID,
-	IN		u1Byte					CurCCK_CCAThres
+	void *			pDM_VOID,
+	u1Byte					CurCCK_CCAThres
 	);
 
 #endif

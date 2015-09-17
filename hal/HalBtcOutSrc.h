@@ -370,116 +370,116 @@ typedef enum _BTC_ANTENNA_POS{
 
 typedef u1Byte
 (*BFP_BTC_R1)(
-	IN	void *			pBtcContext,
-	IN	u4Byte			RegAddr
+void *	pBtcContext,
+u4Byte			RegAddr
 	);
 typedef u2Byte
 (*BFP_BTC_R2)(
-	IN	void *			pBtcContext,
-	IN	u4Byte			RegAddr
+void *	pBtcContext,
+u4Byte			RegAddr
 	);
 typedef u4Byte
 (*BFP_BTC_R4)(
-	IN	void *			pBtcContext,
-	IN	u4Byte			RegAddr
+void *	pBtcContext,
+u4Byte			RegAddr
 	);
 typedef void
 (*BFP_BTC_W1)(
-	IN	void *			pBtcContext,
-	IN	u4Byte			RegAddr,
-	IN	u1Byte			Data
+void *	pBtcContext,
+u4Byte			RegAddr,
+u1Byte			Data
 	);
 typedef void
 (*BFP_BTC_W1_BIT_MASK)(
-	IN	void *			pBtcContext,
-	IN	u4Byte			regAddr,
-	IN	u1Byte			bitMask,
-	IN	u1Byte			data1b
+void *	pBtcContext,
+u4Byte			regAddr,
+u1Byte			bitMask,
+u1Byte			data1b
 	);
 typedef void
 (*BFP_BTC_W2)(
-	IN	void *			pBtcContext,
-	IN	u4Byte			RegAddr,
-	IN	u2Byte			Data
+void *	pBtcContext,
+u4Byte			RegAddr,
+u2Byte			Data
 	);
 typedef void
 (*BFP_BTC_W4)(
-	IN	void *			pBtcContext,
-	IN	u4Byte			RegAddr,
-	IN	u4Byte			Data
+void *	pBtcContext,
+u4Byte			RegAddr,
+u4Byte			Data
 	);
 typedef void
 (*BFP_BTC_LOCAL_REG_W1)(
-	IN	void *			pBtcContext,
-	IN	u4Byte			RegAddr,
-	IN	u1Byte			Data
+void *	pBtcContext,
+u4Byte			RegAddr,
+u1Byte			Data
 	);
 typedef void
 (*BFP_BTC_SET_BB_REG)(
-	IN	void *			pBtcContext,
-	IN	u4Byte			RegAddr,
-	IN	u4Byte			BitMask,
-	IN	u4Byte			Data
+void *	pBtcContext,
+u4Byte			RegAddr,
+u4Byte			BitMask,
+u4Byte			Data
 	);
 typedef u4Byte
 (*BFP_BTC_GET_BB_REG)(
-	IN	void *			pBtcContext,
-	IN	u4Byte			RegAddr,
-	IN	u4Byte			BitMask
+void *	pBtcContext,
+u4Byte			RegAddr,
+u4Byte			BitMask
 	);
 typedef void
 (*BFP_BTC_SET_RF_REG)(
-	IN	void *			pBtcContext,
-	IN	u1Byte			eRFPath,
-	IN	u4Byte			RegAddr,
-	IN	u4Byte			BitMask,
-	IN	u4Byte			Data
+void *	pBtcContext,
+u1Byte			eRFPath,
+u4Byte			RegAddr,
+u4Byte			BitMask,
+u4Byte			Data
 	);
 typedef u4Byte
 (*BFP_BTC_GET_RF_REG)(
-	IN	void *			pBtcContext,
-	IN	u1Byte			eRFPath,
-	IN	u4Byte			RegAddr,
-	IN	u4Byte			BitMask
+void *	pBtcContext,
+u1Byte			eRFPath,
+u4Byte			RegAddr,
+u4Byte			BitMask
 	);
 typedef void
 (*BFP_BTC_FILL_H2C)(
-	IN	void *			pBtcContext,
-	IN	u1Byte			elementId,
-	IN	u4Byte			cmdLen,
-	IN	pu1Byte			pCmdBuffer
+void *	pBtcContext,
+u1Byte			elementId,
+u4Byte			cmdLen,
+pu1Byte			pCmdBuffer
 	);
 
 typedef	u8
 (*BFP_BTC_GET)(
-	IN	void *			pBtCoexist,
-	IN	u1Byte			getType,
-	OUT	void *			pOutBuf
+void *	pBtCoexist,
+u1Byte			getType,
+void *	pOutBuf
 	);
 
 typedef	u8
 (*BFP_BTC_SET)(
-	IN	void *			pBtCoexist,
-	IN	u1Byte			setType,
-	OUT	void *			pInBuf
+void *	pBtCoexist,
+u1Byte			setType,
+void *	pInBuf
 	);
 typedef void
 (*BFP_BTC_SET_BT_REG)(
-	IN	void *			pBtcContext,
-	IN	u1Byte			regType,
-	IN	u4Byte			offset,
-	IN	u4Byte			value
+void *	pBtcContext,
+u1Byte			regType,
+u4Byte			offset,
+u4Byte			value
 	);
 typedef u4Byte
 (*BFP_BTC_GET_BT_REG)(
-	IN	void *			pBtcContext,
-	IN	u1Byte			regType,
-	IN	u4Byte			offset
+void *	pBtcContext,
+u1Byte			regType,
+u4Byte			offset
 	);
 typedef void
 (*BFP_BTC_DISP_DBG_MSG)(
-	IN	void *			pBtCoexist,
-	IN	u1Byte			dispType
+void *	pBtCoexist,
+u1Byte			dispType
 	);
 
 typedef struct _BTC_BT_INFO{
@@ -559,7 +559,7 @@ typedef struct _BTC_STATISTICS{
 
 typedef struct _BTC_COEXIST{
 	bool				bBinded;		/*  make sure only one adapter can bind the data context */
-	void *				Adapter;		/*  default adapter */
+	void *		Adapter;		/*  default adapter */
 	BTC_BOARD_INFO		boardInfo;
 	BTC_BT_INFO			btInfo;		/*  some bt info referenced by non-bt module */
 	BTC_STACK_INFO		stackInfo;
@@ -607,86 +607,86 @@ extern BTC_COEXIST				GLBtCoexist;
 
 u8
 EXhalbtcoutsrc_InitlizeVariables(
-	IN	void *		Adapter
+void *Adapter
 	);
 void
 EXhalbtcoutsrc_PowerOnSetting(
-	IN	PBTC_COEXIST		pBtCoexist
+PBTC_COEXIST		pBtCoexist
 	);
 void
 EXhalbtcoutsrc_InitHwConfig(
-	IN	PBTC_COEXIST		pBtCoexist,
-	IN	u8			bWifiOnly
+PBTC_COEXIST		pBtCoexist,
+u8			bWifiOnly
 	);
 void
 EXhalbtcoutsrc_InitCoexDm(
-	IN	PBTC_COEXIST		pBtCoexist
+PBTC_COEXIST		pBtCoexist
 	);
 void
 EXhalbtcoutsrc_IpsNotify(
-	IN	PBTC_COEXIST		pBtCoexist,
-	IN	u1Byte			type
+PBTC_COEXIST		pBtCoexist,
+u1Byte			type
 	);
 void
 EXhalbtcoutsrc_LpsNotify(
-	IN	PBTC_COEXIST		pBtCoexist,
-	IN	u1Byte			type
+PBTC_COEXIST		pBtCoexist,
+u1Byte			type
 	);
 void
 EXhalbtcoutsrc_ScanNotify(
-	IN	PBTC_COEXIST		pBtCoexist,
-	IN	u1Byte			type
+PBTC_COEXIST		pBtCoexist,
+u1Byte			type
 	);
 void
 EXhalbtcoutsrc_ConnectNotify(
-	IN	PBTC_COEXIST		pBtCoexist,
-	IN	u1Byte			action
+PBTC_COEXIST		pBtCoexist,
+u1Byte			action
 	);
 void
 EXhalbtcoutsrc_MediaStatusNotify(
-	IN	PBTC_COEXIST		pBtCoexist,
-	IN	RT_MEDIA_STATUS	mediaStatus
+PBTC_COEXIST		pBtCoexist,
+RT_MEDIA_STATUS	mediaStatus
 	);
 void
 EXhalbtcoutsrc_SpecialPacketNotify(
-	IN	PBTC_COEXIST		pBtCoexist,
-	IN	u1Byte			pktType
+PBTC_COEXIST		pBtCoexist,
+u1Byte			pktType
 	);
 void
 EXhalbtcoutsrc_BtInfoNotify(
-	IN	PBTC_COEXIST		pBtCoexist,
-	IN	pu1Byte			tmpBuf,
-	IN	u1Byte			length
+PBTC_COEXIST		pBtCoexist,
+pu1Byte			tmpBuf,
+u1Byte			length
 	);
 void
 EXhalbtcoutsrc_HaltNotify(
-	IN	PBTC_COEXIST		pBtCoexist
+PBTC_COEXIST		pBtCoexist
 	);
 void
 EXhalbtcoutsrc_PnpNotify(
-	IN	PBTC_COEXIST		pBtCoexist,
-	IN	u1Byte			pnpState
+PBTC_COEXIST		pBtCoexist,
+u1Byte			pnpState
 	);
 void
 EXhalbtcoutsrc_Periodical(
-	IN	PBTC_COEXIST		pBtCoexist
+PBTC_COEXIST		pBtCoexist
 	);
 void
 EXhalbtcoutsrc_SetChipType(
-	IN	u1Byte		chipType
+u1Byte		chipType
 	);
 void
 EXhalbtcoutsrc_SetAntNum(
-	IN	u1Byte		type,
-	IN	u1Byte		antNum
+u1Byte		type,
+u1Byte		antNum
 	);
 void
 EXhalbtcoutsrc_SetSingleAntPath(
-	IN	u1Byte		singleAntPath
+u1Byte		singleAntPath
 	);
 void
 EXhalbtcoutsrc_DisplayBtCoexInfo(
-	IN	PBTC_COEXIST		pBtCoexist
+PBTC_COEXIST		pBtCoexist
 	);
 
 #endif

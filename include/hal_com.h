@@ -206,17 +206,17 @@ void dump_chip_info(HAL_VERSION	ChipVersion);
 
 u8	/* return the final channel plan decision */
 hal_com_config_channel_plan(
-	IN	struct adapter *	padapter,
-	IN	u8			hw_channel_plan,	/* channel plan from HW (efuse/eeprom) */
-	IN	u8			sw_channel_plan,	/* channel plan from SW (registry/module param) */
-	IN	u8			def_channel_plan,	/* channel plan used when the former two is invalid */
-	IN	bool		AutoLoadFail
+struct adapter *padapter,
+u8			hw_channel_plan,	/* channel plan from HW (efuse/eeprom) */
+u8			sw_channel_plan,	/* channel plan from SW (registry/module param) */
+u8			def_channel_plan,	/* channel plan used when the former two is invalid */
+bool		AutoLoadFail
 	);
 
 bool
 HAL_IsLegalChannel(
-	IN	struct adapter *	Adapter,
-	IN	u32			Channel
+struct adapter *Adapter,
+u32			Channel
 	);
 
 u8	MRateToHwRate(u8 rate);
@@ -224,14 +224,14 @@ u8	MRateToHwRate(u8 rate);
 u8	HwRateToMRate(u8 rate);
 
 void	HalSetBrateCfg(
-	IN struct adapter *		Adapter,
-	IN u8			*mBratesOS,
-	OUT u16			*pBrateCfg);
+struct adapter *Adapter,
+u8			*mBratesOS,
+u16			*pBrateCfg);
 
 bool
 Hal_MappingOutPipe(
-	IN	struct adapter *	pAdapter,
-	IN	u8		NumOutPipe
+struct adapter *padapter,
+u8		NumOutPipe
 	);
 
 void hal_init_macaddr(struct adapter *adapter);
@@ -256,45 +256,45 @@ u8 GetHalDefVar(struct adapter *adapter, HAL_DEF_VARIABLE variable, void *value)
 
 bool
 eqNByte(
-	u8*	str1,
-	u8*	str2,
+	u8*str1,
+	u8*str2,
 	u32	num
 	);
 
 bool
 IsHexDigit(
-	IN	char	chTmp
+char	chTmp
 	);
 
 u32
 MapCharToHexDigit(
-	IN	char	chTmp
+char	chTmp
 );
 
 bool
 GetHexValueFromString(
-	IN		char*			szStr,
-	IN OUT	u32*			pu4bVal,
-	IN OUT	u32*			pu4bMove
+	char*	szStr,
+OUT	u32*	pu4bVal,
+OUT	u32*	pu4bMove
 	);
 
 bool
 GetFractionValueFromString(
-	IN		char*		szStr,
-	IN OUT	u8*			pInteger,
-	IN OUT	u8*			pFraction,
-	IN OUT	u32*		pu4bMove
+	char*szStr,
+OUT	u8*	pInteger,
+OUT	u8*	pFraction,
+OUT	u32*pu4bMove
 	);
 
 bool
 IsCommentString(
-	IN		char*		szStr
+	char*szStr
 	);
 
 bool
 ParseQualifiedString(
     IN	char* In,
-    IN OUT  u32* Start,
+   u32* Start,
     OUT	char* Out,
     IN	char  LeftQualifier,
     IN	char  RightQualifier
@@ -302,13 +302,13 @@ ParseQualifiedString(
 
 bool
 GetU1ByteIntegerFromStringInDecimal(
-	IN		char* Str,
-	IN OUT	u8* pInt
+	char* Str,
+OUT	u8* pInt
 	);
 
 bool
 isAllSpaceOrTab(
-	u8*	data,
+	u8*data,
 	u8	size
 	);
 
@@ -324,14 +324,14 @@ void rtw_dump_raw_rssi_info(struct adapter *padapter);
 void rtw_bb_rf_gain_offset(struct adapter *padapter);
 
 void GetHalODMVar(
-	struct adapter *				Adapter,
+	struct adapter *		Adapter,
 	HAL_ODM_VARIABLE		eVariable,
-	void *					pValue1,
-	void *					pValue2);
+	void *			pValue1,
+	void *			pValue2);
 void SetHalODMVar(
-	struct adapter *				Adapter,
+	struct adapter *		Adapter,
 	HAL_ODM_VARIABLE		eVariable,
-	void *					pValue1,
+	void *			pValue1,
 	bool					bSet);
 
 #ifdef CONFIG_BACKGROUND_NOISE_MONITOR

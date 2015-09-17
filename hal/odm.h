@@ -996,7 +996,7 @@ typedef  struct DM_Out_Source_Dynamic_Mechanism_Structure
 	/*  */
 	/* 	Add for different team use temporarily */
 	/*  */
-	struct adapter *		Adapter;		/*  For CE/NIC team */
+	struct adapter *Adapter;		/*  For CE/NIC team */
 	/*  WHen you use Adapter or priv pointer, you must make sure the pointer is ready. */
 	bool			odm_ready;
 
@@ -1106,7 +1106,7 @@ typedef  struct DM_Out_Source_Dynamic_Mechanism_Structure
 	/*  Common info for 92D DMSP */
 
 	bool			*pbGetValueFromOtherMac;
-	struct adapter *		*pBuddyAdapter;
+	struct adapter **pBuddyAdapter;
 	bool			*pbMasterOfDMSP; /* MAC0: master, MAC1: slave */
 	/*  Common info for Status */
 	bool			*pbScanInProcess;
@@ -1499,8 +1499,8 @@ extern  u4Byte TxScalingTable_Jaguar[TXSCALE_TABLE_SIZE];
 
 void
 ODM_SetAntenna(
-	IN	PDM_ODM_T	pDM_Odm,
-	IN	u1Byte		Antenna);
+PDM_ODM_T	pDM_Odm,
+u1Byte		Antenna);
 
 
 /* Remove BB power saving by Yuchen */
@@ -1508,41 +1508,41 @@ ODM_SetAntenna(
 #define dm_CheckTXPowerTracking		ODM_TXPowerTrackingCheck
 void
 ODM_TXPowerTrackingCheck(
-	IN		PDM_ODM_T		pDM_Odm
+	PDM_ODM_T		pDM_Odm
 	);
 
 bool
 ODM_RAStateCheck(
-	IN		PDM_ODM_T		pDM_Odm,
-	IN		s4Byte			RSSI,
-	IN		bool			bForceUpdate,
-	OUT		pu1Byte			pRATRState
+	PDM_ODM_T		pDM_Odm,
+	s4Byte			RSSI,
+	bool			bForceUpdate,
+	pu1Byte			pRATRState
 	);
 
 #define dm_SWAW_RSSI_Check	ODM_SwAntDivChkPerPktRssi
 void ODM_SwAntDivChkPerPktRssi(
-	IN PDM_ODM_T		pDM_Odm,
-	IN u1Byte			StationID,
-	IN PODM_PHY_INFO_T pPhyInfo
+PDM_ODM_T		pDM_Odm,
+u1Byte			StationID,
+PODM_PHY_INFO_T pPhyInfo
 	);
 
 u4Byte ODM_Get_Rate_Bitmap(
-	IN	PDM_ODM_T	pDM_Odm,
-	IN	u4Byte		macid,
-	IN	u4Byte		ra_mask,
-	IN	u1Byte		rssi_level);
+PDM_ODM_T	pDM_Odm,
+u4Byte		macid,
+u4Byte		ra_mask,
+u1Byte		rssi_level);
 
 #if (BEAMFORMING_SUPPORT == 1)
 BEAMFORMING_CAP
 Beamforming_GetEntryBeamCapByMacId(
- IN PMGNT_INFO pMgntInfo,
- IN u1Byte  MacId
+PMGNT_INFO pMgntInfo,
+u1Byte  MacId
 );
 #endif
 
 void
 odm_TXPowerTrackingInit(
-	IN	PDM_ODM_T	pDM_Odm
+PDM_ODM_T	pDM_Odm
 	);
 
 void
@@ -1552,66 +1552,66 @@ ODM_DMInit(
 
 void
 ODM_DMWatchdog(
-	IN		PDM_ODM_T			pDM_Odm			/*  For common use in the future */
+	PDM_ODM_T			pDM_Odm			/*  For common use in the future */
 	);
 
 void
 ODM_CmnInfoInit(
-	IN		PDM_ODM_T		pDM_Odm,
-	IN		ODM_CMNINFO_E	CmnInfo,
-	IN		u4Byte			Value
+	PDM_ODM_T		pDM_Odm,
+	ODM_CMNINFO_E	CmnInfo,
+	u4Byte			Value
 	);
 
 void
 ODM_CmnInfoHook(
-	IN		PDM_ODM_T		pDM_Odm,
-	IN		ODM_CMNINFO_E	CmnInfo,
-	IN		void *			pValue
+	PDM_ODM_T		pDM_Odm,
+	ODM_CMNINFO_E	CmnInfo,
+	void *	pValue
 	);
 
 void
 ODM_CmnInfoPtrArrayHook(
-	IN		PDM_ODM_T		pDM_Odm,
-	IN		ODM_CMNINFO_E	CmnInfo,
-	IN		u2Byte			Index,
-	IN		void *			pValue
+	PDM_ODM_T		pDM_Odm,
+	ODM_CMNINFO_E	CmnInfo,
+	u2Byte			Index,
+	void *	pValue
 	);
 
 void
 ODM_CmnInfoUpdate(
-	IN		PDM_ODM_T		pDM_Odm,
-	IN		u4Byte			CmnInfo,
-	IN		u8Byte			Value
+	PDM_ODM_T		pDM_Odm,
+	u4Byte			CmnInfo,
+	u8Byte			Value
 	);
 
 void
 ODM_InitAllTimers(
-    IN PDM_ODM_T	pDM_Odm
+   PDM_ODM_T	pDM_Odm
    );
 
 void
 ODM_CancelAllTimers(
-    IN PDM_ODM_T    pDM_Odm
+   PDM_ODM_T    pDM_Odm
    );
 
 void
 ODM_ReleaseAllTimers(
-    IN PDM_ODM_T	pDM_Odm
+   PDM_ODM_T	pDM_Odm
    );
 
 void
 ODM_AntselStatistics_88C(
-	IN		PDM_ODM_T		pDM_Odm,
-	IN		u1Byte			MacId,
-	IN		u4Byte			PWDBAll,
-	IN		bool			isCCKrate
+	PDM_ODM_T		pDM_Odm,
+	u1Byte			MacId,
+	u4Byte			PWDBAll,
+	bool			isCCKrate
 );
 
 void
 ODM_DynamicARFBSelect(
-	IN		PDM_ODM_T		pDM_Odm,
-	IN		u1Byte			rate,
-	IN		bool			Collision_State
+	PDM_ODM_T		pDM_Odm,
+	u1Byte			rate,
+	bool			Collision_State
 	);
 
 #endif

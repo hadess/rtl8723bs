@@ -26,16 +26,16 @@ typedef struct _EDCA_TURBO_
 
 void
 odm_EdcaTurboCheck(
-	IN	void *		pDM_VOID
+void *pDM_VOID
 	);
 void
 ODM_EdcaTurboInit(
-	IN	void *		pDM_VOID
+void *pDM_VOID
 );
 
 void
 odm_EdcaTurboCheckCE(
-	IN	void *		pDM_VOID
+void *pDM_VOID
 	);
 
 #endif

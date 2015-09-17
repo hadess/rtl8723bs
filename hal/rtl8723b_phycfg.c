@@ -50,7 +50,7 @@
 * OverView:	Get shifted position of the BitMask
 *
 * Input:
-*			u4Byte		BitMask,
+*	u4Byte		BitMask,
 *
 * Output:	none
 * Return:		u4Byte		Return the shift bit bit position of the mask
@@ -78,19 +78,19 @@ phy_CalculateBitShift(
 * OverView:	Read "sepcific bits" from BB register
 *
 * Input:
-*			struct adapter *		Adapter,
-*			u4Byte			RegAddr,	The target address to be readback
-*			u4Byte			BitMask		The target bit position in the target address
-*								to be readback
+*	struct adapter *Adapter,
+*	u4Byte			RegAddr,	The target address to be readback
+*	u4Byte			BitMask		The target bit position in the target address
+*						to be readback
 * Output:	None
 * Return:		u4Byte			Data		The readback register value
 * Note:		This function is equal to "GetRegSetting" in PHY programming guide
 */
 u32
 PHY_QueryBBReg_8723B(
-	IN	struct adapter *	Adapter,
-	IN	u32		RegAddr,
-	IN	u32		BitMask
+struct adapter *Adapter,
+u32		RegAddr,
+u32		BitMask
 	)
 {
 	u32	ReturnValue = 0, OriginalValue, BitShift;
@@ -116,12 +116,12 @@ PHY_QueryBBReg_8723B(
 * OverView:	Write "Specific bits" to BB register (page 8~)
 *
 * Input:
-*			struct adapter *		Adapter,
-*			u4Byte			RegAddr,	The target address to be modified
-*			u4Byte			BitMask		The target bit position in the target address
-*									to be modified
-*			u4Byte			Data		The new register value in the target bit position
-*									of the target address
+*	struct adapter *Adapter,
+*	u4Byte			RegAddr,	The target address to be modified
+*	u4Byte			BitMask		The target bit position in the target address
+*							to be modified
+*	u4Byte			Data		The new register value in the target bit position
+*							of the target address
 *
 * Output:	None
 * Return:		None
@@ -130,10 +130,10 @@ PHY_QueryBBReg_8723B(
 
 void
 PHY_SetBBReg_8723B(
-	IN	struct adapter *	Adapter,
-	IN	u32		RegAddr,
-	IN	u32		BitMask,
-	IN	u32		Data
+struct adapter *Adapter,
+u32		RegAddr,
+u32		BitMask,
+u32		Data
 	)
 {
 	/* u16			BBWaitCounter	= 0; */
@@ -162,9 +162,9 @@ PHY_SetBBReg_8723B(
 
 static	u32
 phy_RFSerialRead_8723B(
-	IN	struct adapter *			Adapter,
-	IN	RF_PATH			eRFPath,
-	IN	u32				Offset
+struct adapter *	Adapter,
+RF_PATH			eRFPath,
+u32				Offset
 	)
 {
 	u32						retValue = 0;
@@ -233,49 +233,49 @@ phy_RFSerialRead_8723B(
 * OverView:	Write data to RF register (page 8~)
 *
 * Input:
-*			struct adapter *		Adapter,
-*			RF_PATH			eRFPath,	Radio path of A/B/C/D
-*			u4Byte			Offset,		The target address to be read
-*			u4Byte			Data		The new register Data in the target bit position
-*									of the target to be read
+*	struct adapter *Adapter,
+*	RF_PATH			eRFPath,	Radio path of A/B/C/D
+*	u4Byte			Offset,		The target address to be read
+*	u4Byte			Data		The new register Data in the target bit position
+*							of the target to be read
 *
 * Output:	None
 * Return:		None
 * Note:		Threre are three types of serial operations:
-*			1. Software serial write
-*			2. Hardware LSSI-Low Speed Serial Interface
-*			3. Hardware HSSI-High speed
-*			serial write. Driver need to implement (1) and (2).
-*			This function is equal to the combination of RF_ReadReg() and  RFLSSIRead()
+*	1. Software serial write
+*	2. Hardware LSSI-Low Speed Serial Interface
+*	3. Hardware HSSI-High speed
+*	serial write. Driver need to implement (1) and (2).
+*	This function is equal to the combination of RF_ReadReg() and  RFLSSIRead()
  *
  * Note:		  For RF8256 only
- *			 The total count of RTL8256(Zebra4) register is around 36 bit it only employs
- *			 4-bit RF address. RTL8256 uses "register mode control bit" (Reg00[12], Reg00[10])
- *			 to access register address bigger than 0xf. See "Appendix-4 in PHY Configuration
- *			 programming guide" for more details.
- *			 Thus, we define a sub-finction for RTL8526 register address conversion
- *		       ===========================================================
- *			 Register Mode		RegCTL[1]		RegCTL[0]		Note
- *								(Reg00[12])		(Reg00[10])
- *		       ===========================================================
- *			 Reg_Mode0				0				x			Reg 0 ~15(0x0 ~ 0xf)
- *		       ------------------------------------------------------------------
- *			 Reg_Mode1				1				0			Reg 16 ~30(0x1 ~ 0xf)
- *		       ------------------------------------------------------------------
- *			 Reg_Mode2				1				1			Reg 31 ~ 45(0x1 ~ 0xf)
- *		       ------------------------------------------------------------------
+ *	 The total count of RTL8256(Zebra4) register is around 36 bit it only employs
+ *	 4-bit RF address. RTL8256 uses "register mode control bit" (Reg00[12], Reg00[10])
+ *	 to access register address bigger than 0xf. See "Appendix-4 in PHY Configuration
+ *	 programming guide" for more details.
+ *	 Thus, we define a sub-finction for RTL8526 register address conversion
+ *       ===========================================================
+ *	 Register Mode		RegCTL[1]		RegCTL[0]		Note
+ *						(Reg00[12])		(Reg00[10])
+ *       ===========================================================
+ *	 Reg_Mode0				0				x			Reg 0 ~15(0x0 ~ 0xf)
+ *       ------------------------------------------------------------------
+ *	 Reg_Mode1				1				0			Reg 16 ~30(0x1 ~ 0xf)
+ *       ------------------------------------------------------------------
+ *	 Reg_Mode2				1				1			Reg 31 ~ 45(0x1 ~ 0xf)
+ *       ------------------------------------------------------------------
  *
- *	2008/09/02	MH	Add 92S RF definition
+ *2008/09/02	MH	Add 92S RF definition
  *
  *
  *
 */
 static	void
 phy_RFSerialWrite_8723B(
-	IN	struct adapter *			Adapter,
-	IN	RF_PATH			eRFPath,
-	IN	u32				Offset,
-	IN	u32				Data
+struct adapter *	Adapter,
+RF_PATH			eRFPath,
+u32				Offset,
+u32				Data
 	)
 {
 	u32						DataAndAddr = 0;
@@ -311,11 +311,11 @@ phy_RFSerialWrite_8723B(
 * OverView:	Query "Specific bits" to RF register (page 8~)
 *
 * Input:
-*			struct adapter *		Adapter,
-*			RF_PATH			eRFPath,	Radio path of A/B/C/D
-*			u4Byte			RegAddr,	The target address to be read
-*			u4Byte			BitMask		The target bit position in the target address
-*									to be read
+*	struct adapter *Adapter,
+*	RF_PATH			eRFPath,	Radio path of A/B/C/D
+*	u4Byte			RegAddr,	The target address to be read
+*	u4Byte			BitMask		The target bit position in the target address
+*							to be read
 *
 * Output:	None
 * Return:		u4Byte			Readback value
@@ -323,10 +323,10 @@ phy_RFSerialWrite_8723B(
 */
 u32
 PHY_QueryRFReg_8723B(
-	IN	struct adapter *			Adapter,
-	IN	u8			eRFPath,
-	IN	u32				RegAddr,
-	IN	u32				BitMask
+struct adapter *	Adapter,
+u8			eRFPath,
+u32				RegAddr,
+u32				BitMask
 	)
 {
 	u32 Original_Value, Readback_Value, BitShift;
@@ -349,13 +349,13 @@ PHY_QueryRFReg_8723B(
 * OverView:	Write "Specific bits" to RF register (page 8~)
 *
 * Input:
-*			struct adapter *		Adapter,
-*			RF_PATH			eRFPath,	Radio path of A/B/C/D
-*			u4Byte			RegAddr,	The target address to be modified
-*			u4Byte			BitMask		The target bit position in the target address
-*									to be modified
-*			u4Byte			Data		The new register Data in the target bit position
-*									of the target address
+*	struct adapter *Adapter,
+*	RF_PATH			eRFPath,	Radio path of A/B/C/D
+*	u4Byte			RegAddr,	The target address to be modified
+*	u4Byte			BitMask		The target bit position in the target address
+*							to be modified
+*	u4Byte			Data		The new register Data in the target bit position
+*							of the target address
 *
 * Output:	None
 * Return:		None
@@ -363,11 +363,11 @@ PHY_QueryRFReg_8723B(
 */
 void
 PHY_SetRFReg_8723B(
-	IN	struct adapter *			Adapter,
-	IN	u8				eRFPath,
-	IN	u32				RegAddr,
-	IN	u32				BitMask,
-	IN	u32				Data
+struct adapter *	Adapter,
+u8				eRFPath,
+u32				RegAddr,
+u32				BitMask,
+u32				Data
 	)
 {
 	u32		Original_Value, BitShift;
@@ -440,7 +440,7 @@ s32 PHY_MACConfig8723B(struct adapter * Adapter)
 * OverView:	Initialize Register definition offset for Radio Path A/B/C/D
 *
 * Input:
-*			struct adapter *		Adapter,
+*	struct adapter *Adapter,
 *
 * Output:	None
 * Return:		None
@@ -448,7 +448,7 @@ s32 PHY_MACConfig8723B(struct adapter * Adapter)
 */
 static	void
 phy_InitBBRFRegisterDefinition(
-	IN	struct adapter *		Adapter
+struct adapter *Adapter
 )
 {
 	HAL_DATA_TYPE		*pHalData = GET_HAL_DATA(Adapter);
@@ -481,7 +481,7 @@ phy_InitBBRFRegisterDefinition(
 
 static	int
 phy_BB8723b_Config_ParaFile(
-	IN	struct adapter *	Adapter
+struct adapter *Adapter
 	)
 {
 	HAL_DATA_TYPE		*pHalData = GET_HAL_DATA(Adapter);
@@ -583,7 +583,7 @@ phy_BB8190_Config_ParaFile_Fail:
 
 int
 PHY_BBConfig8723B(
-	IN	struct adapter *	Adapter
+struct adapter *Adapter
 	)
 {
 	int	rtStatus = _SUCCESS;
@@ -622,7 +622,7 @@ PHY_BBConfig8723B(
 }
 
 static void phy_LCK_8723B(
-	IN	struct adapter *	Adapter
+struct adapter *Adapter
 	)
 {
 	PHY_SetRFReg(Adapter, RF_PATH_A, 0xB0, bRFRegOffsetMask, 0xDFBE0);
@@ -633,7 +633,7 @@ static void phy_LCK_8723B(
 
 int
 PHY_RFConfig8723B(
-	IN	struct adapter *	Adapter
+struct adapter *Adapter
 	)
 {
 	int		rtStatus = _SUCCESS;
@@ -658,10 +658,10 @@ PHY_RFConfig8723B(
 
 void
 PHY_SetTxPowerIndex_8723B(
-	IN	struct adapter *			Adapter,
-	IN	u32					PowerIndex,
-	IN	u8					RFPath,
-	IN	u8					Rate
+struct adapter *	Adapter,
+u32					PowerIndex,
+u8					RFPath,
+u8					Rate
 	)
 {
 	if (RFPath == ODM_RF_PATH_A || RFPath == ODM_RF_PATH_B)
@@ -706,28 +706,28 @@ PHY_SetTxPowerIndex_8723B(
 
 u8
 PHY_GetTxPowerIndex_8723B(
-	IN	struct adapter *			pAdapter,
-	IN	u8					RFPath,
-	IN	u8					Rate,
-	IN	CHANNEL_WIDTH		BandWidth,
-	IN	u8					Channel
+struct adapter *	padapter,
+u8					RFPath,
+u8					Rate,
+CHANNEL_WIDTH		BandWidth,
+u8					Channel
 	)
 {
-	PHAL_DATA_TYPE		pHalData = GET_HAL_DATA(pAdapter);
+	PHAL_DATA_TYPE		pHalData = GET_HAL_DATA(padapter);
 	s8					txPower = 0, powerDiffByRate = 0, limit = 0;
 	bool				bIn24G = false;
 
 	/* DBG_871X("===>%s\n", __func__); */
 
-	txPower = (s8) PHY_GetTxPowerIndexBase(pAdapter, RFPath, Rate, BandWidth, Channel, &bIn24G);
-	powerDiffByRate = PHY_GetTxPowerByRate(pAdapter, BAND_ON_2_4G, ODM_RF_PATH_A, RF_1TX, Rate);
+	txPower = (s8) PHY_GetTxPowerIndexBase(padapter, RFPath, Rate, BandWidth, Channel, &bIn24G);
+	powerDiffByRate = PHY_GetTxPowerByRate(padapter, BAND_ON_2_4G, ODM_RF_PATH_A, RF_1TX, Rate);
 
-	limit = PHY_GetTxPowerLimit(pAdapter, pAdapter->registrypriv.RegPwrTblSel, (u8)(!bIn24G), pHalData->CurrentChannelBW, RFPath, Rate, pHalData->CurrentChannel);
+	limit = PHY_GetTxPowerLimit(padapter, padapter->registrypriv.RegPwrTblSel, (u8)(!bIn24G), pHalData->CurrentChannelBW, RFPath, Rate, pHalData->CurrentChannel);
 
 	powerDiffByRate = powerDiffByRate > limit ? limit : powerDiffByRate;
 	txPower += powerDiffByRate;
 
-	txPower += PHY_GetTxPowerTrackingOffset(pAdapter, RFPath, Rate);
+	txPower += PHY_GetTxPowerTrackingOffset(padapter, RFPath, Rate);
 
 	if (txPower > MAX_POWER_INDEX)
 		txPower = MAX_POWER_INDEX;
@@ -738,8 +738,8 @@ PHY_GetTxPowerIndex_8723B(
 
 void
 PHY_SetTxPowerLevel8723B(
-	IN	struct adapter *		Adapter,
-	IN	u8				Channel
+struct adapter *Adapter,
+u8				Channel
 	)
 {
 	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(Adapter);
@@ -763,15 +763,15 @@ PHY_SetTxPowerLevel8723B(
 
 void
 PHY_GetTxPowerLevel8723B(
-	IN	struct adapter *		Adapter,
-	OUT s32*				powerlevel
+struct adapter *Adapter,
+s32*		powerlevel
 	)
 {
 }
 
 static void
 phy_SetRegBW_8723B(
-	IN	struct adapter *		Adapter,
+struct adapter *Adapter,
 	CHANNEL_WIDTH	CurrentBW
 )
 {
@@ -802,7 +802,7 @@ phy_SetRegBW_8723B(
 
 static u8
 phy_GetSecondaryChnl_8723B(
-	IN	struct adapter *	Adapter
+struct adapter *Adapter
 )
 {
 	u8	SCSettingOf40 = 0, SCSettingOf20 = 0;
@@ -847,7 +847,7 @@ phy_GetSecondaryChnl_8723B(
 
 static void
 phy_PostSetBwMode8723B(
-	IN	struct adapter *	Adapter
+struct adapter *Adapter
 )
 {
 	u1Byte			SubChnlNum = 0;
@@ -910,10 +910,10 @@ phy_PostSetBwMode8723B(
 
 static void
 phy_SwChnl8723B(
-	IN	struct adapter *					pAdapter
+struct adapter *			padapter
 	)
 {
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
+	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
 	u8			channelToSW = pHalData->CurrentChannel;
 
 	if (pHalData->rf_chip == RF_PSEUDO_11N)
@@ -922,15 +922,15 @@ phy_SwChnl8723B(
 		return;
 	}
 	pHalData->RfRegChnlVal[0] = ((pHalData->RfRegChnlVal[0] & 0xfffff00) | channelToSW );
-	PHY_SetRFReg(pAdapter, ODM_RF_PATH_A, RF_CHNLBW, 0x3FF, pHalData->RfRegChnlVal[0]);
-	PHY_SetRFReg(pAdapter, ODM_RF_PATH_B, RF_CHNLBW, 0x3FF, pHalData->RfRegChnlVal[0]);
+	PHY_SetRFReg(padapter, ODM_RF_PATH_A, RF_CHNLBW, 0x3FF, pHalData->RfRegChnlVal[0]);
+	PHY_SetRFReg(padapter, ODM_RF_PATH_B, RF_CHNLBW, 0x3FF, pHalData->RfRegChnlVal[0]);
 
 	DBG_8192C("===>phy_SwChnl8723B: Channel = %d\n", channelToSW);
 }
 
 static void
 phy_SwChnlAndSetBwMode8723B(
-	IN  struct adapter *		Adapter
+ struct adapter *Adapter
 )
 {
 	HAL_DATA_TYPE		*pHalData = GET_HAL_DATA(Adapter);
@@ -968,14 +968,14 @@ phy_SwChnlAndSetBwMode8723B(
 
 static void
 PHY_HandleSwChnlAndSetBW8723B(
-	IN	struct adapter *			Adapter,
-	IN	bool				bSwitchChannel,
-	IN	bool				bSetBandWidth,
-	IN	u8					ChannelNum,
-	IN	CHANNEL_WIDTH	ChnlWidth,
-	IN	EXTCHNL_OFFSET	ExtChnlOffsetOf40MHz,
-	IN	EXTCHNL_OFFSET	ExtChnlOffsetOf80MHz,
-	IN	u8					CenterFrequencyIndex1
+struct adapter *	Adapter,
+bool				bSwitchChannel,
+bool				bSetBandWidth,
+u8					ChannelNum,
+CHANNEL_WIDTH	ChnlWidth,
+EXTCHNL_OFFSET	ExtChnlOffsetOf40MHz,
+EXTCHNL_OFFSET	ExtChnlOffsetOf80MHz,
+u8					CenterFrequencyIndex1
 )
 {
 	/* static bool		bInitialzed = false; */
@@ -1056,9 +1056,9 @@ PHY_HandleSwChnlAndSetBW8723B(
 
 void
 PHY_SetBWMode8723B(
-	IN	struct adapter *					Adapter,
-	IN	CHANNEL_WIDTH	Bandwidth,	/*  20M or 40M */
-	IN	unsigned char	Offset		/*  Upper, Lower, or Don't care */
+struct adapter *			Adapter,
+CHANNEL_WIDTH	Bandwidth,	/*  20M or 40M */
+unsigned char	Offset		/*  Upper, Lower, or Don't care */
 )
 {
 	PHAL_DATA_TYPE		pHalData = GET_HAL_DATA(Adapter);
@@ -1068,8 +1068,8 @@ PHY_SetBWMode8723B(
 
 void
 PHY_SwChnl8723B(	/*  Call after initialization */
-	IN	struct adapter *	Adapter,
-	IN	u8		channel
+struct adapter *Adapter,
+u8		channel
 	)
 {
 	PHY_HandleSwChnlAndSetBW8723B(Adapter, true, false, channel, 0, 0, 0, channel);
@@ -1077,11 +1077,11 @@ PHY_SwChnl8723B(	/*  Call after initialization */
 
 void
 PHY_SetSwChnlBWMode8723B(
-	IN	struct adapter *			Adapter,
-	IN	u8					channel,
-	IN	CHANNEL_WIDTH	Bandwidth,
-	IN	u8					Offset40,
-	IN	u8					Offset80
+struct adapter *	Adapter,
+u8					channel,
+CHANNEL_WIDTH	Bandwidth,
+u8					Offset40,
+u8					Offset80
 )
 {
 	/* DBG_871X("%s() ===>\n", __func__); */

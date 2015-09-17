@@ -34,13 +34,13 @@ typedef struct _Dynamic_Power_Saving_
 #define dm_RF_Saving	ODM_RF_Saving
 
 void ODM_RF_Saving(
-	IN		void *					pDM_VOID,
-	IN	u1Byte		bForceInNormal
+	void *			pDM_VOID,
+u1Byte		bForceInNormal
 	);
 
 void
 odm_DynamicBBPowerSavingInit(
-	IN		void *					pDM_VOID
+	void *			pDM_VOID
 	);
 
 #endif

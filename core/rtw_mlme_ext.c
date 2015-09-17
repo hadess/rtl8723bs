@@ -6371,7 +6371,7 @@ static int rtw_auto_ap_start_beacon(struct adapter *adapter)
 	uint len;
 	u8	supportRate[16];
 	int	sz = 0, rateLen;
-	u8 *	ie;
+	u8 *ie;
 	u8	wireless_mode, oper_channel;
 	u8 ssid[3] = {0}; /* hidden ssid */
 	u32 ssid_len = sizeof(ssid);

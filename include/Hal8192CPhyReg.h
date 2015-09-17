@@ -18,10 +18,10 @@
  *
  *
  * Note:	1. Define PMAC/BB register map
- *			2. Define RF register map
- *			3. PMAC/BB register bit mask.
- *			4. RF reg bit mask.
- *			5. Other BB/RF relative definition.
+ *	2. Define RF register map
+ *	3. PMAC/BB register bit mask.
+ *	4. RF reg bit mask.
+ *	5. Other BB/RF relative definition.
  *
  *
  * Export:	Constants, macro, functions(API), global variables(None).
@@ -29,10 +29,10 @@
  * Abbrev:
  *
  * History:
- *		Data		Who		Remark
+ *Data		Who		Remark
  *      08/07/2007  MHC		1. Porting from 9x series PHYCFG.h.
- *							2. Reorganize code architecture.
- *	09/25/2008	MH		1. Add RL6052 register definition
+ *					2. Reorganize code architecture.
+ *09/25/2008	MH		1. Add RL6052 register definition
  *
  *****************************************************************************/
 #ifndef __INC_HAL8192CPHYREG_H

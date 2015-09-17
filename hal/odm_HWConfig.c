@@ -40,7 +40,7 @@
 
 static u1Byte
 odm_QueryRxPwrPercentage(
-	IN		s8		AntPower
+	s8		AntPower
 	)
 {
 	if ((AntPower <= -100) || (AntPower >= 20))
@@ -60,8 +60,8 @@ odm_QueryRxPwrPercentage(
 
 static s4Byte
 odm_SignalScaleMapping_92CSeries(
-	IN OUT PDM_ODM_T pDM_Odm,
-	IN s4Byte CurrSig
+OUT PDM_ODM_T pDM_Odm,
+s4Byte CurrSig
 )
 {
 	s4Byte RetSig = 0;
@@ -106,8 +106,8 @@ odm_SignalScaleMapping_92CSeries(
 }
 s4Byte
 odm_SignalScaleMapping(
-	IN OUT PDM_ODM_T pDM_Odm,
-	IN	s4Byte CurrSig
+OUT PDM_ODM_T pDM_Odm,
+s4Byte CurrSig
 )
 {
 	return odm_SignalScaleMapping_92CSeries(pDM_Odm, CurrSig);
@@ -145,10 +145,10 @@ odm_EVMdbToPercentage(
 
 static void
 odm_RxPhyStatus92CSeries_Parsing(
-	IN OUT	PDM_ODM_T					pDM_Odm,
-	OUT		PODM_PHY_INFO_T			pPhyInfo,
-	IN		pu1Byte						pPhyStatus,
-	IN		PODM_PACKET_INFO_T			pPktinfo
+OUT	PDM_ODM_T					pDM_Odm,
+	PODM_PHY_INFO_T			pPhyInfo,
+	pu1Byte						pPhyStatus,
+	PODM_PACKET_INFO_T			pPktinfo
 	)
 {
 	u1Byte				i, Max_spatial_stream;
@@ -332,9 +332,9 @@ odm_RxPhyStatus92CSeries_Parsing(
 
 static void
 odm_Process_RSSIForDM(
-	IN OUT	PDM_ODM_T					pDM_Odm,
-	IN		PODM_PHY_INFO_T				pPhyInfo,
-	IN		PODM_PACKET_INFO_T			pPktinfo
+OUT	PDM_ODM_T					pDM_Odm,
+	PODM_PHY_INFO_T				pPhyInfo,
+	PODM_PACKET_INFO_T			pPktinfo
 	)
 {
 
@@ -511,10 +511,10 @@ odm_Process_RSSIForDM(
 /*  */
 static void
 ODM_PhyStatusQuery_92CSeries(
-	IN OUT	PDM_ODM_T					pDM_Odm,
-	OUT		PODM_PHY_INFO_T				pPhyInfo,
-	IN		pu1Byte						pPhyStatus,
-	IN		PODM_PACKET_INFO_T			pPktinfo
+OUT	PDM_ODM_T					pDM_Odm,
+	PODM_PHY_INFO_T				pPhyInfo,
+	pu1Byte						pPhyStatus,
+	PODM_PACKET_INFO_T			pPktinfo
 	)
 {
 
@@ -530,10 +530,10 @@ ODM_PhyStatusQuery_92CSeries(
 
 void
 ODM_PhyStatusQuery(
-	IN OUT	PDM_ODM_T					pDM_Odm,
-	OUT		PODM_PHY_INFO_T				pPhyInfo,
-	IN		pu1Byte						pPhyStatus,
-	IN		PODM_PACKET_INFO_T			pPktinfo
+OUT	PDM_ODM_T					pDM_Odm,
+	PODM_PHY_INFO_T				pPhyInfo,
+	pu1Byte						pPhyStatus,
+	PODM_PACKET_INFO_T			pPktinfo
 	)
 {
 
@@ -547,9 +547,9 @@ ODM_PhyStatusQuery(
 
 HAL_STATUS
 ODM_ConfigRFWithHeaderFile(
-	IN	PDM_ODM_T			pDM_Odm,
-	IN	ODM_RF_Config_Type		ConfigType,
-	IN	ODM_RF_RADIO_PATH_E	eRFPath
+PDM_ODM_T			pDM_Odm,
+ODM_RF_Config_Type		ConfigType,
+ODM_RF_RADIO_PATH_E	eRFPath
    )
 {
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_LOUD,
@@ -570,7 +570,7 @@ ODM_ConfigRFWithHeaderFile(
 
 HAL_STATUS
 ODM_ConfigRFWithTxPwrTrackHeaderFile(
-	IN	PDM_ODM_T			pDM_Odm
+PDM_ODM_T			pDM_Odm
    )
 {
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_LOUD,
@@ -587,8 +587,8 @@ ODM_ConfigRFWithTxPwrTrackHeaderFile(
 
 HAL_STATUS
 ODM_ConfigBBWithHeaderFile(
-	IN	PDM_ODM_T			pDM_Odm,
-	IN	ODM_BB_Config_Type		ConfigType
+PDM_ODM_T			pDM_Odm,
+ODM_BB_Config_Type		ConfigType
 	)
 {
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_LOUD,
@@ -609,7 +609,7 @@ ODM_ConfigBBWithHeaderFile(
 
 HAL_STATUS
 ODM_ConfigMACWithHeaderFile(
-	IN	PDM_ODM_T	pDM_Odm
+PDM_ODM_T	pDM_Odm
 	)
 {
 	u1Byte result = HAL_STATUS_SUCCESS;

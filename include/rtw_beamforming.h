@@ -120,7 +120,7 @@ BEAMFORMING_CAP beamforming_get_entry_beam_cap_by_mac_id(void * pmlmepriv , u8 m
 void	beamforming_notify(struct adapter * adapter);
 BEAMFORMING_CAP beamforming_get_beamform_cap(struct beamforming_info	*pBeamInfo);
 
-u32	beamforming_get_report_frame(struct adapter *	 Adapter, union recv_frame *precv_frame);
+u32	beamforming_get_report_frame(struct adapter * Adapter, union recv_frame *precv_frame);
 
 bool	beamforming_send_ht_ndpa_packet(struct adapter * Adapter, u8 *ra, CHANNEL_WIDTH bw, u8 qidx);
 bool	beamforming_send_vht_ndpa_packet(struct adapter * Adapter, u8 *ra, u16 aid, CHANNEL_WIDTH bw, u8 qidx);

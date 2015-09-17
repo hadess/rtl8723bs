@@ -64,7 +64,7 @@ static s16 odm_InbandNoise_Monitor_NSeries(PDM_ODM_T	pDM_Odm, u8 bPauseDIG, u8 I
 	/*  */
 	/*  Step 2. Disable all power save for read registers */
 	/*  */
-	/* dcmd_DebugControlPowerSave(pAdapter, PSDisable); */
+	/* dcmd_DebugControlPowerSave(padapter, PSDisable); */
 
 	/*  */
 	/*  Step 3. Get noise power level */

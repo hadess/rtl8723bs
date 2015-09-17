@@ -18,9 +18,9 @@
 
 static bool
 CheckPositive(
-    IN  PDM_ODM_T     pDM_Odm,
-    IN  const u4Byte  Condition1,
-    IN  const u4Byte  Condition2
+    PDM_ODM_T     pDM_Odm,
+    const u4Byte  Condition1,
+    const u4Byte  Condition2
    )
 {
 	u1Byte    _BoardType = ((pDM_Odm->BoardType & BIT4) >> 4) << 0 | /*  _GLNA */
@@ -87,9 +87,9 @@ CheckPositive(
 }
 static bool
 CheckNegative(
-    IN  PDM_ODM_T     pDM_Odm,
-    IN  const u4Byte  Condition1,
-    IN  const u4Byte  Condition2
+    PDM_ODM_T     pDM_Odm,
+    const u4Byte  Condition1,
+    const u4Byte  Condition2
    )
 {
     return true;
@@ -236,7 +236,7 @@ static u4Byte Array_MP_8723B_AGC_TAB[] = {
 
 void
 ODM_ReadAndConfig_MP_8723B_AGC_TAB(
-	IN   PDM_ODM_T  pDM_Odm
+  PDM_ODM_T  pDM_Odm
 	)
 {
     u4Byte     i         = 0;
@@ -505,7 +505,7 @@ static u4Byte Array_MP_8723B_PHY_REG[] = {
 
 void
 ODM_ReadAndConfig_MP_8723B_PHY_REG(
-	IN   PDM_ODM_T  pDM_Odm
+  PDM_ODM_T  pDM_Odm
 	)
 {
     u4Byte     i         = 0;
@@ -586,7 +586,7 @@ static u4Byte Array_MP_8723B_PHY_REG_PG[] = {
 
 void
 ODM_ReadAndConfig_MP_8723B_PHY_REG_PG(
-	IN   PDM_ODM_T  pDM_Odm
+  PDM_ODM_T  pDM_Odm
 	)
 {
     u4Byte     i         = 0;

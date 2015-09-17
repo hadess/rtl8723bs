@@ -1627,8 +1627,8 @@ xmitframe_coalesce_fail:
  * IEEE LLC/SNAP header contains 8 octets
  * First 3 octets comprise the LLC portion
  * SNAP portion, 5 octets, is divided into two fields:
- *	Organizationally Unique Identifier(OUI), 3 octets,
- *	type, defined by that organization, 2 octets.
+ *Organizationally Unique Identifier(OUI), 3 octets,
+ *type, defined by that organization, 2 octets.
  */
 s32 rtw_put_snap(u8 *data, u16 h_proto)
 {
@@ -2420,9 +2420,9 @@ static void do_queue_select(struct adapter	*padapter, struct pkt_attrib *pattrib
  * The main transmit(tx) entry
  *
  * Return
- *	1	enqueue
- *	0	success, hardware will handle this xmit frame(packet)
- *	<0	fail
+ *1	enqueue
+ *0	success, hardware will handle this xmit frame(packet)
+ *<0	fail
  */
 s32 rtw_xmit(struct adapter *padapter, _pkt **ppkt)
 {

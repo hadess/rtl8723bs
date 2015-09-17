@@ -133,47 +133,47 @@ typedef struct _Phy_Status_Rpt_8812
 
 void
 ODM_PhyStatusQuery(
-	IN OUT	PDM_ODM_T					pDM_Odm,
-	OUT		PODM_PHY_INFO_T			pPhyInfo,
-	IN		pu1Byte						pPhyStatus,
-	IN		PODM_PACKET_INFO_T			pPktinfo
+OUT	PDM_ODM_T					pDM_Odm,
+	PODM_PHY_INFO_T			pPhyInfo,
+	pu1Byte						pPhyStatus,
+	PODM_PACKET_INFO_T			pPktinfo
 	);
 
 HAL_STATUS
 ODM_ConfigRFWithTxPwrTrackHeaderFile(
-	IN	PDM_ODM_T			pDM_Odm
+PDM_ODM_T			pDM_Odm
    );
 
 HAL_STATUS
 ODM_ConfigRFWithHeaderFile(
-	IN	PDM_ODM_T			pDM_Odm,
-	IN	ODM_RF_Config_Type		ConfigType,
-	IN	ODM_RF_RADIO_PATH_E	eRFPath
+PDM_ODM_T			pDM_Odm,
+ODM_RF_Config_Type		ConfigType,
+ODM_RF_RADIO_PATH_E	eRFPath
 	);
 
 HAL_STATUS
 ODM_ConfigBBWithHeaderFile(
-	IN	PDM_ODM_T	                pDM_Odm,
-	IN	ODM_BB_Config_Type		ConfigType
+PDM_ODM_T	                pDM_Odm,
+ODM_BB_Config_Type		ConfigType
    );
 
 HAL_STATUS
 ODM_ConfigMACWithHeaderFile(
-	IN	PDM_ODM_T	pDM_Odm
+PDM_ODM_T	pDM_Odm
    );
 
 HAL_STATUS
 ODM_ConfigFWWithHeaderFile(
-	IN	PDM_ODM_T			pDM_Odm,
-	IN	ODM_FW_Config_Type	ConfigType,
-	OUT u1Byte				*pFirmware,
-	OUT u4Byte				*pSize
+PDM_ODM_T			pDM_Odm,
+ODM_FW_Config_Type	ConfigType,
+u1Byte				*pFirmware,
+u4Byte				*pSize
 	);
 
 s4Byte
 odm_SignalScaleMapping(
-	IN OUT PDM_ODM_T pDM_Odm,
-	IN	s4Byte CurrSig
+OUT PDM_ODM_T pDM_Odm,
+s4Byte CurrSig
 	);
 
 #endif

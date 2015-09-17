@@ -329,13 +329,13 @@ void	rtw_hal_add_ra_tid(struct adapter *padapter, u32 bitmap, u8* arg, u8 rssi_l
 		padapter->HalFunc.Add_RateATid(padapter, bitmap, arg, rssi_level);
 }
 
-/*	Start specifical interface thread		*/
+/*Start specifical interface thread		*/
 void	rtw_hal_start_thread(struct adapter *padapter)
 {
 	if (padapter->HalFunc.run_thread)
 		padapter->HalFunc.run_thread(padapter);
 }
-/*	Start specifical interface thread		*/
+/*Start specifical interface thread		*/
 void	rtw_hal_stop_thread(struct adapter *padapter)
 {
 	if (padapter->HalFunc.cancel_thread)

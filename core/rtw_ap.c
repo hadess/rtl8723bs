@@ -1439,7 +1439,7 @@ int rtw_acl_remove_sta(struct adapter *padapter, u8 *addr)
 
 u8 rtw_ap_set_pairwise_key(struct adapter *padapter, struct sta_info *psta)
 {
-	struct cmd_obj*			ph2c;
+	struct cmd_obj*	ph2c;
 	struct set_stakey_parm	*psetstakey_para;
 	struct cmd_priv				*pcmdpriv =&padapter->cmdpriv;
 	u8	res = _SUCCESS;

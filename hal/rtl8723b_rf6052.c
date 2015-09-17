@@ -53,8 +53,8 @@
  *
  * Overview:    This function is called by SetBWModeCallback8190Pci() only
  *
- * Input:       struct adapter *				Adapter
- *			WIRELESS_BANDWIDTH_E	Bandwidth	20M or 40M
+ * Input:       struct adapter *		Adapter
+ *	WIRELESS_BANDWIDTH_E	Bandwidth	20M or 40M
  *
  * Output:      NONE
  *
@@ -64,8 +64,8 @@
  *---------------------------------------------------------------------------*/
 void
 PHY_RF6052SetBandwidth8723B(
-	IN	struct adapter *				Adapter,
-	IN	CHANNEL_WIDTH		Bandwidth)	/* 20M or 40M */
+struct adapter *		Adapter,
+CHANNEL_WIDTH		Bandwidth)	/* 20M or 40M */
 {
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
 
@@ -92,7 +92,7 @@ PHY_RF6052SetBandwidth8723B(
 
 static int
 phy_RF6052_Config_ParaFile(
-	IN	struct adapter *		Adapter
+struct adapter *Adapter
 	)
 {
 	u32					u4RegValue = 0;
@@ -216,7 +216,7 @@ phy_RF6052_Config_ParaFile_Fail:
 
 int
 PHY_RF6052_Config8723B(
-	IN	struct adapter *		Adapter)
+struct adapter *Adapter)
 {
 	HAL_DATA_TYPE				*pHalData = GET_HAL_DATA(Adapter);
 	int					rtStatus = _SUCCESS;

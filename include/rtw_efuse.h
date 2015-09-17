@@ -111,22 +111,22 @@ extern u8 fakeBTEfuseInitMap[];
 extern u8 fakeBTEfuseModifiedMap[];
 /*------------------------Export global variable----------------------------*/
 
-u16	Efuse_GetCurrentSize(struct adapter * pAdapter, u8 efuseType, bool bPseudoTest);
+u16	Efuse_GetCurrentSize(struct adapter * padapter, u8 efuseType, bool bPseudoTest);
 u8	Efuse_CalculateWordCnts(u8 word_en);
-void	EFUSE_GetEfuseDefinition(struct adapter * pAdapter, u8 efuseType, u8 type, void *pOut, bool bPseudoTest);
-u8	efuse_OneByteRead(struct adapter * pAdapter, u16 addr, u8 *data, bool	 bPseudoTest);
-u8	efuse_OneByteWrite(struct adapter * pAdapter, u16 addr, u8 data, bool	 bPseudoTest);
+void	EFUSE_GetEfuseDefinition(struct adapter * padapter, u8 efuseType, u8 type, void *pOut, bool bPseudoTest);
+u8	efuse_OneByteRead(struct adapter * padapter, u16 addr, u8 *data, bool	 bPseudoTest);
+u8	efuse_OneByteWrite(struct adapter * padapter, u16 addr, u8 data, bool	 bPseudoTest);
 
-void	Efuse_PowerSwitch(struct adapter * pAdapter, u8	bWrite, u8	 PwrState);
-int	Efuse_PgPacketRead(struct adapter * pAdapter, u8 offset, u8 *data, bool bPseudoTest);
-int	Efuse_PgPacketWrite(struct adapter * pAdapter, u8 offset, u8 word_en, u8 *data, bool bPseudoTest);
+void	Efuse_PowerSwitch(struct adapter * padapter, u8	bWrite, u8	 PwrState);
+int	Efuse_PgPacketRead(struct adapter * padapter, u8 offset, u8 *data, bool bPseudoTest);
+int	Efuse_PgPacketWrite(struct adapter * padapter, u8 offset, u8 word_en, u8 *data, bool bPseudoTest);
 void	efuse_WordEnableDataRead(u8 word_en, u8 *sourdata, u8 *targetdata);
-u8	Efuse_WordEnableDataWrite(struct adapter * pAdapter, u16 efuse_addr, u8 word_en, u8 *data, bool bPseudoTest);
+u8	Efuse_WordEnableDataWrite(struct adapter * padapter, u16 efuse_addr, u8 word_en, u8 *data, bool bPseudoTest);
 
-u8	EFUSE_Read1Byte(struct adapter * pAdapter, u16 Address);
-void	EFUSE_ShadowMapUpdate(struct adapter * pAdapter, u8 efuseType, bool bPseudoTest);
-void	EFUSE_ShadowRead(struct adapter * pAdapter, u8 Type, u16 Offset, u32 *Value);
+u8	EFUSE_Read1Byte(struct adapter * padapter, u16 Address);
+void	EFUSE_ShadowMapUpdate(struct adapter * padapter, u8 efuseType, bool bPseudoTest);
+void	EFUSE_ShadowRead(struct adapter * padapter, u8 Type, u16 Offset, u32 *Value);
 void Rtw_Hal_ReadMACAddrFromFile(struct adapter * padapter);
-u32 Rtw_Hal_readPGDataFromConfigFile(struct adapter *	padapter);
+u32 Rtw_Hal_readPGDataFromConfigFile(struct adapter *padapter);
 
 #endif

@@ -274,7 +274,7 @@ typedef struct _WLAN_PHY_INFO
 typedef struct _WLAN_BCN_INFO
 {
 	/* these infor get from rtw_get_encrypt_info when
-	 *	 * translate scan to UI */
+	 * * translate scan to UI */
 	u8 encryp_protocol;/* ENCRYP_PROTOCOL_E: OPEN/WEP/WPA/WPA2/WAPI */
 	int group_cipher; /* WPA/WPA2 group cipher */
 	int pairwise_cipher;/* WPA/WPA2/WEP pairwise cipher */
@@ -358,7 +358,7 @@ enum UAPSD_MAX_SP
 #define NUM_PMKID_CACHE NUM_PRE_AUTH_KEY
 
 /*
-*	WPA2
+*WPA2
 */
 
 typedef struct _PMKID_CANDIDATE {

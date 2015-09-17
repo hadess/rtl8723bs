@@ -43,7 +43,7 @@ Major Change History:
 /* 	2011.07.07, added by Roger. */
 /*  */
 u8 HalPwrSeqCmdParsing(
-	struct adapter *		padapter,
+	struct adapter *padapter,
 	u8				CutVersion,
 	u8				FabVersion,
 	u8				InterfaceType,

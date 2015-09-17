@@ -54,10 +54,10 @@
 #define IS_FW_HEADER_EXIST_8723B(_pFwHdr)	((le16_to_cpu(_pFwHdr->Signature)&0xFFF0) == 0x5300)
 
 struct rt_firmware {
-	u8*			szFwBuffer;
+	u8*	szFwBuffer;
 	u32			ulFwLength;
 
-	u8*			szBTFwBuffer;
+	u8*	szBTFwBuffer;
 	u8			myBTFwBuffer[FW_8723B_SIZE];
 	u32			ulBTFwLength;
 };
@@ -238,10 +238,10 @@ void Hal_EfuseParseEEPROMVer_8723B(struct adapter * padapter, u8 *hwinfo, bool A
 void Hal_EfuseParseChnlPlan_8723B(struct adapter * padapter, u8 *hwinfo, bool AutoLoadFail);
 void Hal_EfuseParseCustomerID_8723B(struct adapter * padapter, u8 *hwinfo, bool AutoLoadFail);
 void Hal_EfuseParseAntennaDiversity_8723B(struct adapter * padapter, u8 *hwinfo, bool AutoLoadFail);
-void Hal_EfuseParseXtal_8723B(struct adapter * pAdapter, u8 *hwinfo, bool AutoLoadFail);
+void Hal_EfuseParseXtal_8723B(struct adapter * padapter, u8 *hwinfo, bool AutoLoadFail);
 void Hal_EfuseParseThermalMeter_8723B(struct adapter * padapter, u8 *hwinfo, u8 AutoLoadFail);
-void Hal_EfuseParsePackageType_8723B(struct adapter * pAdapter, u8* hwinfo, bool AutoLoadFail);
-void Hal_EfuseParseVoltage_8723B(struct adapter * pAdapter, u8* hwinfo, bool	AutoLoadFail);
+void Hal_EfuseParsePackageType_8723B(struct adapter * padapter, u8* hwinfo, bool AutoLoadFail);
+void Hal_EfuseParseVoltage_8723B(struct adapter * padapter, u8* hwinfo, bool	AutoLoadFail);
 
 void C2HPacketHandler_8723B(struct adapter * padapter, u8 *pbuffer, u16 length);
 
@@ -256,7 +256,7 @@ void rtl8723b_InitBeaconParameters(struct adapter * padapter);
 void	_InitBurstPktLen_8723BS(struct adapter * Adapter);
 void _8051Reset8723(struct adapter * padapter);
 #ifdef CONFIG_WOWLAN
-void Hal_DetectWoWMode(struct adapter * pAdapter);
+void Hal_DetectWoWMode(struct adapter * padapter);
 #endif /* CONFIG_WOWLAN */
 
 void rtl8723b_start_thread(struct adapter *padapter);
@@ -273,7 +273,7 @@ void rtl8723bs_hal_check_bt_hang(struct adapter * adapter);
 void HalSetOutPutGPIO(struct adapter * padapter, u8 index, u8 OutPutValue);
 #endif
 
-int FirmwareDownloadBT(IN struct adapter * Adapter, PRT_MP_FIRMWARE pFirmware);
+int FirmwareDownloadBT(struct adapter * Adapter, PRT_MP_FIRMWARE pFirmware);
 
 void CCX_FwC2HTxRpt_8723b(struct adapter * padapter, u8 *pdata, u8 len);
 s32 c2h_id_filter_ccx_8723b(u8 *buf);
@@ -281,6 +281,6 @@ s32 c2h_handler_8723b(struct adapter * padapter, u8 *pC2hEvent);
 u8 MRateToHwRate8723B(u8  rate);
 u8 HwRateToMRate8723B(u8	 rate);
 
-void Hal_ReadRFGainOffset(struct adapter * pAdapter, u8* hwinfo, bool AutoLoadFail);
+void Hal_ReadRFGainOffset(struct adapter * padapter, u8* hwinfo, bool AutoLoadFail);
 
 #endif

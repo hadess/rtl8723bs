@@ -165,7 +165,7 @@ exit:
 
 /*
  * ATTENTION:
- *	rtw_ps_processor() doesn't handle LPS.
+ *rtw_ps_processor() doesn't handle LPS.
  */
 void rtw_ps_processor(struct adapter *padapter)
 {
@@ -278,11 +278,11 @@ void	traffic_check_for_leave_lps(struct adapter * padapter, u8 tx, u32 tx_packet
 
 /*
  * Description:
- *	This function MUST be called under power lock protect
+ *This function MUST be called under power lock protect
  *
  * Parameters
- *	padapter
- *	pslv			power state level, only could be PS_STATE_S0 ~ PS_STATE_S4
+ *padapter
+ *pslv			power state level, only could be PS_STATE_S0 ~ PS_STATE_S4
  *
  */
 void rtw_set_rpwm(struct adapter * padapter, u8 pslv)
@@ -547,9 +547,9 @@ void rtw_set_ps_mode(struct adapter * padapter, u8 ps_mode, u8 smart_ps, u8 bcn_
 
 /*
  * Return:
- *	0:	Leave OK
- *	-1:	Timeout
- *	-2:	Other error
+ *0:	Leave OK
+ *-1:	Timeout
+ *-2:	Other error
  */
 s32 LPS_RF_ON_check(struct adapter * padapter, u32 delay_ms)
 {
@@ -718,7 +718,7 @@ void LeaveAllPowerSaveModeDirect(struct adapter * Adapter)
 /*  Description: Leave all power save mode: LPS, FwLPS, IPS if needed. */
 /*  Move code to function by tynli. 2010.03.26. */
 /*  */
-void LeaveAllPowerSaveMode(IN struct adapter * Adapter)
+void LeaveAllPowerSaveMode(struct adapter * Adapter)
 {
 	struct dvobj_priv *dvobj = adapter_to_dvobj(Adapter);
 	u8	enqueue = 0;
@@ -943,18 +943,18 @@ __inline static void unregister_task_alive(struct pwrctrl_priv *pwrctrl, u32 tag
 
 /*
  * Description:
- *	Check if the fw_pwrstate is okay for I/O.
- *	If not (cpwm is less than S2), then the sub-routine
- *	will raise the cpwm to be greater than or equal to S2.
+ *Check if the fw_pwrstate is okay for I/O.
+ *If not (cpwm is less than S2), then the sub-routine
+ *will raise the cpwm to be greater than or equal to S2.
  *
- *	Calling Context: Passive
+ *Calling Context: Passive
  *
- *	Constraint:
- *		1. this function will request pwrctrl->lock
+ *Constraint:
+ *1. this function will request pwrctrl->lock
  *
  * Return Value:
- *	_SUCCESS	hardware is ready for I/O
- *	_FAIL		can't I/O right now
+ *_SUCCESS	hardware is ready for I/O
+ *_FAIL		can't I/O right now
  */
 s32 rtw_register_task_alive(struct adapter * padapter, u32 task)
 {
@@ -997,13 +997,13 @@ s32 rtw_register_task_alive(struct adapter * padapter, u32 task)
 
 /*
  * Description:
- *	If task is done, call this func. to power down firmware again.
+ *If task is done, call this func. to power down firmware again.
  *
- *	Constraint:
- *		1. this function will request pwrctrl->lock
+ *Constraint:
+ *1. this function will request pwrctrl->lock
  *
  * Return Value:
- *	none
+ *none
  */
 void rtw_unregister_task_alive(struct adapter * padapter, u32 task)
 {
@@ -1054,8 +1054,8 @@ void rtw_unregister_task_alive(struct adapter * padapter, u32 task)
  * Calling Context: Passive
  *
  * Return Value:
- *	 _SUCCESS	rtw_xmit_thread can write fifo/txcmd afterwards.
- *	 _FAIL		rtw_xmit_thread can not do anything.
+ * _SUCCESS	rtw_xmit_thread can write fifo/txcmd afterwards.
+ * _FAIL		rtw_xmit_thread can not do anything.
  */
 s32 rtw_register_tx_alive(struct adapter * padapter)
 {
@@ -1106,8 +1106,8 @@ s32 rtw_register_tx_alive(struct adapter * padapter)
  * Calling Context: Passive
  *
  * Return Value:
- *	_SUCCESS	rtw_cmd_thread can issue cmds to firmware afterwards.
- *	_FAIL		rtw_cmd_thread can not do anything.
+ *_SUCCESS	rtw_cmd_thread can issue cmds to firmware afterwards.
+ *_FAIL		rtw_cmd_thread can not do anything.
  */
 s32 rtw_register_cmd_alive(struct adapter * padapter)
 {
@@ -1477,7 +1477,7 @@ int rtw_pm_set_ips(struct adapter *padapter, u8 mode)
 
 /*
  * ATTENTION:
- *	This function will request pwrctrl LOCK!
+ *This function will request pwrctrl LOCK!
  */
 void rtw_ps_deny(struct adapter * padapter, PS_DENY_REASON reason)
 {
@@ -1503,7 +1503,7 @@ void rtw_ps_deny(struct adapter * padapter, PS_DENY_REASON reason)
 
 /*
  * ATTENTION:
- *	This function will request pwrctrl LOCK!
+ *This function will request pwrctrl LOCK!
  */
 void rtw_ps_deny_cancel(struct adapter * padapter, PS_DENY_REASON reason)
 {
@@ -1530,8 +1530,8 @@ void rtw_ps_deny_cancel(struct adapter * padapter, PS_DENY_REASON reason)
 
 /*
  * ATTENTION:
- *	Before calling this function pwrctrl lock should be occupied already,
- *	otherwise it may return incorrect value.
+ *Before calling this function pwrctrl lock should be occupied already,
+ *otherwise it may return incorrect value.
  */
 u32 rtw_ps_deny_get(struct adapter * padapter)
 {

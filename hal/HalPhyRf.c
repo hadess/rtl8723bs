@@ -34,8 +34,8 @@
 
 
 void ConfigureTxpowerTrack(
-	IN	PDM_ODM_T		pDM_Odm,
-	OUT	PTXPWRTRACK_CFG	pConfig
+PDM_ODM_T		pDM_Odm,
+PTXPWRTRACK_CFG	pConfig
 	)
 {
 	ConfigureTxpowerTrack_8723B(pConfig);
@@ -51,7 +51,7 @@ void ConfigureTxpowerTrack(
 /*  */
 void
 ODM_ClearTxPowerTrackingState(
-	IN PDM_ODM_T		pDM_Odm
+PDM_ODM_T		pDM_Odm
 	)
 {
 	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(pDM_Odm->Adapter);
@@ -86,7 +86,7 @@ ODM_ClearTxPowerTrackingState(
 
 void
 ODM_TXPowerTrackingCallback_ThermalMeter(
-	IN struct adapter *	Adapter
+struct adapter *Adapter
 	)
 {
 

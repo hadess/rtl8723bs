@@ -21,11 +21,11 @@
 #include "hal_com_h2c.h"
 /*
  * Description:
- *	Call power on sequence to enable card
+ *Call power on sequence to enable card
  *
  * Return:
- *	_SUCCESS	enable success
- *	_FAIL		enable fail
+ *_SUCCESS	enable success
+ *_FAIL		enable fail
  */
 static u8 CardEnable(struct adapter * padapter)
 {
@@ -281,13 +281,13 @@ static void _InitTxBufferBoundary(struct adapter * padapter)
 
 static void
 _InitNormalChipRegPriority(
-	IN	struct adapter *	Adapter,
-	IN	u16		beQ,
-	IN	u16		bkQ,
-	IN	u16		viQ,
-	IN	u16		voQ,
-	IN	u16		mgtQ,
-	IN	u16		hiQ
+struct adapter *Adapter,
+u16		beQ,
+u16		bkQ,
+u16		viQ,
+u16		voQ,
+u16		mgtQ,
+u16		hiQ
 	)
 {
 	u16 value16		= (rtw_read16(Adapter, REG_TRXDMA_CTRL) & 0x7);
@@ -301,7 +301,7 @@ _InitNormalChipRegPriority(
 
 static void
 _InitNormalChipOneOutEpPriority(
-	IN	struct adapter * Adapter
+struct adapter * Adapter
 	)
 {
 	HAL_DATA_TYPE	*pHalData	= GET_HAL_DATA(Adapter);
@@ -336,7 +336,7 @@ _InitNormalChipOneOutEpPriority(
 
 static void
 _InitNormalChipTwoOutEpPriority(
-	IN	struct adapter * Adapter
+struct adapter * Adapter
 	)
 {
 	HAL_DATA_TYPE	*pHalData	= GET_HAL_DATA(Adapter);
@@ -389,7 +389,7 @@ _InitNormalChipTwoOutEpPriority(
 
 static void
 _InitNormalChipThreeOutEpPriority(
-	IN	struct adapter * padapter
+struct adapter * padapter
 	)
 {
 	struct registry_priv *pregistrypriv = &padapter->registrypriv;
@@ -416,7 +416,7 @@ _InitNormalChipThreeOutEpPriority(
 
 static void
 _InitNormalChipQueuePriority(
-	IN	struct adapter * Adapter
+struct adapter * Adapter
 	)
 {
 	HAL_DATA_TYPE	*pHalData	= GET_HAL_DATA(Adapter);
@@ -1266,7 +1266,7 @@ static void rtl8723bs_interface_configure(struct adapter * padapter)
 /*  */
 static void
 _EfuseCellSel(
-	IN	struct adapter *	padapter
+struct adapter *padapter
 	)
 {
 	u32			value32;
@@ -1278,7 +1278,7 @@ _EfuseCellSel(
 
 static void
 _ReadRFType(
-	IN	struct adapter *	Adapter
+struct adapter *Adapter
 	)
 {
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
@@ -1293,9 +1293,9 @@ _ReadRFType(
 
 static void
 Hal_EfuseParseMACAddr_8723BS(
-	IN	struct adapter *		padapter,
-	IN	u8*			hwinfo,
-	IN	bool			AutoLoadFail
+struct adapter *padapter,
+u8*	hwinfo,
+bool			AutoLoadFail
 	)
 {
 	u16			i;
@@ -1313,7 +1313,7 @@ Hal_EfuseParseMACAddr_8723BS(
 		/* Read Permanent MAC address */
 		memcpy(pEEPROM->mac_addr, &hwinfo[EEPROM_MAC_ADDR_8723BS], ETH_ALEN);
 	}
-/* 	NicIFSetMacAddress(pAdapter, pAdapter->PermanentAddress); */
+/* 	NicIFSetMacAddress(padapter, padapter->PermanentAddress); */
 
 	RT_TRACE(_module_hci_hal_init_c_, _drv_notice_,
 		 ("Hal_EfuseParseMACAddr_8723BS: Permanent Address = %02x-%02x-%02x-%02x-%02x-%02x\n",
@@ -1324,12 +1324,12 @@ Hal_EfuseParseMACAddr_8723BS(
 
 static void
 Hal_EfuseParseBoardType_8723BS(
-	IN	struct adapter *		pAdapter,
-	IN	u8*			hwinfo,
-	IN	bool			AutoLoadFail
+struct adapter *padapter,
+u8*	hwinfo,
+bool			AutoLoadFail
 	)
 {
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
+	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
 
 	if (!AutoLoadFail)
 	{
@@ -1344,11 +1344,11 @@ Hal_EfuseParseBoardType_8723BS(
 
 static void
 _ReadEfuseInfo8723BS(
-	IN struct adapter *			padapter
+struct adapter *	padapter
 	)
 {
 	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(padapter);
-	u8*			hwinfo = NULL;
+	u8*	hwinfo = NULL;
 
 	RT_TRACE(_module_hci_hal_init_c_, _drv_info_, ("====>_ReadEfuseInfo8723BS()\n"));
 
@@ -1394,7 +1394,7 @@ _ReadEfuseInfo8723BS(
 }
 
 static void _ReadPROMContent(
-	IN struct adapter *		padapter
+struct adapter *padapter
 	)
 {
 	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(padapter);
@@ -1418,7 +1418,7 @@ static void _ReadPROMContent(
 
 static void
 _InitOtherVariable(
-	IN struct adapter *		Adapter
+struct adapter *Adapter
 	)
 {
 }
@@ -1877,9 +1877,9 @@ static void SetHwRegWithBuf8723B(struct adapter * padapter, u8 variable, u8 *pbu
 /*  */
 static u8
 GetHalDefVar8723BSDIO(
-	IN	struct adapter *				Adapter,
-	IN	HAL_DEF_VARIABLE		eVariable,
-	IN	void *					pValue
+struct adapter *		Adapter,
+HAL_DEF_VARIABLE		eVariable,
+void *			pValue
 	)
 {
 	u8			bResult = _SUCCESS;
@@ -1909,9 +1909,9 @@ GetHalDefVar8723BSDIO(
 /*  */
 static u8
 SetHalDefVar8723BSDIO(
-	IN	struct adapter *				Adapter,
-	IN	HAL_DEF_VARIABLE		eVariable,
-	IN	void *					pValue
+struct adapter *		Adapter,
+HAL_DEF_VARIABLE		eVariable,
+void *			pValue
 	)
 {
 	return SetHalDefVar8723B(Adapter, eVariable, pValue);

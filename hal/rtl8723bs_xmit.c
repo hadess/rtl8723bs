@@ -138,11 +138,11 @@ free_xmitbuf:
 
 /*
  * Description
- *	Transmit xmitbuf to hardware tx fifo
+ *Transmit xmitbuf to hardware tx fifo
  *
  * Return
- *	_SUCCESS	ok
- *	_FAIL		something error
+ *_SUCCESS	ok
+ *_FAIL		something error
  */
 s32 rtl8723bs_xmit_buf_handler(struct adapter * padapter)
 {
@@ -188,12 +188,12 @@ s32 rtl8723bs_xmit_buf_handler(struct adapter * padapter)
 
 /*
  * Description:
- *	Aggregation packets and send to hardware
+ *Aggregation packets and send to hardware
  *
  * Return:
- *	0	Success
- *	-1	Hardware resource(TX FIFO) not ready
- *	-2	Software resource(xmitbuf) not ready
+ *0	Success
+ *-1	Hardware resource(TX FIFO) not ready
+ *-2	Software resource(xmitbuf) not ready
  */
 static s32 xmit_xmitframes(struct adapter * padapter, struct xmit_priv *pxmitpriv)
 {
@@ -388,11 +388,11 @@ static s32 xmit_xmitframes(struct adapter * padapter, struct xmit_priv *pxmitpri
 
 /*
  * Description
- *	Transmit xmitframe from queue
+ *Transmit xmitframe from queue
  *
  * Return
- *	_SUCCESS	ok
- *	_FAIL		something error
+ *_SUCCESS	ok
+ *_FAIL		something error
  */
 static s32 rtl8723bs_xmit_handler(struct adapter * padapter)
 {
@@ -527,11 +527,11 @@ s32 rtl8723bs_mgnt_xmit(struct adapter * padapter, struct xmit_frame *pmgntframe
 
 /*
  * Description:
- *	Handle xmitframe(packet) come from rtw_xmit()
+ *Handle xmitframe(packet) come from rtw_xmit()
  *
  * Return:
- *	true	dump packet directly ok
- *	false	enqueue, temporary can't transmit packets to hardware
+ *true	dump packet directly ok
+ *false	enqueue, temporary can't transmit packets to hardware
  */
 s32 rtl8723bs_hal_xmit(struct adapter * padapter, struct xmit_frame *pxmitframe)
 {
@@ -593,8 +593,8 @@ s32	rtl8723bs_hal_xmitframe_enqueue(struct adapter *padapter, struct xmit_frame 
 
 /*
  * Return
- *	_SUCCESS	start thread ok
- *	_FAIL		start thread fail
+ *_SUCCESS	start thread ok
+ *_FAIL		start thread fail
  *
  */
 s32 rtl8723bs_init_xmit_priv(struct adapter * padapter)

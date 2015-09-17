@@ -17,11 +17,11 @@
 
 void
 odm_ConfigRFReg_8723B(
-	IN	PDM_ODM_T				pDM_Odm,
-	IN	u4Byte					Addr,
-	IN	u4Byte					Data,
-	IN  ODM_RF_RADIO_PATH_E     RF_PATH,
-	IN	u4Byte				    RegAddr
+PDM_ODM_T				pDM_Odm,
+u4Byte					Addr,
+u4Byte					Data,
+ ODM_RF_RADIO_PATH_E     RF_PATH,
+u4Byte				    RegAddr
 	)
 {
     if (Addr == 0xfe || Addr == 0xffe)
@@ -83,9 +83,9 @@ odm_ConfigRFReg_8723B(
 
 void
 odm_ConfigRF_RadioA_8723B(
-	IN	PDM_ODM_T				pDM_Odm,
-	IN	u4Byte					Addr,
-	IN	u4Byte					Data
+PDM_ODM_T				pDM_Odm,
+u4Byte					Addr,
+u4Byte					Data
 	)
 {
 	u4Byte  content = 0x1000; /*  RF_Content: radioa_txt */
@@ -98,9 +98,9 @@ odm_ConfigRF_RadioA_8723B(
 
 void
 odm_ConfigMAC_8723B(
-	IN	PDM_ODM_T	pDM_Odm,
-	IN	u4Byte		Addr,
-	IN	u1Byte		Data
+PDM_ODM_T	pDM_Odm,
+u4Byte		Addr,
+u1Byte		Data
 	)
 {
 	rtw_write8(pDM_Odm->Adapter, Addr, Data);
@@ -124,10 +124,10 @@ odm_ConfigBB_AGC_8723B(
 
 void
 odm_ConfigBB_PHY_REG_PG_8723B(
-	IN	PDM_ODM_T	pDM_Odm,
-	IN	u4Byte		Band,
-	IN	u4Byte		RfPath,
-	IN	u4Byte		TxNum,
+PDM_ODM_T	pDM_Odm,
+u4Byte		Band,
+u4Byte		RfPath,
+u4Byte		TxNum,
     IN	u4Byte		Addr,
     IN	u4Byte		Bitmask,
     IN	u4Byte		Data
@@ -144,7 +144,7 @@ odm_ConfigBB_PHY_REG_PG_8723B(
 
 void
 odm_ConfigBB_PHY_8723B(
-	IN	PDM_ODM_T	pDM_Odm,
+PDM_ODM_T	pDM_Odm,
     IN	u4Byte		Addr,
     IN	u4Byte		Bitmask,
     IN	u4Byte		Data
@@ -174,14 +174,14 @@ odm_ConfigBB_PHY_8723B(
 
 void
 odm_ConfigBB_TXPWR_LMT_8723B(
-	IN	PDM_ODM_T	pDM_Odm,
-	IN	pu1Byte		Regulation,
-	IN	pu1Byte		Band,
-	IN	pu1Byte		Bandwidth,
-	IN	pu1Byte		RateSection,
-	IN	pu1Byte		RfPath,
-	IN	pu1Byte		Channel,
-	IN	pu1Byte		PowerLimit
+PDM_ODM_T	pDM_Odm,
+pu1Byte		Regulation,
+pu1Byte		Band,
+pu1Byte		Bandwidth,
+pu1Byte		RateSection,
+pu1Byte		RfPath,
+pu1Byte		Channel,
+pu1Byte		PowerLimit
 	)
 {
 		PHY_SetTxPowerLimit(pDM_Odm->Adapter, Regulation, Band,

@@ -81,172 +81,172 @@ typedef struct _BB_REGISTER_DEFINITION{
 /*  */
 u8
 PHY_GetTxPowerByRateBase(
-	IN	struct adapter *		Adapter,
-	IN	u8				Band,
-	IN	u8				RfPath,
-	IN	u8				TxNum,
-	IN	RATE_SECTION	RateSection
+struct adapter *Adapter,
+u8				Band,
+u8				RfPath,
+u8				TxNum,
+RATE_SECTION	RateSection
 	);
 
 u8
 PHY_GetRateSectionIndexOfTxPowerByRate(
-	IN	struct adapter *	pAdapter,
-	IN	u32			RegAddr,
-	IN	u32			BitMask
+struct adapter *padapter,
+u32			RegAddr,
+u32			BitMask
 	);
 
 void
 PHY_GetRateValuesOfTxPowerByRate(
-	IN	struct adapter *	pAdapter,
-	IN	u32			RegAddr,
-	IN	u32			BitMask,
-	IN	u32			Value,
-	OUT	u8*			RateIndex,
-	OUT	s8*			PwrByRateVal,
-	OUT	u8*			RateNum
+struct adapter *padapter,
+u32			RegAddr,
+u32			BitMask,
+u32			Value,
+u8*	RateIndex,
+s8*	PwrByRateVal,
+u8*	RateNum
 	);
 
 u8
 PHY_GetRateIndexOfTxPowerByRate(
-	IN	u8	Rate
+u8	Rate
 	);
 
 void
 PHY_SetTxPowerIndexByRateSection(
-	IN	struct adapter *		pAdapter,
-	IN	u8				RFPath,
-	IN	u8				Channel,
-	IN	u8				RateSection
+struct adapter *padapter,
+u8				RFPath,
+u8				Channel,
+u8				RateSection
 	);
 
 s8
 PHY_GetTxPowerByRate(
-	IN	struct adapter *	pAdapter,
-	IN	u8			Band,
-	IN	u8			RFPath,
-	IN	u8			TxNum,
-	IN	u8			RateIndex
+struct adapter *padapter,
+u8			Band,
+u8			RFPath,
+u8			TxNum,
+u8			RateIndex
 	);
 
 void
 PHY_SetTxPowerByRate(
-	IN	struct adapter *	pAdapter,
-	IN	u8			Band,
-	IN	u8			RFPath,
-	IN	u8			TxNum,
-	IN	u8			Rate,
-	IN	s8			Value
+struct adapter *padapter,
+u8			Band,
+u8			RFPath,
+u8			TxNum,
+u8			Rate,
+s8			Value
 	);
 
 void
 PHY_SetTxPowerLevelByPath(
-	IN	struct adapter *	Adapter,
-	IN	u8			channel,
-	IN	u8			path
+struct adapter *Adapter,
+u8			channel,
+u8			path
 	);
 
 void
 PHY_SetTxPowerIndexByRateArray(
-	IN	struct adapter *		pAdapter,
-	IN	u8				RFPath,
-	IN	CHANNEL_WIDTH	BandWidth,
-	IN	u8				Channel,
-	IN	u8*				Rates,
-	IN	u8				RateArraySize
+struct adapter *padapter,
+u8				RFPath,
+CHANNEL_WIDTH	BandWidth,
+u8				Channel,
+u8*		Rates,
+u8				RateArraySize
 	);
 
 void
 PHY_InitTxPowerByRate(
-	IN	struct adapter *	pAdapter
+struct adapter *padapter
 	);
 
 void
 PHY_StoreTxPowerByRate(
-	IN	struct adapter *	pAdapter,
-	IN	u32			Band,
-	IN	u32			RfPath,
-	IN	u32			TxNum,
-	IN	u32			RegAddr,
-	IN	u32			BitMask,
-	IN	u32			Data
+struct adapter *padapter,
+u32			Band,
+u32			RfPath,
+u32			TxNum,
+u32			RegAddr,
+u32			BitMask,
+u32			Data
 	);
 
 void
 PHY_TxPowerByRateConfiguration(
-	IN  struct adapter *			pAdapter
+ struct adapter *	padapter
 	);
 
 u8
 PHY_GetTxPowerIndexBase(
-	IN	struct adapter *		pAdapter,
-	IN	u8				RFPath,
-	IN	u8				Rate,
-	IN	CHANNEL_WIDTH	BandWidth,
-	IN	u8				Channel,
-	OUT bool		*bIn24G
+struct adapter *padapter,
+u8				RFPath,
+u8				Rate,
+CHANNEL_WIDTH	BandWidth,
+u8				Channel,
+bool		*bIn24G
 	);
 
 s8
 PHY_GetTxPowerLimit(
-	IN	struct adapter *		Adapter,
-	IN	u32				RegPwrTblSel,
-	IN	BAND_TYPE		Band,
-	IN	CHANNEL_WIDTH	Bandwidth,
-	IN	u8				RfPath,
-	IN	u8				DataRate,
-	IN	u8				Channel
+struct adapter *Adapter,
+u32				RegPwrTblSel,
+BAND_TYPE		Band,
+CHANNEL_WIDTH	Bandwidth,
+u8				RfPath,
+u8				DataRate,
+u8				Channel
 	);
 
 void
 PHY_SetTxPowerLimit(
-	IN	struct adapter *			Adapter,
-	IN	u8					*Regulation,
-	IN	u8					*Band,
-	IN	u8					*Bandwidth,
-	IN	u8					*RateSection,
-	IN	u8					*RfPath,
-	IN	u8					*Channel,
-	IN	u8					*PowerLimit
+struct adapter *	Adapter,
+u8					*Regulation,
+u8					*Band,
+u8					*Bandwidth,
+u8					*RateSection,
+u8					*RfPath,
+u8					*Channel,
+u8					*PowerLimit
 	);
 
 void
 PHY_ConvertTxPowerLimitToPowerIndex(
-	IN	struct adapter *			Adapter
+struct adapter *	Adapter
 	);
 
 void
 PHY_InitTxPowerLimit(
-	IN	struct adapter *			Adapter
+struct adapter *	Adapter
 	);
 
 s8
 PHY_GetTxPowerTrackingOffset(
-	struct adapter *	pAdapter,
+	struct adapter *padapter,
 	u8			Rate,
 	u8			RFPath
 	);
 
 u8
 PHY_GetTxPowerIndex(
-	IN	struct adapter *			pAdapter,
-	IN	u8					RFPath,
-	IN	u8					Rate,
-	IN	CHANNEL_WIDTH		BandWidth,
-	IN	u8					Channel
+struct adapter *	padapter,
+u8					RFPath,
+u8					Rate,
+CHANNEL_WIDTH		BandWidth,
+u8					Channel
 	);
 
 void
 PHY_SetTxPowerIndex(
-	IN	struct adapter *		pAdapter,
-	IN	u32				PowerIndex,
-	IN	u8				RFPath,
-	IN	u8				Rate
+struct adapter *padapter,
+u32				PowerIndex,
+u8				RFPath,
+u8				Rate
 	);
 
 void
 Hal_ChannelPlanToRegulation(
-	IN	struct adapter *		Adapter,
-	IN	u16				ChannelPlan
+struct adapter *Adapter,
+u16				ChannelPlan
 	);
 
 #ifdef CONFIG_LOAD_PHY_PARA_FROM_FILE
@@ -260,19 +260,19 @@ Hal_ChannelPlanToRegulation(
 #define LOAD_RF_TXPWR_TRACK_PARA_FILE	BIT5
 #define LOAD_RF_TXPWR_LMT_PARA_FILE		BIT6
 
-int phy_ConfigMACWithParaFile(IN struct adapter *	Adapter, IN char*	pFileName);
+int phy_ConfigMACWithParaFile(struct adapter *Adapter,char*pFileName);
 
-int phy_ConfigBBWithParaFile(IN struct adapter *	Adapter, IN char*	pFileName, IN u32	ConfigType);
+int phy_ConfigBBWithParaFile(struct adapter *Adapter,char*pFileName,u32	ConfigType);
 
-int phy_ConfigBBWithPgParaFile(IN struct adapter *	Adapter, IN char*	pFileName);
+int phy_ConfigBBWithPgParaFile(struct adapter *Adapter,char*pFileName);
 
-int phy_ConfigBBWithMpParaFile(IN struct adapter *	Adapter, IN char*	pFileName);
+int phy_ConfigBBWithMpParaFile(struct adapter *Adapter,char*pFileName);
 
-int PHY_ConfigRFWithParaFile(IN	struct adapter *	Adapter, IN char*	pFileName, IN u8	eRFPath);
+int PHY_ConfigRFWithParaFile(IN	struct adapter *Adapter,char*pFileName,u8	eRFPath);
 
-int PHY_ConfigRFWithTxPwrTrackParaFile(IN struct adapter *	Adapter, IN char*	pFileName);
+int PHY_ConfigRFWithTxPwrTrackParaFile(struct adapter *Adapter,char*pFileName);
 
-int PHY_ConfigRFWithPowerLimitTableParaFile(IN struct adapter *	Adapter, IN char*	pFileName);
+int PHY_ConfigRFWithPowerLimitTableParaFile(struct adapter *Adapter,char*pFileName);
 
 void phy_free_filebuf(struct adapter *padapter);
 #endif /* CONFIG_LOAD_PHY_PARA_FROM_FILE */

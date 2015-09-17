@@ -18,9 +18,9 @@
 
 static bool
 CheckPositive(
-    IN  PDM_ODM_T     pDM_Odm,
-    IN  const u4Byte  Condition1,
-    IN  const u4Byte  Condition2
+    PDM_ODM_T     pDM_Odm,
+    const u4Byte  Condition1,
+    const u4Byte  Condition2
    )
 {
 	u1Byte    _BoardType = ((pDM_Odm->BoardType & BIT4) >> 4) << 0 | /*  _GLNA */
@@ -87,9 +87,9 @@ CheckPositive(
 
 static bool
 CheckNegative(
-    IN  PDM_ODM_T     pDM_Odm,
-    IN  const u4Byte  Condition1,
-    IN  const u4Byte  Condition2
+    PDM_ODM_T     pDM_Odm,
+    const u4Byte  Condition1,
+    const u4Byte  Condition2
    )
 {
     return true;
@@ -229,7 +229,7 @@ static u4Byte Array_MP_8723B_RadioA[] = {
 
 void
 ODM_ReadAndConfig_MP_8723B_RadioA(
-	IN   PDM_ODM_T  pDM_Odm
+  PDM_ODM_T  pDM_Odm
 	)
 {
     u4Byte     i         = 0;
@@ -330,7 +330,7 @@ static u1Byte gDeltaSwingTableIdx_MP_2GCCKA_P_TxPowerTrack_SDIO_8723B[] = {0, 0,
 
 void
 ODM_ReadAndConfig_MP_8723B_TxPowerTrack_SDIO(
-	IN   PDM_ODM_T  pDM_Odm
+  PDM_ODM_T  pDM_Odm
 	)
 {
 	PODM_RF_CAL_T  pRFCalibrateInfo = &(pDM_Odm->RFCalibrateInfo);
@@ -615,7 +615,7 @@ static pu1Byte Array_MP_8723B_TXPWR_LMT[] = {
 
 void
 ODM_ReadAndConfig_MP_8723B_TXPWR_LMT(
-	IN   PDM_ODM_T  pDM_Odm
+  PDM_ODM_T  pDM_Odm
 	)
 {
 	u4Byte     i           = 0;

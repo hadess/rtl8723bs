@@ -47,16 +47,16 @@ ODM_TxPwrTrackSetPwr_8723B(
 
 void
 PHY_IQCalibrate_8723B(
-	IN struct adapter *	Adapter,
-	IN bool	bReCovery,
-	IN bool	bRestore,
-	IN bool	Is2ant,
-	IN u1Byte	RF_Path);
+struct adapter *Adapter,
+bool	bReCovery,
+bool	bRestore,
+bool	Is2ant,
+u1Byte	RF_Path);
 
 void
 ODM_SetIQCbyRFpath(
-	IN PDM_ODM_T		pDM_Odm,
-    IN u4Byte RFpath
+PDM_ODM_T		pDM_Odm,
+   u4Byte RFpath
 	);
 
 /*  */
@@ -64,37 +64,37 @@ ODM_SetIQCbyRFpath(
 /*  */
 void
 PHY_LCCalibrate_8723B(
-	IN PDM_ODM_T		pDM_Odm
+PDM_ODM_T		pDM_Odm
 );
 
 /*  */
 /*  AP calibrate */
 /*  */
 void
-PHY_DigitalPredistortion_8723B(		IN	struct adapter *	pAdapter);
+PHY_DigitalPredistortion_8723B(	struct adapter *padapter);
 
 
 void
 _PHY_SaveADDARegisters_8723B(
-	IN	struct adapter *	pAdapter,
-	IN	pu4Byte		ADDAReg,
-	IN	pu4Byte		ADDABackup,
-	IN	u4Byte		RegisterNum
+struct adapter *padapter,
+pu4Byte		ADDAReg,
+pu4Byte		ADDABackup,
+u4Byte		RegisterNum
 	);
 
 void
 _PHY_PathADDAOn_8723B(
-	IN	struct adapter *	pAdapter,
-	IN	pu4Byte		ADDAReg,
-	IN	bool		isPathAOn,
-	IN	bool		is2T
+struct adapter *padapter,
+pu4Byte		ADDAReg,
+bool		isPathAOn,
+bool		is2T
 	);
 
 void
 _PHY_MACSettingCalibration_8723B(
-	IN	struct adapter *	pAdapter,
-	IN	pu4Byte		MACReg,
-	IN	pu4Byte		MACBackup
+struct adapter *padapter,
+pu4Byte		MACReg,
+pu4Byte		MACBackup
 	);
 
 #endif	/*  #ifndef __HAL_PHY_RF_8188E_H__ */

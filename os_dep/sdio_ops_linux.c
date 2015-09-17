@@ -68,8 +68,8 @@ u8 sd_f0_read8(struct intf_hdl *pintfhdl, u32 addr, s32 *err)
 
 /*
  * Return:
- *	0		Success
- *	others	Fail
+ *0		Success
+ *others	Fail
  */
 s32 _sd_cmd52_read(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, u8 *pdata)
 {
@@ -103,8 +103,8 @@ s32 _sd_cmd52_read(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, u8 *pdata)
 
 /*
  * Return:
- *	0		Success
- *	others	Fail
+ *0		Success
+ *others	Fail
  */
 s32 sd_cmd52_read(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, u8 *pdata)
 {
@@ -138,8 +138,8 @@ s32 sd_cmd52_read(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, u8 *pdata)
 
 /*
  * Return:
- *	0		Success
- *	others	Fail
+ *0		Success
+ *others	Fail
  */
 s32 _sd_cmd52_write(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, u8 *pdata)
 {
@@ -173,8 +173,8 @@ s32 _sd_cmd52_write(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, u8 *pdata)
 
 /*
  * Return:
- *	0		Success
- *	others	Fail
+ *0		Success
+ *others	Fail
  */
 s32 sd_cmd52_write(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, u8 *pdata)
 {
@@ -399,14 +399,14 @@ void sd_write32(struct intf_hdl *pintfhdl, u32 addr, u32 v, s32 *err)
  * in SDIO ISR(host had been claimed).
  *
  * Parameters:
- *	psdio	pointer of SDIO_DATA
- *	addr	address to read
- *	cnt		amount to read
- *	pdata	pointer to put data, this should be a "DMA:able scratch buffer"!
+ *psdio	pointer of SDIO_DATA
+ *addr	address to read
+ *cnt		amount to read
+ *pdata	pointer to put data, this should be a "DMA:able scratch buffer"!
  *
  * Return:
- *	0		Success
- *	others	Fail
+ *0		Success
+ *others	Fail
  */
 s32 _sd_read(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, void *pdata)
 {
@@ -456,14 +456,14 @@ s32 _sd_read(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, void *pdata)
  * Use CMD53 to read data from SDIO device.
  *
  * Parameters:
- *	psdio	pointer of SDIO_DATA
- *	addr	address to read
- *	cnt		amount to read
- *	pdata	pointer to put data, this should be a "DMA:able scratch buffer"!
+ *psdio	pointer of SDIO_DATA
+ *addr	address to read
+ *cnt		amount to read
+ *pdata	pointer to put data, this should be a "DMA:able scratch buffer"!
  *
  * Return:
- *	0		Success
- *	others	Fail
+ *0		Success
+ *others	Fail
  */
 s32 sd_read(struct intf_hdl * pintfhdl, u32 addr, u32 cnt, void *pdata)
 {
@@ -500,14 +500,14 @@ s32 sd_read(struct intf_hdl * pintfhdl, u32 addr, u32 cnt, void *pdata)
  * in SDIO ISR(host had been claimed).
  *
  * Parameters:
- *	psdio	pointer of SDIO_DATA
- *	addr	address to write
- *	cnt		amount to write
- *	pdata	data pointer, this should be a "DMA:able scratch buffer"!
+ *psdio	pointer of SDIO_DATA
+ *addr	address to write
+ *cnt		amount to write
+ *pdata	data pointer, this should be a "DMA:able scratch buffer"!
  *
  * Return:
- *	0		Success
- *	others	Fail
+ *0		Success
+ *others	Fail
  */
 s32 _sd_write(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, void *pdata)
 {

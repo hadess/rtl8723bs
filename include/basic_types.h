@@ -34,10 +34,10 @@
 /*  TODO: Belows are Sync from SD7-Driver. It is necessary to check correctness */
 
 /*
- *	Call endian free function when
- *		1. Read/write packet content.
- *		2. Before write integer to IO.
- *		3. After read integer from IO.
+ *Call endian free function when
+ *1. Read/write packet content.
+ *2. Before write integer to IO.
+ *3. After read integer from IO.
 */
 
 /*  */

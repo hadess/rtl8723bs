@@ -16,23 +16,23 @@
 #include "odm_precomp.h"
 
 static u4Byte edca_setting_DL_GMode[HT_IOT_PEER_MAX] = {
-/*	UNKNOWN, REALTEK_90, ALTEK_92SE	BROADCOM, LINK	ATHEROS,
- *	CISCO, MERU, MARVELL, 92U_AP, SELF_AP
+/*UNKNOWN, REALTEK_90, ALTEK_92SE	BROADCOM, LINK	ATHEROS,
+ *CISCO, MERU, MARVELL, 92U_AP, SELF_AP
  */
 	0x4322, 0xa44f, 0x5e4322, 0xa42b, 0x5e4322, 0x4322,
 	0xa42b, 0x5ea42b, 0xa44f, 0x5e4322, 0x5ea42b
 };
 
 static u4Byte edca_setting_UL[HT_IOT_PEER_MAX] = {
-/*	UNKNOWN, REALTEK_90, REALTEK_92SE, BROADCOM, RALINK, ATHEROS,
- *	CISCO, MERU, MARVELL, 92U_AP, SELF_AP(DownLink/Tx)
+/*UNKNOWN, REALTEK_90, REALTEK_92SE, BROADCOM, RALINK, ATHEROS,
+ *CISCO, MERU, MARVELL, 92U_AP, SELF_AP(DownLink/Tx)
  */
 	0x5e4322, 0xa44f, 0x5e4322, 0x5ea32b, 0x5ea422,	0x5ea322,
 	0x3ea430, 0x5ea42b, 0x5ea44f, 0x5e4322, 0x5e4322};
 
 static u4Byte edca_setting_DL[HT_IOT_PEER_MAX] = {
-/*	UNKNOWN, REALTEK_90, REALTEK_92SE, BROADCOM, RALINK, ATHEROS,
- *	CISCO, MERU, MARVELL, 92U_AP, SELF_AP(UpLink/Rx)
+/*UNKNOWN, REALTEK_90, REALTEK_92SE, BROADCOM, RALINK, ATHEROS,
+ *CISCO, MERU, MARVELL, 92U_AP, SELF_AP(UpLink/Rx)
  */
 	0xa44f, 0x5ea44f, 0x5e4322, 0x5ea42b, 0xa44f, 0xa630,
 	0x5ea630, 0x5ea42b, 0xa44f, 0xa42b, 0xa42b};
@@ -40,7 +40,7 @@ static u4Byte edca_setting_DL[HT_IOT_PEER_MAX] = {
 void ODM_EdcaTurboInit(void *pDM_VOID)
 {
 	PDM_ODM_T	pDM_Odm = (PDM_ODM_T)pDM_VOID;
-	struct adapter *	Adapter = pDM_Odm->Adapter;
+	struct adapter *Adapter = pDM_Odm->Adapter;
 
 	pDM_Odm->DM_EDCA_Table.bCurrentTurboEDCA = false;
 	pDM_Odm->DM_EDCA_Table.bIsCurRDLState = false;
@@ -82,7 +82,7 @@ void odm_EdcaTurboCheck(void *pDM_VOID)
 void odm_EdcaTurboCheckCE(void *pDM_VOID)
 {
 	PDM_ODM_T		pDM_Odm = (PDM_ODM_T)pDM_VOID;
-	struct adapter *	       Adapter = pDM_Odm->Adapter;
+	struct adapter *       Adapter = pDM_Odm->Adapter;
 	struct dvobj_priv	*pdvobjpriv = adapter_to_dvobj(Adapter);
 	struct recv_priv	*precvpriv = &(Adapter->recvpriv);
 	struct registry_priv	*pregpriv = &Adapter->registrypriv;

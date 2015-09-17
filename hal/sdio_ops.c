@@ -28,10 +28,10 @@
 /*  Creadted by Roger, 2011.01.31. */
 /*  */
 static void HalSdioGetCmdAddr8723BSdio(
-	IN	struct adapter *			padapter,
-	IN	u8				DeviceID,
-	IN	u32				Addr,
-	OUT	u32*				pCmdAddr
+struct adapter *	padapter,
+u8				DeviceID,
+u32				Addr,
+u32*		pCmdAddr
 	)
 {
 	switch (DeviceID)
@@ -113,7 +113,7 @@ static u8 get_deviceid(u32 addr)
 
 /*
  * Ref:
- *	HalSdioGetCmdAddr8723BSdio()
+ *HalSdioGetCmdAddr8723BSdio()
  */
 static u32 _cvrt2ftaddr(const u32 addr, u8 *pdeviceId, u16 *poffset)
 {
@@ -405,19 +405,19 @@ static void sdio_write_mem(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, u8 *wme
 
 /*
  * Description:
- *	Read from RX FIFO
- *	Round read size to block size,
- *	and make sure data transfer will be done in one command.
+ *Read from RX FIFO
+ *Round read size to block size,
+ *and make sure data transfer will be done in one command.
  *
  * Parameters:
- *	pintfhdl	a pointer of intf_hdl
- *	addr		port ID
- *	cnt			size to read
- *	rmem		address to put data
+ *pintfhdl	a pointer of intf_hdl
+ *addr		port ID
+ *cnt			size to read
+ *rmem		address to put data
  *
  * Return:
- *	_SUCCESS(1)		Success
- *	_FAIL(0)		Fail
+ *_SUCCESS(1)		Success
+ *_FAIL(0)		Fail
  */
 static u32 sdio_read_port(
 	struct intf_hdl *pintfhdl,
@@ -476,19 +476,19 @@ static u32 sdio_read_port(
 
 /*
  * Description:
- *	Write to TX FIFO
- *	Align write size block size,
- *	and make sure data could be written in one command.
+ *Write to TX FIFO
+ *Align write size block size,
+ *and make sure data could be written in one command.
  *
  * Parameters:
- *	pintfhdl	a pointer of intf_hdl
- *	addr		port ID
- *	cnt			size to write
- *	wmem		data pointer to write
+ *pintfhdl	a pointer of intf_hdl
+ *addr		port ID
+ *cnt			size to write
+ *wmem		data pointer to write
  *
  * Return:
- *	_SUCCESS(1)		Success
- *	_FAIL(0)		Fail
+ *_SUCCESS(1)		Success
+ *_FAIL(0)		Fail
  */
 static u32 sdio_write_port(
 	struct intf_hdl *pintfhdl,
@@ -547,7 +547,7 @@ void sdio_set_intf_ops(struct adapter *padapter, struct _io_ops *pops)
  * Todo: align address to 4 bytes.
  */
 static s32 _sdio_local_read(
-	struct adapter *	padapter,
+	struct adapter *padapter,
 	u32			addr,
 	u32			cnt,
 	u8			*pbuf)
@@ -589,7 +589,7 @@ static s32 _sdio_local_read(
  * Todo: align address to 4 bytes.
  */
 s32 sdio_local_read(
-	struct adapter *	padapter,
+	struct adapter *padapter,
 	u32			addr,
 	u32			cnt,
 	u8			*pbuf)
@@ -631,7 +631,7 @@ s32 sdio_local_read(
  * Todo: align address to 4 bytes.
  */
 s32 sdio_local_write(
-	struct adapter *	padapter,
+	struct adapter *padapter,
 	u32		addr,
 	u32		cnt,
 	u8		*pbuf)

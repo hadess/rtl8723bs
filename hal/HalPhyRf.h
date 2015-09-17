@@ -46,19 +46,19 @@ typedef struct _TXPWRTRACK_CFG {
 } TXPWRTRACK_CFG, *PTXPWRTRACK_CFG;
 
 void ConfigureTxpowerTrack(
-	IN	PDM_ODM_T		pDM_Odm,
-	OUT	PTXPWRTRACK_CFG	pConfig
+PDM_ODM_T		pDM_Odm,
+PTXPWRTRACK_CFG	pConfig
 	);
 
 
 void
 ODM_ClearTxPowerTrackingState(
-	IN PDM_ODM_T		pDM_Odm
+PDM_ODM_T		pDM_Odm
 	);
 
 void
 ODM_TXPowerTrackingCallback_ThermalMeter(
-	IN struct adapter *	Adapter
+struct adapter *Adapter
 	);
 
 
@@ -68,7 +68,7 @@ ODM_TXPowerTrackingCallback_ThermalMeter(
 
 u1Byte
 ODM_GetRightChnlPlaceforIQK(
-    IN u1Byte chnl
+   u1Byte chnl
 );
 
 

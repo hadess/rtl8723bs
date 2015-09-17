@@ -19,19 +19,19 @@
 /*  */
 /*  RF RL6052 Series API */
 /*  */
-void		rtl8192c_RF_ChangeTxPath(	IN	struct adapter *	Adapter,
-										IN	u16		DataRate);
+void		rtl8192c_RF_ChangeTxPath(struct adapter *Adapter,
+									u16		DataRate);
 void		rtl8192c_PHY_RF6052SetBandwidth(
-										IN	struct adapter *				Adapter,
-										IN	CHANNEL_WIDTH		Bandwidth);
+									struct adapter *		Adapter,
+									CHANNEL_WIDTH		Bandwidth);
 void	rtl8192c_PHY_RF6052SetCckTxPower(
-										IN	struct adapter *	Adapter,
-										IN	u8*		pPowerlevel);
+									struct adapter *Adapter,
+									u8*pPowerlevel);
 void	rtl8192c_PHY_RF6052SetOFDMTxPower(
-										IN	struct adapter *	Adapter,
-										IN	u8*		pPowerLevel,
-										IN	u8		Channel);
-int	PHY_RF6052_Config8192C(	IN	struct adapter *		Adapter	);
+									struct adapter *Adapter,
+									u8*pPowerLevel,
+									u8		Channel);
+int	PHY_RF6052_Config8192C(struct adapter *Adapter	);
 
 /*--------------------------Exported Function prototype---------------------*/
 

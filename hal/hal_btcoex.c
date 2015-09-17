@@ -208,7 +208,7 @@ static void halbtcoutsrc_NormalLps(PBTC_COEXIST pBtCoexist)
 
 /*
  *  Constraint:
- *	   1. this function will request pwrctrl->lock
+ *   1. this function will request pwrctrl->lock
  */
 static void halbtcoutsrc_LeaveLowPower(PBTC_COEXIST pBtCoexist)
 {
@@ -245,7 +245,7 @@ static void halbtcoutsrc_LeaveLowPower(PBTC_COEXIST pBtCoexist)
 
 /*
  *  Constraint:
- *	   1. this function will request pwrctrl->lock
+ *   1. this function will request pwrctrl->lock
  */
 static void halbtcoutsrc_NormalLowPower(PBTC_COEXIST pBtCoexist)
 {
@@ -852,7 +852,7 @@ static void halbtcoutsrc_Write4Byte(void *pBtcContext, u32 RegAddr, u32 Data)
 static void halbtcoutsrc_WriteLocalReg1Byte(void *pBtcContext, u32 RegAddr, u8 Data)
 {
 	PBTC_COEXIST		pBtCoexist =(PBTC_COEXIST)pBtcContext;
-	struct adapter *			Adapter =pBtCoexist->Adapter;
+	struct adapter *	Adapter =pBtCoexist->Adapter;
 
 	if (BTC_INTF_SDIO == pBtCoexist->chipInterface)
 	{
@@ -1378,7 +1378,7 @@ void EXhalbtcoutsrc_DisplayBtCoexInfo(PBTC_COEXIST pBtCoexist)
 
 /*
  * Description:
- *	Run BT-Coexist mechansim or not
+ *Run BT-Coexist mechansim or not
  *
  */
 void hal_btcoex_SetBTCoexist(struct adapter * padapter, u8 bBtExist)
@@ -1392,11 +1392,11 @@ void hal_btcoex_SetBTCoexist(struct adapter * padapter, u8 bBtExist)
 
 /*
  * Dewcription:
- *	Check is co-exist mechanism enabled or not
+ *Check is co-exist mechanism enabled or not
  *
  * Return:
- *	true	Enable BT co-exist mechanism
- *	false	Disable BT co-exist mechanism
+ *true	Enable BT co-exist mechanism
+ *false	Disable BT co-exist mechanism
  */
 u8 hal_btcoex_IsBtExist(struct adapter * padapter)
 {

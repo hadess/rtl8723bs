@@ -1,5 +1,5 @@
 /*****************************************************************************
- *	Copyright(c) 2009,  RealTEK Technology Inc. All Right Reserved.
+ *Copyright(c) 2009,  RealTEK Technology Inc. All Right Reserved.
  *
  * Module:	__INC_HAL8723BREG_H
  *
@@ -12,7 +12,7 @@
  * Abbrev:
  *
  * History:
- *		Data		Who		Remark
+ *Data		Who		Remark
  *
  *****************************************************************************/
 #ifndef __INC_HAL8723BREG_H
