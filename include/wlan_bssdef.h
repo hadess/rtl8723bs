@@ -85,14 +85,11 @@ typedef enum _NDIS_802_11_NETWORK_INFRASTRUCTURE
 
 
 
-typedef struct _NDIS_802_11_FIXED_IEs
-{
+struct ndis_802_11_fix_ie {
   u8  Timestamp[8];
   u16  BeaconInterval;
   u16  Capabilities;
-} NDIS_802_11_FIXED_IEs, *PNDIS_802_11_FIXED_IEs;
-
-
+};
 
 typedef struct _NDIS_802_11_VARIABLE_IEs
 {

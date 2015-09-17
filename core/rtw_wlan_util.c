@@ -1716,7 +1716,7 @@ unsigned int is_ap_in_tkip(struct adapter *padapter)
 
 	if (rtw_get_capability((struct wlan_bssid_ex *)cur_network) & WLAN_CAPABILITY_PRIVACY)
 	{
-		for (i = sizeof(NDIS_802_11_FIXED_IEs); i < pmlmeinfo->network.IELength;)
+		for (i = sizeof(struct ndis_802_11_fix_ie); i < pmlmeinfo->network.IELength;)
 		{
 			pIE = (PNDIS_802_11_VARIABLE_IEs)(pmlmeinfo->network.IEs + i);
 
@@ -1811,7 +1811,7 @@ unsigned char check_assoc_AP(u8 *pframe, uint len)
 	unsigned int	i;
 	PNDIS_802_11_VARIABLE_IEs	pIE;
 
-	for (i = sizeof(NDIS_802_11_FIXED_IEs); i < len;)
+	for (i = sizeof(struct ndis_802_11_fix_ie); i < len;)
 	{
 		pIE = (PNDIS_802_11_VARIABLE_IEs)(pframe + i);
 

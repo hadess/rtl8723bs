@@ -626,7 +626,7 @@ static void update_current_network(struct adapter *adapter, struct wlan_bssid_ex
 		/* if (pmlmepriv->cur_network.network.IELength<= pnetwork->IELength) */
 		{
 			update_network(&(pmlmepriv->cur_network.network), pnetwork, adapter, true);
-			rtw_update_protection(adapter, (pmlmepriv->cur_network.network.IEs) + sizeof (NDIS_802_11_FIXED_IEs),
+			rtw_update_protection(adapter, (pmlmepriv->cur_network.network.IEs) + sizeof (struct ndis_802_11_fix_ie),
 									pmlmepriv->cur_network.network.IELength);
 		}
 	}
@@ -1446,7 +1446,7 @@ static void rtw_joinbss_update_network(struct adapter *padapter, struct wlan_net
 				break;
 	}
 
-	rtw_update_protection(padapter, (cur_network->network.IEs) + sizeof (NDIS_802_11_FIXED_IEs),
+	rtw_update_protection(padapter, (cur_network->network.IEs) + sizeof (struct ndis_802_11_fix_ie),
 									(cur_network->network.IELength));
 
 	rtw_update_ht_cap(padapter, cur_network->network.IEs, cur_network->network.IELength, (u8) cur_network->network.Configuration.DSConfig);
@@ -3119,7 +3119,7 @@ void rtw_update_ht_cap(struct adapter *padapter, u8 *pie, uint ie_len, u8 channe
 
 	/* check Max Rx A-MPDU Size */
 	len = 0;
-	p = rtw_get_ie(pie+sizeof (NDIS_802_11_FIXED_IEs), _HT_CAPABILITY_IE_, &len, ie_len-sizeof (NDIS_802_11_FIXED_IEs));
+	p = rtw_get_ie(pie+sizeof (struct ndis_802_11_fix_ie), _HT_CAPABILITY_IE_, &len, ie_len-sizeof (struct ndis_802_11_fix_ie));
 	if (p && len>0)
 	{
 		pht_capie = (struct rtw_ieee80211_ht_cap *)(p+2);
@@ -3133,7 +3133,7 @@ void rtw_update_ht_cap(struct adapter *padapter, u8 *pie, uint ie_len, u8 channe
 
 
 	len = 0;
-	p = rtw_get_ie(pie+sizeof (NDIS_802_11_FIXED_IEs), _HT_ADD_INFO_IE_, &len, ie_len-sizeof (NDIS_802_11_FIXED_IEs));
+	p = rtw_get_ie(pie+sizeof (struct ndis_802_11_fix_ie), _HT_ADD_INFO_IE_, &len, ie_len-sizeof (struct ndis_802_11_fix_ie));
 	if (p && len>0)
 	{
 		pht_addtinfo = (struct ieee80211_ht_addt_info *)(p+2);

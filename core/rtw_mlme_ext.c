@@ -3590,7 +3590,7 @@ void issue_assocreq(struct adapter *padapter)
 	}
 
 	/* vendor specific IE, such as WPA, WMM, WPS */
-	for (i = sizeof(NDIS_802_11_FIXED_IEs); i < pmlmeinfo->network.IELength;)
+	for (i = sizeof(struct ndis_802_11_fix_ie); i < pmlmeinfo->network.IELength;)
 	{
 		pIE = (PNDIS_802_11_VARIABLE_IEs)(pmlmeinfo->network.IEs + i);
 
@@ -6651,7 +6651,7 @@ u8 join_cmd_hdl(struct adapter *padapter, u8 *pbuf)
 	/* Check AP vendor to move rtw_joinbss_cmd() */
 	/* pmlmeinfo->assoc_AP_vendor = check_assoc_AP(pnetwork->IEs, pnetwork->IELength); */
 
-	/* sizeof(NDIS_802_11_FIXED_IEs) */
+	/* sizeof(struct ndis_802_11_fix_ie) */
 	for (i = _FIXED_IE_LENGTH_; i < pnetwork->IELength;)
 	{
 		pIE = (PNDIS_802_11_VARIABLE_IEs)(pnetwork->IEs + i);
