@@ -54,12 +54,8 @@
 #define IS_FW_HEADER_EXIST_8723B(_pFwHdr)	((le16_to_cpu(_pFwHdr->Signature)&0xFFF0) == 0x5300)
 
 struct rt_firmware {
-	u8*	szFwBuffer;
-	u32			ulFwLength;
-
-	u8*	szBTFwBuffer;
-	u8			myBTFwBuffer[FW_8723B_SIZE];
-	u32			ulBTFwLength;
+	u32 ulFwLength;
+	u8 *szFwBuffer;
 };
 
 /*  */
@@ -273,7 +269,7 @@ void rtl8723bs_hal_check_bt_hang(struct adapter * adapter);
 void HalSetOutPutGPIO(struct adapter * padapter, u8 index, u8 OutPutValue);
 #endif
 
-int FirmwareDownloadBT(struct adapter * Adapter, PRT_MP_FIRMWARE pFirmware);
+int FirmwareDownloadBT(struct adapter * Adapter, struct rt_firmware *firmware);
 
 void CCX_FwC2HTxRpt_8723b(struct adapter * padapter, u8 *pdata, u8 len);
 s32 c2h_id_filter_ccx_8723b(u8 *buf);

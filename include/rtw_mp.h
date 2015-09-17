@@ -319,21 +319,6 @@ struct bb_reg_param {
 	u32 value;
 };
 
-typedef struct _MP_FIRMWARE {
-	FIRMWARE_SOURCE eFWSource;
-	u8*szFwBuffer;
-	u32		ulFwLength;
-
-	u8*szBTFwBuffer;
-	u8		myBTFwBuffer[0x8000];
-	u32		ulBTFwLength;
-} RT_MP_FIRMWARE, *PRT_MP_FIRMWARE;
-
-
-
-
-/*  */
-
 #define LOWER	true
 #define RAISE	false
 

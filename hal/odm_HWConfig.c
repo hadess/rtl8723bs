@@ -13,30 +13,12 @@
  *
  ******************************************************************************/
 
-/*  */
-/*  include files */
-/*  */
-
-
 #include "odm_precomp.h"
 
 #define READ_AND_CONFIG_MP(ic, txt) (ODM_ReadAndConfig_MP_##ic##txt(pDM_Odm))
-#define READ_AND_CONFIG_TC(ic, txt) (ODM_ReadAndConfig_TC_##ic##txt(pDM_Odm))
-
-
-
-  #define READ_AND_CONFIG     READ_AND_CONFIG_MP
-
-
-#define READ_FIRMWARE_MP(ic, txt)		(ODM_ReadFirmware_MP_##ic##txt(pDM_Odm, pFirmware, pSize))
-#define READ_FIRMWARE_TC(ic, txt)		(ODM_ReadFirmware_TC_##ic##txt(pDM_Odm, pFirmware, pSize))
-
-#define READ_FIRMWARE     READ_FIRMWARE_MP
-
-#define GET_VERSION_MP(ic, txt)			(ODM_GetVersion_MP_##ic##txt())
-#define GET_VERSION_TC(ic, txt)			(ODM_GetVersion_TC_##ic##txt())
+#define READ_AND_CONFIG     READ_AND_CONFIG_MP
+#define GET_VERSION_MP(ic, txt)		(ODM_GetVersion_MP_##ic##txt())
 #define GET_VERSION(ic, txt) (pDM_Odm->bIsMPChip?GET_VERSION_MP(ic, txt):GET_VERSION_TC(ic, txt))
-
 
 static u1Byte
 odm_QueryRxPwrPercentage(
