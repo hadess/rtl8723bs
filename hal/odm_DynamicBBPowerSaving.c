@@ -13,15 +13,11 @@
  *
  ******************************************************************************/
 
-/*  */
-/*  include files */
-/*  */
-
 #include "odm_precomp.h"
 
 void
 odm_DynamicBBPowerSavingInit(
-	void *			pDM_VOID
+	void *				pDM_VOID
 	)
 {
 	PDM_ODM_T		pDM_Odm = (PDM_ODM_T)pDM_VOID;
@@ -37,20 +33,20 @@ odm_DynamicBBPowerSavingInit(
 
 void
 ODM_RF_Saving(
-	void *			pDM_VOID,
-u1Byte		bForceInNormal
+	void *				pDM_VOID,
+u8 bForceInNormal
 	)
 {
 	PDM_ODM_T		pDM_Odm = (PDM_ODM_T)pDM_VOID;
 	pPS_T	pDM_PSTable = &pDM_Odm->DM_PSTable;
-	u1Byte	Rssi_Up_bound = 30 ;
-	u1Byte	Rssi_Low_bound = 25;
+	u8 Rssi_Up_bound = 30 ;
+	u8 Rssi_Low_bound = 25;
 	if (pDM_Odm->PatchID == 40) /* RT_CID_819x_FUNAI_TV */
 	{
 		Rssi_Up_bound = 50 ;
 		Rssi_Low_bound = 45;
 	}
-	if (pDM_PSTable->initialize == 0){
+	if (pDM_PSTable->initialize == 0) {
 
 		pDM_PSTable->Reg874 = (PHY_QueryBBReg(pDM_Odm->Adapter, 0x874, bMaskDWord)&0x1CC000)>>14;
 		pDM_PSTable->RegC70 = (PHY_QueryBBReg(pDM_Odm->Adapter, 0xc70, bMaskDWord)&BIT3)>>3;

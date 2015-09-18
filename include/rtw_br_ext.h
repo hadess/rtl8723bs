@@ -35,9 +35,9 @@ struct nat25_network_db_entry
 	struct nat25_network_db_entry	*next_hash;
 	struct nat25_network_db_entry	**pprev_hash;
 	atomic_t						use_count;
-	unsigned char					macAddr[6];
+	unsigned char 				macAddr[6];
 	unsigned long					ageing_timer;
-	unsigned char					networkAddr[MAX_NETWORK_ADDR_LEN];
+	unsigned char 				networkAddr[MAX_NETWORK_ADDR_LEN];
 };
 
 enum NAT25_METHOD {
@@ -54,7 +54,7 @@ struct br_ext_info {
 	unsigned int	macclone_enable;
 	unsigned int	dhcp_bcst_disable;
 	int		addPPPoETag;		/*  1: Add PPPoE relay-SID, 0: disable */
-	unsigned char	nat25_dmzMac[MACADDRLEN];
+	unsigned char nat25_dmzMac[MACADDRLEN];
 	unsigned int	nat25sc_disable;
 };
 

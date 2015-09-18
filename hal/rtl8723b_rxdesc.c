@@ -42,7 +42,7 @@ static void process_link_qual(struct adapter *padapter, union recv_frame *prfram
 	struct rx_pkt_attrib *pattrib;
 	struct signal_stat * signal_stat;
 
-	if (prframe == NULL || padapter ==NULL){
+	if (prframe == NULL || padapter == NULL) {
 		return;
 	}
 

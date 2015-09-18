@@ -247,7 +247,7 @@
 		if (((_Comp) & GlobalDebugComponents) && (_Level <= GlobalDebugLevel))	\
 		{									\
 			int __i;								\
-			u8	*ptr = (u8 *)_HexData;				\
+			u8 *ptr = (u8 *)_HexData;				\
 			_dbgdump("%s", DRIVER_PREFIX);						\
 			_dbgdump(_TitleString);						\
 			for (__i = 0; __i<(int)_HexDataLen; __i++)				\

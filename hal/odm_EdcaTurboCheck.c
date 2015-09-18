@@ -15,7 +15,7 @@
 
 #include "odm_precomp.h"
 
-static u4Byte edca_setting_DL_GMode[HT_IOT_PEER_MAX] = {
+static u32 edca_setting_DL_GMode[HT_IOT_PEER_MAX] = {
 /*UNKNOWN, REALTEK_90, ALTEK_92SE	BROADCOM, LINK	ATHEROS,
  *CISCO, MERU, MARVELL, 92U_AP, SELF_AP
  */
@@ -23,14 +23,14 @@ static u4Byte edca_setting_DL_GMode[HT_IOT_PEER_MAX] = {
 	0xa42b, 0x5ea42b, 0xa44f, 0x5e4322, 0x5ea42b
 };
 
-static u4Byte edca_setting_UL[HT_IOT_PEER_MAX] = {
+static u32 edca_setting_UL[HT_IOT_PEER_MAX] = {
 /*UNKNOWN, REALTEK_90, REALTEK_92SE, BROADCOM, RALINK, ATHEROS,
  *CISCO, MERU, MARVELL, 92U_AP, SELF_AP(DownLink/Tx)
  */
 	0x5e4322, 0xa44f, 0x5e4322, 0x5ea32b, 0x5ea422,	0x5ea322,
 	0x3ea430, 0x5ea42b, 0x5ea44f, 0x5e4322, 0x5e4322};
 
-static u4Byte edca_setting_DL[HT_IOT_PEER_MAX] = {
+static u32 edca_setting_DL[HT_IOT_PEER_MAX] = {
 /*UNKNOWN, REALTEK_90, REALTEK_92SE, BROADCOM, RALINK, ATHEROS,
  *CISCO, MERU, MARVELL, 92U_AP, SELF_AP(UpLink/Rx)
  */
@@ -83,21 +83,21 @@ void odm_EdcaTurboCheckCE(void *pDM_VOID)
 {
 	PDM_ODM_T		pDM_Odm = (PDM_ODM_T)pDM_VOID;
 	struct adapter *       Adapter = pDM_Odm->Adapter;
-	struct dvobj_priv	*pdvobjpriv = adapter_to_dvobj(Adapter);
-	struct recv_priv	*precvpriv = &(Adapter->recvpriv);
-	struct registry_priv	*pregpriv = &Adapter->registrypriv;
-	struct mlme_ext_priv	*pmlmeext = &(Adapter->mlmeextpriv);
-	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
-	u32	EDCA_BE_UL = 0x5ea42b;
-	u32	EDCA_BE_DL = 0x5ea42b;
-	u32	iot_peer = 0;
-	u8	wirelessmode = 0xFF;		/* invalid value */
-	u32	trafficIndex;
-	u32	edca_param;
+	struct dvobj_priv *pdvobjpriv = adapter_to_dvobj(Adapter);
+	struct recv_priv *precvpriv = &(Adapter->recvpriv);
+	struct registry_priv *pregpriv = &Adapter->registrypriv;
+	struct mlme_ext_priv *pmlmeext = &(Adapter->mlmeextpriv);
+	struct mlme_ext_info *pmlmeinfo = &(pmlmeext->mlmext_info);
+	u32 EDCA_BE_UL = 0x5ea42b;
+	u32 EDCA_BE_DL = 0x5ea42b;
+	u32 iot_peer = 0;
+	u8 wirelessmode = 0xFF;		/* invalid value */
+	u32 trafficIndex;
+	u32 edca_param;
 	u64	cur_tx_bytes = 0;
 	u64	cur_rx_bytes = 0;
-	u8	bbtchange = false;
-	u8	biasonrx = false;
+	u8 bbtchange = false;
+	u8 biasonrx = false;
 	struct hal_com_data	*pHalData = GET_HAL_DATA(Adapter);
 
 	if (!pDM_Odm->bLinked) {

@@ -34,7 +34,7 @@
 
 void
 odm_DynamicTxPowerInit(
-	void *			pDM_VOID
+	void *				pDM_VOID
 	);
 
 #endif

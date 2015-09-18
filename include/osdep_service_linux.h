@@ -60,10 +60,10 @@
 	};
 
 	typedef	struct sk_buff	_pkt;
-	typedef unsigned char	_buffer;
+	typedef unsigned char _buffer;
 
 	typedef	int	_OS_STATUS;
-	/* typedef u32	_irqL; */
+	/* typedef u32 _irqL; */
 	typedef unsigned long _irqL;
 	typedef	struct	net_device * _nic_hdl;
 
@@ -74,12 +74,12 @@
 
 	typedef struct work_struct _workitem;
 
-__inline static struct list_head *get_next(struct list_head *list)
+__inline static struct list_head *get_next(struct list_head	*list)
 {
 	return list->next;
 }
 
-__inline static struct list_head *get_list_head(struct __queue	*queue)
+__inline static struct list_head	*get_list_head(struct __queue	*queue)
 {
 	return (&(queue->queue));
 }
@@ -110,7 +110,7 @@ __inline static void _cancel_timer(_timer *ptimer, u8 *bcancelled)
 }
 
 
-__inline static void _init_workitem(_workitem *pwork, void *pfunc, void * cntx)
+__inline static void _init_workitem(_workitem *pwork, void *pfunc, void *cntx)
 {
 	INIT_WORK(pwork, pfunc);
 }

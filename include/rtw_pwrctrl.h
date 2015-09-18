@@ -113,14 +113,13 @@ typedef _sema _pwrlock;
 #define EXE_PWR_LPS		0x04
 
 /*  RF state. */
-typedef enum _rt_rf_power_state
-{
+enum rt_rf_power_state {
 	rf_on,		/*  RF is on after RFSleep or RFOff */
 	rf_sleep,	/*  802.11 Power Save mode */
 	rf_off,		/*  HW/SW Radio OFF or Inactive Power Save */
 	/* Add the new RF state above this line ===== */
 	rf_max
-}rt_rf_power_state;
+};
 
 /*  RF Off Level for IPS or HW/SW radio off */
 #define	RT_RF_OFF_LEVL_ASPM			BIT(0)	/*  PCI ASPM */
@@ -159,8 +158,7 @@ enum { /*  for ips_mode */
 };
 
 /*  Design for pwrctrl_priv.ips_deny, 32 bits for 32 reasons at most */
-typedef enum _PS_DENY_REASON
-{
+enum PS_DENY_REASON {
 	PS_DENY_DRV_INITIAL = 0,
 	PS_DENY_SCAN,
 	PS_DENY_JOIN,
@@ -170,23 +168,23 @@ typedef enum _PS_DENY_REASON
 	PS_DENY_MGNT_TX,
 	PS_DENY_DRV_REMOVE = 30,
 	PS_DENY_OTHERS = 31
-} PS_DENY_REASON;
+};
 
 #ifdef CONFIG_PNO_SUPPORT
 typedef struct pno_nlo_info
 {
 	u32 fast_scan_period;				/* Fast scan period */
-	u32	ssid_num;				/* number of entry */
-	u32	slow_scan_period;			/* slow scan period */
-	u32	fast_scan_iterations;			/* Fast scan iterations */
-	u8	ssid_length[MAX_PNO_LIST_COUNT];	/* SSID Length Array */
-	u8	ssid_cipher_info[MAX_PNO_LIST_COUNT];	/* Cipher information for security */
-	u8	ssid_channel_info[MAX_PNO_LIST_COUNT];	/* channel information */
+	u32 ssid_num;				/* number of entry */
+	u32 slow_scan_period;			/* slow scan period */
+	u32 fast_scan_iterations;			/* Fast scan iterations */
+	u8 ssid_length[MAX_PNO_LIST_COUNT];	/* SSID Length Array */
+	u8 ssid_cipher_info[MAX_PNO_LIST_COUNT];	/* Cipher information for security */
+	u8 ssid_channel_info[MAX_PNO_LIST_COUNT];	/* channel information */
 }pno_nlo_info_t;
 
 typedef struct pno_ssid {
-	u32		SSID_len;
-	u8		SSID[32];
+	u32 	SSID_len;
+	u8 SSID[32];
 } pno_ssid_t;
 
 typedef struct pno_ssid_list {
@@ -195,22 +193,22 @@ typedef struct pno_ssid_list {
 
 typedef struct pno_scan_channel_info
 {
-	u8	channel;
-	u8	tx_power;
-	u8	timeout;
-	u8	active;				/* set 1 means active scan, or pasivite scan. */
+	u8 channel;
+	u8 tx_power;
+	u8 timeout;
+	u8 active;				/* set 1 means active scan, or pasivite scan. */
 }pno_scan_channel_info_t;
 
 typedef struct pno_scan_info
 {
-	u8	enableRFE;			/* Enable RFE */
-	u8	period_scan_time;		/* exclusive with fast_scan_period and slow_scan_period */
-	u8	periodScan;			/* exclusive with fast_scan_period and slow_scan_period */
-	u8	orig_80_offset;			/* original channel 80 offset */
-	u8	orig_40_offset;			/* original channel 40 offset */
-	u8	orig_bw;			/* original bandwidth */
-	u8	orig_ch;			/* original channel */
-	u8	channel_num;			/* number of channel */
+	u8 enableRFE;			/* Enable RFE */
+	u8 period_scan_time;		/* exclusive with fast_scan_period and slow_scan_period */
+	u8 periodScan;			/* exclusive with fast_scan_period and slow_scan_period */
+	u8 orig_80_offset;			/* original channel 80 offset */
+	u8 orig_40_offset;			/* original channel 40 offset */
+	u8 orig_bw;			/* original bandwidth */
+	u8 orig_ch;			/* original channel */
+	u8 channel_num;			/* number of channel */
 	u64	rfe_type;			/* rfe_type && 0x00000000000000ff */
 	pno_scan_channel_info_t ssid_channel_info[MAX_SCAN_LIST_COUNT];
 }pno_scan_info_t;
@@ -225,33 +223,33 @@ struct pwrctrl_priv
 	volatile u8 tog; /*  toggling */
 	volatile u8 cpwm_tog; /*  toggling */
 
-	u8	pwr_mode;
-	u8	smart_ps;
-	u8	bcn_ant_mode;
-	u8	dtim;
+	u8 pwr_mode;
+	u8 smart_ps;
+	u8 bcn_ant_mode;
+	u8 dtim;
 
-	u32	alives;
+	u32 alives;
 	_workitem cpwm_event;
 	u8 brpwmtimeout;
 	_workitem rpwmtimeoutwi;
 	_timer pwr_rpwm_timer;
-	u8	bpower_saving; /* for LPS/IPS */
+	u8 bpower_saving; /* for LPS/IPS */
 
-	u8	b_hw_radio_off;
-	u8	reg_rfoff;
-	u8	reg_pdnmode; /* powerdown mode */
-	u32	rfoff_reason;
+	u8 b_hw_radio_off;
+	u8 reg_rfoff;
+	u8 reg_pdnmode; /* powerdown mode */
+	u32 rfoff_reason;
 
 	/* RF OFF Level */
-	u32	cur_ps_level;
-	u32	reg_rfps_level;
+	u32 cur_ps_level;
+	u32 reg_rfps_level;
 
 	uint	ips_enter_cnts;
 	uint	ips_leave_cnts;
 
-	u8	ips_mode;
-	u8	ips_org_mode;
-	u8	ips_mode_req; /*  used to accept the mode setting request, will update to ipsmode later */
+	u8 ips_mode;
+	u8 ips_org_mode;
+	u8 ips_mode_req; /*  used to accept the mode setting request, will update to ipsmode later */
 	uint bips_processing;
 	unsigned long ips_deny_time; /* will deny IPS when system time is smaller than this */
 	u8 pre_ips_type;/*  0: default flow, 1: carddisbale flow */
@@ -265,56 +263,56 @@ struct pwrctrl_priv
 	u8 ps_processing; /* temporarily used to mark whether in rtw_ps_processor */
 
 	u8 fw_psmode_iface_id;
-	u8	bLeisurePs;
-	u8	LpsIdleCount;
-	u8	power_mgnt;
-	u8	org_power_mgnt;
-	u8	bFwCurrentInPSMode;
+	u8 bLeisurePs;
+	u8 LpsIdleCount;
+	u8 power_mgnt;
+	u8 org_power_mgnt;
+	u8 bFwCurrentInPSMode;
 	unsigned long	DelayLPSLastTimeStamp;
 	s32		pnp_current_pwr_state;
-	u8		pnp_bstop_trx;
+	u8 pnp_bstop_trx;
 
 
-	u8		bInternalAutoSuspend;
-	u8		bInSuspend;
+	u8 bInternalAutoSuspend;
+	u8 bInSuspend;
 
-	u8		bAutoResume;
-	u8		autopm_cnt;
+	u8 bAutoResume;
+	u8 autopm_cnt;
 
-	u8		bSupportRemoteWakeup;
-	u8		wowlan_wake_reason;
-	u8		wowlan_ap_mode;
-	u8		wowlan_mode;
+	u8 bSupportRemoteWakeup;
+	u8 wowlan_wake_reason;
+	u8 wowlan_ap_mode;
+	u8 wowlan_mode;
 #ifdef CONFIG_WOWLAN
-	u8		wowlan_pattern;
-	u8		wowlan_magic;
-	u8		wowlan_unicast;
-	u8		wowlan_pattern_idx;
-	u8		wowlan_pno_enable;
+	u8 wowlan_pattern;
+	u8 wowlan_magic;
+	u8 wowlan_unicast;
+	u8 wowlan_pattern_idx;
+	u8 wowlan_pno_enable;
 #ifdef CONFIG_PNO_SUPPORT
-	u8		pno_in_resume;
-	u8		pno_inited;
+	u8 pno_in_resume;
+	u8 pno_inited;
 	pno_nlo_info_t	*pnlo_info;
 	pno_scan_info_t	*pscan_info;
 	pno_ssid_list_t	*pno_ssid_list;
 #endif
-	u32		wowlan_pattern_context[8][5];
+	u32 	wowlan_pattern_context[8][5];
 	u64		wowlan_fw_iv;
 #endif /*  CONFIG_WOWLAN */
 	_timer	pwr_state_check_timer;
 	int		pwr_state_check_interval;
-	u8		pwr_state_check_cnts;
+	u8 pwr_state_check_cnts;
 
 	int		ps_flag; /* used by autosuspend */
 
-	rt_rf_power_state	rf_pwrstate;/* cur power state, only for IPS */
+	enum rt_rf_power_state	rf_pwrstate;/* cur power state, only for IPS */
 	/* rt_rf_power_state	current_rfpwrstate; */
-	rt_rf_power_state	change_rfpwrstate;
+	enum rt_rf_power_state	change_rfpwrstate;
 
-	u8		bHWPowerdown; /* power down mode selection. 0:radio off, 1:power down */
-	u8		bHWPwrPindetect; /* come from registrypriv.hwpwrp_detect. enable power down function. 0:disable, 1:enable */
-	u8		bkeepfwalive;
-	u8		brfoffbyhw;
+	u8 bHWPowerdown; /* power down mode selection. 0:radio off, 1:power down */
+	u8 bHWPwrPindetect; /* come from registrypriv.hwpwrp_detect. enable power down function. 0:disable, 1:enable */
+	u8 bkeepfwalive;
+	u8 brfoffbyhw;
 	unsigned long PS_BBRegBackup[PSBBREG_TOTALCNT];
 };
 
@@ -340,28 +338,28 @@ extern void rtw_free_pwrctrl_priv(struct adapter * adapter);
 
 s32 rtw_register_task_alive(struct adapter *, u32 task);
 void rtw_unregister_task_alive(struct adapter *, u32 task);
-extern s32 rtw_register_tx_alive(struct adapter * padapter);
-extern void rtw_unregister_tx_alive(struct adapter * padapter);
-extern s32 rtw_register_cmd_alive(struct adapter * padapter);
-extern void rtw_unregister_cmd_alive(struct adapter * padapter);
-extern void cpwm_int_hdl(struct adapter * padapter, struct reportpwrstate_parm *preportpwrstate);
-extern void LPS_Leave_check(struct adapter * padapter);
+extern s32 rtw_register_tx_alive(struct adapter *padapter);
+extern void rtw_unregister_tx_alive(struct adapter *padapter);
+extern s32 rtw_register_cmd_alive(struct adapter *padapter);
+extern void rtw_unregister_cmd_alive(struct adapter *padapter);
+extern void cpwm_int_hdl(struct adapter *padapter, struct reportpwrstate_parm *preportpwrstate);
+extern void LPS_Leave_check(struct adapter *padapter);
 
 extern void LeaveAllPowerSaveMode(struct adapter * Adapter);
 extern void LeaveAllPowerSaveModeDirect(struct adapter * Adapter);
-void _ips_enter(struct adapter * padapter);
-void ips_enter(struct adapter * padapter);
-int _ips_leave(struct adapter * padapter);
-int ips_leave(struct adapter * padapter);
+void _ips_enter(struct adapter *padapter);
+void ips_enter(struct adapter *padapter);
+int _ips_leave(struct adapter *padapter);
+int ips_leave(struct adapter *padapter);
 
 void rtw_ps_processor(struct adapter *padapter);
 
-s32 LPS_RF_ON_check(struct adapter * padapter, u32 delay_ms);
-void LPS_Enter(struct adapter * padapter, const char *msg);
-void LPS_Leave(struct adapter * padapter, const char *msg);
-void traffic_check_for_leave_lps(struct adapter * padapter, u8 tx, u32 tx_packets);
-void rtw_set_ps_mode(struct adapter * padapter, u8 ps_mode, u8 smart_ps, u8 bcn_ant_mode, const char *msg);
-void rtw_set_rpwm(struct adapter * padapter, u8 val8);
+s32 LPS_RF_ON_check(struct adapter *padapter, u32 delay_ms);
+void LPS_Enter(struct adapter *padapter, const char *msg);
+void LPS_Leave(struct adapter *padapter, const char *msg);
+void traffic_check_for_leave_lps(struct adapter *padapter, u8 tx, u32 tx_packets);
+void rtw_set_ps_mode(struct adapter *padapter, u8 ps_mode, u8 smart_ps, u8 bcn_ant_mode, const char *msg);
+void rtw_set_rpwm(struct adapter *padapter, u8 val8);
 
 void rtw_set_ips_deny(struct adapter *padapter, u32 ms);
 int _rtw_pwr_wakeup(struct adapter *padapter, u32 ips_deffer_ms, const char *caller);
@@ -370,8 +368,8 @@ int _rtw_pwr_wakeup(struct adapter *padapter, u32 ips_deffer_ms, const char *cal
 int rtw_pm_set_ips(struct adapter *padapter, u8 mode);
 int rtw_pm_set_lps(struct adapter *padapter, u8 mode);
 
-void rtw_ps_deny(struct adapter * padapter, PS_DENY_REASON reason);
-void rtw_ps_deny_cancel(struct adapter * padapter, PS_DENY_REASON reason);
-u32 rtw_ps_deny_get(struct adapter * padapter);
+void rtw_ps_deny(struct adapter *padapter, enum PS_DENY_REASON reason);
+void rtw_ps_deny_cancel(struct adapter *padapter, enum PS_DENY_REASON reason);
+u32 rtw_ps_deny_get(struct adapter *padapter);
 
 #endif  /* __RTL871X_PWRCTRL_H_ */

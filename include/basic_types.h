@@ -19,13 +19,11 @@
 #define SUCCESS	0
 #define FAIL	(-1)
 
-	#include <linux/types.h>
-	#define IN
-	#define OUT
+#include <linux/types.h>
 
-	typedef	signed int sint;
+typedef	signed int sint;
 
-	#define FIELD_OFFSET(s, field)	((__kernel_ssize_t)&((s*)(0))->field)
+#define FIELD_OFFSET(s, field)	((__kernel_ssize_t)&((s*)(0))->field)
 
 #define SIZE_PTR __kernel_size_t
 #define SSIZE_PTR __kernel_ssize_t
@@ -35,9 +33,9 @@
 
 /*
  *Call endian free function when
- *1. Read/write packet content.
- *2. Before write integer to IO.
- *3. After read integer from IO.
+ *	1. Read/write packet content.
+ *	2. Before write integer to IO.
+ *	3. After read integer from IO.
 */
 
 /*  */
@@ -67,17 +65,17 @@
 /* Write data to memory */
 #define WRITEEF1BYTE(_ptr, _val)			\
 	do {						\
-		(*((u8 *)(_ptr))) = EF1BYTE(_val)	\
+		(*((u8 *)(_ptr))) = EF1BYTE(_val);	\
 	} while (0)
 /* Write le data to memory in host ordering */
 #define WRITEEF2BYTE(_ptr, _val)			\
 	do {						\
-		(*((u16 *)(_ptr))) = EF2BYTE(_val)	\
+		(*((u16 *)(_ptr))) = EF2BYTE(_val);	\
 	} while (0)
 
 #define WRITEEF4BYTE(_ptr, _val)			\
 	do {						\
-		(*((u32 *)(_ptr))) = EF2BYTE(_val)	\
+		(*((u32 *)(_ptr))) = EF2BYTE(_val);	\
 	} while (0)
 
 /* Create a bit mask
@@ -165,21 +163,21 @@
 /*  */
 #define SET_BITS_TO_LE_4BYTE(__pstart, __bitoffset, __bitlen, __val) \
 		*((u32 *)(__pstart)) =				\
-		(							\
+		(						\
 		LE_BITS_CLEARED_TO_4BYTE(__pstart, __bitoffset, __bitlen) | \
 		((((u32)__val) & BIT_LEN_MASK_32(__bitlen)) << (__bitoffset)) \
 		)
 
 #define SET_BITS_TO_LE_2BYTE(__pstart, __bitoffset, __bitlen, __val) \
 		*((u16 *)(__pstart)) =				\
-		(						\
+		(					\
 		LE_BITS_CLEARED_TO_2BYTE(__pstart, __bitoffset, __bitlen) | \
 		((((u16)__val) & BIT_LEN_MASK_16(__bitlen)) << (__bitoffset)) \
 		);
 
 #define SET_BITS_TO_LE_1BYTE(__pstart, __bitoffset, __bitlen, __val) \
 		*((u8 *)(__pstart)) = EF1BYTE			\
-		(						\
+		(					\
 		LE_BITS_CLEARED_TO_1BYTE(__pstart, __bitoffset, __bitlen) | \
 		((((u8)__val) & BIT_LEN_MASK_8(__bitlen)) << (__bitoffset)) \
 		)

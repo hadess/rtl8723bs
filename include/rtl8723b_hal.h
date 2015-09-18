@@ -58,25 +58,22 @@ struct rt_firmware {
 	u8 *szFwBuffer;
 };
 
-/*  */
 /*  This structure must be cared byte-ordering */
-/*  */
-/*  Added by tynli. 2009.12.04. */
 struct rt_firmware_hdr {
 	/*  8-byte alinment required */
 
 	/*  LONG WORD 0 ---- */
 	__le16 	Signature;	/*  92C0: test chip; 92C, 88C0: test chip; 88C1: MP A-cut; 92C1: MP A-cut */
-	u8		Category;	/*  AP/NIC and USB/PCI */
-	u8		Function;	/*  Reserved for different FW function indcation, for further use when driver needs to download different FW in different conditions */
+	u8 Category;	/*  AP/NIC and USB/PCI */
+	u8 Function;	/*  Reserved for different FW function indcation, for further use when driver needs to download different FW in different conditions */
 	__le16 	Version;		/*  FW Version */
 	__le16 Subversion;	/*  FW Subversion, default 0x00 */
 
 	/*  LONG WORD 1 ---- */
-	u8		Month;	/*  Release time Month field */
-	u8		Date;	/*  Release time Date field */
-	u8		Hour;	/*  Release time Hour field */
-	u8		Minute;	/*  Release time Minute field */
+	u8 Month;	/*  Release time Month field */
+	u8 Date;	/*  Release time Date field */
+	u8 Hour;	/*  Release time Hour field */
+	u8 Minute;	/*  Release time Minute field */
 	__le16		RamCodeSize;	/*  The size of RAM code */
 	__le16		Rsvd2;
 
@@ -197,9 +194,9 @@ typedef enum _C2H_EVT
 
 typedef struct _C2H_EVT_HDR
 {
-	u8	CmdID;
-	u8	CmdLen;
-	u8	CmdSeq;
+	u8 CmdID;
+	u8 CmdLen;
+	u8 CmdSeq;
 } __attribute__((__packed__)) C2H_EVT_HDR, *PC2H_EVT_HDR;
 
 typedef enum tag_Package_Definition
@@ -215,44 +212,44 @@ typedef enum tag_Package_Definition
 #define INCLUDE_MULTI_FUNC_GPS(_Adapter)	(GET_HAL_DATA(_Adapter)->MultiFunc & RT_MULTI_FUNC_GPS)
 
 /*  rtl8723a_hal_init.c */
-s32 rtl8723b_FirmwareDownload(struct adapter * padapter, bool  bUsedWoWLANFw);
-void rtl8723b_FirmwareSelfReset(struct adapter * padapter);
-void rtl8723b_InitializeFirmwareVars(struct adapter * padapter);
+s32 rtl8723b_FirmwareDownload(struct adapter *padapter, bool  bUsedWoWLANFw);
+void rtl8723b_FirmwareSelfReset(struct adapter *padapter);
+void rtl8723b_InitializeFirmwareVars(struct adapter *padapter);
 
-void rtl8723b_InitAntenna_Selection(struct adapter * padapter);
-void rtl8723b_init_default_value(struct adapter * padapter);
+void rtl8723b_InitAntenna_Selection(struct adapter *padapter);
+void rtl8723b_init_default_value(struct adapter *padapter);
 
-s32 rtl8723b_InitLLTTable(struct adapter * padapter);
+s32 rtl8723b_InitLLTTable(struct adapter *padapter);
 
 /*  EFuse */
-u8 GetEEPROMSize8723B(struct adapter * padapter);
-void Hal_InitPGData(struct adapter * padapter, u8 *PROMContent);
-void Hal_EfuseParseIDCode(struct adapter * padapter, u8 *hwinfo);
-void Hal_EfuseParseTxPowerInfo_8723B(struct adapter * padapter, u8 *PROMContent, bool AutoLoadFail);
-void Hal_EfuseParseBTCoexistInfo_8723B(struct adapter * padapter, u8 *hwinfo, bool AutoLoadFail);
-void Hal_EfuseParseEEPROMVer_8723B(struct adapter * padapter, u8 *hwinfo, bool AutoLoadFail);
-void Hal_EfuseParseChnlPlan_8723B(struct adapter * padapter, u8 *hwinfo, bool AutoLoadFail);
-void Hal_EfuseParseCustomerID_8723B(struct adapter * padapter, u8 *hwinfo, bool AutoLoadFail);
-void Hal_EfuseParseAntennaDiversity_8723B(struct adapter * padapter, u8 *hwinfo, bool AutoLoadFail);
-void Hal_EfuseParseXtal_8723B(struct adapter * padapter, u8 *hwinfo, bool AutoLoadFail);
-void Hal_EfuseParseThermalMeter_8723B(struct adapter * padapter, u8 *hwinfo, u8 AutoLoadFail);
-void Hal_EfuseParsePackageType_8723B(struct adapter * padapter, u8* hwinfo, bool AutoLoadFail);
-void Hal_EfuseParseVoltage_8723B(struct adapter * padapter, u8* hwinfo, bool	AutoLoadFail);
+u8 GetEEPROMSize8723B(struct adapter *padapter);
+void Hal_InitPGData(struct adapter *padapter, u8 *PROMContent);
+void Hal_EfuseParseIDCode(struct adapter *padapter, u8 *hwinfo);
+void Hal_EfuseParseTxPowerInfo_8723B(struct adapter *padapter, u8 *PROMContent, bool AutoLoadFail);
+void Hal_EfuseParseBTCoexistInfo_8723B(struct adapter *padapter, u8 *hwinfo, bool AutoLoadFail);
+void Hal_EfuseParseEEPROMVer_8723B(struct adapter *padapter, u8 *hwinfo, bool AutoLoadFail);
+void Hal_EfuseParseChnlPlan_8723B(struct adapter *padapter, u8 *hwinfo, bool AutoLoadFail);
+void Hal_EfuseParseCustomerID_8723B(struct adapter *padapter, u8 *hwinfo, bool AutoLoadFail);
+void Hal_EfuseParseAntennaDiversity_8723B(struct adapter *padapter, u8 *hwinfo, bool AutoLoadFail);
+void Hal_EfuseParseXtal_8723B(struct adapter *padapter, u8 *hwinfo, bool AutoLoadFail);
+void Hal_EfuseParseThermalMeter_8723B(struct adapter *padapter, u8 *hwinfo, u8 AutoLoadFail);
+void Hal_EfuseParsePackageType_8723B(struct adapter *padapter, u8 *hwinfo, bool AutoLoadFail);
+void Hal_EfuseParseVoltage_8723B(struct adapter *padapter, u8 *hwinfo, bool	AutoLoadFail);
 
-void C2HPacketHandler_8723B(struct adapter * padapter, u8 *pbuffer, u16 length);
+void C2HPacketHandler_8723B(struct adapter *padapter, u8 *pbuffer, u16 length);
 
 void rtl8723b_set_hal_ops(struct hal_ops *pHalFunc);
-void SetHwReg8723B(struct adapter * padapter, u8 variable, u8 *val);
-void GetHwReg8723B(struct adapter * padapter, u8 variable, u8 *val);
-u8 SetHalDefVar8723B(struct adapter * padapter, HAL_DEF_VARIABLE variable, void *pval);
-u8 GetHalDefVar8723B(struct adapter * padapter, HAL_DEF_VARIABLE variable, void *pval);
+void SetHwReg8723B(struct adapter *padapter, u8 variable, u8 *val);
+void GetHwReg8723B(struct adapter *padapter, u8 variable, u8 *val);
+u8 SetHalDefVar8723B(struct adapter *padapter, enum HAL_DEF_VARIABLE variable, void *pval);
+u8 GetHalDefVar8723B(struct adapter *padapter, enum HAL_DEF_VARIABLE variable, void *pval);
 
 /*  register */
-void rtl8723b_InitBeaconParameters(struct adapter * padapter);
-void	_InitBurstPktLen_8723BS(struct adapter * Adapter);
-void _8051Reset8723(struct adapter * padapter);
+void rtl8723b_InitBeaconParameters(struct adapter *padapter);
+void _InitBurstPktLen_8723BS(struct adapter * Adapter);
+void _8051Reset8723(struct adapter *padapter);
 #ifdef CONFIG_WOWLAN
-void Hal_DetectWoWMode(struct adapter * padapter);
+void Hal_DetectWoWMode(struct adapter *padapter);
 #endif /* CONFIG_WOWLAN */
 
 void rtl8723b_start_thread(struct adapter *padapter);
@@ -266,17 +263,17 @@ void rtl8723bs_hal_check_bt_hang(struct adapter * adapter);
 #endif
 
 #ifdef CONFIG_GPIO_WAKEUP
-void HalSetOutPutGPIO(struct adapter * padapter, u8 index, u8 OutPutValue);
+void HalSetOutPutGPIO(struct adapter *padapter, u8 index, u8 OutPutValue);
 #endif
 
 int FirmwareDownloadBT(struct adapter * Adapter, struct rt_firmware *firmware);
 
-void CCX_FwC2HTxRpt_8723b(struct adapter * padapter, u8 *pdata, u8 len);
+void CCX_FwC2HTxRpt_8723b(struct adapter *padapter, u8 *pdata, u8 len);
 s32 c2h_id_filter_ccx_8723b(u8 *buf);
-s32 c2h_handler_8723b(struct adapter * padapter, u8 *pC2hEvent);
+s32 c2h_handler_8723b(struct adapter *padapter, u8 *pC2hEvent);
 u8 MRateToHwRate8723B(u8  rate);
-u8 HwRateToMRate8723B(u8	 rate);
+u8 HwRateToMRate8723B(u8  rate);
 
-void Hal_ReadRFGainOffset(struct adapter * padapter, u8* hwinfo, bool AutoLoadFail);
+void Hal_ReadRFGainOffset(struct adapter *padapter, u8 *hwinfo, bool AutoLoadFail);
 
 #endif

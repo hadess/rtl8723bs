@@ -117,12 +117,12 @@ struct _io_ops {
 };
 
 struct io_req {
-	struct list_head list;
-	u32	addr;
-	volatile u32	val;
-	u32	command;
-	u32	status;
-	u8	*pbuf;
+	struct list_head	list;
+	u32 addr;
+	volatile u32 val;
+	u32 command;
+	u32 status;
+	u8 *pbuf;
 	_sema	sema;
 
 	void (*_async_io_callback)(struct adapter *padater, struct io_req *pio_req, u8 *cnxt);
@@ -141,23 +141,23 @@ struct reg_protocol_rd {
 #ifdef __LITTLE_ENDIAN
 
 	/* DW1 */
-	u32		NumOfTrans:4;
-	u32		Reserved1:4;
-	u32		Reserved2:24;
+	u32 	NumOfTrans:4;
+	u32 	Reserved1:4;
+	u32 	Reserved2:24;
 	/* DW2 */
-	u32		ByteCount:7;
-	u32		WriteEnable:1;		/* 0:read, 1:write */
-	u32		FixOrContinuous:1;	/* 0:continuous, 1: Fix */
-	u32		BurstMode:1;
-	u32		Byte1Access:1;
-	u32		Byte2Access:1;
-	u32		Byte4Access:1;
-	u32		Reserved3:3;
-	u32		Reserved4:16;
+	u32 	ByteCount:7;
+	u32 	WriteEnable:1;		/* 0:read, 1:write */
+	u32 	FixOrContinuous:1;	/* 0:continuous, 1: Fix */
+	u32 	BurstMode:1;
+	u32 	Byte1Access:1;
+	u32 	Byte2Access:1;
+	u32 	Byte4Access:1;
+	u32 	Reserved3:3;
+	u32 	Reserved4:16;
 	/* DW3 */
-	u32		BusAddress;
+	u32 	BusAddress;
 	/* DW4 */
-	/* u32		Value; */
+	/* u32 	Value; */
 #else
 
 
@@ -183,10 +183,10 @@ struct reg_protocol_rd {
 	u32 Reserved4 : 16;
 
 	/* DW3 */
-	u32		BusAddress;
+	u32 	BusAddress;
 
 	/* DW4 */
-	/* u32		Value; */
+	/* u32 	Value; */
 
 #endif
 
@@ -199,23 +199,23 @@ struct reg_protocol_wt {
 #ifdef __LITTLE_ENDIAN
 
 	/* DW1 */
-	u32		NumOfTrans:4;
-	u32		Reserved1:4;
-	u32		Reserved2:24;
+	u32 	NumOfTrans:4;
+	u32 	Reserved1:4;
+	u32 	Reserved2:24;
 	/* DW2 */
-	u32		ByteCount:7;
-	u32		WriteEnable:1;		/* 0:read, 1:write */
-	u32		FixOrContinuous:1;	/* 0:continuous, 1: Fix */
-	u32		BurstMode:1;
-	u32		Byte1Access:1;
-	u32		Byte2Access:1;
-	u32		Byte4Access:1;
-	u32		Reserved3:3;
-	u32		Reserved4:16;
+	u32 	ByteCount:7;
+	u32 	WriteEnable:1;		/* 0:read, 1:write */
+	u32 	FixOrContinuous:1;	/* 0:continuous, 1: Fix */
+	u32 	BurstMode:1;
+	u32 	Byte1Access:1;
+	u32 	Byte2Access:1;
+	u32 	Byte4Access:1;
+	u32 	Reserved3:3;
+	u32 	Reserved4:16;
 	/* DW3 */
-	u32		BusAddress;
+	u32 	BusAddress;
 	/* DW4 */
-	u32		Value;
+	u32 	Value;
 
 #else
 	/* DW1 */
@@ -239,10 +239,10 @@ struct reg_protocol_wt {
 	u32 Reserved4 : 16;
 
 	/* DW3 */
-	u32		BusAddress;
+	u32 	BusAddress;
 
 	/* DW4 */
-	u32		Value;
+	u32 	Value;
 
 #endif
 
@@ -260,11 +260,11 @@ Below is the data structure used by _io_handler
 
 struct io_queue {
 	_lock	lock;
-	struct list_head free_ioreqs;
-	struct list_head pending;		/* The io_req list that will be served in the single protocol read/write. */
-	struct list_head processing;
-	u8	*free_ioreqs_buf; /*  4-byte aligned */
-	u8	*pallocated_free_ioreqs_buf;
+	struct list_head	free_ioreqs;
+	struct list_head		pending;		/* The io_req list that will be served in the single protocol read/write. */
+	struct list_head		processing;
+	u8 *free_ioreqs_buf; /*  4-byte aligned */
+	u8 *pallocated_free_ioreqs_buf;
 	struct	intf_hdl	intf;
 };
 

@@ -104,7 +104,7 @@ void rtw_odm_dbg_comp_msg(void *sel, struct adapter *adapter)
 	int i;
 
 	rtw_hal_get_def_var(adapter, HW_DEF_ODM_DBG_FLAG, &dbg_comp);
-	DBG_871X_SEL_NL(sel, "odm.DebugComponents = 0x%016llx \n", dbg_comp);
+	DBG_871X_SEL_NL(sel, "odm.DebugComponents = 0x%016llx\n", dbg_comp);
 	for (i = 0;i<RTW_ODM_COMP_MAX;i++) {
 		if (odm_comp_str[i])
 		DBG_871X_SEL_NL(sel, "%cBIT%-2d %s\n",

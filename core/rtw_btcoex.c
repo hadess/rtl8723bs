@@ -18,42 +18,42 @@
 #include <hal_btcoex.h>
 
 
-void rtw_btcoex_Initialize(struct adapter * padapter)
+void rtw_btcoex_Initialize(struct adapter *padapter)
 {
 	hal_btcoex_Initialize(padapter);
 }
 
-void rtw_btcoex_PowerOnSetting(struct adapter * padapter)
+void rtw_btcoex_PowerOnSetting(struct adapter *padapter)
 {
 	hal_btcoex_PowerOnSetting(padapter);
 }
 
-void rtw_btcoex_HAL_Initialize(struct adapter * padapter, u8 bWifiOnly)
+void rtw_btcoex_HAL_Initialize(struct adapter *padapter, u8 bWifiOnly)
 {
 	hal_btcoex_InitHwConfig(padapter, bWifiOnly);
 }
 
-void rtw_btcoex_IpsNotify(struct adapter * padapter, u8 type)
+void rtw_btcoex_IpsNotify(struct adapter *padapter, u8 type)
 {
 	hal_btcoex_IpsNotify(padapter, type);
 }
 
-void rtw_btcoex_LpsNotify(struct adapter * padapter, u8 type)
+void rtw_btcoex_LpsNotify(struct adapter *padapter, u8 type)
 {
 	hal_btcoex_LpsNotify(padapter, type);
 }
 
-void rtw_btcoex_ScanNotify(struct adapter * padapter, u8 type)
+void rtw_btcoex_ScanNotify(struct adapter *padapter, u8 type)
 {
 	hal_btcoex_ScanNotify(padapter, type);
 }
 
-void rtw_btcoex_ConnectNotify(struct adapter * padapter, u8 action)
+void rtw_btcoex_ConnectNotify(struct adapter *padapter, u8 action)
 {
 	hal_btcoex_ConnectNotify(padapter, action);
 }
 
-void rtw_btcoex_MediaStatusNotify(struct adapter * padapter, u8 mediaStatus)
+void rtw_btcoex_MediaStatusNotify(struct adapter *padapter, u8 mediaStatus)
 {
 	if ((RT_MEDIA_CONNECT == mediaStatus)
 		&& (check_fwstate(&padapter->mlmepriv, WIFI_AP_STATE) == true))
@@ -64,27 +64,27 @@ void rtw_btcoex_MediaStatusNotify(struct adapter * padapter, u8 mediaStatus)
 	hal_btcoex_MediaStatusNotify(padapter, mediaStatus);
 }
 
-void rtw_btcoex_SpecialPacketNotify(struct adapter * padapter, u8 pktType)
+void rtw_btcoex_SpecialPacketNotify(struct adapter *padapter, u8 pktType)
 {
 	hal_btcoex_SpecialPacketNotify(padapter, pktType);
 }
 
-void rtw_btcoex_IQKNotify(struct adapter * padapter, u8 state)
+void rtw_btcoex_IQKNotify(struct adapter *padapter, u8 state)
 {
 	hal_btcoex_IQKNotify(padapter, state);
 }
 
-void rtw_btcoex_BtInfoNotify(struct adapter * padapter, u8 length, u8 *tmpBuf)
+void rtw_btcoex_BtInfoNotify(struct adapter *padapter, u8 length, u8 *tmpBuf)
 {
 	hal_btcoex_BtInfoNotify(padapter, length, tmpBuf);
 }
 
-void rtw_btcoex_SuspendNotify(struct adapter * padapter, u8 state)
+void rtw_btcoex_SuspendNotify(struct adapter *padapter, u8 state)
 {
 	hal_btcoex_SuspendNotify(padapter, state);
 }
 
-void rtw_btcoex_HaltNotify(struct adapter * padapter)
+void rtw_btcoex_HaltNotify(struct adapter *padapter)
 {
 	if (false == padapter->bup)
 	{
@@ -105,17 +105,17 @@ void rtw_btcoex_HaltNotify(struct adapter * padapter)
 	hal_btcoex_HaltNotify(padapter);
 }
 
-u8 rtw_btcoex_IsBtDisabled(struct adapter * padapter)
+u8 rtw_btcoex_IsBtDisabled(struct adapter *padapter)
 {
 	return hal_btcoex_IsBtDisabled(padapter);
 }
 
-void rtw_btcoex_Handler(struct adapter * padapter)
+void rtw_btcoex_Handler(struct adapter *padapter)
 {
 	hal_btcoex_Hanlder(padapter);
 }
 
-s32 rtw_btcoex_IsBTCoexCtrlAMPDUSize(struct adapter * padapter)
+s32 rtw_btcoex_IsBTCoexCtrlAMPDUSize(struct adapter *padapter)
 {
 	s32 coexctrl;
 
@@ -124,7 +124,7 @@ s32 rtw_btcoex_IsBTCoexCtrlAMPDUSize(struct adapter * padapter)
 	return coexctrl;
 }
 
-void rtw_btcoex_SetManualControl(struct adapter * padapter, u8 manual)
+void rtw_btcoex_SetManualControl(struct adapter *padapter, u8 manual)
 {
 	if (true == manual)
 	{
@@ -136,67 +136,67 @@ void rtw_btcoex_SetManualControl(struct adapter * padapter, u8 manual)
 	}
 }
 
-u8 rtw_btcoex_IsBtControlLps(struct adapter * padapter)
+u8 rtw_btcoex_IsBtControlLps(struct adapter *padapter)
 {
 	return hal_btcoex_IsBtControlLps(padapter);
 }
 
-u8 rtw_btcoex_IsLpsOn(struct adapter * padapter)
+u8 rtw_btcoex_IsLpsOn(struct adapter *padapter)
 {
 	return hal_btcoex_IsLpsOn(padapter);
 }
 
-u8 rtw_btcoex_RpwmVal(struct adapter * padapter)
+u8 rtw_btcoex_RpwmVal(struct adapter *padapter)
 {
 	return hal_btcoex_RpwmVal(padapter);
 }
 
-u8 rtw_btcoex_LpsVal(struct adapter * padapter)
+u8 rtw_btcoex_LpsVal(struct adapter *padapter)
 {
 	return hal_btcoex_LpsVal(padapter);
 }
 
-void rtw_btcoex_SetBTCoexist(struct adapter * padapter, u8 bBtExist)
+void rtw_btcoex_SetBTCoexist(struct adapter *padapter, u8 bBtExist)
 {
 	hal_btcoex_SetBTCoexist(padapter, bBtExist);
 }
 
-void rtw_btcoex_SetChipType(struct adapter * padapter, u8 chipType)
+void rtw_btcoex_SetChipType(struct adapter *padapter, u8 chipType)
 {
 	hal_btcoex_SetChipType(padapter, chipType);
 }
 
-void rtw_btcoex_SetPGAntNum(struct adapter * padapter, u8 antNum)
+void rtw_btcoex_SetPGAntNum(struct adapter *padapter, u8 antNum)
 {
 	hal_btcoex_SetPgAntNum(padapter, antNum);
 }
 
-void rtw_btcoex_SetSingleAntPath(struct adapter * padapter, u8 singleAntPath)
+void rtw_btcoex_SetSingleAntPath(struct adapter *padapter, u8 singleAntPath)
 {
 	hal_btcoex_SetSingleAntPath(padapter, singleAntPath);
 }
 
-u32 rtw_btcoex_GetRaMask(struct adapter * padapter)
+u32 rtw_btcoex_GetRaMask(struct adapter *padapter)
 {
 	return hal_btcoex_GetRaMask(padapter);
 }
 
-void rtw_btcoex_RecordPwrMode(struct adapter * padapter, u8 *pCmdBuf, u8 cmdLen)
+void rtw_btcoex_RecordPwrMode(struct adapter *padapter, u8 *pCmdBuf, u8 cmdLen)
 {
 	hal_btcoex_RecordPwrMode(padapter, pCmdBuf, cmdLen);
 }
 
-void rtw_btcoex_DisplayBtCoexInfo(struct adapter * padapter, u8 *pbuf, u32 bufsize)
+void rtw_btcoex_DisplayBtCoexInfo(struct adapter *padapter, u8 *pbuf, u32 bufsize)
 {
 	hal_btcoex_DisplayBtCoexInfo(padapter, pbuf, bufsize);
 }
 
-void rtw_btcoex_SetDBG(struct adapter * padapter, u32 *pDbgModule)
+void rtw_btcoex_SetDBG(struct adapter *padapter, u32 *pDbgModule)
 {
 	hal_btcoex_SetDBG(padapter, pDbgModule);
 }
 
-u32 rtw_btcoex_GetDBG(struct adapter * padapter, u8 *pStrBuf, u32 bufSize)
+u32 rtw_btcoex_GetDBG(struct adapter *padapter, u8 *pStrBuf, u32 bufSize)
 {
 	return hal_btcoex_GetDBG(padapter, pStrBuf, bufSize);
 }
@@ -204,7 +204,7 @@ u32 rtw_btcoex_GetDBG(struct adapter * padapter, u8 *pStrBuf, u32 bufSize)
 /*  ================================================== */
 /*  Below Functions are called by BT-Coex */
 /*  ================================================== */
-void rtw_btcoex_RejectApAggregatedPacket(struct adapter * padapter, u8 enable)
+void rtw_btcoex_RejectApAggregatedPacket(struct adapter *padapter, u8 enable)
 {
 	struct mlme_ext_info *pmlmeinfo;
 	struct sta_info *psta;
@@ -224,7 +224,7 @@ void rtw_btcoex_RejectApAggregatedPacket(struct adapter * padapter, u8 enable)
 	}
 }
 
-void rtw_btcoex_LPS_Enter(struct adapter * padapter)
+void rtw_btcoex_LPS_Enter(struct adapter *padapter)
 {
 	struct pwrctrl_priv *pwrpriv;
 	u8 lpsVal;
@@ -237,7 +237,7 @@ void rtw_btcoex_LPS_Enter(struct adapter * padapter)
 	rtw_set_ps_mode(padapter, PS_MODE_MIN, 0, lpsVal, "BTCOEX");
 }
 
-void rtw_btcoex_LPS_Leave(struct adapter * padapter)
+void rtw_btcoex_LPS_Leave(struct adapter *padapter)
 {
 	struct pwrctrl_priv *pwrpriv;
 

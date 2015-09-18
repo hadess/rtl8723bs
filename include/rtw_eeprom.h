@@ -103,26 +103,26 @@ typedef enum _RT_CUSTOMER_ID
 
 struct eeprom_priv
 {
-	u8		bautoload_fail_flag;
-	u8		bloadfile_fail_flag;
-	u8		bloadmac_fail_flag;
-	u8		EepromOrEfuse;
+	u8 bautoload_fail_flag;
+	u8 bloadfile_fail_flag;
+	u8 bloadmac_fail_flag;
+	u8 EepromOrEfuse;
 
-	u8		mac_addr[6];	/* PermanentAddress */
+	u8 mac_addr[6];	/* PermanentAddress */
 
-	u16		channel_plan;
-	u16		CustomerID;
+	u16 	channel_plan;
+	u16 	CustomerID;
 
-	u8		efuse_eeprom_data[EEPROM_MAX_SIZE]; /* 92C:256bytes, 88E:512bytes, we use union set (512bytes) */
-	u8		adjuseVoltageVal;
+	u8 efuse_eeprom_data[EEPROM_MAX_SIZE]; /* 92C:256bytes, 88E:512bytes, we use union set (512bytes) */
+	u8 adjuseVoltageVal;
 
-	u8		EEPROMRFGainOffset;
-	u8		EEPROMRFGainVal;
+	u8 EEPROMRFGainOffset;
+	u8 EEPROMRFGainVal;
 
-	u8		sdio_setting;
-	u32		ocr;
-	u8		cis0[eeprom_cis0_sz];
-	u8		cis1[eeprom_cis1_sz];
+	u8 sdio_setting;
+	u32 	ocr;
+	u8 cis0[eeprom_cis0_sz];
+	u8 cis1[eeprom_cis1_sz];
 };
 
 #endif  /* __RTL871X_EEPROM_H__ */

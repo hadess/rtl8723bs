@@ -81,7 +81,7 @@ typedef	struct tag_HAL_VERSION
 	HAL_CUT_VERSION_E	CUTVersion;
 	HAL_VENDOR_E		VendorType;
 	HAL_RF_TYPE_E		RFType;
-	u8					ROMVer;
+	u8 			ROMVer;
 }HAL_VERSION,*PHAL_VERSION;
 
 /* VERSION_8192C			VersionID; */

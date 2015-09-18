@@ -13,16 +13,12 @@
  *
  ******************************************************************************/
 
-/*  */
-/*  include files */
-/*  */
-
 #include "odm_precomp.h"
 
  s8
 odm_CCKRSSI_8723B(
-	u1Byte	LNA_idx,
-	u1Byte	VGA_idx
+	u8 LNA_idx,
+	u8 VGA_idx
 	)
 {
 	s8	rx_pwr_all = 0x00;

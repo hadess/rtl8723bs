@@ -516,7 +516,7 @@
 /*  */
 /*  9. Security Control Registers	(Offset:) */
 /*  */
-#define RWCAM					REG_CAMCMD		/*8190 Data Sheet is called CAMcmd */
+#define RWCAM					REG_CAMCMD		/* IN 8190 Data Sheet is called CAMcmd */
 #define WCAMI					REG_CAMWRITE	/*  Software write CAM input content */
 #define RCAMO					REG_CAMREAD		/*  Software read/write CAM config */
 #define CAMDBG					REG_CAMDBG

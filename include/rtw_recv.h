@@ -62,7 +62,7 @@ struct recv_reorder_ctrl
 };
 
 struct	stainfo_rxcache	{
-	u16	tid_rxseq[16];
+	u16 tid_rxseq[16];
 /*
 	unsigned short	tid0_rxseq;
 	unsigned short	tid1_rxseq;
@@ -85,40 +85,40 @@ struct	stainfo_rxcache	{
 
 
 struct smooth_rssi_data {
-	u32	elements[100];	/* array to store values */
-	u32	index;			/* index to current array to store */
-	u32	total_num;		/* num of valid elements */
-	u32	total_val;		/* sum of valid elements */
+	u32 elements[100];	/* array to store values */
+	u32 index;			/* index to current array to store */
+	u32 total_num;		/* num of valid elements */
+	u32 total_val;		/* sum of valid elements */
 };
 
 struct signal_stat {
-	u8	update_req;		/* used to indicate */
-	u8	avg_val;		/* avg of valid elements */
-	u32	total_num;		/* num of valid elements */
-	u32	total_val;		/* sum of valid elements */
+	u8 update_req;		/* used to indicate */
+	u8 avg_val;		/* avg of valid elements */
+	u32 total_num;		/* num of valid elements */
+	u32 total_val;		/* sum of valid elements */
 };
 
 struct phy_info {
-	u8		RxPWDBAll;
+	u8 RxPWDBAll;
 
-	u8		SignalQuality;	 /*  in 0-100 index. */
+	u8 SignalQuality;	 /*  in 0-100 index. */
 	s8		RxMIMOSignalQuality[4];	/* per-path's EVM */
-	u8		RxMIMOEVMdbm[4];		/* per-path's EVM dbm */
+	u8 RxMIMOEVMdbm[4];		/* per-path's EVM dbm */
 
-	u8		RxMIMOSignalStrength[4];/*  in 0~100 index */
+	u8 RxMIMOSignalStrength[4];/*  in 0~100 index */
 
-	u16		Cfo_short[4];			/*  per-path's Cfo_short */
-	u16		Cfo_tail[4];			/*  per-path's Cfo_tail */
+	u16 	Cfo_short[4];			/*  per-path's Cfo_short */
+	u16 	Cfo_tail[4];			/*  per-path's Cfo_tail */
 
 	s8		RxPower; /*  in dBm Translate from PWdB */
 	s8		RecvSignalPower;/*  Real power in dBm for this packet, no beautification and aggregation. Keep this raw info to be used for the other procedures. */
-	u8		BTRxRSSIPercentage;
-	u8		SignalStrength; /*  in 0-100 index. */
+	u8 BTRxRSSIPercentage;
+	u8 SignalStrength; /*  in 0-100 index. */
 
 	s8		RxPwr[4];				/* per-path's pwdb */
-	u8		RxSNR[4];				/* per-path's SNR */
-	u8		BandWidth;
-	u8		btCoexPwrAdjust;
+	u8 RxSNR[4];				/* per-path's SNR */
+	u8 BandWidth;
+	u8 btCoexPwrAdjust;
 };
 
 #ifdef DBG_RX_SIGNAL_DISPLAY_RAW_DATA
@@ -138,56 +138,56 @@ struct rx_raw_rssi
 #endif
 
 struct rx_pkt_attrib	{
-	u16	pkt_len;
-	u8	physt;
-	u8	drvinfo_sz;
-	u8	shift_sz;
-	u8	hdrlen; /* the WLAN Header Len */
-	u8	to_fr_ds;
-	u8	amsdu;
-	u8	qos;
-	u8	priority;
-	u8	pw_save;
-	u8	mdata;
-	u16	seq_num;
-	u8	frag_num;
-	u8	mfrag;
-	u8	order;
-	u8	privacy; /* in frame_ctrl field */
-	u8	bdecrypted;
-	u8	encrypt; /* when 0 indicate no encrypt. when non-zero, indicate the encrypt algorith */
-	u8	iv_len;
-	u8	icv_len;
-	u8	crc_err;
-	u8	icv_err;
+	u16 pkt_len;
+	u8 physt;
+	u8 drvinfo_sz;
+	u8 shift_sz;
+	u8 hdrlen; /* the WLAN Header Len */
+	u8 to_fr_ds;
+	u8 amsdu;
+	u8 qos;
+	u8 priority;
+	u8 pw_save;
+	u8 mdata;
+	u16 seq_num;
+	u8 frag_num;
+	u8 mfrag;
+	u8 order;
+	u8 privacy; /* in frame_ctrl field */
+	u8 bdecrypted;
+	u8 encrypt; /* when 0 indicate no encrypt. when non-zero, indicate the encrypt algorith */
+	u8 iv_len;
+	u8 icv_len;
+	u8 crc_err;
+	u8 icv_err;
 
-	u16	eth_type;
+	u16 eth_type;
 
-	u8	dst[ETH_ALEN];
-	u8	src[ETH_ALEN];
-	u8	ta[ETH_ALEN];
-	u8	ra[ETH_ALEN];
-	u8	bssid[ETH_ALEN];
+	u8 dst[ETH_ALEN];
+	u8 src[ETH_ALEN];
+	u8 ta[ETH_ALEN];
+	u8 ra[ETH_ALEN];
+	u8 bssid[ETH_ALEN];
 
-	u8	ack_policy;
+	u8 ack_policy;
 
 /* ifdef CONFIG_TCP_CSUM_OFFLOAD_RX */
-	u8	tcpchk_valid; /*  0: invalid, 1: valid */
-	u8	ip_chkrpt; /* 0: incorrect, 1: correct */
-	u8	tcp_chkrpt; /* 0: incorrect, 1: correct */
+	u8 tcpchk_valid; /*  0: invalid, 1: valid */
+	u8 ip_chkrpt; /* 0: incorrect, 1: correct */
+	u8 tcp_chkrpt; /* 0: incorrect, 1: correct */
 /* endif */
-	u8	key_index;
+	u8 key_index;
 
-	u8	data_rate;
-	u8	sgi;
-	u8	pkt_rpt_type;
-	u32	MacIDValidEntry[2];	/*  64 bits present 64 entry. */
+	u8 data_rate;
+	u8 sgi;
+	u8 pkt_rpt_type;
+	u32 MacIDValidEntry[2];	/*  64 bits present 64 entry. */
 
 /*
-	u8	signal_qual;
+	u8 signal_qual;
 	s8	rx_mimo_signal_qual[2];
-	u8	signal_strength;
-	u32	RxPWDBAll;
+	u8 signal_strength;
+	u32 RxPWDBAll;
 	s32	RecvSignalPower;
 */
 	struct phy_info phy_info;
@@ -225,27 +225,19 @@ accesser of recv_priv: rtw_recv_entry(dispatch / passive level); recv_thread(pas
 
 using enter_critical section to protect
 */
-struct recv_priv
-{
+struct recv_priv {
 	_lock	lock;
-
 	struct __queue	free_recv_queue;
 	struct __queue	recv_pending_queue;
 	struct __queue	uc_swdec_pending_queue;
-
-
 	u8 *pallocated_frame_buf;
 	u8 *precv_frame_buf;
-
 	uint free_recvframe_cnt;
-
 	struct adapter	*adapter;
-
-	u32	bIsAnyNonBEPkts;
+	u32 bIsAnyNonBEPkts;
 	u64	rx_bytes;
 	u64	rx_pkts;
 	u64	rx_drop;
-
 	uint  rx_icv_err;
 	uint  rx_largepacket_crcerr;
 	uint  rx_smallpacket_crcerr;
@@ -263,7 +255,7 @@ struct recv_priv
 	u8 *pallocated_recv_buf;
 	u8 *precv_buf;    /*  4 alignment */
 	struct __queue	free_recv_buf_queue;
-	u32	free_recv_buf_queue_cnt;
+	u32 free_recv_buf_queue_cnt;
 
 	struct __queue	recv_buf_pending_queue;
 
@@ -310,26 +302,27 @@ struct sta_recv_priv {
 };
 
 
-struct recv_buf {
+struct recv_buf
+{
 	struct list_head list;
 
 	_lock recvbuf_lock;
 
-	u32	ref_cnt;
+	u32 ref_cnt;
 
 	struct adapter * adapter;
 
-	u8	*pbuf;
-	u8	*pallocated_buf;
+	u8 *pbuf;
+	u8 *pallocated_buf;
 
-	u32	len;
-	u8	*phead;
-	u8	*pdata;
-	u8	*ptail;
-	u8	*pend;
+	u32 len;
+	u8 *phead;
+	u8 *pdata;
+	u8 *ptail;
+	u8 *pend;
 
 	_pkt	*pskb;
-	u8	reuse;
+	u8 reuse;
 };
 
 
@@ -348,8 +341,9 @@ struct recv_buf {
 	len = (unsigned int)(tail - data);
 
 */
-struct recv_frame_hdr {
-	struct list_head list;
+struct recv_frame_hdr
+{
+	struct list_head	list;
 #ifndef CONFIG_BSD_RX_USE_MBUF
 	struct sk_buff	 *pkt;
 	struct sk_buff	 *pkt_newalloc;
@@ -384,7 +378,6 @@ struct recv_frame_hdr {
 
 
 union recv_frame{
-
 	union{
 		struct list_head list;
 		struct recv_frame_hdr hdr;
@@ -395,13 +388,13 @@ union recv_frame{
 
 };
 
-typedef enum _RX_PACKET_TYPE{
+enum RX_PACKET_TYPE {
 	NORMAL_RX,/* Normal rx packet */
 	TX_REPORT1,/* CCX */
 	TX_REPORT2,/* TX RPT */
 	HIS_REPORT,/*  USB HISR RPT */
 	C2H_PACKET
-}RX_PACKET_TYPE, *PRX_PACKET_TYPE;
+};
 
 extern union recv_frame *_rtw_alloc_recvframe (struct __queue *pfree_recv_queue);  /* get a free recv_frame from pfree_recv_queue */
 extern union recv_frame *rtw_alloc_recvframe (struct __queue *pfree_recv_queue);  /* get a free recv_frame from pfree_recv_queue */
@@ -423,7 +416,7 @@ void rtw_reordering_ctrl_timeout_handler(void *pcontext);
 __inline static u8 *get_rxmem(union recv_frame *precvframe)
 {
 	/* always return rx_head... */
-	if (precvframe ==NULL)
+	if (precvframe == NULL)
 		return NULL;
 
 	return precvframe->u.hdr.rx_head;
@@ -433,7 +426,7 @@ __inline static u8 *get_recvframe_data(union recv_frame *precvframe)
 {
 
 	/* alwasy return rx_data */
-	if (precvframe ==NULL)
+	if (precvframe == NULL)
 		return NULL;
 
 	return precvframe->u.hdr.rx_data;
@@ -447,7 +440,7 @@ __inline static u8 *recvframe_pull(union recv_frame *precvframe, sint sz)
 	/* used for extract sz bytes from rx_data, update rx_data and return the updated rx_data to the caller */
 
 
-	if (precvframe ==NULL)
+	if (precvframe == NULL)
 		return NULL;
 
 
@@ -473,7 +466,7 @@ __inline static u8 *recvframe_put(union recv_frame *precvframe, sint sz)
 	/* after putting, rx_tail must be still larger than rx_end. */
 	unsigned char * prev_rx_tail;
 
-	if (precvframe ==NULL)
+	if (precvframe == NULL)
 		return NULL;
 
 	prev_rx_tail = precvframe->u.hdr.rx_tail;
@@ -501,7 +494,7 @@ __inline static u8 *recvframe_pull_tail(union recv_frame *precvframe, sint sz)
 	/* used for extract sz bytes from rx_end, update rx_end and return the updated rx_end to the caller */
 	/* after pulling, rx_end must be still larger than rx_data. */
 
-	if (precvframe ==NULL)
+	if (precvframe == NULL)
 		return NULL;
 
 	precvframe->u.hdr.rx_tail -= sz;

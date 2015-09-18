@@ -18,63 +18,63 @@
 void
 odm_ConfigRFReg_8723B(
 PDM_ODM_T				pDM_Odm,
-u4Byte					Addr,
-u4Byte					Data,
- ODM_RF_RADIO_PATH_E     RF_PATH,
-u4Byte				    RegAddr
+u32 				Addr,
+u32 				Data,
+	ODM_RF_RADIO_PATH_E     RF_PATH,
+u32 			    RegAddr
 	);
 
 void
 odm_ConfigRF_RadioA_8723B(
 PDM_ODM_T				pDM_Odm,
-u4Byte					Addr,
-u4Byte					Data
+u32 				Addr,
+u32 				Data
 	);
 
 void
 odm_ConfigMAC_8723B(
 PDM_ODM_T	pDM_Odm,
-u4Byte		Addr,
-u1Byte		Data
+u32 	Addr,
+u8 Data
 	);
 
 void
 odm_ConfigBB_AGC_8723B(
-    IN	PDM_ODM_T	pDM_Odm,
-    IN	u4Byte		Addr,
-    IN	u4Byte		Bitmask,
-    IN	u4Byte		Data
+    PDM_ODM_T	pDM_Odm,
+    u32 	Addr,
+    u32 	Bitmask,
+    u32 	Data
    );
 
 void
 odm_ConfigBB_PHY_REG_PG_8723B(
 PDM_ODM_T	pDM_Odm,
-u4Byte		Band,
-u4Byte		RfPath,
-u4Byte		TxNum,
-    IN	u4Byte		Addr,
-    IN	u4Byte		Bitmask,
-    IN	u4Byte		Data
+u32 	Band,
+u32 	RfPath,
+u32 	TxNum,
+    u32 	Addr,
+    u32 	Bitmask,
+    u32 	Data
    );
 
 void
 odm_ConfigBB_PHY_8723B(
 PDM_ODM_T	pDM_Odm,
-    IN	u4Byte		Addr,
-    IN	u4Byte		Bitmask,
-    IN	u4Byte		Data
+    u32 	Addr,
+    u32 	Bitmask,
+    u32 	Data
    );
 
 void
 odm_ConfigBB_TXPWR_LMT_8723B(
 PDM_ODM_T	pDM_Odm,
-pu1Byte		Regulation,
-pu1Byte		Band,
-pu1Byte		Bandwidth,
-pu1Byte		RateSection,
-pu1Byte		RfPath,
-pu1Byte		Channel,
-pu1Byte		PowerLimit
+u8 *	Regulation,
+u8 *	Band,
+u8 *	Bandwidth,
+u8 *	RateSection,
+u8 *	RfPath,
+u8 *	Channel,
+u8 *	PowerLimit
    );
 
 #endif

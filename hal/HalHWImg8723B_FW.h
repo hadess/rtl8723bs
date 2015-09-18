@@ -13,36 +13,52 @@
 *
 ******************************************************************************/
 
-#ifndef __INC_MP_BB_HW_IMG_8723B_H
-#define __INC_MP_BB_HW_IMG_8723B_H
+#ifndef __INC_MP_FW_HW_IMG_8723B_H
+#define __INC_MP_FW_HW_IMG_8723B_H
 
 
 /******************************************************************************
-*                           AGC_TAB.TXT
+*                           FW_AP.TXT
 ******************************************************************************/
 
 void
-ODM_ReadAndConfig_MP_8723B_AGC_TAB(/*  TC: Test Chip, MP: MP Chip */
-	PDM_ODM_T  pDM_Odm
+ODM_ReadFirmware_MP_8723B_FW_AP_WoWLAN(
+     PDM_ODM_T    pDM_Odm,
+     u8       *pFirmware,
+     u32       *pFirmwareSize
 );
 
 /******************************************************************************
-*                           PHY_REG.TXT
+*                           FW_BT.TXT
 ******************************************************************************/
 
 void
-ODM_ReadAndConfig_MP_8723B_PHY_REG(/*  TC: Test Chip, MP: MP Chip */
-	PDM_ODM_T  pDM_Odm
+ODM_ReadFirmware_MP_8723B_FW_BT(
+     PDM_ODM_T    pDM_Odm,
+     u8       *pFirmware,
+     u32       *pFirmwareSize
 );
 
 /******************************************************************************
-*                           PHY_REG_PG.TXT
+*                           FW_NIC.TXT
 ******************************************************************************/
 
 void
-ODM_ReadAndConfig_MP_8723B_PHY_REG_PG(/*  TC: Test Chip, MP: MP Chip */
-	PDM_ODM_T  pDM_Odm
+ODM_ReadFirmware_MP_8723B_FW_NIC(
+     PDM_ODM_T    pDM_Odm,
+     u8       *pFirmware,
+     u32       *pFirmwareSize
 );
-u32 ODM_GetVersion_MP_8723B_PHY_REG_PG(void);
+
+/******************************************************************************
+*                           FW_WoWLAN.TXT
+******************************************************************************/
+
+void
+ODM_ReadFirmware_MP_8723B_FW_WoWLAN(
+     PDM_ODM_T    pDM_Odm,
+     u8       *pFirmware,
+     u32       *pFirmwareSize
+);
 
 #endif

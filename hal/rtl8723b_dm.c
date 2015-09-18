@@ -12,26 +12,16 @@
  * more details.
  *
  ******************************************************************************/
-/*  */
 /*  Description: */
-/*  */
 /*  This file is for 92CE/92CU dynamic mechanism only */
-/*  */
-/*  */
-/*  */
+
 #define _RTL8723B_DM_C_
 
-/*  */
-/*  include files */
-/*  */
 #include <drv_types.h>
 #include <rtw_debug.h>
 #include <rtl8723b_hal.h>
 
-/*  */
 /*  Global var */
-/*  */
-
 
 static void
 dm_CheckStatistics(
@@ -45,10 +35,10 @@ struct adapter *Adapter
 static void Init_ODM_ComInfo_8723b(struct adapter *Adapter)
 {
 
-	struct hal_com_data *	pHalData = GET_HAL_DATA(Adapter);
+	struct hal_com_data *pHalData = GET_HAL_DATA(Adapter);
 	PDM_ODM_T		pDM_Odm = &(pHalData->odmpriv);
-	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
-	u8	cut_ver, fab_ver;
+	struct dm_priv *pdmpriv = &pHalData->dmpriv;
+	u8 cut_ver, fab_ver;
 
 	/*  */
 	/*  Init Value */
@@ -75,13 +65,13 @@ static void Init_ODM_ComInfo_8723b(struct adapter *Adapter)
 	ODM_CmnInfoInit(pDM_Odm, ODM_CMNINFO_BWIFI_TEST, Adapter->registrypriv.wifi_spec);
 
 
-	if (pHalData->rf_type == RF_1T1R){
+	if (pHalData->rf_type == RF_1T1R) {
 		ODM_CmnInfoUpdate(pDM_Odm, ODM_CMNINFO_RF_TYPE, ODM_1T1R);
 	}
-	else if (pHalData->rf_type == RF_2T2R){
+	else if (pHalData->rf_type == RF_2T2R) {
 		ODM_CmnInfoUpdate(pDM_Odm, ODM_CMNINFO_RF_TYPE, ODM_2T2R);
 	}
-	else if (pHalData->rf_type == RF_1T2R){
+	else if (pHalData->rf_type == RF_1T2R) {
 		ODM_CmnInfoUpdate(pDM_Odm, ODM_CMNINFO_RF_TYPE, ODM_1T2R);
 	}
 
@@ -94,13 +84,13 @@ static void Init_ODM_ComInfo_8723b(struct adapter *Adapter)
 
 static void Update_ODM_ComInfo_8723b(struct adapter *Adapter)
 {
-	struct mlme_ext_priv	*pmlmeext = &Adapter->mlmeextpriv;
-	struct mlme_priv		*pmlmepriv = &Adapter->mlmepriv;
+	struct mlme_ext_priv *pmlmeext = &Adapter->mlmeextpriv;
+	struct mlme_priv 	*pmlmepriv = &Adapter->mlmepriv;
 	struct dvobj_priv *dvobj = adapter_to_dvobj(Adapter);
 	struct pwrctrl_priv *pwrctrlpriv = adapter_to_pwrctl(Adapter);
-	struct hal_com_data *	pHalData = GET_HAL_DATA(Adapter);
+	struct hal_com_data *pHalData = GET_HAL_DATA(Adapter);
 	PDM_ODM_T		pDM_Odm = &(pHalData->odmpriv);
-	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
+	struct dm_priv *pdmpriv = &pHalData->dmpriv;
 	int i;
 	u8 zero = 0;
 
@@ -125,7 +115,7 @@ static void Update_ODM_ComInfo_8723b(struct adapter *Adapter)
 	/*  Pointer reference */
 	/*  */
 	/* ODM_CMNINFO_MAC_PHY_MODE pHalData->MacPhyMode92D */
-	/* 	ODM_CmnInfoHook(pDM_Odm, ODM_CMNINFO_MAC_PHY_MODE,&(pDM_Odm->u1Byte_temp)); */
+	/* 	ODM_CmnInfoHook(pDM_Odm, ODM_CMNINFO_MAC_PHY_MODE,&(pDM_Odm->u8_temp)); */
 
 	ODM_CmnInfoUpdate(pDM_Odm, ODM_CMNINFO_ABILITY, pdmpriv->InitODMFlag);
 
@@ -137,7 +127,7 @@ static void Update_ODM_ComInfo_8723b(struct adapter *Adapter)
 	ODM_CmnInfoHook(pDM_Odm, ODM_CMNINFO_BW,&(pHalData->CurrentChannelBW));
 	ODM_CmnInfoHook(pDM_Odm, ODM_CMNINFO_CHNL,&(pHalData->CurrentChannel));
 	ODM_CmnInfoHook(pDM_Odm, ODM_CMNINFO_NET_CLOSED,&(Adapter->net_closed));
-	ODM_CmnInfoHook(pDM_Odm, ODM_CMNINFO_MP_MODE,&zero);
+	ODM_CmnInfoHook(pDM_Odm, ODM_CMNINFO_MP_MODE, &zero);
 	ODM_CmnInfoHook(pDM_Odm, ODM_CMNINFO_BAND,&(pHalData->CurrentBandType));
 	ODM_CmnInfoHook(pDM_Odm, ODM_CMNINFO_FORCED_IGI_LB,&(pHalData->u1ForcedIgiLb));
 	ODM_CmnInfoHook(pDM_Odm, ODM_CMNINFO_FORCED_RATE,&(pHalData->ForcedDataRate));
@@ -155,8 +145,8 @@ rtl8723b_InitHalDm(
 struct adapter *Adapter
 	)
 {
-	struct hal_com_data *	pHalData = GET_HAL_DATA(Adapter);
-	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
+	struct hal_com_data *pHalData = GET_HAL_DATA(Adapter);
+	struct dm_priv *pdmpriv = &pHalData->dmpriv;
 	PDM_ODM_T		pDM_Odm = &(pHalData->odmpriv);
 
 	pdmpriv->DM_Type = DM_Type_ByDriver;
@@ -179,7 +169,7 @@ struct adapter *Adapter
 	bool		bFwCurrentInPSMode = false;
 	bool		bFwPSAwake = true;
 	u8 hw_init_completed = false;
-	struct hal_com_data *	pHalData = GET_HAL_DATA(Adapter);
+	struct hal_com_data *pHalData = GET_HAL_DATA(Adapter);
 
 	hw_init_completed = Adapter->hw_init_completed;
 
@@ -202,11 +192,11 @@ struct adapter *Adapter
 	/* ODM */
 	if (hw_init_completed == true)
 	{
-		u8	bLinked =false;
-		u8	bsta_state =false;
-		u8	bBtDisabled = true;
+		u8 bLinked =false;
+		u8 bsta_state =false;
+		u8 bBtDisabled = true;
 
-		if (rtw_linked_check(Adapter)){
+		if (rtw_linked_check(Adapter)) {
 			bLinked = true;
 			if (check_fwstate(&Adapter->mlmepriv, WIFI_STATION_STATE))
 				bsta_state = true;
@@ -228,11 +218,11 @@ skip_dm:
 	return;
 }
 
-void rtl8723b_hal_dm_in_lps(struct adapter * padapter)
+void rtl8723b_hal_dm_in_lps(struct adapter *padapter)
 {
-	u32	PWDB_rssi = 0;
-	struct mlme_priv	*pmlmepriv = &padapter->mlmepriv;
-	struct hal_com_data *	pHalData = GET_HAL_DATA(padapter);
+	u32 PWDB_rssi = 0;
+	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
+	struct hal_com_data *pHalData = GET_HAL_DATA(padapter);
 	PDM_ODM_T		pDM_Odm = &pHalData->odmpriv;
 	struct sta_priv *pstapriv = &padapter->stapriv;
 	struct sta_info *psta = NULL;
@@ -254,12 +244,12 @@ void rtl8723b_hal_dm_in_lps(struct adapter * padapter)
 
 }
 
-void rtl8723b_HalDmWatchDog_in_LPS(IN	struct adapter *Adapter)
+void rtl8723b_HalDmWatchDog_in_LPS(struct adapter *Adapter)
 {
-	u8	bLinked =false;
-	struct hal_com_data *	pHalData = GET_HAL_DATA(Adapter);
-	struct mlme_priv	*pmlmepriv = &Adapter->mlmepriv;
-	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
+	u8 bLinked =false;
+	struct hal_com_data *pHalData = GET_HAL_DATA(Adapter);
+	struct mlme_priv *pmlmepriv = &Adapter->mlmepriv;
+	struct dm_priv *pdmpriv = &pHalData->dmpriv;
 	PDM_ODM_T		pDM_Odm = &pHalData->odmpriv;
 	pDIG_T	pDM_DigTable = &pDM_Odm->DM_DigTable;
 	struct sta_priv *pstapriv = &Adapter->stapriv;
@@ -317,8 +307,8 @@ skip_lps_dm:
 
 void rtl8723b_init_dm_priv(struct adapter * Adapter)
 {
-	struct hal_com_data *	pHalData = GET_HAL_DATA(Adapter);
-	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
+	struct hal_com_data *pHalData = GET_HAL_DATA(Adapter);
+	struct dm_priv *pdmpriv = &pHalData->dmpriv;
 	memset(pdmpriv, 0, sizeof(struct dm_priv));
 	Init_ODM_ComInfo_8723b(Adapter);
 }

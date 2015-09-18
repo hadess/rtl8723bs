@@ -25,12 +25,12 @@ typedef struct _CFO_TRACKING_
 	bool			bATCStatus;
 	bool			largeCFOHit;
 	bool			bAdjust;
-	u1Byte			CrystalCap;
-	u1Byte			DefXCap;
+	u8 	CrystalCap;
+	u8 	DefXCap;
 	int				CFO_tail[2];
 	int				CFO_ave_pre;
-	u4Byte			packetCount;
-	u4Byte			packetCount_pre;
+	u32 		packetCount;
+	u32 		packetCount_pre;
 
 	bool			bForceXtalCap;
 	bool			bReset;

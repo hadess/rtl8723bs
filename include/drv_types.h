@@ -90,103 +90,103 @@ enum _NIC_VERSION {
 
 struct specific_device_id{
 
-	u32		flags;
+	u32 	flags;
 
-	u16		idVendor;
-	u16		idProduct;
+	u16 	idVendor;
+	u16 	idProduct;
 
 };
 
 struct registry_priv
 {
-	u8	chip_version;
-	u8	rfintfs;
-	u8	lbkmode;
-	u8	hci;
-	NDIS_802_11_SSID	ssid;
-	u8	network_mode;	/* infra, ad-hoc, auto */
-	u8	channel;/* ad-hoc support requirement */
-	u8	wireless_mode;/* A, B, G, auto */
-	u8	scan_mode;/* active, passive */
-	u8	radio_enable;
-	u8	preamble;/* long, short, auto */
-	u8	vrtl_carrier_sense;/* Enable, Disable, Auto */
-	u8	vcs_type;/* RTS/CTS, CTS-to-self */
-	u16	rts_thresh;
+	u8 chip_version;
+	u8 rfintfs;
+	u8 lbkmode;
+	u8 hci;
+	struct ndis_802_11_ssid	ssid;
+	u8 network_mode;	/* infra, ad-hoc, auto */
+	u8 channel;/* ad-hoc support requirement */
+	u8 wireless_mode;/* A, B, G, auto */
+	u8 scan_mode;/* active, passive */
+	u8 radio_enable;
+	u8 preamble;/* long, short, auto */
+	u8 vrtl_carrier_sense;/* Enable, Disable, Auto */
+	u8 vcs_type;/* RTS/CTS, CTS-to-self */
+	u16 rts_thresh;
 	u16  frag_thresh;
-	u8	adhoc_tx_pwr;
-	u8	soft_ap;
-	u8	power_mgnt;
-	u8	ips_mode;
-	u8	smart_ps;
+	u8 adhoc_tx_pwr;
+	u8 soft_ap;
+	u8 power_mgnt;
+	u8 ips_mode;
+	u8 smart_ps;
 	u8   usb_rxagg_mode;
-	u8	long_retry_lmt;
-	u8	short_retry_lmt;
-	u16	busy_thresh;
-	u8	ack_policy;
+	u8 long_retry_lmt;
+	u8 short_retry_lmt;
+	u16 busy_thresh;
+	u8 ack_policy;
 	u8  mp_dm;
-	u8	software_encrypt;
-	u8	software_decrypt;
-	u8	acm_method;
+	u8 software_encrypt;
+	u8 software_decrypt;
+	u8 acm_method;
 	  /* UAPSD */
-	u8	wmm_enable;
-	u8	uapsd_enable;
-	u8	uapsd_max_sp;
-	u8	uapsd_acbk_en;
-	u8	uapsd_acbe_en;
-	u8	uapsd_acvi_en;
-	u8	uapsd_acvo_en;
+	u8 wmm_enable;
+	u8 uapsd_enable;
+	u8 uapsd_max_sp;
+	u8 uapsd_acbk_en;
+	u8 uapsd_acbe_en;
+	u8 uapsd_acvi_en;
+	u8 uapsd_acvo_en;
 
 	struct wlan_bssid_ex    dev_network;
 
-	u8	ht_enable;
+	u8 ht_enable;
 	/*  0: 20 MHz, 1: 40 MHz, 2: 80 MHz, 3: 160MHz */
 	/*  2.4G use bit 0 ~ 3, 5G use bit 4 ~ 7 */
 	/*  0x21 means enable 2.4G 40MHz & 5G 80MHz */
-	u8	bw_mode;
-	u8	ampdu_enable;/* for tx */
-	u8	rx_stbc;
-	u8	ampdu_amsdu;/* A-MPDU Supports A-MSDU is permitted */
+	u8 bw_mode;
+	u8 ampdu_enable;/* for tx */
+	u8 rx_stbc;
+	u8 ampdu_amsdu;/* A-MPDU Supports A-MSDU is permitted */
 	/*  Short GI support Bit Map */
 	/*  BIT0 - 20MHz, 1: support, 0: non-support */
 	/*  BIT1 - 40MHz, 1: support, 0: non-support */
 	/*  BIT2 - 80MHz, 1: support, 0: non-support */
 	/*  BIT3 - 160MHz, 1: support, 0: non-support */
-	u8	short_gi;
+	u8 short_gi;
 	/*  BIT0: Enable VHT LDPC Rx, BIT1: Enable VHT LDPC Tx, BIT4: Enable HT LDPC Rx, BIT5: Enable HT LDPC Tx */
-	u8	ldpc_cap;
+	u8 ldpc_cap;
 	/*  BIT0: Enable VHT STBC Rx, BIT1: Enable VHT STBC Tx, BIT4: Enable HT STBC Rx, BIT5: Enable HT STBC Tx */
-	u8	stbc_cap;
+	u8 stbc_cap;
 	/*  BIT0: Enable VHT Beamformer, BIT1: Enable VHT Beamformee, BIT4: Enable HT Beamformer, BIT5: Enable HT Beamformee */
-	u8	beamform_cap;
+	u8 beamform_cap;
 
-	u8	lowrate_two_xmit;
+	u8 lowrate_two_xmit;
 
-	u8	rf_config ;
-	u8	low_power ;
+	u8 rf_config ;
+	u8 low_power ;
 
-	u8	wifi_spec;/*  !turbo_mode */
+	u8 wifi_spec;/*  !turbo_mode */
 
-	u8	channel_plan;
+	u8 channel_plan;
 
-	u8	btcoex;
-	u8	bt_iso;
-	u8	bt_sco;
-	u8	bt_ampdu;
+	u8 btcoex;
+	u8 bt_iso;
+	u8 bt_sco;
+	u8 bt_ampdu;
 	s8	ant_num;
 
 	bool	bAcceptAddbaReq;
 
-	u8	antdiv_cfg;
-	u8	antdiv_type;
+	u8 antdiv_cfg;
+	u8 antdiv_type;
 
-	u8	usbss_enable;/* 0:disable, 1:enable */
-	u8	hwpdn_mode;/* 0:disable, 1:enable, 2:decide by EFUSE config */
-	u8	hwpwrp_detect;/* 0:disable, 1:enable */
+	u8 usbss_enable;/* 0:disable, 1:enable */
+	u8 hwpdn_mode;/* 0:disable, 1:enable, 2:decide by EFUSE config */
+	u8 hwpwrp_detect;/* 0:disable, 1:enable */
 
-	u8	hw_wps_pbc;/* 0:disable, 1:enable */
+	u8 hw_wps_pbc;/* 0:disable, 1:enable */
 
-	u8	max_roaming_times; /*  the max number driver will try to roaming */
+	u8 max_roaming_times; /*  the max number driver will try to roaming */
 
 	u8 enable80211d;
 
@@ -196,21 +196,21 @@ struct registry_priv
 	u8 notch_filter;
 
 	/* define for tx power adjust */
-	u8	RegEnableTxPowerLimit;
-	u8	RegEnableTxPowerByRate;
-	u8	RegPowerBase;
-	u8	RegPwrTblSel;
+	u8 RegEnableTxPowerLimit;
+	u8 RegEnableTxPowerByRate;
+	u8 RegPowerBase;
+	u8 RegPwrTblSel;
 	s8	TxBBSwing_2G;
 	s8	TxBBSwing_5G;
-	u8	AmplifierType_2G;
-	u8	AmplifierType_5G;
-	u8	bEn_RFE;
-	u8	RFE_Type;
+	u8 AmplifierType_2G;
+	u8 AmplifierType_5G;
+	u8 bEn_RFE;
+	u8 RFE_Type;
 	u8  check_fw_ps;
 
 #ifdef CONFIG_LOAD_PHY_PARA_FROM_FILE
-	u8	load_phy_file;
-	u8	RegDecryptCustomFile;
+	u8 load_phy_file;
+	u8 RegDecryptCustomFile;
 #endif
 
 #ifdef CONFIG_MULTI_VIR_IFACES
@@ -385,7 +385,7 @@ struct debug_priv {
 	u32 dbg_carddisable_cnt;
 	u32 dbg_carddisable_error_cnt;
 	u32 dbg_ps_insuspend_cnt;
-	u32	dbg_dev_unload_inIPS_cnt;
+	u32 dbg_dev_unload_inIPS_cnt;
 	u32 dbg_wow_leave_ps_fail_cnt;
 	u32 dbg_scan_pwr_state_cnt;
 	u32 dbg_downloadfw_pwr_state_cnt;
@@ -416,7 +416,7 @@ struct rtw_traffic_statistics {
 	u64	tx_drop;
 	u64	cur_tx_bytes;
 	u64	last_tx_bytes;
-	u32	cur_tx_tp; /*  Tx throughput in MBps. */
+	u32 cur_tx_tp; /*  Tx throughput in MBps. */
 
 	/*  rx statistics */
 	u64	rx_bytes;
@@ -424,7 +424,7 @@ struct rtw_traffic_statistics {
 	u64	rx_drop;
 	u64	cur_rx_bytes;
 	u64	last_rx_bytes;
-	u32	cur_rx_tp; /*  Rx throughput in MBps. */
+	u32 cur_rx_tp; /*  Rx throughput in MBps. */
 };
 
 struct cam_ctl_t {
@@ -463,9 +463,9 @@ struct dvobj_priv
 	_mutex setch_mutex;
 	_mutex setbw_mutex;
 
-	unsigned char	oper_channel; /* saved channel info when call set_channel_bw */
-	unsigned char	oper_bwmode;
-	unsigned char	oper_ch_offset;/* PRIME_CHNL_OFFSET */
+	unsigned char oper_channel; /* saved channel info when call set_channel_bw */
+	unsigned char oper_bwmode;
+	unsigned char oper_ch_offset;/* PRIME_CHNL_OFFSET */
 	unsigned long on_oper_ch_time;
 
 	/* extend to support mulitu interface */
@@ -478,15 +478,15 @@ struct dvobj_priv
 	struct cam_entry_cache cam_cache[TOTAL_CAM_ENTRY];
 
 	/* For 92D, DMDP have 2 interface. */
-	u8	InterfaceNumber;
-	u8	NumInterfaces;
+	u8 InterfaceNumber;
+	u8 NumInterfaces;
 
 	/* In /Out Pipe information */
 	int	RtInPipe[2];
 	int	RtOutPipe[4];
-	u8	Queue2Pipe[HW_QUEUE_ENTRY];/* for out pipe mapping */
+	u8 Queue2Pipe[HW_QUEUE_ENTRY];/* for out pipe mapping */
 
-	u8	irq_alloc;
+	u8 irq_alloc;
 	atomic_t continual_io_error;
 
 	atomic_t disable_func;
@@ -542,23 +542,23 @@ struct adapter {
 	struct dvobj_priv *dvobj;
 	struct	mlme_priv mlmepriv;
 	struct	mlme_ext_priv mlmeextpriv;
-	struct	cmd_priv	cmdpriv;
-	struct	evt_priv	evtpriv;
+	struct	cmd_priv cmdpriv;
+	struct	evt_priv evtpriv;
 	/* struct	io_queue	*pio_queue; */
-	struct	io_priv	iopriv;
-	struct	xmit_priv	xmitpriv;
-	struct	recv_priv	recvpriv;
-	struct	sta_priv	stapriv;
-	struct	security_priv	securitypriv;
+	struct	io_priv iopriv;
+	struct	xmit_priv xmitpriv;
+	struct	recv_priv recvpriv;
+	struct	sta_priv stapriv;
+	struct	security_priv securitypriv;
 	_lock   security_key_mutex; /*  add for CONFIG_IEEE80211W, none 11w also can use */
-	struct	registry_priv	registrypriv;
+	struct	registry_priv registrypriv;
 	struct	eeprom_priv eeprompriv;
 
-	struct	hostapd_priv	*phostapdpriv;
+	struct	hostapd_priv *phostapdpriv;
 
-	u32	setband;
+	u32 setband;
 
-	void *	HalData;
+	void *		HalData;
 	u32 hal_data_sz;
 	struct hal_ops	HalFunc;
 
@@ -566,19 +566,19 @@ struct adapter {
 	s32	bSurpriseRemoved;
 	s32  bCardDisableWOHSM;
 
-	u32	IsrContent;
-	u32	ImrContent;
+	u32 IsrContent;
+	u32 ImrContent;
 
-	u8	EepromAddressSize;
-	u8	hw_init_completed;
-	u8	bDriverIsGoingToUnload;
-	u8	init_adpt_in_progress;
-	u8	bHaltInProgress;
+	u8 EepromAddressSize;
+	u8 hw_init_completed;
+	u8 bDriverIsGoingToUnload;
+	u8 init_adpt_in_progress;
+	u8 bHaltInProgress;
 
-	void * cmdThread;
-	void * evtThread;
-	void * xmitThread;
-	void * recvThread;
+	void *cmdThread;
+	void *evtThread;
+	void *xmitThread;
+	void *recvThread;
 
 	u32 (*intf_init)(struct dvobj_priv *dvobj);
 	void (*intf_deinit)(struct dvobj_priv *dvobj);

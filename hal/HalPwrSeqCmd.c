@@ -43,19 +43,19 @@ Major Change History:
 /* 	2011.07.07, added by Roger. */
 /*  */
 u8 HalPwrSeqCmdParsing(
-	struct adapter *padapter,
-	u8				CutVersion,
-	u8				FabVersion,
-	u8				InterfaceType,
+	struct adapter *	padapter,
+	u8 		CutVersion,
+	u8 		FabVersion,
+	u8 		InterfaceType,
 	WLAN_PWR_CFG	PwrSeqCmd[])
 {
 	WLAN_PWR_CFG	PwrCfgCmd = {0};
-	u8				bPollingBit = false;
-	u32				AryIdx = 0;
-	u8				value = 0;
-	u32				offset = 0;
-	u32				pollingCount = 0; /*  polling autoload done. */
-	u32				maxPollingCnt = 5000;
+	u8 		bPollingBit = false;
+	u32 			AryIdx = 0;
+	u8 		value = 0;
+	u32 			offset = 0;
+	u32 			pollingCount = 0; /*  polling autoload done. */
+	u32 			maxPollingCnt = 5000;
 
 	do {
 		PwrCfgCmd = PwrSeqCmd[AryIdx];

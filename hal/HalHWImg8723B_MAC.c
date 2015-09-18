@@ -19,24 +19,24 @@
 static bool
 CheckPositive(
     PDM_ODM_T     pDM_Odm,
-    const u4Byte  Condition1,
-    const u4Byte  Condition2
+    const u32  Condition1,
+    const u32  Condition2
    )
 {
-	u1Byte    _BoardType = ((pDM_Odm->BoardType & BIT4) >> 4) << 0 | /*  _GLNA */
+	u8    _BoardType = ((pDM_Odm->BoardType & BIT4) >> 4) << 0 | /*  _GLNA */
                            ((pDM_Odm->BoardType & BIT3) >> 3) << 1 | /*  _GPA */
                            ((pDM_Odm->BoardType & BIT7) >> 7) << 2 | /*  _ALNA */
                            ((pDM_Odm->BoardType & BIT6) >> 6) << 3 | /*  _APA */
                            ((pDM_Odm->BoardType & BIT2) >> 2) << 4;  /*  _BT */
 
-	u4Byte	  cond1   = Condition1, cond2 = Condition2;
-	u4Byte    driver1 = pDM_Odm->CutVersion       << 24 |
+	u32   cond1   = Condition1, cond2 = Condition2;
+	u32    driver1 = pDM_Odm->CutVersion       << 24 |
 		                pDM_Odm->SupportPlatform  << 16 |
 		                pDM_Odm->PackageType      << 12 |
 		                pDM_Odm->SupportInterface << 8  |
 		                _BoardType;
 
-	u4Byte    driver2 = pDM_Odm->TypeGLNA <<  0 |
+	u32    driver2 = pDM_Odm->TypeGLNA <<  0 |
 		                pDM_Odm->TypeGPA  <<  8 |
 		                pDM_Odm->TypeALNA << 16 |
 		                pDM_Odm->TypeAPA  << 24;
@@ -67,7 +67,7 @@ CheckPositive(
 	driver1 &= 0x000F0FFF;
 
 	if ((cond1 & driver1) == cond1) {
-		u4Byte bitMask = 0;
+		u32 bitMask = 0;
 		if ((cond1 & 0x0F) == 0) /*  BoardType is DONTCARE */
 			return true;
 
@@ -88,8 +88,8 @@ CheckPositive(
 static bool
 CheckNegative(
     PDM_ODM_T     pDM_Odm,
-    const u4Byte  Condition1,
-    const u4Byte  Condition2
+    const u32  Condition1,
+    const u32  Condition2
    )
 {
     return true;
@@ -99,7 +99,7 @@ CheckNegative(
 *                           MAC_REG.TXT
 ******************************************************************************/
 
-static u4Byte Array_MP_8723B_MAC_REG[] = {
+static u32 Array_MP_8723B_MAC_REG[] = {
 		0x02F, 0x00000030,
 		0x035, 0x00000000,
 		0x039, 0x00000008,
@@ -208,30 +208,30 @@ static u4Byte Array_MP_8723B_MAC_REG[] = {
 
 void
 ODM_ReadAndConfig_MP_8723B_MAC_REG(
-  PDM_ODM_T  pDM_Odm
+	PDM_ODM_T  pDM_Odm
 	)
 {
-    u4Byte     i         = 0;
-    u4Byte     ArrayLen    = sizeof(Array_MP_8723B_MAC_REG)/sizeof(u4Byte);
-    pu4Byte    Array       = Array_MP_8723B_MAC_REG;
+    u32     i         = 0;
+    u32     ArrayLen    = sizeof(Array_MP_8723B_MAC_REG)/sizeof(u32);
+    u32 *    Array       = Array_MP_8723B_MAC_REG;
 
     ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_LOUD, ("===> ODM_ReadAndConfig_MP_8723B_MAC_REG\n"));
 
     for (i = 0; i < ArrayLen; i += 2)
     {
-        u4Byte v1 = Array[i];
-        u4Byte v2 = Array[i+1];
+        u32 v1 = Array[i];
+        u32 v2 = Array[i+1];
 
         /*  This (offset, data) pair doesn't care the condition. */
         if (v1 < 0x40000000)
         {
-           odm_ConfigMAC_8723B(pDM_Odm, v1, (u1Byte)v2);
+           odm_ConfigMAC_8723B(pDM_Odm, v1, (u8)v2);
            continue;
         }
         else
         {   /*  This line is the beginning of branch. */
             bool bMatched = true;
-            u1Byte  cCond  = (u1Byte)((v1 & (BIT29|BIT28)) >> 28);
+            u8  cCond  = (u8)((v1 & (BIT29|BIT28)) >> 28);
 
             if (cCond == COND_ELSE) { /*  ELSE, ENDIF */
                 bMatched = true;
@@ -259,15 +259,15 @@ ODM_ReadAndConfig_MP_8723B_MAC_REG(
             else /*  Configure matched pairs and skip to end of if-else. */
             {
                 while (v1 < 0x40000000 && i < ArrayLen-2) {
-                    odm_ConfigMAC_8723B(pDM_Odm, v1, (u1Byte)v2);
+                    odm_ConfigMAC_8723B(pDM_Odm, v1, (u8)v2);
                     READ_NEXT_PAIR(v1, v2, i);
                 }
 
                 /*  Keeps reading until ENDIF. */
-                cCond = (u1Byte)((v1 & (BIT29|BIT28)) >> 28);
+                cCond = (u8)((v1 & (BIT29|BIT28)) >> 28);
                 while (cCond != COND_ENDIF && i < ArrayLen-2) {
                     READ_NEXT_PAIR(v1, v2, i);
-                    cCond = (u1Byte)((v1 & (BIT29|BIT28)) >> 28);
+                    cCond = (u8)((v1 & (BIT29|BIT28)) >> 28);
                 }
             }
         }

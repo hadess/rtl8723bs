@@ -27,7 +27,7 @@
  *_SUCCESS	enable success
  *_FAIL		enable fail
  */
-static u8 CardEnable(struct adapter * padapter)
+static u8 CardEnable(struct adapter *padapter)
 {
 	u8 bMacPwrCtrlOn;
 	u8 ret = _FAIL;
@@ -56,7 +56,7 @@ static u8 CardEnable(struct adapter * padapter)
 /* give us Low Pulse when host wake up */
 void HostWakeUpGpioClear(struct adapter * Adapter)
 {
-	u32	value32;
+	u32 value32;
 
 	value32 = rtw_read32(Adapter, REG_GPIO_PIN_CTRL_2);
 
@@ -68,7 +68,7 @@ void HostWakeUpGpioClear(struct adapter * Adapter)
 	rtw_write32(Adapter, REG_GPIO_PIN_CTRL_2, value32);
 } /* HostWakeUpGpioClear */
 
-void HalSetOutPutGPIO(struct adapter * padapter, u8 index, u8 OutPutValue)
+void HalSetOutPutGPIO(struct adapter *padapter, u8 index, u8 OutPutValue)
 {
 	if (index <= 7) {
 		/* config GPIO mode */
@@ -111,7 +111,7 @@ void HalSetOutPutGPIO(struct adapter * padapter, u8 index, u8 OutPutValue)
 #endif
 
 static
-u8 _InitPowerOn_8723BS(struct adapter * padapter)
+u8 _InitPowerOn_8723BS(struct adapter *padapter)
 {
 	u8 value8;
 	u16 value16;
@@ -198,9 +198,9 @@ u8 _InitPowerOn_8723BS(struct adapter * padapter)
 }
 
 /* Tx Page FIFO threshold */
-static void _init_available_page_threshold(struct adapter * padapter, u8 numHQ, u8 numNQ, u8 numLQ, u8 numPubQ)
+static void _init_available_page_threshold(struct adapter *padapter, u8 numHQ, u8 numNQ, u8 numLQ, u8 numPubQ)
 {
-	u16	HQ_threshold, NQ_threshold, LQ_threshold;
+	u16 HQ_threshold, NQ_threshold, LQ_threshold;
 
 	HQ_threshold = (numPubQ + numHQ + 1) >> 1;
 	HQ_threshold |= (HQ_threshold<<8);
@@ -217,16 +217,16 @@ static void _init_available_page_threshold(struct adapter * padapter, u8 numHQ, 
 	DBG_8192C("%s(): Enable Tx FIFO Page Threshold H:0x%x, N:0x%x, L:0x%x\n", __func__, HQ_threshold, NQ_threshold, LQ_threshold);
 }
 
-static void _InitQueueReservedPage(struct adapter * padapter)
+static void _InitQueueReservedPage(struct adapter *padapter)
 {
 	struct hal_com_data		*pHalData = GET_HAL_DATA(padapter);
-	struct registry_priv	*pregistrypriv = &padapter->registrypriv;
-	u32			numHQ		= 0;
-	u32			numLQ		= 0;
-	u32			numNQ		= 0;
-	u32			numPubQ;
-	u32			value32;
-	u8			value8;
+	struct registry_priv *pregistrypriv = &padapter->registrypriv;
+	u32 		numHQ		= 0;
+	u32 		numLQ		= 0;
+	u32 		numNQ		= 0;
+	u32 		numPubQ;
+	u32 		value32;
+	u8 	value8;
 	bool			bWiFiConfig	= pregistrypriv->wifi_spec;
 
 	if (pHalData->OutEpQueueSel & TX_SELE_HQ)
@@ -258,12 +258,12 @@ static void _InitQueueReservedPage(struct adapter * padapter)
 	_init_available_page_threshold(padapter, numHQ, numNQ, numLQ, numPubQ);
 }
 
-static void _InitTxBufferBoundary(struct adapter * padapter)
+static void _InitTxBufferBoundary(struct adapter *padapter)
 {
 	struct registry_priv *pregistrypriv = &padapter->registrypriv;
 
-	/* u16	txdmactrl; */
-	u8	txpktbuf_bndy;
+	/* u16 txdmactrl; */
+	u8 txpktbuf_bndy;
 
 	if (!pregistrypriv->wifi_spec) {
 		txpktbuf_bndy = TX_PAGE_BOUNDARY_8723B;
@@ -282,12 +282,12 @@ static void _InitTxBufferBoundary(struct adapter * padapter)
 static void
 _InitNormalChipRegPriority(
 struct adapter *Adapter,
-u16		beQ,
-u16		bkQ,
-u16		viQ,
-u16		voQ,
-u16		mgtQ,
-u16		hiQ
+u16 	beQ,
+u16 	bkQ,
+u16 	viQ,
+u16 	voQ,
+u16 	mgtQ,
+u16 	hiQ
 	)
 {
 	u16 value16		= (rtw_read16(Adapter, REG_TRXDMA_CTRL) & 0x7);
@@ -306,7 +306,7 @@ struct adapter * Adapter
 {
 	struct hal_com_data	*pHalData	= GET_HAL_DATA(Adapter);
 
-	u16	value = 0;
+	u16 value = 0;
 	switch (pHalData->OutEpQueueSel)
 	{
 		case TX_SELE_HQ:
@@ -341,11 +341,11 @@ struct adapter * Adapter
 {
 	struct hal_com_data	*pHalData	= GET_HAL_DATA(Adapter);
 	struct registry_priv *pregistrypriv = &Adapter->registrypriv;
-	u16			beQ, bkQ, viQ, voQ, mgtQ, hiQ;
+	u16 		beQ, bkQ, viQ, voQ, mgtQ, hiQ;
 
 
-	u16	valueHi = 0;
-	u16	valueLow = 0;
+	u16 valueHi = 0;
+	u16 valueLow = 0;
 
 	switch (pHalData->OutEpQueueSel)
 	{
@@ -366,7 +366,7 @@ struct adapter * Adapter
 			break;
 	}
 
-	if (!pregistrypriv->wifi_spec){
+	if (!pregistrypriv->wifi_spec) {
 		beQ		= valueLow;
 		bkQ		= valueLow;
 		viQ		= valueHi;
@@ -389,13 +389,13 @@ struct adapter * Adapter
 
 static void
 _InitNormalChipThreeOutEpPriority(
-struct adapter * padapter
+struct adapter *padapter
 	)
 {
 	struct registry_priv *pregistrypriv = &padapter->registrypriv;
-	u16			beQ, bkQ, viQ, voQ, mgtQ, hiQ;
+	u16 		beQ, bkQ, viQ, voQ, mgtQ, hiQ;
 
-	if (!pregistrypriv->wifi_spec){/*  typical setting */
+	if (!pregistrypriv->wifi_spec) {/*  typical setting */
 		beQ		= QUEUE_LOW;
 		bkQ		= QUEUE_LOW;
 		viQ		= QUEUE_NORMAL;
@@ -440,12 +440,12 @@ struct adapter * Adapter
 
 }
 
-static void _InitQueuePriority(struct adapter * padapter)
+static void _InitQueuePriority(struct adapter *padapter)
 {
 	_InitNormalChipQueuePriority(padapter);
 }
 
-static void _InitPageBoundary(struct adapter * padapter)
+static void _InitPageBoundary(struct adapter *padapter)
 {
 	/*  RX Page Boundary */
 	u16 rxff_bndy = RX_DMA_BOUNDARY_8723B;
@@ -453,7 +453,7 @@ static void _InitPageBoundary(struct adapter * padapter)
 	rtw_write16(padapter, (REG_TRXFF_BNDY + 2), rxff_bndy);
 }
 
-static void _InitTransferPageSize(struct adapter * padapter)
+static void _InitTransferPageSize(struct adapter *padapter)
 {
 	/*  Tx page size is always 128. */
 
@@ -462,12 +462,12 @@ static void _InitTransferPageSize(struct adapter * padapter)
 	rtw_write8(padapter, REG_PBP, value8);
 }
 
-static void _InitDriverInfoSize(struct adapter * padapter, u8 drvInfoSize)
+static void _InitDriverInfoSize(struct adapter *padapter, u8 drvInfoSize)
 {
 	rtw_write8(padapter, REG_RX_DRVINFO_SZ, drvInfoSize);
 }
 
-static void _InitNetworkType(struct adapter * padapter)
+static void _InitNetworkType(struct adapter *padapter)
 {
 	u32 value32;
 
@@ -480,9 +480,9 @@ static void _InitNetworkType(struct adapter * padapter)
 	rtw_write32(padapter, REG_CR, value32);
 }
 
-static void _InitWMACSetting(struct adapter * padapter)
+static void _InitWMACSetting(struct adapter *padapter)
 {
-	struct hal_com_data * pHalData;
+	struct hal_com_data *pHalData;
 	u16 value16;
 
 
@@ -514,10 +514,10 @@ static void _InitWMACSetting(struct adapter * padapter)
 	rtw_write16(padapter, REG_RXFLTMAP0, value16);
 }
 
-static void _InitAdaptiveCtrl(struct adapter * padapter)
+static void _InitAdaptiveCtrl(struct adapter *padapter)
 {
-	u16	value16;
-	u32	value32;
+	u16 value16;
+	u32 value32;
 
 	/*  Response Rate Set */
 	value32 = rtw_read32(padapter, REG_RRSR);
@@ -537,7 +537,7 @@ static void _InitAdaptiveCtrl(struct adapter * padapter)
 	rtw_write16(padapter, REG_RL, value16);
 }
 
-static void _InitEDCA(struct adapter * padapter)
+static void _InitEDCA(struct adapter *padapter)
 {
 	/*  Set Spec SIFS (used in NAV) */
 	rtw_write16(padapter, REG_SPEC_SIFS, 0x100a);
@@ -556,9 +556,9 @@ static void _InitEDCA(struct adapter * padapter)
 	rtw_write32(padapter, REG_EDCA_VO_PARAM, 0x002FA226);
 }
 
-static void _InitRetryFunction(struct adapter * padapter)
+static void _InitRetryFunction(struct adapter *padapter)
 {
-	u8	value8;
+	u8 value8;
 
 	value8 = rtw_read8(padapter, REG_FWHW_TXQ_CTRL);
 	value8 |= EN_AMPDU_RTY_NEW;
@@ -568,11 +568,11 @@ static void _InitRetryFunction(struct adapter * padapter)
 	rtw_write8(padapter, REG_ACKTO, 0x40);
 }
 
-static void HalRxAggr8723BSdio(struct adapter * padapter)
+static void HalRxAggr8723BSdio(struct adapter *padapter)
 {
 	struct registry_priv *pregistrypriv;
-	u8	valueDMATimeout;
-	u8	valueDMAPageCount;
+	u8 valueDMATimeout;
+	u8 valueDMAPageCount;
 
 
 	pregistrypriv = &padapter->registrypriv;
@@ -597,7 +597,7 @@ static void HalRxAggr8723BSdio(struct adapter * padapter)
 	rtw_write8(padapter, REG_RXDMA_AGG_PG_TH, valueDMAPageCount);
 }
 
-static void sdio_AggSettingRxUpdate(struct adapter * padapter)
+static void sdio_AggSettingRxUpdate(struct adapter *padapter)
 {
 	struct hal_com_data *pHalData;
 	u8 valueDMA;
@@ -617,7 +617,7 @@ static void sdio_AggSettingRxUpdate(struct adapter * padapter)
 	rtw_write8(padapter, REG_RXDMA_MODE_CTRL_8723B, valueRxAggCtrl);/* RxAggLowThresh = 4*1K */
 }
 
-static void _initSdioAggregationSetting(struct adapter * padapter)
+static void _initSdioAggregationSetting(struct adapter *padapter)
 {
 	struct hal_com_data	*pHalData = GET_HAL_DATA(padapter);
 
@@ -633,12 +633,12 @@ static void _initSdioAggregationSetting(struct adapter * padapter)
 	pHalData->UsbRxHighSpeedMode = false;
 }
 
-static void _InitOperationMode(struct adapter * padapter)
+static void _InitOperationMode(struct adapter *padapter)
 {
-	struct hal_com_data * pHalData;
+	struct hal_com_data *pHalData;
 	struct mlme_ext_priv *pmlmeext;
-	u8				regBwOpMode = 0;
-	u32				regRATR = 0, regRRSR = 0;
+	u8 		regBwOpMode = 0;
+	u32 			regRATR = 0, regRRSR = 0;
 
 	pHalData = GET_HAL_DATA(padapter);
 	pmlmeext = &padapter->mlmeextpriv;
@@ -689,7 +689,7 @@ static void _InitOperationMode(struct adapter * padapter)
 
 }
 
-static void _InitInterrupt(struct adapter * padapter)
+static void _InitInterrupt(struct adapter *padapter)
 {
 	/*  HISR - turn all off */
 	rtw_write32(padapter, REG_HISR, 0);
@@ -708,7 +708,7 @@ static void _InitInterrupt(struct adapter * padapter)
 	InitSysInterrupt8723BSdio(padapter);
 }
 
-static void _InitRFType(struct adapter * padapter)
+static void _InitRFType(struct adapter *padapter)
 {
 	struct hal_com_data *pHalData = GET_HAL_DATA(padapter);
 
@@ -723,7 +723,7 @@ static void _InitRFType(struct adapter * padapter)
 	DBG_8192C("Set RF Chip ID to RF_6052 and RF type to 1T1R.\n");
 }
 
-static void _RfPowerSave(struct adapter * padapter)
+static void _RfPowerSave(struct adapter *padapter)
 {
 /* YJ, TODO */
 }
@@ -755,10 +755,10 @@ static bool HalDetectPwrDownMode(struct adapter * Adapter)
 	return pHalData->pwrdown;
 }	/*  HalDetectPwrDownMode */
 
-static u32 rtl8723bs_hal_init(struct adapter * padapter)
+static u32 rtl8723bs_hal_init(struct adapter *padapter)
 {
 	s32 ret;
-	struct hal_com_data * pHalData;
+	struct hal_com_data *pHalData;
 	struct pwrctrl_priv *pwrctrlpriv;
 	struct registry_priv *pregistrypriv;
 	u32 NavUpper = WiFiNavUpperUs;
@@ -886,7 +886,7 @@ static u32 rtl8723bs_hal_init(struct adapter * padapter)
 
 #if (HAL_MAC_ENABLE == 1)
 	ret = PHY_MACConfig8723B(padapter);
-	if (ret != _SUCCESS){
+	if (ret != _SUCCESS) {
 		RT_TRACE(_module_hci_hal_init_c_, _drv_info_, ("Initializepadapter8192CSdio(): Fail to configure MAC!!\n"));
 		return ret;
 	}
@@ -896,7 +896,7 @@ static u32 rtl8723bs_hal_init(struct adapter * padapter)
 	/*  */
 #if (HAL_BB_ENABLE == 1)
 	ret = PHY_BBConfig8723B(padapter);
-	if (ret != _SUCCESS){
+	if (ret != _SUCCESS) {
 		RT_TRACE(_module_hci_hal_init_c_, _drv_info_, ("Initializepadapter8192CSdio(): Fail to configure BB!!\n"));
 		return ret;
 	}
@@ -908,7 +908,7 @@ static u32 rtl8723bs_hal_init(struct adapter * padapter)
 	{
 #if (HAL_RF_ENABLE == 1)
 		ret = PHY_RFConfig8723B(padapter);
-		if (ret != _SUCCESS){
+		if (ret != _SUCCESS) {
 			RT_TRACE(_module_hci_hal_init_c_, _drv_info_, ("Initializepadapter8192CSdio(): Fail to configure RF!!\n"));
 			return ret;
 		}
@@ -918,8 +918,8 @@ static u32 rtl8723bs_hal_init(struct adapter * padapter)
 	/*  */
 	/*  Joseph Note: Keep RfRegChnlVal for later use. */
 	/*  */
-	pHalData->RfRegChnlVal[0] = PHY_QueryRFReg(padapter, (RF_PATH)0, RF_CHNLBW, bRFRegOffsetMask);
-	pHalData->RfRegChnlVal[1] = PHY_QueryRFReg(padapter, (RF_PATH)1, RF_CHNLBW, bRFRegOffsetMask);
+	pHalData->RfRegChnlVal[0] = PHY_QueryRFReg(padapter, (enum RF_PATH)0, RF_CHNLBW, bRFRegOffsetMask);
+	pHalData->RfRegChnlVal[1] = PHY_QueryRFReg(padapter, (enum RF_PATH)1, RF_CHNLBW, bRFRegOffsetMask);
 
 
 	/* if (!pHalData->bMACFuncEnable) { */
@@ -1071,11 +1071,11 @@ static u32 rtl8723bs_hal_init(struct adapter * padapter)
 /*  */
 /*  First created by tynli. 2011.01.28. */
 /*  */
-static void CardDisableRTL8723BSdio(struct adapter * padapter)
+static void CardDisableRTL8723BSdio(struct adapter *padapter)
 {
-	u8		u1bTmp;
-	u8		bMacPwrCtrlOn;
-	u8		ret = _FAIL;
+	u8 u1bTmp;
+	u8 bMacPwrCtrlOn;
+	u8 ret = _FAIL;
 
 	/*  Run LPS WL RFOFF flow */
 	ret = HalPwrSeqCmdParsing(padapter, PWR_CUT_ALL_MSK, PWR_FAB_ALL_MSK, PWR_INTF_SDIO_MSK, rtl8723B_enter_lps_flow);
@@ -1117,7 +1117,7 @@ static void CardDisableRTL8723BSdio(struct adapter * padapter)
 	}
 }
 
-static u32 rtl8723bs_hal_deinit(struct adapter * padapter)
+static u32 rtl8723bs_hal_deinit(struct adapter *padapter)
 {
         struct dvobj_priv *psdpriv = padapter->dvobj;
 	struct debug_priv *pdbgpriv = &psdpriv->drv_dbg;
@@ -1138,7 +1138,7 @@ static u32 rtl8723bs_hal_deinit(struct adapter * padapter)
 				do{
 					val8 = rtw_read8(padapter, REG_HMETFR);
 					cnt++;
-					DBG_871X("%s  polling REG_HMETFR = 0x%x, cnt =%d \n", __func__, val8, cnt);
+					DBG_871X("%s  polling REG_HMETFR = 0x%x, cnt =%d\n", __func__, val8, cnt);
 					mdelay(10);
 				}while (cnt<100 && (val8!= 0));
 				/* H2C done, enter 32k */
@@ -1155,7 +1155,7 @@ static u32 rtl8723bs_hal_deinit(struct adapter * padapter)
 					do{
 						val8 = rtw_read8(padapter, REG_CR);
 						cnt++;
-						DBG_871X("%s  polling 0x100 = 0x%x, cnt =%d \n", __func__, val8, cnt);
+						DBG_871X("%s  polling 0x100 = 0x%x, cnt =%d\n", __func__, val8, cnt);
 						mdelay(10);
 					}while (cnt<100 && (val8!= 0xEA));
 				}
@@ -1194,12 +1194,12 @@ static u32 rtl8723bs_hal_deinit(struct adapter * padapter)
 	return _SUCCESS;
 }
 
-static u32 rtl8723bs_inirp_init(struct adapter * padapter)
+static u32 rtl8723bs_inirp_init(struct adapter *padapter)
 {
 	return _SUCCESS;
 }
 
-static u32 rtl8723bs_inirp_deinit(struct adapter * padapter)
+static u32 rtl8723bs_inirp_deinit(struct adapter *padapter)
 {
 	RT_TRACE(_module_hci_hal_init_c_, _drv_info_, ("+rtl8723bs_inirp_deinit\n"));
 
@@ -1208,9 +1208,9 @@ static u32 rtl8723bs_inirp_deinit(struct adapter * padapter)
 	return _SUCCESS;
 }
 
-static void rtl8723bs_init_default_value(struct adapter * padapter)
+static void rtl8723bs_init_default_value(struct adapter *padapter)
 {
-	struct hal_com_data * pHalData;
+	struct hal_com_data *pHalData;
 
 
 	pHalData = GET_HAL_DATA(padapter);
@@ -1221,11 +1221,11 @@ static void rtl8723bs_init_default_value(struct adapter * padapter)
 	pHalData->SdioRxFIFOCnt = 0;
 }
 
-static void rtl8723bs_interface_configure(struct adapter * padapter)
+static void rtl8723bs_interface_configure(struct adapter *padapter)
 {
 	struct hal_com_data		*pHalData = GET_HAL_DATA(padapter);
-	struct dvobj_priv		*pdvobjpriv = adapter_to_dvobj(padapter);
-	struct registry_priv	*pregistrypriv = &padapter->registrypriv;
+	struct dvobj_priv 	*pdvobjpriv = adapter_to_dvobj(padapter);
+	struct registry_priv *pregistrypriv = &padapter->registrypriv;
 	bool		bWiFiConfig	= pregistrypriv->wifi_spec;
 
 
@@ -1238,7 +1238,7 @@ static void rtl8723bs_interface_configure(struct adapter * padapter)
 	else
 		pHalData->OutEpNumber = SDIO_MAX_TX_QUEUE;
 
-	switch (pHalData->OutEpNumber){
+	switch (pHalData->OutEpNumber) {
 		case 3:
 			pHalData->OutEpQueueSel =TX_SELE_HQ| TX_SELE_LQ|TX_SELE_NQ;
 			break;
@@ -1269,7 +1269,7 @@ _EfuseCellSel(
 struct adapter *padapter
 	)
 {
-	u32			value32;
+	u32 		value32;
 
 	value32 = rtw_read32(padapter, EFUSE_TEST);
 	value32 = (value32 & ~EFUSE_SEL_MASK) | EFUSE_SEL(EFUSE_WIFI_SEL_0);
@@ -1293,18 +1293,18 @@ struct adapter *Adapter
 
 static void
 Hal_EfuseParseMACAddr_8723BS(
-struct adapter *padapter,
-u8*	hwinfo,
+struct adapter *	padapter,
+u8*		hwinfo,
 bool			AutoLoadFail
 	)
 {
-	u16			i;
-	u8			sMacAddr[6] = {0x00, 0xE0, 0x4C, 0xb7, 0x23, 0x00};
-	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(padapter);
+	u16 		i;
+	u8 	sMacAddr[6] = {0x00, 0xE0, 0x4C, 0xb7, 0x23, 0x00};
+	struct eeprom_priv *pEEPROM = GET_EEPROM_EFUSE_PRIV(padapter);
 
 	if (AutoLoadFail)
 	{
-/* 		sMacAddr[5] = (u1Byte)GetRandomNumber(1, 254); */
+/* 		sMacAddr[5] = (u8)GetRandomNumber(1, 254); */
 		for (i = 0; i<6; i++)
 			pEEPROM->mac_addr[i] = sMacAddr[i];
 	}
@@ -1324,8 +1324,8 @@ bool			AutoLoadFail
 
 static void
 Hal_EfuseParseBoardType_8723BS(
-struct adapter *padapter,
-u8*	hwinfo,
+struct adapter *	padapter,
+u8*		hwinfo,
 bool			AutoLoadFail
 	)
 {
@@ -1344,11 +1344,11 @@ bool			AutoLoadFail
 
 static void
 _ReadEfuseInfo8723BS(
-struct adapter *	padapter
+	struct adapter *		padapter
 	)
 {
-	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(padapter);
-	u8*	hwinfo = NULL;
+	struct eeprom_priv *pEEPROM = GET_EEPROM_EFUSE_PRIV(padapter);
+	u8*		hwinfo = NULL;
 
 	RT_TRACE(_module_hci_hal_init_c_, _drv_info_, ("====>_ReadEfuseInfo8723BS()\n"));
 
@@ -1394,11 +1394,11 @@ struct adapter *	padapter
 }
 
 static void _ReadPROMContent(
-struct adapter *padapter
+	struct adapter *	padapter
 	)
 {
-	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(padapter);
-	u8			eeValue;
+	struct eeprom_priv *pEEPROM = GET_EEPROM_EFUSE_PRIV(padapter);
+	u8 	eeValue;
 
 	eeValue = rtw_read8(padapter, REG_9346CR);
 	/*  To check system boot selection. */
@@ -1418,7 +1418,7 @@ struct adapter *padapter
 
 static void
 _InitOtherVariable(
-struct adapter *Adapter
+	struct adapter *	Adapter
 	)
 {
 }
@@ -1431,7 +1431,7 @@ struct adapter *Adapter
 /* 		PASSIVE_LEVEL (SDIO interface) */
 /*  */
 /*  */
-static s32 _ReadAdapterInfo8723BS(struct adapter * padapter)
+static s32 _ReadAdapterInfo8723BS(struct adapter *padapter)
 {
 	u8 val8;
 	unsigned long start;
@@ -1468,7 +1468,7 @@ static s32 _ReadAdapterInfo8723BS(struct adapter * padapter)
 	return _SUCCESS;
 }
 
-static void ReadAdapterInfo8723BS(struct adapter * padapter)
+static void ReadAdapterInfo8723BS(struct adapter *padapter)
 {
 	/*  Read EEPROM size before call any EEPROM function */
 	padapter->EepromAddressSize = GetEEPROMSize8723B(padapter);
@@ -1480,27 +1480,26 @@ static void ReadAdapterInfo8723BS(struct adapter * padapter)
  * If variable not handled here,
  * some variables will be processed in SetHwReg8723B()
  */
-static void SetHwReg8723BS(struct adapter * padapter, u8 variable, u8 *val)
+static void SetHwReg8723BS(struct adapter *padapter, u8 variable, u8 *val)
 {
-	struct hal_com_data * pHalData;
+	struct hal_com_data *pHalData;
 	u8 val8;
 
-#if defined(CONFIG_WOWLAN)
+#if defined(CONFIG_WOWLAN) || defined(CONFIG_AP_WOWLAN)
 	struct wowlan_ioctl_param *poidparam;
-	struct recv_buf *precvbuf;
 	struct pwrctrl_priv *pwrctl = adapter_to_pwrctl(padapter);
-	struct security_priv *psecuritypriv = &padapter->securitypriv;
-	struct mlme_priv	*pmlmepriv = &padapter->mlmepriv;
-	struct sta_info *psta = NULL;
-	struct dvobj_priv *psdpriv = padapter->dvobj;
-	struct debug_priv *pdbgpriv = &psdpriv->drv_dbg;
-	int res, i;
-	u32 tmp = 0, tmp1 = 0, himr = 0;
-	u64 iv_low = 0, iv_high = 0;
+	int res;
+	u32 tmp;
 	u16 len = 0;
-	u8 mstatus = (*(u8 *)val);
 	u8 trycnt = 100;
-	u8 data[4];
+	u32 himr = 0;
+#if defined(CONFIG_WOWLAN)
+	struct security_priv *psecuritypriv = &padapter->securitypriv;
+	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
+	struct sta_info *psta = NULL;
+	u64 iv_low = 0, iv_high = 0;
+	u8 mstatus = (*(u8 *)val);
+#endif
 #endif
 
 	pHalData = GET_HAL_DATA(padapter);
@@ -1534,7 +1533,7 @@ static void SetHwReg8723BS(struct adapter * padapter, u8 variable, u8 *val)
 		case HW_VAR_WOWLAN:
 		{
 			poidparam = (struct wowlan_ioctl_param *)val;
-			switch (poidparam->subcode){
+			switch (poidparam->subcode) {
 				case WOWLAN_ENABLE:
 					DBG_871X_LEVEL(_drv_always_, "WOWLAN_ENABLE\n");
 
@@ -1570,7 +1569,7 @@ static void SetHwReg8723BS(struct adapter * padapter, u8 variable, u8 *val)
                                                 }
 					}while (trycnt--);
 					if (trycnt == 0)
-						DBG_871X_LEVEL(_drv_always_, "Stop RX DMA failed...... \n");
+						DBG_871X_LEVEL(_drv_always_, "Stop RX DMA failed......\n");
 
 					/*  3. Clear IMR and ISR */
 					DBG_871X_LEVEL(_drv_always_, "Clear IMR and ISR\n");
@@ -1690,7 +1689,7 @@ static void SetHwReg8723BS(struct adapter * padapter, u8 variable, u8 *val)
 								psecuritypriv->dot118021XGrpKey[psecuritypriv->dot118021XGrpKeyid].lkey[3]);
 							}
 							else
-								DBG_871X_LEVEL(_drv_always_, "GTK index =%d \n", gtk_keyindex);
+								DBG_871X_LEVEL(_drv_always_, "GTK index =%d\n", gtk_keyindex);
 						}
 
 						/*  4. Re-download Normal FW. */
@@ -1763,7 +1762,7 @@ static void SetHwReg8723BS(struct adapter * padapter, u8 variable, u8 *val)
 			} while (trycnt--);
 
 			if (trycnt == 0)
-				DBG_871X_LEVEL(_drv_always_, "Stop RX DMA failed...... \n");
+				DBG_871X_LEVEL(_drv_always_, "Stop RX DMA failed......\n");
 
 			/*  3. Clear IMR and ISR */
 			DBG_871X_LEVEL(_drv_always_, "Clear IMR and ISR\n");
@@ -1840,7 +1839,7 @@ static void SetHwReg8723BS(struct adapter * padapter, u8 variable, u8 *val)
  * If variable not handled here,
  * some variables will be processed in GetHwReg8723B()
  */
-static void GetHwReg8723BS(struct adapter * padapter, u8 variable, u8 *val)
+static void GetHwReg8723BS(struct adapter *padapter, u8 variable, u8 *val)
 {
 	switch (variable) {
 	case HW_VAR_CPWM:
@@ -1859,11 +1858,11 @@ static void GetHwReg8723BS(struct adapter * padapter, u8 variable, u8 *val)
 	}
 }
 
-static void SetHwRegWithBuf8723B(struct adapter * padapter, u8 variable, u8 *pbuf, int len)
+static void SetHwRegWithBuf8723B(struct adapter *padapter, u8 variable, u8 *pbuf, int len)
 {
 	switch (variable) {
 	case HW_VAR_C2H_HANDLE:
-		/* DBG_8192C("%s len =%d \n", __func__, len); */
+		/* DBG_8192C("%s len =%d\n", __func__, len); */
 		C2HPacketHandler_8723B(padapter, pbuf, len);
 		break;
 	default:
@@ -1877,12 +1876,12 @@ static void SetHwRegWithBuf8723B(struct adapter * padapter, u8 variable, u8 *pbu
 /*  */
 static u8
 GetHalDefVar8723BSDIO(
-struct adapter *		Adapter,
-HAL_DEF_VARIABLE		eVariable,
-void *			pValue
+struct adapter *			Adapter,
+enum HAL_DEF_VARIABLE		eVariable,
+void *				pValue
 	)
 {
-	u8			bResult = _SUCCESS;
+	u8 	bResult = _SUCCESS;
 
 	switch (eVariable)
 	{
@@ -1907,17 +1906,13 @@ void *			pValue
 /* 	Description: */
 /* 		Change default setting of specified variable. */
 /*  */
-static u8
-SetHalDefVar8723BSDIO(
-struct adapter *		Adapter,
-HAL_DEF_VARIABLE		eVariable,
-void *			pValue
-	)
+static u8 SetHalDefVar8723BSDIO(struct adapter *Adapter,
+				enum HAL_DEF_VARIABLE eVariable, void *pValue)
 {
 	return SetHalDefVar8723B(Adapter, eVariable, pValue);
 }
 
-void rtl8723bs_set_hal_ops(struct adapter * padapter)
+void rtl8723bs_set_hal_ops(struct adapter *padapter)
 {
 	struct hal_ops *pHalFunc = &padapter->HalFunc;
 

@@ -20,14 +20,14 @@
 struct intf_priv {
 
 	u8 *intf_dev;
-	u32	max_iosz;	/* USB2.0: 128, USB1.1: 64, SDIO:64 */
-	u32	max_xmitsz; /* USB2.0: unlimited, SDIO:512 */
-	u32	max_recvsz; /* USB2.0: unlimited, SDIO:512 */
+	u32 max_iosz;	/* USB2.0: 128, USB1.1: 64, SDIO:64 */
+	u32 max_xmitsz; /* USB2.0: unlimited, SDIO:512 */
+	u32 max_recvsz; /* USB2.0: unlimited, SDIO:512 */
 
 	volatile u8 *io_rwmem;
 	volatile u8 *allocated_io_rwmem;
-	u32	io_wsz; /* unit: 4bytes */
-	u32	io_rsz;/* unit: 4bytes */
+	u32 io_wsz; /* unit: 4bytes */
+	u32 io_rsz;/* unit: 4bytes */
 	u8 intf_status;
 
 	void (*_bus_io)(u8 *priv);
@@ -55,7 +55,7 @@ void devobj_deinit(struct dvobj_priv *pdvobj);
 u8 rtw_init_drv_sw(struct adapter *padapter);
 u8 rtw_free_drv_sw(struct adapter *padapter);
 u8 rtw_reset_drv_sw(struct adapter *padapter);
-void rtw_dev_unload(struct adapter * padapter);
+void rtw_dev_unload(struct adapter *padapter);
 
 u32 rtw_start_drv_threads(struct adapter *padapter);
 void rtw_stop_drv_threads (struct adapter *padapter);

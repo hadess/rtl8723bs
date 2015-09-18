@@ -76,60 +76,60 @@ enum BEAMFORMING_CTRL_TYPE
 struct beamforming_entry {
 	bool	bUsed;
 	bool	bSound;
-	u16	aid;			/*  Used to construct AID field of NDPA packet. */
-	u16	mac_id;		/*  Used to Set Reg42C in IBSS mode. */
-	u16	p_aid;		/*  Used to fill Reg42C & Reg714 to compare with P_AID of Tx DESC. */
-	u8	mac_addr[6];/*  Used to fill Reg6E4 to fill Mac address of CSI report frame. */
-	CHANNEL_WIDTH	sound_bw;	/*  Sounding BandWidth */
-	u16	sound_period;
+	u16 aid;			/*  Used to construct AID field of NDPA packet. */
+	u16 mac_id;		/*  Used to Set Reg42C in IBSS mode. */
+	u16 p_aid;		/*  Used to fill Reg42C & Reg714 to compare with P_AID of Tx DESC. */
+	u8 mac_addr[6];/*  Used to fill Reg6E4 to fill Mac address of CSI report frame. */
+	enum CHANNEL_WIDTH	sound_bw;	/*  Sounding BandWidth */
+	u16 sound_period;
 	BEAMFORMING_CAP	beamforming_entry_cap;
 	BEAMFORMING_ENTRY_STATE	beamforming_entry_state;
-	u8	LogSeq;
-	u8	LogRetryCnt;
-	u8	LogSuccessCnt;
-	u8	LogStatusFailCnt;
-	u8	PreCsiReport[327];
-	u8	DefaultCsiCnt;
+	u8 LogSeq;
+	u8 LogRetryCnt;
+	u8 LogSuccessCnt;
+	u8 LogStatusFailCnt;
+	u8 PreCsiReport[327];
+	u8 DefaultCsiCnt;
 	bool	bDefaultCSI;
 };
 
 struct sounding_info {
-	u8				sound_idx;
-	CHANNEL_WIDTH	sound_bw;
+	u8 		sound_idx;
+	enum CHANNEL_WIDTH	sound_bw;
 	SOUNDING_MODE	sound_mode;
-	u16				sound_period;
+	u16 			sound_period;
 };
 
 struct beamforming_info {
 	BEAMFORMING_CAP		beamforming_cap;
 	BEAMFORMING_STATE		beamforming_state;
 	struct beamforming_entry	beamforming_entry[BEAMFORMING_ENTRY_NUM];
-	u8						beamforming_cur_idx;
-	u8						beamforming_in_progress;
-	u8						sounding_sequence;
-	struct sounding_info		sounding_info;
+	u8 				beamforming_cur_idx;
+	u8 				beamforming_in_progress;
+	u8 				sounding_sequence;
+	struct sounding_info 	sounding_info;
 };
 
 struct rtw_ndpa_sta_info {
-	u16	aid:12;
-	u16	feedback_type:1;
-	u16	nc_index:3;
+	u16 aid:12;
+	u16 feedback_type:1;
+	u16 nc_index:3;
 };
 
-BEAMFORMING_CAP beamforming_get_entry_beam_cap_by_mac_id(void * pmlmepriv , u8 mac_id);
-void	beamforming_notify(struct adapter * adapter);
-BEAMFORMING_CAP beamforming_get_beamform_cap(struct beamforming_info	*pBeamInfo);
+BEAMFORMING_CAP beamforming_get_entry_beam_cap_by_mac_id(void *pmlmepriv , u8 mac_id);
+void beamforming_notify(struct adapter * adapter);
+BEAMFORMING_CAP beamforming_get_beamform_cap(struct beamforming_info *pBeamInfo);
 
-u32	beamforming_get_report_frame(struct adapter * Adapter, union recv_frame *precv_frame);
+u32 beamforming_get_report_frame(struct adapter * Adapter, union recv_frame *precv_frame);
 
-bool	beamforming_send_ht_ndpa_packet(struct adapter * Adapter, u8 *ra, CHANNEL_WIDTH bw, u8 qidx);
-bool	beamforming_send_vht_ndpa_packet(struct adapter * Adapter, u8 *ra, u16 aid, CHANNEL_WIDTH bw, u8 qidx);
+bool	beamforming_send_ht_ndpa_packet(struct adapter * Adapter, u8 *ra, enum CHANNEL_WIDTH bw, u8 qidx);
+bool	beamforming_send_vht_ndpa_packet(struct adapter * Adapter, u8 *ra, u16 aid, enum CHANNEL_WIDTH bw, u8 qidx);
 
-void	beamforming_check_sounding_success(struct adapter * Adapter, bool status);
+void beamforming_check_sounding_success(struct adapter * Adapter, bool status);
 
-void	beamforming_watchdog(struct adapter * Adapter);
+void beamforming_watchdog(struct adapter * Adapter);
 
-void	beamforming_wk_hdl(struct adapter *padapter, u8 type, u8 *pbuf);
-u8	beamforming_wk_cmd(struct adapter *padapter, s32 type, u8 *pbuf, s32 size, u8 enqueue);
+void beamforming_wk_hdl(struct adapter *padapter, u8 type, u8 *pbuf);
+u8 beamforming_wk_cmd(struct adapter *padapter, s32 type, u8 *pbuf, s32 size, u8 enqueue);
 
 #endif

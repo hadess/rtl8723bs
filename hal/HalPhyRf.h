@@ -27,18 +27,18 @@ typedef enum _PWRTRACK_CONTROL_METHOD {
 	MIX_MODE
 } PWRTRACK_METHOD;
 
-typedef void	(*FuncSetPwr)(PDM_ODM_T, PWRTRACK_METHOD, u1Byte, u1Byte);
-typedef void	(*FuncIQK)(PDM_ODM_T, u1Byte, u1Byte, u1Byte);
-typedef void	(*FuncLCK)(PDM_ODM_T);
-typedef void	(*FuncSwing)(PDM_ODM_T, pu1Byte*, pu1Byte*, pu1Byte*, pu1Byte*);
+typedef void (*FuncSetPwr)(PDM_ODM_T, PWRTRACK_METHOD, u8, u8);
+typedef void (*FuncIQK)(PDM_ODM_T, u8, u8, u8);
+typedef void (*FuncLCK)(PDM_ODM_T);
+typedef void (*FuncSwing)(PDM_ODM_T, u8 **, u8 **, u8 **, u8 **);
 
 typedef struct _TXPWRTRACK_CFG {
-	u1Byte		SwingTableSize_CCK;
-	u1Byte		SwingTableSize_OFDM;
-	u1Byte		Threshold_IQK;
-	u1Byte		AverageThermalNum;
-	u1Byte		RfPathCount;
-	u4Byte		ThermalRegAddr;
+	u8 SwingTableSize_CCK;
+	u8 SwingTableSize_OFDM;
+	u8 Threshold_IQK;
+	u8 AverageThermalNum;
+	u8 RfPathCount;
+	u32 	ThermalRegAddr;
 	FuncSetPwr	ODM_TxPwrTrackSetPwr;
 	FuncIQK		DoIQK;
 	FuncLCK		PHY_LCCalibrate;
@@ -46,19 +46,19 @@ typedef struct _TXPWRTRACK_CFG {
 } TXPWRTRACK_CFG, *PTXPWRTRACK_CFG;
 
 void ConfigureTxpowerTrack(
-PDM_ODM_T		pDM_Odm,
-PTXPWRTRACK_CFG	pConfig
+	PDM_ODM_T		pDM_Odm,
+	PTXPWRTRACK_CFG	pConfig
 	);
 
 
 void
 ODM_ClearTxPowerTrackingState(
-PDM_ODM_T		pDM_Odm
+	PDM_ODM_T		pDM_Odm
 	);
 
 void
 ODM_TXPowerTrackingCallback_ThermalMeter(
-struct adapter *Adapter
+	struct adapter *Adapter
 	);
 
 
@@ -66,9 +66,9 @@ struct adapter *Adapter
 #define ODM_TARGET_CHNL_NUM_2G_5G	59
 
 
-u1Byte
+u8
 ODM_GetRightChnlPlaceforIQK(
-   u1Byte chnl
+    u8 chnl
 );
 
 

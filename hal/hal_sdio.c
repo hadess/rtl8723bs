@@ -41,8 +41,8 @@ u8 rtw_hal_sdio_query_tx_freepage(struct adapter *padapter, u8 PageIdx, u8 Requi
 void rtw_hal_sdio_update_tx_freepage(struct adapter *padapter, u8 PageIdx, u8 RequiredPageNum)
 {
 	struct hal_com_data	*pHalData = GET_HAL_DATA(padapter);
-	u8	DedicatedPgNum = 0;
-	u8	RequiredPublicFreePgNum = 0;
+	u8 DedicatedPgNum = 0;
+	u8 RequiredPublicFreePgNum = 0;
 	/* _irqL irql; */
 
 	/* spin_lock_bh(&pHalData->SdioTxFIFOFreePageLock); */
@@ -59,11 +59,11 @@ void rtw_hal_sdio_update_tx_freepage(struct adapter *padapter, u8 PageIdx, u8 Re
 	/* spin_unlock_bh(&pHalData->SdioTxFIFOFreePageLock); */
 }
 
-void rtw_hal_set_sdio_tx_max_length(struct adapter * padapter, u8 numHQ, u8 numNQ, u8 numLQ, u8 numPubQ)
+void rtw_hal_set_sdio_tx_max_length(struct adapter *padapter, u8 numHQ, u8 numNQ, u8 numLQ, u8 numPubQ)
 {
 	struct hal_com_data	*pHalData = GET_HAL_DATA(padapter);
-	u32	page_size;
-	u32	lenHQ, lenNQ, lenLQ;
+	u32 page_size;
+	u32 lenHQ, lenNQ, lenLQ;
 
 	rtw_hal_get_def_var(padapter, HAL_DEF_TX_PAGE_SIZE,&page_size);
 
@@ -76,11 +76,11 @@ void rtw_hal_set_sdio_tx_max_length(struct adapter * padapter, u8 numHQ, u8 numN
 	pHalData->sdio_tx_max_len[LOW_QUEUE_IDX] = (lenLQ > MAX_XMITBUF_SZ)? MAX_XMITBUF_SZ:lenLQ;
 }
 
-u32 rtw_hal_get_sdio_tx_max_length(struct adapter * padapter, u8 queue_idx)
+u32 rtw_hal_get_sdio_tx_max_length(struct adapter *padapter, u8 queue_idx)
 {
-	struct dvobj_priv	*pdvobjpriv = adapter_to_dvobj(padapter);
+	struct dvobj_priv *pdvobjpriv = adapter_to_dvobj(padapter);
 	struct hal_com_data	*pHalData = GET_HAL_DATA(padapter);
-	u32	deviceId, max_len;
+	u32 deviceId, max_len;
 
 
 	deviceId = ffaddr2deviceId(pdvobjpriv, queue_idx);

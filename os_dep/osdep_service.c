@@ -30,18 +30,18 @@ inline int RTW_STATUS_CODE(int error_code)
 	return _FAIL;
 }
 
-u8* _rtw_malloc(u32 sz)
+u8 *_rtw_malloc(u32 sz)
 {
-	u8	*pbuf =NULL;
+	u8 *pbuf = NULL;
 
 	pbuf = kmalloc(sz, in_interrupt() ? GFP_ATOMIC : GFP_KERNEL);
 
 	return pbuf;
 }
 
-u8* _rtw_zmalloc(u32 sz)
+u8 *_rtw_zmalloc(u32 sz)
 {
-	u8	*pbuf = _rtw_malloc(sz);
+	u8 *pbuf = _rtw_malloc(sz);
 
 	if (pbuf != NULL) {
 		memset(pbuf, 0, sz);
@@ -78,7 +78,7 @@ void rtw_init_timer(_timer *ptimer, void *padapter, void *pfunc)
 	_init_timer(ptimer, adapter->pnetdev, pfunc, adapter);
 }
 
-void	_rtw_init_queue(struct __queue	*pqueue)
+void _rtw_init_queue(struct __queue *pqueue)
 {
 	INIT_LIST_HEAD(&(pqueue->queue));
 
@@ -99,7 +99,7 @@ static int openFile(struct file **fpp, char *path, int flag, int mode)
 
 	fp =filp_open(path, flag, mode);
 	if (IS_ERR(fp)) {
-		*fpp =NULL;
+		*fpp = NULL;
 		return PTR_ERR(fp);
 	}
 	else {
@@ -175,14 +175,14 @@ static int isFileReadable(char *path)
 * @param sz how many bytes to read at most
 * @return the byte we've read, or Linux specific error code
 */
-static int retriveFromFile(char *path, u8* buf, u32 sz)
+static int retriveFromFile(char *path, u8 *buf, u32 sz)
 {
 	int ret =-1;
 	mm_segment_t oldfs;
 	struct file *fp;
 
 	if (path && buf) {
-		if (0 == (ret =openFile(&fp, path, O_RDONLY, 0))){
+		if (0 == (ret =openFile(&fp, path, O_RDONLY, 0))) {
 			DBG_871X("%s openFile path:%s fp =%p\n", __func__, path , fp);
 
 			oldfs = get_fs(); set_fs(get_ds());
@@ -222,7 +222,7 @@ int rtw_is_file_readable(char *path)
 * @param sz how many bytes to read at most
 * @return the byte we've read
 */
-int rtw_retrive_from_file(char *path, u8* buf, u32 sz)
+int rtw_retrive_from_file(char *path, u8 *buf, u32 sz)
 {
 	int ret =retriveFromFile(path, buf, sz);
 	return ret>= 0?ret:0;

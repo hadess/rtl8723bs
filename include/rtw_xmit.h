@@ -136,7 +136,7 @@ union txdesc {
 
 struct	hw_xmit	{
 	/* _lock xmit_lock; */
-	/* struct list_head pending; */
+	/* struct list_head	pending; */
 	struct __queue *sta_queue;
 	/* struct hw_txqueue *phwtxqueue; */
 	/* sint	txcmdcnt; */
@@ -146,51 +146,51 @@ struct	hw_xmit	{
 /* reduce size */
 struct pkt_attrib
 {
-	u8	type;
-	u8	subtype;
-	u8	bswenc;
-	u8	dhcp_pkt;
-	u16	ether_type;
-	u16	seqnum;
-	u16	pkt_hdrlen;	/* the original 802.3 pkt header len */
-	u16	hdrlen;		/* the WLAN Header Len */
-	u32	pktlen;		/* the original 802.3 pkt raw_data len (not include ether_hdr data) */
-	u32	last_txcmdsz;
-	u8	nr_frags;
-	u8	encrypt;	/* when 0 indicate no encrypt. when non-zero, indicate the encrypt algorith */
-	u8	iv_len;
-	u8	icv_len;
-	u8	iv[18];
-	u8	icv[16];
-	u8	priority;
-	u8	ack_policy;
-	u8	mac_id;
-	u8	vcs_mode;	/* virtual carrier sense method */
-	u8	dst[ETH_ALEN];
-	u8	src[ETH_ALEN];
-	u8	ta[ETH_ALEN];
-	u8	ra[ETH_ALEN];
-	u8	key_idx;
-	u8	qos_en;
-	u8	ht_en;
-	u8	raid;/* rate adpative id */
-	u8	bwmode;
-	u8	ch_offset;/* PRIME_CHNL_OFFSET */
-	u8	sgi;/* short GI */
-	u8	ampdu_en;/* tx ampdu enable */
-	u8	ampdu_spacing; /* ampdu_min_spacing for peer sta's rx */
-	u8	mdata;/* more data bit */
-	u8	pctrl;/* per packet txdesc control enable */
-	u8	triggered;/* for ap mode handling Power Saving sta */
-	u8	qsel;
-	u8	order;/* order bit */
-	u8	eosp;
-	u8	rate;
-	u8	intel_proxim;
-	u8	retry_ctrl;
+	u8 type;
+	u8 subtype;
+	u8 bswenc;
+	u8 dhcp_pkt;
+	u16 ether_type;
+	u16 seqnum;
+	u16 pkt_hdrlen;	/* the original 802.3 pkt header len */
+	u16 hdrlen;		/* the WLAN Header Len */
+	u32 pktlen;		/* the original 802.3 pkt raw_data len (not include ether_hdr data) */
+	u32 last_txcmdsz;
+	u8 nr_frags;
+	u8 encrypt;	/* when 0 indicate no encrypt. when non-zero, indicate the encrypt algorith */
+	u8 iv_len;
+	u8 icv_len;
+	u8 iv[18];
+	u8 icv[16];
+	u8 priority;
+	u8 ack_policy;
+	u8 mac_id;
+	u8 vcs_mode;	/* virtual carrier sense method */
+	u8 dst[ETH_ALEN];
+	u8 src[ETH_ALEN];
+	u8 ta[ETH_ALEN];
+	u8 ra[ETH_ALEN];
+	u8 key_idx;
+	u8 qos_en;
+	u8 ht_en;
+	u8 raid;/* rate adpative id */
+	u8 bwmode;
+	u8 ch_offset;/* PRIME_CHNL_OFFSET */
+	u8 sgi;/* short GI */
+	u8 ampdu_en;/* tx ampdu enable */
+	u8 ampdu_spacing; /* ampdu_min_spacing for peer sta's rx */
+	u8 mdata;/* more data bit */
+	u8 pctrl;/* per packet txdesc control enable */
+	u8 triggered;/* for ap mode handling Power Saving sta */
+	u8 qsel;
+	u8 order;/* order bit */
+	u8 eosp;
+	u8 rate;
+	u8 intel_proxim;
+	u8 retry_ctrl;
 	u8   mbssid;
-	u8	ldpc;
-	u8	stbc;
+	u8 ldpc;
+	u8 stbc;
 	struct sta_info * psta;
 
 	u8 rtsen;
@@ -255,7 +255,7 @@ void rtw_sctx_done(struct submit_ctx **sctx);
 
 struct xmit_buf
 {
-	struct list_head list;
+	struct list_head	list;
 
 	struct adapter *padapter;
 
@@ -278,8 +278,8 @@ struct xmit_buf
 	u8 *ptail;
 	u8 *pend;
 	u32 ff_hwaddr;
-	u8	pg_num;
-	u8	agg_num;
+	u8 pg_num;
+	u8 agg_num;
 
 #if defined(DBG_XMIT_BUF)|| defined(DBG_XMIT_BUF_EXT)
 	u8 no;
@@ -290,7 +290,7 @@ struct xmit_buf
 
 struct xmit_frame
 {
-	struct list_head list;
+	struct list_head	list;
 
 	struct pkt_attrib attrib;
 
@@ -300,12 +300,12 @@ struct xmit_frame
 
 	struct adapter *padapter;
 
-	u8	*buf_addr;
+	u8 *buf_addr;
 
 	struct xmit_buf *pxmitbuf;
 
-	u8	pg_num;
-	u8	agg_num;
+	u8 pg_num;
+	u8 agg_num;
 
 	u8 ack_report;
 
@@ -315,7 +315,7 @@ struct xmit_frame
 };
 
 struct tx_servq {
-	struct list_head tx_pending;
+	struct list_head	tx_pending;
 	struct __queue	sta_pending;
 	int qcnt;
 };
@@ -333,8 +333,8 @@ struct sta_xmit_priv
 	struct tx_servq	bk_q;			/* priority == 1, 2 */
 	struct tx_servq	vi_q;			/* priority == 4, 5 */
 	struct tx_servq	vo_q;			/* priority == 6, 7 */
-	struct list_head legacy_dz;
-	struct list_head apsd;
+	struct list_head	legacy_dz;
+	struct list_head  apsd;
 
 	u16 txseq_tid[16];
 
@@ -368,7 +368,7 @@ enum cmdbuf_type {
 	CMDBUF_MAX
 };
 
-struct	xmit_priv	{
+struct	xmit_priv {
 
 	_lock	lock;
 
@@ -383,7 +383,7 @@ struct	xmit_priv	{
 	struct __queue	bm_pending;
 
 	/* struct __queue	legacy_dz_queue; */
-	/* struct _queue	apsd_queue; */
+	/* struct __queue	apsd_queue; */
 
 	u8 *pallocated_frame_buf;
 	u8 *pxmit_frame_buf;
@@ -409,8 +409,8 @@ struct	xmit_priv	{
 	struct adapter	*adapter;
 
 	u8   vcs_setting;
-	u8	vcs;
-	u8	vcs_type;
+	u8 vcs;
+	u8 vcs_type;
 	/* u16  rts_thresh; */
 
 	u64	tx_bytes;
@@ -419,9 +419,9 @@ struct	xmit_priv	{
 	u64	last_tx_pkts;
 
 	struct hw_xmit *hwxmits;
-	u8	hwxmit_entry;
+	u8 hwxmit_entry;
 
-	u8	wmm_para_seq[4];/* sequence for wmm ac parameter strength from large to small. it's value is 0->vo, 1->vi, 2->be, 3->bk. */
+	u8 wmm_para_seq[4];/* sequence for wmm ac parameter strength from large to small. it's value is 0->vo, 1->vi, 2->be, 3->bk. */
 
 #ifdef CONFIG_SDIO_TX_TASKLET
 	struct tasklet_struct xmit_tasklet;
@@ -444,7 +444,7 @@ struct	xmit_priv	{
 
 	struct xmit_buf	pcmd_xmitbuf[CMDBUF_MAX];
 
-	u16	nqos_ssn;
+	u16 nqos_ssn;
 
 	int	ack_tx;
 	_mutex ack_tx_mutex;
@@ -506,18 +506,18 @@ void stop_sta_xmit(struct adapter *padapter, struct sta_info *psta);
 void wakeup_sta_to_xmit(struct adapter *padapter, struct sta_info *psta);
 void xmit_delivery_enabled_frames(struct adapter *padapter, struct sta_info *psta);
 
-u8	query_ra_short_GI(struct sta_info *psta);
+u8 query_ra_short_GI(struct sta_info *psta);
 
-u8	qos_acm(u8 acm_mask, u8 priority);
+u8 qos_acm(u8 acm_mask, u8 priority);
 
-void	enqueue_pending_xmitbuf(struct xmit_priv *pxmitpriv, struct xmit_buf *pxmitbuf);
+void enqueue_pending_xmitbuf(struct xmit_priv *pxmitpriv, struct xmit_buf *pxmitbuf);
 void enqueue_pending_xmitbuf_to_head(struct xmit_priv *pxmitpriv, struct xmit_buf *pxmitbuf);
 struct xmit_buf*dequeue_pending_xmitbuf(struct xmit_priv *pxmitpriv);
 struct xmit_buf*dequeue_pending_xmitbuf_under_survey(struct xmit_priv *pxmitpriv);
 sint	check_pending_xmitbuf(struct xmit_priv *pxmitpriv);
-int	rtw_xmit_thread(void * context);
+int	rtw_xmit_thread(void *context);
 
-u32	rtw_get_ff_hwaddr(struct xmit_frame	*pxmitframe);
+u32 rtw_get_ff_hwaddr(struct xmit_frame	*pxmitframe);
 
 int rtw_ack_tx_wait(struct xmit_priv *pxmitpriv, u32 timeout_ms);
 void rtw_ack_tx_done(struct xmit_priv *pxmitpriv, int status);

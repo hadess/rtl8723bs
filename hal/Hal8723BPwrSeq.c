@@ -1,11 +1,19 @@
+/******************************************************************************
+ *
+ * Copyright(c) 2007 - 2012 Realtek Corporation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of version 2 of the GNU General Public License as
+ * published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+ * more details.
+ *
+ ******************************************************************************/
 
 /*++
-Copyright (c) Realtek Semiconductor Corp. All rights reserved.
-
-Module Name:
-	Hal8821PwrSeq.c
-
-Abstract:
 	This file includes all kinds of Power Action event for RTL8723B and corresponding hardware configurtions which are released from HW SD.
 
 Major Change History:
@@ -16,7 +24,6 @@ Major Change History:
 --*/
 
 #include "Hal8723BPwrSeq.h"
-
 
 /*
     drivers should parse below arrays and do the corresponding actions

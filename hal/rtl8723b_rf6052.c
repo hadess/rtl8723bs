@@ -53,8 +53,8 @@
  *
  * Overview:    This function is called by SetBWModeCallback8190Pci() only
  *
- * Input:       struct adapter *		Adapter
- *	WIRELESS_BANDWIDTH_E	Bandwidth	20M or 40M
+ * Input:       struct adapter *			Adapter
+ *		WIRELESS_BANDWIDTH_E	Bandwidth	20M or 40M
  *
  * Output:      NONE
  *
@@ -64,8 +64,8 @@
  *---------------------------------------------------------------------------*/
 void
 PHY_RF6052SetBandwidth8723B(
-struct adapter *		Adapter,
-CHANNEL_WIDTH		Bandwidth)	/* 20M or 40M */
+struct adapter *			Adapter,
+enum CHANNEL_WIDTH		Bandwidth)	/* 20M or 40M */
 {
 	struct hal_com_data	*pHalData = GET_HAL_DATA(Adapter);
 
@@ -92,20 +92,20 @@ CHANNEL_WIDTH		Bandwidth)	/* 20M or 40M */
 
 static int
 phy_RF6052_Config_ParaFile(
-struct adapter *Adapter
+struct adapter *	Adapter
 	)
 {
-	u32					u4RegValue = 0;
-	u8					eRFPath;
-	BB_REGISTER_DEFINITION_T	*pPhyReg;
+	u32 				u4RegValue = 0;
+	u8 			eRFPath;
+	struct bb_register_def *pPhyReg;
 
 	int					rtStatus = _SUCCESS;
 	struct hal_com_data		*pHalData = GET_HAL_DATA(Adapter);
 
-	static char			sz8723RadioAFile[] = RTL8723B_PHY_RADIO_A;
-	static char			sz8723RadioBFile[] = RTL8723B_PHY_RADIO_B;
+	static char 		sz8723RadioAFile[] = RTL8723B_PHY_RADIO_A;
+	static char 		sz8723RadioBFile[] = RTL8723B_PHY_RADIO_B;
 	static s8			sz8723BTxPwrTrackFile[] = RTL8723B_TXPWR_TRACK;
-	char					*pszRadioAFile, *pszRadioBFile, *pszTxPwrTrackFile;
+	char 				*pszRadioAFile, *pszRadioBFile, *pszTxPwrTrackFile;
 
 	pszRadioAFile = sz8723RadioAFile;
 	pszRadioBFile = sz8723RadioBFile;
@@ -188,7 +188,7 @@ struct adapter *Adapter
 			break;
 		}
 
-		if (rtStatus != _SUCCESS){
+		if (rtStatus != _SUCCESS) {
 			/* RT_TRACE(COMP_FPGA, DBG_LOUD, ("phy_RF6052_Config_ParaFile():Radio[%d] Fail!!", eRFPath)); */
 			goto phy_RF6052_Config_ParaFile_Fail;
 		}
@@ -216,7 +216,7 @@ phy_RF6052_Config_ParaFile_Fail:
 
 int
 PHY_RF6052_Config8723B(
-struct adapter *Adapter)
+struct adapter *	Adapter)
 {
 	struct hal_com_data				*pHalData = GET_HAL_DATA(Adapter);
 	int					rtStatus = _SUCCESS;

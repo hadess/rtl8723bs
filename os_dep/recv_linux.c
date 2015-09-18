@@ -71,8 +71,8 @@ int rtw_os_recvbuf_resource_free(struct adapter *padapter, struct recv_buf *prec
 
 _pkt *rtw_os_alloc_msdu_pkt(union recv_frame *prframe, u16 nSubframe_Length, u8 *pdata)
 {
-	u16	eth_type;
-	u8	*data_ptr;
+	u16 eth_type;
+	u8 *data_ptr;
 	_pkt *sub_skb;
 	struct rx_pkt_attrib *pattrib;
 
@@ -132,7 +132,7 @@ void rtw_os_recv_indicate_pkt(struct adapter *padapter, _pkt *pkt, struct rx_pkt
 	if (pkt) {
 		if (check_fwstate(pmlmepriv, WIFI_AP_STATE) == true)
 		{
-			_pkt *pskb2 =NULL;
+			_pkt *pskb2 = NULL;
 			struct sta_info *psta = NULL;
 			struct sta_priv *pstapriv = &padapter->stapriv;
 			int bmcast = IS_MCAST(pattrib->dst);
@@ -206,7 +206,7 @@ void rtw_handle_tkip_mic_err(struct adapter *padapter, u8 bgroup)
 	union iwreq_data wrqu;
 	struct iw_michaelmicfailure    ev;
 	struct mlme_priv*              pmlmepriv  = &padapter->mlmepriv;
-	struct security_priv	*psecuritypriv = &padapter->securitypriv;
+	struct security_priv *psecuritypriv = &padapter->securitypriv;
 	unsigned long cur_time = 0;
 
 	if (psecuritypriv->last_mic_err_time == 0)
@@ -312,13 +312,13 @@ int rtw_recv_indicatepkt(struct adapter *padapter, union recv_frame *precv_frame
 	skb = precv_frame->u.hdr.pkt;
 	if (skb == NULL)
 	{
-		RT_TRACE(_module_recv_osdep_c_, _drv_err_, ("rtw_recv_indicatepkt():skb ==NULL something wrong!!!!\n"));
+		RT_TRACE(_module_recv_osdep_c_, _drv_err_, ("rtw_recv_indicatepkt():skb == NULL something wrong!!!!\n"));
 		goto _recv_indicatepkt_drop;
 	}
 
 	RT_TRACE(_module_recv_osdep_c_, _drv_info_, ("rtw_recv_indicatepkt():skb != NULL !!!\n"));
 	RT_TRACE(_module_recv_osdep_c_, _drv_info_, ("rtw_recv_indicatepkt():precv_frame->u.hdr.rx_head =%p  precv_frame->hdr.rx_data =%p\n", precv_frame->u.hdr.rx_head, precv_frame->u.hdr.rx_data));
-	RT_TRACE(_module_recv_osdep_c_, _drv_info_, ("precv_frame->hdr.rx_tail =%p precv_frame->u.hdr.rx_end =%p precv_frame->hdr.len =%d \n", precv_frame->u.hdr.rx_tail, precv_frame->u.hdr.rx_end, precv_frame->u.hdr.len));
+	RT_TRACE(_module_recv_osdep_c_, _drv_info_, ("precv_frame->hdr.rx_tail =%p precv_frame->u.hdr.rx_end =%p precv_frame->hdr.len =%d\n", precv_frame->u.hdr.rx_tail, precv_frame->u.hdr.rx_end, precv_frame->u.hdr.len));
 
 	skb->data = precv_frame->u.hdr.rx_data;
 

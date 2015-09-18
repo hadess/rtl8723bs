@@ -83,7 +83,7 @@ struct wmm_event
 
 
 struct fwevent {
-	u32	parmsize;
+	u32 parmsize;
 	void (*event_callback)(struct adapter *dev, u8 *pbuf);
 };
 
@@ -102,7 +102,7 @@ struct c2hevent_queue {
 	volatile int	head;
 	volatile int	tail;
 	struct	event_node	nodes[C2HEVENT_SZ];
-	unsigned char	seq;
+	unsigned char seq;
 };
 
 #define NETWORK_QUEUE_SZ	4
