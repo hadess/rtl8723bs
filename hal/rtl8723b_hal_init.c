@@ -2600,18 +2600,14 @@ u8 	*hwinfo
 	RT_TRACE(_module_hal_init_c_, _drv_notice_, ("EEPROM ID = 0x%04x\n", EEPROMId));
 }
 
-static void
-Hal_ReadPowerValueFromPROM_8723B(
-struct adapter *	Adapter,
-PTxPowerInfo24G	pwrInfo24G,
-u8 		* PROMContent,
-bool			AutoLoadFail
-	)
+static void Hal_ReadPowerValueFromPROM_8723B(struct adapter *Adapter,
+					     struct TxPowerInfo24G *pwrInfo24G,
+					     u8 *PROMContent, bool AutoLoadFail)
 {
 	struct hal_com_data	*pHalData = GET_HAL_DATA(Adapter);
 	u32 rfPath, eeAddr =EEPROM_TX_PWR_INX_8723B, group, TxCount = 0;
 
-	memset(pwrInfo24G, 0, sizeof(TxPowerInfo24G));
+	memset(pwrInfo24G, 0, sizeof(struct TxPowerInfo24G));
 
 	if (0xFF == PROMContent[eeAddr+1])
 		AutoLoadFail = true;
@@ -2744,10 +2740,9 @@ bool			AutoLoadFail
 	)
 {
 	struct hal_com_data	*pHalData = GET_HAL_DATA(padapter);
-	TxPowerInfo24G	pwrInfo24G;
+	struct TxPowerInfo24G	pwrInfo24G;
 	u8 	rfPath, ch, TxCount = 1;
 
-/* 	RT_TRACE(_module_hci_hal_init_c_, _drv_notice_, ("%s(): AutoLoadFail = %d\n", __func__, AutoLoadFail)); */
 	Hal_ReadPowerValueFromPROM_8723B(padapter, &pwrInfo24G, PROMContent, AutoLoadFail);
 	for (rfPath = 0 ; rfPath < MAX_RF_PATH ; rfPath++)
 	{
