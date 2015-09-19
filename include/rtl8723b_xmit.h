@@ -243,9 +243,6 @@ typedef struct txdesc_8723b
 #define GET_RX_STATUS_DESC_HTC_8723B(__pRxStatusDesc)					LE_BITS_TO_4BYTE(__pRxStatusDesc+12, 10, 1)
 #define GET_RX_STATUS_DESC_EOSP_8723B(__pRxStatusDesc)					LE_BITS_TO_4BYTE(__pRxStatusDesc+12, 11, 1)
 #define GET_RX_STATUS_DESC_BSSID_FIT_8723B(__pRxStatusDesc)		LE_BITS_TO_4BYTE(__pRxStatusDesc+12, 12, 2)
-#ifdef CONFIG_USB_RX_AGGREGATION
-#define GET_RX_STATUS_DESC_USB_AGG_PKTNUM_8723B(__pRxStatusDesc)	LE_BITS_TO_4BYTE(__pRxStatusDesc+12, 16, 8)
-#endif
 #define GET_RX_STATUS_DESC_PATTERN_MATCH_8723B(__pRxDesc)			LE_BITS_TO_4BYTE(__pRxDesc+12, 29, 1)
 #define GET_RX_STATUS_DESC_UNICAST_MATCH_8723B(__pRxDesc)			LE_BITS_TO_4BYTE(__pRxDesc+12, 30, 1)
 #define GET_RX_STATUS_DESC_MAGIC_MATCH_8723B(__pRxDesc)			LE_BITS_TO_4BYTE(__pRxDesc+12, 31, 1)

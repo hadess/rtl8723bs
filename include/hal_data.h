@@ -23,72 +23,53 @@
 /*  */
 /*  <Roger_Notes> For RTL8723 WiFi/BT/GPS multi-function configuration. 2010.10.06. */
 /*  */
-typedef enum _RT_MULTI_FUNC{
+enum RT_MULTI_FUNC {
 	RT_MULTI_FUNC_NONE	= 0x00,
 	RT_MULTI_FUNC_WIFI	= 0x01,
 	RT_MULTI_FUNC_BT		= 0x02,
 	RT_MULTI_FUNC_GPS	= 0x04,
-}RT_MULTI_FUNC,*PRT_MULTI_FUNC;
+};
 /*  */
 /*  <Roger_Notes> For RTL8723 WiFi PDn/GPIO polarity control configuration. 2010.10.08. */
 /*  */
-typedef enum _RT_POLARITY_CTL {
+enum RT_POLARITY_CTL {
 	RT_POLARITY_LOW_ACT	= 0,
 	RT_POLARITY_HIGH_ACT	= 1,
-} RT_POLARITY_CTL, *PRT_POLARITY_CTL;
+};
 
 /*  For RTL8723 regulator mode. by tynli. 2011.01.14. */
-typedef enum _RT_REGULATOR_MODE {
+enum RT_REGULATOR_MODE {
 	RT_SWITCHING_REGULATOR	= 0,
-	RT_LDO_REGULATOR			= 1,
-} RT_REGULATOR_MODE, *PRT_REGULATOR_MODE;
+	RT_LDO_REGULATOR	= 1,
+};
 
-/*  */
-/*  Interface type. */
-/*  */
-typedef	enum _INTERFACE_SELECT_PCIE{
-	INTF_SEL0_SOLO_MINICARD			= 0,		/*  WiFi solo-mCard */
-	INTF_SEL1_BT_COMBO_MINICARD		= 1,		/*  WiFi+BT combo-mCard */
-	INTF_SEL2_PCIe						= 2,		/*  PCIe Card */
-} INTERFACE_SELECT_PCIE, *PINTERFACE_SELECT_PCIE;
+enum RT_AMPDU_BURST {
+	RT_AMPDU_BURST_NONE	= 0,
+	RT_AMPDU_BURST_92D	= 1,
+	RT_AMPDU_BURST_88E	= 2,
+	RT_AMPDU_BURST_8812_4	= 3,
+	RT_AMPDU_BURST_8812_8	= 4,
+	RT_AMPDU_BURST_8812_12	= 5,
+	RT_AMPDU_BURST_8812_15	= 6,
+	RT_AMPDU_BURST_8723B	= 7,
+};
 
-
-typedef	enum _INTERFACE_SELECT_USB{
-	INTF_SEL0_USB				= 0,		/*  USB */
-	INTF_SEL1_USB_High_Power	= 1,		/*  USB with high power PA */
-	INTF_SEL2_MINICARD			= 2,		/*  Minicard */
-	INTF_SEL3_USB_Solo		= 3,		/*  USB solo-Slim module */
-	INTF_SEL4_USB_Combo		= 4,		/*  USB Combo-Slim module */
-	INTF_SEL5_USB_Combo_MF	= 5,		/*  USB WiFi+BT Multi-Function Combo, i.e., Proprietary layout(AS-VAU) which is the same as SDIO card */
-} INTERFACE_SELECT_USB, *PINTERFACE_SELECT_USB;
-
-typedef enum _RT_AMPDU_BRUST_MODE{
-	RT_AMPDU_BRUST_NONE		= 0,
-	RT_AMPDU_BRUST_92D		= 1,
-	RT_AMPDU_BRUST_88E		= 2,
-	RT_AMPDU_BRUST_8812_4	= 3,
-	RT_AMPDU_BRUST_8812_8	= 4,
-	RT_AMPDU_BRUST_8812_12	= 5,
-	RT_AMPDU_BRUST_8812_15	= 6,
-	RT_AMPDU_BRUST_8723B		= 7,
-}RT_AMPDU_BRUST,*PRT_AMPDU_BRUST_MODE;
-
-#define CHANNEL_MAX_NUMBER			14+24+21	/*  14 is the max channel number */
+#define CHANNEL_MAX_NUMBER		14+24+21	/*  14 is the max channel number */
 #define CHANNEL_MAX_NUMBER_2G		14
 #define CHANNEL_MAX_NUMBER_5G		54			/*  Please refer to "phy_GetChnlGroup8812A" and "Hal_ReadTxPowerInfo8812A" */
 #define CHANNEL_MAX_NUMBER_5G_80M	7
-#define CHANNEL_GROUP_MAX				3+9	/*  ch1~3, ch4~9, ch10~14 total three groups */
-#define MAX_PG_GROUP					13
+#define CHANNEL_GROUP_MAX		3+9	/*  ch1~3, ch4~9, ch10~14 total three groups */
+#define MAX_PG_GROUP			13
 
 /*  Tx Power Limit Table Size */
-#define MAX_REGULATION_NUM						4
+#define MAX_REGULATION_NUM			4
 #define MAX_RF_PATH_NUM_IN_POWER_LIMIT_TABLE	4
-#define MAX_2_4G_BANDWITH_NUM					4
-#define MAX_RATE_SECTION_NUM						10
-#define MAX_5G_BANDWITH_NUM						4
+#define MAX_2_4G_BANDWITH_NUM			4
+#define MAX_RATE_SECTION_NUM			10
+#define MAX_5G_BANDWITH_NUM			4
 
-#define MAX_BASE_NUM_IN_PHY_REG_PG_2_4G			10 /*   CCK:1, OFDM:1, HT:4, VHT:4 */
-#define MAX_BASE_NUM_IN_PHY_REG_PG_5G			9 /*  OFDM:1, HT:4, VHT:4 */
+#define MAX_BASE_NUM_IN_PHY_REG_PG_2_4G		10 /*   CCK:1, OFDM:1, HT:4, VHT:4 */
+#define MAX_BASE_NUM_IN_PHY_REG_PG_5G		9 /*  OFDM:1, HT:4, VHT:4 */
 
 
 /*  duplicate code, will move to ODM ######### */
@@ -105,28 +86,17 @@ typedef enum _RT_AMPDU_BRUST_MODE{
 /* define HP_THERMAL_NUM		8 */
 /*  duplicate code, will move to ODM ######### */
 
-typedef enum _MACPHY_MODE_8192D{
+enum {
 	SINGLEMAC_SINGLEPHY,	/* SMSP */
 	DUALMAC_DUALPHY,		/* DMDP */
 	DUALMAC_SINGLEPHY,	/* DMSP */
-}MACPHY_MODE_8192D,*PMACPHY_MODE_8192D;
-
-#ifdef CONFIG_USB_RX_AGGREGATION
-typedef enum _USB_RX_AGG_MODE{
-	USB_RX_AGG_DISABLE,
-	USB_RX_AGG_DMA,
-	USB_RX_AGG_USB,
-	USB_RX_AGG_MIX
-}USB_RX_AGG_MODE;
-
-#endif
+};
 
 #define PAGE_SIZE_128	128
 #define PAGE_SIZE_256	256
 #define PAGE_SIZE_512	512
 
-struct dm_priv
-{
+struct dm_priv {
 	u8 DM_Type;
 
 #define DYNAMIC_FUNC_BT BIT0
@@ -213,12 +183,11 @@ struct dm_priv
 };
 
 
-typedef struct hal_com_data
-{
-	HAL_VERSION			VersionID;
-	RT_MULTI_FUNC		MultiFunc; /*  For multi-function consideration. */
-	RT_POLARITY_CTL		PolarityCtl; /*  For Wifi PDn Polarity control. */
-	RT_REGULATOR_MODE	RegulatorMode; /*  switching regulator or LDO */
+struct hal_com_data {
+	HAL_VERSION VersionID;
+	enum RT_MULTI_FUNC MultiFunc; /*  For multi-function consideration. */
+	enum RT_POLARITY_CTL PolarityCtl; /*  For Wifi PDn Polarity control. */
+	enum RT_REGULATOR_MODE	RegulatorMode; /*  switching regulator or LDO */
 
 	u16 FirmwareVersion;
 	u16 FirmwareVersionRev;
@@ -251,9 +220,7 @@ typedef struct hal_com_data
 	u32 framesyncC34;
 	u8 framesyncMonitor;
 	u8 DefaultInitialGain[4];
-	/*  */
 	/*  EEPROM setting. */
-	/*  */
 	u16 EEPROMVID;
 	u16 EEPROMSVID;
 
@@ -274,10 +241,8 @@ typedef struct hal_com_data
 	bool		EepromOrEfuse;
 	u8 		EfuseUsedPercentage;
 	u16 			EfuseUsedBytes;
-	/* u8 		EfuseMap[2][HWSET_MAX_SIZE_JAGUAR]; */
 	EFUSE_HAL		EfuseHal;
 
-	/*  */
 	/* 3 [2.4G] */
 	u8 Index24G_CCK_Base[MAX_RF_PATH][CHANNEL_MAX_NUMBER];
 	u8 Index24G_BW40_Base[MAX_RF_PATH][CHANNEL_MAX_NUMBER];
@@ -300,15 +265,12 @@ typedef struct hal_com_data
 	u8 TxPwrInPercentage;
 
 	u8 TxPwrCalibrateRate;
-	/*  */
 	/*  TX power by rate table at most 4RF path. */
 	/*  The register is */
-	/*  */
 	/*  VHT TX power by rate off setArray = */
 	/*  Band:-2G&5G = 0 / 1 */
 	/*  RF: at most 4*4 = ABCD = 0/1/2/3 */
 	/*  CCK = 0 OFDM = 1/2 HT-MCS 0-15 =3/4/56 VHT =7/8/9/10/11 */
-	/*  */
 	u8 TxPwrByRateTable;
 	u8 TxPwrByRateBand;
 	s8	TxPwrByRateOffset[TX_PWR_BY_RATE_NUM_BAND]
@@ -457,24 +419,12 @@ typedef struct hal_com_data
 	u8 RegIQKFWOffload;
 	struct submit_ctx	iqk_sctx;
 
-	RT_AMPDU_BRUST		AMPDUBurstMode; /* 92C maybe not use, but for compile successfully */
+	enum RT_AMPDU_BURST	AMPDUBurstMode; /* 92C maybe not use, but for compile successfully */
 
-	/*  */
-	/*  For SDIO Interface HAL related */
-	/*  */
-
-	/*  */
-	/*  SDIO ISR Related */
-	/*  */
-/* 	u32 		IntrMask[1]; */
-/* 	u32 		IntrMaskToSet[1]; */
-/* 	LOG_INTERRUPT		InterruptLog; */
 	u32 		sdio_himr;
 	u32 		sdio_hisr;
 
-	/*  */
 	/*  SDIO Tx FIFO related. */
-	/*  */
 	/*  HIQ, MID, LOW, PUB free pages; padapter->xmitpriv.free_txpg */
 	u8 	SdioTxFIFOFreePage[SDIO_TX_FREE_PG_QUEUE];
 	_lock		SdioTxFIFOFreePageLock;
@@ -482,9 +432,7 @@ typedef struct hal_com_data
 	u8 	SdioTxOQTFreeSpace;
 
 
-	/*  */
 	/*  SDIO Rx FIFO related. */
-	/*  */
 	u8 	SdioRxFIFOCnt;
 	u16 		SdioRxFIFOSize;
 
@@ -496,7 +444,7 @@ typedef struct hal_com_data
 	/*  For bluetooth co-existance */
 	BT_COEXIST		bt_coexist;
 
-	/*  Interrupt relatd register information. */
+	/*  Interrupt related register information. */
 	u32 		SysIntrStatus;
 	u32 		SysIntrMask;
 
@@ -527,8 +475,7 @@ typedef struct hal_com_data
 	s16 noise[ODM_MAX_CHANNEL_NUM];
 #endif
 
-} HAL_DATA_COMMON, *PHAL_DATA_COMMON;
-
+};
 
 #define GET_HAL_DATA(__padapter)	((struct hal_com_data *)((__padapter)->HalData))
 #define GET_HAL_RFPATH_NUM(__padapter) (((struct hal_com_data *)((__padapter)->HalData))->NumTotalRFPath)
