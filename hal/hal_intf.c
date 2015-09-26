@@ -88,34 +88,28 @@ static void rtw_hal_init_opmode(struct adapter *padapter)
 
 uint	 rtw_hal_init(struct adapter *padapter)
 {
-	uint	status = _SUCCESS;
+	uint	status;
 	struct dvobj_priv *dvobj = adapter_to_dvobj(padapter);
-	int i;
 
 	status = padapter->HalFunc.hal_init(padapter);
 
 	if (status == _SUCCESS) {
-
 		rtw_hal_init_opmode(padapter);
 
-		for (i = 0; i<dvobj->iface_nums; i++)
-			dvobj->padapters[i]->hw_init_completed = true;
+		dvobj->padapters->hw_init_completed = true;
 
 		if (padapter->registrypriv.notch_filter == 1)
 			rtw_hal_notch_filter(padapter, 1);
 
 		rtw_hal_reset_security_engine(padapter);
 
-		for (i = 0; i<dvobj->iface_nums; i++)
-			rtw_sec_restore_wep_key(dvobj->padapters[i]);
+		rtw_sec_restore_wep_key(dvobj->padapters);
 
 		init_hw_mlme_ext(padapter);
 
 		rtw_bb_rf_gain_offset(padapter);
-	}
-	else {
-		for (i = 0; i<dvobj->iface_nums; i++)
-			dvobj->padapters[i]->hw_init_completed = false;
+	} else {
+		dvobj->padapters->hw_init_completed = false;
 		DBG_871X("rtw_hal_init: hal__init fail\n");
 	}
 
@@ -129,18 +123,13 @@ uint rtw_hal_deinit(struct adapter *padapter)
 {
 	uint	status = _SUCCESS;
 	struct dvobj_priv *dvobj = adapter_to_dvobj(padapter);
-	int i;
 
 	status = padapter->HalFunc.hal_deinit(padapter);
 
 	if (status == _SUCCESS) {
-		for (i = 0; i<dvobj->iface_nums; i++) {
-			padapter = dvobj->padapters[i];
-			padapter->hw_init_completed = false;
-		}
-	}
-	else
-	{
+		padapter = dvobj->padapters;
+		padapter->hw_init_completed = false;
+	} else {
 		DBG_871X("\n rtw_hal_deinit: hal_init fail\n");
 	}
 	return status;

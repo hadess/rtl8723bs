@@ -236,14 +236,6 @@ struct registry_priv
 #define GET_IFACE_NUMS(padapter) (((struct adapter *)padapter)->dvobj->iface_nums)
 #define GET_ADAPTER(padapter, iface_id) (((struct adapter *)padapter)->dvobj->padapters[iface_id])
 
-enum _IFACE_ID {
-	IFACE_ID0, /* mapping to PRIMARY ADAPTER */
-	IFACE_ID1, /* mapping to SECONDARY ADAPTER */
-	IFACE_ID2,
-	IFACE_ID3,
-	IFACE_ID_MAX,
-};
-
 #ifdef CONFIG_DBG_COUNTER
 
 struct rx_logs {
@@ -467,11 +459,7 @@ struct dvobj_priv
 	unsigned char oper_ch_offset;/* PRIME_CHNL_OFFSET */
 	unsigned long on_oper_ch_time;
 
-	/* extend to support mulitu interface */
-	/* padapters[IFACE_ID0] == if1 */
-	/* padapters[IFACE_ID1] == if2 */
-	struct adapter *padapters[IFACE_ID_MAX];
-	u8 iface_nums; /*  total number of ifaces used runtime */
+	struct adapter *padapters;
 
 	struct cam_ctl_t cam_ctl;
 	struct cam_entry_cache cam_cache[TOTAL_CAM_ENTRY];

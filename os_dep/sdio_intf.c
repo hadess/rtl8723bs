@@ -339,8 +339,8 @@ static struct adapter *rtw_sdio_if1_init(struct dvobj_priv *dvobj, const struct 
 
 	padapter->bDriverStopped =true;
 
-	dvobj->padapters[dvobj->iface_nums++] = padapter;
-	padapter->iface_id = IFACE_ID0;
+	dvobj->padapters = padapter;
+	padapter->iface_id = 0;
 
 	/* 3 1. init network device data */
 	pnetdev = rtw_init_netdev(padapter);

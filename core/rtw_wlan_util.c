@@ -2346,19 +2346,10 @@ u8 rtw_search_max_mac_id(struct adapter *padapter)
 
 struct adapter *dvobj_get_port0_adapter(struct dvobj_priv *dvobj)
 {
-	struct adapter *port0_iface = NULL;
-	int i;
-	for (i = 0;i<dvobj->iface_nums;i++) {
-		if (get_iface_type(dvobj->padapters[i]) == IFACE_PORT0)
-			break;
-	}
+	if (get_iface_type(dvobj->padapters[i]) != IFACE_PORT0)
+		return NULL;
 
-	if (i<0 || i>=dvobj->iface_nums)
-		rtw_warn_on(1);
-	else
-		port0_iface = dvobj->padapters[i];
-
-	return port0_iface;
+	return dvobj->padapters;
 }
 
 #ifdef CONFIG_GPIO_API

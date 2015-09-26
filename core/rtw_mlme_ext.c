@@ -7260,54 +7260,28 @@ int rtw_get_ch_setting_union(struct adapter *adapter, u8 *ch, u8 *bw, u8 *offset
 	struct dvobj_priv *dvobj = adapter_to_dvobj(adapter);
 	struct adapter *iface;
 	struct mlme_ext_priv *mlmeext;
-	int i;
 	u8 ch_ret = 0;
 	u8 bw_ret = CHANNEL_WIDTH_20;
 	u8 offset_ret = HAL_PRIME_CHNL_OFFSET_DONT_CARE;
-	int num = 0;
 
-	if (ch) *ch = 0;
-	if (bw) *bw = CHANNEL_WIDTH_20;
-	if (offset) *offset = HAL_PRIME_CHNL_OFFSET_DONT_CARE;
+	if (ch)
+		*ch = 0;
+	if (bw)
+		*bw = CHANNEL_WIDTH_20;
+	if (offset)
+		*offset = HAL_PRIME_CHNL_OFFSET_DONT_CARE;
 
-	for (i = 0; i<dvobj->iface_nums; i++) {
-		iface = dvobj->padapters[i];
-		mlmeext = &iface->mlmeextpriv;
+	iface = dvobj->padapters;
+	mlmeext = &iface->mlmeextpriv;
 
-		if (!check_fwstate(&iface->mlmepriv, _FW_LINKED|_FW_UNDER_LINKING))
-			continue;
+	if (!check_fwstate(&iface->mlmepriv, _FW_LINKED|_FW_UNDER_LINKING))
+		return 0;
 
-		if (num == 0) {
-			ch_ret = mlmeext->cur_channel;
-			bw_ret = mlmeext->cur_bwmode;
-			offset_ret = mlmeext->cur_ch_offset;
-			num++;
-			continue;
-		}
+	ch_ret = mlmeext->cur_channel;
+	bw_ret = mlmeext->cur_bwmode;
+	offset_ret = mlmeext->cur_ch_offset;
 
-		if (ch_ret != mlmeext->cur_channel) {
-			num = 0;
-			break;
-		}
-
-		if (bw_ret < mlmeext->cur_bwmode) {
-			bw_ret = mlmeext->cur_bwmode;
-			offset_ret = mlmeext->cur_ch_offset;
-		} else if (bw_ret == mlmeext->cur_bwmode && offset_ret != mlmeext->cur_ch_offset) {
-			num = 0;
-			break;
-		}
-
-		num++;
-	}
-
-	if (num) {
-		if (ch) *ch = ch_ret;
-		if (bw) *bw = bw_ret;
-		if (offset) *offset = offset_ret;
-	}
-
-	return num;
+	return 1;
 }
 
 u8 set_ch_hdl(struct adapter *padapter, u8 *pbuf)

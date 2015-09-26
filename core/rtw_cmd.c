@@ -1483,41 +1483,22 @@ u8 traffic_status_watchdog(struct adapter *padapter, u8 from_timer)
 		}
 
 		/*  LeisurePS only work in infra mode. */
-		if (bEnterPS)
-		{
+		if (bEnterPS) {
 			if (!from_timer)
-			{
 				LPS_Enter(padapter, "TRAFFIC_IDLE");
-			}
-			else
-			{
-				/* do this at caller */
-				/* rtw_lps_ctrl_wk_cmd(adapter, LPS_CTRL_ENTER, 1); */
-				/* rtw_hal_dm_watchdog_in_lps(padapter); */
-			}
-		}
-		else
-		{
+		} else {
 			if (!from_timer)
-			{
 				LPS_Leave(padapter, "TRAFFIC_BUSY");
-			}
 			else
-			{
 				rtw_lps_ctrl_wk_cmd(padapter, LPS_CTRL_TRAFFIC_BUSY, 1);
-			}
 		}
-	}
-	else
-	{
+	} else {
 		struct dvobj_priv *dvobj = adapter_to_dvobj(padapter);
 		int n_assoc_iface = 0;
 		int i;
 
-		for (i = 0; i < dvobj->iface_nums; i++) {
-			if (check_fwstate(&(dvobj->padapters[i]->mlmepriv), WIFI_ASOC_STATE))
-				n_assoc_iface++;
-		}
+		if (check_fwstate(&(dvobj->padapters->mlmepriv), WIFI_ASOC_STATE))
+			n_assoc_iface++;
 
 		if (!from_timer && n_assoc_iface == 0)
 			LPS_Leave(padapter, "NON_LINKED");

@@ -591,19 +591,14 @@ void LPS_Enter(struct adapter *padapter, const char *msg)
 	struct dvobj_priv *dvobj = adapter_to_dvobj(padapter);
 	struct pwrctrl_priv *pwrpriv = dvobj_to_pwrctl(dvobj);
 	int n_assoc_iface = 0;
-	int i;
 	char buf[32] = {0};
-
-/* 	DBG_871X("+LeisurePSEnter\n"); */
 
 	if (rtw_btcoex_IsBtControlLps(padapter) == true)
 		return;
 
 	/* Skip lps enter request if number of assocated adapters is not 1 */
-	for (i = 0; i < dvobj->iface_nums; i++) {
-		if (check_fwstate(&(dvobj->padapters[i]->mlmepriv), WIFI_ASOC_STATE))
-			n_assoc_iface++;
-	}
+	if (check_fwstate(&(dvobj->padapters->mlmepriv), WIFI_ASOC_STATE))
+		n_assoc_iface++;
 	if (n_assoc_iface != 1)
 		return;
 
@@ -611,13 +606,10 @@ void LPS_Enter(struct adapter *padapter, const char *msg)
 	if (get_iface_type(padapter) != IFACE_PORT0)
 		return;
 
-	for (i = 0; i < dvobj->iface_nums; i++) {
-		if (PS_RDY_CHECK(dvobj->padapters[i]) == false)
+	if (PS_RDY_CHECK(dvobj->padapters) == false)
 			return;
-	}
 
-	if (pwrpriv->bLeisurePs)
-	{
+	if (pwrpriv->bLeisurePs) {
 		/*  Idle for a while if we connect to AP a while ago. */
 		if (pwrpriv->LpsIdleCount >= 2) /*   4 Sec */
 		{
@@ -721,45 +713,32 @@ void LeaveAllPowerSaveMode(struct adapter * Adapter)
 	struct dvobj_priv *dvobj = adapter_to_dvobj(Adapter);
 	u8 enqueue = 0;
 	int n_assoc_iface = 0;
-	int i;
 
-	/* DBG_871X("%s.....\n", __func__); */
-
-	if (false == Adapter->bup)
-	{
+	if (!Adapter->bup) {
 		DBG_871X(FUNC_ADPT_FMT ": bup =%d Skip!\n",
 			FUNC_ADPT_ARG(Adapter), Adapter->bup);
 		return;
 	}
 
-	if (true == Adapter->bSurpriseRemoved)
-	{
+	if (Adapter->bSurpriseRemoved) {
 		DBG_871X(FUNC_ADPT_FMT ": bSurpriseRemoved =%d Skip!\n",
 			FUNC_ADPT_ARG(Adapter), Adapter->bSurpriseRemoved);
 		return;
 	}
 
-	for (i = 0; i < dvobj->iface_nums; i++) {
-		if (check_fwstate(&(dvobj->padapters[i]->mlmepriv), WIFI_ASOC_STATE))
-			n_assoc_iface++;
-	}
+	if (check_fwstate(&(dvobj->padapters->mlmepriv), WIFI_ASOC_STATE))
+		n_assoc_iface++;
 
-	if (n_assoc_iface)
-	{ /* connect */
+	if (n_assoc_iface) { /* connect */
 		enqueue = 1;
 
 		rtw_lps_ctrl_wk_cmd(Adapter, LPS_CTRL_LEAVE, enqueue);
 
 		LPS_Leave_check(Adapter);
-	}
-	else
-	{
-		if (adapter_to_pwrctl(Adapter)->rf_pwrstate == rf_off)
-		{
+	} else {
+		if (adapter_to_pwrctl(Adapter)->rf_pwrstate == rf_off) {
 			if (false == ips_leave(Adapter))
-			{
 				DBG_871X("======> ips_leave fail.............\n");
-			}
 		}
 	}
 }

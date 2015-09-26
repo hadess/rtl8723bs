@@ -574,23 +574,19 @@ struct net_device *rtw_init_netdev(struct adapter *old_padapter)
 
 void rtw_unregister_netdevs(struct dvobj_priv *dvobj)
 {
-	int i;
 	struct adapter *padapter = NULL;
+	struct net_device *pnetdev = NULL;
 
-	for (i = 0; i < dvobj->iface_nums; i++) {
-		struct net_device *pnetdev = NULL;
+	padapter = dvobj->padapters;
 
-		padapter = dvobj->padapters[i];
+	if (padapter == NULL)
+		return;
 
-		if (padapter == NULL)
-			continue;
+	pnetdev = padapter->pnetdev;
 
-		pnetdev = padapter->pnetdev;
-
-		if ((padapter->DriverState != DRIVER_DISAPPEAR) && pnetdev)
-			unregister_netdev(pnetdev); /* will call netdev_close() */
-		rtw_wdev_unregister(padapter->rtw_wdev);
-	}
+	if ((padapter->DriverState != DRIVER_DISAPPEAR) && pnetdev)
+		unregister_netdev(pnetdev); /* will call netdev_close() */
+	rtw_wdev_unregister(padapter->rtw_wdev);
 }
 
 u32 rtw_start_drv_threads(struct adapter *padapter)
@@ -946,40 +942,20 @@ static int _rtw_drv_register_netdev(struct adapter *padapter, char *name)
 
 error_register_netdev:
 
-	if (padapter->iface_id > IFACE_ID0) {
-		rtw_free_drv_sw(padapter);
+	rtw_free_drv_sw(padapter);
 
-		rtw_free_netdev(pnetdev);
-	}
+	rtw_free_netdev(pnetdev);
 
 	return ret;
 }
 
 int rtw_drv_register_netdev(struct adapter *if1)
 {
-	int i, status = _SUCCESS;
 	struct dvobj_priv *dvobj = if1->dvobj;
+	struct adapter *padapter = dvobj->padapters;
+	char *name = if1->registrypriv.ifname;
 
-	if (dvobj->iface_nums < IFACE_ID_MAX) {
-		for (i = 0; i<dvobj->iface_nums; i++) {
-			struct adapter *padapter = dvobj->padapters[i];
-
-			if (padapter) {
-				char *name;
-
-				if (padapter->iface_id == IFACE_ID0)
-					name = if1->registrypriv.ifname;
-				else
-					name = "wlan%d";
-
-				if ((status = _rtw_drv_register_netdev(padapter, name)) != _SUCCESS) {
-					break;
-				}
-			}
-		}
-	}
-
-	return status;
+	return _rtw_drv_register_netdev(padapter, name);
 }
 
 int _netdev_open(struct net_device *pnetdev)
