@@ -191,7 +191,6 @@ struct registry_priv
 	u8 enable80211d;
 
 	u8 ifname[16];
-	u8 if2name[16];
 
 	u8 notch_filter;
 
