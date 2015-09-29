@@ -21,21 +21,21 @@ typedef struct _EDCA_TURBO_
 	bool bCurrentTurboEDCA;
 	bool bIsCurRDLState;
 
-	u4Byte	prv_traffic_idx; /*  edca turbo */
+	u32 prv_traffic_idx; /*  edca turbo */
 }EDCA_T,*pEDCA_T;
 
 void
 odm_EdcaTurboCheck(
-	IN	void *		pDM_VOID
+void *	pDM_VOID
 	);
 void
 ODM_EdcaTurboInit(
-	IN	void *		pDM_VOID
+void *	pDM_VOID
 );
 
 void
 odm_EdcaTurboCheckCE(
-	IN	void *		pDM_VOID
+void *	pDM_VOID
 	);
 
 #endif

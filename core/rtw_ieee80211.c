@@ -11,11 +11,6 @@
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
  * more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110, USA
- *
- *
  ******************************************************************************/
 #define _IEEE80211_C
 
@@ -48,13 +43,13 @@ u8 RSN_CIPHER_SUITE_WEP104[] = { 0x00, 0x0f, 0xac, 5 };
 /*  for adhoc-master to generate ie and provide supported-rate to fw */
 /*  */
 
-static u8	WIFI_CCKRATES[] =
+static u8 WIFI_CCKRATES[] =
 {(IEEE80211_CCK_RATE_1MB | IEEE80211_BASIC_RATE_MASK),
  (IEEE80211_CCK_RATE_2MB | IEEE80211_BASIC_RATE_MASK),
  (IEEE80211_CCK_RATE_5MB | IEEE80211_BASIC_RATE_MASK),
  (IEEE80211_CCK_RATE_11MB | IEEE80211_BASIC_RATE_MASK)};
 
-static u8	WIFI_OFDMRATES[] =
+static u8 WIFI_OFDMRATES[] =
 {(IEEE80211_OFDM_RATE_6MB),
  (IEEE80211_OFDM_RATE_9MB),
  (IEEE80211_OFDM_RATE_12MB),
@@ -80,11 +75,11 @@ int rtw_get_bit_value_from_ieee_value(u8 val)
 
 uint	rtw_is_cckrates_included(u8 *rate)
 {
-		u32	i = 0;
+		u32 i = 0;
 
 		while (rate[i]!= 0)
 		{
-			if  ( (((rate[i]) & 0x7f) == 2)	|| (((rate[i]) & 0x7f) == 4) ||
+			if  ((((rate[i]) & 0x7f) == 2)	|| (((rate[i]) & 0x7f) == 4) ||
 			(((rate[i]) & 0x7f) == 11)  || (((rate[i]) & 0x7f) == 22))
 			return true;
 			i++;
@@ -100,7 +95,7 @@ uint	rtw_is_cckratesonly_included(u8 *rate)
 
 	while (rate[i]!= 0)
 	{
-			if  ( (((rate[i]) & 0x7f) != 2) && (((rate[i]) & 0x7f) != 4) &&
+			if  ((((rate[i]) & 0x7f) != 2) && (((rate[i]) & 0x7f) != 4) &&
 				(((rate[i]) & 0x7f) != 11)  && (((rate[i]) & 0x7f) != 22))
 
 			return false;
@@ -171,7 +166,7 @@ u8 *rtw_get_ie(u8 *pbuf, sint index, sint *len, sint limit)
 	sint tmp, i;
 	u8 *p;
 
-	if (limit < 1){
+	if (limit < 1) {
 		return NULL;
 	}
 
@@ -295,7 +290,7 @@ exit:
 	return ret;
 }
 
-void rtw_set_supported_rate(u8* SupportedRates, uint mode)
+void rtw_set_supported_rate(u8 *SupportedRates, uint mode)
 {
 	memset(SupportedRates, 0, NDIS_802_11_LENGTH_RATES_EX);
 
@@ -324,7 +319,7 @@ void rtw_set_supported_rate(u8* SupportedRates, uint mode)
 	}
 }
 
-uint	rtw_get_rateset_len(u8	*rateset)
+uint	rtw_get_rateset_len(u8 *rateset)
 {
 	uint i = 0;
 
@@ -343,10 +338,10 @@ uint	rtw_get_rateset_len(u8	*rateset)
 
 int rtw_generate_ie(struct registry_priv *pregistrypriv)
 {
-	u8	wireless_mode;
+	u8 wireless_mode;
 	int	sz = 0, rateLen;
-	WLAN_BSSID_EX*	pdev_network = &pregistrypriv->dev_network;
-	u8*	ie = pdev_network->IEs;
+	struct wlan_bssid_ex*pdev_network = &pregistrypriv->dev_network;
+	u8*ie = pdev_network->IEs;
 
 	/* timestamp will be inserted by hardware */
 	sz += 8;
@@ -524,7 +519,7 @@ int rtw_get_wpa2_cipher_suite(u8 *s)
 }
 
 
-int rtw_parse_wpa_ie(u8* wpa_ie, int wpa_ie_len, int *group_cipher, int *pairwise_cipher, int *is_8021x)
+int rtw_parse_wpa_ie(u8 *wpa_ie, int wpa_ie_len, int *group_cipher, int *pairwise_cipher, int *is_8021x)
 {
 	int i, ret = _SUCCESS;
 	int left, count;
@@ -609,7 +604,7 @@ int rtw_parse_wpa_ie(u8* wpa_ie, int wpa_ie_len, int *group_cipher, int *pairwis
 
 }
 
-int rtw_parse_wpa2_ie(u8* rsn_ie, int rsn_ie_len, int *group_cipher, int *pairwise_cipher, int *is_8021x)
+int rtw_parse_wpa2_ie(u8 *rsn_ie, int rsn_ie_len, int *group_cipher, int *pairwise_cipher, int *is_8021x)
 {
 	int i, ret = _SUCCESS;
 	int left, count;
@@ -716,7 +711,7 @@ int rtw_get_wapi_ie(u8 *in_ie, uint in_len, u8 *wapi_ie, u16 *wapi_len)
 			if (wapi_ie) {
 				memcpy(wapi_ie, &in_ie[cnt], in_ie[cnt+1]+2);
 
-				for (i = 0;i<(in_ie[cnt+1]+2);i =i+8){
+				for (i = 0;i<(in_ie[cnt+1]+2);i =i+8) {
 					RT_TRACE(_module_rtl871x_mlme_c_, _drv_info_, ("\n %2x,%2x,%2x,%2x,%2x,%2x,%2x,%2x\n",
 								wapi_ie[i], wapi_ie[i+1], wapi_ie[i+2], wapi_ie[i+3], wapi_ie[i+4],
 								wapi_ie[i+5], wapi_ie[i+6], wapi_ie[i+7]));
@@ -763,7 +758,7 @@ int rtw_get_sec_ie(u8 *in_ie, uint in_len, u8 *rsn_ie, u16 *rsn_len, u8 *wpa_ie,
 				if (wpa_ie) {
 				memcpy(wpa_ie, &in_ie[cnt], in_ie[cnt+1]+2);
 
-				for (i = 0;i<(in_ie[cnt+1]+2);i =i+8){
+				for (i = 0;i<(in_ie[cnt+1]+2);i =i+8) {
 						RT_TRACE(_module_rtl871x_mlme_c_, _drv_info_, ("\n %2x,%2x,%2x,%2x,%2x,%2x,%2x,%2x\n",
 									wpa_ie[i], wpa_ie[i+1], wpa_ie[i+2], wpa_ie[i+3], wpa_ie[i+4],
 									wpa_ie[i+5], wpa_ie[i+6], wpa_ie[i+7]));
@@ -782,7 +777,7 @@ int rtw_get_sec_ie(u8 *in_ie, uint in_len, u8 *rsn_ie, u16 *rsn_len, u8 *wpa_ie,
 				if (rsn_ie) {
 				memcpy(rsn_ie, &in_ie[cnt], in_ie[cnt+1]+2);
 
-				for (i = 0;i<(in_ie[cnt+1]+2);i =i+8){
+				for (i = 0;i<(in_ie[cnt+1]+2);i =i+8) {
 						RT_TRACE(_module_rtl871x_mlme_c_, _drv_info_, ("\n %2x,%2x,%2x,%2x,%2x,%2x,%2x,%2x\n",
 									rsn_ie[i], rsn_ie[i+1], rsn_ie[i+2], rsn_ie[i+3], rsn_ie[i+4],
 									rsn_ie[i+5], rsn_ie[i+6], rsn_ie[i+7]));
@@ -832,7 +827,7 @@ u8 rtw_is_wps_ie(u8 *ie_ptr, uint *wps_ielen)
 u8 *rtw_get_wps_ie(u8 *in_ie, uint in_len, u8 *wps_ie, uint *wps_ielen)
 {
 	uint cnt;
-	u8 *wpsie_ptr =NULL;
+	u8 *wpsie_ptr = NULL;
 	u8 eid, wps_oui[4]={0x0, 0x50, 0xf2, 0x04};
 
 	if (wps_ielen)
@@ -1315,7 +1310,7 @@ void rtw_get_bcn_info(struct wlan_network *pnetwork)
 	struct HT_info_element *pht_info = NULL;
 	struct ieee80211_ht_cap *pht_cap = NULL;
 	unsigned int		len;
-	unsigned char		*p;
+	unsigned char 	*p;
 	__le16 le_cap;
 
 	memcpy((u8 *)&le_cap, rtw_get_capability_from_ie(pnetwork->network.IEs), 2);
@@ -1433,7 +1428,7 @@ u16 rtw_mcs_rate(u8 rf_type, u8 bw_40MHz, u8 short_GI, unsigned char * MCS_rate)
 	return max_rate;
 }
 
-int rtw_action_frame_parse(const u8 *frame, u32 frame_len, u8* category, u8 *action)
+int rtw_action_frame_parse(const u8 *frame, u32 frame_len, u8 *category, u8 *action)
 {
 	const u8 *frame_body = frame + sizeof(struct ieee80211_hdr_3addr);
 	u16 fc;

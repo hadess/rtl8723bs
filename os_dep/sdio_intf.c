@@ -22,10 +22,6 @@
 #define dev_to_sdio_func(d)     container_of(d, struct sdio_func, dev)
 #endif
 
-#ifdef CONFIG_WOWLAN
-static struct mmc_host *mmc_host = NULL;
-#endif
-
 static const struct sdio_device_id sdio_ids[] =
 {
 //	{ SDIO_DEVICE(0x024c, 0xB723), },
@@ -137,7 +133,7 @@ static void sdio_free_irq(struct dvobj_priv *dvobj)
 extern unsigned int oob_irq;
 static irqreturn_t gpio_hostwakeup_irq_thread(int irq, void *data)
 {
-	struct adapter * padapter = (struct adapter *)data;
+	struct adapter *padapter = (struct adapter *)data;
 	DBG_871X_LEVEL(_drv_always_, "gpio_hostwakeup_irq_thread\n");
 	/* Disable interrupt before calling handler */
 	/* disable_irq_nosync(oob_irq); */
@@ -145,7 +141,7 @@ static irqreturn_t gpio_hostwakeup_irq_thread(int irq, void *data)
 	return IRQ_HANDLED;
 }
 
-static u8 gpio_hostwakeup_alloc_irq(struct adapter * padapter)
+static u8 gpio_hostwakeup_alloc_irq(struct adapter *padapter)
 {
 	int err;
 	if (oob_irq == 0) {
@@ -171,7 +167,7 @@ static u8 gpio_hostwakeup_alloc_irq(struct adapter * padapter)
 	return _SUCCESS;
 }
 
-static void gpio_hostwakeup_free_irq(struct adapter * padapter)
+static void gpio_hostwakeup_free_irq(struct adapter *padapter)
 {
 	if (oob_irq == 0)
 		return;
@@ -297,7 +293,7 @@ static void sdio_dvobj_deinit(struct sdio_func *func)
 	return;
 }
 
-void rtw_set_hal_ops(struct adapter * padapter)
+void rtw_set_hal_ops(struct adapter *padapter)
 {
 	/* alloc memory for HAL DATA */
 	rtw_hal_data_init(padapter);
@@ -305,7 +301,7 @@ void rtw_set_hal_ops(struct adapter * padapter)
 	rtl8723bs_set_hal_ops(padapter);
 }
 
-static void sd_intf_start(struct adapter * padapter)
+static void sd_intf_start(struct adapter *padapter)
 {
 	if (padapter == NULL) {
 		DBG_8192C(KERN_ERR "%s: padapter is NULL!\n", __func__);
@@ -316,7 +312,7 @@ static void sd_intf_start(struct adapter * padapter)
 	rtw_hal_enable_interrupt(padapter);
 }
 
-static void sd_intf_stop(struct adapter * padapter)
+static void sd_intf_stop(struct adapter *padapter)
 {
 	if (padapter == NULL) {
 		DBG_8192C(KERN_ERR "%s: padapter is NULL!\n", __func__);
@@ -332,7 +328,7 @@ static struct adapter *rtw_sdio_if1_init(struct dvobj_priv *dvobj, const struct 
 {
 	int status = _FAIL;
 	struct net_device *pnetdev;
-	struct adapter * padapter = NULL;
+	struct adapter *padapter = NULL;
 
 	if ((padapter = (struct adapter *)vzalloc(sizeof(*padapter))) == NULL) {
 		goto exit;
@@ -343,8 +339,8 @@ static struct adapter *rtw_sdio_if1_init(struct dvobj_priv *dvobj, const struct 
 
 	padapter->bDriverStopped =true;
 
-	dvobj->padapters[dvobj->iface_nums++] = padapter;
-	padapter->iface_id = IFACE_ID0;
+	dvobj->padapters = padapter;
+	padapter->iface_id = 0;
 
 	/* 3 1. init network device data */
 	pnetdev = rtw_init_netdev(padapter);
@@ -476,7 +472,7 @@ static int rtw_drv_init(
 	const struct sdio_device_id *id)
 {
 	int status = _FAIL;
-	struct adapter *if1 = NULL;
+	struct adapter *if1 = NULL, *if2 = NULL;
 	struct dvobj_priv *dvobj;
 
 	switch (func->vendor) {
@@ -503,23 +499,17 @@ static int rtw_drv_init(
 	}
 
 	if ((if1 = rtw_sdio_if1_init(dvobj, id)) == NULL) {
-		DBG_871X("Failure to initialize adapter\n");
+		DBG_871X("rtw_init_primarystruct adapter Failed!\n");
 		goto free_dvobj;
 	}
 
 	/* dev_alloc_name && register_netdev */
 	if ((status = rtw_drv_register_netdev(if1)) != _SUCCESS) {
-		pr_err("ERROR %d - Failure to register net device\n", status);
-		goto free_iface;
+		goto free_if2;
 	}
 
-	status = rtw_ndev_notifier_register();
-	if (status) {
-		pr_err("ERROR %d - Failure to register net device notifier\n", status);
-		goto free_device;
-	};
 	if (sdio_alloc_irq(dvobj) != _SUCCESS)
-		goto free_notifier;
+		goto free_if2;
 
 #ifdef	CONFIG_GPIO_WAKEUP
 	gpio_hostwakeup_alloc_irq(if1);
@@ -527,24 +517,26 @@ static int rtw_drv_init(
 
 	RT_TRACE(_module_hci_intfs_c_, _drv_err_, ("-871x_drv - drv_init, success!\n"));
 
-	return _SUCCESS;
+	rtw_ndev_notifier_register();
+	status = _SUCCESS;
 
-free_notifier:
-	rtw_ndev_notifier_unregister();
-free_device:
-	rtw_ndev_notifier_unregister();
-free_iface:
-	rtw_sdio_if1_deinit(if1);
+free_if2:
+	if (status != _SUCCESS && if2) {
+	}
+	if (status != _SUCCESS && if1) {
+		rtw_sdio_if1_deinit(if1);
+	}
 free_dvobj:
-	sdio_dvobj_deinit(func);
+	if (status != _SUCCESS)
+		sdio_dvobj_deinit(func);
 exit:
-	return -ENODEV;
+	return status == _SUCCESS?0:-ENODEV;
 }
 
 static void rtw_dev_remove(struct sdio_func *func)
 {
 	struct dvobj_priv *dvobj = sdio_get_drvdata(func);
-	struct adapter * padapter = dvobj->if1;
+	struct adapter *padapter = dvobj->if1;
 
 	RT_TRACE(_module_hci_intfs_c_, _drv_notice_, ("+rtw_dev_remove\n"));
 
@@ -653,7 +645,7 @@ static int rtw_sdio_resume(struct device *dev)
 	struct dvobj_priv *psdpriv = sdio_get_drvdata(func);
 	struct pwrctrl_priv *pwrpriv = dvobj_to_pwrctl(psdpriv);
 	struct adapter *padapter = psdpriv->if1;
-	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
+	struct mlme_ext_priv *pmlmeext = &padapter->mlmeextpriv;
 	int ret = 0;
 	struct debug_priv *pdbgpriv = &psdpriv->drv_dbg;
 
@@ -692,21 +684,19 @@ static int __init rtw_drv_entry(void)
 	DBG_871X_LEVEL(_drv_always_, "rtl8723bs BT-Coex version = %s\n", BTCOEXVERSION);
 #endif /*  BTCOEXVERSION */
 
-	if (rtw_drv_proc_init() == _FAIL) {
-		pr_err("Unable to open proc entries\n");
-		return -ENODEV;
-	}
+	sdio_drvpriv.drv_registered = true;
+	rtw_drv_proc_init();
 
 	ret = sdio_register_driver(&sdio_drvpriv.r871xs_drv);
-	if (ret) {
+	if (ret != 0)
+	{
 		sdio_drvpriv.drv_registered = false;
 		rtw_drv_proc_deinit();
 		rtw_ndev_notifier_unregister();
-		pr_err("%s: register driver failed!!(%d)\n", __func__, ret);
+		DBG_871X("%s: register driver failed!!(%d)\n", __func__, ret);
 		goto exit;
 	}
 
-	sdio_drvpriv.drv_registered = true;
 	goto exit;
 
 exit:

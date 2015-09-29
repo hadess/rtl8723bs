@@ -31,8 +31,6 @@
 #define	ODM_REG_T_METER_92D_11N			0x42
 #define	ODM_REG_T_METER_88E_11N			0x42
 
-
-
 /* 2 BB REG LIST */
 /* PAGE 8 */
 #define	ODM_REG_BB_CTRL_11N				0x800

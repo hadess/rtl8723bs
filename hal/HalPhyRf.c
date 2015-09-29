@@ -34,8 +34,8 @@
 
 
 void ConfigureTxpowerTrack(
-	IN	PDM_ODM_T		pDM_Odm,
-	OUT	PTXPWRTRACK_CFG	pConfig
+PDM_ODM_T		pDM_Odm,
+	PTXPWRTRACK_CFG	pConfig
 	)
 {
 	ConfigureTxpowerTrack_8723B(pConfig);
@@ -51,11 +51,11 @@ void ConfigureTxpowerTrack(
 /*  */
 void
 ODM_ClearTxPowerTrackingState(
-	IN PDM_ODM_T		pDM_Odm
+	PDM_ODM_T		pDM_Odm
 	)
 {
-	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(pDM_Odm->Adapter);
-	u1Byte			p = 0;
+	struct hal_com_data *pHalData = GET_HAL_DATA(pDM_Odm->Adapter);
+	u8 	p = 0;
 
 	pDM_Odm->BbSwingIdxCckBase = pDM_Odm->DefaultCckIndex;
 	pDM_Odm->BbSwingIdxCck = pDM_Odm->DefaultCckIndex;
@@ -86,45 +86,45 @@ ODM_ClearTxPowerTrackingState(
 
 void
 ODM_TXPowerTrackingCallback_ThermalMeter(
-	IN struct adapter *	Adapter
+	struct adapter *Adapter
 	)
 {
 
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
+	struct hal_com_data	*pHalData = GET_HAL_DATA(Adapter);
 	PDM_ODM_T		pDM_Odm = &pHalData->odmpriv;
 
-	u1Byte			ThermalValue = 0, delta, delta_LCK, delta_IQK, p = 0, i = 0;
-	u1Byte			ThermalValue_AVG_count = 0;
-	u4Byte			ThermalValue_AVG = 0;
+	u8 	ThermalValue = 0, delta, delta_LCK, delta_IQK, p = 0, i = 0;
+	u8 	ThermalValue_AVG_count = 0;
+	u32 		ThermalValue_AVG = 0;
 
-	u1Byte			OFDM_min_index = 0;  /*  OFDM BB Swing should be less than +3.0dB, which is required by Arthur */
-	u1Byte			Indexforchannel = 0; /*  GetRightChnlPlaceforIQK(pHalData->CurrentChannel) */
+	u8 	OFDM_min_index = 0;  /*  OFDM BB Swing should be less than +3.0dB, which is required by Arthur */
+	u8 	Indexforchannel = 0; /*  GetRightChnlPlaceforIQK(pHalData->CurrentChannel) */
 
 	TXPWRTRACK_CFG	c;
 
 
 	/* 4 1. The following TWO tables decide the final index of OFDM/CCK swing table. */
-	pu1Byte			deltaSwingTableIdx_TUP_A;
-	pu1Byte			deltaSwingTableIdx_TDOWN_A;
-	pu1Byte			deltaSwingTableIdx_TUP_B;
-	pu1Byte			deltaSwingTableIdx_TDOWN_B;
+	u8 *		deltaSwingTableIdx_TUP_A;
+	u8 *		deltaSwingTableIdx_TDOWN_A;
+	u8 *		deltaSwingTableIdx_TUP_B;
+	u8 *		deltaSwingTableIdx_TDOWN_B;
 
 	/* 4 2. Initilization (7 steps in total) */
 
 	ConfigureTxpowerTrack(pDM_Odm, &c);
 
-	(*c.GetDeltaSwingTable)(pDM_Odm, (pu1Byte*)&deltaSwingTableIdx_TUP_A, (pu1Byte*)&deltaSwingTableIdx_TDOWN_A,
-									  (pu1Byte*)&deltaSwingTableIdx_TUP_B, (pu1Byte*)&deltaSwingTableIdx_TDOWN_B);
+	(*c.GetDeltaSwingTable)(pDM_Odm, (u8 **)&deltaSwingTableIdx_TUP_A, (u8 **)&deltaSwingTableIdx_TDOWN_A,
+									  (u8 **)&deltaSwingTableIdx_TUP_B, (u8 **)&deltaSwingTableIdx_TDOWN_B);
 
 	pDM_Odm->RFCalibrateInfo.TXPowerTrackingCallbackCnt++; /* cosa add for debug */
 	pDM_Odm->RFCalibrateInfo.bTXPowerTrackingInit = true;
 
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD,
 		("===>ODM_TXPowerTrackingCallback_ThermalMeter, \
-		 \n pDM_Odm->BbSwingIdxCckBase: %d, pDM_Odm->BbSwingIdxOfdmBase[A]: %d, pDM_Odm->DefaultOfdmIndex: %d\n",
+		\n pDM_Odm->BbSwingIdxCckBase: %d, pDM_Odm->BbSwingIdxOfdmBase[A]: %d, pDM_Odm->DefaultOfdmIndex: %d\n",
 		pDM_Odm->BbSwingIdxCckBase, pDM_Odm->BbSwingIdxOfdmBase[ODM_RF_PATH_A], pDM_Odm->DefaultOfdmIndex));
 
-	ThermalValue = (u1Byte)PHY_QueryRFReg(pDM_Odm->Adapter, ODM_RF_PATH_A, c.ThermalRegAddr, 0xfc00);	/* 0x42: RF Reg[15:10] 88E */
+	ThermalValue = (u8)PHY_QueryRFReg(pDM_Odm->Adapter, ODM_RF_PATH_A, c.ThermalRegAddr, 0xfc00);	/* 0x42: RF Reg[15:10] 88E */
 	if (! pDM_Odm->RFCalibrateInfo.TxPowerTrackControl || pHalData->EEPROMThermalMeter == 0 ||
 	    pHalData->EEPROMThermalMeter == 0xFF)
 		return;
@@ -150,7 +150,7 @@ ODM_TXPowerTrackingCallback_ThermalMeter(
 
 	if (ThermalValue_AVG_count)               /* Calculate Average ThermalValue after average enough times */
 	{
-		ThermalValue = (u1Byte)(ThermalValue_AVG / ThermalValue_AVG_count);
+		ThermalValue = (u8)(ThermalValue_AVG / ThermalValue_AVG_count);
 		ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD,
 			("AVG Thermal Meter = 0x%X, EFUSE Thermal Base = 0x%X\n", ThermalValue, pHalData->EEPROMThermalMeter));
 	}
@@ -372,11 +372,11 @@ ODM_TXPowerTrackingCallback_ThermalMeter(
 /* 3 IQ Calibration */
 /* 3 ============================================================ */
 
-u1Byte ODM_GetRightChnlPlaceforIQK(u1Byte chnl)
+u8 ODM_GetRightChnlPlaceforIQK(u8 chnl)
 {
-	u1Byte	channel_all[ODM_TARGET_CHNL_NUM_2G_5G] =
+	u8 channel_all[ODM_TARGET_CHNL_NUM_2G_5G] =
 	{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62, 64, 100, 102, 104, 106, 108, 110, 112, 114, 116, 118, 120, 122, 124, 126, 128, 130, 132, 134, 136, 138, 140, 149, 151, 153, 155, 157, 159, 161, 163, 165};
-	u1Byte	place = chnl;
+	u8 place = chnl;
 
 
 	if (chnl > 14)

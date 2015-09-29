@@ -96,9 +96,9 @@ typedef enum mstat_status{
 
 #define rtw_mstat_update(flag, status, sz) do {} while (0)
 #define rtw_mstat_dump(sel) do {} while (0)
-u8*	_rtw_zmalloc(u32 sz);
-u8*	_rtw_malloc(u32 sz);
-void	_kfree(u8 *pbuf, u32 sz);
+u8*_rtw_zmalloc(u32 sz);
+u8*_rtw_malloc(u32 sz);
+void _kfree(u8 *pbuf, u32 sz);
 
 struct sk_buff *_rtw_skb_alloc(u32 sz);
 struct sk_buff *_rtw_skb_copy(const struct sk_buff *skb);
@@ -116,7 +116,7 @@ int _rtw_netif_rx(_nic_hdl ndev, struct sk_buff *skb);
 #define rtw_skb_clone_f(skb, mstat_f)	_rtw_skb_clone((skb))
 #define rtw_netif_rx(ndev, skb) _rtw_netif_rx(ndev, skb)
 
-extern void	_rtw_init_queue(_queue	*pqueue);
+extern void _rtw_init_queue(struct __queue	*pqueue);
 
 extern void rtw_init_timer(_timer *ptimer, void *padapter, void *pfunc);
 
@@ -155,7 +155,7 @@ __inline static int rtw_bug_check(void *parg1, void *parg2, void *parg3, void *p
 __inline static u32 _RND4(u32 sz)
 {
 
-	u32	val;
+	u32 val;
 
 	val = ((sz >> 2) + ((sz & 3) ? 1: 0)) << 2;
 
@@ -166,7 +166,7 @@ __inline static u32 _RND4(u32 sz)
 __inline static u32 _RND8(u32 sz)
 {
 
-	u32	val;
+	u32 val;
 
 	val = ((sz >> 3) + ((sz & 7) ? 1: 0)) << 3;
 
@@ -189,7 +189,7 @@ extern void rtw_softap_unlock_suspend(void);
 
 /* File operation APIs, just for linux now */
 extern int rtw_is_file_readable(char *path);
-extern int rtw_retrive_from_file(char *path, u8* buf, u32 sz);
+extern int rtw_retrive_from_file(char *path, u8 *buf, u32 sz);
 
 extern void rtw_free_netdev(struct net_device * netdev);
 

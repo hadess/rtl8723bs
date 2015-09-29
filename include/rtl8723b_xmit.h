@@ -243,9 +243,6 @@ typedef struct txdesc_8723b
 #define GET_RX_STATUS_DESC_HTC_8723B(__pRxStatusDesc)					LE_BITS_TO_4BYTE(__pRxStatusDesc+12, 10, 1)
 #define GET_RX_STATUS_DESC_EOSP_8723B(__pRxStatusDesc)					LE_BITS_TO_4BYTE(__pRxStatusDesc+12, 11, 1)
 #define GET_RX_STATUS_DESC_BSSID_FIT_8723B(__pRxStatusDesc)		LE_BITS_TO_4BYTE(__pRxStatusDesc+12, 12, 2)
-#ifdef CONFIG_USB_RX_AGGREGATION
-#define GET_RX_STATUS_DESC_USB_AGG_PKTNUM_8723B(__pRxStatusDesc)	LE_BITS_TO_4BYTE(__pRxStatusDesc+12, 16, 8)
-#endif
 #define GET_RX_STATUS_DESC_PATTERN_MATCH_8723B(__pRxDesc)			LE_BITS_TO_4BYTE(__pRxDesc+12, 29, 1)
 #define GET_RX_STATUS_DESC_UNICAST_MATCH_8723B(__pRxDesc)			LE_BITS_TO_4BYTE(__pRxDesc+12, 30, 1)
 #define GET_RX_STATUS_DESC_MAGIC_MATCH_8723B(__pRxDesc)			LE_BITS_TO_4BYTE(__pRxDesc+12, 31, 1)
@@ -444,18 +441,18 @@ typedef struct txdesc_8723b
 
 
 void rtl8723b_update_txdesc(struct xmit_frame *pxmitframe, u8 *pmem);
-void rtl8723b_fill_fake_txdesc(struct adapter * padapter, u8 *pDesc, u32 BufferLen, u8 IsPsPoll, u8 IsBTQosNull, u8 bDataFrame);
+void rtl8723b_fill_fake_txdesc(struct adapter *padapter, u8 *pDesc, u32 BufferLen, u8 IsPsPoll, u8 IsBTQosNull, u8 bDataFrame);
 
-s32 rtl8723bs_init_xmit_priv(struct adapter * padapter);
-void rtl8723bs_free_xmit_priv(struct adapter * padapter);
-s32 rtl8723bs_hal_xmit(struct adapter * padapter, struct xmit_frame *pxmitframe);
-s32 rtl8723bs_mgnt_xmit(struct adapter * padapter, struct xmit_frame *pmgntframe);
+s32 rtl8723bs_init_xmit_priv(struct adapter *padapter);
+void rtl8723bs_free_xmit_priv(struct adapter *padapter);
+s32 rtl8723bs_hal_xmit(struct adapter *padapter, struct xmit_frame *pxmitframe);
+s32 rtl8723bs_mgnt_xmit(struct adapter *padapter, struct xmit_frame *pmgntframe);
 s32	rtl8723bs_hal_xmitframe_enqueue(struct adapter *padapter, struct xmit_frame *pxmitframe);
-s32 rtl8723bs_xmit_buf_handler(struct adapter * padapter);
-int rtl8723bs_xmit_thread(void * context);
+s32 rtl8723bs_xmit_buf_handler(struct adapter *padapter);
+int rtl8723bs_xmit_thread(void *context);
 #define hal_xmit_handler rtl8723bs_xmit_buf_handler
 
-u8	BWMapping_8723B(struct adapter * Adapter, struct pkt_attrib *pattrib);
-u8	SCMapping_8723B(struct adapter * Adapter, struct pkt_attrib	*pattrib);
+u8 BWMapping_8723B(struct adapter * Adapter, struct pkt_attrib *pattrib);
+u8 SCMapping_8723B(struct adapter * Adapter, struct pkt_attrib	*pattrib);
 
 #endif

@@ -11,11 +11,6 @@
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
  * more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110, USA
- *
- *
  ******************************************************************************/
 #define _RTW_STA_MGT_C_
 
@@ -64,7 +59,7 @@ void _rtw_init_stainfo(struct sta_info *psta)
 	psta->keep_alive_trycnt = 0;
 }
 
-u32	_rtw_init_sta_priv(struct	sta_priv *pstapriv)
+u32 _rtw_init_sta_priv(struct	sta_priv *pstapriv)
 {
 	struct sta_info *psta;
 	s32 i;
@@ -139,7 +134,7 @@ inline struct sta_info *rtw_get_stainfo_by_offset(struct sta_priv *stapriv, int 
 void kfree_all_stainfo(struct sta_priv *pstapriv);
 void kfree_all_stainfo(struct sta_priv *pstapriv)
 {
-	_list	*plist, *phead;
+	struct list_head	*plist, *phead;
 	struct sta_info *psta = NULL;
 
 	spin_lock_bh(&pstapriv->sta_hash_lock);
@@ -162,16 +157,16 @@ void kfree_sta_priv_lock(struct	sta_priv *pstapriv)
 	 kfree_all_stainfo(pstapriv); /* be done before free sta_hash_lock */
 }
 
-u32	_rtw_free_sta_priv(struct	sta_priv *pstapriv)
+u32 _rtw_free_sta_priv(struct	sta_priv *pstapriv)
 {
-	_list	*phead, *plist;
+	struct list_head	*phead, *plist;
 	struct sta_info *psta = NULL;
 	struct recv_reorder_ctrl *preorder_ctrl;
 	int	index;
 
-	if (pstapriv){
+	if (pstapriv) {
 
-		/*	delete all reordering_ctrl_timer		*/
+		/*delete all reordering_ctrl_timer		*/
 		spin_lock_bh(&pstapriv->sta_hash_lock);
 		for (index = 0; index < NUM_STA; index++)
 		{
@@ -208,9 +203,9 @@ struct	sta_info *rtw_alloc_stainfo(struct	sta_priv *pstapriv, u8 *hwaddr)
 {
 	uint tmp_aid;
 	s32	index;
-	_list	*phash_list;
-	struct sta_info	*psta;
-	_queue *pfree_sta_queue;
+	struct list_head	*phash_list;
+	struct sta_info *psta;
+	struct __queue *pfree_sta_queue;
 	struct recv_reorder_ctrl *preorder_ctrl;
 	int i = 0;
 	u16  wRxSeqInitialValue = 0xffff;
@@ -246,7 +241,7 @@ struct	sta_info *rtw_alloc_stainfo(struct	sta_priv *pstapriv, u8 *hwaddr)
 
 		RT_TRACE(_module_rtl871x_sta_mgt_c_, _drv_info_, ("rtw_alloc_stainfo: index  = %x", index));
 
-		if (index >= NUM_STA){
+		if (index >= NUM_STA) {
 			RT_TRACE(_module_rtl871x_sta_mgt_c_, _drv_err_, ("ERROR => rtw_alloc_stainfo: index >= NUM_STA"));
 			psta = NULL;
 			goto exit;
@@ -271,7 +266,7 @@ struct	sta_info *rtw_alloc_stainfo(struct	sta_priv *pstapriv, u8 *hwaddr)
                      memcpy(&psta->sta_recvpriv.rxcache.tid_rxseq[ i ], &wRxSeqInitialValue, 2);
 		}
 
-		RT_TRACE(_module_rtl871x_sta_mgt_c_, _drv_info_, ("alloc number_%d stainfo  with hwaddr = %x %x %x %x %x %x  \n",
+		RT_TRACE(_module_rtl871x_sta_mgt_c_, _drv_info_, ("alloc number_%d stainfo  with hwaddr = %x %x %x %x %x %x \n",
 		pstapriv->asoc_sta_count , hwaddr[0], hwaddr[1], hwaddr[2], hwaddr[3], hwaddr[4], hwaddr[5]));
 
 		init_addba_retry_timer(pstapriv->padapter, psta);
@@ -320,13 +315,13 @@ exit:
 }
 
 /*  using pstapriv->sta_hash_lock to protect */
-u32	rtw_free_stainfo(struct adapter *padapter , struct sta_info *psta)
+u32 rtw_free_stainfo(struct adapter *padapter , struct sta_info *psta)
 {
 	int i;
-	_queue *pfree_sta_queue;
+	struct __queue *pfree_sta_queue;
 	struct recv_reorder_ctrl *preorder_ctrl;
-	struct	sta_xmit_priv	*pstaxmitpriv;
-	struct	xmit_priv	*pxmitpriv = &padapter->xmitpriv;
+	struct	sta_xmit_priv *pstaxmitpriv;
+	struct	xmit_priv *pxmitpriv = &padapter->xmitpriv;
 	struct	sta_priv *pstapriv = &padapter->stapriv;
 	struct hw_xmit *phwxmit;
 
@@ -391,7 +386,7 @@ u32	rtw_free_stainfo(struct adapter *padapter , struct sta_info *psta)
 	spin_unlock_bh(&pxmitpriv->lock);
 
 	list_del_init(&psta->hash_list);
-	RT_TRACE(_module_rtl871x_sta_mgt_c_, _drv_err_, ("\n free number_%d stainfo  with hwaddr = 0x%.2x 0x%.2x 0x%.2x 0x%.2x 0x%.2x 0x%.2x  \n", pstapriv->asoc_sta_count , psta->hwaddr[0], psta->hwaddr[1], psta->hwaddr[2], psta->hwaddr[3], psta->hwaddr[4], psta->hwaddr[5]));
+	RT_TRACE(_module_rtl871x_sta_mgt_c_, _drv_err_, ("\n free number_%d stainfo  with hwaddr = 0x%.2x 0x%.2x 0x%.2x 0x%.2x 0x%.2x 0x%.2x \n", pstapriv->asoc_sta_count , psta->hwaddr[0], psta->hwaddr[1], psta->hwaddr[2], psta->hwaddr[3], psta->hwaddr[4], psta->hwaddr[5]));
 	pstapriv->asoc_sta_count --;
 
 
@@ -404,10 +399,10 @@ u32	rtw_free_stainfo(struct adapter *padapter , struct sta_info *psta)
 	/* for A-MPDU Rx reordering buffer control, cancel reordering_ctrl_timer */
 	for (i = 0; i < 16 ; i++)
 	{
-		_list	*phead, *plist;
+		struct list_head	*phead, *plist;
 		union recv_frame *prframe;
-		_queue *ppending_recvframe_queue;
-		_queue *pfree_recv_queue = &padapter->recvpriv.free_recv_queue;
+		struct __queue *ppending_recvframe_queue;
+		struct __queue *pfree_recv_queue = &padapter->recvpriv.free_recv_queue;
 
 		preorder_ctrl = &psta->recvreorder_ctrl[i];
 
@@ -489,7 +484,7 @@ exit:
 /*  free all stainfo which in sta_hash[all] */
 void rtw_free_all_stainfo(struct adapter *padapter)
 {
-	_list	*plist, *phead;
+	struct list_head	*plist, *phead;
 	s32	index;
 	struct sta_info *psta = NULL;
 	struct	sta_priv *pstapriv = &padapter->stapriv;
@@ -523,13 +518,13 @@ void rtw_free_all_stainfo(struct adapter *padapter)
 /* any station allocated can be searched by hash list */
 struct sta_info *rtw_get_stainfo(struct sta_priv *pstapriv, u8 *hwaddr)
 {
-	_list	*plist, *phead;
+	struct list_head	*plist, *phead;
 	struct sta_info *psta = NULL;
-	u32	index;
+	u32 index;
 	u8 *addr;
 	u8 bc_addr[ETH_ALEN] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
 
-	if (hwaddr ==NULL)
+	if (hwaddr == NULL)
 		return NULL;
 
 	if (IS_MCAST(hwaddr))
@@ -558,7 +553,7 @@ struct sta_info *rtw_get_stainfo(struct sta_priv *pstapriv, u8 *hwaddr)
 		{ /*  if found the matched address */
 			break;
 		}
-		psta =NULL;
+		psta = NULL;
 		plist = get_next(plist);
 	}
 
@@ -566,20 +561,20 @@ struct sta_info *rtw_get_stainfo(struct sta_priv *pstapriv, u8 *hwaddr)
 	return psta;
 }
 
-u32 rtw_init_bcmc_stainfo(struct adapter * padapter)
+u32 rtw_init_bcmc_stainfo(struct adapter *padapter)
 {
 
-	struct sta_info		*psta;
+	struct sta_info 	*psta;
 	struct tx_servq	*ptxservq;
 	u32 res = _SUCCESS;
 	NDIS_802_11_MAC_ADDRESS	bcast_addr = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
 
 	struct	sta_priv *pstapriv = &padapter->stapriv;
-	/* _queue	*pstapending = &padapter->xmitpriv.bm_pending; */
+	/* struct __queue	*pstapending = &padapter->xmitpriv.bm_pending; */
 
 	psta = rtw_alloc_stainfo(pstapriv, bcast_addr);
 
-	if (psta ==NULL){
+	if (psta == NULL) {
 		res = _FAIL;
 		RT_TRACE(_module_rtl871x_sta_mgt_c_, _drv_err_, ("rtw_alloc_stainfo fail"));
 		goto exit;
@@ -594,10 +589,10 @@ exit:
 }
 
 
-struct sta_info* rtw_get_bcmc_stainfo(struct adapter * padapter)
+struct sta_info* rtw_get_bcmc_stainfo(struct adapter *padapter)
 {
-	struct sta_info		*psta;
-	struct sta_priv		*pstapriv = &padapter->stapriv;
+	struct sta_info 	*psta;
+	struct sta_priv 	*pstapriv = &padapter->stapriv;
 	u8 bc_addr[ETH_ALEN] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
 
 	psta = rtw_get_stainfo(pstapriv, bc_addr);
@@ -607,12 +602,12 @@ struct sta_info* rtw_get_bcmc_stainfo(struct adapter * padapter)
 u8 rtw_access_ctrl(struct adapter *padapter, u8 *mac_addr)
 {
 	u8 res = true;
-	_list	*plist, *phead;
+	struct list_head	*plist, *phead;
 	struct rtw_wlan_acl_node *paclnode;
 	u8 match = false;
 	struct sta_priv *pstapriv = &padapter->stapriv;
 	struct wlan_acl_pool *pacl_list = &pstapriv->acl_list;
-	_queue	*pacl_node_q =&pacl_list->acl_node_q;
+	struct __queue	*pacl_node_q =&pacl_list->acl_node_q;
 
 	spin_lock_bh(&(pacl_node_q->lock));
 	phead = get_list_head(pacl_node_q);

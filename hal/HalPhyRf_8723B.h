@@ -30,33 +30,33 @@ void ConfigureTxpowerTrack_8723B(
 
 void DoIQK_8723B(
 	PDM_ODM_T	pDM_Odm,
-	u1Byte		DeltaThermalIndex,
-	u1Byte		ThermalValue,
-	u1Byte		Threshold
+	u8 DeltaThermalIndex,
+	u8 ThermalValue,
+	u8 Threshold
 	);
 
 void
 ODM_TxPwrTrackSetPwr_8723B(
 	PDM_ODM_T			pDM_Odm,
 	PWRTRACK_METHOD		Method,
-	u1Byte				RFPath,
-	u1Byte				ChannelMappedIndex
+	u8 		RFPath,
+	u8 		ChannelMappedIndex
 	);
 
 /* 1 7.	IQK */
 
 void
 PHY_IQCalibrate_8723B(
-	IN struct adapter *	Adapter,
-	IN bool	bReCovery,
-	IN bool	bRestore,
-	IN bool	Is2ant,
-	IN u1Byte	RF_Path);
+	struct adapter *Adapter,
+	bool	bReCovery,
+	bool	bRestore,
+	bool	Is2ant,
+	u8 RF_Path);
 
 void
 ODM_SetIQCbyRFpath(
-	IN PDM_ODM_T		pDM_Odm,
-    IN u4Byte RFpath
+	PDM_ODM_T		pDM_Odm,
+    u32 RFpath
 	);
 
 /*  */
@@ -64,37 +64,37 @@ ODM_SetIQCbyRFpath(
 /*  */
 void
 PHY_LCCalibrate_8723B(
-	IN PDM_ODM_T		pDM_Odm
+	PDM_ODM_T		pDM_Odm
 );
 
 /*  */
 /*  AP calibrate */
 /*  */
 void
-PHY_DigitalPredistortion_8723B(		IN	struct adapter *	pAdapter);
+PHY_DigitalPredistortion_8723B(struct adapter *padapter);
 
 
 void
 _PHY_SaveADDARegisters_8723B(
-	IN	struct adapter *	pAdapter,
-	IN	pu4Byte		ADDAReg,
-	IN	pu4Byte		ADDABackup,
-	IN	u4Byte		RegisterNum
+	struct adapter *padapter,
+	u32 *	ADDAReg,
+	u32 *	ADDABackup,
+	u32 	RegisterNum
 	);
 
 void
 _PHY_PathADDAOn_8723B(
-	IN	struct adapter *	pAdapter,
-	IN	pu4Byte		ADDAReg,
-	IN	bool		isPathAOn,
-	IN	bool		is2T
+	struct adapter *padapter,
+	u32 *	ADDAReg,
+	bool		isPathAOn,
+	bool		is2T
 	);
 
 void
 _PHY_MACSettingCalibration_8723B(
-	IN	struct adapter *	pAdapter,
-	IN	pu4Byte		MACReg,
-	IN	pu4Byte		MACBackup
+	struct adapter *padapter,
+	u32 *	MACReg,
+	u32 *	MACBackup
 	);
 
 #endif	/*  #ifndef __HAL_PHY_RF_8188E_H__ */

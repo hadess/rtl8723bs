@@ -17,11 +17,10 @@
 
 #include "rtl8192c_rf.h"
 
-int	PHY_RF6052_Config8723B(	IN	struct adapter *		Adapter	);
+int	PHY_RF6052_Config8723B(struct adapter *Adapter	);
 
 void
-PHY_RF6052SetBandwidth8723B(
-	IN	struct adapter *				Adapter,
-	IN	CHANNEL_WIDTH		Bandwidth);
+PHY_RF6052SetBandwidth8723B(struct adapter *Adapter,
+	enum CHANNEL_WIDTH		Bandwidth);
 
 #endif

@@ -27,7 +27,7 @@ static bool rtw_sdio_claim_host_needed(struct sdio_func *func)
 	return true;
 }
 
-inline void rtw_sdio_set_irq_thd(struct dvobj_priv *dvobj, void * thd_hdl)
+inline void rtw_sdio_set_irq_thd(struct dvobj_priv *dvobj, void *thd_hdl)
 {
 	PSDIO_DATA sdio_data = &dvobj->intf_data;
 
@@ -36,7 +36,7 @@ inline void rtw_sdio_set_irq_thd(struct dvobj_priv *dvobj, void * thd_hdl)
 
 u8 sd_f0_read8(struct intf_hdl *pintfhdl, u32 addr, s32 *err)
 {
-	struct adapter * padapter;
+	struct adapter *padapter;
 	struct dvobj_priv *psdiodev;
 	PSDIO_DATA psdio;
 
@@ -48,7 +48,7 @@ u8 sd_f0_read8(struct intf_hdl *pintfhdl, u32 addr, s32 *err)
 	psdiodev = pintfhdl->pintf_dev;
 	psdio = &psdiodev->intf_data;
 
-	if (padapter->bSurpriseRemoved){
+	if (padapter->bSurpriseRemoved) {
 		/* DBG_871X(" %s (padapter->bSurpriseRemoved ||adapter->pwrctrlpriv.pnp_bstop_trx)!!!\n", __func__); */
 		return v;
 	}
@@ -68,12 +68,12 @@ u8 sd_f0_read8(struct intf_hdl *pintfhdl, u32 addr, s32 *err)
 
 /*
  * Return:
- *	0		Success
- *	others	Fail
+ *0		Success
+ *others	Fail
  */
 s32 _sd_cmd52_read(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, u8 *pdata)
 {
-	struct adapter * padapter;
+	struct adapter *padapter;
 	struct dvobj_priv *psdiodev;
 	PSDIO_DATA psdio;
 
@@ -84,7 +84,7 @@ s32 _sd_cmd52_read(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, u8 *pdata)
 	psdiodev = pintfhdl->pintf_dev;
 	psdio = &psdiodev->intf_data;
 
-	if (padapter->bSurpriseRemoved){
+	if (padapter->bSurpriseRemoved) {
 		/* DBG_871X(" %s (padapter->bSurpriseRemoved ||adapter->pwrctrlpriv.pnp_bstop_trx)!!!\n", __func__); */
 		return err;
 	}
@@ -103,12 +103,12 @@ s32 _sd_cmd52_read(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, u8 *pdata)
 
 /*
  * Return:
- *	0		Success
- *	others	Fail
+ *0		Success
+ *others	Fail
  */
 s32 sd_cmd52_read(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, u8 *pdata)
 {
-	struct adapter * padapter;
+	struct adapter *padapter;
 	struct dvobj_priv *psdiodev;
 	PSDIO_DATA psdio;
 
@@ -120,7 +120,7 @@ s32 sd_cmd52_read(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, u8 *pdata)
 	psdiodev = pintfhdl->pintf_dev;
 	psdio = &psdiodev->intf_data;
 
-	if (padapter->bSurpriseRemoved){
+	if (padapter->bSurpriseRemoved) {
 		/* DBG_871X(" %s (padapter->bSurpriseRemoved ||adapter->pwrctrlpriv.pnp_bstop_trx)!!!\n", __func__); */
 		return err;
 	}
@@ -138,12 +138,12 @@ s32 sd_cmd52_read(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, u8 *pdata)
 
 /*
  * Return:
- *	0		Success
- *	others	Fail
+ *0		Success
+ *others	Fail
  */
 s32 _sd_cmd52_write(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, u8 *pdata)
 {
-	struct adapter * padapter;
+	struct adapter *padapter;
 	struct dvobj_priv *psdiodev;
 	PSDIO_DATA psdio;
 
@@ -154,7 +154,7 @@ s32 _sd_cmd52_write(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, u8 *pdata)
 	psdiodev = pintfhdl->pintf_dev;
 	psdio = &psdiodev->intf_data;
 
-	if (padapter->bSurpriseRemoved){
+	if (padapter->bSurpriseRemoved) {
 		/* DBG_871X(" %s (padapter->bSurpriseRemoved ||adapter->pwrctrlpriv.pnp_bstop_trx)!!!\n", __func__); */
 		return err;
 	}
@@ -173,12 +173,12 @@ s32 _sd_cmd52_write(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, u8 *pdata)
 
 /*
  * Return:
- *	0		Success
- *	others	Fail
+ *0		Success
+ *others	Fail
  */
 s32 sd_cmd52_write(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, u8 *pdata)
 {
-	struct adapter * padapter;
+	struct adapter *padapter;
 	struct dvobj_priv *psdiodev;
 	PSDIO_DATA psdio;
 
@@ -190,7 +190,7 @@ s32 sd_cmd52_write(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, u8 *pdata)
 	psdiodev = pintfhdl->pintf_dev;
 	psdio = &psdiodev->intf_data;
 
-	if (padapter->bSurpriseRemoved){
+	if (padapter->bSurpriseRemoved) {
 		/* DBG_871X(" %s (padapter->bSurpriseRemoved ||adapter->pwrctrlpriv.pnp_bstop_trx)!!!\n", __func__); */
 		return err;
 	}
@@ -208,7 +208,7 @@ s32 sd_cmd52_write(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, u8 *pdata)
 
 u8 sd_read8(struct intf_hdl *pintfhdl, u32 addr, s32 *err)
 {
-	struct adapter * padapter;
+	struct adapter *padapter;
 	struct dvobj_priv *psdiodev;
 	PSDIO_DATA psdio;
 
@@ -220,7 +220,7 @@ u8 sd_read8(struct intf_hdl *pintfhdl, u32 addr, s32 *err)
 	psdiodev = pintfhdl->pintf_dev;
 	psdio = &psdiodev->intf_data;
 
-	if (padapter->bSurpriseRemoved){
+	if (padapter->bSurpriseRemoved) {
 		/* DBG_871X(" %s (padapter->bSurpriseRemoved ||adapter->pwrctrlpriv.pnp_bstop_trx)!!!\n", __func__); */
 		return v;
 	}
@@ -240,7 +240,7 @@ u8 sd_read8(struct intf_hdl *pintfhdl, u32 addr, s32 *err)
 
 u32 sd_read32(struct intf_hdl *pintfhdl, u32 addr, s32 *err)
 {
-	struct adapter * padapter;
+	struct adapter *padapter;
 	struct dvobj_priv *psdiodev;
 	PSDIO_DATA psdio;
 	u32 v = 0;
@@ -251,7 +251,7 @@ u32 sd_read32(struct intf_hdl *pintfhdl, u32 addr, s32 *err)
 	psdiodev = pintfhdl->pintf_dev;
 	psdio = &psdiodev->intf_data;
 
-	if (padapter->bSurpriseRemoved){
+	if (padapter->bSurpriseRemoved) {
 		/* DBG_871X(" %s (padapter->bSurpriseRemoved ||adapter->pwrctrlpriv.pnp_bstop_trx)!!!\n", __func__); */
 		return v;
 	}
@@ -278,16 +278,16 @@ u32 sd_read32(struct intf_hdl *pintfhdl, u32 addr, s32 *err)
 			v = sdio_readl(func, addr, err);
 			if (claim_needed) sdio_release_host(func);
 
-			if (*err == 0){
+			if (*err == 0) {
 				rtw_reset_continual_io_error(psdiodev);
 				break;
 			} else {
 				DBG_871X(KERN_ERR "%s: (%d) addr = 0x%05x, val = 0x%x, try_cnt =%d\n", __func__, *err, addr, v, i);
-				if ((-ESHUTDOWN == *err) || (-ENODEV == *err)){
+				if ((-ESHUTDOWN == *err) || (-ENODEV == *err)) {
 					padapter->bSurpriseRemoved = true;
 				}
 
-				if (rtw_inc_and_chk_continual_io_error(psdiodev) == true){
+				if (rtw_inc_and_chk_continual_io_error(psdiodev) == true) {
 					padapter->bSurpriseRemoved = true;
 					break;
 				}
@@ -305,7 +305,7 @@ u32 sd_read32(struct intf_hdl *pintfhdl, u32 addr, s32 *err)
 
 void sd_write8(struct intf_hdl *pintfhdl, u32 addr, u8 v, s32 *err)
 {
-	struct adapter * padapter;
+	struct adapter *padapter;
 	struct dvobj_priv *psdiodev;
 	PSDIO_DATA psdio;
 	struct sdio_func *func;
@@ -315,7 +315,7 @@ void sd_write8(struct intf_hdl *pintfhdl, u32 addr, u8 v, s32 *err)
 	psdiodev = pintfhdl->pintf_dev;
 	psdio = &psdiodev->intf_data;
 
-	if (padapter->bSurpriseRemoved){
+	if (padapter->bSurpriseRemoved) {
 		/* DBG_871X(" %s (padapter->bSurpriseRemoved ||adapter->pwrctrlpriv.pnp_bstop_trx)!!!\n", __func__); */
 		return ;
 	}
@@ -334,7 +334,7 @@ void sd_write8(struct intf_hdl *pintfhdl, u32 addr, u8 v, s32 *err)
 
 void sd_write32(struct intf_hdl *pintfhdl, u32 addr, u32 v, s32 *err)
 {
-	struct adapter * padapter;
+	struct adapter *padapter;
 	struct dvobj_priv *psdiodev;
 	PSDIO_DATA psdio;
 	struct sdio_func *func;
@@ -344,7 +344,7 @@ void sd_write32(struct intf_hdl *pintfhdl, u32 addr, u32 v, s32 *err)
 	psdiodev = pintfhdl->pintf_dev;
 	psdio = &psdiodev->intf_data;
 
-	if (padapter->bSurpriseRemoved){
+	if (padapter->bSurpriseRemoved) {
 		/* DBG_871X(" %s (padapter->bSurpriseRemoved ||adapter->pwrctrlpriv.pnp_bstop_trx)!!!\n", __func__); */
 		return ;
 	}
@@ -370,16 +370,16 @@ void sd_write32(struct intf_hdl *pintfhdl, u32 addr, u32 v, s32 *err)
 			if (claim_needed) sdio_claim_host(func);
 			sdio_writel(func, v, addr, err);
 			if (claim_needed) sdio_release_host(func);
-			if (*err == 0){
+			if (*err == 0) {
 				rtw_reset_continual_io_error(psdiodev);
 				break;
 			} else {
 				DBG_871X(KERN_ERR "%s: (%d) addr = 0x%05x, val = 0x%x, try_cnt =%d\n", __func__, *err, addr, v, i);
-				if ((-ESHUTDOWN == *err) || (-ENODEV == *err)){
+				if ((-ESHUTDOWN == *err) || (-ENODEV == *err)) {
 					padapter->bSurpriseRemoved = true;
 				}
 
-				if (rtw_inc_and_chk_continual_io_error(psdiodev) == true){
+				if (rtw_inc_and_chk_continual_io_error(psdiodev) == true) {
 					padapter->bSurpriseRemoved = true;
 					break;
 				}
@@ -399,18 +399,18 @@ void sd_write32(struct intf_hdl *pintfhdl, u32 addr, u32 v, s32 *err)
  * in SDIO ISR(host had been claimed).
  *
  * Parameters:
- *	psdio	pointer of SDIO_DATA
- *	addr	address to read
- *	cnt		amount to read
- *	pdata	pointer to put data, this should be a "DMA:able scratch buffer"!
+ *psdio	pointer of SDIO_DATA
+ *addr	address to read
+ *cnt		amount to read
+ *pdata	pointer to put data, this should be a "DMA:able scratch buffer"!
  *
  * Return:
- *	0		Success
- *	others	Fail
+ *0		Success
+ *others	Fail
  */
 s32 _sd_read(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, void *pdata)
 {
-	struct adapter * padapter;
+	struct adapter *padapter;
 	struct dvobj_priv *psdiodev;
 	PSDIO_DATA psdio;
 
@@ -421,7 +421,7 @@ s32 _sd_read(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, void *pdata)
 	psdiodev = pintfhdl->pintf_dev;
 	psdio = &psdiodev->intf_data;
 
-	if (padapter->bSurpriseRemoved){
+	if (padapter->bSurpriseRemoved) {
 		/* DBG_871X(" %s (padapter->bSurpriseRemoved ||adapter->pwrctrlpriv.pnp_bstop_trx)!!!\n", __func__); */
 		return err;
 	}
@@ -456,18 +456,18 @@ s32 _sd_read(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, void *pdata)
  * Use CMD53 to read data from SDIO device.
  *
  * Parameters:
- *	psdio	pointer of SDIO_DATA
- *	addr	address to read
- *	cnt		amount to read
- *	pdata	pointer to put data, this should be a "DMA:able scratch buffer"!
+ *psdio	pointer of SDIO_DATA
+ *addr	address to read
+ *cnt		amount to read
+ *pdata	pointer to put data, this should be a "DMA:able scratch buffer"!
  *
  * Return:
- *	0		Success
- *	others	Fail
+ *0		Success
+ *others	Fail
  */
 s32 sd_read(struct intf_hdl * pintfhdl, u32 addr, u32 cnt, void *pdata)
 {
-	struct adapter * padapter;
+	struct adapter *padapter;
 	struct dvobj_priv *psdiodev;
 	PSDIO_DATA psdio;
 
@@ -479,7 +479,7 @@ s32 sd_read(struct intf_hdl * pintfhdl, u32 addr, u32 cnt, void *pdata)
 	psdiodev = pintfhdl->pintf_dev;
 	psdio = &psdiodev->intf_data;
 
-	if (padapter->bSurpriseRemoved){
+	if (padapter->bSurpriseRemoved) {
 		/* DBG_871X(" %s (padapter->bSurpriseRemoved ||adapter->pwrctrlpriv.pnp_bstop_trx)!!!\n", __func__); */
 		return err;
 	}
@@ -500,18 +500,18 @@ s32 sd_read(struct intf_hdl * pintfhdl, u32 addr, u32 cnt, void *pdata)
  * in SDIO ISR(host had been claimed).
  *
  * Parameters:
- *	psdio	pointer of SDIO_DATA
- *	addr	address to write
- *	cnt		amount to write
- *	pdata	data pointer, this should be a "DMA:able scratch buffer"!
+ *psdio	pointer of SDIO_DATA
+ *addr	address to write
+ *cnt		amount to write
+ *pdata	data pointer, this should be a "DMA:able scratch buffer"!
  *
  * Return:
- *	0		Success
- *	others	Fail
+ *0		Success
+ *others	Fail
  */
 s32 _sd_write(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, void *pdata)
 {
-	struct adapter * padapter;
+	struct adapter *padapter;
 	struct dvobj_priv *psdiodev;
 	PSDIO_DATA psdio;
 
@@ -523,7 +523,7 @@ s32 _sd_write(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, void *pdata)
 	psdiodev = pintfhdl->pintf_dev;
 	psdio = &psdiodev->intf_data;
 
-	if (padapter->bSurpriseRemoved){
+	if (padapter->bSurpriseRemoved) {
 		/* DBG_871X(" %s (padapter->bSurpriseRemoved ||adapter->pwrctrlpriv.pnp_bstop_trx)!!!\n", __func__); */
 		return err;
 	}
@@ -571,7 +571,7 @@ s32 _sd_write(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, void *pdata)
  */
 s32 sd_write(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, void *pdata)
 {
-	struct adapter * padapter;
+	struct adapter *padapter;
 	struct dvobj_priv *psdiodev;
 	PSDIO_DATA psdio;
 	struct sdio_func *func;
@@ -582,7 +582,7 @@ s32 sd_write(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, void *pdata)
 	psdiodev = pintfhdl->pintf_dev;
 	psdio = &psdiodev->intf_data;
 
-	if (padapter->bSurpriseRemoved){
+	if (padapter->bSurpriseRemoved) {
 		/* DBG_871X(" %s (padapter->bSurpriseRemoved ||adapter->pwrctrlpriv.pnp_bstop_trx)!!!\n", __func__); */
 		return err;
 	}

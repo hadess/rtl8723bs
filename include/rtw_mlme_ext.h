@@ -251,26 +251,26 @@ typedef enum _RT_CHANNEL_DOMAIN_5G
 
 typedef struct _RT_CHANNEL_PLAN
 {
-	unsigned char	Channel[MAX_CHANNEL_NUM];
-	unsigned char	Len;
+	unsigned char Channel[MAX_CHANNEL_NUM];
+	unsigned char Len;
 }RT_CHANNEL_PLAN, *PRT_CHANNEL_PLAN;
 
 typedef struct _RT_CHANNEL_PLAN_2G
 {
-	unsigned char	Channel[MAX_CHANNEL_NUM_2G];
-	unsigned char	Len;
+	unsigned char Channel[MAX_CHANNEL_NUM_2G];
+	unsigned char Len;
 }RT_CHANNEL_PLAN_2G, *PRT_CHANNEL_PLAN_2G;
 
 typedef struct _RT_CHANNEL_PLAN_5G
 {
-	unsigned char	Channel[MAX_CHANNEL_NUM_5G];
-	unsigned char	Len;
+	unsigned char Channel[MAX_CHANNEL_NUM_5G];
+	unsigned char Len;
 }RT_CHANNEL_PLAN_5G, *PRT_CHANNEL_PLAN_5G;
 
 typedef struct _RT_CHANNEL_PLAN_MAP
 {
-	unsigned char	Index2G;
-	unsigned char	Index5G;
+	unsigned char Index2G;
+	unsigned char Index5G;
 }RT_CHANNEL_PLAN_MAP, *PRT_CHANNEL_PLAN_MAP;
 
 enum Associated_AP
@@ -340,7 +340,7 @@ struct	ss_res
 	int	scan_mode;
 	u8 ssid_num;
 	u8 ch_num;
-	NDIS_802_11_SSID ssid[RTW_SSID_SCAN_AMOUNT];
+	struct ndis_802_11_ssid ssid[RTW_SSID_SCAN_AMOUNT];
 	struct rtw_ieee80211_channel ch[RTW_CHANNEL_SCAN_AMOUNT];
 };
 
@@ -365,10 +365,10 @@ struct	ss_res
 
 struct FW_Sta_Info
 {
-	struct sta_info	*psta;
-	u32	status;
-	u32	rx_pkt;
-	u32	retry;
+	struct sta_info *psta;
+	u32 status;
+	u32 rx_pkt;
+	u32 retry;
 	NDIS_802_11_RATES_EX  SupportedRates;
 };
 
@@ -392,55 +392,55 @@ struct FW_Sta_Info
  */
 struct mlme_ext_info
 {
-	u32	state;
-	u32	reauth_count;
-	u32	reassoc_count;
-	u32	link_count;
-	u32	auth_seq;
-	u32	auth_algo;	/*  802.11 auth, could be open, shared, auto */
-	u32	authModeToggle;
-	u32	enc_algo;/* encrypt algorithm; */
-	u32	key_index;	/*  this is only valid for legendary wep, 0~3 for key id. */
-	u32	iv;
-	u8	chg_txt[128];
-	u16	aid;
-	u16	bcn_interval;
-	u16	capability;
-	u8	assoc_AP_vendor;
-	u8	slotTime;
-	u8	preamble_mode;
-	u8	WMM_enable;
-	u8	ERP_enable;
-	u8	ERP_IE;
-	u8	HT_enable;
-	u8	HT_caps_enable;
-	u8	HT_info_enable;
-	u8	HT_protection;
-	u8	turboMode_cts2self;
-	u8	turboMode_rtsen;
-	u8	SM_PS;
-	u8	agg_enable_bitmap;
-	u8	ADDBA_retry_count;
-	u8	candidate_tid_bitmap;
-	u8	dialogToken;
+	u32 state;
+	u32 reauth_count;
+	u32 reassoc_count;
+	u32 link_count;
+	u32 auth_seq;
+	u32 auth_algo;	/*  802.11 auth, could be open, shared, auto */
+	u32 authModeToggle;
+	u32 enc_algo;/* encrypt algorithm; */
+	u32 key_index;	/*  this is only valid for legendary wep, 0~3 for key id. */
+	u32 iv;
+	u8 chg_txt[128];
+	u16 aid;
+	u16 bcn_interval;
+	u16 capability;
+	u8 assoc_AP_vendor;
+	u8 slotTime;
+	u8 preamble_mode;
+	u8 WMM_enable;
+	u8 ERP_enable;
+	u8 ERP_IE;
+	u8 HT_enable;
+	u8 HT_caps_enable;
+	u8 HT_info_enable;
+	u8 HT_protection;
+	u8 turboMode_cts2self;
+	u8 turboMode_rtsen;
+	u8 SM_PS;
+	u8 agg_enable_bitmap;
+	u8 ADDBA_retry_count;
+	u8 candidate_tid_bitmap;
+	u8 dialogToken;
 	/*  Accept ADDBA Request */
 	bool bAcceptAddbaReq;
-	u8	bwmode_updated;
-	u8	hidden_ssid_mode;
-	u8	VHT_enable;
+	u8 bwmode_updated;
+	u8 hidden_ssid_mode;
+	u8 VHT_enable;
 
 	struct ADDBA_request		ADDBA_req;
 	struct WMM_para_element	WMM_param;
 	struct HT_caps_element	HT_caps;
 	struct HT_info_element		HT_info;
-	WLAN_BSSID_EX			network;/* join network or bss_network, if in ap mode, it is the same to cur_network.network */
+	struct wlan_bssid_ex			network;/* join network or bss_network, if in ap mode, it is the same to cur_network.network */
 	struct FW_Sta_Info		FW_sta_info[NUM_STA];
 };
 
 /*  The channel information about this channel including joining, scanning, and power constraints. */
 typedef struct _RT_CHANNEL_INFO
 {
-	u8				ChannelNum;		/*  The channel number. */
+	u8 		ChannelNum;		/*  The channel number. */
 	RT_SCAN_TYPE	ScanType;		/*  Scan type such as passive or active scan. */
 }RT_CHANNEL_INFO, *PRT_CHANNEL_INFO;
 
@@ -483,39 +483,39 @@ struct p2p_oper_class_map {
 struct mlme_ext_priv
 {
 	struct adapter	*padapter;
-	u8	mlmeext_init;
+	u8 mlmeext_init;
 	atomic_t		event_seq;
-	u16	mgnt_seq;
-	u16	sa_query_seq;
+	u16 mgnt_seq;
+	u16 sa_query_seq;
 	u64 mgnt_80211w_IPN;
 	u64 mgnt_80211w_IPN_rx;
-	/* struct fw_priv	fwpriv; */
+	/* struct fw_priv fwpriv; */
 
-	unsigned char	cur_channel;
-	unsigned char	cur_bwmode;
-	unsigned char	cur_ch_offset;/* PRIME_CHNL_OFFSET */
-	unsigned char	cur_wireless_mode;	/*  NETWORK_TYPE */
+	unsigned char cur_channel;
+	unsigned char cur_bwmode;
+	unsigned char cur_ch_offset;/* PRIME_CHNL_OFFSET */
+	unsigned char cur_wireless_mode;	/*  NETWORK_TYPE */
 
-	unsigned char	max_chan_nums;
+	unsigned char max_chan_nums;
 	RT_CHANNEL_INFO		channel_set[MAX_CHANNEL_NUM];
 	struct p2p_channels channel_list;
-	unsigned char	basicrate[NumRates];
-	unsigned char	datarate[NumRates];
+	unsigned char basicrate[NumRates];
+	unsigned char datarate[NumRates];
 	unsigned char default_supported_mcs_set[16];
 
 	struct ss_res		sitesurvey_res;
-	struct mlme_ext_info	mlmext_info;/* for sta/adhoc mode, including current scanning/connecting/connected related info. */
+	struct mlme_ext_info mlmext_info;/* for sta/adhoc mode, including current scanning/connecting/connected related info. */
                                                      /* for ap mode, network includes ap's cap_info */
 	_timer		survey_timer;
 	_timer		link_timer;
 	_timer		sa_query_timer;
 	/* _timer		ADDBA_timer; */
-	u16			chan_scan_time;
+	u16 		chan_scan_time;
 	unsigned long last_scan_time;
-	u8	scan_abort;
-	u8	tx_rate; /*  TXRATE when USERATE is set. */
+	u8 scan_abort;
+	u8 tx_rate; /*  TXRATE when USERATE is set. */
 
-	u32	retry; /* retry for issue probereq */
+	u32 retry; /* retry for issue probereq */
 
 	u64 TSFValue;
 
@@ -533,7 +533,7 @@ struct mlme_ext_priv
 
 	/* recv_decache check for Action_public frame */
 	u8 action_public_dialog_token;
-	u16	 action_public_rxseq;
+	u16  action_public_rxseq;
 
 	u8 active_keep_alive_check;
 #ifdef DBG_FIXED_CHAN
@@ -542,15 +542,15 @@ struct mlme_ext_priv
 
 };
 
-void init_mlme_default_rate_set(struct adapter * padapter);
-int init_mlme_ext_priv(struct adapter * padapter);
+void init_mlme_default_rate_set(struct adapter *padapter);
+int init_mlme_ext_priv(struct adapter *padapter);
 int init_hw_mlme_ext(struct adapter *padapter);
 void free_mlme_ext_priv (struct mlme_ext_priv *pmlmeext);
 extern void init_mlme_ext_timer(struct adapter *padapter);
 extern void init_addba_retry_timer(struct adapter *padapter, struct sta_info *psta);
 extern struct xmit_frame *alloc_mgtxmitframe(struct xmit_priv *pxmitpriv);
 
-/* void fill_fwpriv(struct adapter * padapter, struct fw_priv *pfwpriv); */
+/* void fill_fwpriv(struct adapter *padapter, struct fw_priv *pfwpriv); */
 
 unsigned char networktype_to_raid_ex(struct adapter *adapter, struct sta_info *psta);
 
@@ -571,7 +571,7 @@ u8 rtw_get_oper_bw(struct adapter *adapter);
 void rtw_set_oper_bw(struct adapter *adapter, u8 bw);
 u8 rtw_get_oper_choffset(struct adapter *adapter);
 void rtw_set_oper_choffset(struct adapter *adapter, u8 offset);
-u8	rtw_get_center_ch(u8 channel, u8 chnl_bw, u8 chnl_offset);
+u8 rtw_get_center_ch(u8 channel, u8 chnl_bw, u8 chnl_offset);
 unsigned long rtw_get_on_cur_ch_time(struct adapter *adapter);
 
 void set_channel_bwmode(struct adapter *padapter, unsigned char channel, unsigned char channel_offset, unsigned short bwmode);
@@ -601,11 +601,11 @@ int allocate_fw_sta_entry(struct adapter *padapter);
 void flush_all_cam_entry(struct adapter *padapter);
 
 void site_survey(struct adapter *padapter);
-u8 collect_bss_info(struct adapter *padapter, union recv_frame *precv_frame, WLAN_BSSID_EX *bssid);
-void update_network(WLAN_BSSID_EX *dst, WLAN_BSSID_EX *src, struct adapter * padapter, bool update_ie);
+u8 collect_bss_info(struct adapter *padapter, union recv_frame *precv_frame, struct wlan_bssid_ex *bssid);
+void update_network(struct wlan_bssid_ex *dst, struct wlan_bssid_ex *src, struct adapter *padapter, bool update_ie);
 
-u8* get_my_bssid(WLAN_BSSID_EX *pnetwork);
-u16 get_beacon_interval(WLAN_BSSID_EX *bss);
+u8 *get_my_bssid(struct wlan_bssid_ex *pnetwork);
+u16 get_beacon_interval(struct wlan_bssid_ex *bss);
 
 int is_client_associated_to_ap(struct adapter *padapter);
 int is_client_associated_to_ibss(struct adapter *padapter);
@@ -613,24 +613,24 @@ int is_IBSS_empty(struct adapter *padapter);
 
 unsigned char check_assoc_AP(u8 *pframe, uint len);
 
-int WMM_param_handler(struct adapter *padapter, PNDIS_802_11_VARIABLE_IEs	pIE);
+int WMM_param_handler(struct adapter *padapter, struct ndis_80211_var_ie *	pIE);
 void WMMOnAssocRsp(struct adapter *padapter);
 
-void HT_caps_handler(struct adapter *padapter, PNDIS_802_11_VARIABLE_IEs pIE);
-void HT_info_handler(struct adapter *padapter, PNDIS_802_11_VARIABLE_IEs pIE);
+void HT_caps_handler(struct adapter *padapter, struct ndis_80211_var_ie * pIE);
+void HT_info_handler(struct adapter *padapter, struct ndis_80211_var_ie * pIE);
 void HTOnAssocRsp(struct adapter *padapter);
 
-void ERP_IE_handler(struct adapter *padapter, PNDIS_802_11_VARIABLE_IEs pIE);
+void ERP_IE_handler(struct adapter *padapter, struct ndis_80211_var_ie * pIE);
 void VCS_update(struct adapter *padapter, struct sta_info *psta);
-void	update_ldpc_stbc_cap(struct sta_info *psta);
+void update_ldpc_stbc_cap(struct sta_info *psta);
 
 void update_beacon_info(struct adapter *padapter, u8 *pframe, uint len, struct sta_info *psta);
 int rtw_check_bcn_info(struct adapter *Adapter, u8 *pframe, u32 packet_len);
 void update_IOT_info(struct adapter *padapter);
 void update_capinfo(struct adapter * Adapter, u16 updateCap);
-void update_wireless_mode(struct adapter * padapter);
+void update_wireless_mode(struct adapter *padapter);
 void update_sta_basic_rate(struct sta_info *psta, u8 wireless_mode);
-int update_sta_support_rate(struct adapter *padapter, u8* pvar_ie, uint var_ie_len, int cam_idx);
+int update_sta_support_rate(struct adapter *padapter, u8 *pvar_ie, uint var_ie_len, int cam_idx);
 
 /* for sta/adhoc mode */
 void update_sta_info(struct adapter *padapter, struct sta_info *psta);
@@ -660,7 +660,7 @@ bool rtw_port_switch_chk(struct adapter *adapter);
 void report_wmm_edca_update(struct adapter *padapter);
 
 void beacon_timing_control(struct adapter *padapter);
-u8 chk_bmc_sleepq_cmd(struct adapter * padapter);
+u8 chk_bmc_sleepq_cmd(struct adapter *padapter);
 extern u8 set_tx_beacon_cmd(struct adapter *padapter);
 unsigned int setup_beacon_frame(struct adapter *padapter, unsigned char *beacon_frame);
 void update_mgnt_tx_rate(struct adapter *padapter, u8 rate);
@@ -675,10 +675,10 @@ void issue_probersp(struct adapter *padapter, unsigned char *da, u8 is_valid_p2p
 void issue_assocreq(struct adapter *padapter);
 void issue_asocrsp(struct adapter *padapter, unsigned short status, struct sta_info *pstat, int pkt_type);
 void issue_auth(struct adapter *padapter, struct sta_info *psta, unsigned short status);
-void issue_probereq(struct adapter *padapter, NDIS_802_11_SSID *pssid, u8 *da);
-s32 issue_probereq_ex(struct adapter *padapter, NDIS_802_11_SSID *pssid, u8* da, u8 ch, bool append_wps, int try_cnt, int wait_ms);
+void issue_probereq(struct adapter *padapter, struct ndis_802_11_ssid *pssid, u8 *da);
+s32 issue_probereq_ex(struct adapter *padapter, struct ndis_802_11_ssid *pssid, u8 *da, u8 ch, bool append_wps, int try_cnt, int wait_ms);
 int issue_nulldata(struct adapter *padapter, unsigned char *da, unsigned int power_mode, int try_cnt, int wait_ms);
-s32 issue_nulldata_in_interrupt(struct adapter * padapter, u8 *da);
+s32 issue_nulldata_in_interrupt(struct adapter *padapter, u8 *da);
 int issue_qos_nulldata(struct adapter *padapter, unsigned char *da, u16 tid, int try_cnt, int wait_ms);
 int issue_deauth(struct adapter *padapter, unsigned char *da, unsigned short reason);
 int issue_deauth_ex(struct adapter *padapter, u8 *da, unsigned short reason, int try_cnt, int wait_ms);
@@ -688,9 +688,9 @@ unsigned int send_delba(struct adapter *padapter, u8 initiator, u8 *addr);
 unsigned int send_beacon(struct adapter *padapter);
 
 void start_clnt_assoc(struct adapter *padapter);
-void start_clnt_auth(struct adapter * padapter);
-void start_clnt_join(struct adapter * padapter);
-void start_create_ibss(struct adapter * padapter);
+void start_clnt_auth(struct adapter *padapter);
+void start_clnt_join(struct adapter *padapter);
+void start_create_ibss(struct adapter *padapter);
 
 unsigned int OnAssocReq(struct adapter *padapter, union recv_frame *precv_frame);
 unsigned int OnAssocRsp(struct adapter *padapter, union recv_frame *precv_frame);
@@ -805,17 +805,12 @@ struct C2HEvent_Header
 	unsigned int len:16;
 	unsigned int ID:8;
 	unsigned int seq:8;
-
 #else
-
 	unsigned int seq:8;
 	unsigned int ID:8;
 	unsigned int len:16;
-
 #endif
-
 	unsigned int rsvd;
-
 };
 
 void rtw_dummy_event_callback(struct adapter *adapter , u8 *pbuf);

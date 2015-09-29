@@ -15,11 +15,13 @@
 #ifndef __ODM_TYPES_H__
 #define __ODM_TYPES_H__
 
+#include <drv_types.h>
+
 /*  Deifne HW endian support */
 #define	ODM_ENDIAN_BIG	0
 #define	ODM_ENDIAN_LITTLE	1
 
-#define GET_ODM(__pAdapter)	((PDM_ODM_T)(&((GET_HAL_DATA(__pAdapter))->odmpriv)))
+#define GET_ODM(__padapter)	((PDM_ODM_T)(&((GET_HAL_DATA(__padapter))->odmpriv)))
 
 typedef enum _HAL_STATUS{
 	HAL_STATUS_SUCCESS,
@@ -74,34 +76,14 @@ typedef enum _RT_SPINLOCK_TYPE{
 	RT_INDIC_SPINLOCK = 41,	/* protect indication */
 }RT_SPINLOCK_TYPE;
 
-	#include <drv_types.h>
-
-	#define u1Byte		u8
-	#define	pu1Byte		u8*
-
-	#define u2Byte		u16
-	#define	pu2Byte		u16*
-
-	#define u4Byte		u32
-	#define	pu4Byte		u32*
-
-	#define u8Byte		u64
-	#define	pu8Byte		u64*
-
-	#define s4Byte		s32
-	#define	ps4Byte		s32*
-
-	#define s8Byte		s64
-	#define	ps8Byte		s64*
-
 	#if defined(__LITTLE_ENDIAN)
 		#define	ODM_ENDIAN_TYPE			ODM_ENDIAN_LITTLE
-	#elif defined (__BIG_ENDIAN)
+	#else
 		#define	ODM_ENDIAN_TYPE			ODM_ENDIAN_BIG
 	#endif
 
 	typedef struct timer_list		RT_TIMER, *PRT_TIMER;
-	typedef  void *				RT_TIMER_CALL_BACK;
+	typedef  void *			RT_TIMER_CALL_BACK;
 	#define	STA_INFO_T			struct sta_info
 	#define	PSTA_INFO_T		struct sta_info *
 

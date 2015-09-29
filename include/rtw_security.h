@@ -40,14 +40,14 @@ const char *security_type_str(u8 value);
 #define RTW_KCK_LEN 16
 #define RTW_REPLAY_CTR_LEN 8
 
-typedef enum {
+enum {
 	ENCRYP_PROTOCOL_OPENSYS,   /* open system */
 	ENCRYP_PROTOCOL_WEP,       /* WEP */
 	ENCRYP_PROTOCOL_WPA,       /* WPA */
 	ENCRYP_PROTOCOL_WPA2,      /* WPA2 */
 	ENCRYP_PROTOCOL_WAPI,      /* WAPI: Not support in this version */
 	ENCRYP_PROTOCOL_MAX
-}ENCRYP_PROTOCOL_E;
+};
 
 
 #ifndef Ndis802_11AuthModeWPA2
@@ -74,9 +74,7 @@ struct {
   u8 TSC6;
   u8 TSC7;
 } _byte_;
-
 #else
-
 struct {
   u8 TSC7;
   u8 TSC6;
@@ -87,7 +85,6 @@ struct {
   u8 TSC1;
   u8 TSC0;
 } _byte_;
-
 #endif
 
 };
@@ -100,34 +97,34 @@ union Keytype {
 
 typedef struct _RT_PMKID_LIST
 {
-	u8						bUsed;
-	u8						Bssid[6];
-	u8						PMKID[16];
-	u8						SsidBuf[33];
-	u8*						ssid_octet;
-	u16						ssid_length;
+	u8 				bUsed;
+	u8 				Bssid[6];
+	u8 				PMKID[16];
+	u8 				SsidBuf[33];
+	u8*					ssid_octet;
+	u16 					ssid_length;
 } RT_PMKID_LIST, *PRT_PMKID_LIST;
 
 
 struct security_priv
 {
-	u32	  dot11AuthAlgrthm;		/*  802.11 auth, could be open, shared, 8021x and authswitch */
-	u32	  dot11PrivacyAlgrthm;	/*  This specify the privacy for shared auth. algorithm. */
+	u32   dot11AuthAlgrthm;		/*  802.11 auth, could be open, shared, 8021x and authswitch */
+	u32   dot11PrivacyAlgrthm;	/*  This specify the privacy for shared auth. algorithm. */
 
 	/* WEP */
-	u32	  dot11PrivacyKeyIndex;	/*  this is only valid for legendary wep, 0~3 for key id. (tx key index) */
+	u32   dot11PrivacyKeyIndex;	/*  this is only valid for legendary wep, 0~3 for key id. (tx key index) */
 	union Keytype dot11DefKey[4];	/*  this is only valid for def. key */
-	u32	dot11DefKeylen[4];
-	u8	key_mask; /* use to restore wep key after hal_init */
+	u32 dot11DefKeylen[4];
+	u8 key_mask; /* use to restore wep key after hal_init */
 
 	u32 dot118021XGrpPrivacy;	/*  This specify the privacy algthm. used for Grp key */
-	u32	dot118021XGrpKeyid;		/*  key id used for Grp Key (tx key index) */
+	u32 dot118021XGrpKeyid;		/*  key id used for Grp Key (tx key index) */
 	union Keytype	dot118021XGrpKey[BIP_MAX_KEYID];	/*  802.1x Group Key, for inx0 and inx1 */
 	union Keytype	dot118021XGrptxmickey[BIP_MAX_KEYID];
 	union Keytype	dot118021XGrprxmickey[BIP_MAX_KEYID];
 	union pn48		dot11Grptxpn;			/*  PN48 used for Grp Key xmit. */
 	union pn48		dot11Grprxpn;			/*  PN48 used for Grp Key recv. */
-	u32	dot11wBIPKeyid;						/*  key id used for BIP Key (tx key index) */
+	u32 dot11wBIPKeyid;						/*  key id used for BIP Key (tx key index) */
 	union Keytype	dot11wBIPKey[6];		/*  BIP Key, for index4 and index5 */
 	union pn48		dot11wBIPtxpn;			/*  PN48 used for Grp Key xmit. */
 	union pn48		dot11wBIPrxpn;			/*  PN48 used for Grp Key recv. */
@@ -144,15 +141,15 @@ struct security_priv
 	int wps_ie_len;
 
 
-	u8	binstallGrpkey;
+	u8 binstallGrpkey;
 #ifdef CONFIG_GTK_OL
-	u8	binstallKCK_KEK;
+	u8 binstallKCK_KEK;
 #endif /* CONFIG_GTK_OL */
-	u8	binstallBIPkey;
-	u8	busetkipkey;
+	u8 binstallBIPkey;
+	u8 busetkipkey;
 	/* _timer tkip_timer; */
-	u8	bcheck_grpkey;
-	u8	bgrpkey_handshake;
+	u8 bcheck_grpkey;
+	u8 bgrpkey_handshake;
 
 	s32	sw_encrypt;/* from registry_priv */
 	s32	sw_decrypt;/* from registry_priv */
@@ -161,12 +158,12 @@ struct security_priv
 
 
 	/* keeps the auth_type & enc_status from upper layer ioctl(wpa_supplicant or wzc) */
-	u32 ndisauthtype;	/*  NDIS_802_11_AUTHENTICATION_MODE */
+	u32 ndisauthtype;	/*  enum NDIS_802_11_AUTHENTICATION_MODE */
 	u32 ndisencryptstatus;	/*  NDIS_802_11_ENCRYPTION_STATUS */
 
-	WLAN_BSSID_EX sec_bss;  /* for joinbss (h2c buffer) usage */
+	struct wlan_bssid_ex sec_bss;  /* for joinbss (h2c buffer) usage */
 
-	NDIS_802_11_WEP ndiswep;
+	struct ndis_802_11_wep ndiswep;
 
 	u8 assoc_info[600];
 	u8 szofcapability[256]; /* for wpa2 usage */
@@ -177,13 +174,13 @@ struct security_priv
 
 	/* for tkip countermeasure */
 	unsigned long last_mic_err_time;
-	u8	btkip_countermeasure;
-	u8	btkip_wait_report;
+	u8 btkip_countermeasure;
+	u8 btkip_wait_report;
 	u32 btkip_countermeasure_time;
 
 	/*  For WPA2 Pre-Authentication. */
 	RT_PMKID_LIST		PMKIDList[NUM_PMKID_CACHE];	/*  Renamed from PreAuthKey[NUM_PRE_AUTH_KEY]. Annie, 2006-10-13. */
-	u8				PMKIDIndex;
+	u8 		PMKIDIndex;
 
 	u8 bWepDefaultKeyIdxSet;
 
@@ -435,7 +432,7 @@ void rtw_wep_encrypt(struct adapter *padapter, u8  *pxmitframe);
 u32 rtw_aes_decrypt(struct adapter *padapter, u8  *precvframe);
 u32 rtw_tkip_decrypt(struct adapter *padapter, u8  *precvframe);
 void rtw_wep_decrypt(struct adapter *padapter, u8  *precvframe);
-u32	rtw_BIP_verify(struct adapter *padapter, u8 *precvframe);
+u32 rtw_BIP_verify(struct adapter *padapter, u8 *precvframe);
 
 void rtw_sec_restore_wep_key(struct adapter *adapter);
 u8 rtw_handle_tkip_countermeasure(struct adapter * adapter, const char *caller);

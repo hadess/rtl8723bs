@@ -11,11 +11,6 @@
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
  * more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110, USA
- *
- *
  ******************************************************************************/
 
 #include <drv_types.h>
@@ -109,7 +104,7 @@ void rtw_odm_dbg_comp_msg(void *sel, struct adapter *adapter)
 	int i;
 
 	rtw_hal_get_def_var(adapter, HW_DEF_ODM_DBG_FLAG, &dbg_comp);
-	DBG_871X_SEL_NL(sel, "odm.DebugComponents = 0x%016llx \n", dbg_comp);
+	DBG_871X_SEL_NL(sel, "odm.DebugComponents = 0x%016llx\n", dbg_comp);
 	for (i = 0;i<RTW_ODM_COMP_MAX;i++) {
 		if (odm_comp_str[i])
 		DBG_871X_SEL_NL(sel, "%cBIT%-2d %s\n",
@@ -161,7 +156,7 @@ inline void rtw_odm_ability_set(struct adapter *adapter, u32 ability)
 
 void rtw_odm_adaptivity_parm_msg(void *sel, struct adapter *adapter)
 {
-	HAL_DATA_TYPE *pHalData = GET_HAL_DATA(adapter);
+	struct hal_com_data *pHalData = GET_HAL_DATA(adapter);
 	DM_ODM_T *odm = &pHalData->odmpriv;
 
 	DBG_871X_SEL_NL(sel, "%10s %16s %8s %10s %11s %14s\n"
@@ -179,7 +174,7 @@ void rtw_odm_adaptivity_parm_msg(void *sel, struct adapter *adapter)
 void rtw_odm_adaptivity_parm_set(struct adapter *adapter, s8 TH_L2H_ini, s8 TH_EDCCA_HL_diff,
 	s8 IGI_Base, bool ForceEDCCA, u8 AdapEn_RSSI, u8 IGI_LowerBound)
 {
-	HAL_DATA_TYPE *pHalData = GET_HAL_DATA(adapter);
+	struct hal_com_data *pHalData = GET_HAL_DATA(adapter);
 	DM_ODM_T *odm = &pHalData->odmpriv;
 
 	odm->TH_L2H_ini = TH_L2H_ini;
@@ -192,7 +187,7 @@ void rtw_odm_adaptivity_parm_set(struct adapter *adapter, s8 TH_L2H_ini, s8 TH_E
 
 void rtw_odm_get_perpkt_rssi(void *sel, struct adapter *adapter)
 {
-	HAL_DATA_TYPE *hal_data = GET_HAL_DATA(adapter);
+	struct hal_com_data *hal_data = GET_HAL_DATA(adapter);
 	DM_ODM_T *odm = &(hal_data->odmpriv);
 
 	DBG_871X_SEL_NL(sel,"RxRate = %s, RSSI_A = %d(%%), RSSI_B = %d(%%)\n",

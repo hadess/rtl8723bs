@@ -179,11 +179,10 @@ typedef enum _RT_MEDIA_STATUS {
 } RT_MEDIA_STATUS;
 
 #define MAX_DLFW_PAGE_SIZE			4096	/*  @ page : 4k bytes */
-typedef enum _FIRMWARE_SOURCE {
+enum FIRMWARE_SOURCE {
 	FW_SOURCE_IMG_FILE = 0,
 	FW_SOURCE_HEADER_FILE = 1,		/* from header file */
-} FIRMWARE_SOURCE, *PFIRMWARE_SOURCE;
-
+};
 
 /*  BK, BE, VI, VO, HCCA, MANAGEMENT, COMMAND, HIGH, BEACON. */
 /* define MAX_TX_QUEUE		9 */
@@ -204,34 +203,34 @@ void rtw_hal_data_deinit(struct adapter *padapter);
 
 void dump_chip_info(HAL_VERSION	ChipVersion);
 
-u8	/* return the final channel plan decision */
+u8 /* return the final channel plan decision */
 hal_com_config_channel_plan(
-	IN	struct adapter *	padapter,
-	IN	u8			hw_channel_plan,	/* channel plan from HW (efuse/eeprom) */
-	IN	u8			sw_channel_plan,	/* channel plan from SW (registry/module param) */
-	IN	u8			def_channel_plan,	/* channel plan used when the former two is invalid */
-	IN	bool		AutoLoadFail
+struct adapter *padapter,
+u8 	hw_channel_plan,	/* channel plan from HW (efuse/eeprom) */
+u8 	sw_channel_plan,	/* channel plan from SW (registry/module param) */
+u8 	def_channel_plan,	/* channel plan used when the former two is invalid */
+bool		AutoLoadFail
 	);
 
 bool
 HAL_IsLegalChannel(
-	IN	struct adapter *	Adapter,
-	IN	u32			Channel
+struct adapter *Adapter,
+u32 		Channel
 	);
 
-u8	MRateToHwRate(u8 rate);
+u8 MRateToHwRate(u8 rate);
 
-u8	HwRateToMRate(u8 rate);
+u8 HwRateToMRate(u8 rate);
 
-void	HalSetBrateCfg(
-	IN struct adapter *		Adapter,
-	IN u8			*mBratesOS,
-	OUT u16			*pBrateCfg);
+void HalSetBrateCfg(
+	struct adapter *	Adapter,
+	u8 	*mBratesOS,
+	u16 		*pBrateCfg);
 
 bool
 Hal_MappingOutPipe(
-	IN	struct adapter *	pAdapter,
-	IN	u8		NumOutPipe
+struct adapter *padapter,
+u8 NumOutPipe
 	);
 
 void hal_init_macaddr(struct adapter *adapter);
@@ -243,74 +242,38 @@ s32 c2h_evt_read_88xx(struct adapter *adapter, u8 *buf);
 
 u8  rtw_hal_networktype_to_raid(struct adapter *adapter, struct sta_info *psta);
 u8 rtw_get_mgntframe_raid(struct adapter *adapter, unsigned char network_type);
-void rtw_hal_update_sta_rate_mask(struct adapter * padapter, struct sta_info *psta);
+void rtw_hal_update_sta_rate_mask(struct adapter *padapter, struct sta_info *psta);
 
 void hw_var_port_switch (struct adapter *adapter);
 
-void SetHwReg(struct adapter * padapter, u8 variable, u8 *val);
-void GetHwReg(struct adapter * padapter, u8 variable, u8 *val);
+void SetHwReg(struct adapter *padapter, u8 variable, u8 *val);
+void GetHwReg(struct adapter *padapter, u8 variable, u8 *val);
 void rtw_hal_check_rxfifo_full(struct adapter *adapter);
 
-u8 SetHalDefVar(struct adapter *adapter, HAL_DEF_VARIABLE variable, void *value);
-u8 GetHalDefVar(struct adapter *adapter, HAL_DEF_VARIABLE variable, void *value);
+u8 SetHalDefVar(struct adapter *adapter, enum HAL_DEF_VARIABLE variable,
+		void *value);
+u8 GetHalDefVar(struct adapter *adapter, enum HAL_DEF_VARIABLE variable,
+		void *value);
 
-bool
-eqNByte(
-	u8*	str1,
-	u8*	str2,
-	u32	num
-	);
+bool eqNByte(u8 *str1, u8 *str2, u32 num);
 
-bool
-IsHexDigit(
-	IN	char	chTmp
-	);
+bool IsHexDigit(char chTmp);
 
-u32
-MapCharToHexDigit(
-	IN	char	chTmp
-);
+u32 MapCharToHexDigit(char chTmp);
 
-bool
-GetHexValueFromString(
-	IN		char*			szStr,
-	IN OUT	u32*			pu4bVal,
-	IN OUT	u32*			pu4bMove
-	);
+bool GetHexValueFromString(char *szStr, u32 *pu4bVal, u32 *pu4bMove);
 
-bool
-GetFractionValueFromString(
-	IN		char*		szStr,
-	IN OUT	u8*			pInteger,
-	IN OUT	u8*			pFraction,
-	IN OUT	u32*		pu4bMove
-	);
+bool GetFractionValueFromString(char *szStr, u8 *pInteger, u8 *pFraction,
+				u32 *pu4bMove);
 
-bool
-IsCommentString(
-	IN		char*		szStr
-	);
+bool IsCommentString(char *szStr);
 
-bool
-ParseQualifiedString(
-    IN	char* In,
-    IN OUT  u32* Start,
-    OUT	char* Out,
-    IN	char  LeftQualifier,
-    IN	char  RightQualifier
-   );
+bool ParseQualifiedString(char *In, u32 *Start, char *Out, char LeftQualifier,
+			  char RightQualifier);
 
-bool
-GetU1ByteIntegerFromStringInDecimal(
-	IN		char* Str,
-	IN OUT	u8* pInt
-	);
+bool GetU1ByteIntegerFromStringInDecimal(char *str, u8 *in);
 
-bool
-isAllSpaceOrTab(
-	u8*	data,
-	u8	size
-	);
+bool isAllSpaceOrTab(u8 *data, u8 size);
 
 void linked_info_dump(struct adapter *padapter, u8 benable);
 #ifdef DBG_RX_SIGNAL_DISPLAY_RAW_DATA
@@ -323,24 +286,23 @@ void rtw_dump_raw_rssi_info(struct adapter *padapter);
 
 void rtw_bb_rf_gain_offset(struct adapter *padapter);
 
-void GetHalODMVar(
-	struct adapter *				Adapter,
-	HAL_ODM_VARIABLE		eVariable,
-	void *					pValue1,
-	void *					pValue2);
+void GetHalODMVar(struct adapter *Adapter,
+	enum HAL_ODM_VARIABLE		eVariable,
+	void *				pValue1,
+	void *				pValue2);
 void SetHalODMVar(
-	struct adapter *				Adapter,
-	HAL_ODM_VARIABLE		eVariable,
-	void *					pValue1,
+	struct adapter *			Adapter,
+	enum HAL_ODM_VARIABLE		eVariable,
+	void *				pValue1,
 	bool					bSet);
 
 #ifdef CONFIG_BACKGROUND_NOISE_MONITOR
 struct noise_info
 {
-	u8		bPauseDIG;
-	u8		IGIValue;
-	u32	max_time;/* ms */
-	u8		chan;
+	u8 bPauseDIG;
+	u8 IGIValue;
+	u32 max_time;/* ms */
+	u8 chan;
 };
 #endif
 

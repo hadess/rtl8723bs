@@ -18,8 +18,6 @@
  * Automatically generated C config: don't edit
  */
 
-/* define CONFIG_FILE_FWIMG */
-
 /*
  * Functions Config
  */

@@ -17,15 +17,15 @@
 
 static void
 odm_SetCrystalCap(
-	IN		void *					pDM_VOID,
-	IN		u1Byte					CrystalCap
+	void *				pDM_VOID,
+	u8 			CrystalCap
 )
 {
 	PDM_ODM_T					pDM_Odm = (PDM_ODM_T)pDM_VOID;
 	PCFO_TRACKING				pCfoTrack = &pDM_Odm->DM_CfoTrack;
 	bool					bEEPROMCheck;
-	struct adapter *					Adapter = pDM_Odm->Adapter;
-	HAL_DATA_TYPE				*pHalData = GET_HAL_DATA(Adapter);
+	struct adapter *				Adapter = pDM_Odm->Adapter;
+	struct hal_com_data				*pHalData = GET_HAL_DATA(Adapter);
 
 	bEEPROMCheck = (pHalData->EEPROMVersion >= 0x01)?true:false;
 
@@ -41,16 +41,16 @@ odm_SetCrystalCap(
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CFO_TRACKING, ODM_DBG_LOUD, ("odm_SetCrystalCap(): CrystalCap = 0x%x\n", CrystalCap));
 }
 
-static u1Byte
+static u8
 odm_GetDefaultCrytaltalCap(
-	IN		void *					pDM_VOID
+	void *				pDM_VOID
 )
 {
 	PDM_ODM_T					pDM_Odm = (PDM_ODM_T)pDM_VOID;
-	u1Byte						CrystalCap = 0x20;
+	u8 				CrystalCap = 0x20;
 
-	struct adapter *					Adapter = pDM_Odm->Adapter;
-	HAL_DATA_TYPE				*pHalData = GET_HAL_DATA(Adapter);
+	struct adapter *				Adapter = pDM_Odm->Adapter;
+	struct hal_com_data				*pHalData = GET_HAL_DATA(Adapter);
 
 	CrystalCap = pHalData->CrystalCap;
 
@@ -61,8 +61,8 @@ odm_GetDefaultCrytaltalCap(
 
 static void
 odm_SetATCStatus(
-	IN		void *					pDM_VOID,
-	IN		bool					ATCStatus
+	void *				pDM_VOID,
+	bool					ATCStatus
 )
 {
 	PDM_ODM_T					pDM_Odm = (PDM_ODM_T)pDM_VOID;
@@ -77,7 +77,7 @@ odm_SetATCStatus(
 
 static bool
 odm_GetATCStatus(
-	IN		void *					pDM_VOID
+	void *				pDM_VOID
 )
 {
 	bool						ATCStatus;
@@ -89,7 +89,7 @@ odm_GetATCStatus(
 
 void
 ODM_CfoTrackingReset(
-	IN		void *					pDM_VOID
+	void *				pDM_VOID
 )
 {
 	PDM_ODM_T					pDM_Odm = (PDM_ODM_T)pDM_VOID;
@@ -104,7 +104,7 @@ ODM_CfoTrackingReset(
 
 void
 ODM_CfoTrackingInit(
-	IN		void *					pDM_VOID
+	void *				pDM_VOID
 )
 {
 	PDM_ODM_T					pDM_Odm = (PDM_ODM_T)pDM_VOID;
@@ -113,13 +113,13 @@ ODM_CfoTrackingInit(
 	pCfoTrack->DefXCap = pCfoTrack->CrystalCap = odm_GetDefaultCrytaltalCap(pDM_Odm);
 	pCfoTrack->bATCStatus = odm_GetATCStatus(pDM_Odm);
 	pCfoTrack->bAdjust = true;
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CFO_TRACKING, ODM_DBG_LOUD, ("ODM_CfoTracking_init() =========> \n"));
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CFO_TRACKING, ODM_DBG_LOUD, ("ODM_CfoTracking_init(): bATCStatus = %d, CrystalCap = 0x%x \n", pCfoTrack->bATCStatus, pCfoTrack->DefXCap));
+	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CFO_TRACKING, ODM_DBG_LOUD, ("ODM_CfoTracking_init() =========>\n"));
+	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CFO_TRACKING, ODM_DBG_LOUD, ("ODM_CfoTracking_init(): bATCStatus = %d, CrystalCap = 0x%x\n", pCfoTrack->bATCStatus, pCfoTrack->DefXCap));
 }
 
 void
 ODM_CfoTracking(
-	IN		void *					pDM_VOID
+	void *				pDM_VOID
 )
 {
 	PDM_ODM_T					pDM_Odm = (PDM_ODM_T)pDM_VOID;
@@ -127,7 +127,7 @@ ODM_CfoTracking(
 	int							CFO_kHz_A, CFO_kHz_B, CFO_ave = 0;
 	int							CFO_ave_diff;
 	int							CrystalCap = (int)pCfoTrack->CrystalCap;
-	u1Byte						Adjust_Xtal = 1;
+	u8 				Adjust_Xtal = 1;
 
 	/* 4 Support ability */
 	if (!(pDM_Odm->SupportAbility & ODM_BB_CFO_TRACKING))
@@ -136,7 +136,7 @@ ODM_CfoTracking(
 		return;
 	}
 
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CFO_TRACKING, ODM_DBG_LOUD, ("ODM_CfoTracking() =========> \n"));
+	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CFO_TRACKING, ODM_DBG_LOUD, ("ODM_CfoTracking() =========>\n"));
 
 	if (!pDM_Odm->bLinked || !pDM_Odm->bOneEntryOnly)
 	{
@@ -223,7 +223,7 @@ ODM_CfoTracking(
 			else if (CrystalCap < 0)
 				CrystalCap = 0;
 
-			odm_SetCrystalCap(pDM_Odm, (u1Byte)CrystalCap);
+			odm_SetCrystalCap(pDM_Odm, (u8)CrystalCap);
 		}
 		ODM_RT_TRACE(pDM_Odm, ODM_COMP_CFO_TRACKING, ODM_DBG_LOUD, ("ODM_CfoTracking(): Crystal cap = 0x%x, Default Crystal cap = 0x%x\n",
 			pCfoTrack->CrystalCap, pCfoTrack->DefXCap));
@@ -244,15 +244,15 @@ ODM_CfoTracking(
 
 void
 ODM_ParsingCFO(
-	IN		void *			pDM_VOID,
-	IN		void *			pPktinfo_VOID,
-	IN		s8*			pcfotail
+	void *		pDM_VOID,
+	void *		pPktinfo_VOID,
+	s8 *		pcfotail
 	)
 {
 	PDM_ODM_T		pDM_Odm = (PDM_ODM_T)pDM_VOID;
 	PODM_PACKET_INFO_T		pPktinfo = (PODM_PACKET_INFO_T)pPktinfo_VOID;
 	PCFO_TRACKING	pCfoTrack = &pDM_Odm->DM_CfoTrack;
-	u1Byte			i;
+	u8 	i;
 
 	if (!(pDM_Odm->SupportAbility & ODM_BB_CFO_TRACKING))
 		return;

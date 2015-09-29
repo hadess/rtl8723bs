@@ -28,15 +28,15 @@
 
 	struct cmd_obj {
 		struct adapter *padapter;
-		u16	cmdcode;
-		u8	res;
-		u8	*parmbuf;
-		u32	cmdsz;
-		u8	*rsp;
-		u32	rspsz;
+		u16 cmdcode;
+		u8 res;
+		u8 *parmbuf;
+		u32 cmdsz;
+		u8 *rsp;
+		u32 rspsz;
 		struct submit_ctx *sctx;
 		/* _sema		cmd_sem; */
-		_list	list;
+		struct list_head	list;
 	};
 
 	/* cmd flags */
@@ -49,15 +49,15 @@
 		_sema	cmd_queue_sema;
 		/* _sema	cmd_done_sema; */
 		_sema	terminate_cmdthread_sema;
-		_queue	cmd_queue;
-		u8	cmd_seq;
-		u8	*cmd_buf;	/* shall be non-paged, and 4 bytes aligned */
-		u8	*cmd_allocated_buf;
-		u8	*rsp_buf;	/* shall be non-paged, and 4 bytes aligned */
-		u8	*rsp_allocated_buf;
-		u32	cmd_issued_cnt;
-		u32	cmd_done_cnt;
-		u32	rsp_cnt;
+		struct __queue	cmd_queue;
+		u8 cmd_seq;
+		u8 *cmd_buf;	/* shall be non-paged, and 4 bytes aligned */
+		u8 *cmd_allocated_buf;
+		u8 *rsp_buf;	/* shall be non-paged, and 4 bytes aligned */
+		u8 *rsp_allocated_buf;
+		u32 cmd_issued_cnt;
+		u32 cmd_done_cnt;
+		u32 rsp_cnt;
 		atomic_t cmdthd_running;
 		/* u8 cmdthd_running; */
 		u8 stop_req;
@@ -72,11 +72,11 @@
 		#define C2H_QUEUE_MAX_LEN 10
 
 		atomic_t event_seq;
-		u8	*evt_buf;	/* shall be non-paged, and 4 bytes aligned */
-		u8	*evt_allocated_buf;
-		u32	evt_done_cnt;
-		u8	*c2h_mem;
-		u8	*allocated_c2h_mem;
+		u8 *evt_buf;	/* shall be non-paged, and 4 bytes aligned */
+		u8 *evt_allocated_buf;
+		u32 evt_done_cnt;
+		u8 *c2h_mem;
+		u8 *allocated_c2h_mem;
 	};
 
 #define init_h2fwcmd_w_parm_no_rsp(pcmd, pparm, code) \
@@ -136,7 +136,7 @@ extern struct cmd_obj *rtw_dequeue_cmd(struct cmd_priv *pcmdpriv);
 extern void rtw_free_cmd_obj(struct cmd_obj *pcmd);
 
 void rtw_stop_cmd_thread(struct adapter *adapter);
-int rtw_cmd_thread(void * context);
+int rtw_cmd_thread(void *context);
 
 extern u32 rtw_init_cmd_priv (struct cmd_priv *pcmdpriv);
 extern void rtw_free_cmd_priv (struct cmd_priv *pcmdpriv);
@@ -217,7 +217,7 @@ Command Event Mode
 
 */
 struct joinbss_parm {
-	WLAN_BSSID_EX network;
+	struct wlan_bssid_ex network;
 };
 
 /*
@@ -240,7 +240,7 @@ Notes: To create a BSS
 Command Mode
 */
 struct createbss_parm {
-	WLAN_BSSID_EX network;
+	struct wlan_bssid_ex network;
 };
 
 /*
@@ -262,8 +262,8 @@ The definition of mode:
 
 */
 struct	setopmode_parm {
-	u8	mode;
-	u8	rsvd[3];
+	u8 mode;
+	u8 rsvd[3];
 };
 
 /*
@@ -281,7 +281,7 @@ struct sitesurvey_parm {
 	sint scan_mode;	/* active: 1, passive: 0 */
 	u8 ssid_num;
 	u8 ch_num;
-	NDIS_802_11_SSID ssid[RTW_SSID_SCAN_AMOUNT];
+	struct ndis_802_11_ssid ssid[RTW_SSID_SCAN_AMOUNT];
 	struct rtw_ieee80211_channel ch[RTW_CHANNEL_SCAN_AMOUNT];
 };
 
@@ -312,11 +312,11 @@ when 802.1x ==> keyid > 2 ==> unicast key
 
 */
 struct setkey_parm {
-	u8	algorithm;	/*  encryption algorithm, could be none, wep40, TKIP, CCMP, wep104 */
-	u8	keyid;
-	u8	grpkey;		/*  1: this is the grpkey for 802.1x. 0: this is the unicast key for 802.1x */
-	u8	set_tx;		/*  1: main tx key for wep. 0: other key. */
-	u8	key[16];	/*  this could be 40 or 104 */
+	u8 algorithm;	/*  encryption algorithm, could be none, wep40, TKIP, CCMP, wep104 */
+	u8 keyid;
+	u8 grpkey;		/*  1: this is the grpkey for 802.1x. 0: this is the unicast key for 802.1x */
+	u8 set_tx;		/*  1: main tx key for wep. 0: other key. */
+	u8 key[16];	/*  this could be 40 or 104 */
 };
 
 /*
@@ -329,16 +329,16 @@ when shared key ==> algorithm/keyid
 
 */
 struct set_stakey_parm {
-	u8	addr[ETH_ALEN];
-	u8	algorithm;
-	u8	keyid;
-	u8	key[16];
+	u8 addr[ETH_ALEN];
+	u8 algorithm;
+	u8 keyid;
+	u8 key[16];
 };
 
 struct set_stakey_rsp {
-	u8	addr[ETH_ALEN];
-	u8	keyid;
-	u8	rsvd;
+	u8 addr[ETH_ALEN];
+	u8 keyid;
+	u8 rsvd;
 };
 
 /*
@@ -352,12 +352,12 @@ FW will write an cam entry associated with it.
 
 */
 struct set_assocsta_parm {
-	u8	addr[ETH_ALEN];
+	u8 addr[ETH_ALEN];
 };
 
 struct set_assocsta_rsp {
-	u8	cam_id;
-	u8	rsvd[3];
+	u8 cam_id;
+	u8 rsvd[3];
 };
 
 /*
@@ -371,7 +371,7 @@ struct set_assocsta_rsp {
 
 */
 struct del_assocsta_parm {
-	u8	addr[ETH_ALEN];
+	u8 addr[ETH_ALEN];
 };
 
 /*
@@ -383,9 +383,9 @@ Command Mode
 
 */
 struct setstapwrstate_parm {
-	u8	staid;
-	u8	status;
-	u8	hwaddr[6];
+	u8 staid;
+	u8 status;
+	u8 hwaddr[6];
 };
 
 /*
@@ -397,7 +397,7 @@ Command Mode
 
 */
 struct	setbasicrate_parm {
-	u8	basicrates[NumRates];
+	u8 basicrates[NumRates];
 };
 
 /*
@@ -425,8 +425,8 @@ Command Mode
 
 */
 struct setdatarate_parm {
-	u8	mac_id;
-	u8	datarates[NumRates];
+	u8 mac_id;
+	u8 datarates[NumRates];
 };
 
 /*
@@ -462,7 +462,7 @@ Command Mode
 
 struct	setphyinfo_parm {
 	struct regulatory_class class_sets[NUM_REGULATORYS];
-	u8	status;
+	u8 status;
 };
 
 struct	getphyinfo_parm {
@@ -471,7 +471,7 @@ struct	getphyinfo_parm {
 
 struct	getphyinfo_rsp {
 	struct regulatory_class class_sets[NUM_REGULATORYS];
-	u8	status;
+	u8 status;
 };
 
 /*
@@ -484,8 +484,8 @@ Command Mode
 
 */
 struct	setphy_parm {
-	u8	rfchannel;
-	u8	modem;
+	u8 rfchannel;
+	u8 modem;
 };
 
 /*
@@ -501,49 +501,49 @@ struct	getphy_parm {
 
 };
 struct	getphy_rsp {
-	u8	rfchannel;
-	u8	modem;
+	u8 rfchannel;
+	u8 modem;
 };
 
 struct readBB_parm {
-	u8	offset;
+	u8 offset;
 };
 struct readBB_rsp {
-	u8	value;
+	u8 value;
 };
 
 struct readTSSI_parm {
-	u8	offset;
+	u8 offset;
 };
 struct readTSSI_rsp {
-	u8	value;
+	u8 value;
 };
 
 struct writeBB_parm {
-	u8	offset;
-	u8	value;
+	u8 offset;
+	u8 value;
 };
 
 struct readRF_parm {
-	u8	offset;
+	u8 offset;
 };
 struct readRF_rsp {
-	u32	value;
+	u32 value;
 };
 
 struct writeRF_parm {
-	u32	offset;
-	u32	value;
+	u32 offset;
+	u32 value;
 };
 
 struct getrfintfs_parm {
-	u8	rfintfs;
+	u8 rfintfs;
 };
 
 
 struct Tx_Beacon_param
 {
-	WLAN_BSSID_EX network;
+	struct wlan_bssid_ex network;
 };
 
 /*
@@ -611,76 +611,76 @@ struct drvextra_cmd_parm {
 /*------------------- Below are used for RF/BB tunning ---------------------*/
 
 struct	setantenna_parm {
-	u8	tx_antset;
-	u8	rx_antset;
-	u8	tx_antenna;
-	u8	rx_antenna;
+	u8 tx_antset;
+	u8 rx_antset;
+	u8 tx_antenna;
+	u8 rx_antenna;
 };
 
 struct	enrateadaptive_parm {
-	u32	en;
+	u32 en;
 };
 
 struct settxagctbl_parm {
-	u32	txagc[MAX_RATES_LENGTH];
+	u32 txagc[MAX_RATES_LENGTH];
 };
 
 struct gettxagctbl_parm {
 	u32 rsvd;
 };
 struct gettxagctbl_rsp {
-	u32	txagc[MAX_RATES_LENGTH];
+	u32 txagc[MAX_RATES_LENGTH];
 };
 
 struct setagcctrl_parm {
-	u32	agcctrl;		/*  0: pure hw, 1: fw */
+	u32 agcctrl;		/*  0: pure hw, 1: fw */
 };
 
 
 struct setssup_parm	{
-	u32	ss_ForceUp[MAX_RATES_LENGTH];
+	u32 ss_ForceUp[MAX_RATES_LENGTH];
 };
 
 struct getssup_parm	{
 	u32 rsvd;
 };
 struct getssup_rsp	{
-	u8	ss_ForceUp[MAX_RATES_LENGTH];
+	u8 ss_ForceUp[MAX_RATES_LENGTH];
 };
 
 
 struct setssdlevel_parm	{
-	u8	ss_DLevel[MAX_RATES_LENGTH];
+	u8 ss_DLevel[MAX_RATES_LENGTH];
 };
 
 struct getssdlevel_parm	{
 	u32 rsvd;
 };
 struct getssdlevel_rsp	{
-	u8	ss_DLevel[MAX_RATES_LENGTH];
+	u8 ss_DLevel[MAX_RATES_LENGTH];
 };
 
 struct setssulevel_parm	{
-	u8	ss_ULevel[MAX_RATES_LENGTH];
+	u8 ss_ULevel[MAX_RATES_LENGTH];
 };
 
 struct getssulevel_parm	{
 	u32 rsvd;
 };
 struct getssulevel_rsp	{
-	u8	ss_ULevel[MAX_RATES_LENGTH];
+	u8 ss_ULevel[MAX_RATES_LENGTH];
 };
 
 
 struct	setcountjudge_parm {
-	u8	count_judge[MAX_RATES_LENGTH];
+	u8 count_judge[MAX_RATES_LENGTH];
 };
 
 struct	getcountjudge_parm {
 	u32 rsvd;
 };
 struct	getcountjudge_rsp {
-	u8	count_judge[MAX_RATES_LENGTH];
+	u8 count_judge[MAX_RATES_LENGTH];
 };
 
 
@@ -768,7 +768,7 @@ struct setassocrspextraie_parm {
 struct addBaReq_parm
 {
 	unsigned int tid;
-	u8	addr[ETH_ALEN];
+	u8 addr[ETH_ALEN];
 };
 
 /*H2C Handler index: 46 */
@@ -787,7 +787,7 @@ struct SetChannelPlan_param
 /*H2C Handler index: 60 */
 struct LedBlink_param
 {
-	void *	 pLed;
+	void *pLed;
 };
 
 /*H2C Handler index: 61 */
@@ -836,7 +836,7 @@ Result:
 #define H2C_CMD_OVERFLOW		0x06
 #define H2C_RESERVED			0x07
 
-u8 rtw_sitesurvey_cmd(struct adapter  *padapter, NDIS_802_11_SSID *ssid, int ssid_num, struct rtw_ieee80211_channel *ch, int ch_num);
+u8 rtw_sitesurvey_cmd(struct adapter  *padapter, struct ndis_802_11_ssid *ssid, int ssid_num, struct rtw_ieee80211_channel *ch, int ch_num);
 extern u8 rtw_createbss_cmd(struct adapter  *padapter);
 u8 rtw_startbss_cmd(struct adapter  *padapter, int flags);
 
@@ -846,7 +846,7 @@ extern u8 rtw_clearstakey_cmd(struct adapter *padapter, struct sta_info *sta, u8
 
 extern u8 rtw_joinbss_cmd(struct adapter  *padapter, struct wlan_network* pnetwork);
 u8 rtw_disassoc_cmd(struct adapter *padapter, u32 deauth_timeout_ms, bool enqueue);
-extern u8 rtw_setopmode_cmd(struct adapter  *padapter, NDIS_802_11_NETWORK_INFRASTRUCTURE networktype, bool enqueue);
+extern u8 rtw_setopmode_cmd(struct adapter  *padapter, enum NDIS_802_11_NETWORK_INFRASTRUCTURE networktype, bool enqueue);
 extern u8 rtw_setdatarate_cmd(struct adapter  *padapter, u8 *rateset);
 extern u8 rtw_setrfintfs_cmd(struct adapter  *padapter, u8 mode);
 
@@ -871,8 +871,8 @@ u8 rtw_chk_hi_queue_cmd(struct adapter *padapter);
 
 extern u8 rtw_set_chplan_cmd(struct adapter *padapter, u8 chplan, u8 enqueue, u8 swconfig);
 
-extern u8 rtw_c2h_packet_wk_cmd(struct adapter * padapter, u8 *pbuf, u16 length);
-extern u8 rtw_c2h_wk_cmd(struct adapter * padapter, u8 *c2h_evt);
+extern u8 rtw_c2h_packet_wk_cmd(struct adapter *padapter, u8 *pbuf, u16 length);
+extern u8 rtw_c2h_wk_cmd(struct adapter *padapter, u8 *c2h_evt);
 
 u8 rtw_drvextra_cmd_hdl(struct adapter *padapter, unsigned char *pbuf);
 
@@ -888,7 +888,7 @@ extern void rtw_getrttbl_cmdrsp_callback(struct adapter  *padapter,  struct cmd_
 
 
 struct _cmd_callback {
-	u32	cmd_code;
+	u32 cmd_code;
 	void (*callback)(struct adapter  *padapter, struct cmd_obj *cmd);
 };
 

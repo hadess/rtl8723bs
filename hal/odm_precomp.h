@@ -45,16 +45,11 @@
 #include "odm_DynamicTxPower.h"
 #include "odm_CfoTracking.h"
 #include "odm_NoiseMonitor.h"
-
-	/* include "hal_com.h" */
-	#include "HalPhyRf.h"
-
-	#include "HalPhyRf_8723B.h"/* for IQK, LCK, Power-tracking */
-	#include "rtl8723b_hal.h"
-
+#include "HalPhyRf.h"
+#include "HalPhyRf_8723B.h"/* for IQK, LCK, Power-tracking */
+#include "rtl8723b_hal.h"
 #include "odm_interface.h"
 #include "odm_reg.h"
-
 #include "HalHWImg8723B_MAC.h"
 #include "HalHWImg8723B_RF.h"
 #include "HalHWImg8723B_BB.h"

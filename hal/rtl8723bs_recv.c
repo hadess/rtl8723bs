@@ -19,7 +19,7 @@
 #include <rtl8723b_hal.h>
 
 
-static s32 initrecvbuf(struct recv_buf *precvbuf, struct adapter * padapter)
+static s32 initrecvbuf(struct recv_buf *precvbuf, struct adapter *padapter)
 {
 	INIT_LIST_HEAD(&precvbuf->list);
 	spin_lock_init(&precvbuf->recvbuf_lock);
@@ -30,7 +30,7 @@ static s32 initrecvbuf(struct recv_buf *precvbuf, struct adapter * padapter)
 }
 
 static void update_recvframe_attrib(
-	struct adapter * padapter,
+	struct adapter *padapter,
 	union recv_frame *precvframe,
 	struct recv_stat *prxstat)
 {
@@ -86,21 +86,21 @@ static void update_recvframe_attrib(
 
 /*
  * Notice:
- *	Before calling this function,
- *	precvframe->u.hdr.rx_data should be ready!
+ *Before calling this function,
+ *precvframe->u.hdr.rx_data should be ready!
  */
 static void update_recvframe_phyinfo(
 	union recv_frame	*precvframe,
 	struct phy_stat *pphy_status)
 {
-	struct adapter *			padapter = precvframe->u.hdr.adapter;
+	struct adapter *		padapter = precvframe->u.hdr.adapter;
 	struct rx_pkt_attrib	*pattrib = &precvframe->u.hdr.attrib;
-	HAL_DATA_TYPE		*pHalData = GET_HAL_DATA(padapter);
+	struct hal_com_data		*pHalData = GET_HAL_DATA(padapter);
 	PODM_PHY_INFO_T		pPHYInfo = (PODM_PHY_INFO_T)(&pattrib->phy_info);
 
-	u8			*wlanhdr;
+	u8 	*wlanhdr;
 	ODM_PACKET_INFO_T	pkt_info;
-	u8 *sa =NULL;
+	u8 *sa = NULL;
 	/* _irqL		irqL; */
 	struct sta_priv *pstapriv;
 	struct sta_info *psta;
@@ -161,9 +161,9 @@ static void update_recvframe_phyinfo(
 	}
 }
 
-static void rtl8723bs_c2h_packet_handler(struct adapter * padapter, u8 *pbuf, u16 length)
+static void rtl8723bs_c2h_packet_handler(struct adapter *padapter, u8 *pbuf, u16 length)
 {
-	u8 *tmpBuf =NULL;
+	u8 *tmpBuf = NULL;
 	u8 res = false;
 
 	if (length == 0)
@@ -189,16 +189,16 @@ static void rtl8723bs_c2h_packet_handler(struct adapter * padapter, u8 *pbuf, u1
 
 static void rtl8723bs_recv_tasklet(void *priv)
 {
-	struct adapter *			padapter;
-	PHAL_DATA_TYPE		pHalData;
-	struct recv_priv		*precvpriv;
+	struct adapter *		padapter;
+	struct hal_com_data *	pHalData;
+	struct recv_priv 	*precvpriv;
 	struct recv_buf		*precvbuf;
 	union recv_frame		*precvframe;
 	struct rx_pkt_attrib	*pattrib;
-	u8		*ptr;
-	u32	pkt_offset, skb_len, alloc_sz;
+	u8 *ptr;
+	u32 pkt_offset, skb_len, alloc_sz;
 	_pkt		*pkt_copy = NULL;
-	u8		shift_sz = 0, rx_report_sz = 0;
+	u8 shift_sz = 0, rx_report_sz = 0;
 
 
 	padapter = (struct adapter *)priv;
@@ -271,7 +271,7 @@ static void rtl8723bs_recv_tasklet(void *priv)
 
 				/*  for first fragment packet, driver need allocate 1536+drvinfo_sz+RXDESC_SIZE to defrag packet. */
 				/*  modify alloc_sz for recvive crc error packet by thomas 2011-06-02 */
-				if ((pattrib->mfrag == 1) && (pattrib->frag_num == 0)){
+				if ((pattrib->mfrag == 1) && (pattrib->frag_num == 0)) {
 					if (skb_len <= 1650)
 						alloc_sz = 1664;
 					else
@@ -395,11 +395,11 @@ static void rtl8723bs_recv_tasklet(void *priv)
  * 2. recv tasklet
  *
  */
-s32 rtl8723bs_init_recv_priv(struct adapter * padapter)
+s32 rtl8723bs_init_recv_priv(struct adapter *padapter)
 {
 	s32			res;
-	u32			i, n;
-	struct recv_priv	*precvpriv;
+	u32 		i, n;
+	struct recv_priv *precvpriv;
 	struct recv_buf		*precvbuf;
 
 
@@ -494,10 +494,10 @@ exit:
  * 2. recv tasklet
  *
  */
-void rtl8723bs_free_recv_priv(struct adapter * padapter)
+void rtl8723bs_free_recv_priv(struct adapter *padapter)
 {
-	u32			i, n;
-	struct recv_priv	*precvpriv;
+	u32 		i, n;
+	struct recv_priv *precvpriv;
 	struct recv_buf		*precvbuf;
 
 

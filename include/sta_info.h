@@ -24,7 +24,7 @@
 /* if mode == 0, then the sta is allowed once the addr is hit. */
 /* if mode == 1, then the sta is rejected once the addr is non-hit. */
 struct rtw_wlan_acl_node {
-        _list		        list;
+        struct list_head		        list;
         u8       addr[ETH_ALEN];
         u8       valid;
 };
@@ -36,7 +36,7 @@ struct wlan_acl_pool {
 	int mode;
 	int num;
 	struct rtw_wlan_acl_node aclnode[NUM_ACL];
-	_queue	acl_node_q;
+	struct __queue	acl_node_q;
 };
 
 typedef struct _RSSI_STA{
@@ -44,7 +44,7 @@ typedef struct _RSSI_STA{
 	s32	UndecoratedSmoothedCCK;
 	s32	UndecoratedSmoothedOFDM;
 	u64	PacketMap;
-	u8	ValidBit;
+	u8 ValidBit;
 }RSSI_STA, *PRSSI_STA;
 
 struct	stainfo_stats	{
@@ -78,21 +78,21 @@ struct	stainfo_stats	{
 struct sta_info {
 
 	_lock	lock;
-	_list	list; /* free_sta_queue */
-	_list	hash_list; /* sta_hash */
+	struct list_head	list; /* free_sta_queue */
+	struct list_head	hash_list; /* sta_hash */
 	struct adapter *padapter;
 
 	struct sta_xmit_priv sta_xmitpriv;
 	struct sta_recv_priv sta_recvpriv;
 
-	_queue sleep_q;
+	struct __queue sleep_q;
 	unsigned int sleepq_len;
 
 	uint state;
 	uint aid;
 	uint mac_id;
 	uint qos_option;
-	u8	hwaddr[ETH_ALEN];
+	u8 hwaddr[ETH_ALEN];
 
 	uint	ieee8021x_blocked;	/* 0: allowed, 1:blocked */
 	uint	dot118021XPrivacy; /* aes, tkip... */
@@ -109,22 +109,22 @@ struct sta_info {
 	union pn48		dot11rxpn;			/*  PN48 used for Unicast recv. */
 
 
-	u8	bssrateset[16];
-	u32	bssratelen;
+	u8 bssrateset[16];
+	u32 bssratelen;
 	s32  rssi;
 	s32	signal_quality;
 
-	u8	cts2self;
-	u8	rtsen;
+	u8 cts2self;
+	u8 rtsen;
 
-	u8	raid;
-	u8	init_rate;
-	u32	ra_mask;
-	u8	wireless_mode;	/*  NETWORK_TYPE */
-	u8	bw_mode;
+	u8 raid;
+	u8 init_rate;
+	u32 ra_mask;
+	u8 wireless_mode;	/*  NETWORK_TYPE */
+	u8 bw_mode;
 
-	u8	ldpc;
-	u8	stbc;
+	u8 ldpc;
+	u8 stbc;
 
 	struct stainfo_stats sta_stats;
 
@@ -135,11 +135,11 @@ struct sta_info {
 	struct recv_reorder_ctrl recvreorder_ctrl[16];
 
 	/* for A-MPDU Tx */
-	/* unsigned char		ampdu_txen_bitmap; */
-	u16	BA_starting_seqctrl[16];
+	/* unsigned char 	ampdu_txen_bitmap; */
+	u16 BA_starting_seqctrl[16];
 
 
-	struct ht_priv	htpriv;
+	struct ht_priv htpriv;
 
 	/* Notes: */
 	/* STA_Mode: */
@@ -150,8 +150,8 @@ struct sta_info {
 	/* curr_network(mlme_priv/security_priv/qos/ht) : AP CAP/INFO */
 	/* sta_info: (AP & STA) CAP/INFO */
 
-	_list asoc_list;
-	_list auth_list;
+	struct list_head asoc_list;
+	struct list_head auth_list;
 
 	unsigned int expire_to;
 	unsigned int auth_seq;
@@ -214,16 +214,16 @@ struct sta_info {
 	/*  2011/10/20 MH Add for ODM STA info. */
 	/*  */
 	/*  Driver Write */
-	u8		bValid;				/*  record the sta status link or not? */
-	u8		IOTPeer;			/*  Enum value.	HT_IOT_PEER_E */
+	u8 bValid;				/*  record the sta status link or not? */
+	u8 IOTPeer;			/*  Enum value.	HT_IOT_PEER_E */
 	/*  ODM Write */
 	/* 1 PHY_STATUS_INFO */
-	u8		RSSI_Path[4];		/*  */
-	u8		RSSI_Ave;
-	u8		RXEVM[4];
-	u8		RXSNR[4];
+	u8 RSSI_Path[4];		/*  */
+	u8 RSSI_Ave;
+	u8 RXEVM[4];
+	u8 RXSNR[4];
 
-	u8		rssi_level;			/* for Refresh RA mask */
+	u8 rssi_level;			/* for Refresh RA mask */
 	/*  ODM Write */
 	/* 1 TX_INFO (may changed by IC) */
 	/* TX_INFO_T		pTxInfo;		 Define in IC folder. Move lower layer. */
@@ -320,18 +320,18 @@ struct	sta_priv {
 
 	u8 *pallocated_stainfo_buf;
 	u8 *pstainfo_buf;
-	_queue	free_sta_queue;
+	struct __queue	free_sta_queue;
 
 	_lock sta_hash_lock;
-	_list   sta_hash[NUM_STA];
+	struct list_head   sta_hash[NUM_STA];
 	int asoc_sta_count;
-	_queue sleep_q;
-	_queue wakeup_q;
+	struct __queue sleep_q;
+	struct __queue wakeup_q;
 
 	struct adapter *padapter;
 
-	_list asoc_list;
-	_list auth_list;
+	struct list_head asoc_list;
+	struct list_head auth_list;
 	_lock asoc_list_lock;
 	_lock auth_list_lock;
 	u8 asoc_list_cnt;
@@ -374,19 +374,19 @@ __inline static u32 wifi_mac_hash(u8 *mac)
 }
 
 
-extern u32	_rtw_init_sta_priv(struct sta_priv *pstapriv);
-extern u32	_rtw_free_sta_priv(struct sta_priv *pstapriv);
+extern u32 _rtw_init_sta_priv(struct sta_priv *pstapriv);
+extern u32 _rtw_free_sta_priv(struct sta_priv *pstapriv);
 
 #define stainfo_offset_valid(offset) (offset < NUM_STA && offset >= 0)
 int rtw_stainfo_offset(struct sta_priv *stapriv, struct sta_info *sta);
 struct sta_info *rtw_get_stainfo_by_offset(struct sta_priv *stapriv, int offset);
 
 extern struct sta_info *rtw_alloc_stainfo(struct	sta_priv *pstapriv, u8 *hwaddr);
-extern u32	rtw_free_stainfo(struct adapter *padapter , struct sta_info *psta);
+extern u32 rtw_free_stainfo(struct adapter *padapter , struct sta_info *psta);
 extern void rtw_free_all_stainfo(struct adapter *padapter);
 extern struct sta_info *rtw_get_stainfo(struct sta_priv *pstapriv, u8 *hwaddr);
-extern u32 rtw_init_bcmc_stainfo(struct adapter * padapter);
-extern struct sta_info* rtw_get_bcmc_stainfo(struct adapter * padapter);
+extern u32 rtw_init_bcmc_stainfo(struct adapter *padapter);
+extern struct sta_info* rtw_get_bcmc_stainfo(struct adapter *padapter);
 extern u8 rtw_access_ctrl(struct adapter *padapter, u8 *mac_addr);
 
 #endif /* _STA_INFO_H_ */

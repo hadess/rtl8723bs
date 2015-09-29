@@ -365,20 +365,20 @@ __inline static int IS_MCAST(unsigned char *da)
 
 __inline static unsigned char * get_ra(unsigned char *pframe)
 {
-	unsigned char	*ra;
+	unsigned char *ra;
 	ra = GetAddr1Ptr(pframe);
 	return ra;
 }
 __inline static unsigned char * get_ta(unsigned char *pframe)
 {
-	unsigned char	*ta;
+	unsigned char *ta;
 	ta = GetAddr2Ptr(pframe);
 	return ta;
 }
 
 __inline static unsigned char * get_da(unsigned char *pframe)
 {
-	unsigned char	*da;
+	unsigned char *da;
 	unsigned int	to_fr_ds	= (GetToDs(pframe) << 1) | GetFrDs(pframe);
 
 	switch (to_fr_ds) {
@@ -402,7 +402,7 @@ __inline static unsigned char * get_da(unsigned char *pframe)
 
 __inline static unsigned char * get_sa(unsigned char *pframe)
 {
-	unsigned char	*sa;
+	unsigned char *sa;
 	unsigned int	to_fr_ds	= (GetToDs(pframe) << 1) | GetFrDs(pframe);
 
 	switch (to_fr_ds) {
@@ -425,7 +425,7 @@ __inline static unsigned char * get_sa(unsigned char *pframe)
 
 __inline static unsigned char * get_hdr_bssid(unsigned char *pframe)
 {
-	unsigned char	*sa = NULL;
+	unsigned char *sa = NULL;
 	unsigned int	to_fr_ds	= (GetToDs(pframe) << 1) | GetFrDs(pframe);
 
 	switch (to_fr_ds) {
@@ -514,7 +514,7 @@ __inline static int IsFrameTypeCtrl(unsigned char *pframe)
 
 #define	_RESERVED47_				47
 
-typedef	enum _ELEMENT_ID{
+enum ELEMENT_ID {
 	EID_SsId					= 0, /* service set identifier (0:32) */
 	EID_SupRates				= 1, /* supported rates (1:8) */
 	EID_FHParms				= 2, /* FH parameter set (5) */
@@ -588,7 +588,7 @@ typedef	enum _ELEMENT_ID{
 	EID_VHTCapability			= 191, /*  Based on 802.11ac D2.0 */
 	EID_VHTOperation			= 192, /*  Based on 802.11ac D2.0 */
 	EID_OpModeNotification		= 199, /*  Based on 802.11ac D3.0 */
-}ELEMENT_ID, *PELEMENT_ID;
+};
 
 /* ---------------------------------------------------------------------------
 					Below is the fixed elements...
@@ -679,11 +679,11 @@ struct rtw_ieee80211_bar {
 
 struct rtw_ieee80211_ht_cap {
 	__le16	cap_info;
-	unsigned char	ampdu_params_info;
-	unsigned char	supp_mcs_set[16];
+	unsigned char ampdu_params_info;
+	unsigned char supp_mcs_set[16];
 	__le16	extended_ht_cap_info;
 	__le16		tx_BF_cap_info;
-	unsigned char	       antenna_selection_info;
+	unsigned char        antenna_selection_info;
 } __attribute__ ((packed));
 
 /**
@@ -693,11 +693,11 @@ struct rtw_ieee80211_ht_cap {
  * described in 802.11n draft section 7.3.2.53
  */
 struct ieee80211_ht_addt_info {
-	unsigned char	control_chan;
-	unsigned char		ht_param;
+	unsigned char control_chan;
+	unsigned char 	ht_param;
 	__le16	operation_mode;
 	__le16	stbc_param;
-	unsigned char		basic_set[16];
+	unsigned char 	basic_set[16];
 } __attribute__ ((packed));
 
 
@@ -708,11 +708,11 @@ struct HT_caps_element
 		struct
 		{
 			__le16	HT_caps_info;
-			unsigned char	AMPDU_para;
-			unsigned char	MCS_rate[16];
+			unsigned char AMPDU_para;
+			unsigned char MCS_rate[16];
 			__le16	HT_ext_caps;
 			__le16	Beamforming_caps;
-			unsigned char	ASEL_caps;
+			unsigned char ASEL_caps;
 		} HT_cap_element;
 		unsigned char HT_cap[26];
 	}u;
@@ -720,39 +720,39 @@ struct HT_caps_element
 
 struct HT_info_element
 {
-	unsigned char	primary_channel;
-	unsigned char	infos[5];
-	unsigned char	MCS_rate[16];
+	unsigned char primary_channel;
+	unsigned char infos[5];
+	unsigned char MCS_rate[16];
 }  __attribute__ ((packed));
 
 struct AC_param
 {
-	unsigned char		ACI_AIFSN;
-	unsigned char		CW;
+	unsigned char 	ACI_AIFSN;
+	unsigned char 	CW;
 	__le16	TXOP_limit;
 }  __attribute__ ((packed));
 
 struct WMM_para_element
 {
-	unsigned char		QoS_info;
-	unsigned char		reserved;
+	unsigned char 	QoS_info;
+	unsigned char 	reserved;
 	struct AC_param	ac_param[4];
 }  __attribute__ ((packed));
 
 struct ADDBA_request
 {
-	unsigned char		dialog_token;
+	unsigned char 	dialog_token;
 	__le16	BA_para_set;
 	__le16	BA_timeout_value;
 	__le16	BA_starting_seqctrl;
 }  __attribute__ ((packed));
 
-typedef enum _HT_CAP_AMPDU_FACTOR {
+enum HT_CAP_AMPDU_FACTOR {
 	MAX_AMPDU_FACTOR_8K		= 0,
 	MAX_AMPDU_FACTOR_16K	= 1,
 	MAX_AMPDU_FACTOR_32K	= 2,
 	MAX_AMPDU_FACTOR_64K	= 3,
-}HT_CAP_AMPDU_FACTOR;
+};
 
 /* 802.11n HT capabilities masks */
 #define IEEE80211_HT_CAP_LDPC_CODING		0x0001

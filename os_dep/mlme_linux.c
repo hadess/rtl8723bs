@@ -75,11 +75,11 @@ void rtw_os_indicate_scan_done(struct adapter *padapter, bool aborted)
 static RT_PMKID_LIST   backupPMKIDList[ NUM_PMKID_CACHE ];
 void rtw_reset_securitypriv(struct adapter *adapter)
 {
-	u8	backupPMKIDIndex = 0;
-	u8	backupTKIPCountermeasure = 0x00;
-	u32	backupTKIPcountermeasure_time = 0;
+	u8 backupPMKIDIndex = 0;
+	u8 backupTKIPCountermeasure = 0x00;
+	u32 backupTKIPcountermeasure_time = 0;
 	/*  add for CONFIG_IEEE80211W, none 11w also can use */
-	struct mlme_ext_priv	*pmlmeext = &adapter->mlmeextpriv;
+	struct mlme_ext_priv *pmlmeext = &adapter->mlmeextpriv;
 
 	spin_lock_bh(&adapter->security_key_mutex);
 
@@ -152,7 +152,7 @@ void rtw_os_indicate_disconnect(struct adapter *adapter)
 void rtw_report_sec_ie(struct adapter *adapter, u8 authmode, u8 *sec_ie)
 {
 	uint	len;
-	u8	*buff,*p, i;
+	u8 *buff,*p, i;
 	union iwreq_data wrqu;
 
 	RT_TRACE(_module_mlme_osdep_c_, _drv_info_, ("+rtw_report_sec_ie, authmode =%d\n", authmode));
@@ -175,7 +175,7 @@ void rtw_report_sec_ie(struct adapter *adapter, u8 authmode, u8 *sec_ie)
 		len = sec_ie[1]+2;
 		len = (len < IW_CUSTOM_MAX) ? len:IW_CUSTOM_MAX;
 
-		for (i = 0;i<len;i++){
+		for (i = 0;i<len;i++) {
 			p+=sprintf(p,"%02x", sec_ie[i]);
 		}
 

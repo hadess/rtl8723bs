@@ -48,8 +48,8 @@ static int ch_freq_map_num = (sizeof(ch_freq_map) / sizeof(struct ch_freq));
 
 u32 rtw_ch2freq(u32 channel)
 {
-	u8	i;
-	u32	freq = 0;
+	u8 i;
+	u32 freq = 0;
 
 	for (i = 0; i < ch_freq_map_num; i++)
 	{

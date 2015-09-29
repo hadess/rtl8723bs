@@ -21,69 +21,69 @@ typedef struct _Dynamic_Initial_Gain_Threshold_
 	bool		bStopDIG;
 	bool		bPSDInProgress;
 
-	u1Byte		Dig_Enable_Flag;
-	u1Byte		Dig_Ext_Port_Stage;
+	u8 Dig_Enable_Flag;
+	u8 Dig_Ext_Port_Stage;
 
 	int			RssiLowThresh;
 	int			RssiHighThresh;
 
-	u4Byte		FALowThresh;
-	u4Byte		FAHighThresh;
+	u32 	FALowThresh;
+	u32 	FAHighThresh;
 
-	u1Byte		CurSTAConnectState;
-	u1Byte		PreSTAConnectState;
-	u1Byte		CurMultiSTAConnectState;
+	u8 CurSTAConnectState;
+	u8 PreSTAConnectState;
+	u8 CurMultiSTAConnectState;
 
-	u1Byte		PreIGValue;
-	u1Byte		CurIGValue;
-	u1Byte		BackupIGValue;		/* MP DIG */
-	u1Byte		BT30_CurIGI;
-	u1Byte		IGIBackup;
+	u8 PreIGValue;
+	u8 CurIGValue;
+	u8 BackupIGValue;		/* MP DIG */
+	u8 BT30_CurIGI;
+	u8 IGIBackup;
 
 	s8		BackoffVal;
 	s8		BackoffVal_range_max;
 	s8		BackoffVal_range_min;
-	u1Byte		rx_gain_range_max;
-	u1Byte		rx_gain_range_min;
-	u1Byte		Rssi_val_min;
+	u8 rx_gain_range_max;
+	u8 rx_gain_range_min;
+	u8 Rssi_val_min;
 
-	u1Byte		PreCCK_CCAThres;
-	u1Byte		CurCCK_CCAThres;
-	u1Byte		PreCCKPDState;
-	u1Byte		CurCCKPDState;
-	u1Byte		CCKPDBackup;
+	u8 PreCCK_CCAThres;
+	u8 CurCCK_CCAThres;
+	u8 PreCCKPDState;
+	u8 CurCCKPDState;
+	u8 CCKPDBackup;
 
-	u1Byte		LargeFAHit;
-	u1Byte		ForbiddenIGI;
-	u4Byte		Recover_cnt;
+	u8 LargeFAHit;
+	u8 ForbiddenIGI;
+	u32 	Recover_cnt;
 
-	u1Byte		DIG_Dynamic_MIN_0;
-	u1Byte		DIG_Dynamic_MIN_1;
+	u8 DIG_Dynamic_MIN_0;
+	u8 DIG_Dynamic_MIN_1;
 	bool		bMediaConnect_0;
 	bool		bMediaConnect_1;
 
-	u4Byte		AntDiv_RSSI_max;
-	u4Byte		RSSI_max;
+	u32 	AntDiv_RSSI_max;
+	u32 	RSSI_max;
 
-	u1Byte		*pbP2pLinkInProgress;
+	u8 *pbP2pLinkInProgress;
 }DIG_T,*pDIG_T;
 
 typedef struct false_ALARM_STATISTICS{
-	u4Byte	Cnt_Parity_Fail;
-	u4Byte	Cnt_Rate_Illegal;
-	u4Byte	Cnt_Crc8_fail;
-	u4Byte	Cnt_Mcs_fail;
-	u4Byte	Cnt_Ofdm_fail;
-	u4Byte	Cnt_Ofdm_fail_pre;	/* For RTL8881A */
-	u4Byte	Cnt_Cck_fail;
-	u4Byte	Cnt_all;
-	u4Byte	Cnt_Fast_Fsync;
-	u4Byte	Cnt_SB_Search_fail;
-	u4Byte	Cnt_OFDM_CCA;
-	u4Byte	Cnt_CCK_CCA;
-	u4Byte	Cnt_CCA_all;
-	u4Byte	Cnt_BW_USC;	/* Gary */
-	u4Byte	Cnt_BW_LSC;	/* Gary */
+	u32 Cnt_Parity_Fail;
+	u32 Cnt_Rate_Illegal;
+	u32 Cnt_Crc8_fail;
+	u32 Cnt_Mcs_fail;
+	u32 Cnt_Ofdm_fail;
+	u32 Cnt_Ofdm_fail_pre;	/* For RTL8881A */
+	u32 Cnt_Cck_fail;
+	u32 Cnt_all;
+	u32 Cnt_Fast_Fsync;
+	u32 Cnt_SB_Search_fail;
+	u32 Cnt_OFDM_CCA;
+	u32 Cnt_CCK_CCA;
+	u32 Cnt_CCA_all;
+	u32 Cnt_BW_USC;	/* Gary */
+	u32 Cnt_BW_LSC;	/* Gary */
 }false_ALARM_STATISTICS, *Pfalse_ALARM_STATISTICS;
 
 typedef enum tag_Dynamic_Init_Gain_Operation_Type_Definition
@@ -108,42 +108,6 @@ typedef enum tag_ODM_PauseCCKPD_Type {
 	ODM_RESUME_CCKPD	=	BIT1
 } ODM_Pause_CCKPD_TYPE;
 
-/*
-typedef enum tag_CCK_Packet_Detection_Threshold_Type_Definition
-{
-	CCK_PD_STAGE_LowRssi = 0,
-	CCK_PD_STAGE_HighRssi = 1,
-	CCK_PD_STAGE_MAX = 3,
-}DM_CCK_PDTH_E;
-
-typedef enum tag_DIG_EXT_PORT_ALGO_Definition
-{
-	DIG_EXT_PORT_STAGE_0 = 0,
-	DIG_EXT_PORT_STAGE_1 = 1,
-	DIG_EXT_PORT_STAGE_2 = 2,
-	DIG_EXT_PORT_STAGE_3 = 3,
-	DIG_EXT_PORT_STAGE_MAX = 4,
-}DM_DIG_EXT_PORT_ALG_E;
-
-typedef enum tag_DIG_Connect_Definition
-{
-	DIG_STA_DISCONNECT = 0,
-	DIG_STA_CONNECT = 1,
-	DIG_STA_BEFORE_CONNECT = 2,
-	DIG_MultiSTA_DISCONNECT = 3,
-	DIG_MultiSTA_CONNECT = 4,
-	DIG_CONNECT_MAX
-}DM_DIG_CONNECT_E;
-
-
-#define DM_MultiSTA_InitGainChangeNotify(Event) {DM_DigTable.CurMultiSTAConnectState = Event;}
-
-#define DM_MultiSTA_InitGainChangeNotify_CONNECT(_struct adapter)	\
-	DM_MultiSTA_InitGainChangeNotify(DIG_MultiSTA_CONNECT)
-
-#define DM_MultiSTA_InitGainChangeNotify_DISCONNECT(_struct adapter)	\
-	DM_MultiSTA_InitGainChangeNotify(DIG_MultiSTA_DISCONNECT)
-*/
 #define		DM_DIG_THRESH_HIGH			40
 #define		DM_DIG_THRESH_LOW			35
 
@@ -185,115 +149,115 @@ typedef enum tag_DIG_Connect_Definition
 
 void
 odm_NHMCounterStatisticsInit(
-	IN		void *					pDM_VOID
+	void *				pDM_VOID
 	);
 
 void
 odm_NHMCounterStatistics(
-	IN		void *					pDM_VOID
+	void *				pDM_VOID
 	);
 
 void
 odm_NHMBBInit(
-	IN		void *					pDM_VOID
+	void *				pDM_VOID
 );
 
 void
 odm_NHMBB(
-	IN		void *					pDM_VOID
+	void *				pDM_VOID
 );
 
 void
 odm_NHMCounterStatisticsReset(
-	IN		void *			pDM_VOID
+	void *		pDM_VOID
 );
 
 void
 odm_GetNHMCounterStatistics(
-	IN		void *			pDM_VOID
+	void *		pDM_VOID
 );
 
 void
 odm_SearchPwdBLowerBound(
-	IN		void *					pDM_VOID,
-	IN		u1Byte					IGI_target
+	void *				pDM_VOID,
+	u8 			IGI_target
 );
 
 void
 odm_AdaptivityInit(
-	IN		void *					pDM_VOID
+	void *				pDM_VOID
 	);
 
 void
 odm_Adaptivity(
-	IN		void *					pDM_VOID,
-	IN		u1Byte					IGI
+	void *				pDM_VOID,
+	u8 			IGI
 	);
 
 void
 ODM_Write_DIG(
-	IN		void *					pDM_VOID,
-	IN		u1Byte					CurrentIGI
+	void *				pDM_VOID,
+	u8 			CurrentIGI
 	);
 
 void
 odm_PauseDIG(
-	IN		void *					pDM_VOID,
-	IN		ODM_Pause_DIG_TYPE		PauseType,
-	IN		u1Byte					IGIValue
+	void *				pDM_VOID,
+	ODM_Pause_DIG_TYPE		PauseType,
+	u8 			IGIValue
 	);
 
 void
 odm_DIGInit(
-	IN		void *					pDM_VOID
+	void *				pDM_VOID
 	);
 
 void
 odm_DIG(
-	IN		void *					pDM_VOID
+	void *				pDM_VOID
 	);
 
 void
 odm_DIGbyRSSI_LPS(
-	IN		void *					pDM_VOID
+	void *				pDM_VOID
 	);
 
 void
 odm_FalseAlarmCounterStatistics(
-	IN		void *					pDM_VOID
+	void *				pDM_VOID
 	);
 
 void
 odm_FAThresholdCheck(
-	IN		void *					pDM_VOID,
-	IN		bool					bDFSBand,
-	IN		bool					bPerformance,
-	IN		u4Byte					RxTp,
-	IN		u4Byte					TxTp,
-	OUT		u4Byte*					dm_FA_thres
+	void *				pDM_VOID,
+	bool					bDFSBand,
+	bool					bPerformance,
+	u32 				RxTp,
+	u32 				TxTp,
+	u32*				dm_FA_thres
 	);
 
-u1Byte
+u8
 odm_ForbiddenIGICheck(
-	IN		void *					pDM_VOID,
-	IN		u1Byte					DIG_Dynamic_MIN,
-	IN		u1Byte					CurrentIGI
+	void *				pDM_VOID,
+	u8 			DIG_Dynamic_MIN,
+	u8 			CurrentIGI
 	);
 
 bool
 odm_DigAbort(
-	IN		void *					pDM_VOID
+	void *				pDM_VOID
 	);
 
 void
 odm_CCKPacketDetectionThresh(
-	IN		void *					pDM_VOID
+	void *				pDM_VOID
 	);
 
 void
 ODM_Write_CCK_CCA_Thres(
-	IN		void *					pDM_VOID,
-	IN		u1Byte					CurCCK_CCAThres
+	void *				pDM_VOID,
+	u8 			CurCCK_CCAThres
 	);
 
 #endif

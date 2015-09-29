@@ -1,21 +1,21 @@
-/*  */
-/*  Description: */
-/*  */
-/*  This file is for RTL8723B Co-exist mechanism */
-/*  */
-/*  History */
-/*  2012/11/15 Cosa first check in. */
-/*  */
-/*  */
+/******************************************************************************
+ *
+ * Copyright(c) 2007 - 2012 Realtek Corporation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of version 2 of the GNU General Public License as
+ * published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+ * more details.
+ *
+ ******************************************************************************/
 
-/*  */
-/*  include files */
-/*  */
 #include "Mp_Precomp.h"
 
-/*  */
 /*  Global variables, these are static variables */
-/*  */
 static COEX_DM_8723B_1ANT		GLCoexDm8723b1Ant;
 static PCOEX_DM_8723B_1ANT	pCoexDm =&GLCoexDm8723b1Ant;
 static COEX_STA_8723B_1ANT		GLCoexSta8723b1Ant;
@@ -27,24 +27,20 @@ static const char *const GLBtInfoSrc8723b1Ant[]={
 	"BT Info[bt auto report]",
 };
 
-static u4Byte	GLCoexVerDate8723b1Ant =20140507;
-static u4Byte	GLCoexVer8723b1Ant = 0x4e;
+static u32 GLCoexVerDate8723b1Ant =20140507;
+static u32 GLCoexVer8723b1Ant = 0x4e;
 
-/*  */
 /*  local function proto type if needed */
-/*  */
-/*  */
 /*  local function start with halbtc8723b1ant_ */
-/*  */
-static u1Byte
+static u8
 halbtc8723b1ant_BtRssiState(
-	u1Byte			levelNum,
-	u1Byte			rssiThresh,
-	u1Byte			rssiThresh1
+	u8 	levelNum,
+	u8 	rssiThresh,
+	u8 	rssiThresh1
 	)
 {
-	s4Byte			btRssi = 0;
-	u1Byte			btRssiState =pCoexSta->preBtRssiState;
+	s32			btRssi = 0;
+	u8 	btRssiState =pCoexSta->preBtRssiState;
 
 	btRssi = pCoexSta->btRssi;
 
@@ -141,9 +137,9 @@ halbtc8723b1ant_BtRssiState(
 
 static void
 halbtc8723b1ant_UpdateRaMask(
-	IN	PBTC_COEXIST		pBtCoexist,
-	IN	bool				bForceExec,
-	IN	u4Byte				disRateMask
+PBTC_COEXIST		pBtCoexist,
+bool				bForceExec,
+u32 			disRateMask
 	)
 {
 	pCoexDm->curRaMask = disRateMask;
@@ -157,9 +153,9 @@ halbtc8723b1ant_UpdateRaMask(
 
 static void
 halbtc8723b1ant_AutoRateFallbackRetry(
-	IN	PBTC_COEXIST		pBtCoexist,
-	IN	bool				bForceExec,
-	IN	u1Byte				type
+PBTC_COEXIST		pBtCoexist,
+bool				bForceExec,
+u8 		type
 	)
 {
 	bool	bWifiUnderBMode =false;
@@ -197,9 +193,9 @@ halbtc8723b1ant_AutoRateFallbackRetry(
 
 static void
 halbtc8723b1ant_RetryLimit(
-	IN	PBTC_COEXIST		pBtCoexist,
-	IN	bool				bForceExec,
-	IN	u1Byte				type
+PBTC_COEXIST		pBtCoexist,
+bool				bForceExec,
+u8 		type
 	)
 {
 	pCoexDm->curRetryLimitType = type;
@@ -224,9 +220,9 @@ halbtc8723b1ant_RetryLimit(
 
 static void
 halbtc8723b1ant_AmpduMaxTime(
-	IN	PBTC_COEXIST		pBtCoexist,
-	IN	bool				bForceExec,
-	IN	u1Byte				type
+PBTC_COEXIST		pBtCoexist,
+bool				bForceExec,
+u8 		type
 	)
 {
 	pCoexDm->curAmpduTimeType = type;
@@ -251,12 +247,12 @@ halbtc8723b1ant_AmpduMaxTime(
 
 static void
 halbtc8723b1ant_LimitedTx(
-	IN	PBTC_COEXIST		pBtCoexist,
-	IN	bool				bForceExec,
-	IN	u1Byte				raMaskType,
-	IN	u1Byte				arfrType,
-	IN	u1Byte				retryLimitType,
-	IN	u1Byte				ampduTimeType
+PBTC_COEXIST		pBtCoexist,
+bool				bForceExec,
+u8 		raMaskType,
+u8 		arfrType,
+u8 		retryLimitType,
+u8 		ampduTimeType
 	)
 {
 	switch (raMaskType)
@@ -281,16 +277,16 @@ halbtc8723b1ant_LimitedTx(
 
 static void
 halbtc8723b1ant_LimitedRx(
-	IN	PBTC_COEXIST		pBtCoexist,
-	IN	bool				bForceExec,
-	IN	bool				bRejApAggPkt,
-	IN	bool				bBtCtrlAggBufSize,
-	IN	u1Byte				aggBufSize
+PBTC_COEXIST		pBtCoexist,
+bool				bForceExec,
+bool				bRejApAggPkt,
+bool				bBtCtrlAggBufSize,
+u8 		aggBufSize
 	)
 {
 	bool	bRejectRxAgg =bRejApAggPkt;
 	bool	bBtCtrlRxAggSize =bBtCtrlAggBufSize;
-	u1Byte	rxAggSize =aggBufSize;
+	u8 rxAggSize =aggBufSize;
 
 	/*  */
 	/* 	Rx Aggregation related setting */
@@ -308,10 +304,10 @@ halbtc8723b1ant_LimitedRx(
 
 static void
 halbtc8723b1ant_QueryBtInfo(
-	IN	PBTC_COEXIST		pBtCoexist
+PBTC_COEXIST		pBtCoexist
 	)
 {
-	u1Byte			H2C_Parameter[1] ={0};
+	u8 	H2C_Parameter[1] ={0};
 
 	pCoexSta->bC2hBtInfoReqSent = true;
 
@@ -325,12 +321,12 @@ halbtc8723b1ant_QueryBtInfo(
 
 static void
 halbtc8723b1ant_MonitorBtCtr(
-	IN	PBTC_COEXIST		pBtCoexist
+PBTC_COEXIST		pBtCoexist
 	)
 {
-	u4Byte			regHPTxRx, regLPTxRx, u4Tmp;
-	u4Byte			regHPTx = 0, regHPRx = 0, regLPTx = 0, regLPRx = 0;
-	static u1Byte		NumOfBtCounterChk;
+	u32 		regHPTxRx, regLPTxRx, u4Tmp;
+	u32 		regHPTx = 0, regHPRx = 0, regLPTx = 0, regLPRx = 0;
+	static u8 NumOfBtCounterChk;
 
        /* to avoid 0x76e[3] = 1 (WLAN_Act control by PTA) during IPS */
 	/* if (! (pBtCoexist->fBtcRead1Byte(pBtCoexist, 0x76e) & 0x8)) */
@@ -383,12 +379,12 @@ halbtc8723b1ant_MonitorBtCtr(
 
 static void
 halbtc8723b1ant_MonitorWiFiCtr(
-	IN	PBTC_COEXIST		pBtCoexist
+PBTC_COEXIST		pBtCoexist
 	)
 {
-	s4Byte	wifiRssi = 0;
+	s32	wifiRssi = 0;
 	bool bWifiBusy = false, bWifiUnderBMode = false;
-	static u1Byte nCCKLockCounter = 0;
+	static u8 nCCKLockCounter = 0;
 
 	pBtCoexist->fBtcGet(pBtCoexist, BTC_GET_BL_WIFI_BUSY, &bWifiBusy);
 	pBtCoexist->fBtcGet(pBtCoexist, BTC_GET_S4_WIFI_RSSI, &wifiRssi);
@@ -478,7 +474,7 @@ halbtc8723b1ant_MonitorWiFiCtr(
 
 static bool
 halbtc8723b1ant_IsWifiStatusChanged(
-	IN	PBTC_COEXIST		pBtCoexist
+PBTC_COEXIST		pBtCoexist
 	)
 {
 	static bool	bPreWifiBusy =false, bPreUnder4way =false, bPreBtHsOn =false;
@@ -514,7 +510,7 @@ halbtc8723b1ant_IsWifiStatusChanged(
 
 static void
 halbtc8723b1ant_UpdateBtLinkInfo(
-	IN	PBTC_COEXIST		pBtCoexist
+PBTC_COEXIST		pBtCoexist
 	)
 {
 	PBTC_BT_LINK_INFO	pBtLinkInfo =&pBtCoexist->btLinkInfo;
@@ -572,15 +568,15 @@ halbtc8723b1ant_UpdateBtLinkInfo(
 		pBtLinkInfo->bHidOnly = false;
 }
 
-static u1Byte
+static u8
 halbtc8723b1ant_ActionAlgorithm(
-	IN	PBTC_COEXIST		pBtCoexist
+PBTC_COEXIST		pBtCoexist
 	)
 {
 	PBTC_BT_LINK_INFO	pBtLinkInfo =&pBtCoexist->btLinkInfo;
 	bool				bBtHsOn =false;
-	u1Byte				algorithm =BT_8723B_1ANT_COEX_ALGO_UNDEFINED;
-	u1Byte				numOfDiffProfile = 0;
+	u8 		algorithm =BT_8723B_1ANT_COEX_ALGO_UNDEFINED;
+	u8 		numOfDiffProfile = 0;
 
 	pBtCoexist->fBtcGet(pBtCoexist, BTC_GET_BL_HS_OPERATION, &bBtHsOn);
 
@@ -784,11 +780,11 @@ halbtc8723b1ant_ActionAlgorithm(
 
 static void
 halbtc8723b1ant_SetSwPenaltyTxRateAdaptive(
-	IN	PBTC_COEXIST		pBtCoexist,
-	IN	bool			bLowPenaltyRa
+PBTC_COEXIST		pBtCoexist,
+bool			bLowPenaltyRa
 	)
 {
-	u1Byte			H2C_Parameter[6] ={0};
+	u8 	H2C_Parameter[6] ={0};
 
 	H2C_Parameter[0] = 0x6;	/*  opCode, 0x6 = Retry_Penalty */
 
@@ -809,9 +805,9 @@ halbtc8723b1ant_SetSwPenaltyTxRateAdaptive(
 
 static void
 halbtc8723b1ant_LowPenaltyRa(
-	IN	PBTC_COEXIST		pBtCoexist,
-	IN	bool			bForceExec,
-	IN	bool			bLowPenaltyRa
+PBTC_COEXIST		pBtCoexist,
+bool			bForceExec,
+bool			bLowPenaltyRa
 	)
 {
 	pCoexDm->bCurLowPenaltyRa = bLowPenaltyRa;
@@ -828,11 +824,11 @@ halbtc8723b1ant_LowPenaltyRa(
 
 static void
 halbtc8723b1ant_SetCoexTable(
-	IN	PBTC_COEXIST	pBtCoexist,
-	IN	u4Byte		val0x6c0,
-	IN	u4Byte		val0x6c4,
-	IN	u4Byte		val0x6c8,
-	IN	u1Byte		val0x6cc
+PBTC_COEXIST	pBtCoexist,
+u32 	val0x6c0,
+u32 	val0x6c4,
+u32 	val0x6c8,
+u8 val0x6cc
 	)
 {
 	BTC_PRINT(BTC_MSG_ALGORITHM, ALGO_TRACE_SW_EXEC, ("[BTCoex], set coex table, set 0x6c0 = 0x%x\n", val0x6c0));
@@ -850,12 +846,12 @@ halbtc8723b1ant_SetCoexTable(
 
 static void
 halbtc8723b1ant_CoexTable(
-	IN	PBTC_COEXIST		pBtCoexist,
-	IN	bool			bForceExec,
-	IN	u4Byte			val0x6c0,
-	IN	u4Byte			val0x6c4,
-	IN	u4Byte			val0x6c8,
-	IN	u1Byte			val0x6cc
+PBTC_COEXIST		pBtCoexist,
+bool			bForceExec,
+u32 		val0x6c0,
+u32 		val0x6c4,
+u32 		val0x6c8,
+u8 	val0x6cc
 	)
 {
 	BTC_PRINT(BTC_MSG_ALGORITHM, ALGO_TRACE_SW, ("[BTCoex], %s write Coex Table 0x6c0 = 0x%x, 0x6c4 = 0x%x, 0x6cc = 0x%x\n",
@@ -882,9 +878,9 @@ halbtc8723b1ant_CoexTable(
 
 static void
 halbtc8723b1ant_CoexTableWithType(
-	IN	PBTC_COEXIST		pBtCoexist,
-	IN	bool				bForceExec,
-	IN	u1Byte				type
+PBTC_COEXIST		pBtCoexist,
+bool				bForceExec,
+u8 		type
 	)
 {
 	BTC_PRINT(BTC_MSG_ALGORITHM, ALGO_TRACE, ("[BTCoex], ********** CoexTable(%d) **********\n", type));
@@ -924,11 +920,11 @@ halbtc8723b1ant_CoexTableWithType(
 
 static void
 halbtc8723b1ant_SetFwIgnoreWlanAct(
-	IN	PBTC_COEXIST		pBtCoexist,
-	IN	bool			bEnable
+PBTC_COEXIST		pBtCoexist,
+bool			bEnable
 	)
 {
-	u1Byte			H2C_Parameter[1] ={0};
+	u8 	H2C_Parameter[1] ={0};
 
 	if (bEnable)
 	{
@@ -943,9 +939,9 @@ halbtc8723b1ant_SetFwIgnoreWlanAct(
 
 static void
 halbtc8723b1ant_IgnoreWlanAct(
-	IN	PBTC_COEXIST		pBtCoexist,
-	IN	bool			bForceExec,
-	IN	bool			bEnable
+PBTC_COEXIST		pBtCoexist,
+bool			bForceExec,
+bool			bEnable
 	)
 {
 	BTC_PRINT(BTC_MSG_ALGORITHM, ALGO_TRACE_FW, ("[BTCoex], %s turn Ignore WlanAct %s\n",
@@ -967,13 +963,13 @@ halbtc8723b1ant_IgnoreWlanAct(
 
 static void
 halbtc8723b1ant_SetLpsRpwm(
-	IN	PBTC_COEXIST		pBtCoexist,
-	IN	u1Byte			lpsVal,
-	IN	u1Byte			rpwmVal
+PBTC_COEXIST		pBtCoexist,
+u8 	lpsVal,
+u8 	rpwmVal
 	)
 {
-	u1Byte	lps =lpsVal;
-	u1Byte	rpwm =rpwmVal;
+	u8 lps =lpsVal;
+	u8 rpwm =rpwmVal;
 
 	pBtCoexist->fBtcSet(pBtCoexist, BTC_SET_U1_LPS_VAL, &lps);
 	pBtCoexist->fBtcSet(pBtCoexist, BTC_SET_U1_RPWM_VAL, &rpwm);
@@ -981,13 +977,13 @@ halbtc8723b1ant_SetLpsRpwm(
 
 static void
 halbtc8723b1ant_LpsRpwm(
-	IN	PBTC_COEXIST		pBtCoexist,
-	IN	bool			bForceExec,
-	IN	u1Byte			lpsVal,
-	IN	u1Byte			rpwmVal
+PBTC_COEXIST		pBtCoexist,
+bool			bForceExec,
+u8 	lpsVal,
+u8 	rpwmVal
 	)
 {
-	BTC_PRINT(BTC_MSG_ALGORITHM, ALGO_TRACE_FW, ("[BTCoex], %s set lps/rpwm = 0x%x/0x%x \n",
+	BTC_PRINT(BTC_MSG_ALGORITHM, ALGO_TRACE_FW, ("[BTCoex], %s set lps/rpwm = 0x%x/0x%x\n",
 		(bForceExec? "force to":""), lpsVal, rpwmVal));
 	pCoexDm->curLps = lpsVal;
 	pCoexDm->curRpwm = rpwmVal;
@@ -1014,8 +1010,8 @@ halbtc8723b1ant_LpsRpwm(
 
 static void
 halbtc8723b1ant_SwMechanism(
-	IN	PBTC_COEXIST	pBtCoexist,
-	IN	bool		bLowPenaltyRA
+PBTC_COEXIST	pBtCoexist,
+bool		bLowPenaltyRA
 	)
 {
 	BTC_PRINT(BTC_MSG_ALGORITHM, ALGO_BT_MONITOR, ("[BTCoex], SM[LpRA] = %d\n",
@@ -1026,18 +1022,18 @@ halbtc8723b1ant_SwMechanism(
 
 static void
 halbtc8723b1ant_SetAntPath(
-	IN	PBTC_COEXIST		pBtCoexist,
-	IN	u1Byte				antPosType,
-	IN	bool				bInitHwCfg,
-	IN	bool				bWifiOff
+PBTC_COEXIST		pBtCoexist,
+u8 		antPosType,
+bool				bInitHwCfg,
+bool				bWifiOff
 	)
 {
 	PBTC_BOARD_INFO pBoardInfo =&pBtCoexist->boardInfo;
-	u4Byte			fwVer = 0, u4Tmp = 0, cntBtCalChk = 0;
+	u32 		fwVer = 0, u4Tmp = 0, cntBtCalChk = 0;
 	bool			bPgExtSwitch =false;
 	bool			bUseExtSwitch =false;
 	bool			bIsInMpMode = false;
-	u1Byte			H2C_Parameter[2] ={0}, u1Tmp = 0;
+	u8 	H2C_Parameter[2] ={0}, u1Tmp = 0;
 
 	pBtCoexist->fBtcGet(pBtCoexist, BTC_GET_BL_EXT_SWITCH, &bPgExtSwitch);
 	pBtCoexist->fBtcGet(pBtCoexist, BTC_GET_U4_WIFI_FW_VER, &fwVer);	/*  [31:16]=fw ver, [15:0]=fw sub ver */
@@ -1254,16 +1250,16 @@ halbtc8723b1ant_SetAntPath(
 
 static void
 halbtc8723b1ant_SetFwPstdma(
-	IN	PBTC_COEXIST		pBtCoexist,
-	IN	u1Byte			byte1,
-	IN	u1Byte			byte2,
-	IN	u1Byte			byte3,
-	IN	u1Byte			byte4,
-	IN	u1Byte			byte5
+PBTC_COEXIST		pBtCoexist,
+u8 	byte1,
+u8 	byte2,
+u8 	byte3,
+u8 	byte4,
+u8 	byte5
 	)
 {
-	u1Byte			H2C_Parameter[5] ={0};
-	u1Byte			realByte1 =byte1, realByte5 =byte5;
+	u8 	H2C_Parameter[5] ={0};
+	u8 	realByte1 =byte1, realByte5 =byte5;
 	bool			bApEnable =false;
 
 	pBtCoexist->fBtcGet(pBtCoexist, BTC_GET_BL_WIFI_AP_MODE_ENABLE, &bApEnable);
@@ -1303,18 +1299,18 @@ halbtc8723b1ant_SetFwPstdma(
 
 static void
 halbtc8723b1ant_PsTdma(
-	IN	PBTC_COEXIST		pBtCoexist,
-	IN	bool			bForceExec,
-	IN	bool			bTurnOn,
-	IN	u1Byte			type
+PBTC_COEXIST		pBtCoexist,
+bool			bForceExec,
+bool			bTurnOn,
+u8 	type
 	)
 {
 	PBTC_BT_LINK_INFO pBtLinkInfo =&pBtCoexist->btLinkInfo;
 	bool			bWifiBusy =false;
-	u1Byte			rssiAdjustVal = 0;
-	u1Byte			psTdmaByte4Val = 0x50, psTdmaByte0Val = 0x51, psTdmaByte3Val =  0x10;
+	u8 	rssiAdjustVal = 0;
+	u8 	psTdmaByte4Val = 0x50, psTdmaByte0Val = 0x51, psTdmaByte3Val =  0x10;
 	s8			nWiFiDurationAdjust = 0x0;
-	/* u4Byte			fwVer = 0; */
+	/* u32 		fwVer = 0; */
 
 	/* BTC_PRINT(BTC_MSG_ALGORITHM, ALGO_TRACE_FW, ("[BTCoex], %s turn %s PS TDMA, type =%d\n", */
 	/* 	(bForceExec? "force to":""), (bTurnOn? "ON":"OFF"), type)); */
@@ -1508,7 +1504,7 @@ halbtc8723b1ant_PsTdma(
 
 static bool
 halbtc8723b1ant_IsCommonAction(
-	IN	PBTC_COEXIST		pBtCoexist
+PBTC_COEXIST		pBtCoexist
 	)
 {
 	bool			bCommon =false, bWifiConnected =false, bWifiBusy =false;
@@ -1581,13 +1577,13 @@ halbtc8723b1ant_IsCommonAction(
 
 static void
 halbtc8723b1ant_TdmaDurationAdjustForAcl(
-	IN	PBTC_COEXIST		pBtCoexist,
-	IN	u1Byte				wifiStatus
+PBTC_COEXIST		pBtCoexist,
+u8 		wifiStatus
 	)
 {
-	static s4Byte		up, dn, m, n, WaitCount;
-	s4Byte			result;   /* 0: no change, +1: increase WiFi duration, -1: decrease WiFi duration */
-	u1Byte			retryCount = 0, btInfoExt;
+	static s32		up, dn, m, n, WaitCount;
+	s32			result;   /* 0: no change, +1: increase WiFi duration, -1: decrease WiFi duration */
+	u8 	retryCount = 0, btInfoExt;
 	bool			bWifiBusy = false;
 
 	BTC_PRINT(BTC_MSG_ALGORITHM, ALGO_TRACE_FW, ("[BTCoex], TdmaDurationAdjustForAcl()\n"));
@@ -1778,11 +1774,11 @@ halbtc8723b1ant_TdmaDurationAdjustForAcl(
 
 static void
 halbtc8723b1ant_PsTdmaCheckForPowerSaveState(
-	IN	PBTC_COEXIST		pBtCoexist,
-	IN	bool			bNewPsState
+PBTC_COEXIST		pBtCoexist,
+bool			bNewPsState
 	)
 {
-	u1Byte	lpsMode = 0x0;
+	u8 lpsMode = 0x0;
 
 	pBtCoexist->fBtcGet(pBtCoexist, BTC_GET_U1_LPS_MODE, &lpsMode);
 
@@ -1814,10 +1810,10 @@ halbtc8723b1ant_PsTdmaCheckForPowerSaveState(
 
 static void
 halbtc8723b1ant_PowerSaveState(
-	IN	PBTC_COEXIST		pBtCoexist,
-	IN	u1Byte				psType,
-	IN	u1Byte				lpsVal,
-	IN	u1Byte				rpwmVal
+PBTC_COEXIST		pBtCoexist,
+u8 		psType,
+u8 		lpsVal,
+u8 		rpwmVal
 	)
 {
 	bool		bLowPwrDisable =false;
@@ -1864,7 +1860,7 @@ halbtc8723b1ant_PowerSaveState(
 /*  */
 static void
 halbtc8723b1ant_ActionWifiMultiPort(
-	IN	PBTC_COEXIST		pBtCoexist
+PBTC_COEXIST		pBtCoexist
 	)
 {
 	halbtc8723b1ant_PowerSaveState(pBtCoexist, BTC_PS_WIFI_NATIVE, 0x0, 0x0);
@@ -1875,7 +1871,7 @@ halbtc8723b1ant_ActionWifiMultiPort(
 
 static void
 halbtc8723b1ant_ActionHs(
-	IN	PBTC_COEXIST		pBtCoexist
+PBTC_COEXIST		pBtCoexist
 	)
 {
 	halbtc8723b1ant_PsTdma(pBtCoexist, NORMAL_EXEC, true, 5);
@@ -1884,7 +1880,7 @@ halbtc8723b1ant_ActionHs(
 
 static void
 halbtc8723b1ant_ActionBtInquiry(
-	IN	PBTC_COEXIST		pBtCoexist
+PBTC_COEXIST		pBtCoexist
 	)
 {
 	PBTC_BT_LINK_INFO pBtLinkInfo =&pBtCoexist->btLinkInfo;
@@ -1928,8 +1924,8 @@ halbtc8723b1ant_ActionBtInquiry(
 
 static void
 halbtc8723b1ant_ActionBtScoHidOnlyBusy(
-	IN	PBTC_COEXIST		pBtCoexist,
-	IN	u1Byte				wifiStatus
+PBTC_COEXIST		pBtCoexist,
+u8 		wifiStatus
 	)
 {
 	PBTC_BT_LINK_INFO pBtLinkInfo =&pBtCoexist->btLinkInfo;
@@ -1953,11 +1949,11 @@ halbtc8723b1ant_ActionBtScoHidOnlyBusy(
 
 static void
 halbtc8723b1ant_ActionWifiConnectedBtAclBusy(
-	IN	PBTC_COEXIST		pBtCoexist,
-	IN	u1Byte				wifiStatus
+PBTC_COEXIST		pBtCoexist,
+u8 		wifiStatus
 	)
 {
-	u1Byte		btRssiState;
+	u8 btRssiState;
 
 	PBTC_BT_LINK_INFO pBtLinkInfo =&pBtCoexist->btLinkInfo;
 	btRssiState = halbtc8723b1ant_BtRssiState(2, 28, 0);
@@ -2023,7 +2019,7 @@ halbtc8723b1ant_ActionWifiConnectedBtAclBusy(
 
 static void
 halbtc8723b1ant_ActionWifiNotConnected(
-	IN	PBTC_COEXIST		pBtCoexist
+PBTC_COEXIST		pBtCoexist
 	)
 {
 	/*  power save state */
@@ -2036,7 +2032,7 @@ halbtc8723b1ant_ActionWifiNotConnected(
 
 static void
 halbtc8723b1ant_ActionWifiNotConnectedScan(
-	IN	PBTC_COEXIST		pBtCoexist
+PBTC_COEXIST		pBtCoexist
 	)
 {
 	PBTC_BT_LINK_INFO pBtLinkInfo =&pBtCoexist->btLinkInfo;
@@ -2078,7 +2074,7 @@ halbtc8723b1ant_ActionWifiNotConnectedScan(
 
 static void
 halbtc8723b1ant_ActionWifiNotConnectedAssoAuth(
-	IN	PBTC_COEXIST		pBtCoexist
+PBTC_COEXIST		pBtCoexist
 	)
 {
 	PBTC_BT_LINK_INFO pBtLinkInfo =&pBtCoexist->btLinkInfo;
@@ -2105,7 +2101,7 @@ halbtc8723b1ant_ActionWifiNotConnectedAssoAuth(
 
 static void
 halbtc8723b1ant_ActionWifiConnectedScan(
-	IN	PBTC_COEXIST		pBtCoexist
+PBTC_COEXIST		pBtCoexist
 	)
 {
 	PBTC_BT_LINK_INFO pBtLinkInfo =&pBtCoexist->btLinkInfo;
@@ -2147,7 +2143,7 @@ halbtc8723b1ant_ActionWifiConnectedScan(
 
 static void
 halbtc8723b1ant_ActionWifiConnectedSpecialPacket(
-	IN	PBTC_COEXIST		pBtCoexist
+PBTC_COEXIST		pBtCoexist
 	)
 {
 	PBTC_BT_LINK_INFO pBtLinkInfo =&pBtCoexist->btLinkInfo;
@@ -2174,7 +2170,7 @@ halbtc8723b1ant_ActionWifiConnectedSpecialPacket(
 
 static void
 halbtc8723b1ant_ActionWifiConnected(
-	IN	PBTC_COEXIST		pBtCoexist
+PBTC_COEXIST		pBtCoexist
 	)
 {
 	bool	bWifiBusy =false;
@@ -2285,10 +2281,10 @@ halbtc8723b1ant_ActionWifiConnected(
 
 static void
 halbtc8723b1ant_RunSwCoexistMechanism(
-	IN	PBTC_COEXIST		pBtCoexist
+PBTC_COEXIST		pBtCoexist
 	)
 {
-	u1Byte				algorithm = 0;
+	u8 		algorithm = 0;
 
 	algorithm = halbtc8723b1ant_ActionAlgorithm(pBtCoexist);
 	pCoexDm->curAlgorithm = algorithm;
@@ -2351,16 +2347,16 @@ halbtc8723b1ant_RunSwCoexistMechanism(
 
 static void
 halbtc8723b1ant_RunCoexistMechanism(
-	IN	PBTC_COEXIST		pBtCoexist
+PBTC_COEXIST		pBtCoexist
 	)
 {
 	PBTC_BT_LINK_INFO pBtLinkInfo =&pBtCoexist->btLinkInfo;
 	bool	bWifiConnected =false, bBtHsOn =false;
 	bool	bIncreaseScanDevNum =false;
 	bool	bBtCtrlAggBufSize =false;
-	u1Byte	aggBufSize =5;
-	u4Byte	wifiLinkStatus = 0;
-	u4Byte	numOfWifiLink = 0;
+	u8 aggBufSize =5;
+	u32 wifiLinkStatus = 0;
+	u32 numOfWifiLink = 0;
 
 	BTC_PRINT(BTC_MSG_ALGORITHM, ALGO_TRACE, ("[BTCoex], RunCoexistMechanism() ===>\n"));
 
@@ -2403,7 +2399,7 @@ halbtc8723b1ant_RunCoexistMechanism(
 
 		if ((pBtLinkInfo->bA2dpExist) && (pCoexSta->bC2hBtInquiryPage))
 		{
-			BTC_PRINT(BTC_MSG_INTERFACE, INTF_NOTIFY, ("############# [BTCoex],  BT Is Inquirying \n"));
+			BTC_PRINT(BTC_MSG_INTERFACE, INTF_NOTIFY, ("############# [BTCoex],  BT Is Inquirying\n"));
 			halbtc8723b1ant_ActionBtInquiry(pBtCoexist);
 		}
 		else
@@ -2437,7 +2433,7 @@ halbtc8723b1ant_RunCoexistMechanism(
 	pBtCoexist->fBtcGet(pBtCoexist, BTC_GET_BL_HS_OPERATION, &bBtHsOn);
 	if (pCoexSta->bC2hBtInquiryPage)
 	{
-		BTC_PRINT(BTC_MSG_INTERFACE, INTF_NOTIFY, ("############# [BTCoex],  BT Is Inquirying \n"));
+		BTC_PRINT(BTC_MSG_INTERFACE, INTF_NOTIFY, ("############# [BTCoex],  BT Is Inquirying\n"));
 		halbtc8723b1ant_ActionBtInquiry(pBtCoexist);
 		return;
 	}
@@ -2476,7 +2472,7 @@ halbtc8723b1ant_RunCoexistMechanism(
 
 static void
 halbtc8723b1ant_InitCoexDm(
-	IN	PBTC_COEXIST		pBtCoexist
+PBTC_COEXIST		pBtCoexist
 	)
 {
 	/*  force to reset coex mechanism */
@@ -2492,13 +2488,13 @@ halbtc8723b1ant_InitCoexDm(
 
 static void
 halbtc8723b1ant_InitHwConfig(
-	IN	PBTC_COEXIST		pBtCoexist,
-	IN	bool				bBackUp,
-	IN	bool				bWifiOnly
+PBTC_COEXIST		pBtCoexist,
+bool				bBackUp,
+bool				bWifiOnly
 	)
 {
-	u4Byte				u4Tmp = 0;/*  fwVer; */
-	u1Byte				u1Tmpa = 0, u1Tmpb = 0;
+	u32 			u4Tmp = 0;/*  fwVer; */
+	u8 		u1Tmpa = 0, u1Tmpb = 0;
 
 	BTC_PRINT(BTC_MSG_INTERFACE, INTF_INIT, ("[BTCoex], 1Ant Init HW Config!!\n"));
 
@@ -2539,12 +2535,12 @@ halbtc8723b1ant_InitHwConfig(
 /*  */
 void
 EXhalbtc8723b1ant_PowerOnSetting(
-	IN	PBTC_COEXIST		pBtCoexist
+PBTC_COEXIST		pBtCoexist
 	)
 {
 	PBTC_BOARD_INFO		pBoardInfo =&pBtCoexist->boardInfo;
-	u1Byte u1Tmp = 0x0;
-	u2Byte u2Tmp = 0x0;
+	u8 u1Tmp = 0x0;
+	u16 u2Tmp = 0x0;
 
 	pBtCoexist->fBtcWrite1Byte(pBtCoexist, 0x67, 0x20);
 
@@ -2604,8 +2600,8 @@ EXhalbtc8723b1ant_PowerOnSetting(
 
 void
 EXhalbtc8723b1ant_InitHwConfig(
-	IN	PBTC_COEXIST		pBtCoexist,
-	IN	bool				bWifiOnly
+PBTC_COEXIST		pBtCoexist,
+bool				bWifiOnly
 	)
 {
 	halbtc8723b1ant_InitHwConfig(pBtCoexist, true, bWifiOnly);
@@ -2613,7 +2609,7 @@ EXhalbtc8723b1ant_InitHwConfig(
 
 void
 EXhalbtc8723b1ant_InitCoexDm(
-	IN	PBTC_COEXIST		pBtCoexist
+PBTC_COEXIST		pBtCoexist
 	)
 {
 	BTC_PRINT(BTC_MSG_INTERFACE, INTF_INIT, ("[BTCoex], Coex Mechanism Init!!\n"));
@@ -2627,23 +2623,23 @@ EXhalbtc8723b1ant_InitCoexDm(
 
 void
 EXhalbtc8723b1ant_DisplayCoexInfo(
-	IN	PBTC_COEXIST		pBtCoexist
+PBTC_COEXIST		pBtCoexist
 	)
 {
 	PBTC_BOARD_INFO		pBoardInfo =&pBtCoexist->boardInfo;
 	PBTC_STACK_INFO		pStackInfo =&pBtCoexist->stackInfo;
 	PBTC_BT_LINK_INFO	pBtLinkInfo =&pBtCoexist->btLinkInfo;
-	pu1Byte				cliBuf =pBtCoexist->cliBuf;
-	u1Byte				u1Tmp[4], i, btInfoExt, psTdmaCase = 0;
-	u2Byte				u2Tmp[4];
-	u4Byte				u4Tmp[4];
+	u8 *			cliBuf =pBtCoexist->cliBuf;
+	u8 		u1Tmp[4], i, btInfoExt, psTdmaCase = 0;
+	u16 			u2Tmp[4];
+	u32 			u4Tmp[4];
 	bool				bRoam =false, bScan =false, bLink =false, bWifiUnder5G =false, bWifiUnderBMode = false;
 	bool				bBtHsOn =false, bWifiBusy =false;
-	s4Byte				wifiRssi = 0, btHsRssi = 0;
-	u4Byte				wifiBw, wifiTrafficDir, faOfdm, faCck, wifiLinkStatus;
-	u1Byte				wifiDot11Chnl, wifiHsChnl;
-	u4Byte				fwVer = 0, btPatchVer = 0;
-	static u1Byte			PopReportIn10s = 0;
+	s32				wifiRssi = 0, btHsRssi = 0;
+	u32 			wifiBw, wifiTrafficDir, faOfdm, faCck, wifiLinkStatus;
+	u8 		wifiDot11Chnl, wifiHsChnl;
+	u32 			fwVer = 0, btPatchVer = 0;
+	static u8 	PopReportIn10s = 0;
 
 	CL_SPRINTF(cliBuf, BT_TMP_BUF_SIZE, "\r\n ============[BT Coexist info]============");
 	CL_PRINTF(cliBuf);
@@ -2725,7 +2721,7 @@ EXhalbtc8723b1ant_DisplayCoexInfo(
 	PopReportIn10s++;
 	CL_SPRINTF(cliBuf, BT_TMP_BUF_SIZE, "\r\n %-35s = [%s/ %d/ %d/ %d] ", "BT [status/ rssi/ retryCnt/ popCnt]", \
 		((pBtCoexist->btInfo.bBtDisabled)? ("disabled"):	((pCoexSta->bC2hBtInquiryPage)?("inquiry/page scan"):((BT_8723B_1ANT_BT_STATUS_NON_CONNECTED_IDLE == pCoexDm->btStatus)? "non-connected idle":
-		( (BT_8723B_1ANT_BT_STATUS_CONNECTED_IDLE == pCoexDm->btStatus)? "connected-idle":"busy")))),
+		((BT_8723B_1ANT_BT_STATUS_CONNECTED_IDLE == pCoexDm->btStatus)? "connected-idle":"busy")))),
 		pCoexSta->btRssi, pCoexSta->btRetryCnt, pCoexSta->popEventCnt);
 	CL_PRINTF(cliBuf);
 
@@ -2924,8 +2920,8 @@ EXhalbtc8723b1ant_DisplayCoexInfo(
 
 void
 EXhalbtc8723b1ant_IpsNotify(
-	IN	PBTC_COEXIST		pBtCoexist,
-	IN	u1Byte			type
+PBTC_COEXIST		pBtCoexist,
+u8 	type
 	)
 {
 	if (pBtCoexist->bManualControl ||	pBtCoexist->bStopCoexDm)
@@ -2953,8 +2949,8 @@ EXhalbtc8723b1ant_IpsNotify(
 
 void
 EXhalbtc8723b1ant_LpsNotify(
-	IN	PBTC_COEXIST		pBtCoexist,
-	IN	u1Byte			type
+PBTC_COEXIST		pBtCoexist,
+u8 	type
 	)
 {
 	if (pBtCoexist->bManualControl || pBtCoexist->bStopCoexDm)
@@ -2974,18 +2970,18 @@ EXhalbtc8723b1ant_LpsNotify(
 
 void
 EXhalbtc8723b1ant_ScanNotify(
-	IN	PBTC_COEXIST		pBtCoexist,
-	IN	u1Byte			type
+PBTC_COEXIST		pBtCoexist,
+u8 	type
 	)
 {
 	bool bWifiConnected =false, bBtHsOn =false;
-	u4Byte	wifiLinkStatus = 0;
-	u4Byte	numOfWifiLink = 0;
+	u32 wifiLinkStatus = 0;
+	u32 numOfWifiLink = 0;
 	bool	bBtCtrlAggBufSize =false;
-	u1Byte	aggBufSize =5;
+	u8 aggBufSize =5;
 
-	u1Byte u1Tmpa, u1Tmpb;
-	u4Byte u4Tmp;
+	u8 u1Tmpa, u1Tmpb;
+	u32 u4Tmp;
 
 	if (pBtCoexist->bManualControl ||
 		pBtCoexist->bStopCoexDm)
@@ -3070,15 +3066,15 @@ EXhalbtc8723b1ant_ScanNotify(
 
 void
 EXhalbtc8723b1ant_ConnectNotify(
-	IN	PBTC_COEXIST		pBtCoexist,
-	IN	u1Byte			type
+PBTC_COEXIST		pBtCoexist,
+u8 	type
 	)
 {
 	bool	bWifiConnected =false, bBtHsOn =false;
-	u4Byte	wifiLinkStatus = 0;
-	u4Byte	numOfWifiLink = 0;
+	u32 wifiLinkStatus = 0;
+	u32 numOfWifiLink = 0;
 	bool	bBtCtrlAggBufSize =false;
-	u1Byte	aggBufSize =5;
+	u8 aggBufSize =5;
 
 	if (pBtCoexist->bManualControl ||
 		pBtCoexist->bStopCoexDm ||
@@ -3143,13 +3139,13 @@ EXhalbtc8723b1ant_ConnectNotify(
 
 void
 EXhalbtc8723b1ant_MediaStatusNotify(
-	IN	PBTC_COEXIST			pBtCoexist,
-	IN	u1Byte				type
+PBTC_COEXIST			pBtCoexist,
+u8 		type
 	)
 {
-	u1Byte			H2C_Parameter[3] ={0};
-	u4Byte			wifiBw;
-	u1Byte			wifiCentralChnl;
+	u8 	H2C_Parameter[3] ={0};
+	u32 		wifiBw;
+	u8 	wifiCentralChnl;
 	bool			bWifiUnderBMode = false;
 
 	if (pBtCoexist->bManualControl ||
@@ -3216,15 +3212,15 @@ EXhalbtc8723b1ant_MediaStatusNotify(
 
 void
 EXhalbtc8723b1ant_SpecialPacketNotify(
-	IN	PBTC_COEXIST			pBtCoexist,
-	IN	u1Byte				type
+PBTC_COEXIST			pBtCoexist,
+u8 		type
 	)
 {
 	bool	bBtHsOn =false;
-	u4Byte	wifiLinkStatus = 0;
-	u4Byte	numOfWifiLink = 0;
+	u32 wifiLinkStatus = 0;
+	u32 numOfWifiLink = 0;
 	bool	bBtCtrlAggBufSize =false;
-	u1Byte	aggBufSize =5;
+	u8 aggBufSize =5;
 
 	if (pBtCoexist->bManualControl ||
 		pBtCoexist->bStopCoexDm ||
@@ -3297,13 +3293,13 @@ EXhalbtc8723b1ant_SpecialPacketNotify(
 
 void
 EXhalbtc8723b1ant_BtInfoNotify(
-	IN	PBTC_COEXIST		pBtCoexist,
-	IN	pu1Byte			tmpBuf,
-	IN	u1Byte			length
+PBTC_COEXIST		pBtCoexist,
+u8 *		tmpBuf,
+u8 	length
 	)
 {
-	u1Byte				btInfo = 0;
-	u1Byte				i, rspSource = 0;
+	u8 		btInfo = 0;
+	u8 		i, rspSource = 0;
 	bool				bWifiConnected =false;
 	bool				bBtBusy =false;
 
@@ -3471,7 +3467,7 @@ EXhalbtc8723b1ant_BtInfoNotify(
 
 void
 EXhalbtc8723b1ant_HaltNotify(
-	IN	PBTC_COEXIST			pBtCoexist
+PBTC_COEXIST			pBtCoexist
 	)
 {
 	BTC_PRINT(BTC_MSG_INTERFACE, INTF_NOTIFY, ("[BTCoex], Halt notify\n"));
@@ -3489,8 +3485,8 @@ EXhalbtc8723b1ant_HaltNotify(
 
 void
 EXhalbtc8723b1ant_PnpNotify(
-	IN	PBTC_COEXIST			pBtCoexist,
-	IN	u1Byte				pnpState
+PBTC_COEXIST			pBtCoexist,
+u8 		pnpState
 	)
 {
 	BTC_PRINT(BTC_MSG_INTERFACE, INTF_NOTIFY, ("[BTCoex], Pnp notify\n"));
@@ -3518,11 +3514,11 @@ EXhalbtc8723b1ant_PnpNotify(
 
 void
 EXhalbtc8723b1ant_Periodical(
-	IN	PBTC_COEXIST			pBtCoexist
+PBTC_COEXIST			pBtCoexist
 	)
 {
-	static u1Byte		disVerInfoCnt = 0;
-	u4Byte				fwVer = 0, btPatchVer = 0;
+	static u8 disVerInfoCnt = 0;
+	u32 			fwVer = 0, btPatchVer = 0;
 
 	BTC_PRINT(BTC_MSG_ALGORITHM, ALGO_TRACE, ("[BTCoex], ==========================Periodical ===========================\n"));
 

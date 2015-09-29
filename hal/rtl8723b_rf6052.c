@@ -53,8 +53,8 @@
  *
  * Overview:    This function is called by SetBWModeCallback8190Pci() only
  *
- * Input:       struct adapter *				Adapter
- *			WIRELESS_BANDWIDTH_E	Bandwidth	20M or 40M
+ * Input:       struct adapter *			Adapter
+ *		WIRELESS_BANDWIDTH_E	Bandwidth	20M or 40M
  *
  * Output:      NONE
  *
@@ -64,10 +64,10 @@
  *---------------------------------------------------------------------------*/
 void
 PHY_RF6052SetBandwidth8723B(
-	IN	struct adapter *				Adapter,
-	IN	CHANNEL_WIDTH		Bandwidth)	/* 20M or 40M */
+struct adapter *			Adapter,
+enum CHANNEL_WIDTH		Bandwidth)	/* 20M or 40M */
 {
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
+	struct hal_com_data	*pHalData = GET_HAL_DATA(Adapter);
 
 	switch (Bandwidth)
 	{
@@ -92,20 +92,20 @@ PHY_RF6052SetBandwidth8723B(
 
 static int
 phy_RF6052_Config_ParaFile(
-	IN	struct adapter *		Adapter
+struct adapter *	Adapter
 	)
 {
-	u32					u4RegValue = 0;
-	u8					eRFPath;
-	BB_REGISTER_DEFINITION_T	*pPhyReg;
+	u32 				u4RegValue = 0;
+	u8 			eRFPath;
+	struct bb_register_def *pPhyReg;
 
 	int					rtStatus = _SUCCESS;
-	HAL_DATA_TYPE		*pHalData = GET_HAL_DATA(Adapter);
+	struct hal_com_data		*pHalData = GET_HAL_DATA(Adapter);
 
-	static char			sz8723RadioAFile[] = RTL8723B_PHY_RADIO_A;
-	static char			sz8723RadioBFile[] = RTL8723B_PHY_RADIO_B;
+	static char 		sz8723RadioAFile[] = RTL8723B_PHY_RADIO_A;
+	static char 		sz8723RadioBFile[] = RTL8723B_PHY_RADIO_B;
 	static s8			sz8723BTxPwrTrackFile[] = RTL8723B_TXPWR_TRACK;
-	char					*pszRadioAFile, *pszRadioBFile, *pszTxPwrTrackFile;
+	char 				*pszRadioAFile, *pszRadioBFile, *pszTxPwrTrackFile;
 
 	pszRadioAFile = sz8723RadioAFile;
 	pszRadioBFile = sz8723RadioBFile;
@@ -188,7 +188,7 @@ phy_RF6052_Config_ParaFile(
 			break;
 		}
 
-		if (rtStatus != _SUCCESS){
+		if (rtStatus != _SUCCESS) {
 			/* RT_TRACE(COMP_FPGA, DBG_LOUD, ("phy_RF6052_Config_ParaFile():Radio[%d] Fail!!", eRFPath)); */
 			goto phy_RF6052_Config_ParaFile_Fail;
 		}
@@ -216,9 +216,9 @@ phy_RF6052_Config_ParaFile_Fail:
 
 int
 PHY_RF6052_Config8723B(
-	IN	struct adapter *		Adapter)
+struct adapter *	Adapter)
 {
-	HAL_DATA_TYPE				*pHalData = GET_HAL_DATA(Adapter);
+	struct hal_com_data				*pHalData = GET_HAL_DATA(Adapter);
 	int					rtStatus = _SUCCESS;
 
 	/*  */

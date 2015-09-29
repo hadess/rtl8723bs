@@ -86,7 +86,7 @@ void rtw_os_xmit_resource_free(struct adapter *padapter, struct xmit_buf *pxmitb
 
 void rtw_os_pkt_complete(struct adapter *padapter, _pkt *pkt)
 {
-	u16	queue;
+	u16 queue;
 	struct xmit_priv *pxmitpriv = &padapter->xmitpriv;
 
 	queue = skb_get_queue_mapping(pkt);
@@ -126,7 +126,7 @@ void rtw_os_xmit_schedule(struct adapter *padapter)
 static void rtw_check_xmit_resource(struct adapter *padapter, _pkt *pkt)
 {
 	struct xmit_priv *pxmitpriv = &padapter->xmitpriv;
-	u16	queue;
+	u16 queue;
 
 	queue = skb_get_queue_mapping(pkt);
 	if (padapter->registrypriv.wifi_spec) {
@@ -147,7 +147,7 @@ static int rtw_mlcst2unicst(struct adapter *padapter, struct sk_buff *skb)
 {
 	struct	sta_priv *pstapriv = &padapter->stapriv;
 	struct xmit_priv *pxmitpriv = &padapter->xmitpriv;
-	_list	*phead, *plist;
+	struct list_head	*phead, *plist;
 	struct sk_buff *newskb;
 	struct sta_info *psta = NULL;
 	u8 chk_alive_num = 0;
@@ -225,7 +225,7 @@ int _rtw_xmit_entry(_pkt *pkt, _nic_hdl pnetdev)
 {
 	struct adapter *padapter = (struct adapter *)rtw_netdev_priv(pnetdev);
 	struct xmit_priv *pxmitpriv = &padapter->xmitpriv;
-	struct mlme_priv	*pmlmepriv = &padapter->mlmepriv;
+	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
 	s32 res = 0;
 
 	DBG_COUNTER(padapter->tx_logs.os_tx);

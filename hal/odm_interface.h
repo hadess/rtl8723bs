@@ -19,15 +19,9 @@
 
 
 
-/*  */
 /*  =========== Constant/Structure/Enum/... Define */
-/*  */
 
-
-
-/*  */
 /*  =========== Macro Define */
-/*  */
 
 #define _reg_all(_name)			ODM_##_name
 #define _reg_ic(_name, _ic)		ODM_##_name##_ic

@@ -18,29 +18,29 @@
 
 typedef struct _Dynamic_Power_Saving_
 {
-	u1Byte		PreCCAState;
-	u1Byte		CurCCAState;
+	u8 PreCCAState;
+	u8 CurCCAState;
 
-	u1Byte		PreRFState;
-	u1Byte		CurRFState;
+	u8 PreRFState;
+	u8 CurRFState;
 
 	int		    Rssi_val_min;
 
-	u1Byte		initialize;
-	u4Byte		Reg874, RegC70, Reg85C, RegA74;
+	u8 initialize;
+	u32 	Reg874, RegC70, Reg85C, RegA74;
 
 }PS_T,*pPS_T;
 
 #define dm_RF_Saving	ODM_RF_Saving
 
 void ODM_RF_Saving(
-	IN		void *					pDM_VOID,
-	IN	u1Byte		bForceInNormal
+	void *				pDM_VOID,
+u8 bForceInNormal
 	);
 
 void
 odm_DynamicBBPowerSavingInit(
-	IN		void *					pDM_VOID
+	void *				pDM_VOID
 	);
 
 #endif

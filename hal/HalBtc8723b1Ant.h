@@ -1,14 +1,26 @@
-/*  */
+/******************************************************************************
+ *
+ * Copyright(c) 2007 - 2012 Realtek Corporation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of version 2 of the GNU General Public License as
+ * published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+ * more details.
+ *
+ ******************************************************************************/
 /*  The following is for 8723B 1ANT BT Co-exist definition */
-/*  */
-#define	BT_INFO_8723B_1ANT_B_FTP						BIT7
-#define	BT_INFO_8723B_1ANT_B_A2DP					BIT6
-#define	BT_INFO_8723B_1ANT_B_HID						BIT5
-#define	BT_INFO_8723B_1ANT_B_SCO_BUSY				BIT4
-#define	BT_INFO_8723B_1ANT_B_ACL_BUSY				BIT3
-#define	BT_INFO_8723B_1ANT_B_INQ_PAGE				BIT2
-#define	BT_INFO_8723B_1ANT_B_SCO_ESCO				BIT1
-#define	BT_INFO_8723B_1ANT_B_CONNECTION				BIT0
+#define	BT_INFO_8723B_1ANT_B_FTP		BIT7
+#define	BT_INFO_8723B_1ANT_B_A2DP		BIT6
+#define	BT_INFO_8723B_1ANT_B_HID		BIT5
+#define	BT_INFO_8723B_1ANT_B_SCO_BUSY		BIT4
+#define	BT_INFO_8723B_1ANT_B_ACL_BUSY		BIT3
+#define	BT_INFO_8723B_1ANT_B_INQ_PAGE		BIT2
+#define	BT_INFO_8723B_1ANT_B_SCO_ESCO		BIT1
+#define	BT_INFO_8723B_1ANT_B_CONNECTION		BIT0
 
 #define	BT_INFO_8723B_1ANT_A2DP_BASIC_RATE(_BT_INFO_EXT_)	\
 		(((_BT_INFO_EXT_&BIT0))? true:false)
@@ -63,55 +75,55 @@ typedef struct _COEX_DM_8723B_1ANT{
 	/*  fw mechanism */
 	bool		bCurIgnoreWlanAct;
 	bool		bPreIgnoreWlanAct;
-	u1Byte		prePsTdma;
-	u1Byte		curPsTdma;
-	u1Byte		psTdmaPara[5];
-	u1Byte		psTdmaDuAdjType;
+	u8 prePsTdma;
+	u8 curPsTdma;
+	u8 psTdmaPara[5];
+	u8 psTdmaDuAdjType;
 	bool		bAutoTdmaAdjust;
 	bool		bPrePsTdmaOn;
 	bool		bCurPsTdmaOn;
 	bool		bPreBtAutoReport;
 	bool		bCurBtAutoReport;
-	u1Byte		preLps;
-	u1Byte		curLps;
-	u1Byte		preRpwm;
-	u1Byte		curRpwm;
+	u8 preLps;
+	u8 curLps;
+	u8 preRpwm;
+	u8 curRpwm;
 
 	/*  sw mechanism */
 	bool	bPreLowPenaltyRa;
 	bool		bCurLowPenaltyRa;
-	u4Byte		preVal0x6c0;
-	u4Byte		curVal0x6c0;
-	u4Byte		preVal0x6c4;
-	u4Byte		curVal0x6c4;
-	u4Byte		preVal0x6c8;
-	u4Byte		curVal0x6c8;
-	u1Byte		preVal0x6cc;
-	u1Byte		curVal0x6cc;
+	u32 	preVal0x6c0;
+	u32 	curVal0x6c0;
+	u32 	preVal0x6c4;
+	u32 	curVal0x6c4;
+	u32 	preVal0x6c8;
+	u32 	curVal0x6c8;
+	u8 preVal0x6cc;
+	u8 curVal0x6cc;
 	bool		bLimitedDig;
 
-	u4Byte		backupArfrCnt1;	/*  Auto Rate Fallback Retry cnt */
-	u4Byte		backupArfrCnt2;	/*  Auto Rate Fallback Retry cnt */
-	u2Byte		backupRetryLimit;
-	u1Byte		backupAmpduMaxTime;
+	u32 	backupArfrCnt1;	/*  Auto Rate Fallback Retry cnt */
+	u32 	backupArfrCnt2;	/*  Auto Rate Fallback Retry cnt */
+	u16 	backupRetryLimit;
+	u8 backupAmpduMaxTime;
 
 	/*  algorithm related */
-	u1Byte		preAlgorithm;
-	u1Byte		curAlgorithm;
-	u1Byte		btStatus;
-	u1Byte		wifiChnlInfo[3];
+	u8 preAlgorithm;
+	u8 curAlgorithm;
+	u8 btStatus;
+	u8 wifiChnlInfo[3];
 
-	u4Byte		preRaMask;
-	u4Byte		curRaMask;
-	u1Byte		preArfrType;
-	u1Byte		curArfrType;
-	u1Byte		preRetryLimitType;
-	u1Byte		curRetryLimitType;
-	u1Byte		preAmpduTimeType;
-	u1Byte		curAmpduTimeType;
-	u4Byte		nArpCnt;
+	u32 	preRaMask;
+	u32 	curRaMask;
+	u8 preArfrType;
+	u8 curArfrType;
+	u8 preRetryLimitType;
+	u8 curRetryLimitType;
+	u8 preAmpduTimeType;
+	u8 curAmpduTimeType;
+	u32 	nArpCnt;
 
-	u1Byte		errorCondition;
+	u8 errorCondition;
 } COEX_DM_8723B_1ANT, *PCOEX_DM_8723B_1ANT;
 
 typedef struct _COEX_STA_8723B_1ANT{
@@ -123,39 +135,39 @@ typedef struct _COEX_STA_8723B_1ANT{
 
 	bool					bUnderLps;
 	bool					bUnderIps;
-	u4Byte					specialPktPeriodCnt;
-	u4Byte					highPriorityTx;
-	u4Byte					highPriorityRx;
-	u4Byte					lowPriorityTx;
-	u4Byte					lowPriorityRx;
+	u32 				specialPktPeriodCnt;
+	u32 				highPriorityTx;
+	u32 				highPriorityRx;
+	u32 				lowPriorityTx;
+	u32 				lowPriorityRx;
 	s8					btRssi;
 	bool					bBtTxRxMask;
-	u1Byte					preBtRssiState;
-	u1Byte					preWifiRssiState[4];
+	u8 			preBtRssiState;
+	u8 			preWifiRssiState[4];
 	bool					bC2hBtInfoReqSent;
-	u1Byte					btInfoC2h[BT_INFO_SRC_8723B_1ANT_MAX][10];
-	u4Byte					btInfoC2hCnt[BT_INFO_SRC_8723B_1ANT_MAX];
+	u8 			btInfoC2h[BT_INFO_SRC_8723B_1ANT_MAX][10];
+	u32 				btInfoC2hCnt[BT_INFO_SRC_8723B_1ANT_MAX];
 	bool					bC2hBtInquiryPage;
 	bool					bC2hBtPage;				/* Add for win8.1 page out issue */
 	bool					bWiFiIsHighPriTask;		/* Add for win8.1 page out issue */
-	u1Byte					btRetryCnt;
-	u1Byte					btInfoExt;
-	u4Byte					popEventCnt;
-	u1Byte					nScanAPNum;
+	u8 			btRetryCnt;
+	u8 			btInfoExt;
+	u32 				popEventCnt;
+	u8 			nScanAPNum;
 
-	u4Byte					nCRCOK_CCK;
-	u4Byte					nCRCOK_11g;
-	u4Byte					nCRCOK_11n;
-	u4Byte					nCRCOK_11nAgg;
+	u32 				nCRCOK_CCK;
+	u32 				nCRCOK_11g;
+	u32 				nCRCOK_11n;
+	u32 				nCRCOK_11nAgg;
 
-	u4Byte					nCRCErr_CCK;
-	u4Byte					nCRCErr_11g;
-	u4Byte					nCRCErr_11n;
-	u4Byte					nCRCErr_11nAgg;
+	u32 				nCRCErr_CCK;
+	u32 				nCRCErr_11g;
+	u32 				nCRCErr_11n;
+	u32 				nCRCErr_11nAgg;
 
 	bool					bCCKLock;
 	bool					bPreCCKLock;
-	u1Byte					nCoexTableType;
+	u8 			nCoexTableType;
 
 	bool					bForceLpsOn;
 }COEX_STA_8723B_1ANT, *PCOEX_STA_8723B_1ANT;
@@ -165,67 +177,67 @@ typedef struct _COEX_STA_8723B_1ANT{
 /*  */
 void
 EXhalbtc8723b1ant_PowerOnSetting(
-	IN	PBTC_COEXIST		pBtCoexist
+PBTC_COEXIST		pBtCoexist
 	);
 void
 EXhalbtc8723b1ant_InitHwConfig(
-	IN	PBTC_COEXIST		pBtCoexist,
-	IN	bool				bWifiOnly
+PBTC_COEXIST		pBtCoexist,
+bool				bWifiOnly
 	);
 void
 EXhalbtc8723b1ant_InitCoexDm(
-	IN	PBTC_COEXIST		pBtCoexist
+PBTC_COEXIST		pBtCoexist
 	);
 void
 EXhalbtc8723b1ant_IpsNotify(
-	IN	PBTC_COEXIST		pBtCoexist,
-	IN	u1Byte			type
+PBTC_COEXIST		pBtCoexist,
+u8 	type
 	);
 void
 EXhalbtc8723b1ant_LpsNotify(
-	IN	PBTC_COEXIST		pBtCoexist,
-	IN	u1Byte			type
+PBTC_COEXIST		pBtCoexist,
+u8 	type
 	);
 void
 EXhalbtc8723b1ant_ScanNotify(
-	IN	PBTC_COEXIST		pBtCoexist,
-	IN	u1Byte			type
+PBTC_COEXIST		pBtCoexist,
+u8 	type
 	);
 void
 EXhalbtc8723b1ant_ConnectNotify(
-	IN	PBTC_COEXIST		pBtCoexist,
-	IN	u1Byte			type
+PBTC_COEXIST		pBtCoexist,
+u8 	type
 	);
 void
 EXhalbtc8723b1ant_MediaStatusNotify(
-	IN	PBTC_COEXIST			pBtCoexist,
-	IN	u1Byte				type
+PBTC_COEXIST			pBtCoexist,
+u8 		type
 	);
 void
 EXhalbtc8723b1ant_SpecialPacketNotify(
-	IN	PBTC_COEXIST			pBtCoexist,
-	IN	u1Byte				type
+PBTC_COEXIST			pBtCoexist,
+u8 		type
 	);
 void
 EXhalbtc8723b1ant_BtInfoNotify(
-	IN	PBTC_COEXIST		pBtCoexist,
-	IN	pu1Byte			tmpBuf,
-	IN	u1Byte			length
+PBTC_COEXIST		pBtCoexist,
+u8 *		tmpBuf,
+u8 	length
 	);
 void
 EXhalbtc8723b1ant_HaltNotify(
-	IN	PBTC_COEXIST			pBtCoexist
+PBTC_COEXIST			pBtCoexist
 	);
 void
 EXhalbtc8723b1ant_PnpNotify(
-	IN	PBTC_COEXIST			pBtCoexist,
-	IN	u1Byte				pnpState
+PBTC_COEXIST			pBtCoexist,
+u8 		pnpState
 	);
 void
 EXhalbtc8723b1ant_Periodical(
-	IN	PBTC_COEXIST			pBtCoexist
+PBTC_COEXIST			pBtCoexist
 	);
 void
 EXhalbtc8723b1ant_DisplayCoexInfo(
-	IN	PBTC_COEXIST		pBtCoexist
+PBTC_COEXIST		pBtCoexist
 	);

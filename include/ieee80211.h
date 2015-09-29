@@ -248,8 +248,8 @@ typedef struct ieee_param {
 			struct rtw_ieee80211_ht_cap ht_cap;
 		} add_sta;
 		struct {
-			u8	reserved[2];/* for set max_num_sta */
-			u8	buf[0];
+			u8 reserved[2];/* for set max_num_sta */
+			u8 buf[0];
 		} bcn_ie;
 	} u;
 }ieee_param;
@@ -298,7 +298,7 @@ struct ieee_ibss_seq {
 	u16 seq_num;
 	u16 frag_num;
 	unsigned long packet_time;
-	_list	list;
+	struct list_head	list;
 };
 
 struct eapol {
@@ -1293,15 +1293,15 @@ u8 *rtw_get_ie(u8*pbuf, sint index, sint *len, sint limit);
 u8 *rtw_get_ie_ex(u8 *in_ie, uint in_len, u8 eid, u8 *oui, u8 oui_len, u8 *ie, uint *ielen);
 int rtw_ies_remove_ie(u8 *ies, uint *ies_len, uint offset, u8 eid, u8 *oui, u8 oui_len);
 
-void rtw_set_supported_rate(u8* SupportedRates, uint mode) ;
+void rtw_set_supported_rate(u8 *SupportedRates, uint mode) ;
 
 unsigned char *rtw_get_wpa_ie(unsigned char *pie, int *wpa_ie_len, int limit);
 unsigned char *rtw_get_wpa2_ie(unsigned char *pie, int *rsn_ie_len, int limit);
 int rtw_get_wpa_cipher_suite(u8 *s);
 int rtw_get_wpa2_cipher_suite(u8 *s);
 int rtw_get_wapi_ie(u8 *in_ie, uint in_len, u8 *wapi_ie, u16 *wapi_len);
-int rtw_parse_wpa_ie(u8* wpa_ie, int wpa_ie_len, int *group_cipher, int *pairwise_cipher, int *is_8021x);
-int rtw_parse_wpa2_ie(u8* wpa_ie, int wpa_ie_len, int *group_cipher, int *pairwise_cipher, int *is_8021x);
+int rtw_parse_wpa_ie(u8 *wpa_ie, int wpa_ie_len, int *group_cipher, int *pairwise_cipher, int *is_8021x);
+int rtw_parse_wpa2_ie(u8 *wpa_ie, int wpa_ie_len, int *group_cipher, int *pairwise_cipher, int *is_8021x);
 
 int rtw_get_sec_ie(u8 *in_ie, uint in_len, u8 *rsn_ie, u16 *rsn_len, u8 *wpa_ie, u16 *wpa_len);
 
@@ -1319,7 +1319,7 @@ u8 *rtw_get_wps_attr_content(u8 *wps_ie, uint wps_ielen, u16 target_attr_id , u8
 #define for_each_ie(ie, buf, buf_len) \
 	for (ie = (void*)buf; (((u8 *)ie) - ((u8 *)buf) + 1) < buf_len; ie = (void*)(((u8 *)ie) + *(((u8 *)ie)+1) + 2))
 
-uint	rtw_get_rateset_len(u8	*rateset);
+uint	rtw_get_rateset_len(u8 *rateset);
 
 struct registry_priv;
 int rtw_generate_ie(struct registry_priv *pregistrypriv);
@@ -1339,7 +1339,7 @@ void rtw_macaddr_cfg(u8 *mac_addr);
 
 u16 rtw_mcs_rate(u8 rf_type, u8 bw_40MHz, u8 short_GI, unsigned char * MCS_rate);
 
-int rtw_action_frame_parse(const u8 *frame, u32 frame_len, u8* category, u8 *action);
+int rtw_action_frame_parse(const u8 *frame, u32 frame_len, u8 *category, u8 *action);
 const char *action_public_str(u8 action);
 
 #endif /* IEEE80211_H */

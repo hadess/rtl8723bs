@@ -126,7 +126,7 @@ since mlme_priv is a shared resource between many threads,
 like ISR/Call-Back functions, the OID handlers, and even timer functions.
 
 
-Each _queue has its own locks, already.
+Each struct __queue has its own locks, already.
 Other items are protected by mlme_priv.lock.
 
 To avoid possible dead lock, any thread trying to modifiying mlme_priv
@@ -146,9 +146,9 @@ struct sitesurvey_ctrl {
 };
 
 typedef struct _RT_LINK_DETECT_T{
-	u32				NumTxOkInPeriod;
-	u32				NumRxOkInPeriod;
-	u32				NumRxUnicastOkInPeriod;
+	u32 			NumTxOkInPeriod;
+	u32 			NumRxOkInPeriod;
+	u32 			NumRxUnicastOkInPeriod;
 	bool			bBusyTraffic;
 	bool			bTxBusyTraffic;
 	bool			bRxBusyTraffic;
@@ -161,61 +161,61 @@ typedef struct _RT_LINK_DETECT_T{
 }RT_LINK_DETECT_T, *PRT_LINK_DETECT_T;
 
 struct profile_info {
-	u8	ssidlen;
-	u8	ssid[ WLAN_SSID_MAXLEN ];
-	u8	peermac[ ETH_ALEN ];
+	u8 ssidlen;
+	u8 ssid[ WLAN_SSID_MAXLEN ];
+	u8 peermac[ ETH_ALEN ];
 };
 
 struct tx_invite_req_info{
-	u8					token;
-	u8					benable;
-	u8					go_ssid[ WLAN_SSID_MAXLEN ];
-	u8					ssidlen;
-	u8					go_bssid[ ETH_ALEN ];
-	u8					peer_macaddr[ ETH_ALEN ];
-	u8					operating_ch;	/* 	This information will be set by using the p2p_set op_ch =x */
-	u8					peer_ch;		/* 	The listen channel for peer P2P device */
+	u8 			token;
+	u8 			benable;
+	u8 			go_ssid[ WLAN_SSID_MAXLEN ];
+	u8 			ssidlen;
+	u8 			go_bssid[ ETH_ALEN ];
+	u8 			peer_macaddr[ ETH_ALEN ];
+	u8 			operating_ch;	/* 	This information will be set by using the p2p_set op_ch =x */
+	u8 			peer_ch;		/* 	The listen channel for peer P2P device */
 
 };
 
 struct tx_invite_resp_info{
-	u8					token;	/* 	Used to record the dialog token of p2p invitation request frame. */
+	u8 			token;	/* 	Used to record the dialog token of p2p invitation request frame. */
 };
 
 struct tx_provdisc_req_info{
-	u16					wps_config_method_request;	/* 	Used when sending the provisioning request frame */
-	u16					peer_channel_num[2];		/* 	The channel number which the receiver stands. */
-	NDIS_802_11_SSID	ssid;
-	u8					peerDevAddr[ ETH_ALEN ];		/* 	Peer device address */
-	u8					peerIFAddr[ ETH_ALEN ];		/* 	Peer interface address */
-	u8					benable;					/* 	This provision discovery request frame is trigger to send or not */
+	u16 				wps_config_method_request;	/* 	Used when sending the provisioning request frame */
+	u16 				peer_channel_num[2];		/* 	The channel number which the receiver stands. */
+	struct ndis_802_11_ssid	ssid;
+	u8 			peerDevAddr[ ETH_ALEN ];		/* 	Peer device address */
+	u8 			peerIFAddr[ ETH_ALEN ];		/* 	Peer interface address */
+	u8 			benable;					/* 	This provision discovery request frame is trigger to send or not */
 };
 
 struct rx_provdisc_req_info{	/* When peer device issue prov_disc_req first, we should store the following informations */
-	u8					peerDevAddr[ ETH_ALEN ];		/* 	Peer device address */
-	u8					strconfig_method_desc_of_prov_disc_req[4];	/* 	description for the config method located in the provisioning discovery request frame. */
+	u8 			peerDevAddr[ ETH_ALEN ];		/* 	Peer device address */
+	u8 			strconfig_method_desc_of_prov_disc_req[4];	/* 	description for the config method located in the provisioning discovery request frame. */
 																	/* 	The UI must know this information to know which config method the remote p2p device is requiring. */
 };
 
 struct tx_nego_req_info{
-	u16					peer_channel_num[2];		/* 	The channel number which the receiver stands. */
-	u8					peerDevAddr[ ETH_ALEN ];		/* 	Peer device address */
-	u8					benable;					/* 	This negoitation request frame is trigger to send or not */
+	u16 				peer_channel_num[2];		/* 	The channel number which the receiver stands. */
+	u8 			peerDevAddr[ ETH_ALEN ];		/* 	Peer device address */
+	u8 			benable;					/* 	This negoitation request frame is trigger to send or not */
 };
 
 struct group_id_info{
-	u8					go_device_addr[ ETH_ALEN ];	/* 	The GO's device address of this P2P group */
-	u8					ssid[ WLAN_SSID_MAXLEN ];	/* 	The SSID of this P2P group */
+	u8 			go_device_addr[ ETH_ALEN ];	/* 	The GO's device address of this P2P group */
+	u8 			ssid[ WLAN_SSID_MAXLEN ];	/* 	The SSID of this P2P group */
 };
 
 struct scan_limit_info{
-	u8					scan_op_ch_only;			/* 	When this flag is set, the driver should just scan the operation channel */
-	u8					operation_ch[2];				/* 	Store the operation channel of invitation request frame */
+	u8 			scan_op_ch_only;			/* 	When this flag is set, the driver should just scan the operation channel */
+	u8 			operation_ch[2];				/* 	Store the operation channel of invitation request frame */
 };
 
 struct cfg80211_wifidirect_info{
 	_timer					remain_on_ch_timer;
-	u8						restore_channel;
+	u8 				restore_channel;
 	struct ieee80211_channel	remain_on_ch_channel;
 	enum nl80211_channel_type	remain_on_ch_type;
 	u64						remain_on_ch_cookie;
@@ -224,7 +224,7 @@ struct cfg80211_wifidirect_info{
 };
 
 struct wifidirect_info{
-	struct adapter *				padapter;
+	struct adapter *			padapter;
 	_timer					find_phase_timer;
 	_timer					restore_p2p_state_timer;
 
@@ -232,54 +232,54 @@ struct wifidirect_info{
 	_timer					pre_tx_scan_timer;
 	_timer					reset_ch_sitesurvey;
 	_timer					reset_ch_sitesurvey2;	/* 	Just for resetting the scan limit function by using p2p nego */
-	struct tx_provdisc_req_info	tx_prov_disc_info;
+	struct tx_provdisc_req_info tx_prov_disc_info;
 	struct rx_provdisc_req_info rx_prov_disc_info;
-	struct tx_invite_req_info	invitereq_info;
-	struct profile_info			profileinfo[ P2P_MAX_PERSISTENT_GROUP_NUM ];	/* 	Store the profile information of persistent group */
-	struct tx_invite_resp_info	inviteresp_info;
-	struct tx_nego_req_info	nego_req_info;
-	struct group_id_info		groupid_info;	/* 	Store the group id information when doing the group negotiation handshake. */
-	struct scan_limit_info		rx_invitereq_info;	/* 	Used for get the limit scan channel from the Invitation procedure */
-	struct scan_limit_info		p2p_info;		/* 	Used for get the limit scan channel from the P2P negotiation handshake */
+	struct tx_invite_req_info invitereq_info;
+	struct profile_info 		profileinfo[ P2P_MAX_PERSISTENT_GROUP_NUM ];	/* 	Store the profile information of persistent group */
+	struct tx_invite_resp_info inviteresp_info;
+	struct tx_nego_req_info nego_req_info;
+	struct group_id_info 	groupid_info;	/* 	Store the group id information when doing the group negotiation handshake. */
+	struct scan_limit_info 	rx_invitereq_info;	/* 	Used for get the limit scan channel from the Invitation procedure */
+	struct scan_limit_info 	p2p_info;		/* 	Used for get the limit scan channel from the P2P negotiation handshake */
 	enum P2P_ROLE			role;
 	enum P2P_STATE			pre_p2p_state;
 	enum P2P_STATE			p2p_state;
-	u8						device_addr[ETH_ALEN];	/* 	The device address should be the mac address of this device. */
-	u8						interface_addr[ETH_ALEN];
-	u8						social_chan[4];
-	u8						listen_channel;
-	u8						operating_channel;
-	u8						listen_dwell;		/* 	This value should be between 1 and 3 */
-	u8						support_rate[8];
-	u8						p2p_wildcard_ssid[P2P_WILDCARD_SSID_LEN];
-	u8						intent;		/* 	should only include the intent value. */
-	u8						p2p_peer_interface_addr[ ETH_ALEN ];
-	u8						p2p_peer_device_addr[ ETH_ALEN ];
-	u8						peer_intent;	/* 	Included the intent value and tie breaker value. */
-	u8						device_name[ WPS_MAX_DEVICE_NAME_LEN ];	/* 	Device name for displaying on searching device screen */
-	u8						device_name_len;
-	u8						profileindex;	/* 	Used to point to the index of profileinfo array */
-	u8						peer_operating_ch;
-	u8						find_phase_state_exchange_cnt;
-	u16						device_password_id_for_nego;	/* 	The device password ID for group negotation */
-	u8						negotiation_dialog_token;
-	u8						nego_ssid[ WLAN_SSID_MAXLEN ];	/* 	SSID information for group negotitation */
-	u8						nego_ssidlen;
-	u8						p2p_group_ssid[WLAN_SSID_MAXLEN];
-	u8						p2p_group_ssid_len;
-	u8						persistent_supported;		/* 	Flag to know the persistent function should be supported or not. */
+	u8 				device_addr[ETH_ALEN];	/* 	The device address should be the mac address of this device. */
+	u8 				interface_addr[ETH_ALEN];
+	u8 				social_chan[4];
+	u8 				listen_channel;
+	u8 				operating_channel;
+	u8 				listen_dwell;		/* 	This value should be between 1 and 3 */
+	u8 				support_rate[8];
+	u8 				p2p_wildcard_ssid[P2P_WILDCARD_SSID_LEN];
+	u8 				intent;		/* 	should only include the intent value. */
+	u8 				p2p_peer_interface_addr[ ETH_ALEN ];
+	u8 				p2p_peer_device_addr[ ETH_ALEN ];
+	u8 				peer_intent;	/* 	Included the intent value and tie breaker value. */
+	u8 				device_name[ WPS_MAX_DEVICE_NAME_LEN ];	/* 	Device name for displaying on searching device screen */
+	u8 				device_name_len;
+	u8 				profileindex;	/* 	Used to point to the index of profileinfo array */
+	u8 				peer_operating_ch;
+	u8 				find_phase_state_exchange_cnt;
+	u16 					device_password_id_for_nego;	/* 	The device password ID for group negotation */
+	u8 				negotiation_dialog_token;
+	u8 				nego_ssid[ WLAN_SSID_MAXLEN ];	/* 	SSID information for group negotitation */
+	u8 				nego_ssidlen;
+	u8 				p2p_group_ssid[WLAN_SSID_MAXLEN];
+	u8 				p2p_group_ssid_len;
+	u8 				persistent_supported;		/* 	Flag to know the persistent function should be supported or not. */
 														/* 	In the Sigma test, the Sigma will provide this enable from the sta_set_p2p CAPI. */
 														/* 	0: disable */
 														/* 	1: enable */
-	u8						session_available;			/* 	Flag to set the WFD session available to enable or disable "by Sigma" */
+	u8 				session_available;			/* 	Flag to set the WFD session available to enable or disable "by Sigma" */
 														/* 	In the Sigma test, the Sigma will disable the session available by using the sta_preset CAPI. */
 														/* 	0: disable */
 														/* 	1: enable */
 
-	u8						wfd_tdls_enable;			/* 	Flag to enable or disable the TDLS by WFD Sigma */
+	u8 				wfd_tdls_enable;			/* 	Flag to enable or disable the TDLS by WFD Sigma */
 														/* 	0: disable */
 														/* 	1: enable */
-	u8						wfd_tdls_weaksec;			/* 	Flag to enable or disable the weak security function for TDLS by WFD Sigma */
+	u8 				wfd_tdls_weaksec;			/* 	Flag to enable or disable the weak security function for TDLS by WFD Sigma */
 														/* 	0: disable */
 														/* 	In this case, the driver can't issue the tdsl setup request frame. */
 														/* 	1: enable */
@@ -287,38 +287,38 @@ struct wifidirect_info{
 														/* 	even the current security is weak security. */
 
 	enum	P2P_WPSINFO		ui_got_wps_info;			/* 	This field will store the WPS value (PIN value or PBC) that UI had got from the user. */
-	u16						supported_wps_cm;			/* 	This field describes the WPS config method which this driver supported. */
+	u16 					supported_wps_cm;			/* 	This field describes the WPS config method which this driver supported. */
 														/* 	The value should be the combination of config method defined in page104 of WPS v2.0 spec. */
-	u8						external_uuid;				/*  UUID flag */
-	u8						uuid[16];					/*  UUID */
+	u8 				external_uuid;				/*  UUID flag */
+	u8 				uuid[16];					/*  UUID */
 	uint						channel_list_attr_len;		/* 	This field will contain the length of body of P2P Channel List attribute of group negotitation response frame. */
-	u8						channel_list_attr[100];		/* 	This field will contain the body of P2P Channel List attribute of group negotitation response frame. */
+	u8 				channel_list_attr[100];		/* 	This field will contain the body of P2P Channel List attribute of group negotitation response frame. */
 														/* 	We will use the channel_cnt and channel_list fields when constructing the group negotitation confirm frame. */
-	u8						driver_interface;			/* 	Indicate DRIVER_WEXT or DRIVER_CFG80211 */
+	u8 				driver_interface;			/* 	Indicate DRIVER_WEXT or DRIVER_CFG80211 */
 };
 
 struct tdls_ss_record{	/* signal strength record */
-	u8		macaddr[ETH_ALEN];
-	u8		RxPWDBAll;
-	u8		is_tdls_sta;	/*  true: direct link sta, false: else */
+	u8 macaddr[ETH_ALEN];
+	u8 RxPWDBAll;
+	u8 is_tdls_sta;	/*  true: direct link sta, false: else */
 };
 
 struct tdls_info{
-	u8					ap_prohibited;
-	u8					link_established;
-	u8					sta_cnt;
-	u8					sta_maximum;	/*  1:tdls sta is equal (NUM_STA-1), reach max direct link number; 0: else; */
+	u8 			ap_prohibited;
+	u8 			link_established;
+	u8 			sta_cnt;
+	u8 			sta_maximum;	/*  1:tdls sta is equal (NUM_STA-1), reach max direct link number; 0: else; */
 	struct tdls_ss_record	ss_record;
-	u8					ch_sensing;
-	u8					cur_channel;
-	u8					candidate_ch;
-	u8					collect_pkt_num[MAX_CHANNEL_NUM];
+	u8 			ch_sensing;
+	u8 			cur_channel;
+	u8 			candidate_ch;
+	u8 			collect_pkt_num[MAX_CHANNEL_NUM];
 	_lock				cmd_lock;
 	_lock				hdl_lock;
-	u8					watchdog_count;
-	u8					dev_discovered;		/* WFD_TDLS: for sigma test */
-	u8					tdls_enable;
-	u8					external_setup;	/*  true: setup is handled by wpa_supplicant */
+	u8 			watchdog_count;
+	u8 			dev_discovered;		/* WFD_TDLS: for sigma test */
+	u8 			tdls_enable;
+	u8 			external_setup;	/*  true: setup is handled by wpa_supplicant */
 };
 
 struct tdls_txmgmt {
@@ -343,7 +343,7 @@ struct mlme_priv {
 	_lock	lock;
 	sint	fw_state;	/* shall we protect this variable? maybe not necessarily... */
 	u8 bScanInProcess;
-	u8	to_join; /* flag */
+	u8 to_join; /* flag */
 
 	u8 to_roam; /* roaming trying times */
 	struct wlan_network *roam_network; /* the target of active roam */
@@ -353,24 +353,24 @@ struct mlme_priv {
 	u32 roam_scanr_exp_ms; /* scan result expire time in ms  for roam */
 	u8 roam_tgt_addr[ETH_ALEN]; /* request to roam to speicific target without other consideration */
 
-	u8	*nic_hdl;
+	u8 *nic_hdl;
 
-	u8	not_indic_disco;
-	_list		*pscanned;
-	_queue	free_bss_pool;
-	_queue	scanned_queue;
-	u8		*free_bss_buf;
-	u32	num_of_scanned;
+	u8 not_indic_disco;
+	struct list_head		*pscanned;
+	struct __queue	free_bss_pool;
+	struct __queue	scanned_queue;
+	u8 *free_bss_buf;
+	u32 num_of_scanned;
 
-	NDIS_802_11_SSID	assoc_ssid;
-	u8	assoc_bssid[6];
+	struct ndis_802_11_ssid	assoc_ssid;
+	u8 assoc_bssid[6];
 
 	struct wlan_network	cur_network;
 	struct wlan_network *cur_network_scanned;
 
 	/* uint wireless_mode; no used, remove it */
 
-	u32	auto_scan_int_ms;
+	u32 auto_scan_int_ms;
 
 	_timer assoc_timer;
 
@@ -394,13 +394,13 @@ struct mlme_priv {
 
 	int num_FortyMHzIntolerant;
 
-	struct ht_priv	htpriv;
+	struct ht_priv htpriv;
 
 	RT_LINK_DETECT_T	LinkDetectInfo;
 	_timer	dynamic_chk_timer; /* dynamic/periodic check timer */
 
-	u8	acm_mask; /*  for wmm acm mask */
-	u8	ChannelPlan;
+	u8 acm_mask; /*  for wmm acm mask */
+	u8 ChannelPlan;
 	RT_SCAN_TYPE	scan_mode; /*  active: 1, passive: 0 */
 
 	u8 *wps_probe_req_ie;
@@ -460,19 +460,19 @@ struct mlme_priv {
 	u32 p2p_assoc_req_ie_len;
 
 	_lock	bcn_update_lock;
-	u8		update_bcn;
+	u8 update_bcn;
 
 #ifdef CONFIG_INTEL_WIDI
 	int	widi_state;
 	int	listen_state;
 	_timer	listen_timer;
 	atomic_t	rx_probe_rsp; /*  1:receive probe respone from RDS source. */
-	u8	*l2sdTaBuffer;
-	u8	channel_idx;
-	u8	group_cnt;	/* In WiDi 3.5, they specified another scan algo. for WFD/RDS co-existed */
-	u8	sa_ext[L2SDTA_SERVICE_VE_LEN];
+	u8 *l2sdTaBuffer;
+	u8 channel_idx;
+	u8 group_cnt;	/* In WiDi 3.5, they specified another scan algo. for WFD/RDS co-existed */
+	u8 sa_ext[L2SDTA_SERVICE_VE_LEN];
 
-	u8	widi_enable;
+	u8 widi_enable;
 	/**
 	 * For WiDi 4; upper layer would set
 	 * p2p_primary_device_type_category_id
@@ -480,16 +480,16 @@ struct mlme_priv {
 	 * p2p_secondary_device_type_category_id
 	 * p2p_secondary_device_type_sub_category_id
 	 */
-	u16	p2p_pdt_cid;
-	u16	p2p_pdt_scid;
-	u8	num_p2p_sdt;
-	u16	p2p_sdt_cid[MAX_NUM_P2P_SDT];
-	u16	p2p_sdt_scid[MAX_NUM_P2P_SDT];
-	u8	p2p_reject_disable;	/* When starting NL80211 wpa_supplicant/hostapd, it will call netdev_close */
+	u16 p2p_pdt_cid;
+	u16 p2p_pdt_scid;
+	u8 num_p2p_sdt;
+	u16 p2p_sdt_cid[MAX_NUM_P2P_SDT];
+	u16 p2p_sdt_scid[MAX_NUM_P2P_SDT];
+	u8 p2p_reject_disable;	/* When starting NL80211 wpa_supplicant/hostapd, it will call netdev_close */
 							/* such that it will cause p2p disabled. Use this flag to reject. */
 #endif /*  CONFIG_INTEL_WIDI */
 
-	u8	NumOfBcnInfoChkFail;
+	u8 NumOfBcnInfoChkFail;
 	unsigned long	timeBcnInfoChkStart;
 };
 
@@ -516,12 +516,12 @@ extern void rtw_stassoc_event_callback(struct adapter *adapter, u8 *pbuf);
 extern void rtw_stadel_event_callback(struct adapter *adapter, u8 *pbuf);
 extern void rtw_atimdone_event_callback(struct adapter *adapter, u8 *pbuf);
 extern void rtw_cpwm_event_callback(struct adapter *adapter, u8 *pbuf);
-extern void rtw_wmm_event_callback(struct adapter * padapter, u8 *pbuf);
+extern void rtw_wmm_event_callback(struct adapter *padapter, u8 *pbuf);
 
 extern void rtw_join_timeout_handler(RTW_TIMER_HDL_ARGS);
 extern void _rtw_scan_timeout_handler(RTW_TIMER_HDL_ARGS);
 
-int event_thread(void * context);
+int event_thread(void *context);
 
 extern void rtw_free_network_queue(struct adapter *adapter, u8 isfreeall);
 extern int rtw_init_mlme_priv(struct adapter *adapter);/*  (struct mlme_priv *pmlmepriv); */
@@ -563,7 +563,7 @@ __inline static void set_fwstate(struct mlme_priv *pmlmepriv, sint state)
 {
 	pmlmepriv->fw_state |= state;
 	/* FOR HW integration */
-	if (_FW_UNDER_SURVEY ==state){
+	if (_FW_UNDER_SURVEY ==state) {
 		pmlmepriv->bScanInProcess = true;
 	}
 }
@@ -572,7 +572,7 @@ __inline static void _clr_fwstate_(struct mlme_priv *pmlmepriv, sint state)
 {
 	pmlmepriv->fw_state &= ~state;
 	/* FOR HW integration */
-	if (_FW_UNDER_SURVEY ==state){
+	if (_FW_UNDER_SURVEY ==state) {
 		pmlmepriv->bScanInProcess = false;
 	}
 }
@@ -596,13 +596,13 @@ __inline static void set_scanned_network_val(struct mlme_priv *pmlmepriv, sint v
 	spin_unlock_bh(&pmlmepriv->lock);
 }
 
-extern u16 rtw_get_capability(WLAN_BSSID_EX *bss);
-extern void rtw_update_scanned_network(struct adapter *adapter, WLAN_BSSID_EX *target);
+extern u16 rtw_get_capability(struct wlan_bssid_ex *bss);
+extern void rtw_update_scanned_network(struct adapter *adapter, struct wlan_bssid_ex *target);
 extern void rtw_disconnect_hdl_under_linked(struct adapter * adapter, struct sta_info *psta, u8 free_assoc);
 extern void rtw_generate_random_ibss(u8 *pibss);
-extern struct wlan_network* rtw_find_network(_queue *scanned_queue, u8 *addr);
-extern struct wlan_network* rtw_get_oldest_wlan_network(_queue *scanned_queue);
-struct wlan_network *_rtw_find_same_network(_queue *scanned_queue, struct wlan_network *network);
+extern struct wlan_network* rtw_find_network(struct __queue *scanned_queue, u8 *addr);
+extern struct wlan_network* rtw_get_oldest_wlan_network(struct __queue *scanned_queue);
+struct wlan_network *_rtw_find_same_network(struct __queue *scanned_queue, struct wlan_network *network);
 
 extern void rtw_free_assoc_resources(struct adapter * adapter, int lock_scanned_queue);
 extern void rtw_indicate_disconnect(struct adapter * adapter);
@@ -633,7 +633,7 @@ void rtw_free_mlme_priv_ie_data(struct mlme_priv *pmlmepriv);
 
 extern void _rtw_free_mlme_priv(struct mlme_priv *pmlmepriv);
 
-/* extern struct wlan_network* _rtw_dequeue_network(_queue *queue); */
+/* extern struct wlan_network* _rtw_dequeue_network(struct __queue *queue); */
 
 extern struct wlan_network* _rtw_alloc_network(struct mlme_priv *pmlmepriv);
 
@@ -642,9 +642,9 @@ extern void _rtw_free_network(struct mlme_priv *pmlmepriv, struct wlan_network *
 extern void _rtw_free_network_nolock(struct mlme_priv *pmlmepriv, struct wlan_network *pnetwork);
 
 
-extern struct wlan_network* _rtw_find_network(_queue *scanned_queue, u8 *addr);
+extern struct wlan_network* _rtw_find_network(struct __queue *scanned_queue, u8 *addr);
 
-extern void _rtw_free_network_queue(struct adapter * padapter, u8 isfreeall);
+extern void _rtw_free_network_queue(struct adapter *padapter, u8 isfreeall);
 
 extern sint rtw_if_up(struct adapter *padapter);
 
@@ -656,7 +656,7 @@ u8 *rtw_get_beacon_interval_from_ie(u8 *ie);
 
 void rtw_joinbss_reset(struct adapter *padapter);
 
-void	rtw_ht_use_default_setting(struct adapter *padapter);
+void rtw_ht_use_default_setting(struct adapter *padapter);
 void rtw_build_wmm_ie_ht(struct adapter *padapter, u8 *out_ie, uint *pout_len);
 unsigned int rtw_restructure_ht_ie(struct adapter *padapter, u8 *in_ie, u8 *out_ie, uint in_len, uint *pout_len, u8 channel);
 void rtw_update_ht_cap(struct adapter *padapter, u8 *pie, uint ie_len, u8 channel);
@@ -664,7 +664,7 @@ void rtw_issue_addbareq_cmd(struct adapter *padapter, struct xmit_frame *pxmitfr
 void rtw_append_exented_cap(struct adapter *padapter, u8 *out_ie, uint *pout_len);
 
 int rtw_is_same_ibss(struct adapter *adapter, struct wlan_network *pnetwork);
-int is_same_network(WLAN_BSSID_EX *src, WLAN_BSSID_EX *dst, u8 feature);
+int is_same_network(struct wlan_bssid_ex *src, struct wlan_bssid_ex *dst, u8 feature);
 
 #define rtw_roam_flags(adapter) ((adapter)->mlmepriv.roam_flags)
 #define rtw_chk_roam_flags(adapter, flags) ((adapter)->mlmepriv.roam_flags & flags)

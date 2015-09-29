@@ -17,11 +17,11 @@
 
 void
 odm_ConfigRFReg_8723B(
-	IN	PDM_ODM_T				pDM_Odm,
-	IN	u4Byte					Addr,
-	IN	u4Byte					Data,
-	IN  ODM_RF_RADIO_PATH_E     RF_PATH,
-	IN	u4Byte				    RegAddr
+PDM_ODM_T				pDM_Odm,
+u32 				Addr,
+u32 				Data,
+	ODM_RF_RADIO_PATH_E     RF_PATH,
+u32 			    RegAddr
 	)
 {
     if (Addr == 0xfe || Addr == 0xffe)
@@ -37,8 +37,8 @@ odm_ConfigRFReg_8723B(
 		/* For disable/enable test in high temperature, the B6 value will fail to fill. Suggestion by BB Stanley, 2013.06.25. */
 		if (Addr == 0xb6)
 		{
-			u4Byte getvalue = 0;
-			u1Byte	count = 0;
+			u32 getvalue = 0;
+			u8 count = 0;
 			getvalue = PHY_QueryRFReg(pDM_Odm->Adapter, RF_PATH, Addr, bMaskDWord);
 
 			udelay(1);
@@ -57,8 +57,8 @@ odm_ConfigRFReg_8723B(
 
 		if (Addr == 0xb2)
 		{
-			u4Byte getvalue = 0;
-			u1Byte	count = 0;
+			u32 getvalue = 0;
+			u8 count = 0;
 			getvalue = PHY_QueryRFReg(pDM_Odm->Adapter, RF_PATH, Addr, bMaskDWord);
 
 			udelay(1);
@@ -83,13 +83,13 @@ odm_ConfigRFReg_8723B(
 
 void
 odm_ConfigRF_RadioA_8723B(
-	IN	PDM_ODM_T				pDM_Odm,
-	IN	u4Byte					Addr,
-	IN	u4Byte					Data
+PDM_ODM_T				pDM_Odm,
+u32 				Addr,
+u32 				Data
 	)
 {
-	u4Byte  content = 0x1000; /*  RF_Content: radioa_txt */
-	u4Byte	maskforPhySet = (u4Byte)(content&0xE000);
+	u32  content = 0x1000; /*  RF_Content: radioa_txt */
+	u32 maskforPhySet = (u32)(content&0xE000);
 
 	odm_ConfigRFReg_8723B(pDM_Odm, Addr, Data, ODM_RF_PATH_A, Addr|maskforPhySet);
 
@@ -98,9 +98,9 @@ odm_ConfigRF_RadioA_8723B(
 
 void
 odm_ConfigMAC_8723B(
-	IN	PDM_ODM_T	pDM_Odm,
-	IN	u4Byte		Addr,
-	IN	u1Byte		Data
+PDM_ODM_T	pDM_Odm,
+u32 	Addr,
+u8 Data
 	)
 {
 	rtw_write8(pDM_Odm->Adapter, Addr, Data);
@@ -109,10 +109,10 @@ odm_ConfigMAC_8723B(
 
 void
 odm_ConfigBB_AGC_8723B(
-    IN	PDM_ODM_T	pDM_Odm,
-    IN	u4Byte		Addr,
-    IN	u4Byte		Bitmask,
-    IN	u4Byte		Data
+    PDM_ODM_T	pDM_Odm,
+    u32 	Addr,
+    u32 	Bitmask,
+    u32 	Data
    )
 {
 	PHY_SetBBReg(pDM_Odm->Adapter, Addr, Bitmask, Data);
@@ -124,13 +124,13 @@ odm_ConfigBB_AGC_8723B(
 
 void
 odm_ConfigBB_PHY_REG_PG_8723B(
-	IN	PDM_ODM_T	pDM_Odm,
-	IN	u4Byte		Band,
-	IN	u4Byte		RfPath,
-	IN	u4Byte		TxNum,
-    IN	u4Byte		Addr,
-    IN	u4Byte		Bitmask,
-    IN	u4Byte		Data
+PDM_ODM_T	pDM_Odm,
+u32 	Band,
+u32 	RfPath,
+u32 	TxNum,
+    u32 	Addr,
+    u32 	Bitmask,
+    u32 	Data
    )
 {
 	if (Addr == 0xfe || Addr == 0xffe)
@@ -144,10 +144,10 @@ odm_ConfigBB_PHY_REG_PG_8723B(
 
 void
 odm_ConfigBB_PHY_8723B(
-	IN	PDM_ODM_T	pDM_Odm,
-    IN	u4Byte		Addr,
-    IN	u4Byte		Bitmask,
-    IN	u4Byte		Data
+PDM_ODM_T	pDM_Odm,
+    u32 	Addr,
+    u32 	Bitmask,
+    u32 	Data
    )
 {
 	if (Addr == 0xfe)
@@ -174,14 +174,14 @@ odm_ConfigBB_PHY_8723B(
 
 void
 odm_ConfigBB_TXPWR_LMT_8723B(
-	IN	PDM_ODM_T	pDM_Odm,
-	IN	pu1Byte		Regulation,
-	IN	pu1Byte		Band,
-	IN	pu1Byte		Bandwidth,
-	IN	pu1Byte		RateSection,
-	IN	pu1Byte		RfPath,
-	IN	pu1Byte		Channel,
-	IN	pu1Byte		PowerLimit
+PDM_ODM_T	pDM_Odm,
+u8 *	Regulation,
+u8 *	Band,
+u8 *	Bandwidth,
+u8 *	RateSection,
+u8 *	RfPath,
+u8 *	Channel,
+u8 *	PowerLimit
 	)
 {
 		PHY_SetTxPowerLimit(pDM_Odm->Adapter, Regulation, Band,
