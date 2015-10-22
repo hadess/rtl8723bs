@@ -1495,7 +1495,6 @@ u8 traffic_status_watchdog(struct adapter *padapter, u8 from_timer)
 	} else {
 		struct dvobj_priv *dvobj = adapter_to_dvobj(padapter);
 		int n_assoc_iface = 0;
-		int i;
 
 		if (check_fwstate(&(dvobj->padapters->mlmepriv), WIFI_ASOC_STATE))
 			n_assoc_iface++;
