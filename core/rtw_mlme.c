@@ -391,7 +391,6 @@ static struct	wlan_network *rtw_dequeue_network(struct __queue *queue)
 }
 */
 
-struct	wlan_network *rtw_alloc_network(struct	mlme_priv *pmlmepriv);
 struct	wlan_network *rtw_alloc_network(struct	mlme_priv *pmlmepriv)/* _queue	*free_queue) */
 {
 	struct	wlan_network	*pnetwork;
@@ -400,14 +399,12 @@ struct	wlan_network *rtw_alloc_network(struct	mlme_priv *pmlmepriv)/* _queue	*fr
 	return pnetwork;
 }
 
-void rtw_free_network_nolock(struct adapter *padapter, struct wlan_network *pnetwork);
 void rtw_free_network_nolock(struct adapter *padapter, struct wlan_network *pnetwork)
 {
 	/* RT_TRACE(_module_rtl871x_mlme_c_, _drv_err_, ("rtw_free_network ==> ssid = %s\n\n" , pnetwork->network.Ssid.Ssid)); */
 	_rtw_free_network_nolock(&(padapter->mlmepriv), pnetwork);
 	rtw_cfg80211_unlink_bss(padapter, pnetwork);
 }
-
 
 void rtw_free_network_queue(struct adapter * dev, u8 isfreeall)
 {
@@ -755,8 +752,7 @@ exit:
 	spin_unlock_bh(&queue->lock);
 }
 
-void rtw_add_network(struct adapter *adapter, struct wlan_bssid_ex *pnetwork);
-void rtw_add_network(struct adapter *adapter, struct wlan_bssid_ex *pnetwork)
+static void rtw_add_network(struct adapter *adapter, struct wlan_bssid_ex *pnetwork)
 {
 	/* struct __queue	*queue	= &(pmlmepriv->scanned_queue); */
 
