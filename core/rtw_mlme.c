@@ -634,7 +634,7 @@ Caller must hold pmlmepriv->lock first.
 
 
 */
-void rtw_update_scanned_network(struct adapter *adapter, struct wlan_bssid_ex *target)
+static void rtw_update_scanned_network(struct adapter *adapter, struct wlan_bssid_ex *target)
 {
 	struct list_head	*plist, *phead;
 	u32 bssid_ex_sz;
@@ -755,18 +755,11 @@ exit:
 	spin_unlock_bh(&queue->lock);
 }
 
-void rtw_add_network(struct adapter *adapter, struct wlan_bssid_ex *pnetwork);
 void rtw_add_network(struct adapter *adapter, struct wlan_bssid_ex *pnetwork)
 {
-	/* struct __queue	*queue	= &(pmlmepriv->scanned_queue); */
-
-	/* spin_lock_bh(&queue->lock); */
-
 	update_current_network(adapter, pnetwork);
 
 	rtw_update_scanned_network(adapter, pnetwork);
-
-	/* spin_unlock_bh(&queue->lock); */
 }
 
 /* select the desired network based on the capability of the (i)bss. */
@@ -860,48 +853,33 @@ void rtw_survey_event_callback(struct adapter	*adapter, u8 *pbuf)
 		return;
 	}
 
-
-	spin_lock_bh(&pmlmepriv->lock);
-
 	/*  update IBSS_network 's timestamp */
-	if ((check_fwstate(pmlmepriv, WIFI_ADHOC_MASTER_STATE)) == true)
-	{
-		/* RT_TRACE(_module_rtl871x_mlme_c_, _drv_err_,"rtw_survey_event_callback : WIFI_ADHOC_MASTER_STATE\n\n"); */
-		if (!memcmp(&(pmlmepriv->cur_network.network.MacAddress), pnetwork->MacAddress, ETH_ALEN))
-		{
+	if ((check_fwstate(pmlmepriv, WIFI_ADHOC_MASTER_STATE))) {
+		if (!memcmp(&(pmlmepriv->cur_network.network.MacAddress),
+		    pnetwork->MacAddress, ETH_ALEN)) {
 			struct wlan_network* ibss_wlan = NULL;
 
 			memcpy(pmlmepriv->cur_network.network.IEs, pnetwork->IEs, 8);
 			spin_lock_bh(&(pmlmepriv->scanned_queue.lock));
 			ibss_wlan = rtw_find_network(&pmlmepriv->scanned_queue,  pnetwork->MacAddress);
-			if (ibss_wlan)
-			{
+			if (ibss_wlan) {
 				memcpy(ibss_wlan->network.IEs , pnetwork->IEs, 8);
 				spin_unlock_bh(&(pmlmepriv->scanned_queue.lock));
-				goto exit;
+				return;
 			}
 			spin_unlock_bh(&(pmlmepriv->scanned_queue.lock));
 		}
 	}
 
 	/*  lock pmlmepriv->lock when you accessing network_q */
-	if ((check_fwstate(pmlmepriv, _FW_UNDER_LINKING)) == false)
-	{
+	if ((check_fwstate(pmlmepriv, _FW_UNDER_LINKING)) == false) {
+		spin_lock_bh(&pmlmepriv->lock);
 	        if (pnetwork->Ssid.Ssid[0] == 0)
-		{
 			pnetwork->Ssid.SsidLength = 0;
-		}
 		rtw_add_network(adapter, pnetwork);
+		spin_unlock_bh(&pmlmepriv->lock);
 	}
-
-exit:
-
-	spin_unlock_bh(&pmlmepriv->lock);
-
-	return;
 }
-
-
 
 void rtw_surveydone_event_callback(struct adapter	*adapter, u8 *pbuf)
 {
