@@ -649,8 +649,7 @@ static void rtw_update_scanned_network(struct adapter *adapter, struct wlan_bssi
 	phead = get_list_head(queue);
 	plist = get_next(phead);
 
-	while (1)
-	{
+	while (1) {
 		if (phead == plist)
 			break;
 
@@ -658,8 +657,7 @@ static void rtw_update_scanned_network(struct adapter *adapter, struct wlan_bssi
 
 		rtw_bug_check(pnetwork, pnetwork, pnetwork, pnetwork);
 
-		if (is_same_network(&(pnetwork->network), target, feature))
-		{
+		if (is_same_network(&(pnetwork->network), target, feature)) {
 			target_find = 1;
 			break;
 		}
@@ -700,8 +698,7 @@ static void rtw_update_scanned_network(struct adapter *adapter, struct wlan_bssi
 			/* bss info not receving from the right channel */
 			if (pnetwork->network.PhyInfo.SignalQuality == 101)
 				pnetwork->network.PhyInfo.SignalQuality = 0;
-		}
-		else {
+		} else {
 			/* Otherwise just pull from the free list */
 
 			pnetwork = rtw_alloc_network(pmlmepriv); /*  will update scan_time */
@@ -724,8 +721,7 @@ static void rtw_update_scanned_network(struct adapter *adapter, struct wlan_bssi
 			list_add_tail(&(pnetwork->list),&(queue->queue));
 
 		}
-	}
-	else {
+	} else {
 		/* we have an entry and we are going to update it. But this entry may
 		 * be already expired. In this case we do the same as we found a new
 		 * net and call the new_net handler
@@ -740,11 +736,9 @@ static void rtw_update_scanned_network(struct adapter *adapter, struct wlan_bssi
 
 		/*  probe resp(3) > beacon(1) > probe req(2) */
 		if ((target->Reserved[0] != 2) &&
-			(target->Reserved[0] >= pnetwork->network.Reserved[0])
-			) {
+		    (target->Reserved[0] >= pnetwork->network.Reserved[0])) {
 			update_ie = true;
-		}
-		else {
+		} else {
 			update_ie = false;
 		}
 
@@ -768,7 +762,6 @@ void rtw_add_network(struct adapter *adapter, struct wlan_bssid_ex *pnetwork)
 /* 			   (3) WMM */
 /* 			   (4) HT */
 /*                      (5) others */
-int rtw_is_desired_network(struct adapter *adapter, struct wlan_network *pnetwork);
 int rtw_is_desired_network(struct adapter *adapter, struct wlan_network *pnetwork)
 {
 	struct security_priv *psecuritypriv = &adapter->securitypriv;
@@ -860,14 +853,11 @@ void rtw_survey_event_callback(struct adapter	*adapter, u8 *pbuf)
 			struct wlan_network* ibss_wlan = NULL;
 
 			memcpy(pmlmepriv->cur_network.network.IEs, pnetwork->IEs, 8);
-			spin_lock_bh(&(pmlmepriv->scanned_queue.lock));
 			ibss_wlan = rtw_find_network(&pmlmepriv->scanned_queue,  pnetwork->MacAddress);
 			if (ibss_wlan) {
 				memcpy(ibss_wlan->network.IEs , pnetwork->IEs, 8);
-				spin_unlock_bh(&(pmlmepriv->scanned_queue.lock));
 				return;
 			}
-			spin_unlock_bh(&(pmlmepriv->scanned_queue.lock));
 		}
 	}
 
