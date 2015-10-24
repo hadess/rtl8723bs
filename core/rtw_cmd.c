@@ -2203,37 +2203,49 @@ void rtw_createbss_cmd_callback(struct adapter *padapter, struct cmd_obj *pcmd)
 	if (pcmd->parmbuf == NULL)
 		goto exit;
 
-	if ((pcmd->res != H2C_SUCCESS)) {
+	if ((pcmd->res != H2C_SUCCESS))
+	{
 		RT_TRACE(_module_rtl871x_cmd_c_, _drv_err_, ("\n ********Error: rtw_createbss_cmd_callback  Fail ************\n\n."));
 		_set_timer(&pmlmepriv->assoc_timer, 1);
 	}
 
 	_cancel_timer(&pmlmepriv->assoc_timer, &timer_cancelled);
 
-	if (check_fwstate(pmlmepriv, WIFI_AP_STATE)) {
-		spin_lock_bh(&pmlmepriv->lock);
+	spin_lock_bh(&pmlmepriv->lock);
+
+
+	if (check_fwstate(pmlmepriv, WIFI_AP_STATE))
+	{
 		psta = rtw_get_stainfo(&padapter->stapriv, pnetwork->MacAddress);
-		if (!psta) {
-			psta = rtw_alloc_stainfo(&padapter->stapriv, pnetwork->MacAddress);
-			if (psta == NULL) {
-				RT_TRACE(_module_rtl871x_cmd_c_, _drv_err_, ("\nCan't alloc sta_info when createbss_cmd_callback\n"));
-				goto createbss_cmd_fail ;
-			}
+		if (!psta)
+		{
+		psta = rtw_alloc_stainfo(&padapter->stapriv, pnetwork->MacAddress);
+		if (psta == NULL)
+		{
+			RT_TRACE(_module_rtl871x_cmd_c_, _drv_err_, ("\nCan't alloc sta_info when createbss_cmd_callback\n"));
+			goto createbss_cmd_fail ;
 		}
+		}
+
 		rtw_indicate_connect(padapter);
-		spin_unlock_bh(&pmlmepriv->lock);
-	} else {
+	}
+	else
+	{
 		pwlan = _rtw_alloc_network(pmlmepriv);
 		spin_lock_bh(&(pmlmepriv->scanned_queue.lock));
-		if (pwlan == NULL) {
+		if (pwlan == NULL)
+		{
 			pwlan = rtw_get_oldest_wlan_network(&pmlmepriv->scanned_queue);
-			if (pwlan == NULL) {
+			if (pwlan == NULL)
+			{
 				RT_TRACE(_module_rtl871x_cmd_c_, _drv_err_, ("\n Error:  can't get pwlan in rtw_joinbss_event_callback\n"));
 				spin_unlock_bh(&(pmlmepriv->scanned_queue.lock));
 				goto createbss_cmd_fail;
 			}
 			pwlan->last_scanned = jiffies;
-		} else {
+		}
+		else
+		{
 			list_add_tail(&(pwlan->list), &pmlmepriv->scanned_queue.queue);
 		}
 
@@ -2253,9 +2265,12 @@ void rtw_createbss_cmd_callback(struct adapter *padapter, struct cmd_obj *pcmd)
 
 		spin_unlock_bh(&(pmlmepriv->scanned_queue.lock));
 		/*  we will set _FW_LINKED when there is one more sat to join us (rtw_stassoc_event_callback) */
+
 	}
 
 createbss_cmd_fail:
+
+	spin_unlock_bh(&pmlmepriv->lock);
 exit:
 	rtw_free_cmd_obj(pcmd);
 }
