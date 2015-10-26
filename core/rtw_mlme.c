@@ -1143,17 +1143,13 @@ void rtw_free_assoc_resources(struct adapter *adapter, int lock_scanned_queue)
 		rtw_free_all_stainfo(adapter);
 
 		psta = rtw_get_bcmc_stainfo(adapter);
-		spin_lock_bh(&(pstapriv->sta_hash_lock));
 		rtw_free_stainfo(adapter, psta);
-		spin_unlock_bh(&(pstapriv->sta_hash_lock));
 
 		rtw_init_bcmc_stainfo(adapter);
 	}
 
 	if (lock_scanned_queue) {
-		spin_lock_bh(&(pmlmepriv->scanned_queue.lock));
 		find_network(adapter);
-		spin_unlock_bh(&(pmlmepriv->scanned_queue.lock));
 	} else {
 		find_network(adapter);
 	}
@@ -1516,11 +1512,8 @@ void rtw_joinbss_event_prehandle(struct adapter *adapter, u8 *pbuf)
 					if (pcur_wlan)	pcur_wlan->fixed = false;
 
 					pcur_sta = rtw_get_stainfo(pstapriv, cur_network->network.MacAddress);
-					if (pcur_sta) {
-						spin_lock_bh(&(pstapriv->sta_hash_lock));
+					if (pcur_sta)
 						rtw_free_stainfo(adapter,  pcur_sta);
-						spin_unlock_bh(&(pstapriv->sta_hash_lock));
-					}
 
 					ptarget_wlan = rtw_find_network(&pmlmepriv->scanned_queue, pnetwork->network.MacAddress);
 					if (check_fwstate(pmlmepriv, WIFI_STATION_STATE) == true) {
@@ -1871,9 +1864,7 @@ void rtw_stadel_event_callback(struct adapter *adapter, u8 *pbuf)
 	      check_fwstate(pmlmepriv, WIFI_ADHOC_STATE))
 	{
 
-		spin_lock_bh(&(pstapriv->sta_hash_lock));
 		rtw_free_stainfo(adapter,  psta);
-		spin_unlock_bh(&(pstapriv->sta_hash_lock));
 
 		if (adapter->stapriv.asoc_sta_count == 1) /* a sta + bc/mc_stainfo (not Ibss_stainfo) */
 		{
