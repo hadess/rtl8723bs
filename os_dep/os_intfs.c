@@ -851,22 +851,22 @@ void rtw_cancel_all_timer(struct adapter *padapter)
 {
 	RT_TRACE(_module_os_intfs_c_, _drv_info_, ("+rtw_cancel_all_timer\n"));
 
-	_cancel_timer_ex(&padapter->mlmepriv.assoc_timer);
+	del_timer_sync(&padapter->mlmepriv.assoc_timer);
 	RT_TRACE(_module_os_intfs_c_, _drv_info_, ("rtw_cancel_all_timer:cancel association timer complete!\n"));
 
-	_cancel_timer_ex(&padapter->mlmepriv.scan_to_timer);
+	del_timer_sync(&padapter->mlmepriv.scan_to_timer);
 	RT_TRACE(_module_os_intfs_c_, _drv_info_, ("rtw_cancel_all_timer:cancel scan_to_timer!\n"));
 
-	_cancel_timer_ex(&padapter->mlmepriv.dynamic_chk_timer);
+	del_timer_sync(&padapter->mlmepriv.dynamic_chk_timer);
 	RT_TRACE(_module_os_intfs_c_, _drv_info_, ("rtw_cancel_all_timer:cancel dynamic_chk_timer!\n"));
 
-	_cancel_timer_ex(&(adapter_to_pwrctl(padapter)->pwr_state_check_timer));
+	del_timer_sync(&(adapter_to_pwrctl(padapter)->pwr_state_check_timer));
 
-	_cancel_timer_ex(&padapter->mlmepriv.set_scan_deny_timer);
+	del_timer_sync(&padapter->mlmepriv.set_scan_deny_timer);
 	rtw_clear_scan_deny(padapter);
 	RT_TRACE(_module_os_intfs_c_, _drv_info_, ("rtw_cancel_all_timer:cancel set_scan_deny_timer!\n"));
 
-	_cancel_timer_ex(&padapter->recvpriv.signal_stat_timer);
+	del_timer_sync(&padapter->recvpriv.signal_stat_timer);
 
 	/* cancel dm timer */
 	rtw_hal_dm_deinit(padapter);

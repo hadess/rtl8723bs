@@ -120,12 +120,6 @@ extern void _rtw_init_queue(struct __queue	*pqueue);
 
 extern void rtw_init_timer(_timer *ptimer, void *padapter, void *pfunc);
 
-
-__inline static unsigned char _cancel_timer_ex(_timer *ptimer)
-{
-	return del_timer_sync(ptimer);
-}
-
 static __inline void thread_enter(char *name)
 {
 	allow_signal(SIGTERM);
