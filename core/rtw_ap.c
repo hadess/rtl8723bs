@@ -43,7 +43,6 @@ void init_mlme_ap_info(struct adapter *padapter)
 void free_mlme_ap_info(struct adapter *padapter)
 {
 	struct sta_info *psta = NULL;
-	struct sta_priv *pstapriv = &padapter->stapriv;
 	struct mlme_priv *pmlmepriv = &(padapter->mlmepriv);
 	struct mlme_ext_priv *pmlmeext = &padapter->mlmeextpriv;
 	struct mlme_ext_info *pmlmeinfo = &(pmlmeext->mlmext_info);
@@ -2171,7 +2170,6 @@ u8 bss_cap_update_on_sta_leave(struct adapter *padapter, struct sta_info *psta)
 u8 ap_free_sta(struct adapter *padapter, struct sta_info *psta, bool active, u16 reason)
 {
 	u8 beacon_updated = false;
-	struct sta_priv *pstapriv = &padapter->stapriv;
 
 	if (!psta)
 		return beacon_updated;

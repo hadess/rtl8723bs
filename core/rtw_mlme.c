@@ -1778,7 +1778,6 @@ void rtw_stadel_event_callback(struct adapter *adapter, u8 *pbuf)
 	u8 *pibss = NULL;
 	struct	mlme_priv *pmlmepriv = &(adapter->mlmepriv);
 	struct	stadel_event *pstadel	= (struct stadel_event*)pbuf;
-	struct	sta_priv *pstapriv = &adapter->stapriv;
 	struct wlan_network *tgt_network = &(pmlmepriv->cur_network);
 	struct mlme_ext_priv *pmlmeext = &adapter->mlmeextpriv;
 	struct mlme_ext_info *pmlmeinfo = &(pmlmeext->mlmext_info);
