@@ -23,7 +23,6 @@
 	#include <linux/slab.h>
 	#include <linux/module.h>
 	#include <linux/kref.h>
-	/* include <linux/smp_lock.h> */
 	#include <linux/netdevice.h>
 	#include <linux/skbuff.h>
 	#include <asm/uaccess.h>
@@ -56,7 +55,8 @@
 
 	struct	__queue	{
 		struct	list_head	queue;
-		_lock	lock;
+		spinlock_t lock;
+		bool lock_set;
 	};
 
 	typedef	struct sk_buff	_pkt;

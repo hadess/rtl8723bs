@@ -226,7 +226,8 @@ accesser of recv_priv: rtw_recv_entry(dispatch / passive level); recv_thread(pas
 using enter_critical section to protect
 */
 struct recv_priv {
-	_lock	lock;
+	spinlock_t	lock;
+	bool lock_set;
 	struct __queue	free_recv_queue;
 	struct __queue	recv_pending_queue;
 	struct __queue	uc_swdec_pending_queue;
@@ -287,7 +288,8 @@ struct recv_priv {
 
 struct sta_recv_priv {
 
-	_lock	lock;
+	spinlock_t	lock;
+	bool lock_set;
 	sint	option;
 
 	/* struct __queue	blk_strms[MAX_RX_NUMBLKS]; */
@@ -306,7 +308,8 @@ struct recv_buf
 {
 	struct list_head list;
 
-	_lock recvbuf_lock;
+	spinlock_t recvbuf_lock;
+	bool recfbuf_lock_set;
 
 	u32 ref_cnt;
 
