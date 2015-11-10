@@ -586,17 +586,21 @@ __inline static void _clr_fwstate_(struct mlme_priv *pmlmepriv, sint state)
  */
 __inline static void clr_fwstate(struct mlme_priv *pmlmepriv, sint state)
 {
-	spin_lock_bh(&pmlmepriv->lock);
+	bool lock_set = false;
+
+	SPIN_LOCK(pmlmepriv->lock, lock_set);
 	if (check_fwstate(pmlmepriv, state) == true)
 		pmlmepriv->fw_state ^= state;
-	spin_unlock_bh(&pmlmepriv->lock);
+	SPIN_UNLOCK(pmlmepriv->lock, lock_set);
 }
 
 __inline static void set_scanned_network_val(struct mlme_priv *pmlmepriv, sint val)
 {
-	spin_lock_bh(&pmlmepriv->lock);
+	bool lock_set = false;
+
+	SPIN_LOCK(pmlmepriv->lock, lock_set);
 	pmlmepriv->num_of_scanned = val;
-	spin_unlock_bh(&pmlmepriv->lock);
+	SPIN_UNLOCK(pmlmepriv->lock, lock_set);
 }
 
 extern u16 rtw_get_capability(struct wlan_bssid_ex *bss);

@@ -992,10 +992,10 @@ void SetHalODMVar(
 			}
 			else {
 				DBG_8192C("### Clean STA_(%d) info ###\n", psta->mac_id);
-				/* spin_lock_bh(&pHalData->odm_stainfo_lock); */
+				/* SPIN_LOCK(pHalData->odm_stainfo_lock); */
 				ODM_CmnInfoPtrArrayHook(podmpriv, ODM_CMNINFO_STA_STATUS, psta->mac_id, NULL);
 
-				/* spin_unlock_bh(&pHalData->odm_stainfo_lock); */
+				/* SPIN_UNLOCK(pHalData->odm_stainfo_lock); */
 		            }
 		}
 		break;

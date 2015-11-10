@@ -80,8 +80,9 @@ void rtw_reset_securitypriv(struct adapter *adapter)
 	u32 backupTKIPcountermeasure_time = 0;
 	/*  add for CONFIG_IEEE80211W, none 11w also can use */
 	struct mlme_ext_priv *pmlmeext = &adapter->mlmeextpriv;
+	bool lock_set = false;
 
-	spin_lock_bh(&adapter->security_key_mutex);
+	SPIN_LOCK(adapter->security_key_mutex, lock_set);
 
 	if (adapter->securitypriv.dot11AuthAlgrthm == dot11AuthAlgrthm_8021X)/* 802.1x */
 	{
@@ -132,7 +133,7 @@ void rtw_reset_securitypriv(struct adapter *adapter)
 		/*  */
 	}
 	/*  add for CONFIG_IEEE80211W, none 11w also can use */
-	spin_unlock_bh(&adapter->security_key_mutex);
+	SPIN_UNLOCK(adapter->security_key_mutex, lock_set);
 }
 
 void rtw_os_indicate_disconnect(struct adapter *adapter)

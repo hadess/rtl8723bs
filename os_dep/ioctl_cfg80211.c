@@ -296,7 +296,6 @@ struct cfg80211_bss *rtw_cfg80211_inform_bss(struct adapter *padapter, struct wl
 	}
 
 	/* To reduce PBC Overlap rate */
-	/* spin_lock_bh(&pwdev_priv->scan_req_lock); */
 	if (adapter_wdev_data(padapter)->scan_request != NULL)
 	{
 		u8 *psr = NULL, sr = 0;
@@ -332,7 +331,6 @@ struct cfg80211_bss *rtw_cfg80211_inform_bss(struct adapter *padapter, struct wl
 			}
 		}
 	}
-	/* spin_unlock_bh(&pwdev_priv->scan_req_lock); */
 
 
 	channel = pnetwork->network.Configuration.DSConfig;
@@ -1399,8 +1397,9 @@ exit:
 void rtw_cfg80211_indicate_scan_done(struct adapter *adapter, bool aborted)
 {
 	struct rtw_wdev_priv *pwdev_priv = adapter_wdev_data(adapter);
+	bool lock_set = false;
 
-	spin_lock_bh(&pwdev_priv->scan_req_lock);
+	SPIN_LOCK(pwdev_priv->scan_req_lock, lock_set);
 	if (pwdev_priv->scan_request != NULL) {
 		#ifdef CONFIG_DEBUG_CFG80211
 		DBG_871X("%s with scan req\n", __func__);
@@ -1422,7 +1421,7 @@ void rtw_cfg80211_indicate_scan_done(struct adapter *adapter, bool aborted)
 		DBG_871X("%s without scan req\n", __func__);
 		#endif
 	}
-	spin_unlock_bh(&pwdev_priv->scan_req_lock);
+	SPIN_UNLOCK(pwdev_priv->scan_req_lock, lock_set);
 }
 
 void rtw_cfg80211_unlink_bss(struct adapter *padapter, struct wlan_network *pnetwork)
@@ -1451,18 +1450,18 @@ void rtw_cfg80211_surveydone_event_callback(struct adapter *padapter)
 	struct	mlme_priv *pmlmepriv = &(padapter->mlmepriv);
 	struct __queue *queue	= &(pmlmepriv->scanned_queue);
 	struct	wlan_network	*pnetwork = NULL;
+	bool lock_set = false;
 
 #ifdef CONFIG_DEBUG_CFG80211
 	DBG_8192C("%s\n", __func__);
 #endif
 
-	spin_lock_bh(&(pmlmepriv->scanned_queue.lock));
+	SPIN_LOCK(pmlmepriv->scanned_queue.lock, lock_set);
 
 	phead = get_list_head(queue);
 	plist = get_next(phead);
 
-	while (1)
-	{
+	while (1) {
 		if (phead == plist)
 			break;
 
@@ -1482,7 +1481,7 @@ void rtw_cfg80211_surveydone_event_callback(struct adapter *padapter)
 
 	}
 
-	spin_unlock_bh(&(pmlmepriv->scanned_queue.lock));
+	SPIN_UNLOCK(pmlmepriv->scanned_queue.lock, lock_set);
 }
 
 static int rtw_cfg80211_set_probe_req_wpsp2pie(struct adapter *padapter, char *buf, int len)
@@ -1544,6 +1543,7 @@ static int cfg80211_rtw_scan(struct wiphy *wiphy
 	struct adapter *padapter;
 	struct rtw_wdev_priv *pwdev_priv;
 	struct mlme_priv *pmlmepriv;
+	bool lock_set = false;
 
 	if (ndev == NULL) {
 		ret = -EINVAL;
@@ -1558,24 +1558,20 @@ static int cfg80211_rtw_scan(struct wiphy *wiphy
 	DBG_871X(FUNC_ADPT_FMT"\n", FUNC_ADPT_ARG(padapter));
 /* endif */
 
-	spin_lock_bh(&pwdev_priv->scan_req_lock);
+	SPIN_LOCK(pwdev_priv->scan_req_lock, lock_set);
 	pwdev_priv->scan_request = request;
-	spin_unlock_bh(&pwdev_priv->scan_req_lock);
+	SPIN_UNLOCK(pwdev_priv->scan_req_lock, lock_set);
 
-	if (check_fwstate(pmlmepriv, WIFI_AP_STATE) == true)
-	{
+	if (check_fwstate(pmlmepriv, WIFI_AP_STATE) == true) {
 #ifdef CONFIG_DEBUG_CFG80211
 		DBG_871X("%s under WIFI_AP_STATE\n", __func__);
 #endif
 
-		if (check_fwstate(pmlmepriv, WIFI_UNDER_WPS|_FW_UNDER_SURVEY|_FW_UNDER_LINKING) == true)
-		{
+		if (check_fwstate(pmlmepriv, WIFI_UNDER_WPS|_FW_UNDER_SURVEY|_FW_UNDER_LINKING) == true) {
 			DBG_8192C("%s, fwstate = 0x%x\n", __func__, pmlmepriv->fw_state);
 
 			if (check_fwstate(pmlmepriv, WIFI_UNDER_WPS))
-			{
 				DBG_8192C("AP mode process WPS\n");
-			}
 
 			need_indicate_scan_done = true;
 			goto check_need_indicate_scan_done;
@@ -1644,7 +1640,7 @@ static int cfg80211_rtw_scan(struct wiphy *wiphy
 		ch[i].flags = request->channels[i]->flags;
 	}
 
-	spin_lock_bh(&pmlmepriv->lock);
+	SPIN_LOCK(pmlmepriv->lock, lock_set);
 	if (request->n_channels == 1) {
 		for (i = 1;i<survey_times_for_one_ch;i++)
 			memcpy(&ch[i], &ch[0], sizeof(struct rtw_ieee80211_channel));
@@ -1659,13 +1655,11 @@ static int cfg80211_rtw_scan(struct wiphy *wiphy
 	} else {
 		_status = rtw_sitesurvey_cmd(padapter, ssid, RTW_SSID_SCAN_AMOUNT, NULL, 0);
 	}
-	spin_unlock_bh(&pmlmepriv->lock);
+	SPIN_UNLOCK(pmlmepriv->lock, lock_set);
 
 
 	if (_status == false)
-	{
 		ret = -1;
-	}
 
 check_need_indicate_scan_done:
 	if (true == need_indicate_scan_done)
@@ -2908,6 +2902,7 @@ static int cfg80211_rtw_del_station(struct wiphy *wiphy, struct net_device *ndev
 	struct mlme_priv *pmlmepriv = &(padapter->mlmepriv);
 	struct sta_priv *pstapriv = &padapter->stapriv;
 	const u8 *mac = params->mac;
+	bool lock_set = false;
 
 	DBG_871X("+"FUNC_NDEV_FMT"\n", FUNC_NDEV_ARG(ndev));
 
@@ -2940,7 +2935,7 @@ static int cfg80211_rtw_del_station(struct wiphy *wiphy, struct net_device *ndev
 	}
 
 
-	spin_lock_bh(&pstapriv->asoc_list_lock);
+	SPIN_LOCK(pstapriv->asoc_list_lock, lock_set);
 
 	phead = &pstapriv->asoc_list;
 	plist = get_next(phead);
@@ -2976,7 +2971,7 @@ static int cfg80211_rtw_del_station(struct wiphy *wiphy, struct net_device *ndev
 
 	}
 
-	spin_unlock_bh(&pstapriv->asoc_list_lock);
+	SPIN_UNLOCK(pstapriv->asoc_list_lock, lock_set);
 
 	associated_clients_update(padapter, updated);
 
@@ -3022,11 +3017,13 @@ static int	cfg80211_rtw_dump_station(struct wiphy *wiphy, struct net_device *nde
 	struct adapter *padapter = (struct adapter *)rtw_netdev_priv(ndev);
 	struct sta_info *psta = NULL;
 	struct sta_priv *pstapriv = &padapter->stapriv;
+	bool lock_set = false;
+
 	DBG_871X(FUNC_NDEV_FMT"\n", FUNC_NDEV_ARG(ndev));
 
-	spin_lock_bh(&pstapriv->asoc_list_lock);
+	SPIN_LOCK(pstapriv->asoc_list_lock, lock_set);
 	psta = rtw_sta_info_get_by_idx(idx, pstapriv);
-	spin_unlock_bh(&pstapriv->asoc_list_lock);
+	SPIN_UNLOCK(pstapriv->asoc_list_lock, lock_set);
 	if (NULL == psta)
 	{
 		DBG_871X("Station is not found\n");

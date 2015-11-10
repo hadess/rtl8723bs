@@ -154,13 +154,13 @@ static int rtw_mlcst2unicst(struct adapter *padapter, struct sk_buff *skb)
 	char chk_alive_list[NUM_STA];
 	u8 bc_addr[6]={0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
 	u8 null_addr[6]={0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
-
+	bool lock_set = false;
 	int i;
 	s32	res;
 
 	DBG_COUNTER(padapter->tx_logs.os_tx_m2u);
 
-	spin_lock_bh(&pstapriv->asoc_list_lock);
+	SPIN_LOCK(pstapriv->asoc_list_lock, lock_set);
 	phead = &pstapriv->asoc_list;
 	plist = get_next(phead);
 
@@ -175,7 +175,7 @@ static int rtw_mlcst2unicst(struct adapter *padapter, struct sk_buff *skb)
 			chk_alive_list[chk_alive_num++] = stainfo_offset;
 		}
 	}
-	spin_unlock_bh(&pstapriv->asoc_list_lock);
+	SPIN_UNLOCK(pstapriv->asoc_list_lock, lock_set);
 
 	for (i = 0; i < chk_alive_num; i++) {
 		psta = rtw_get_stainfo_by_offset(pstapriv, chk_alive_list[i]);

@@ -45,7 +45,7 @@ void rtw_hal_sdio_update_tx_freepage(struct adapter *padapter, u8 PageIdx, u8 Re
 	u8 RequiredPublicFreePgNum = 0;
 	/* _irqL irql; */
 
-	/* spin_lock_bh(&pHalData->SdioTxFIFOFreePageLock); */
+	/* SPIN_LOCK(pHalData->SdioTxFIFOFreePageLock); */
 
 	DedicatedPgNum = pHalData->SdioTxFIFOFreePage[PageIdx];
 	if (RequiredPageNum <= DedicatedPgNum) {
@@ -56,7 +56,7 @@ void rtw_hal_sdio_update_tx_freepage(struct adapter *padapter, u8 PageIdx, u8 Re
 		pHalData->SdioTxFIFOFreePage[PUBLIC_QUEUE_IDX] -= RequiredPublicFreePgNum;
 	}
 
-	/* spin_unlock_bh(&pHalData->SdioTxFIFOFreePageLock); */
+	/* SPIN_UNLOCK(pHalData->SdioTxFIFOFreePageLock); */
 }
 
 void rtw_hal_set_sdio_tx_max_length(struct adapter *padapter, u8 numHQ, u8 numNQ, u8 numLQ, u8 numPubQ)

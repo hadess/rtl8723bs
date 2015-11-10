@@ -74,6 +74,20 @@
 
 	typedef struct work_struct _workitem;
 
+#define	SPIN_LOCK(_LOCK, SET)				\
+	if (!_LOCK##_set) {				\
+		_LOCK##_set = true;			\
+		SET = true;				\
+		spin_lock_bh(&_LOCK);			\
+	}
+
+#define SPIN_UNLOCK(_LOCK, SET)				\
+	if (SET) {					\
+		spin_unlock_bh(&_LOCK);			\
+		_LOCK##_set = false;			\
+		SET = false;				\
+	}
+
 __inline static struct list_head *get_next(struct list_head	*list)
 {
 	return list->next;
