@@ -227,7 +227,7 @@ using enter_critical section to protect
 */
 struct recv_priv {
 	spinlock_t	lock;
-	bool lock_set;
+	ulong lock_set;
 	struct __queue	free_recv_queue;
 	struct __queue	recv_pending_queue;
 	struct __queue	uc_swdec_pending_queue;
@@ -289,7 +289,7 @@ struct recv_priv {
 struct sta_recv_priv {
 
 	spinlock_t	lock;
-	bool lock_set;
+	ulong lock_set;
 	sint	option;
 
 	/* struct __queue	blk_strms[MAX_RX_NUMBLKS]; */
@@ -309,7 +309,7 @@ struct recv_buf
 	struct list_head list;
 
 	spinlock_t recvbuf_lock;
-	bool recfbuf_lock_set;
+	ulong recfbuf_lock_set;
 
 	u32 ref_cnt;
 

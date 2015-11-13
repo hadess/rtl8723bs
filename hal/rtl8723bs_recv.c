@@ -134,10 +134,10 @@ static void update_recvframe_phyinfo(
 	pkt_info.DataRate = pattrib->data_rate;
 
 	/* rtl8723b_query_rx_phy_status(precvframe, pphy_status); */
-	/* SPIN_LOCK(pHalData->odm_stainfo_lock); */
+	/* SPIN_LOCK_BH(pHalData->odm_stainfo_lock); */
 	ODM_PhyStatusQuery(&pHalData->odmpriv, pPHYInfo, (u8 *)pphy_status,&(pkt_info));
 	if (psta) psta->rssi = pattrib->phy_info.RecvSignalPower;
-	/* SPIN_UNLOCK(pHalData->odm_stainfo_lock); */
+	/* SPIN_UNLOCK_BH(pHalData->odm_stainfo_lock); */
 	precvframe->u.hdr.psta = NULL;
 	if (pkt_info.bPacketMatchBSSID &&
 		(check_fwstate(&padapter->mlmepriv, WIFI_AP_STATE) == true))

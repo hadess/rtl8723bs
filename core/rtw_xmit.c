@@ -1470,7 +1470,7 @@ s32 rtw_mgmt_xmitframe_coalesce(struct adapter *padapter, _pkt *pkt, struct xmit
 	if (BIP_AAD == NULL)
 		return _FAIL;
 
-	SPIN_LOCK(padapter->security_key_mutex, lock_set);
+	SPIN_LOCK_BH(padapter->security_key_mutex, lock_set);
 
 	/* only support station mode */
 	if (!check_fwstate(pmlmepriv, WIFI_STATION_STATE) || !check_fwstate(pmlmepriv, _FW_LINKED))
@@ -1610,12 +1610,12 @@ s32 rtw_mgmt_xmitframe_coalesce(struct adapter *padapter, _pkt *pkt, struct xmit
 	}
 
 xmitframe_coalesce_success:
-	SPIN_UNLOCK(padapter->security_key_mutex, lock_set);
+	SPIN_UNLOCK_BH(padapter->security_key_mutex, lock_set);
 	kfree(BIP_AAD);
 	return _SUCCESS;
 
 xmitframe_coalesce_fail:
-	SPIN_UNLOCK(padapter->security_key_mutex, lock_set);
+	SPIN_UNLOCK_BH(padapter->security_key_mutex, lock_set);
 	kfree(BIP_AAD);
 	return _FAIL;
 }
@@ -1786,7 +1786,7 @@ struct xmit_buf *rtw_alloc_xmitbuf_ext(struct xmit_priv *pxmitpriv)
 	struct list_head *plist, *phead;
 	struct __queue *pfree_queue = &pxmitpriv->free_xmit_extbuf_queue;
 
-	spin_lock_irqsave(&pfree_queue->lock, irqL);
+	SPIN_LOCK_IRQSAVE(pfree_queue->lock, irqL);
 
 	if (list_empty(&pfree_queue->queue)) {
 		pxmitbuf = NULL;
@@ -1822,7 +1822,7 @@ struct xmit_buf *rtw_alloc_xmitbuf_ext(struct xmit_priv *pxmitpriv)
 
 	}
 
-	spin_unlock_irqrestore(&pfree_queue->lock, irqL);
+	SPIN_UNLOCK_IRQRESTORE(pfree_queue->lock, irqL);
 
 	return pxmitbuf;
 }
@@ -1837,7 +1837,7 @@ s32 rtw_free_xmitbuf_ext(struct xmit_priv *pxmitpriv, struct xmit_buf *pxmitbuf)
 		return _FAIL;
 	}
 
-	spin_lock_irqsave(&pfree_queue->lock, irqL);
+	SPIN_LOCK_IRQSAVE(pfree_queue->lock, irqL);
 
 	list_del_init(&pxmitbuf->list);
 
@@ -1847,7 +1847,7 @@ s32 rtw_free_xmitbuf_ext(struct xmit_priv *pxmitpriv, struct xmit_buf *pxmitbuf)
 	DBG_871X("DBG_XMIT_BUF_EXT FREE no =%d, free_xmit_extbuf_cnt =%d\n", pxmitbuf->no , pxmitpriv->free_xmit_extbuf_cnt);
 	#endif
 
-	spin_unlock_irqrestore(&pfree_queue->lock, irqL);
+	SPIN_UNLOCK_IRQRESTORE(pfree_queue->lock, irqL);
 
 	return _SUCCESS;
 }
@@ -1861,7 +1861,7 @@ struct xmit_buf *rtw_alloc_xmitbuf(struct xmit_priv *pxmitpriv)
 
 	/* DBG_871X("+rtw_alloc_xmitbuf\n"); */
 
-	spin_lock_irqsave(&pfree_xmitbuf_queue->lock, irqL);
+	SPIN_LOCK_IRQSAVE(pfree_xmitbuf_queue->lock, irqL);
 
 	if (list_empty(&pfree_xmitbuf_queue->queue)) {
 		pxmitbuf = NULL;
@@ -1903,7 +1903,7 @@ struct xmit_buf *rtw_alloc_xmitbuf(struct xmit_priv *pxmitpriv)
 	}
 	#endif
 
-	spin_unlock_irqrestore(&pfree_xmitbuf_queue->lock, irqL);
+	SPIN_UNLOCK_IRQRESTORE(pfree_xmitbuf_queue->lock, irqL);
 
 	return pxmitbuf;
 }
@@ -1932,7 +1932,7 @@ s32 rtw_free_xmitbuf(struct xmit_priv *pxmitpriv, struct xmit_buf *pxmitbuf)
 	}
 	else
 	{
-		spin_lock_irqsave(&pfree_xmitbuf_queue->lock, irqL);
+		SPIN_LOCK_IRQSAVE(pfree_xmitbuf_queue->lock, irqL);
 
 		list_del_init(&pxmitbuf->list);
 
@@ -1943,7 +1943,7 @@ s32 rtw_free_xmitbuf(struct xmit_priv *pxmitpriv, struct xmit_buf *pxmitbuf)
 		#ifdef DBG_XMIT_BUF
 		DBG_871X("DBG_XMIT_BUF FREE no =%d, free_xmitbuf_cnt =%d\n", pxmitbuf->no , pxmitpriv->free_xmitbuf_cnt);
 		#endif
-		spin_unlock_irqrestore(&pfree_xmitbuf_queue->lock, irqL);
+		SPIN_UNLOCK_IRQRESTORE(pfree_xmitbuf_queue->lock, irqL);
 	}
 	return _SUCCESS;
 }
@@ -1990,7 +1990,7 @@ struct xmit_frame *rtw_alloc_xmitframe(struct xmit_priv *pxmitpriv)/* _queue *pf
 	struct __queue *pfree_xmit_queue = &pxmitpriv->free_xmit_queue;
 	bool lock_set = false;
 
-	SPIN_LOCK(pfree_xmit_queue->lock, lock_set);
+	SPIN_LOCK_BH(pfree_xmit_queue->lock, lock_set);
 
 	if (list_empty(&pfree_xmit_queue->queue)) {
 		RT_TRACE(_module_rtl871x_xmit_c_, _drv_info_, ("rtw_alloc_xmitframe:%d\n", pxmitpriv->free_xmitframe_cnt));
@@ -2007,7 +2007,7 @@ struct xmit_frame *rtw_alloc_xmitframe(struct xmit_priv *pxmitpriv)/* _queue *pf
 		RT_TRACE(_module_rtl871x_xmit_c_, _drv_info_, ("rtw_alloc_xmitframe():free_xmitframe_cnt =%d\n", pxmitpriv->free_xmitframe_cnt));
 	}
 
-	SPIN_UNLOCK(pfree_xmit_queue->lock, lock_set);
+	SPIN_UNLOCK_BH(pfree_xmit_queue->lock, lock_set);
 
 	rtw_init_xmitframe(pxframe);
 	return pxframe;
@@ -2020,7 +2020,7 @@ struct xmit_frame *rtw_alloc_xmitframe_ext(struct xmit_priv *pxmitpriv)
 	struct __queue *queue = &pxmitpriv->free_xframe_ext_queue;
 	bool lock_set = false;
 
-	SPIN_LOCK(queue->lock, lock_set);
+	SPIN_LOCK_BH(queue->lock, lock_set);
 
 	if (list_empty(&queue->queue)) {
 		RT_TRACE(_module_rtl871x_xmit_c_, _drv_info_, ("rtw_alloc_xmitframe_ext:%d\n", pxmitpriv->free_xframe_ext_cnt));
@@ -2035,7 +2035,7 @@ struct xmit_frame *rtw_alloc_xmitframe_ext(struct xmit_priv *pxmitpriv)
 		RT_TRACE(_module_rtl871x_xmit_c_, _drv_info_, ("rtw_alloc_xmitframe_ext():free_xmitframe_cnt =%d\n", pxmitpriv->free_xframe_ext_cnt));
 	}
 
-	SPIN_UNLOCK(queue->lock, lock_set);
+	SPIN_UNLOCK_BH(queue->lock, lock_set);
 
 	rtw_init_xmitframe(pxframe);
 
@@ -2101,7 +2101,7 @@ s32 rtw_free_xmitframe(struct xmit_priv *pxmitpriv, struct xmit_frame *pxmitfram
 	else
 	{}
 
-	SPIN_LOCK(queue->lock, lock_set);
+	SPIN_LOCK_BH(queue->lock, lock_set);
 
 	list_del_init(&pxmitframe->list);
 	list_add_tail(&pxmitframe->list, get_list_head(queue));
@@ -2114,7 +2114,7 @@ s32 rtw_free_xmitframe(struct xmit_priv *pxmitpriv, struct xmit_frame *pxmitfram
 	} else {
 	}
 
-	SPIN_UNLOCK(queue->lock, lock_set);
+	SPIN_UNLOCK_BH(queue->lock, lock_set);
 
 check_pkt_complete:
 
@@ -2131,7 +2131,7 @@ void rtw_free_xmitframe_queue(struct xmit_priv *pxmitpriv, struct __queue *pfram
 	struct	xmit_frame	*pxmitframe;
 	bool lock_set = false;
 
-	SPIN_LOCK(pframequeue->lock, lock_set);
+	SPIN_LOCK_BH(pframequeue->lock, lock_set);
 
 	phead = get_list_head(pframequeue);
 	plist = get_next(phead);
@@ -2146,7 +2146,7 @@ void rtw_free_xmitframe_queue(struct xmit_priv *pxmitpriv, struct __queue *pfram
 		rtw_free_xmitframe(pxmitpriv, pxmitframe);
 
 	}
-	SPIN_UNLOCK(pframequeue->lock, lock_set);
+	SPIN_UNLOCK_BH(pframequeue->lock, lock_set);
 }
 
 s32 rtw_xmitframe_enqueue(struct adapter *padapter, struct xmit_frame *pxmitframe)
@@ -2253,21 +2253,21 @@ s32 rtw_xmit_classifier(struct adapter *padapter, struct xmit_frame *pxmitframe)
 
 	ptxservq = rtw_get_sta_pending(padapter, psta, pattrib->priority, (u8 *)(&ac_index));
 
-	/* spin_lock_irqsave(&pstapending->lock, irqL0); */
+	/* SPIN_LOCK_IRQSAVE(pstapending->lock, irqL0); */
 
 	if (list_empty(&ptxservq->tx_pending)) {
 		list_add_tail(&ptxservq->tx_pending, get_list_head(phwxmits[ac_index].sta_queue));
 	}
 
-	/* spin_lock_irqsave(&ptxservq->sta_pending.lock, irqL1); */
+	/* SPIN_LOCK_IRQSAVE(ptxservq->sta_pending.lock, irqL1); */
 
 	list_add_tail(&pxmitframe->list, get_list_head(&ptxservq->sta_pending));
 	ptxservq->qcnt++;
 	phwxmits[ac_index].accnt++;
 
-	/* spin_unlock_irqrestore(&ptxservq->sta_pending.lock, irqL1); */
+	/* SPIN_UNLOCK_IRQRESTORE(ptxservq->sta_pending.lock, irqL1); */
 
-	/* spin_unlock_irqrestore(&pstapending->lock, irqL0); */
+	/* SPIN_UNLOCK_IRQRESTORE(pstapending->lock, irqL0); */
 
 exit:
 
@@ -2470,14 +2470,14 @@ s32 rtw_xmit(struct adapter *padapter, _pkt **ppkt)
 
 	do_queue_select(padapter, &pxmitframe->attrib);
 
-	SPIN_LOCK(pxmitpriv->lock, lock_set);
+	SPIN_LOCK_BH(pxmitpriv->lock, lock_set);
 	if (xmitframe_enqueue_for_sleeping_sta(padapter, pxmitframe) == true)
 	{
-		SPIN_UNLOCK(pxmitpriv->lock, lock_set);
+		SPIN_UNLOCK_BH(pxmitpriv->lock, lock_set);
 		DBG_COUNTER(padapter->tx_logs.core_tx_ap_enqueue);
 		return 1;
 	}
-	SPIN_UNLOCK(pxmitpriv->lock, lock_set);
+	SPIN_UNLOCK_BH(pxmitpriv->lock, lock_set);
 
 	/* pre_xmitframe */
 	if (rtw_hal_xmit(padapter, pxmitframe) == false)
@@ -2585,7 +2585,7 @@ sint xmitframe_enqueue_for_sleeping_sta(struct adapter *padapter, struct xmit_fr
 
 	if (bmcst)
 	{
-		SPIN_LOCK(psta->sleep_q.lock, lock_set);
+		SPIN_LOCK_BH(psta->sleep_q.lock, lock_set);
 
 		if (pstapriv->sta_dz_bitmap)/* if anyone sta is in ps mode */
 		{
@@ -2614,14 +2614,14 @@ sint xmitframe_enqueue_for_sleeping_sta(struct adapter *padapter, struct xmit_fr
 
 		}
 
-		SPIN_UNLOCK(psta->sleep_q.lock, lock_set);
+		SPIN_UNLOCK_BH(psta->sleep_q.lock, lock_set);
 
 		return ret;
 
 	}
 
 
-	SPIN_LOCK(psta->sleep_q.lock, lock_set);
+	SPIN_LOCK_BH(psta->sleep_q.lock, lock_set);
 
 	if (psta->state&WIFI_SLEEP_STATE)
 	{
@@ -2681,7 +2681,7 @@ sint xmitframe_enqueue_for_sleeping_sta(struct adapter *padapter, struct xmit_fr
 		}
 	}
 
-	SPIN_UNLOCK(psta->sleep_q.lock, lock_set);
+	SPIN_UNLOCK_BH(psta->sleep_q.lock, lock_set);
 
 	return ret;
 }
@@ -2741,7 +2741,7 @@ void stop_sta_xmit(struct adapter *padapter, struct sta_info *psta)
 	psta_bmc = rtw_get_bcmc_stainfo(padapter);
 
 
-	SPIN_LOCK(pxmitpriv->lock, lock_set);
+	SPIN_LOCK_BH(pxmitpriv->lock, lock_set);
 
 	psta->state |= WIFI_SLEEP_STATE;
 
@@ -2769,7 +2769,7 @@ void stop_sta_xmit(struct adapter *padapter, struct sta_info *psta)
 	dequeue_xmitframes_to_sleeping_queue(padapter, psta_bmc, &pstaxmitpriv->be_q.sta_pending);
 	list_del_init(&(pstaxmitpriv->be_q.tx_pending));
 
-	SPIN_UNLOCK(pxmitpriv->lock, lock_set);
+	SPIN_UNLOCK_BH(pxmitpriv->lock, lock_set);
 }
 
 void wakeup_sta_to_xmit(struct adapter *padapter, struct sta_info *psta)
@@ -2784,7 +2784,7 @@ void wakeup_sta_to_xmit(struct adapter *padapter, struct sta_info *psta)
 
 	psta_bmc = rtw_get_bcmc_stainfo(padapter);
 
-	SPIN_LOCK(pxmitpriv->lock, lock_set);
+	SPIN_LOCK_BH(pxmitpriv->lock, lock_set);
 
 	xmitframe_phead = get_list_head(&psta->sleep_q);
 	xmitframe_plist = get_next(xmitframe_phead);
@@ -2915,7 +2915,7 @@ void wakeup_sta_to_xmit(struct adapter *padapter, struct sta_info *psta)
 
 _exit:
 
-	SPIN_UNLOCK(pxmitpriv->lock, lock_set);
+	SPIN_UNLOCK_BH(pxmitpriv->lock, lock_set);
 
 	if (update_mask)
 	{
@@ -2935,7 +2935,7 @@ void xmit_delivery_enabled_frames(struct adapter *padapter, struct sta_info *pst
 	struct xmit_priv *pxmitpriv = &padapter->xmitpriv;
 	bool lock_set = false;
 
-	SPIN_LOCK(pxmitpriv->lock, lock_set);
+	SPIN_LOCK_BH(pxmitpriv->lock, lock_set);
 
 	xmitframe_phead = get_list_head(&psta->sleep_q);
 	xmitframe_plist = get_next(xmitframe_phead);
@@ -3001,7 +3001,7 @@ void xmit_delivery_enabled_frames(struct adapter *padapter, struct sta_info *pst
 		}
 
 	}
-	SPIN_UNLOCK(pxmitpriv->lock, lock_set);
+	SPIN_UNLOCK_BH(pxmitpriv->lock, lock_set);
 
 	return;
 }
@@ -3016,10 +3016,10 @@ void enqueue_pending_xmitbuf(
 
 	pqueue = &pxmitpriv->pending_xmitbuf_queue;
 
-	SPIN_LOCK(pqueue->lock, lock_set);
+	SPIN_LOCK_BH(pqueue->lock, lock_set);
 	list_del_init(&pxmitbuf->list);
 	list_add_tail(&pxmitbuf->list, get_list_head(pqueue));
-	SPIN_UNLOCK(pqueue->lock, lock_set);
+	SPIN_UNLOCK_BH(pqueue->lock, lock_set);
 
 	up(&(pri_adapter->xmitpriv.xmit_sema));
 }
@@ -3033,10 +3033,10 @@ void enqueue_pending_xmitbuf_to_head(
 
 	pqueue = &pxmitpriv->pending_xmitbuf_queue;
 
-	SPIN_LOCK(pqueue->lock, lock_set);
+	SPIN_LOCK_BH(pqueue->lock, lock_set);
 	list_del_init(&pxmitbuf->list);
 	list_add(&pxmitbuf->list, get_list_head(pqueue));
-	SPIN_UNLOCK(pqueue->lock, lock_set);
+	SPIN_UNLOCK_BH(pqueue->lock, lock_set);
 }
 
 struct xmit_buf* dequeue_pending_xmitbuf(
@@ -3049,7 +3049,7 @@ struct xmit_buf* dequeue_pending_xmitbuf(
 	pxmitbuf = NULL;
 	pqueue = &pxmitpriv->pending_xmitbuf_queue;
 
-	SPIN_LOCK(pqueue->lock, lock_set);
+	SPIN_LOCK_BH(pqueue->lock, lock_set);
 
 	if (!list_empty(&pqueue->queue))
 	{
@@ -3061,7 +3061,7 @@ struct xmit_buf* dequeue_pending_xmitbuf(
 		list_del_init(&pxmitbuf->list);
 	}
 
-	SPIN_UNLOCK(pqueue->lock, lock_set);
+	SPIN_UNLOCK_BH(pqueue->lock, lock_set);
 
 	return pxmitbuf;
 }
@@ -3076,7 +3076,7 @@ struct xmit_buf* dequeue_pending_xmitbuf_under_survey(
 	pxmitbuf = NULL;
 	pqueue = &pxmitpriv->pending_xmitbuf_queue;
 
-	SPIN_LOCK(pqueue->lock, lock_set);
+	SPIN_LOCK_BH(pqueue->lock, lock_set);
 
 	if (!list_empty(&pqueue->queue))
 	{
@@ -3104,7 +3104,7 @@ struct xmit_buf* dequeue_pending_xmitbuf_under_survey(
 		} while (1);
 	}
 
-	SPIN_UNLOCK(pqueue->lock, lock_set);
+	SPIN_UNLOCK_BH(pqueue->lock, lock_set);
 
 	return pxmitbuf;
 }
@@ -3118,12 +3118,12 @@ sint check_pending_xmitbuf(
 
 	pqueue = &pxmitpriv->pending_xmitbuf_queue;
 
-	SPIN_LOCK(pqueue->lock, lock_set);
+	SPIN_LOCK_BH(pqueue->lock, lock_set);
 
 	if (!list_empty(&pqueue->queue))
 		ret = true;
 
-	SPIN_UNLOCK(pqueue->lock, lock_set);
+	SPIN_UNLOCK_BH(pqueue->lock, lock_set);
 
 	return ret;
 }

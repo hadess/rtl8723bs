@@ -77,7 +77,7 @@ struct	stainfo_stats	{
 
 struct sta_info {
 	spinlock_t	lock;
-	bool lock_set;
+	ulong lock_set;
 	struct list_head	list; /* free_sta_queue */
 	struct list_head	hash_list; /* sta_hash */
 	struct adapter *padapter;
@@ -323,7 +323,7 @@ struct	sta_priv {
 	struct __queue	free_sta_queue;
 
 	spinlock_t sta_hash_lock;
-	bool sta_hash_lock_set;
+	ulong sta_hash_lock_set;
 	struct list_head   sta_hash[NUM_STA];
 	int asoc_sta_count;
 	struct __queue sleep_q;
@@ -334,9 +334,9 @@ struct	sta_priv {
 	struct list_head asoc_list;
 	struct list_head auth_list;
 	spinlock_t asoc_list_lock;
-	bool asoc_list_lock_set;
+	ulong asoc_list_lock_set;
 	spinlock_t auth_list_lock;
-	bool auth_list_lock_set;
+	ulong auth_list_lock_set;
 	u8 asoc_list_cnt;
 	u8 auth_list_cnt;
 

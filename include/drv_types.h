@@ -420,7 +420,7 @@ struct rtw_traffic_statistics {
 
 struct cam_ctl_t {
 	spinlock_t lock;
-	bool lock_set;
+	ulong lock_set;
 	u64 bitmap;
 };
 
@@ -448,7 +448,7 @@ struct dvobj_priv
 	/* for local/global synchronization */
 	/*  */
 	spinlock_t lock;
-	bool lock_set;
+	ulong lock_set;
 	int macid[NUM_STA];
 
 	_mutex hw_init_mutex;
@@ -540,7 +540,7 @@ struct adapter {
 	struct	sta_priv stapriv;
 	struct	security_priv securitypriv;
 	spinlock_t   security_key_mutex; /*  add for CONFIG_IEEE80211W, none 11w also can use */
-	bool security_key_mutex_set;
+	ulong security_key_mutex_set;
 	struct	registry_priv registrypriv;
 	struct	eeprom_priv eeprompriv;
 

@@ -613,10 +613,10 @@ void invalidate_cam_all(struct adapter *padapter)
 
 	rtw_hal_set_hwreg(padapter, HW_VAR_CAM_INVALID_ALL, NULL);
 
-	SPIN_LOCK(cam_ctl->lock, lock_set);
+	SPIN_LOCK_BH(cam_ctl->lock, lock_set);
 	cam_ctl->bitmap = 0;
 	memset(dvobj->cam_cache, 0, sizeof(struct cam_entry_cache)*TOTAL_CAM_ENTRY);
-	SPIN_UNLOCK(cam_ctl->lock, lock_set);
+	SPIN_UNLOCK_BH(cam_ctl->lock, lock_set);
 }
 
 static u32 _ReadCAM(struct adapter *padapter , u32 addr)
@@ -705,9 +705,9 @@ inline void write_cam_from_cache(struct adapter *adapter, u8 id)
 	struct cam_entry_cache cache;
 	bool lock_set = false;
 
-	SPIN_LOCK(cam_ctl->lock, lock_set);
+	SPIN_LOCK_BH(cam_ctl->lock, lock_set);
 	memcpy(&cache, &dvobj->cam_cache[id], sizeof(struct cam_entry_cache));
-	SPIN_UNLOCK(cam_ctl->lock, lock_set);
+	SPIN_UNLOCK_BH(cam_ctl->lock, lock_set);
 
 	_write_cam(adapter, id, cache.ctrl, cache.mac, cache.key);
 }
@@ -718,13 +718,13 @@ void write_cam_cache(struct adapter *adapter, u8 id, u16 ctrl, u8 *mac, u8 *key)
 	struct cam_ctl_t *cam_ctl = &dvobj->cam_ctl;
 	bool lock_set = false;
 
-	SPIN_LOCK(cam_ctl->lock, lock_set);
+	SPIN_LOCK_BH(cam_ctl->lock, lock_set);
 
 	dvobj->cam_cache[id].ctrl = ctrl;
 	memcpy(dvobj->cam_cache[id].mac, mac, ETH_ALEN);
 	memcpy(dvobj->cam_cache[id].key, key, 16);
 
-	SPIN_UNLOCK(cam_ctl->lock, lock_set);
+	SPIN_UNLOCK_BH(cam_ctl->lock, lock_set);
 }
 
 void clear_cam_cache(struct adapter *adapter, u8 id)
@@ -733,11 +733,11 @@ void clear_cam_cache(struct adapter *adapter, u8 id)
 	struct cam_ctl_t *cam_ctl = &dvobj->cam_ctl;
 	bool lock_set = false;
 
-	SPIN_LOCK(cam_ctl->lock, lock_set);
+	SPIN_LOCK_BH(cam_ctl->lock, lock_set);
 
 	memset(&(dvobj->cam_cache[id]), 0, sizeof(struct cam_entry_cache));
 
-	SPIN_UNLOCK(cam_ctl->lock, lock_set);
+	SPIN_UNLOCK_BH(cam_ctl->lock, lock_set);
 }
 
 static bool _rtw_camid_is_gk(struct adapter *adapter, u8 cam_id)
@@ -791,9 +791,9 @@ s16 rtw_camid_search(struct adapter *adapter, u8 *addr, s16 kid)
 	s16 cam_id = -1;
 	bool lock_set = false;
 
-	SPIN_LOCK(cam_ctl->lock, lock_set);
+	SPIN_LOCK_BH(cam_ctl->lock, lock_set);
 	cam_id = _rtw_camid_search(adapter, addr, kid);
-	SPIN_UNLOCK(cam_ctl->lock, lock_set);
+	SPIN_UNLOCK_BH(cam_ctl->lock, lock_set);
 
 	return cam_id;
 }
@@ -806,7 +806,7 @@ s16 rtw_camid_alloc(struct adapter *adapter, struct sta_info *sta, u8 kid)
 	struct mlme_ext_info *mlmeinfo;
 	bool lock_set = false;
 
-	SPIN_LOCK(cam_ctl->lock, lock_set);
+	SPIN_LOCK_BH(cam_ctl->lock, lock_set);
 
 	mlmeinfo = &adapter->mlmeextpriv.mlmext_info;
 
@@ -867,7 +867,7 @@ bitmap_handle:
 	if (cam_id >= 0)
 		cam_ctl->bitmap |= BIT(cam_id);
 
-	SPIN_UNLOCK(cam_ctl->lock, lock_set);
+	SPIN_UNLOCK_BH(cam_ctl->lock, lock_set);
 
 	return cam_id;
 }
@@ -878,12 +878,12 @@ void rtw_camid_free(struct adapter *adapter, u8 cam_id)
 	struct cam_ctl_t *cam_ctl = &dvobj->cam_ctl;
 	bool lock_set = false;
 
-	SPIN_LOCK(cam_ctl->lock, lock_set);
+	SPIN_LOCK_BH(cam_ctl->lock, lock_set);
 
 	if (cam_id < TOTAL_CAM_ENTRY)
 		cam_ctl->bitmap &= ~(BIT(cam_id));
 
-	SPIN_UNLOCK(cam_ctl->lock, lock_set);
+	SPIN_UNLOCK_BH(cam_ctl->lock, lock_set);
 }
 
 int allocate_fw_sta_entry(struct adapter *padapter)
@@ -2278,7 +2278,7 @@ void rtw_alloc_macid(struct adapter *padapter, struct sta_info *psta)
 		return;
 	}
 
-	SPIN_LOCK(pdvobj->lock, lock_set);
+	SPIN_LOCK_BH(pdvobj->lock, lock_set);
 	for (i = 0; i<NUM_STA; i++)
 	{
 		if (pdvobj->macid[i] == false)
@@ -2287,7 +2287,7 @@ void rtw_alloc_macid(struct adapter *padapter, struct sta_info *psta)
 			break;
 		}
 	}
-	SPIN_UNLOCK(pdvobj->lock, lock_set);
+	SPIN_UNLOCK_BH(pdvobj->lock, lock_set);
 
 	if (i > (NUM_STA-1))
 	{
@@ -2316,7 +2316,7 @@ void rtw_release_macid(struct adapter *padapter, struct sta_info *psta)
 		return;
 	}
 
-	SPIN_LOCK(pdvobj->lock, lock_set);
+	SPIN_LOCK_BH(pdvobj->lock, lock_set);
 	if (psta->mac_id<NUM_STA && psta->mac_id != 1)
 	{
 		if (pdvobj->macid[psta->mac_id] == true)
@@ -2327,7 +2327,7 @@ void rtw_release_macid(struct adapter *padapter, struct sta_info *psta)
 		}
 
 	}
-	SPIN_UNLOCK(pdvobj->lock, lock_set);
+	SPIN_UNLOCK_BH(pdvobj->lock, lock_set);
 
 }
 /* For 8188E RA */
@@ -2338,7 +2338,7 @@ u8 rtw_search_max_mac_id(struct adapter *padapter)
 	int i;
 	bool lock_set = false;
 
-	SPIN_LOCK(pdvobj->lock, lock_set);
+	SPIN_LOCK_BH(pdvobj->lock, lock_set);
 	for (i =(NUM_STA-1); i>= 0 ; i--)
 	{
 		if (pdvobj->macid[i] == true)
@@ -2347,7 +2347,7 @@ u8 rtw_search_max_mac_id(struct adapter *padapter)
 		}
 	}
 	max_mac_id = i;
-	SPIN_UNLOCK(pdvobj->lock, lock_set);
+	SPIN_UNLOCK_BH(pdvobj->lock, lock_set);
 
 	return max_mac_id;
 

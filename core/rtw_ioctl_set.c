@@ -74,7 +74,7 @@ u8 rtw_do_join(struct adapter *padapter)
 	u8 ret = _SUCCESS;
 	bool lock_set = false;
 
-	SPIN_LOCK(pmlmepriv->scanned_queue.lock, lock_set);
+	SPIN_LOCK_BH(pmlmepriv->scanned_queue.lock, lock_set);
 	phead = get_list_head(queue);
 	plist = get_next(phead);
 
@@ -90,7 +90,7 @@ u8 rtw_do_join(struct adapter *padapter)
 
 	if (list_empty(&queue->queue))
 	{
-		SPIN_UNLOCK(pmlmepriv->scanned_queue.lock, lock_set);
+		SPIN_UNLOCK_BH(pmlmepriv->scanned_queue.lock, lock_set);
 		_clr_fwstate_(pmlmepriv, _FW_UNDER_LINKING);
 
 		/* when set_ssid/set_bssid for rtw_do_join(), but scanning queue is empty */
@@ -118,7 +118,7 @@ u8 rtw_do_join(struct adapter *padapter)
 	else
 	{
 		int select_ret;
-		SPIN_UNLOCK(pmlmepriv->scanned_queue.lock, lock_set);
+		SPIN_UNLOCK_BH(pmlmepriv->scanned_queue.lock, lock_set);
 		if ((select_ret =rtw_select_and_join_from_scanned_queue(pmlmepriv)) == _SUCCESS)
 		{
 			pmlmepriv->to_join = false;
@@ -203,7 +203,7 @@ u8 rtw_set_802_11_bssid(struct adapter *padapter, u8 *bssid)
 		goto exit;
 	}
 
-	SPIN_LOCK(pmlmepriv->lock, lock_set);
+	SPIN_LOCK_BH(pmlmepriv->lock, lock_set);
 
 
 	DBG_871X("Set BSSID under fw_state = 0x%08x\n", get_fwstate(pmlmepriv));
@@ -258,7 +258,7 @@ handle_tkip_countermeasure:
 	}
 
 release_mlme_lock:
-	SPIN_UNLOCK(pmlmepriv->lock, lock_set);
+	SPIN_UNLOCK_BH(pmlmepriv->lock, lock_set);
 
 exit:
 	RT_TRACE(_module_rtl871x_ioctl_set_c_, _drv_err_,
@@ -284,7 +284,7 @@ u8 rtw_set_802_11_ssid(struct adapter *padapter, struct ndis_802_11_ssid *ssid)
 		goto exit;
 	}
 
-	SPIN_LOCK(pmlmepriv->lock, lock_set);
+	SPIN_LOCK_BH(pmlmepriv->lock, lock_set);
 
 	DBG_871X("Set SSID under fw_state = 0x%08x\n", get_fwstate(pmlmepriv));
 	if (check_fwstate(pmlmepriv, _FW_UNDER_SURVEY) == true) {
@@ -373,7 +373,7 @@ handle_tkip_countermeasure:
 	}
 
 release_mlme_lock:
-	SPIN_UNLOCK(pmlmepriv->lock, lock_set);
+	SPIN_UNLOCK_BH(pmlmepriv->lock, lock_set);
 
 exit:
 	RT_TRACE(_module_rtl871x_ioctl_set_c_, _drv_err_,
@@ -410,7 +410,7 @@ u8 rtw_set_802_11_connect(struct adapter *padapter, u8 *bssid, struct ndis_802_1
 		goto exit;
 	}
 
-	SPIN_LOCK(pmlmepriv->lock, lock_set);
+	SPIN_LOCK_BH(pmlmepriv->lock, lock_set);
 
 	DBG_871X_LEVEL(_drv_always_, FUNC_ADPT_FMT"  fw_state = 0x%08x\n",
 		FUNC_ADPT_ARG(padapter), get_fwstate(pmlmepriv));
@@ -447,7 +447,7 @@ handle_tkip_countermeasure:
 	}
 
 release_mlme_lock:
-	SPIN_UNLOCK(pmlmepriv->lock, lock_set);
+	SPIN_UNLOCK_BH(pmlmepriv->lock, lock_set);
 
 exit:
 	return status;
@@ -478,7 +478,7 @@ u8 rtw_set_802_11_infrastructure_mode(struct adapter *padapter,
 			stop_ap_mode(padapter);
 		}
 
-		SPIN_LOCK(pmlmepriv->lock, lock_set);
+		SPIN_LOCK_BH(pmlmepriv->lock, lock_set);
 
 		if ((check_fwstate(pmlmepriv, _FW_LINKED) == true) ||(*pold_state ==Ndis802_11IBSS))
 			rtw_disassoc_cmd(padapter, 0, true);
@@ -526,7 +526,7 @@ u8 rtw_set_802_11_infrastructure_mode(struct adapter *padapter,
 		/* RT_TRACE(COMP_OID_SET, DBG_LOUD, ("set_infrastructure: fw_state:%x after changing mode\n", */
 		/* 									get_fwstate(pmlmepriv))); */
 
-		SPIN_UNLOCK(pmlmepriv->lock, lock_set);
+		SPIN_UNLOCK_BH(pmlmepriv->lock, lock_set);
 	}
 	return true;
 }
@@ -537,7 +537,7 @@ u8 rtw_set_802_11_disassociate(struct adapter *padapter)
 	struct mlme_priv * pmlmepriv = &padapter->mlmepriv;
 	bool lock_set = false;
 
-	SPIN_LOCK(pmlmepriv->lock, lock_set);
+	SPIN_LOCK_BH(pmlmepriv->lock, lock_set);
 
 	if (check_fwstate(pmlmepriv, _FW_LINKED) == true)
 	{
@@ -551,7 +551,7 @@ u8 rtw_set_802_11_disassociate(struct adapter *padapter)
 			DBG_871X("%s(): rtw_pwr_wakeup fail !!!\n", __func__);
 	}
 
-	SPIN_UNLOCK(pmlmepriv->lock, lock_set);
+	SPIN_UNLOCK_BH(pmlmepriv->lock, lock_set);
 
 	return true;
 }
@@ -593,11 +593,11 @@ u8 rtw_set_802_11_bssid_list_scan(struct adapter *padapter, struct ndis_802_11_s
 			return _SUCCESS;
 		}
 
-		SPIN_LOCK(pmlmepriv->lock, lock_set);
+		SPIN_LOCK_BH(pmlmepriv->lock, lock_set);
 
 		res = rtw_sitesurvey_cmd(padapter, pssid, ssid_max_num, NULL, 0);
 
-		SPIN_UNLOCK(pmlmepriv->lock, lock_set);
+		SPIN_UNLOCK_BH(pmlmepriv->lock, lock_set);
 	}
 exit:
 
