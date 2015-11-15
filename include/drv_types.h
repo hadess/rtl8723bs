@@ -533,7 +533,6 @@ struct adapter {
 	struct	mlme_ext_priv mlmeextpriv;
 	struct	cmd_priv cmdpriv;
 	struct	evt_priv evtpriv;
-	/* struct	io_queue	*pio_queue; */
 	struct	io_priv iopriv;
 	struct	xmit_priv xmitpriv;
 	struct	recv_priv recvpriv;

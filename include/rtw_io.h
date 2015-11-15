@@ -82,7 +82,6 @@
 
 struct intf_priv;
 struct intf_hdl;
-struct io_queue;
 
 struct _io_ops {
 		u8 (*_read8)(struct intf_hdl *pintfhdl, u32 addr);
@@ -100,8 +99,6 @@ struct _io_ops {
 
 		void (*_read_mem)(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, u8 *pmem);
 		void (*_write_mem)(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, u8 *pmem);
-
-		void (*_sync_irp_protocol_rw)(struct io_queue *pio_q);
 
 		u32 (*_read_interrupt)(struct intf_hdl *pintfhdl, u32 addr);
 
@@ -253,34 +250,10 @@ struct reg_protocol_wt {
 int rtw_inc_and_chk_continual_io_error(struct dvobj_priv *dvobj);
 void rtw_reset_continual_io_error(struct dvobj_priv *dvobj);
 
-/*
-Below is the data structure used by _io_handler
-
-*/
-
-struct io_queue {
-	spinlock_t	lock;
-	ulong lock_set;
-	struct list_head	free_ioreqs;
-	struct list_head		pending;		/* The io_req list that will be served in the single protocol read/write. */
-	struct list_head		processing;
-	u8 *free_ioreqs_buf; /*  4-byte aligned */
-	u8 *pallocated_free_ioreqs_buf;
-	struct	intf_hdl	intf;
-};
-
 struct io_priv{
 	struct adapter *padapter;
 	struct intf_hdl intf;
 };
-
-extern uint ioreq_flush(struct adapter *adapter, struct io_queue *ioqueue);
-extern void sync_ioreq_enqueue(struct io_req *preq, struct io_queue *ioqueue);
-extern uint sync_ioreq_flush(struct adapter *adapter, struct io_queue *ioqueue);
-
-
-extern uint free_ioreq(struct io_req *preq, struct io_queue *pio_queue);
-extern struct io_req *alloc_ioreq(struct io_queue *pio_q);
 
 extern uint register_intf_hdl(u8 *dev, struct intf_hdl *pintfhdl);
 extern void unregister_intf_hdl(struct intf_hdl *pintfhdl);
@@ -349,9 +322,6 @@ int rtw_init_io_priv(struct adapter *padapter, void (*set_intf_ops)(struct adapt
 
 extern uint alloc_io_queue(struct adapter *adapter);
 extern void free_io_queue(struct adapter *adapter);
-extern void async_bus_io(struct io_queue *pio_q);
-extern void bus_sync_io(struct io_queue *pio_q);
-extern u32 _ioreq2rwmem(struct io_queue *pio_q);
 extern void dev_power_down(struct adapter * Adapter, u8 bpwrup);
 
 #define PlatformEFIOWrite1Byte(_a, _b, _c)		\

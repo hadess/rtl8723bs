@@ -271,7 +271,6 @@ struct mp_priv
 
 	u8 *pallocated_mp_xmitframe_buf;
 	u8 *pmp_xmtframe_buf;
-	struct __queue free_mp_xmitqueue;
 	u32 free_mp_xmitframe_cnt;
 	bool bSetRxBssid;
 	bool bTxBufCkFail;

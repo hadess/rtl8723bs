@@ -49,7 +49,6 @@
 	#include <net/cfg80211.h>
 
 	typedef struct	semaphore _sema;
-	typedef	spinlock_t	_lock;
 	typedef struct mutex		_mutex;
 	typedef struct timer_list _timer;
 

@@ -313,10 +313,6 @@ struct tdls_info{
 	u8 			cur_channel;
 	u8 			candidate_ch;
 	u8 			collect_pkt_num[MAX_CHANNEL_NUM];
-	spinlock_t		cmd_lock;
-	spinlock_t		hdl_lock;
-	ulong			cmd_lock_set;
-	ulong			hdl_lock_set;
 	u8 			watchdog_count;
 	u8 			dev_discovered;		/* WFD_TDLS: for sigma test */
 	u8 			tdls_enable;
