@@ -472,7 +472,7 @@ static int rtw_drv_init(
 	const struct sdio_device_id *id)
 {
 	int status = _FAIL;
-	struct adapter *if1 = NULL, *if2 = NULL;
+	struct adapter *if1 = NULL;
 	struct dvobj_priv *dvobj;
 
 	switch (func->vendor) {
@@ -489,6 +489,14 @@ static int rtw_drv_init(
 		}
 		break;
 	case 0x02d0:
+		switch (func->device) {
+		case 0x4324:
+			break;
+		default:
+			pr_info("RTL8723BS: Found unrecognized vendor 0x%x, device 0x%x\n",
+				func->vendor, func->device);
+			goto exit;
+		}
 		break;
 	default:
 		pr_info("RTL8723BS: Found unrecognized vendor 0x%x, device 0x%x\n",
@@ -496,22 +504,25 @@ static int rtw_drv_init(
 		goto exit;
 	}
 	if ((dvobj = sdio_dvobj_init(func)) == NULL) {
-		RT_TRACE(_module_hci_intfs_c_, _drv_err_, ("initialize device object priv Failed!\n"));
+		pr_err("RTL8723BS: initialize device object priv Failed!\n");
 		goto exit;
 	}
 
 	if ((if1 = rtw_sdio_if1_init(dvobj, id)) == NULL) {
-		DBG_871X("rtw_init_primarystruct adapter Failed!\n");
+		pr_err("RTL8723BS: rtw_init_primary struct adapter Failed!\n");
 		goto free_dvobj;
 	}
 
 	/* dev_alloc_name && register_netdev */
 	if ((status = rtw_drv_register_netdev(if1)) != _SUCCESS) {
+		pr_err("RTL8723BS: Register netdev failed!\n");
 		goto free_if2;
 	}
 
-	if (sdio_alloc_irq(dvobj) != _SUCCESS)
+	if (sdio_alloc_irq(dvobj) != _SUCCESS) {
+		pr_err("RTL8723BS: Alloc irq failed!\n");
 		goto free_if2;
+	}
 
 #ifdef	CONFIG_GPIO_WAKEUP
 	gpio_hostwakeup_alloc_irq(if1);
@@ -523,8 +534,6 @@ static int rtw_drv_init(
 	status = _SUCCESS;
 
 free_if2:
-	if (status != _SUCCESS && if2) {
-	}
 	if (status != _SUCCESS && if1) {
 		rtw_sdio_if1_deinit(if1);
 	}
