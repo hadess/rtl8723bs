@@ -481,7 +481,6 @@ static int rtw_drv_init(
 		case 0x0523:
 		case 0x0623:
 		case 0xb723:
-		case 0x4324:
 			break;
 		default:
 			pr_info("RTL8723BS: Found unrecognized vendor 0x%x, device 0x%x\n",
