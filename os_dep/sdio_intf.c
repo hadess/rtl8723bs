@@ -26,7 +26,7 @@ static const struct sdio_device_id sdio_ids[] =
 {
 //	{ SDIO_DEVICE(0x024c, 0xB723), },
 //	{ SDIO_DEVICE(0x024c, 0x0523), },
-	{ SDIO_DEVICE(0x02d0, 0x4324), },
+//	{ SDIO_DEVICE(0x024c, 0x0623), },
 	{ SDIO_DEVICE_CLASS(SDIO_CLASS_WLAN) },
 	{ /* end: all zeroes */				},
 };
