@@ -43,7 +43,6 @@ void init_mlme_ap_info(struct adapter *padapter)
 void free_mlme_ap_info(struct adapter *padapter)
 {
 	struct sta_info *psta = NULL;
-	struct sta_priv *pstapriv = &padapter->stapriv;
 	struct mlme_priv *pmlmepriv = &(padapter->mlmepriv);
 	struct mlme_ext_priv *pmlmeext = &padapter->mlmeextpriv;
 	struct mlme_ext_info *pmlmeinfo = &(pmlmeext->mlmext_info);
@@ -62,9 +61,7 @@ void free_mlme_ap_info(struct adapter *padapter)
 
 	/* free bc/mc sta_info */
 	psta = rtw_get_bcmc_stainfo(padapter);
-	spin_lock_bh(&(pstapriv->sta_hash_lock));
 	rtw_free_stainfo(padapter, psta);
-	spin_unlock_bh(&(pstapriv->sta_hash_lock));
 }
 
 static void update_BCNTIM(struct adapter *padapter)
@@ -252,9 +249,7 @@ void expire_timeout_chk(struct adapter *padapter)
 
 				spin_unlock_bh(&pstapriv->auth_list_lock);
 
-				spin_lock_bh(&(pstapriv->sta_hash_lock));
 				rtw_free_stainfo(padapter, psta);
-				spin_unlock_bh(&(pstapriv->sta_hash_lock));
 
 				spin_lock_bh(&pstapriv->auth_list_lock);
 			}
@@ -2175,7 +2170,6 @@ u8 bss_cap_update_on_sta_leave(struct adapter *padapter, struct sta_info *psta)
 u8 ap_free_sta(struct adapter *padapter, struct sta_info *psta, bool active, u16 reason)
 {
 	u8 beacon_updated = false;
-	struct sta_priv *pstapriv = &padapter->stapriv;
 
 	if (!psta)
 		return beacon_updated;
@@ -2211,9 +2205,7 @@ u8 ap_free_sta(struct adapter *padapter, struct sta_info *psta, bool active, u16
 
 	beacon_updated = bss_cap_update_on_sta_leave(padapter, psta);
 
-	spin_lock_bh(&(pstapriv->sta_hash_lock));
 	rtw_free_stainfo(padapter, psta);
-	spin_unlock_bh(&(pstapriv->sta_hash_lock));
 
 
 	return beacon_updated;
@@ -2477,9 +2469,7 @@ void stop_ap_mode(struct adapter *padapter)
 	rtw_free_all_stainfo(padapter);
 
 	psta = rtw_get_bcmc_stainfo(padapter);
-	spin_lock_bh(&(pstapriv->sta_hash_lock));
 	rtw_free_stainfo(padapter, psta);
-	spin_unlock_bh(&(pstapriv->sta_hash_lock));
 
 	rtw_init_bcmc_stainfo(padapter);
 

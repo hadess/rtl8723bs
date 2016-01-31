@@ -205,17 +205,6 @@ u8 rtw_hal_check_ips_status(struct adapter *padapter)
 	return val;
 }
 
-#if defined(CONFIG_WOWLAN) || defined(CONFIG_AP_WOWLAN)
-void rtw_hal_clear_interrupt(struct adapter *padapter)
-{
-    if (padapter->HalFunc.clear_interrupt)
-        padapter->HalFunc.clear_interrupt(padapter);
-    else
-        DBG_871X("%s: HalFunc.clear_interrupt is NULL!\n", __func__);
-
-}
-#endif
-
 s32	rtw_hal_xmitframe_enqueue(struct adapter *padapter, struct xmit_frame *pxmitframe)
 {
 	if (padapter->HalFunc.hal_xmitframe_enqueue)

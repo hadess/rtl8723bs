@@ -182,7 +182,7 @@ u32 _rtw_free_sta_priv(struct	sta_priv *pstapriv)
 				for (i = 0; i < 16 ; i++)
 				{
 					preorder_ctrl = &psta->recvreorder_ctrl[i];
-					_cancel_timer_ex(&preorder_ctrl->reordering_ctrl_timer);
+					del_timer_sync(&preorder_ctrl->reordering_ctrl_timer);
 				}
 			}
 		}
@@ -243,6 +243,7 @@ struct	sta_info *rtw_alloc_stainfo(struct	sta_priv *pstapriv, u8 *hwaddr)
 
 		if (index >= NUM_STA) {
 			RT_TRACE(_module_rtl871x_sta_mgt_c_, _drv_err_, ("ERROR => rtw_alloc_stainfo: index >= NUM_STA"));
+			spin_unlock_bh(&(pstapriv->sta_hash_lock));
 			psta = NULL;
 			goto exit;
 		}
@@ -301,7 +302,7 @@ struct	sta_info *rtw_alloc_stainfo(struct	sta_priv *pstapriv, u8 *hwaddr)
 
 		/* init for the sequence number of received management frame */
 		psta->RxMgmtFrameSeqNum = 0xffff;
-
+		spin_unlock_bh(&(pstapriv->sta_hash_lock));
 		/* alloc mac id for non-bc/mc station, */
 		rtw_alloc_macid(pstapriv->padapter, psta);
 
@@ -309,7 +310,6 @@ struct	sta_info *rtw_alloc_stainfo(struct	sta_priv *pstapriv, u8 *hwaddr)
 
 exit:
 
-	spin_unlock_bh(&(pstapriv->sta_hash_lock));
 
 	return psta;
 }
@@ -394,7 +394,7 @@ u32 rtw_free_stainfo(struct adapter *padapter , struct sta_info *psta)
 	/* _rtw_init_sta_xmit_priv(&psta->sta_xmitpriv); */
 	/* _rtw_init_sta_recv_priv(&psta->sta_recvpriv); */
 
-	_cancel_timer_ex(&psta->addba_retry_timer);
+	del_timer_sync(&psta->addba_retry_timer);
 
 	/* for A-MPDU Rx reordering buffer control, cancel reordering_ctrl_timer */
 	for (i = 0; i < 16 ; i++)
@@ -406,7 +406,7 @@ u32 rtw_free_stainfo(struct adapter *padapter , struct sta_info *psta)
 
 		preorder_ctrl = &psta->recvreorder_ctrl[i];
 
-		_cancel_timer_ex(&preorder_ctrl->reordering_ctrl_timer);
+		del_timer_sync(&preorder_ctrl->reordering_ctrl_timer);
 
 
 		ppending_recvframe_queue = &preorder_ctrl->pending_recvframe_queue;
