@@ -488,7 +488,7 @@ void update_bmc_sta(struct adapter *padapter)
 
 		psta->ieee8021x_blocked = 0;
 
-		memset((void*)&psta->sta_stats, 0, sizeof(struct stainfo_stats));
+		memset((void *)&psta->sta_stats, 0, sizeof(struct stainfo_stats));
 
 		/* psta->dot118021XPrivacy = _NO_PRIVACY_;//!!! remove it, because it has been set before this. */
 
@@ -667,7 +667,7 @@ void update_sta_info_apmode(struct adapter *padapter, struct sta_info *psta)
 
 	/* todo: init other variables */
 
-	memset((void*)&psta->sta_stats, 0, sizeof(struct stainfo_stats));
+	memset((void *)&psta->sta_stats, 0, sizeof(struct stainfo_stats));
 
 
 	/* add ratid */
@@ -775,7 +775,7 @@ void start_bss_network(struct adapter *padapter, u8 *pbuf)
 	int	ie_len;
 	struct registry_priv  *pregpriv = &padapter->registrypriv;
 	struct mlme_priv *pmlmepriv = &(padapter->mlmepriv);
-	struct security_priv* psecuritypriv = &(padapter->securitypriv);
+	struct security_priv *psecuritypriv = &(padapter->securitypriv);
 	struct wlan_bssid_ex *pnetwork = (struct wlan_bssid_ex *)&pmlmepriv->cur_network.network;
 	struct mlme_ext_priv *pmlmeext = &(padapter->mlmeextpriv);
 	struct mlme_ext_info *pmlmeinfo = &(pmlmeext->mlmext_info);
@@ -1429,18 +1429,18 @@ int rtw_acl_remove_sta(struct adapter *padapter, u8 *addr)
 
 u8 rtw_ap_set_pairwise_key(struct adapter *padapter, struct sta_info *psta)
 {
-	struct cmd_obj*		ph2c;
+	struct cmd_obj *ph2c;
 	struct set_stakey_parm	*psetstakey_para;
 	struct cmd_priv 			*pcmdpriv = &padapter->cmdpriv;
 	u8 res = _SUCCESS;
 
-	ph2c = (struct cmd_obj*)rtw_zmalloc(sizeof(struct cmd_obj));
+	ph2c = (struct cmd_obj *)rtw_zmalloc(sizeof(struct cmd_obj));
 	if (ph2c == NULL) {
 		res = _FAIL;
 		goto exit;
 	}
 
-	psetstakey_para = (struct set_stakey_parm*)rtw_zmalloc(sizeof(struct set_stakey_parm));
+	psetstakey_para = (struct set_stakey_parm *)rtw_zmalloc(sizeof(struct set_stakey_parm));
 	if (psetstakey_para == NULL) {
 		kfree((u8 *) ph2c);
 		res = _FAIL;
@@ -1468,19 +1468,19 @@ exit:
 static int rtw_ap_set_key(struct adapter *padapter, u8 *key, u8 alg, int keyid, u8 set_tx)
 {
 	u8 keylen;
-	struct cmd_obj* pcmd;
+	struct cmd_obj *pcmd;
 	struct setkey_parm *psetkeyparm;
 	struct cmd_priv *pcmdpriv = &(padapter->cmdpriv);
 	int res = _SUCCESS;
 
 	/* DBG_871X("%s\n", __func__); */
 
-	pcmd = (struct cmd_obj*)rtw_zmalloc(sizeof(struct cmd_obj));
+	pcmd = (struct cmd_obj *)rtw_zmalloc(sizeof(struct cmd_obj));
 	if (pcmd == NULL) {
 		res = _FAIL;
 		goto exit;
 	}
-	psetkeyparm = (struct setkey_parm*)rtw_zmalloc(sizeof(struct setkey_parm));
+	psetkeyparm = (struct setkey_parm *)rtw_zmalloc(sizeof(struct setkey_parm));
 	if (psetkeyparm == NULL) {
 		kfree((unsigned char *)pcmd);
 		res = _FAIL;
@@ -1582,7 +1582,7 @@ static void update_bcn_erpinfo_ie(struct adapter *padapter)
 	p = rtw_get_ie(ie + _BEACON_IE_OFFSET_, _ERPINFO_IE_, &len, (pnetwork->IELength - _BEACON_IE_OFFSET_));
 	if (p && len > 0) {
 
-		struct ndis_80211_var_ie * pIE = (struct ndis_80211_var_ie *)p;
+		struct ndis_80211_var_ie *pIE = (struct ndis_80211_var_ie *)p;
 
 		if (pmlmepriv->num_sta_non_erp == 1)
 			pIE->data[0] |= RTW_ERP_INFO_NON_ERP_PRESENT|RTW_ERP_INFO_USE_PROTECTION;
@@ -1701,7 +1701,7 @@ static void update_bcn_p2p_ie(struct adapter *padapter)
 
 }
 
-static void update_bcn_vendor_spec_ie(struct adapter *padapter, u8*oui)
+static void update_bcn_vendor_spec_ie(struct adapter *padapter, u8 *oui)
 {
 	DBG_871X("%s\n", __func__);
 
@@ -2311,9 +2311,9 @@ void rtw_ap_restore_network(struct adapter *padapter)
 {
 	struct mlme_priv *mlmepriv = &padapter->mlmepriv;
 	struct mlme_ext_priv *pmlmeext = &padapter->mlmeextpriv;
-	struct sta_priv * pstapriv = &padapter->stapriv;
+	struct sta_priv *pstapriv = &padapter->stapriv;
 	struct sta_info *psta;
-	struct security_priv* psecuritypriv = &(padapter->securitypriv);
+	struct security_priv *psecuritypriv = &(padapter->securitypriv);
 	struct list_head	*phead, *plist;
 	u8 chk_alive_num = 0;
 	char chk_alive_list[NUM_STA];
