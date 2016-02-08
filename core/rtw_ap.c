@@ -886,20 +886,20 @@ void start_bss_network(struct adapter *padapter, u8 *pbuf)
 			cur_bwmode = CHANNEL_WIDTH_40;
 			switch (pht_info->infos[0] & 0x3) {
 
-				case 1:
-					/* pmlmeext->cur_ch_offset = HAL_PRIME_CHNL_OFFSET_LOWER; */
-					cur_ch_offset = HAL_PRIME_CHNL_OFFSET_LOWER;
-					break;
+			case 1:
+				/* pmlmeext->cur_ch_offset = HAL_PRIME_CHNL_OFFSET_LOWER; */
+				cur_ch_offset = HAL_PRIME_CHNL_OFFSET_LOWER;
+				break;
 
-				case 3:
-					/* pmlmeext->cur_ch_offset = HAL_PRIME_CHNL_OFFSET_UPPER; */
-					cur_ch_offset = HAL_PRIME_CHNL_OFFSET_UPPER;
-					break;
+			case 3:
+				/* pmlmeext->cur_ch_offset = HAL_PRIME_CHNL_OFFSET_UPPER; */
+				cur_ch_offset = HAL_PRIME_CHNL_OFFSET_UPPER;
+				break;
 
-				default:
-					/* pmlmeext->cur_ch_offset = HAL_PRIME_CHNL_OFFSET_DONT_CARE; */
-					cur_ch_offset = HAL_PRIME_CHNL_OFFSET_DONT_CARE;
-					break;
+			default:
+				/* pmlmeext->cur_ch_offset = HAL_PRIME_CHNL_OFFSET_DONT_CARE; */
+				cur_ch_offset = HAL_PRIME_CHNL_OFFSET_DONT_CARE;
+				break;
 			}
 
 		}
@@ -1224,21 +1224,21 @@ int rtw_check_beacon_data(struct adapter *padapter, u8 *pbuf,  int len)
 
 	switch (network_type) {
 
-		case WIRELESS_11B:
-			pbss_network->NetworkTypeInUse = Ndis802_11DS;
-			break;
-		case WIRELESS_11G:
-		case WIRELESS_11BG:
-             case WIRELESS_11G_24N:
-		case WIRELESS_11BG_24N:
-			pbss_network->NetworkTypeInUse = Ndis802_11OFDM24;
-			break;
-		case WIRELESS_11A:
-			pbss_network->NetworkTypeInUse = Ndis802_11OFDM5;
-			break;
-		default:
-			pbss_network->NetworkTypeInUse = Ndis802_11OFDM24;
-			break;
+	case WIRELESS_11B:
+		pbss_network->NetworkTypeInUse = Ndis802_11DS;
+		break;
+	case WIRELESS_11G:
+	case WIRELESS_11BG:
+	case WIRELESS_11G_24N:
+	case WIRELESS_11BG_24N:
+		pbss_network->NetworkTypeInUse = Ndis802_11OFDM24;
+		break;
+	case WIRELESS_11A:
+		pbss_network->NetworkTypeInUse = Ndis802_11OFDM5;
+		break;
+	default:
+		pbss_network->NetworkTypeInUse = Ndis802_11OFDM24;
+		break;
 	}
 
 	pmlmepriv->cur_network.network_type = network_type;
@@ -1499,17 +1499,17 @@ static int rtw_ap_set_key(struct adapter *padapter, u8 *key, u8 alg, int keyid, 
 
 	switch (alg) {
 
-		case _WEP40_:
-			keylen = 5;
-			break;
-		case _WEP104_:
-			keylen = 13;
-			break;
-		case _TKIP_:
-		case _TKIP_WTMIC_:
-		case _AES_:
-		default:
-			keylen = 16;
+	case _WEP40_:
+		keylen = 5;
+		break;
+	case _WEP104_:
+		keylen = 13;
+		break;
+	case _TKIP_:
+	case _TKIP_WTMIC_:
+	case _AES_:
+	default:
+		keylen = 16;
 	}
 
 	memcpy(&(psetkeyparm->key[0]), key, keylen);
@@ -1543,14 +1543,14 @@ int rtw_ap_set_wep_key(struct adapter *padapter, u8 *key, u8 keylen, int keyid, 
 
 	switch (keylen) {
 
-		case 5:
-			alg = _WEP40_;
-			break;
-		case 13:
-			alg = _WEP104_;
-			break;
-		default:
-			alg = _NO_PRIVACY_;
+	case 5:
+		alg = _WEP40_;
+		break;
+	case 13:
+		alg = _WEP104_;
+		break;
+	default:
+		alg = _NO_PRIVACY_;
 	}
 
 	DBG_871X("%s\n", __func__);
@@ -1751,50 +1751,50 @@ void update_beacon(struct adapter *padapter, u8 ie_id, u8 *oui, u8 tx)
 
 	switch (ie_id) {
 
-		case 0xFF:
+	case 0xFF:
 
-			update_bcn_fixed_ie(padapter);/* 8: TimeStamp, 2: Beacon Interval 2:Capability */
+		update_bcn_fixed_ie(padapter);/* 8: TimeStamp, 2: Beacon Interval 2:Capability */
 
-			break;
+		break;
 
-		case _TIM_IE_:
+	case _TIM_IE_:
 
-			update_BCNTIM(padapter);
+		update_BCNTIM(padapter);
 
-			break;
+		break;
 
-		case _ERPINFO_IE_:
+	case _ERPINFO_IE_:
 
-			update_bcn_erpinfo_ie(padapter);
+		update_bcn_erpinfo_ie(padapter);
 
-			break;
+		break;
 
-		case _HT_CAPABILITY_IE_:
+	case _HT_CAPABILITY_IE_:
 
-			update_bcn_htcap_ie(padapter);
+		update_bcn_htcap_ie(padapter);
 
-			break;
+		break;
 
-		case _RSN_IE_2_:
+	case _RSN_IE_2_:
 
-			update_bcn_rsn_ie(padapter);
+		update_bcn_rsn_ie(padapter);
 
-			break;
+		break;
 
-		case _HT_ADD_INFO_IE_:
+	case _HT_ADD_INFO_IE_:
 
-			update_bcn_htinfo_ie(padapter);
+		update_bcn_htinfo_ie(padapter);
 
-			break;
+		break;
 
-		case _VENDOR_SPECIFIC_IE_:
+	case _VENDOR_SPECIFIC_IE_:
 
-			update_bcn_vendor_spec_ie(padapter, oui);
+		update_bcn_vendor_spec_ie(padapter, oui);
 
-			break;
+		break;
 
-		default:
-			break;
+	default:
+		break;
 	}
 
 	pmlmepriv->update_bcn = true;
