@@ -97,8 +97,8 @@ static void update_BCNTIM(struct adapter *padapter)
 
 			/* append TIM IE from dst_ie offset */
 			dst_ie = p;
-		}
-		else{
+		} else{
+
 
 			tim_ielen = 0;
 
@@ -165,8 +165,8 @@ static void update_BCNTIM(struct adapter *padapter)
 
 			*dst_ie++ = le16_to_cpu(pvb);
 
-		}
-		else if (tim_ielen == 5) {
+		} else if (tim_ielen == 5) {
+
 
 			memcpy(dst_ie, &tim_bitmap_le, 2);
 			dst_ie += 2;
@@ -330,8 +330,8 @@ void expire_timeout_chk(struct adapter *padapter)
 			pstapriv->asoc_list_cnt--;
 			DBG_871X("asoc expire "MAC_FMT", state = 0x%x\n", MAC_ARG(psta->hwaddr), psta->state);
 			updated = ap_free_sta(padapter, psta, false, WLAN_REASON_DEAUTH_LEAVING);
-		}
-		else{
+		} else{
+
 
 			/* TODO: Aging mechanism to digest frames in sleep_q to avoid running out of xmitframe */
 			if (psta->sleepq_len > (NR_XMITFRAME/pstapriv->asoc_list_cnt)
@@ -377,8 +377,8 @@ if (chk_alive_num) {
 			psta->expire_to = pstapriv->expire_to;
 			psta->keep_alive_trycnt = 0;
 			continue;
-		}
-		else if (psta->keep_alive_trycnt <= 3) {
+		} else if (psta->keep_alive_trycnt <= 3) {
+
 
 			DBG_871X("ack check for asoc expire, keep_alive_trycnt =%d\n", psta->keep_alive_trycnt);
 			psta->expire_to = 1;
@@ -456,8 +456,8 @@ void add_RATid(struct adapter *padapter, struct sta_info *psta, u8 rssi_level)
 			__func__, psta->mac_id, psta->raid, shortGIrate, tx_ra_bitmap);
 
 		rtw_hal_add_ra_tid(padapter, tx_ra_bitmap, arg, rssi_level);
-	}
-	else{
+	} else{
+
 
 		DBG_871X("station aid %d exceed the max number\n", psta->aid);
 	}
@@ -497,8 +497,8 @@ void update_bmc_sta(struct adapter *padapter)
 		network_type = rtw_check_network_type((u8 *)&pcur_network->SupportedRates, supportRateNum, pcur_network->Configuration.DSConfig);
 		if (IsSupportedTxCCK(network_type)) {
 			network_type = WIRELESS_11B;
-		}
-		else if (network_type == WIRELESS_INVALID) { /*  error handling */
+		} else if (network_type == WIRELESS_INVALID) { /*  error handling */
+
 			if (pcur_network->Configuration.DSConfig > 14)
 				network_type = WIRELESS_11A;
 			else
@@ -536,8 +536,8 @@ void update_bmc_sta(struct adapter *padapter)
 		psta->state = _FW_LINKED;
 		spin_unlock_bh(&psta->lock);
 
-	}
-	else{
+	} else{
+
 
 		DBG_871X("add_RATid_bmc_sta error!\n");
 	}
@@ -594,8 +594,8 @@ void update_sta_info_apmode(struct adapter *padapter, struct sta_info *psta)
 		if ((phtpriv_sta->ht_cap.cap_info & phtpriv_ap->ht_cap.cap_info) & cpu_to_le16(IEEE80211_HT_CAP_SUP_WIDTH)) {
 
 			psta->bw_mode = CHANNEL_WIDTH_40;
-		}
-		else{
+		} else{
+
 
 			psta->bw_mode = CHANNEL_WIDTH_20;
 		}
@@ -640,8 +640,8 @@ void update_sta_info_apmode(struct adapter *padapter, struct sta_info *psta)
 			SET_FLAG(cur_stbc_cap, (STBC_HT_ENABLE_TX | STBC_HT_CAP_TX));
 			DBG_871X("Enable HT Tx STBC for STA(%d)\n", psta->aid);
 		}
-	}
-	else{
+	} else{
+
 
 		phtpriv_sta->ampdu_enable = false;
 
@@ -711,8 +711,8 @@ static void update_ap_info(struct adapter *padapter, struct sta_info *psta)
 		}
 
 		psta->qos_option = true;
-	}
-	else{
+	} else{
+
 
 		phtpriv_ap->ampdu_enable = false;
 
@@ -1195,8 +1195,8 @@ int rtw_check_beacon_data(struct adapter *padapter, u8 *pbuf,  int len)
 			(psecuritypriv->wpa2_pairwise_cipher & WPA_CIPHER_CCMP)) {
 
 			pht_cap->ampdu_params_info |= (IEEE80211_HT_CAP_AMPDU_DENSITY&(0x07<<2));
-		}
-		else{
+		} else{
+
 
 			pht_cap->ampdu_params_info |= (IEEE80211_HT_CAP_AMPDU_DENSITY&0x00);
 		}
@@ -1708,20 +1708,20 @@ static void update_bcn_vendor_spec_ie(struct adapter *padapter, u8*oui)
 	if (!memcmp(RTW_WPA_OUI, oui, 4)) {
 
 		update_bcn_wpa_ie(padapter);
-	}
-	else if (!memcmp(WMM_OUI, oui, 4)) {
+	} else if (!memcmp(WMM_OUI, oui, 4)) {
+
 
 		update_bcn_wmm_ie(padapter);
-	}
-	else if (!memcmp(WPS_OUI, oui, 4)) {
+	} else if (!memcmp(WPS_OUI, oui, 4)) {
+
 
 		update_bcn_wps_ie(padapter);
-	}
-	else if (!memcmp(P2P_OUI, oui, 4)) {
+	} else if (!memcmp(P2P_OUI, oui, 4)) {
+
 
 		update_bcn_p2p_ie(padapter);
-	}
-	else{
+	} else{
+
 
 		DBG_871X("unknown OUI type!\n");
 	}
@@ -1947,8 +1947,8 @@ void bss_cap_update_on_sta_join(struct adapter *padapter, struct sta_info *psta)
 			}
 
 		}
-	}
-	else{
+	} else{
+
 
 		if (psta->no_short_preamble_set) {
 
@@ -1981,8 +1981,8 @@ void bss_cap_update_on_sta_join(struct adapter *padapter, struct sta_info *psta)
 			}
 		}
 
-	}
-	else{
+	} else{
+
 
 		if (psta->nonerp_set) {
 
@@ -2016,8 +2016,8 @@ void bss_cap_update_on_sta_join(struct adapter *padapter, struct sta_info *psta)
 			}
 
 		}
-	}
-	else{
+	} else{
+
 
 		if (psta->no_short_slot_time_set) {
 
@@ -2068,8 +2068,8 @@ void bss_cap_update_on_sta_join(struct adapter *padapter, struct sta_info *psta)
 				   pmlmepriv->num_sta_ht_20mhz);
 		}
 
-	}
-	else{
+	} else{
+
 
 		if (!psta->no_ht_set) {
 			psta->no_ht_set = 1;
@@ -2278,8 +2278,8 @@ void sta_info_update(struct adapter *padapter, struct sta_info *psta)
 
 		psta->htpriv.ht_option = true;
 		psta->qos_option = 1;
-	}
-	else{
+	} else{
+
 
 		psta->htpriv.ht_option = false;
 	}
