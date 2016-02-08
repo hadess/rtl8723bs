@@ -562,11 +562,11 @@ void update_sta_info_apmode(struct adapter *padapter, struct sta_info *psta)
 	/* set intf_tag to if1 */
 	/* psta->intf_tag = 0; */
 
-        DBG_871X("%s\n", __func__);
+  DBG_871X("%s\n", __func__);
 
 	/* psta->mac_id = psta->aid+4; */
 	/* psta->mac_id = psta->aid+1;//alloc macid when call rtw_alloc_stainfo(), */
-		                                       /* release macid when call rtw_free_stainfo() */
+	/* release macid when call rtw_free_stainfo() */
 
 	/* ap mode */
 	rtw_hal_set_odm_var(padapter, HAL_ODM_STA_INFO, psta, true);
@@ -1931,7 +1931,7 @@ void bss_cap_update_on_sta_join(struct adapter *padapter, struct sta_info *psta)
 	struct mlme_priv *pmlmepriv = &(padapter->mlmepriv);
 	struct mlme_ext_priv *pmlmeext = &(padapter->mlmeextpriv);
 
-        if (!(psta->flags & WLAN_STA_SHORT_PREAMBLE)) {
+  if (!(psta->flags & WLAN_STA_SHORT_PREAMBLE)) {
 
 		if (!psta->no_short_preamble_set) {
 
