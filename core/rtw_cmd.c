@@ -997,8 +997,7 @@ u8 rtw_setopmode_cmd(struct adapter  *padapter, enum NDIS_802_11_NETWORK_INFRAST
 
 		init_h2fwcmd_w_parm_no_rsp(ph2c, psetop, _SetOpMode_CMD_);
 		res = rtw_enqueue_cmd(pcmdpriv, ph2c);
-	}
-	else {
+	} else{
 		setopmode_hdl(padapter, (u8 *)psetop);
 		kfree((u8 *)psetop);
 	}
@@ -1033,10 +1032,9 @@ u8 rtw_setstakey_cmd(struct adapter *padapter, struct sta_info *sta, u8 unicast_
 
 	if (unicast_key == true) {
 		memcpy(&psetstakey_para->key, &sta->dot118021x_UncstKey, 16);
-	}
-	else {
+	} else{
 		memcpy(&psetstakey_para->key, &psecuritypriv->dot118021XGrpKey[psecuritypriv->dot118021XGrpKeyid].skey, 16);
-       }
+  }
 
 	/* jeff: set this becasue at least sw key is ready */
 	padapter->securitypriv.busetkipkey = true;
@@ -1061,8 +1059,7 @@ u8 rtw_setstakey_cmd(struct adapter *padapter, struct sta_info *sta, u8 unicast_
 		ph2c->rsp = (u8 *) psetstakey_rsp;
 		ph2c->rspsz = sizeof(struct set_stakey_rsp);
 		res = rtw_enqueue_cmd(pcmdpriv, ph2c);
-	}
-	else {
+	} else{
 		set_stakey_hdl(padapter, (u8 *)psetstakey_para);
 		kfree((u8 *) psetstakey_para);
 	}
