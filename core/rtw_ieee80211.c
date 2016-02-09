@@ -433,8 +433,7 @@ unsigned char *rtw_get_wpa_ie(unsigned char *pie, int *wpa_ie_len, int limit)
 
 			return pbuf;
 
-		}
-		else {
+		} else{
 
 			*wpa_ie_len = 0;
 			return NULL;
