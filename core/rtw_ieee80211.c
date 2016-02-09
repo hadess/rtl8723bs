@@ -758,7 +758,8 @@ u8 rtw_is_wps_ie(u8 *ie_ptr, uint *wps_ielen)
 	u8 match = false;
 	u8 eid, wps_oui[4] = {0x0, 0x50, 0xf2, 0x04};
 
-	if (ie_ptr == NULL) return match;
+	if (ie_ptr == NULL)
+    return match;
 
 	eid = ie_ptr[0];
 
@@ -1169,7 +1170,8 @@ u8 key_2char2num(u8 hch, u8 lch)
 void rtw_macaddr_cfg(u8 *mac_addr)
 {
 	u8 mac[ETH_ALEN];
-	if (mac_addr == NULL)	return;
+	if (mac_addr == NULL)
+    return;
 
 	if (rtw_initmac) {	/* 	Users specify the mac address */
 		int jj, kk;
