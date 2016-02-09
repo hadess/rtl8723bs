@@ -70,8 +70,7 @@ void sd_f0_reg_dump(void *sel, struct adapter *adapter)
 {
 	int i;
 
-	for (i = 0x0;i<= 0xff;i++)
-	{
+	for (i = 0x0;i<= 0xff;i++) {
 		if (i%16 == 0)
 			DBG_871X_SEL_NL(sel, "0x%02x ", i);
 
@@ -90,8 +89,7 @@ void mac_reg_dump(void *sel, struct adapter *adapter)
 
 	DBG_871X_SEL_NL(sel, "======= MAC REG =======\n");
 
-	for (i = 0x0;i<0x800;i+=4)
-	{
+	for (i = 0x0;i<0x800;i+=4) {
 		if (j%4 == 1)
 			DBG_871X_SEL_NL(sel, "0x%03x", i);
 		DBG_871X_SEL(sel, " 0x%08x ", rtw_read32(adapter, i));
@@ -105,8 +103,7 @@ void bb_reg_dump(void *sel, struct adapter *adapter)
 	int i, j = 1;
 
 	DBG_871X_SEL_NL(sel, "======= BB REG =======\n");
-	for (i = 0x800;i<0x1000;i+=4)
-	{
+	for (i = 0x800;i<0x1000;i+=4) {
 		if (j%4 == 1)
 			DBG_871X_SEL_NL(sel, "0x%03x", i);
 		DBG_871X_SEL(sel, " 0x%08x ", rtw_read32(adapter, i));
@@ -151,8 +148,7 @@ ssize_t proc_set_write_reg(struct file *file, const char __user *buffer, size_t 
 	char tmp[32];
 	u32 addr, val, len;
 
-	if (count < 3)
-	{
+	if (count < 3) {
 		DBG_871X("argument size is less than 3\n");
 		return -EFAULT;
 	}
@@ -166,8 +162,7 @@ ssize_t proc_set_write_reg(struct file *file, const char __user *buffer, size_t 
 			return count;
 		}
 
-		switch (len)
-		{
+		switch (len) {
 			case 1:
 				rtw_write8(padapter, addr, (u8)val);
 				break;
@@ -201,8 +196,7 @@ int proc_get_read_reg(struct seq_file *m, void *v)
 		return 0;
 	}
 
-	switch (proc_get_read_len)
-	{
+	switch (proc_get_read_len) {
 		case 1:
 			DBG_871X_SEL_NL(m, "rtw_read8(0x%x) = 0x%x\n", proc_get_read_addr, rtw_read8(padapter, proc_get_read_addr));
 			break;
@@ -225,8 +219,7 @@ ssize_t proc_set_read_reg(struct file *file, const char __user *buffer, size_t c
 	char tmp[16];
 	u32 addr, len;
 
-	if (count < 2)
-	{
+	if (count < 2) {
 		DBG_871X("argument size is less than 2\n");
 		return -EFAULT;
 	}
@@ -465,8 +458,7 @@ int proc_get_survey_info(struct seq_file *m, void *v)
 	}
 
 	DBG_871X_SEL_NL(m, "%5s  %-17s  %3s  %-3s  %-4s  %-4s  %5s  %s\n","index", "bssid", "ch", "RSSI", "SdBm", "Noise", "age", "ssid");
-	while (1)
-	{
+	while (1) {
 		if (phead == plist)
 			break;
 
@@ -513,8 +505,7 @@ int proc_get_ap_info(struct seq_file *m, void *v)
 	struct sta_priv *pstapriv = &padapter->stapriv;
 
 	psta = rtw_get_stainfo(pstapriv, cur_network->network.MacAddress);
-	if (psta)
-	{
+	if (psta) {
 		int i;
 		struct recv_reorder_ctrl *preorder_ctrl;
 
@@ -529,18 +520,14 @@ int proc_get_ap_info(struct seq_file *m, void *v)
 		DBG_871X_SEL_NL(m, "agg_enable_bitmap =%x, candidate_tid_bitmap =%x\n", psta->htpriv.agg_enable_bitmap, psta->htpriv.candidate_tid_bitmap);
 		DBG_871X_SEL_NL(m, "ldpc_cap = 0x%x, stbc_cap = 0x%x, beamform_cap = 0x%x\n", psta->htpriv.ldpc_cap, psta->htpriv.stbc_cap, psta->htpriv.beamform_cap);
 
-		for (i = 0;i<16;i++)
-		{
+		for (i = 0;i<16;i++) {
 			preorder_ctrl = &psta->recvreorder_ctrl[i];
-			if (preorder_ctrl->enable)
-			{
+			if (preorder_ctrl->enable) {
 				DBG_871X_SEL_NL(m, "tid =%d, indicate_seq =%d\n", i, preorder_ctrl->indicate_seq);
 			}
 		}
 
-	}
-	else
-	{
+	} else{
 		DBG_871X_SEL_NL(m, "can't get sta's macaddr, cur_network's macaddr:" MAC_FMT "\n", MAC_ARG(cur_network->network.MacAddress));
 	}
 
@@ -574,8 +561,7 @@ int proc_get_trx_info(struct seq_file *m, void *v)
 	DBG_871X_SEL_NL(m, "free_recvframe_cnt =%d\n"
 		, precvpriv->free_recvframe_cnt);
 
-	for (i = 0; i < 4; i++)
-	{
+	for (i = 0; i < 4; i++) {
 		phwxmit = pxmitpriv->hwxmits + i;
 		DBG_871X_SEL_NL(m, "%d, hwq.accnt =%d\n", i, phwxmit->accnt);
 	}
@@ -1045,8 +1031,7 @@ ssize_t proc_set_ht_enable(struct file *file, const char __user *buffer, size_t 
 	if (buffer && !copy_from_user(tmp, buffer, sizeof(tmp))) {
 		sscanf(tmp, "%d ", &mode);
 
-		if (pregpriv && mode >= 0 && mode < 2)
-		{
+		if (pregpriv && mode >= 0 && mode < 2) {
 			pregpriv->ht_enable = mode;
 			printk("ht_enable =%d\n", pregpriv->ht_enable);
 		}
@@ -1082,8 +1067,7 @@ ssize_t proc_set_bw_mode(struct file *file, const char __user *buffer, size_t co
 	if (buffer && !copy_from_user(tmp, buffer, sizeof(tmp))) {
 		sscanf(tmp, "%d ", &mode);
 
-		if (pregpriv &&  mode < 2)
-		{
+		if (pregpriv &&  mode < 2) {
 
 			pregpriv->bw_mode = mode;
 			printk("bw_mode =%d\n", mode);
@@ -1122,8 +1106,7 @@ ssize_t proc_set_ampdu_enable(struct file *file, const char __user *buffer, size
 
 		sscanf(tmp, "%d ", &mode);
 
-		if (pregpriv && mode < 3)
-		{
+		if (pregpriv && mode < 3) {
 			pregpriv->ampdu_enable = mode;
 			printk("ampdu_enable =%d\n", mode);
 		}
@@ -1167,12 +1150,10 @@ ssize_t proc_set_rx_ampdu(struct file *file, const char __user *buffer, size_t c
 
 		sscanf(tmp, "%d ", &mode);
 
-		if (pregpriv && mode >= 0 && mode < 2)
-		{
+		if (pregpriv && mode >= 0 && mode < 2) {
 			pmlmeinfo->bAcceptAddbaReq = mode;
 			DBG_871X("pmlmeinfo->bAcceptAddbaReq =%d\n", pmlmeinfo->bAcceptAddbaReq);
-			if (mode == 0)
-			{
+			if (mode == 0) {
 				//tear down Rx AMPDU
 				send_delba(padapter, 0, get_my_bssid(&(pmlmeinfo->network)));// recipient
 			}
@@ -1399,16 +1380,14 @@ ssize_t proc_set_btcoex_dbg(struct file *file, const char __user *buffer, size_t
 
 //	DBG_871X("+" FUNC_ADPT_FMT "\n", FUNC_ADPT_ARG(padapter));
 
-	if (NULL == buffer)
-	{
+	if (NULL == buffer) {
 		DBG_871X(FUNC_ADPT_FMT ": input buffer is NULL!\n",
 			FUNC_ADPT_ARG(padapter));
 
 		return -EFAULT;
 	}
 
-	if (count < 1)
-	{
+	if (count < 1) {
 		DBG_871X(FUNC_ADPT_FMT ": input length is 0!\n",
 			FUNC_ADPT_ARG(padapter));
 
@@ -1419,8 +1398,7 @@ ssize_t proc_set_btcoex_dbg(struct file *file, const char __user *buffer, size_t
 	if (num > (sizeof(tmp) - 1))
 		num = (sizeof(tmp) - 1);
 
-	if (copy_from_user(tmp, buffer, num))
-	{
+	if (copy_from_user(tmp, buffer, num)) {
 		DBG_871X(FUNC_ADPT_FMT ": copy buffer from user space FAIL!\n",
 			FUNC_ADPT_ARG(padapter));
 
@@ -1428,15 +1406,13 @@ ssize_t proc_set_btcoex_dbg(struct file *file, const char __user *buffer, size_t
 	}
 
 	num = sscanf(tmp, "%x %x", module, module+1);
-	if (1 == num)
-	{
+	if (1 == num) {
 		if (0 == module[0])
 			memset(module, 0, sizeof(module));
 		else
 			memset(module, 0xFF, sizeof(module));
 	}
-	else if (2 != num)
-	{
+	else if (2 != num) {
 		DBG_871X(FUNC_ADPT_FMT ": input(\"%s\") format incorrect!\n",
 			FUNC_ADPT_ARG(padapter), tmp);
 
