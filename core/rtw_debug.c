@@ -70,7 +70,7 @@ void sd_f0_reg_dump(void *sel, struct adapter *adapter)
 {
 	int i;
 
-	for (i = 0x0;i<= 0xff;i++) {
+	for (i = 0x0; i <= 0xff; i++) {
 		if (i%16 == 0)
 			DBG_871X_SEL_NL(sel, "0x%02x ", i);
 
@@ -78,7 +78,7 @@ void sd_f0_reg_dump(void *sel, struct adapter *adapter)
 
 		if (i%16 == 15)
 			DBG_871X_SEL(sel, "\n");
-		else if (i%8 ==7)
+		else if (i%8 == 7)
 			DBG_871X_SEL(sel, "\t");
 	}
 }
@@ -89,7 +89,7 @@ void mac_reg_dump(void *sel, struct adapter *adapter)
 
 	DBG_871X_SEL_NL(sel, "======= MAC REG =======\n");
 
-	for (i = 0x0;i<0x800;i+=4) {
+	for (i = 0x0; i < 0x800; i += 4) {
 		if (j%4 == 1)
 			DBG_871X_SEL_NL(sel, "0x%03x", i);
 		DBG_871X_SEL(sel, " 0x%08x ", rtw_read32(adapter, i));
@@ -103,7 +103,7 @@ void bb_reg_dump(void *sel, struct adapter *adapter)
 	int i, j = 1;
 
 	DBG_871X_SEL_NL(sel, "======= BB REG =======\n");
-	for (i = 0x800;i<0x1000;i+=4) {
+	for (i = 0x800; i < 0x1000 ; i += 4) {
 		if (j%4 == 1)
 			DBG_871X_SEL_NL(sel, "0x%03x", i);
 		DBG_871X_SEL(sel, " 0x%08x ", rtw_read32(adapter, i));
@@ -120,16 +120,16 @@ void rf_reg_dump(void *sel, struct adapter *adapter)
 	u8 path_nums = 0;
 
 	rtw_hal_get_hwreg(adapter, HW_VAR_RF_TYPE, (u8 *)(&rf_type));
-	if ((RF_1T2R == rf_type) ||(RF_1T1R ==rf_type))
+	if ((RF_1T2R == rf_type) || (RF_1T1R == rf_type))
 		path_nums = 1;
 	else
 		path_nums = 2;
 
 	DBG_871X_SEL_NL(sel, "======= RF REG =======\n");
 
-	for (path = 0;path<path_nums;path++) {
+	for (path = 0; path < path_nums; path++) {
 		DBG_871X_SEL_NL(sel, "RF_Path(%x)\n", path);
-		for (i = 0;i<0x100;i++) {
+		for (i = 0; i < 0x100; i++) {
 			value = rtw_hal_read_rfreg(adapter, path, i, 0xffffffff);
 			if (j%4 == 1)
 				DBG_871X_SEL_NL(sel, "0x%02x ", i);
@@ -267,19 +267,19 @@ int proc_get_sec_info(struct seq_file *m, void *v)
 
 #ifdef DBG_SW_SEC_CNT
 	DBG_871X_SEL_NL(m, "wep_sw_enc_cnt =%llu, %llu, %llu\n"
-		, sec->wep_sw_enc_cnt_bc , sec->wep_sw_enc_cnt_mc, sec->wep_sw_enc_cnt_uc);
+		, sec->wep_sw_enc_cnt_bc, sec->wep_sw_enc_cnt_mc, sec->wep_sw_enc_cnt_uc);
 	DBG_871X_SEL_NL(m, "wep_sw_dec_cnt =%llu, %llu, %llu\n"
-		, sec->wep_sw_dec_cnt_bc , sec->wep_sw_dec_cnt_mc, sec->wep_sw_dec_cnt_uc);
+		, sec->wep_sw_dec_cnt_bc, sec->wep_sw_dec_cnt_mc, sec->wep_sw_dec_cnt_uc);
 
 	DBG_871X_SEL_NL(m, "tkip_sw_enc_cnt =%llu, %llu, %llu\n"
-		, sec->tkip_sw_enc_cnt_bc , sec->tkip_sw_enc_cnt_mc, sec->tkip_sw_enc_cnt_uc);
+		, sec->tkip_sw_enc_cnt_bc, sec->tkip_sw_enc_cnt_mc, sec->tkip_sw_enc_cnt_uc);
 	DBG_871X_SEL_NL(m, "tkip_sw_dec_cnt =%llu, %llu, %llu\n"
-		, sec->tkip_sw_dec_cnt_bc , sec->tkip_sw_dec_cnt_mc, sec->tkip_sw_dec_cnt_uc);
+		, sec->tkip_sw_dec_cnt_bc, sec->tkip_sw_dec_cnt_mc, sec->tkip_sw_dec_cnt_uc);
 
 	DBG_871X_SEL_NL(m, "aes_sw_enc_cnt =%llu, %llu, %llu\n"
-		, sec->aes_sw_enc_cnt_bc , sec->aes_sw_enc_cnt_mc, sec->aes_sw_enc_cnt_uc);
+		, sec->aes_sw_enc_cnt_bc, sec->aes_sw_enc_cnt_mc, sec->aes_sw_enc_cnt_uc);
 	DBG_871X_SEL_NL(m, "aes_sw_dec_cnt =%llu, %llu, %llu\n"
-		, sec->aes_sw_dec_cnt_bc , sec->aes_sw_dec_cnt_mc, sec->aes_sw_dec_cnt_uc);
+		, sec->aes_sw_dec_cnt_bc, sec->aes_sw_dec_cnt_mc, sec->aes_sw_dec_cnt_uc);
 #endif /* DBG_SW_SEC_CNT */
 
 	return 0;
@@ -457,7 +457,7 @@ int proc_get_survey_info(struct seq_file *m, void *v)
 		return 0;
 	}
 
-	DBG_871X_SEL_NL(m, "%5s  %-17s  %3s  %-3s  %-4s  %-4s  %5s  %s\n","index", "bssid", "ch", "RSSI", "SdBm", "Noise", "age", "ssid");
+	DBG_871X_SEL_NL(m, "%5s  %-17s  %3s  %-3s  %-4s  %-4s  %5s  %s\n", "index", "bssid", "ch", "RSSI", "SdBm", "Noise", "age", "ssid");
 	while (1) {
 		if (phead == plist)
 			break;
@@ -474,7 +474,7 @@ int proc_get_survey_info(struct seq_file *m, void *v)
 		}
 
 		#if defined(CONFIG_SIGNAL_DISPLAY_DBM) && defined(CONFIG_BACKGROUND_NOISE_MONITOR)
-		rtw_hal_get_odm_var(padapter, HAL_ODM_NOISE_MONITOR,&(pnetwork->network.Configuration.DSConfig), &(notify_noise));
+		rtw_hal_get_odm_var(padapter, HAL_ODM_NOISE_MONITOR, &(pnetwork->network.Configuration.DSConfig), &(notify_noise));
 		#endif
 
 		DBG_871X_SEL_NL(m, "%5d  "MAC_FMT"  %3d  %3d  %4d  %4d  %5d  %s\n",
@@ -520,7 +520,7 @@ int proc_get_ap_info(struct seq_file *m, void *v)
 		DBG_871X_SEL_NL(m, "agg_enable_bitmap =%x, candidate_tid_bitmap =%x\n", psta->htpriv.agg_enable_bitmap, psta->htpriv.candidate_tid_bitmap);
 		DBG_871X_SEL_NL(m, "ldpc_cap = 0x%x, stbc_cap = 0x%x, beamform_cap = 0x%x\n", psta->htpriv.ldpc_cap, psta->htpriv.stbc_cap, psta->htpriv.beamform_cap);
 
-		for (i = 0;i<16;i++) {
+		for (i = 0; i < 16; i++) {
 			preorder_ctrl = &psta->recvreorder_ctrl[i];
 			if (preorder_ctrl->enable) {
 				DBG_871X_SEL_NL(m, "tid =%d, indicate_seq =%d\n", i, preorder_ctrl->indicate_seq);
@@ -986,13 +986,13 @@ ssize_t proc_set_rx_signal(struct file *file, const char __user *buffer, size_t 
 
 		is_signal_dbg = is_signal_dbg == 0?0:1;
 
-		if (is_signal_dbg && num!=2)
+		if (is_signal_dbg && num != 2)
 			return count;
 
-		signal_strength = signal_strength>100?100:signal_strength;
+		signal_strength = signal_strength > 100?100:signal_strength;
 
 		padapter->recvpriv.is_signal_dbg = is_signal_dbg;
-		padapter->recvpriv.signal_strength_dbg =signal_strength;
+		padapter->recvpriv.signal_strength_dbg =  signal_strength;
 
 		if (is_signal_dbg)
 			DBG_871X("set %s %u\n", "DBG_SIGNAL_STRENGTH", signal_strength);
@@ -1263,10 +1263,10 @@ ssize_t proc_set_rssi_disp(struct file *file, const char __user *buffer, size_t 
 
 		if (enable) {
 			DBG_8192C("Linked info Function Enable\n");
-			padapter->bLinkInfoDump = enable ;
+			padapter->bLinkInfoDump = enable;
 		} else {
 			DBG_8192C("Linked info Function Disable\n");
-			padapter->bLinkInfoDump = 0 ;
+			padapter->bLinkInfoDump = 0;
 		}
 	}
 	return count;
