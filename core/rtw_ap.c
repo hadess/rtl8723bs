@@ -1663,6 +1663,7 @@ static void update_bcn_wps_ie(struct adapter *padapter)
 	if ((pmlmeinfo->state&0x03) == WIFI_FW_AP_STATE) {
 
 		u8 sr = 0;
+		
 		rtw_get_wps_attr_content(pwps_ie_src,  wps_ielen, WPS_ATTR_SELECTED_REGISTRAR, (u8 *)(&sr), NULL);
 
 		if (sr) {
