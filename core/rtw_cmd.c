@@ -61,7 +61,7 @@ static struct _cmd_callback rtw_cmd_callback[] = {
 	{GEN_CMD_CODE(_SetPwrMode), NULL},
 	{GEN_CMD_CODE(_JoinbssRpt), NULL},
 	{GEN_CMD_CODE(_SetRaTable), NULL},
-	{GEN_CMD_CODE(_GetRaTable) , NULL},
+	{GEN_CMD_CODE(_GetRaTable), NULL},
 
 	{GEN_CMD_CODE(_GetCCXReport), NULL}, /*40*/
 	{GEN_CMD_CODE(_GetDTMReport),	NULL},
@@ -109,25 +109,25 @@ static struct cmd_hdl wlancmds[] = {
 	GEN_MLME_EXT_HANDLER(0, NULL)
 	GEN_MLME_EXT_HANDLER(0, NULL)
 	GEN_MLME_EXT_HANDLER(0, NULL)
-	GEN_MLME_EXT_HANDLER(sizeof (struct joinbss_parm), join_cmd_hdl) /*14*/
-	GEN_MLME_EXT_HANDLER(sizeof (struct disconnect_parm), disconnect_hdl)
-	GEN_MLME_EXT_HANDLER(sizeof (struct createbss_parm), createbss_hdl)
-	GEN_MLME_EXT_HANDLER(sizeof (struct setopmode_parm), setopmode_hdl)
-	GEN_MLME_EXT_HANDLER(sizeof (struct sitesurvey_parm), sitesurvey_cmd_hdl) /*18*/
-	GEN_MLME_EXT_HANDLER(sizeof (struct setauth_parm), setauth_hdl)
-	GEN_MLME_EXT_HANDLER(sizeof (struct setkey_parm), setkey_hdl) /*20*/
-	GEN_MLME_EXT_HANDLER(sizeof (struct set_stakey_parm), set_stakey_hdl)
-	GEN_MLME_EXT_HANDLER(sizeof (struct set_assocsta_parm), NULL)
-	GEN_MLME_EXT_HANDLER(sizeof (struct del_assocsta_parm), NULL)
-	GEN_MLME_EXT_HANDLER(sizeof (struct setstapwrstate_parm), NULL)
-	GEN_MLME_EXT_HANDLER(sizeof (struct setbasicrate_parm), NULL)
-	GEN_MLME_EXT_HANDLER(sizeof (struct getbasicrate_parm), NULL)
-	GEN_MLME_EXT_HANDLER(sizeof (struct setdatarate_parm), NULL)
-	GEN_MLME_EXT_HANDLER(sizeof (struct getdatarate_parm), NULL)
-	GEN_MLME_EXT_HANDLER(sizeof (struct setphyinfo_parm), NULL)
-	GEN_MLME_EXT_HANDLER(sizeof (struct getphyinfo_parm), NULL)  /*30*/
-	GEN_MLME_EXT_HANDLER(sizeof (struct setphy_parm), NULL)
-	GEN_MLME_EXT_HANDLER(sizeof (struct getphy_parm), NULL)
+	GEN_MLME_EXT_HANDLER(sizeof(struct joinbss_parm), join_cmd_hdl) /*14*/
+	GEN_MLME_EXT_HANDLER(sizeof(struct disconnect_parm), disconnect_hdl)
+	GEN_MLME_EXT_HANDLER(sizeof(struct createbss_parm), createbss_hdl)
+	GEN_MLME_EXT_HANDLER(sizeof(struct setopmode_parm), setopmode_hdl)
+	GEN_MLME_EXT_HANDLER(sizeof(struct sitesurvey_parm), sitesurvey_cmd_hdl) /*18*/
+	GEN_MLME_EXT_HANDLER(sizeof(struct setauth_parm), setauth_hdl)
+	GEN_MLME_EXT_HANDLER(sizeof(struct setkey_parm), setkey_hdl) /*20*/
+	GEN_MLME_EXT_HANDLER(sizeof(struct set_stakey_parm), set_stakey_hdl)
+	GEN_MLME_EXT_HANDLER(sizeof(struct set_assocsta_parm), NULL)
+	GEN_MLME_EXT_HANDLER(sizeof(struct del_assocsta_parm), NULL)
+	GEN_MLME_EXT_HANDLER(sizeof(struct setstapwrstate_parm), NULL)
+	GEN_MLME_EXT_HANDLER(sizeof(struct setbasicrate_parm), NULL)
+	GEN_MLME_EXT_HANDLER(sizeof(struct getbasicrate_parm), NULL)
+	GEN_MLME_EXT_HANDLER(sizeof(struct setdatarate_parm), NULL)
+	GEN_MLME_EXT_HANDLER(sizeof(struct getdatarate_parm), NULL)
+	GEN_MLME_EXT_HANDLER(sizeof(struct setphyinfo_parm), NULL)
+	GEN_MLME_EXT_HANDLER(sizeof(struct getphyinfo_parm), NULL)  /*30*/
+	GEN_MLME_EXT_HANDLER(sizeof(struct setphy_parm), NULL)
+	GEN_MLME_EXT_HANDLER(sizeof(struct getphy_parm), NULL)
 	GEN_MLME_EXT_HANDLER(0, NULL)
 	GEN_MLME_EXT_HANDLER(0, NULL)
 	GEN_MLME_EXT_HANDLER(0, NULL)
@@ -170,7 +170,7 @@ Caller and the rtw_cmd_thread can protect cmd_q by spin_lock.
 No irqsave is necessary.
 */
 
-sint	_rtw_init_cmd_priv (struct	cmd_priv *pcmdpriv)
+sint	_rtw_init_cmd_priv(struct	cmd_priv *pcmdpriv)
 {
 	sint res = _SUCCESS;
 
@@ -226,7 +226,7 @@ sint _rtw_init_evt_priv(struct evt_priv *pevtpriv)
 	return res;
 }
 
-void _rtw_free_evt_priv (struct	evt_priv *pevtpriv)
+void _rtw_free_evt_priv(struct	evt_priv *pevtpriv)
 {
 	RT_TRACE(_module_rtl871x_cmd_c_, _drv_info_, ("+_rtw_free_evt_priv\n"));
 
@@ -246,7 +246,7 @@ void _rtw_free_evt_priv (struct	evt_priv *pevtpriv)
 	RT_TRACE(_module_rtl871x_cmd_c_, _drv_info_, ("-_rtw_free_evt_priv\n"));
 }
 
-void _rtw_free_cmd_priv (struct	cmd_priv *pcmdpriv)
+void _rtw_free_cmd_priv(struct	cmd_priv *pcmdpriv)
 {
 	if (pcmdpriv) {
 		if (pcmdpriv->cmd_allocated_buf)
@@ -312,11 +312,11 @@ u32 rtw_init_cmd_priv(struct cmd_priv *pcmdpriv)
 {
 	u32 res;
 
-	res = _rtw_init_cmd_priv (pcmdpriv);
+	res = _rtw_init_cmd_priv(pcmdpriv);
 	return res;
 }
 
-u32 rtw_init_evt_priv (struct	evt_priv *pevtpriv)
+u32 rtw_init_evt_priv(struct	evt_priv *pevtpriv)
 {
 	int	res;
 
@@ -324,13 +324,13 @@ u32 rtw_init_evt_priv (struct	evt_priv *pevtpriv)
 	return res;
 }
 
-void rtw_free_evt_priv (struct	evt_priv *pevtpriv)
+void rtw_free_evt_priv(struct	evt_priv *pevtpriv)
 {
 	RT_TRACE(_module_rtl871x_cmd_c_, _drv_info_, ("rtw_free_evt_priv\n"));
 	_rtw_free_evt_priv(pevtpriv);
 }
 
-void rtw_free_cmd_priv (struct	cmd_priv *pcmdpriv)
+void rtw_free_cmd_priv(struct	cmd_priv *pcmdpriv)
 {
 	RT_TRACE(_module_rtl871x_cmd_c_, _drv_info_, ("rtw_free_cmd_priv\n"));
 	_rtw_free_cmd_priv(pcmdpriv);
@@ -344,7 +344,7 @@ int rtw_cmd_filter(struct cmd_priv *pcmdpriv, struct cmd_obj *cmd_obj)
 	if (cmd_obj->cmdcode == GEN_CMD_CODE(_SetChannelPlan))
 		bAllow = true;
 
-	if ((pcmdpriv->padapter->hw_init_completed ==false && bAllow == false)
+	if ((pcmdpriv->padapter->hw_init_completed == false && bAllow == false)
 		|| atomic_read(&(pcmdpriv->cmdthd_running)) == false	/* com_thread not running */
 	) {
 		/* DBG_871X("%s:%s: drop cmdcode:%u, hw_init_completed:%u, cmdthd_running:%u\n", caller_func, __func__, */
@@ -371,7 +371,7 @@ u32 rtw_enqueue_cmd(struct cmd_priv *pcmdpriv, struct cmd_obj *cmd_obj)
 
 	cmd_obj->padapter = padapter;
 
-	if (_FAIL == (res =rtw_cmd_filter(pcmdpriv, cmd_obj))) {
+	if (_FAIL == (res = rtw_cmd_filter(pcmdpriv, cmd_obj))) {
 		rtw_free_cmd_obj(cmd_obj);
 		goto exit;
 	}
@@ -396,14 +396,14 @@ struct	cmd_obj	*rtw_dequeue_cmd(struct cmd_priv *pcmdpriv)
 
 void rtw_free_cmd_obj(struct cmd_obj *pcmd)
 {
-	if ((pcmd->cmdcode!= _JoinBss_CMD_) &&
-	    (pcmd->cmdcode!= _CreateBss_CMD_)) {
+	if ((pcmd->cmdcode != _JoinBss_CMD_) &&
+	    (pcmd->cmdcode != _CreateBss_CMD_)) {
 		/* free parmbuf in cmd_obj */
 		kfree((unsigned char *)pcmd->parmbuf);
 	}
 
-	if (pcmd->rsp!= NULL) {
-		if (pcmd->rspsz!= 0) {
+	if (pcmd->rsp != NULL) {
+		if (pcmd->rspsz != 0) {
 			/* free rsp in cmd_obj */
 			kfree((unsigned char *)pcmd->rsp);
 		}
@@ -455,7 +455,7 @@ int rtw_cmd_thread(void *context)
 			break;
 		}
 
-		if ((padapter->bDriverStopped == true)||(padapter->bSurpriseRemoved == true)) {
+		if ((padapter->bDriverStopped == true) || (padapter->bSurpriseRemoved == true)) {
 			DBG_871X_LEVEL(_drv_always_, "%s: DriverStopped(%d) SurpriseRemoved(%d) break at line %d\n",
 				__func__, padapter->bDriverStopped, padapter->bSurpriseRemoved, __LINE__);
 			break;
@@ -478,7 +478,7 @@ int rtw_cmd_thread(void *context)
 		}
 
 _next:
-		if ((padapter->bDriverStopped == true)||(padapter->bSurpriseRemoved == true)) {
+		if ((padapter->bDriverStopped == true) || (padapter->bSurpriseRemoved == true)) {
 			DBG_871X_LEVEL(_drv_always_, "%s: DriverStopped(%d) SurpriseRemoved(%d) break at line %d\n",
 				__func__, padapter->bDriverStopped, padapter->bSurpriseRemoved, __LINE__);
 			break;
@@ -570,7 +570,7 @@ post_process:
 	}
 
 	/*  free all cmd_obj resources */
-	do{
+	do {
 		pcmd = rtw_dequeue_cmd(pcmdpriv);
 		if (pcmd == NULL) {
 			rtw_unregister_cmd_alive(padapter);
@@ -587,7 +587,7 @@ post_process:
 		}
 
 		rtw_free_cmd_obj(pcmd);
-	}while (1);
+	} while (1);
 
 	up(&pcmdpriv->terminate_cmdthread_sema);
 	atomic_set(&(pcmdpriv->cmdthd_running), false);
@@ -635,7 +635,7 @@ u8 rtw_sitesurvey_cmd(struct adapter  *padapter, struct ndis_802_11_ssid *ssid, 
 	/* prepare ssid list */
 	if (ssid) {
 		int i;
-		for (i = 0; i<ssid_num && i< RTW_SSID_SCAN_AMOUNT; i++) {
+		for (i = 0; i < ssid_num && i < RTW_SSID_SCAN_AMOUNT; i++) {
 			if (ssid[i].SsidLength) {
 				memcpy(&psurveyPara->ssid[i], &ssid[i], sizeof(struct ndis_802_11_ssid));
 				psurveyPara->ssid_num++;
@@ -649,7 +649,7 @@ u8 rtw_sitesurvey_cmd(struct adapter  *padapter, struct ndis_802_11_ssid *ssid, 
 	/* prepare channel list */
 	if (ch) {
 		int i;
-		for (i = 0; i<ch_num && i< RTW_CHANNEL_SCAN_AMOUNT; i++) {
+		for (i = 0; i < ch_num && i < RTW_CHANNEL_SCAN_AMOUNT; i++) {
 			if (ch[i].hw_value && !(ch[i].flags & RTW_IEEE80211_CHAN_DISABLED)) {
 				memcpy(&psurveyPara->ch[i], &ch[i], sizeof(struct rtw_ieee80211_channel));
 				psurveyPara->ch_num++;
@@ -713,7 +713,7 @@ void rtw_getbbrfreg_cmdrsp_callback(struct adapter *padapter,  struct cmd_obj *p
 u8 rtw_createbss_cmd(struct adapter  *padapter)
 {
 	struct cmd_obj *pcmd;
-	struct cmd_priv 			*pcmdpriv =&padapter->cmdpriv;
+	struct cmd_priv 			*pcmdpriv = &padapter->cmdpriv;
 	struct mlme_priv 		*pmlmepriv = &padapter->mlmepriv;
 	struct wlan_bssid_ex		*pdev_network = &padapter->registrypriv.dev_network;
 	u8 res = _SUCCESS;
@@ -748,7 +748,7 @@ exit:
 u8 rtw_startbss_cmd(struct adapter  *padapter, int flags)
 {
 	struct cmd_obj *pcmd;
-	struct cmd_priv  *pcmdpriv =&padapter->cmdpriv;
+	struct cmd_priv  *pcmdpriv = &padapter->cmdpriv;
 	struct submit_ctx sctx;
 	u8 res = _SUCCESS;
 
@@ -797,10 +797,10 @@ u8 rtw_joinbss_cmd(struct adapter  *padapter, struct wlan_network *pnetwork)
 	uint	t_len = 0;
 	struct wlan_bssid_ex		*psecnetwork;
 	struct cmd_obj		*pcmd;
-	struct cmd_priv 	*pcmdpriv =&padapter->cmdpriv;
+	struct cmd_priv 	*pcmdpriv = &padapter->cmdpriv;
 	struct mlme_priv 	*pmlmepriv = &padapter->mlmepriv;
 	struct qos_priv 	*pqospriv = &pmlmepriv->qospriv;
-	struct security_priv *psecuritypriv =&padapter->securitypriv;
+	struct security_priv *psecuritypriv = &padapter->securitypriv;
 	struct registry_priv *pregistrypriv = &padapter->registrypriv;
 	struct ht_priv 		*phtpriv = &pmlmepriv->htpriv;
 	enum NDIS_802_11_NETWORK_INFRASTRUCTURE ndis_network_mode = pnetwork->network.InfrastructureMode;
@@ -844,7 +844,7 @@ u8 rtw_joinbss_cmd(struct adapter  *padapter, struct wlan_network *pnetwork)
 		}
 	}
 
-	psecnetwork =(struct wlan_bssid_ex *)&psecuritypriv->sec_bss;
+	psecnetwork = (struct wlan_bssid_ex *)&psecuritypriv->sec_bss;
 	if (psecnetwork == NULL) {
 		if (pcmd != NULL)
 			kfree((unsigned char *)pcmd);
@@ -860,8 +860,8 @@ u8 rtw_joinbss_cmd(struct adapter  *padapter, struct wlan_network *pnetwork)
 
 	memcpy(psecnetwork, &pnetwork->network, get_wlan_bssid_ex_sz(&pnetwork->network));
 
-	auth =&psecuritypriv->authenticator_ie[0];
-	psecuritypriv->authenticator_ie[0]=(unsigned char)psecnetwork->IELength;
+	auth = &psecuritypriv->authenticator_ie[0];
+	psecuritypriv->authenticator_ie[0] = (unsigned char)psecnetwork->IELength;
 
 	if ((psecnetwork->IELength-12) < (256-1)) {
 		memcpy(&psecuritypriv->authenticator_ie[1], &psecnetwork->IEs[12], psecnetwork->IELength-12);
@@ -876,7 +876,7 @@ u8 rtw_joinbss_cmd(struct adapter  *padapter, struct wlan_network *pnetwork)
 	/*  the driver just has the bssid information for PMKIDList searching. */
 
 	if (pmlmepriv->assoc_by_bssid == false) {
-		memcpy(&pmlmepriv->assoc_bssid[ 0 ], &pnetwork->network.MacAddress[ 0 ], ETH_ALEN);
+		memcpy(&pmlmepriv->assoc_bssid[0], &pnetwork->network.MacAddress[0], ETH_ALEN);
 	}
 
 	psecnetwork->IELength = rtw_restruct_sec_ie(padapter, &pnetwork->network.IEs[0], &psecnetwork->IEs[0], pnetwork->network.IELength);
@@ -897,7 +897,7 @@ u8 rtw_joinbss_cmd(struct adapter  *padapter, struct wlan_network *pnetwork)
 
 	phtpriv->ht_option = false;
 	ptmp = rtw_get_ie(&pnetwork->network.IEs[12], _HT_CAPABILITY_IE_, &tmp_len, pnetwork->network.IELength-12);
-	if (pregistrypriv->ht_enable && ptmp && tmp_len>0) {
+	if (pregistrypriv->ht_enable && ptmp && tmp_len > 0) {
 		/* 	Added by Albert 2010/06/23 */
 		/* 	For the WEP mode, we will use the bg mode to do the connection to avoid some IOT issue. */
 		/* 	Especially for Realtek 8192u SoftAP. */
@@ -1010,7 +1010,7 @@ u8 rtw_setstakey_cmd(struct adapter *padapter, struct sta_info *sta, u8 unicast_
 {
 	struct cmd_obj *ph2c;
 	struct set_stakey_parm	*psetstakey_para;
-	struct cmd_priv 			*pcmdpriv =&padapter->cmdpriv;
+	struct cmd_priv 			*pcmdpriv = &padapter->cmdpriv;
 	struct set_stakey_rsp		*psetstakey_rsp = NULL;
 
 	struct mlme_priv 		*pmlmepriv = &padapter->mlmepriv;
@@ -1026,7 +1026,7 @@ u8 rtw_setstakey_cmd(struct adapter *padapter, struct sta_info *sta, u8 unicast_
 	memcpy(psetstakey_para->addr, sta->hwaddr, ETH_ALEN);
 
 	if (check_fwstate(pmlmepriv, WIFI_STATION_STATE)) {
-		psetstakey_para->algorithm =(unsigned char) psecuritypriv->dot11PrivacyAlgrthm;
+		psetstakey_para->algorithm = (unsigned char) psecuritypriv->dot11PrivacyAlgrthm;
 	} else {
 		GET_ENCRY_ALGO(psecuritypriv, sta, psetstakey_para->algorithm, false);
 	}
@@ -1039,7 +1039,7 @@ u8 rtw_setstakey_cmd(struct adapter *padapter, struct sta_info *sta, u8 unicast_
        }
 
 	/* jeff: set this becasue at least sw key is ready */
-	padapter->securitypriv.busetkipkey =true;
+	padapter->securitypriv.busetkipkey = true;
 
 	if (enqueue) {
 		ph2c = (struct cmd_obj *)rtw_zmalloc(sizeof(struct cmd_obj));
@@ -1074,7 +1074,7 @@ u8 rtw_clearstakey_cmd(struct adapter *padapter, struct sta_info *sta, u8 enqueu
 {
 	struct cmd_obj *ph2c;
 	struct set_stakey_parm	*psetstakey_para;
-	struct cmd_priv 			*pcmdpriv =&padapter->cmdpriv;
+	struct cmd_priv 			*pcmdpriv = &padapter->cmdpriv;
 	struct set_stakey_rsp		*psetstakey_rsp = NULL;
 	s16 cam_id = 0;
 	u8 res = _SUCCESS;
@@ -1162,7 +1162,7 @@ u8 rtw_reset_securitypriv_cmd(struct adapter *padapter)
 {
 	struct cmd_obj *ph2c;
 	struct drvextra_cmd_parm  *pdrvextra_cmd_parm;
-	struct cmd_priv *pcmdpriv =&padapter->cmdpriv;
+	struct cmd_priv *pcmdpriv = &padapter->cmdpriv;
 	u8 res = _SUCCESS;
 
 	ph2c = (struct cmd_obj *)rtw_zmalloc(sizeof(struct cmd_obj));
@@ -1197,7 +1197,7 @@ u8 rtw_free_assoc_resources_cmd(struct adapter *padapter)
 {
 	struct cmd_obj *ph2c;
 	struct drvextra_cmd_parm  *pdrvextra_cmd_parm;
-	struct cmd_priv *pcmdpriv =&padapter->cmdpriv;
+	struct cmd_priv *pcmdpriv = &padapter->cmdpriv;
 	u8 res = _SUCCESS;
 
 	ph2c = (struct cmd_obj *)rtw_zmalloc(sizeof(struct cmd_obj));
@@ -1232,7 +1232,7 @@ u8 rtw_dynamic_chk_wk_cmd(struct adapter *padapter)
 {
 	struct cmd_obj *ph2c;
 	struct drvextra_cmd_parm  *pdrvextra_cmd_parm;
-	struct cmd_priv *pcmdpriv =&padapter->cmdpriv;
+	struct cmd_priv *pcmdpriv = &padapter->cmdpriv;
 	u8 res = _SUCCESS;
 
 	/* only  primary padapter does this cmd */
@@ -1291,7 +1291,7 @@ u8 rtw_set_chplan_cmd(struct adapter *padapter, u8 chplan, u8 enqueue, u8 swconf
 		res = _FAIL;
 		goto exit;
 	}
-	setChannelPlan_param->channel_plan =chplan;
+	setChannelPlan_param->channel_plan = chplan;
 
 	if (enqueue) {
 		/* need enqueue, prepare cmd_obj and enqueue */
@@ -1306,7 +1306,7 @@ u8 rtw_set_chplan_cmd(struct adapter *padapter, u8 chplan, u8 enqueue, u8 swconf
 		res = rtw_enqueue_cmd(pcmdpriv, pcmdobj);
 	} else{
 		/* no need to enqueue, do the cmd hdl directly and free cmd parameter */
-		if (H2C_SUCCESS !=set_chplan_hdl(padapter, (unsigned char *)setChannelPlan_param))
+		if (H2C_SUCCESS != set_chplan_hdl(padapter, (unsigned char *)setChannelPlan_param))
 			res = _FAIL;
 
 		kfree((u8 *)setChannelPlan_param);
@@ -1340,8 +1340,8 @@ static void collect_traffic_statistics(struct adapter *padapter)
 	pdvobjpriv->traffic_stat.last_tx_bytes = pdvobjpriv->traffic_stat.tx_bytes;
 	pdvobjpriv->traffic_stat.last_rx_bytes = pdvobjpriv->traffic_stat.rx_bytes;
 
-	pdvobjpriv->traffic_stat.cur_tx_tp = (u32)(pdvobjpriv->traffic_stat.cur_tx_bytes *8/2/1024/1024);
-	pdvobjpriv->traffic_stat.cur_rx_tp = (u32)(pdvobjpriv->traffic_stat.cur_rx_bytes *8/2/1024/1024);
+	pdvobjpriv->traffic_stat.cur_tx_tp = (u32)(pdvobjpriv->traffic_stat.cur_tx_bytes * 8/2/1024/1024);
+	pdvobjpriv->traffic_stat.cur_rx_tp = (u32)(pdvobjpriv->traffic_stat.cur_rx_bytes * 8/2/1024/1024);
 }
 
 u8 traffic_status_watchdog(struct adapter *padapter, u8 from_timer)
@@ -1426,8 +1426,8 @@ u8 traffic_status_watchdog(struct adapter *padapter, u8 from_timer)
 		} else{
 			/* DBG_871X("(+)Tx = %d, Rx = %d\n", pmlmepriv->LinkDetectInfo.NumTxOkInPeriod, pmlmepriv->LinkDetectInfo.NumRxUnicastOkInPeriod); */
 
-			if (pmlmepriv->LinkDetectInfo.TrafficTransitionCount>=2)
-				pmlmepriv->LinkDetectInfo.TrafficTransitionCount -=2;
+			if (pmlmepriv->LinkDetectInfo.TrafficTransitionCount >= 2)
+				pmlmepriv->LinkDetectInfo.TrafficTransitionCount -= 2;
 			else
 				pmlmepriv->LinkDetectInfo.TrafficTransitionCount = 0;
 
@@ -1656,14 +1656,14 @@ static void rtw_lps_change_dtim_hdl(struct adapter *padapter, u8 dtim)
 
 	down(&pwrpriv->lock);
 
-	if (pwrpriv->dtim!=dtim) {
+	if (pwrpriv->dtim != dtim) {
 		DBG_871X("change DTIM from %d to %d, bFwCurrentInPSMode =%d, ps_mode =%d\n", pwrpriv->dtim, dtim,
 			pwrpriv->bFwCurrentInPSMode, pwrpriv->pwr_mode);
 
 		pwrpriv->dtim = dtim;
 	}
 
-	if ((pwrpriv->bFwCurrentInPSMode ==true) && (pwrpriv->pwr_mode > PS_MODE_ACTIVE)) {
+	if ((pwrpriv->bFwCurrentInPSMode == true) && (pwrpriv->pwr_mode > PS_MODE_ACTIVE)) {
 		u8 ps_mode = pwrpriv->pwr_mode;
 
 		/* DBG_871X("change DTIM from %d to %d, ps_mode =%d\n", pwrpriv->dtim, dtim, ps_mode); */
@@ -1899,7 +1899,7 @@ static void rtw_btinfo_hdl(struct adapter *adapter, u8 *buf, u16 buf_len)
 		buf[1] = 0;
 	else if (cmd_idx == BTINFO_BT_AUTO_RPT)
 		buf[1] = 2;
-	rtw_btcoex_BtInfoNotify(adapter , len+1, &buf[1]);
+	rtw_btcoex_BtInfoNotify(adapter, len+1, &buf[1]);
 }
 
 u8 rtw_c2h_packet_wk_cmd(struct adapter *padapter, u8 *pbuf, u16 length)
@@ -2061,20 +2061,20 @@ u8 rtw_drvextra_cmd_hdl(struct adapter *padapter, unsigned char *pbuf)
 			rtw_dm_ra_mask_hdl(padapter, (struct sta_info *)pdrvextra_cmd->pbuf);
 			break;
 		case BTINFO_WK_CID:
-			rtw_btinfo_hdl(padapter , pdrvextra_cmd->pbuf, pdrvextra_cmd->size);
+			rtw_btinfo_hdl(padapter, pdrvextra_cmd->pbuf, pdrvextra_cmd->size);
 			break;
 		default:
 			break;
 	}
 
-	if (pdrvextra_cmd->pbuf && pdrvextra_cmd->size>0) {
+	if (pdrvextra_cmd->pbuf && pdrvextra_cmd->size > 0) {
 		kfree(pdrvextra_cmd->pbuf);
 	}
 
 	return H2C_SUCCESS;
 }
 
-void rtw_survey_cmd_callback(struct adapter *padapter ,  struct cmd_obj *pcmd)
+void rtw_survey_cmd_callback(struct adapter *padapter,  struct cmd_obj *pcmd)
 {
 	struct	mlme_priv *pmlmepriv = &padapter->mlmepriv;
 
@@ -2150,7 +2150,7 @@ void rtw_createbss_cmd_callback(struct adapter *padapter, struct cmd_obj *pcmd)
 			psta = rtw_alloc_stainfo(&padapter->stapriv, pnetwork->MacAddress);
 			if (psta == NULL) {
 				RT_TRACE(_module_rtl871x_cmd_c_, _drv_err_, ("\nCan't alloc sta_info when createbss_cmd_callback\n"));
-				goto createbss_cmd_fail ;
+				goto createbss_cmd_fail;
 			}
 		}
 
@@ -2198,7 +2198,7 @@ exit:
 
 
 
-void rtw_setstaKey_cmdrsp_callback(struct adapter *padapter ,  struct cmd_obj *pcmd)
+void rtw_setstaKey_cmdrsp_callback(struct adapter *padapter,  struct cmd_obj *pcmd)
 {
 
 	struct sta_priv *pstapriv = &padapter->stapriv;
