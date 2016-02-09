@@ -18,7 +18,7 @@
 #include <osdep_service.h>
 #include <drv_types.h>
 
-void up_clk(_adapter*padapter,	 u16 *x)
+void up_clk(_adapter *padapter,	 u16 *x)
 {
 _func_enter_;
 	*x = *x | _EESK;
@@ -126,7 +126,7 @@ _func_enter_;
 _func_exit_;
 }
 
-u16 wait_eeprom_cmd_done(_adapter* padapter)
+u16 wait_eeprom_cmd_done(_adapter *padapter)
 {
 	u8 x;
 	u16 i, res = false;
