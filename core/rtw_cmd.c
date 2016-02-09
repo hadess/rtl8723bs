@@ -235,9 +235,8 @@ void _rtw_free_evt_priv(struct	evt_priv *pevtpriv)
 		msleep(10);
 
 	while (!rtw_cbuf_empty(pevtpriv->c2h_queue)) {
-		void *c2h;
-		if ((c2h = rtw_cbuf_pop(pevtpriv->c2h_queue)) != NULL
-			&& c2h != (void *)pevtpriv) {
+		void *c2h = rtw_cbuf_pop(pevtpriv->c2h_queue);
+		if ( c2h != NULL && c2h != (void *)pevtpriv) {
 			kfree(c2h);
 		}
 	}
@@ -371,7 +370,8 @@ u32 rtw_enqueue_cmd(struct cmd_priv *pcmdpriv, struct cmd_obj *cmd_obj)
 
 	cmd_obj->padapter = padapter;
 
-	if (_FAIL == (res = rtw_cmd_filter(pcmdpriv, cmd_obj))) {
+	res = rtw_cmd_filter(pcmdpriv, cmd_obj);
+	if (_FAIL == res) {
 		rtw_free_cmd_obj(cmd_obj);
 		goto exit;
 	}
@@ -484,7 +484,8 @@ _next:
 			break;
 		}
 
-		if (!(pcmd = rtw_dequeue_cmd(pcmdpriv))) {
+		pcmd = rtw_dequeue_cmd(pcmdpriv);
+		if (!pcmd) {
 			rtw_unregister_cmd_alive(padapter);
 			continue;
 		}
@@ -532,7 +533,8 @@ post_process:
 			mutex_unlock(&(pcmd->padapter->cmdpriv.sctx_mutex));
 		}
 
-		if ((cmd_process_time = jiffies_to_msecs(jiffies - cmd_start_time)) > 1000) {
+		cmd_process_time = jiffies_to_msecs(jiffies - cmd_start_time);
+		if (cmd_process_time > 1000) {
 			if (pcmd->cmdcode == GEN_CMD_CODE(_Set_Drv_Extra)) {
 				DBG_871X(ADPT_FMT" cmd =%d process_time =%lu > 1 sec\n",
 					ADPT_ARG(pcmd->padapter), pcmd->cmdcode, cmd_process_time);
@@ -1978,14 +1980,18 @@ static void c2h_wk_callback(_workitem *work)
 	evtpriv->c2h_wk_alive = true;
 
 	while (!rtw_cbuf_empty(evtpriv->c2h_queue)) {
-		if ((c2h_evt = (u8 *)rtw_cbuf_pop(evtpriv->c2h_queue)) != NULL) {
+		c2h_evt = (u8 *)rtw_cbuf_pop(evtpriv->c2h_queue);
+		if (c2h_evt != NULL) {
 			/* This C2H event is read, clear it */
 			c2h_evt_clear(adapter);
-		} else if ((c2h_evt = (u8 *)rtw_malloc(16)) != NULL) {
-			/* This C2H event is not read, read & clear now */
-			if (rtw_hal_c2h_evt_read(adapter, c2h_evt) != _SUCCESS) {
-				kfree(c2h_evt);
-				continue;
+		} else{
+			c2h_evt = (u8 *)rtw_malloc(16);
+			if (c2h_evt != NULL) {
+				/* This C2H event is not read, read & clear now */
+				if (rtw_hal_c2h_evt_read(adapter, c2h_evt) != _SUCCESS) {
+					kfree(c2h_evt);
+					continue;
+				}
 			}
 		}
 
