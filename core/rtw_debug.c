@@ -463,7 +463,7 @@ int proc_get_survey_info(struct seq_file *m, void *v)
 			break;
 
 		pnetwork = LIST_CONTAINOR(plist, struct wlan_network, list);
-                if (!pnetwork)
+		if (!pnetwork)
 			break;
 
 		if (check_fwstate(pmlmepriv, _FW_LINKED) == true &&
