@@ -173,7 +173,7 @@ u8 *rtw_get_ie(u8 *pbuf, sint index, sint *len, sint limit)
 	while (1) {
 		if (*p == index) {
 			*len = *(p + 1);
-			return (p);
+			return p;
 		} else{
 			tmp = *(p + 1);
 			p += (tmp + 2);
