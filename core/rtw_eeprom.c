@@ -188,36 +188,36 @@ _func_enter_;
 
 	shift_out_bits(padapter, EEPROM_EWEN_OPCODE, 5);
 
-	if (padapter->EepromAddressSize == 8)	//CF+ and SDIO
+	if (padapter->EepromAddressSize == 8)	/*CF+ and SDIO*/
 		shift_out_bits(padapter, 0, 6);
-	else									//USB
+	else									/*USB*/
 		shift_out_bits(padapter, 0, 4);
 
 	standby(padapter);
 
-// Commented out by rcnjko, 2004.0
-//	// Erase this particular word.  Write the erase opcode and register
-//	// number in that order. The opcode is 3bits in length; reg is 6 bits long.
-//	shift_out_bits(Adapter, EEPROM_ERASE_OPCODE, 3);
-//	shift_out_bits(Adapter, reg, Adapter->EepromAddressSize);
-//
-//	if (wait_eeprom_cmd_done(Adapter ) == false)
-//	{
-//		return;
-//	}
-
+/* Commented out by rcnjko, 2004.0
+*	 Erase this particular word.  Write the erase opcode and register
+*	 number in that order. The opcode is 3bits in length; reg is 6 bits long.
+*	shift_out_bits(Adapter, EEPROM_ERASE_OPCODE, 3);
+*	shift_out_bits(Adapter, reg, Adapter->EepromAddressSize);
+*
+*	if (wait_eeprom_cmd_done(Adapter ) == false)
+*	{
+*		return;
+*	}
+*/
 
 	standby(padapter);
 
-	// write the new word to the EEPROM
+	/* write the new word to the EEPROM*/
 
-	// send the write opcode the EEPORM
+	/* send the write opcode the EEPORM*/
 	shift_out_bits(padapter, EEPROM_WRITE_OPCODE, 3);
 
-	// select which word in the EEPROM that we are writing to.
+	/* select which word in the EEPROM that we are writing to.*/
 	shift_out_bits(padapter, reg, padapter->EepromAddressSize);
 
-	// write the data to the selected EEPROM word.
+	/* write the data to the selected EEPROM word.*/
 	shift_out_bits(padapter, data, 16);
 
 	if (wait_eeprom_cmd_done(padapter) == false) {
@@ -236,7 +236,7 @@ _func_exit_;
 	return;
 }
 
-u16 eeprom_read16(_adapter *padapter, u16 reg) //ReadEEprom
+u16 eeprom_read16(_adapter *padapter, u16 reg) /*ReadEEprom*/
 {
 
 	u16 x;
@@ -248,7 +248,7 @@ _func_enter_;
 		RT_TRACE(_module_rtl871x_eeprom_c_, _drv_err_, ("padapter->bSurpriseRemoved==true"));
 		goto out;
 	}
-	// select EEPROM, reset bits, set _EECS
+	/* select EEPROM, reset bits, set _EECS*/
 	x = rtw_read8(padapter, EE_9346CR);
 
 	if (padapter->bSurpriseRemoved == true) {
@@ -260,12 +260,12 @@ _func_enter_;
 	x |= _EEM1 | _EECS;
 	rtw_write8(padapter, EE_9346CR, (unsigned char)x);
 
-	// write the read opcode and register number in that order
-	// The opcode is 3bits in length, reg is 6 bits long
+	/* write the read opcode and register number in that order*/
+	/* The opcode is 3bits in length, reg is 6 bits long*/
 	shift_out_bits(padapter, EEPROM_READ_OPCODE, 3);
 	shift_out_bits(padapter, reg, padapter->EepromAddressSize);
 
-	// Now read the data (16 bits) in from the selected EEPROM word
+	/* Now read the data (16 bits) in from the selected EEPROM word*/
 	data = shift_in_bits(padapter);
 
 	eeprom_clean(padapter);
@@ -279,7 +279,7 @@ _func_exit_;
 
 
 
-//From even offset
+/*From even offset*/
 void eeprom_read_sz(_adapter *padapter, u16 reg, u8 *data, u32 sz)
 {
 
@@ -290,7 +290,7 @@ _func_enter_;
 		RT_TRACE(_module_rtl871x_eeprom_c_, _drv_err_, ("padapter->bSurpriseRemoved==true"));
 		goto out;
 	}
-	// select EEPROM, reset bits, set _EECS
+	/* select EEPROM, reset bits, set _EECS*/
 	x = rtw_read8(padapter, EE_9346CR);
 
 	if (padapter->bSurpriseRemoved == true) {
@@ -302,8 +302,8 @@ _func_enter_;
 	x |= _EEM1 | _EECS;
 	rtw_write8(padapter, EE_9346CR, (unsigned char)x);
 
-	// write the read opcode and register number in that order
-	// The opcode is 3bits in length, reg is 6 bits long
+	/* write the read opcode and register number in that order*/
+	/* The opcode is 3bits in length, reg is 6 bits long*/
 	shift_out_bits(padapter, EEPROM_READ_OPCODE, 3);
 	shift_out_bits(padapter, reg, padapter->EepromAddressSize);
 
@@ -323,7 +323,7 @@ _func_exit_;
 }
 
 
-//addr_off : address offset of the entry in eeprom (not the tuple number of eeprom (reg); that is addr_off !=reg)
+/*addr_off : address offset of the entry in eeprom (not the tuple number of eeprom (reg); that is addr_off !=reg)*/
 u8 eeprom_read(_adapter *padapter, u32 addr_off, u8 sz, u8 *rbuf)
 {
 	u8 quotient, remainder, addr_2align_odd;
@@ -335,7 +335,7 @@ _func_enter_;
 	/*read that start at high part: e.g  1,3,5,7,9,...*/
 	if (addr_2align_odd) {
 		stmp = eeprom_read16(padapter, reg);
-		rbuf[idx++] = (u8) ((stmp>>8)&0xff); //return hogh-part of the short
+		rbuf[idx++] = (u8) ((stmp>>8)&0xff); /*return hogh-part of the short*/
 		reg++; sz--;
 	}
 
@@ -349,7 +349,7 @@ _func_enter_;
 	}
 
 	reg = reg+i;
-	if (remainder) { //end of read at lower part of short : 0,2,4,6,...
+	if (remainder) { /*end of read at lower part of short : 0,2,4,6,...*/
 		stmp = eeprom_read16(padapter, reg);
 		rbuf[idx] = (u8)(stmp & 0xff);
 	}
