@@ -538,7 +538,7 @@ int rtw_parse_wpa_ie(u8 *wpa_ie, int wpa_ie_len, int *group_cipher, int *pairwis
 
 	/* pairwise_cipher */
 	if (left >= 2) {
-                /* count = le16_to_cpu(*(u16*)pos); */
+    /* count = le16_to_cpu(*(u16*)pos); */
 		count = RTW_GET_LE16(pos);
 		pos += 2;
 		left -= 2;
@@ -611,7 +611,7 @@ int rtw_parse_wpa2_ie(u8 *rsn_ie, int rsn_ie_len, int *group_cipher, int *pairwi
 
 	/* pairwise_cipher */
 	if (left >= 2) {
-	        /* count = le16_to_cpu(*(u16*)pos); */
+	  /* count = le16_to_cpu(*(u16*)pos); */
 		count = RTW_GET_LE16(pos);
 		pos += 2;
 		left -= 2;
@@ -1152,13 +1152,13 @@ static u8 key_char2num(u8 ch);
 static u8 key_char2num(u8 ch)
 {
     if ((ch >= '0') && (ch <= '9'))
-        return ch - '0';
+      return ch - '0';
     else if ((ch >= 'a') && (ch <= 'f'))
-        return ch - 'a' + 10;
+      return ch - 'a' + 10;
     else if ((ch >= 'A') && (ch <= 'F'))
-        return ch - 'A' + 10;
+      return ch - 'A' + 10;
     else
-	 return 0xff;
+      return 0xff;
 }
 
 u8 key_2char2num(u8 hch, u8 lch);
