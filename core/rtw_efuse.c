@@ -629,4 +629,4 @@ EFUSE_ShadowRead(
 	else if (Type == 4)
 		efuse_ShadowRead4Byte(padapter, Offset, (u32 *)Value);
 
-}	// EFUSE_ShadowRead
+}	/* EFUSE_ShadowRead*/
