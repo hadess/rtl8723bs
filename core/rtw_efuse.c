@@ -23,19 +23,19 @@
 /*------------------------Define local variable------------------------------*/
 u8 fakeEfuseBank = 0;
 u32 fakeEfuseUsedBytes = 0;
-u8 fakeEfuseContent[EFUSE_MAX_HW_SIZE]={0};
-u8 fakeEfuseInitMap[EFUSE_MAX_MAP_LEN]={0};
-u8 fakeEfuseModifiedMap[EFUSE_MAX_MAP_LEN]={0};
+u8 fakeEfuseContent[EFUSE_MAX_HW_SIZE] = {0};
+u8 fakeEfuseInitMap[EFUSE_MAX_MAP_LEN] = {0};
+u8 fakeEfuseModifiedMap[EFUSE_MAX_MAP_LEN] = {0};
 
 u32 BTEfuseUsedBytes = 0;
 u8 BTEfuseContent[EFUSE_MAX_BT_BANK][EFUSE_MAX_HW_SIZE];
-u8 BTEfuseInitMap[EFUSE_BT_MAX_MAP_LEN]={0};
-u8 BTEfuseModifiedMap[EFUSE_BT_MAX_MAP_LEN]={0};
+u8 BTEfuseInitMap[EFUSE_BT_MAX_MAP_LEN] = {0};
+u8 BTEfuseModifiedMap[EFUSE_BT_MAX_MAP_LEN] = {0};
 
 u32 fakeBTEfuseUsedBytes = 0;
 u8 fakeBTEfuseContent[EFUSE_MAX_BT_BANK][EFUSE_MAX_HW_SIZE];
-u8 fakeBTEfuseInitMap[EFUSE_BT_MAX_MAP_LEN]={0};
-u8 fakeBTEfuseModifiedMap[EFUSE_BT_MAX_MAP_LEN]={0};
+u8 fakeBTEfuseInitMap[EFUSE_BT_MAX_MAP_LEN] = {0};
+u8 fakeBTEfuseModifiedMap[EFUSE_BT_MAX_MAP_LEN] = {0};
 /*------------------------Define local variable------------------------------*/
 
 /*  */
@@ -47,12 +47,12 @@ bool
 Efuse_Read1ByteFromFakeContent(
 	struct adapter *padapter,
 	u16 	Offset,
-	u8 *Value	);
+	u8 *Value);
 bool
 Efuse_Read1ByteFromFakeContent(
 	struct adapter *padapter,
 	u16 	Offset,
-	u8 *Value	)
+	u8 *Value)
 {
 	if (Offset >= EFUSE_MAX_HW_SIZE) {
 		return false;
@@ -69,12 +69,12 @@ bool
 Efuse_Write1ByteToFakeContent(
 	struct adapter *padapter,
 	u16 	Offset,
-	u8 Value	);
+	u8 Value);
 bool
 Efuse_Write1ByteToFakeContent(
 	struct adapter *padapter,
 	u16 	Offset,
-	u8 Value	)
+	u8 Value)
 {
 	if (Offset >= EFUSE_MAX_HW_SIZE) {
 		return false;
@@ -234,7 +234,7 @@ u16 	Address)
 	u32 k = 0;
 	u16 contentLen = 0;
 
-	EFUSE_GetEfuseDefinition(Adapter, EFUSE_WIFI , TYPE_EFUSE_REAL_CONTENT_LEN, (void *)&contentLen, false);
+	EFUSE_GetEfuseDefinition(Adapter, EFUSE_WIFI, TYPE_EFUSE_REAL_CONTENT_LEN, (void *)&contentLen, false);
 
 	if (Address < contentLen) {/* E-fuse 512Byte */
 		/* Write E-fuse Register address bit0~7 */
@@ -260,13 +260,13 @@ u16 	Address)
 				break;
 			}
 		}
-		data =rtw_read8(Adapter, EFUSE_CTRL);
+		data = rtw_read8(Adapter, EFUSE_CTRL);
 		return data;
 	}
 	else
 		return 0xFF;
 
-}/* EFUSE_Read1Byte */
+} /* EFUSE_Read1Byte */
 
 /*  11/16/2008 MH Read one byte from real Efuse. */
 u8
@@ -291,12 +291,12 @@ bool		bPseudoTest)
 	/*  <20130121, Kordan> For SMIC EFUSE specificatoin. */
 	/* 0x34[11]: SW force PGMEN input of efuse to high. (for the bank selected by 0x34[9:8]) */
 	/* PHY_SetMacReg(padapter, 0x34, BIT11, 0); */
-	rtw_write16(padapter, 0x34, rtw_read16(padapter, 0x34)& (~BIT11));
+	rtw_write16(padapter, 0x34, rtw_read16(padapter, 0x34) & (~BIT11));
 
 	/*  -----------------e-fuse reg ctrl --------------------------------- */
 	/* address */
 	rtw_write8(padapter, EFUSE_CTRL+1, (u8)(addr&0xff));
-	rtw_write8(padapter, EFUSE_CTRL+2, ((u8)((addr>>8) &0x03)) |
+	rtw_write8(padapter, EFUSE_CTRL+2, ((u8)((addr>>8) & 0x03)) |
 	(rtw_read8(padapter, EFUSE_CTRL+2)&0xFC));
 
 	/* rtw_write8(padapter, EFUSE_CTRL+3,  0x72); read cmd */
@@ -304,12 +304,12 @@ bool		bPseudoTest)
 	readbyte = rtw_read8(padapter, EFUSE_CTRL+3);
 	rtw_write8(padapter, EFUSE_CTRL+3, (readbyte & 0x7f));
 
-	while (!(0x80 &rtw_read8(padapter, EFUSE_CTRL+3)) && (tmpidx<1000)) {
+	while (!(0x80 & rtw_read8(padapter, EFUSE_CTRL+3)) && (tmpidx < 1000)) {
 		mdelay(1);
 		tmpidx++;
 	}
 	if (tmpidx < 100) {
-		*data =rtw_read8(padapter, EFUSE_CTRL);
+		*data = rtw_read8(padapter, EFUSE_CTRL);
 		bResult = true;
 	} else{
 		*data = 0xff;
@@ -330,7 +330,7 @@ u8 	data,
 bool		bPseudoTest)
 {
 	u8 tmpidx = 0;
-	u8 bResult =false;
+	u8 bResult = false;
 	u32 efuseValue = 0;
 
 	/* DBG_871X("===> EFUSE_OneByteWrite(), addr = %x data =%x\n", addr, data); */
@@ -357,10 +357,10 @@ bool		bPseudoTest)
 	/*  <20130121, Kordan> For SMIC EFUSE specificatoin. */
 	/* 0x34[11]: SW force PGMEN input of efuse to high. (for the bank selected by 0x34[9:8]) */
 	/* PHY_SetMacReg(padapter, 0x34, BIT11, 1); */
-	rtw_write16(padapter, 0x34, rtw_read16(padapter, 0x34)| (BIT11));
+	rtw_write16(padapter, 0x34, rtw_read16(padapter, 0x34) | (BIT11));
 	rtw_write32(padapter, EFUSE_CTRL, 0x90600000|((addr<<8 | data)));
 
-	while ((0x80 &  rtw_read8(padapter, EFUSE_CTRL+3)) && (tmpidx<100)) {
+	while ((0x80 &  rtw_read8(padapter, EFUSE_CTRL+3)) && (tmpidx < 100)) {
 		mdelay(1);
 		tmpidx++;
 	}
@@ -596,7 +596,7 @@ void EFUSE_ShadowMapUpdate(
 
 	/* PlatformMoveMemory((void *)&pHalData->EfuseMap[EFUSE_MODIFY_MAP][0], */
 	/* void *)&pHalData->EfuseMap[EFUSE_INIT_MAP][0], mapLen); */
-}/*  EFUSE_ShadowMapUpdate */
+} /*  EFUSE_ShadowMapUpdate */
 
 
 /*-----------------------------------------------------------------------------
@@ -620,7 +620,7 @@ EFUSE_ShadowRead(
 	struct adapter *padapter,
 	u8 Type,
 	u16 	Offset,
-	u32 	*Value	)
+	u32 	*Value)
 {
 	if (Type == 1)
 		efuse_ShadowRead1Byte(padapter, Offset, (u8 *)Value);
