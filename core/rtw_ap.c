@@ -720,8 +720,8 @@ static void update_ap_info(struct adapter *padapter, struct sta_info *psta)
 
 static void update_hw_ht_param(struct adapter *padapter)
 {
-	unsigned char 	max_AMPDU_len;
-	unsigned char 	min_MPDU_spacing;
+	unsigned char max_AMPDU_len;
+	unsigned char min_MPDU_spacing;
 	struct mlme_ext_priv *pmlmeext = &padapter->mlmeextpriv;
 	struct mlme_ext_info *pmlmeinfo = &(pmlmeext->mlmext_info);
 
@@ -1408,7 +1408,7 @@ u8 rtw_ap_set_pairwise_key(struct adapter *padapter, struct sta_info *psta)
 {
 	struct cmd_obj *ph2c;
 	struct set_stakey_parm	*psetstakey_para;
-	struct cmd_priv 			*pcmdpriv = &padapter->cmdpriv;
+	struct cmd_priv *pcmdpriv = &padapter->cmdpriv;
 	u8 res = _SUCCESS;
 
 	ph2c = (struct cmd_obj *)rtw_zmalloc(sizeof(struct cmd_obj));
@@ -1663,7 +1663,7 @@ static void update_bcn_wps_ie(struct adapter *padapter)
 	if ((pmlmeinfo->state&0x03) == WIFI_FW_AP_STATE) {
 
 		u8 sr = 0;
-		
+
 		rtw_get_wps_attr_content(pwps_ie_src,  wps_ielen, WPS_ATTR_SELECTED_REGISTRAR, (u8 *)(&sr), NULL);
 
 		if (sr) {
@@ -1807,7 +1807,7 @@ static int rtw_ht_operation_update(struct adapter *padapter)
 		return 0;
 
 	/* if (!iface->conf->ieee80211n || iface->conf->ht_op_mode_fixed) */
-	/* 	return 0; */
+	/*  return 0; */
 
 	DBG_871X("%s current operation mode = 0x%X\n",
 		   __func__, pmlmepriv->ht_op_mode);
