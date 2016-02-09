@@ -463,6 +463,7 @@ int proc_get_survey_info(struct seq_file *m, void *v)
 			break;
 
 		pnetwork = LIST_CONTAINOR(plist, struct wlan_network, list);
+
 		if (!pnetwork)
 			break;
 
@@ -605,12 +606,15 @@ ssize_t proc_set_rate_ctl(struct file *file, const char __user *buffer, size_t c
 	return count;
 }
 
-u8 g_fwdl_chksum_fail = 0;
-u8 g_fwdl_wintint_rdy_fail = 0;
+u8 g_fwdl_chksum_fail;
+u8 g_fwdl_wintint_rdy_fail;
 
 ssize_t proc_set_fwdl_test_case(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
 {
 	char tmp[32];
+
+	g_fwdl_chksum_fail = 0;
+	g_fwdl_wintint_rdy_fail = 0;
 
 	if (count < 1)
 		return -EFAULT;
@@ -622,11 +626,13 @@ ssize_t proc_set_fwdl_test_case(struct file *file, const char __user *buffer, si
 	return count;
 }
 
-u32 g_wait_hiq_empty = 0;
+u32 g_wait_hiq_empty;
 
 ssize_t proc_set_wait_hiq_empty(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
 {
 	char tmp[32];
+
+	g_wait_hiq_empty = 0;
 
 	if (count < 1)
 		return -EFAULT;
