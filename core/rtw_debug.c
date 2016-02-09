@@ -1411,8 +1411,7 @@ ssize_t proc_set_btcoex_dbg(struct file *file, const char __user *buffer, size_t
 			memset(module, 0, sizeof(module));
 		else
 			memset(module, 0xFF, sizeof(module));
-	}
-	else if (2 != num) {
+	} else if (2 != num) {
 		DBG_871X(FUNC_ADPT_FMT ": input(\"%s\") format incorrect!\n",
 			FUNC_ADPT_ARG(padapter), tmp);
 
