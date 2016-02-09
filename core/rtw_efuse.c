@@ -262,8 +262,7 @@ u16 	Address)
 		}
 		data = rtw_read8(Adapter, EFUSE_CTRL);
 		return data;
-	}
-	else
+	} else
 		return 0xFF;
 
 } /* EFUSE_Read1Byte */
