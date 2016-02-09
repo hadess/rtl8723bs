@@ -497,7 +497,7 @@ u8 rtw_set_802_11_infrastructure_mode(struct adapter *padapter,
 
 u8 rtw_set_802_11_disassociate(struct adapter *padapter)
 {
-	struct mlme_priv * pmlmepriv = &padapter->mlmepriv;
+	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
 
 	spin_lock_bh(&pmlmepriv->lock);
 
@@ -594,7 +594,7 @@ u8 rtw_set_802_11_add_wep(struct adapter *padapter, struct ndis_802_11_wep *wep)
 	u8 bdefaultkey;
 	u8 btransmitkey;
 	sint		keyid, res;
-	struct security_priv* psecuritypriv = &(padapter->securitypriv);
+	struct security_priv *psecuritypriv = &(padapter->securitypriv);
 	u8 ret = _SUCCESS;
 
 	bdefaultkey = (wep->KeyIndex & 0x40000000) > 0 ? false : true;   /* for ??? */
