@@ -98,7 +98,8 @@ u8 rtw_do_join(struct adapter *padapter)
 		) {
 			RT_TRACE(_module_rtl871x_ioctl_set_c_, _drv_info_, ("rtw_do_join(): site survey if scanned_queue is empty\n."));
 			/*  submit site_survey_cmd */
-			if (_SUCCESS != (ret = rtw_sitesurvey_cmd(padapter, &pmlmepriv->assoc_ssid, 1, NULL, 0))) {
+			ret = rtw_sitesurvey_cmd(padapter, &pmlmepriv->assoc_ssid, 1, NULL, 0);
+			if (_SUCCESS != ret) {
 				pmlmepriv->to_join = false;
 				RT_TRACE(_module_rtl871x_ioctl_set_c_, _drv_err_, ("rtw_do_join(): site survey return error\n."));
 			}
@@ -111,7 +112,8 @@ u8 rtw_do_join(struct adapter *padapter)
 	} else{
 		int select_ret;
 		spin_unlock_bh(&(pmlmepriv->scanned_queue.lock));
-		if ((select_ret = rtw_select_and_join_from_scanned_queue(pmlmepriv)) == _SUCCESS) {
+		select_ret = rtw_select_and_join_from_scanned_queue(pmlmepriv);
+		if (select_ret == _SUCCESS) {
 			pmlmepriv->to_join = false;
 			_set_timer(&pmlmepriv->assoc_timer, MAX_JOIN_TIMEOUT);
 		} else{
@@ -152,7 +154,8 @@ u8 rtw_do_join(struct adapter *padapter)
 					|| rtw_to_roam(padapter) > 0
 				) {
 					/* DBG_871X("rtw_do_join() when   no desired bss in scanning queue\n"); */
-					if (_SUCCESS != (ret = rtw_sitesurvey_cmd(padapter, &pmlmepriv->assoc_ssid, 1, NULL, 0))) {
+					ret = rtw_sitesurvey_cmd(padapter, &pmlmepriv->assoc_ssid, 1, NULL, 0);
+					if (_SUCCESS != ret) {
 						pmlmepriv->to_join = false;
 						RT_TRACE(_module_rtl871x_ioctl_set_c_, _drv_err_, ("do_join(): site survey return error\n."));
 					}
