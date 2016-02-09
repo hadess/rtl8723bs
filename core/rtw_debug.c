@@ -163,18 +163,18 @@ ssize_t proc_set_write_reg(struct file *file, const char __user *buffer, size_t 
 		}
 
 		switch (len) {
-			case 1:
-				rtw_write8(padapter, addr, (u8)val);
-				break;
-			case 2:
-				rtw_write16(padapter, addr, (u16)val);
-				break;
-			case 4:
-				rtw_write32(padapter, addr, val);
-				break;
-			default:
-				DBG_871X("error write length =%d", len);
-				break;
+		case 1:
+			rtw_write8(padapter, addr, (u8)val);
+			break;
+		case 2:
+			rtw_write16(padapter, addr, (u16)val);
+			break;
+		case 4:
+			rtw_write32(padapter, addr, val);
+			break;
+		default:
+			DBG_871X("error write length =%d", len);
+			break;
 		}
 
 	}
@@ -197,18 +197,18 @@ int proc_get_read_reg(struct seq_file *m, void *v)
 	}
 
 	switch (proc_get_read_len) {
-		case 1:
-			DBG_871X_SEL_NL(m, "rtw_read8(0x%x) = 0x%x\n", proc_get_read_addr, rtw_read8(padapter, proc_get_read_addr));
-			break;
-		case 2:
-			DBG_871X_SEL_NL(m, "rtw_read16(0x%x) = 0x%x\n", proc_get_read_addr, rtw_read16(padapter, proc_get_read_addr));
-			break;
-		case 4:
-			DBG_871X_SEL_NL(m, "rtw_read32(0x%x) = 0x%x\n", proc_get_read_addr, rtw_read32(padapter, proc_get_read_addr));
-			break;
-		default:
-			DBG_871X_SEL_NL(m, "error read length =%d\n", proc_get_read_len);
-			break;
+	case 1:
+		DBG_871X_SEL_NL(m, "rtw_read8(0x%x) = 0x%x\n", proc_get_read_addr, rtw_read8(padapter, proc_get_read_addr));
+		break;
+	case 2:
+		DBG_871X_SEL_NL(m, "rtw_read16(0x%x) = 0x%x\n", proc_get_read_addr, rtw_read16(padapter, proc_get_read_addr));
+		break;
+	case 4:
+		DBG_871X_SEL_NL(m, "rtw_read32(0x%x) = 0x%x\n", proc_get_read_addr, rtw_read32(padapter, proc_get_read_addr));
+		break;
+	default:
+		DBG_871X_SEL_NL(m, "error read length =%d\n", proc_get_read_len);
+		break;
 	}
 
 	return 0;
