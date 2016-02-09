@@ -468,9 +468,9 @@ int proc_get_survey_info(struct seq_file *m, void *v)
 
 		if (check_fwstate(pmlmepriv, _FW_LINKED) == true &&
 			is_same_network(&pmlmepriv->cur_network.network, &pnetwork->network, 0)) {
-			notify_signal = translate_percentage_to_dbm(padapter->recvpriv.signal_strength);//dbm
+			notify_signal = translate_percentage_to_dbm(padapter->recvpriv.signal_strength);/*dbm*/
 		} else {
-			notify_signal = translate_percentage_to_dbm(pnetwork->network.PhyInfo.SignalStrength);//dbm
+			notify_signal = translate_percentage_to_dbm(pnetwork->network.PhyInfo.SignalStrength);/*dbm*/
 		}
 
 		#if defined(CONFIG_SIGNAL_DISPLAY_DBM) && defined(CONFIG_BACKGROUND_NOISE_MONITOR)
@@ -485,7 +485,7 @@ int proc_get_survey_info(struct seq_file *m, void *v)
 			notify_signal,
 			notify_noise,
 			jiffies_to_msecs(jiffies - pnetwork->last_scanned),
-			//translate_percentage_to_dbm(pnetwork->network.PhyInfo.SignalStrength),
+			/*translate_percentage_to_dbm(pnetwork->network.PhyInfo.SignalStrength),*/
 			pnetwork->network.Ssid.Ssid);
 		plist = get_next(plist);
 	}
@@ -937,7 +937,7 @@ int proc_get_int_logs(struct seq_file *m, void *v)
 	return 0;
 }
 
-#endif // CONFIG_DBG_COUNTER
+#endif /* CONFIG_DBG_COUNTER*/
 
 int proc_get_rx_signal(struct seq_file *m, void *v)
 {
@@ -945,7 +945,7 @@ int proc_get_rx_signal(struct seq_file *m, void *v)
 	struct adapter *padapter = (struct adapter *)rtw_netdev_priv(dev);
 
 	DBG_871X_SEL_NL(m, "rssi:%d\n", padapter->recvpriv.rssi);
-	//DBG_871X_SEL_NL(m, "rxpwdb:%d\n", padapter->recvpriv.rxpwdb);
+	/*DBG_871X_SEL_NL(m, "rxpwdb:%d\n", padapter->recvpriv.rxpwdb);*/
 	DBG_871X_SEL_NL(m, "signal_strength:%u\n", padapter->recvpriv.signal_strength);
 	DBG_871X_SEL_NL(m, "signal_qual:%u\n", padapter->recvpriv.signal_qual);
 	DBG_871X_SEL_NL(m, "noise:%d\n", padapter->recvpriv.noise);
@@ -1154,8 +1154,8 @@ ssize_t proc_set_rx_ampdu(struct file *file, const char __user *buffer, size_t c
 			pmlmeinfo->bAcceptAddbaReq = mode;
 			DBG_871X("pmlmeinfo->bAcceptAddbaReq =%d\n", pmlmeinfo->bAcceptAddbaReq);
 			if (mode == 0) {
-				//tear down Rx AMPDU
-				send_delba(padapter, 0, get_my_bssid(&(pmlmeinfo->network)));// recipient
+				/*tear down Rx AMPDU*/
+				send_delba(padapter, 0, get_my_bssid(&(pmlmeinfo->network)));/* recipient*/
 			}
 		}
 
@@ -1378,7 +1378,7 @@ ssize_t proc_set_btcoex_dbg(struct file *file, const char __user *buffer, size_t
 
 	padapter = (struct adapter *)rtw_netdev_priv(dev);
 
-//	DBG_871X("+" FUNC_ADPT_FMT "\n", FUNC_ADPT_ARG(padapter));
+/*	DBG_871X("+" FUNC_ADPT_FMT "\n", FUNC_ADPT_ARG(padapter));*/
 
 	if (NULL == buffer) {
 		DBG_871X(FUNC_ADPT_FMT ": input buffer is NULL!\n",
