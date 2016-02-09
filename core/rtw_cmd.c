@@ -236,7 +236,7 @@ void _rtw_free_evt_priv(struct	evt_priv *pevtpriv)
 
 	while (!rtw_cbuf_empty(pevtpriv->c2h_queue)) {
 		void *c2h = rtw_cbuf_pop(pevtpriv->c2h_queue);
-		if ( c2h != NULL && c2h != (void *)pevtpriv) {
+		if (c2h != NULL && c2h != (void *)pevtpriv) {
 			kfree(c2h);
 		}
 	}
