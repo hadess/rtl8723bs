@@ -52,8 +52,7 @@ _func_enter_;
 
 	x &= ~(_EEDO | _EEDI);
 
-	do
-	{
+	do {
 		x &= ~_EEDI;
 		if(data & mask)
 			x |= _EEDI;
@@ -90,8 +89,7 @@ _func_enter_;
 	x &= ~(_EEDO | _EEDI);
 	d = 0;
 
-	for(i=0; i<16; i++)
-	{
+	for(i = 0; i < 16; i++) {
 		d = d << 1;
 		up_clk(padapter, &x);
 	if(padapter->bSurpriseRemoved==true) {
@@ -134,8 +132,7 @@ u16 wait_eeprom_cmd_done(_adapter* padapter)
 	u16 i,res=false;
 _func_enter_;
 	standby(padapter );
-	for (i=0; i<200; i++)
-	{
+	for (i=0; i<200; i++) {
 		x = rtw_read8(padapter, EE_9346CR);
 		if (x & _EEDO) {
 			res=true;
@@ -223,8 +220,7 @@ _func_enter_;
 	// write the data to the selected EEPROM word.
 	shift_out_bits(padapter, data, 16);
 
-	if (wait_eeprom_cmd_done(padapter ) == false)
-	{
+	if (wait_eeprom_cmd_done(padapter ) == false) {
 
 		goto exit;
 	}
@@ -312,8 +308,7 @@ _func_enter_;
 	shift_out_bits(padapter, reg, padapter->EepromAddressSize);
 
 
-	for(i=0; i<sz; i+=2)
-	{
+	for(i = 0; i < sz; i += 2) {
 		data16 = shift_in_bits(padapter);
 		data[i] = data16 & 0xff;
 		data[i+1] = data16 >>8;
@@ -337,8 +332,8 @@ _func_enter_;
 	reg = (u16)(addr_off >> 1);
 	addr_2align_odd = (u8)(addr_off & 0x1);
 
-	if(addr_2align_odd) //read that start at high part: e.g  1,3,5,7,9,...
-	{
+	/*read that start at high part: e.g  1,3,5,7,9,...*/
+	if(addr_2align_odd) {
 		stmp = eeprom_read16(padapter, reg);
 		rbuf[idx++] = (u8) ((stmp>>8)&0xff); //return hogh-part of the short
 		reg++; sz--;
@@ -347,8 +342,7 @@ _func_enter_;
 	quotient = sz >> 1;
 	remainder = sz & 0x1;
 
-	for(i=0 ; i < quotient; i++)
-	{
+	for(i=0 ; i < quotient; i++) {
 		stmp = eeprom_read16(padapter, reg+i);
 		rbuf[idx++] = (u8) (stmp&0xff);
 		rbuf[idx++] = (u8) ((stmp>>8)&0xff);
