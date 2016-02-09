@@ -112,10 +112,9 @@ static void update_BCNTIM(struct adapter *padapter)
 
 			/*  get supported rates len */
 			p = rtw_get_ie(pie + _BEACON_IE_OFFSET_, _SUPPORTEDRATES_IE_, &tmp_len, (pnetwork_mlmeext->IELength - _BEACON_IE_OFFSET_));
-			if (p !=  NULL) {
-
+			if (p !=  NULL)
 				offset += tmp_len+2;
-			}
+
 
 			/* DS Parameter Set IE, len =3 */
 			offset += 3;
@@ -320,9 +319,9 @@ void expire_timeout_chk(struct adapter *padapter)
 				int stainfo_offset;
 
 				stainfo_offset = rtw_stainfo_offset(pstapriv, psta);
-				if (stainfo_offset_valid(stainfo_offset)) {
+				if (stainfo_offset_valid(stainfo_offset))
 					chk_alive_list[chk_alive_num++] = stainfo_offset;
-				}
+
 
 				continue;
 			}
@@ -591,28 +590,20 @@ void update_sta_info_apmode(struct adapter *padapter, struct sta_info *psta)
 		phtpriv_sta->rx_ampdu_min_spacing = (phtpriv_sta->ht_cap.ampdu_params_info&IEEE80211_HT_CAP_AMPDU_DENSITY)>>2;
 
 		/*  bwmode */
-		if ((phtpriv_sta->ht_cap.cap_info & phtpriv_ap->ht_cap.cap_info) & cpu_to_le16(IEEE80211_HT_CAP_SUP_WIDTH)) {
-
+		if ((phtpriv_sta->ht_cap.cap_info & phtpriv_ap->ht_cap.cap_info) & cpu_to_le16(IEEE80211_HT_CAP_SUP_WIDTH))
 			psta->bw_mode = CHANNEL_WIDTH_40;
-		} else{
-
-
+		else
 			psta->bw_mode = CHANNEL_WIDTH_20;
-		}
 
-		if (pmlmeext->cur_bwmode < psta->bw_mode) {
-
+		if (pmlmeext->cur_bwmode < psta->bw_mode)
 			psta->bw_mode = pmlmeext->cur_bwmode;
-		}
 
 		phtpriv_sta->ch_offset = pmlmeext->cur_ch_offset;
 
 
 		/* check if sta support s Short GI 20M */
-		if ((phtpriv_sta->ht_cap.cap_info & phtpriv_ap->ht_cap.cap_info) & cpu_to_le16(IEEE80211_HT_CAP_SGI_20)) {
-
+		if ((phtpriv_sta->ht_cap.cap_info & phtpriv_ap->ht_cap.cap_info) & cpu_to_le16(IEEE80211_HT_CAP_SGI_20))
 			phtpriv_sta->sgi_20m = true;
-		}
 
 		/* check if sta support s Short GI 40M */
 		if ((phtpriv_sta->ht_cap.cap_info & phtpriv_ap->ht_cap.cap_info) & cpu_to_le16(IEEE80211_HT_CAP_SGI_40)) {
@@ -700,15 +691,13 @@ static void update_ap_info(struct adapter *padapter, struct sta_info *psta)
 		/* phtpriv_ap->ampdu_enable = phtpriv_ap->ampdu_enable; */
 
 		/* check if sta support s Short GI 20M */
-		if ((phtpriv_ap->ht_cap.cap_info) & cpu_to_le16(IEEE80211_HT_CAP_SGI_20)) {
-
+		if ((phtpriv_ap->ht_cap.cap_info) & cpu_to_le16(IEEE80211_HT_CAP_SGI_20))
 			phtpriv_ap->sgi_20m = true;
-		}
-		/* check if sta support s Short GI 40M */
-		if ((phtpriv_ap->ht_cap.cap_info) & cpu_to_le16(IEEE80211_HT_CAP_SGI_40)) {
 
+		/* check if sta support s Short GI 40M */
+		if ((phtpriv_ap->ht_cap.cap_info) & cpu_to_le16(IEEE80211_HT_CAP_SGI_40))
 			phtpriv_ap->sgi_40m = true;
-		}
+
 
 		psta->qos_option = true;
 	} else{
@@ -794,10 +783,9 @@ void start_bss_network(struct adapter *padapter, u8 *pbuf)
 	/* check if there is wps ie, */
 	/* if there is wpsie in beacon, the hostapd will update beacon twice when stating hostapd, */
 	/* and at first time the security ie (RSN/WPA IE) will not include in beacon. */
-	if (NULL == rtw_get_wps_ie(pnetwork->IEs+_FIXED_IE_LENGTH_, pnetwork->IELength-_FIXED_IE_LENGTH_, NULL, NULL)) {
-
+	if (NULL == rtw_get_wps_ie(pnetwork->IEs+_FIXED_IE_LENGTH_, pnetwork->IELength-_FIXED_IE_LENGTH_, NULL, NULL))
 		pmlmeext->bstart_bss = true;
-	}
+
 
 	/* todo: update wmm, ht cap */
 	/* pmlmeinfo->WMM_enable; */
@@ -933,10 +921,9 @@ void start_bss_network(struct adapter *padapter, u8 *pbuf)
 
 #ifndef CONFIG_INTERRUPT_BASED_TXBCN /* other case will  tx beacon when bcn interrupt coming in. */
 		/* issue beacon frame */
-		if (send_beacon(padapter) == _FAIL) {
-
+		if (send_beacon(padapter) == _FAIL)
 			DBG_871X("issue_beacon, fail!\n");
-		}
+
 #endif /* CONFIG_INTERRUPT_BASED_TXBCN */
 
 	}
@@ -1057,10 +1044,8 @@ int rtw_check_beacon_data(struct adapter *padapter, u8 *pbuf,  int len)
 
 	/* parsing ERP_IE */
 	p = rtw_get_ie(ie + _BEACON_IE_OFFSET_, _ERPINFO_IE_, &ie_len, (pbss_network->IELength - _BEACON_IE_OFFSET_));
-	if (p && ie_len > 0) {
-
+	if (p && ie_len > 0)
 		ERP_IE_handler(padapter, (struct ndis_80211_var_ie *)p);
-	}
 
 	/* update privacy/security */
 	if (cap & BIT(4))
@@ -1116,10 +1101,9 @@ int rtw_check_beacon_data(struct adapter *padapter, u8 *pbuf,  int len)
 
 		}
 
-		if ((p == NULL) || (ie_len == 0)) {
-
+		if ((p == NULL) || (ie_len == 0))
 				break;
-		}
+
 
 	}
 
@@ -1146,10 +1130,9 @@ int rtw_check_beacon_data(struct adapter *padapter, u8 *pbuf,  int len)
 				break;
 			}
 
-			if ((p == NULL) || (ie_len == 0)) {
-
+			if ((p == NULL) || (ie_len == 0))
 				break;
-			}
+
 		}
 	}
 
@@ -1174,20 +1157,17 @@ int rtw_check_beacon_data(struct adapter *padapter, u8 *pbuf,  int len)
 		if (pmlmepriv->htpriv.sgi_40m == false)
 			pht_cap->cap_info &= cpu_to_le16(~(IEEE80211_HT_CAP_SGI_40));
 
-		if (!TEST_FLAG(pmlmepriv->htpriv.ldpc_cap, LDPC_HT_ENABLE_RX)) {
-
+		if (!TEST_FLAG(pmlmepriv->htpriv.ldpc_cap, LDPC_HT_ENABLE_RX))
 			pht_cap->cap_info &= cpu_to_le16(~(IEEE80211_HT_CAP_LDPC_CODING));
-		}
 
-		if (!TEST_FLAG(pmlmepriv->htpriv.stbc_cap, STBC_HT_ENABLE_TX)) {
 
+		if (!TEST_FLAG(pmlmepriv->htpriv.stbc_cap, STBC_HT_ENABLE_TX))
 			pht_cap->cap_info &= cpu_to_le16(~(IEEE80211_HT_CAP_TX_STBC));
-		}
 
-		if (!TEST_FLAG(pmlmepriv->htpriv.stbc_cap, STBC_HT_ENABLE_RX)) {
 
+		if (!TEST_FLAG(pmlmepriv->htpriv.stbc_cap, STBC_HT_ENABLE_RX))
 			pht_cap->cap_info &= cpu_to_le16(~(IEEE80211_HT_CAP_RX_STBC_3R));
-		}
+
 
 		pht_cap->ampdu_params_info &= ~(IEEE80211_HT_CAP_AMPDU_FACTOR|IEEE80211_HT_CAP_AMPDU_DENSITY);
 
@@ -1217,10 +1197,9 @@ int rtw_check_beacon_data(struct adapter *padapter, u8 *pbuf,  int len)
 
 	/* parsing HT_INFO_IE */
 	p = rtw_get_ie(ie + _BEACON_IE_OFFSET_, _HT_ADD_INFO_IE_, &ie_len, (pbss_network->IELength - _BEACON_IE_OFFSET_));
-	if (p && ie_len > 0) {
-
+	if (p && ie_len > 0)
 		pHT_info_ie = p;
-	}
+
 
 	switch (network_type) {
 
@@ -1258,10 +1237,9 @@ int rtw_check_beacon_data(struct adapter *padapter, u8 *pbuf,  int len)
 		pmlmepriv->htpriv.ht_option = true;
 		pmlmepriv->qospriv.qos_option = 1;
 
-		if (pregistrypriv->ampdu_enable == 1) {
-
+		if (pregistrypriv->ampdu_enable == 1)
 			pmlmepriv->htpriv.ampdu_enable = true;
-		}
+
 
 		HT_caps_handler(padapter, (struct ndis_80211_var_ie *)pHT_caps_ie);
 
@@ -1280,10 +1258,9 @@ int rtw_check_beacon_data(struct adapter *padapter, u8 *pbuf,  int len)
 	if (!psta) {
 
 		psta = rtw_alloc_stainfo(&padapter->stapriv, pbss_network->MacAddress);
-		if (psta == NULL) {
-
+		if (psta == NULL)
 			return _FAIL;
-		}
+
 	}
 
 	/*  update AP's sta info */
@@ -1705,26 +1682,21 @@ static void update_bcn_vendor_spec_ie(struct adapter *padapter, u8 *oui)
 {
 	DBG_871X("%s\n", __func__);
 
-	if (!memcmp(RTW_WPA_OUI, oui, 4)) {
-
+	if (!memcmp(RTW_WPA_OUI, oui, 4))
 		update_bcn_wpa_ie(padapter);
-	} else if (!memcmp(WMM_OUI, oui, 4)) {
 
-
+	else if (!memcmp(WMM_OUI, oui, 4))
 		update_bcn_wmm_ie(padapter);
-	} else if (!memcmp(WPS_OUI, oui, 4)) {
 
-
+	else if (!memcmp(WPS_OUI, oui, 4))
 		update_bcn_wps_ie(padapter);
-	} else if (!memcmp(P2P_OUI, oui, 4)) {
 
-
+	else if (!memcmp(P2P_OUI, oui, 4))
 		update_bcn_p2p_ie(padapter);
-	} else{
 
-
+	else
 		DBG_871X("unknown OUI type!\n");
-	}
+
 
 
 }
@@ -2344,9 +2316,9 @@ void rtw_ap_restore_network(struct adapter *padapter)
 		plist = get_next(plist);
 
 		stainfo_offset = rtw_stainfo_offset(pstapriv, psta);
-		if (stainfo_offset_valid(stainfo_offset)) {
+		if (stainfo_offset_valid(stainfo_offset))
 			chk_alive_list[chk_alive_num++] = stainfo_offset;
-		}
+
 	}
 
 	spin_unlock_bh(&pstapriv->asoc_list_lock);
