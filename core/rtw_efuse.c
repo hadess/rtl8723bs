@@ -132,7 +132,7 @@ u8 PwrState)
  *---------------------------------------------------------------------------*/
 u16
 Efuse_GetCurrentSize(
-	struct adapter *	padapter,
+	struct adapter *padapter,
 	u8 	efuseType,
 	bool		bPseudoTest)
 {
