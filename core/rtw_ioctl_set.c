@@ -231,8 +231,7 @@ handle_tkip_countermeasure:
 
 	if (check_fwstate(pmlmepriv, _FW_UNDER_SURVEY) == true) {
 		pmlmepriv->to_join = true;
-	}
-	else {
+	} else {
 		status = rtw_do_join(padapter);
 	}
 
@@ -337,8 +336,7 @@ handle_tkip_countermeasure:
 
 	if (check_fwstate(pmlmepriv, _FW_UNDER_SURVEY) == true) {
 		pmlmepriv->to_join = true;
-	}
-	else {
+	} else {
 		status = rtw_do_join(padapter);
 	}
 
@@ -410,8 +408,7 @@ handle_tkip_countermeasure:
 
 	if (check_fwstate(pmlmepriv, _FW_UNDER_SURVEY) == true) {
 		pmlmepriv->to_join = true;
-	}
-	else {
+	} else {
 		status = rtw_do_join(padapter);
 	}
 
