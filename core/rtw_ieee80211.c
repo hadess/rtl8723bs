@@ -327,28 +327,28 @@ int rtw_generate_ie(struct registry_priv *pregistrypriv)
 {
 	u8 wireless_mode;
 	int	sz = 0, rateLen;
-	struct wlan_bssid_ex*pdev_network = &pregistrypriv->dev_network;
-	u8*ie = pdev_network->IEs;
+	struct wlan_bssid_ex *pdev_network = &pregistrypriv->dev_network;
+	u8 *ie = pdev_network->IEs;
 
 	/* timestamp will be inserted by hardware */
 	sz += 8;
 	ie += sz;
 
 	/* beacon interval : 2bytes */
-	*(__le16*)ie = cpu_to_le16((u16)pdev_network->Configuration.BeaconPeriod);/* BCN_INTERVAL; */
+	*(__le16 *)ie = cpu_to_le16((u16)pdev_network->Configuration.BeaconPeriod);/* BCN_INTERVAL; */
 	sz += 2;
 	ie += 2;
 
 	/* capability info */
-	*(u16*)ie = 0;
+	*(u16 *)ie = 0;
 
-	*(__le16*)ie |= cpu_to_le16(cap_IBSS);
+	*(__le16 *)ie |= cpu_to_le16(cap_IBSS);
 
 	if (pregistrypriv->preamble == PREAMBLE_SHORT)
-		*(__le16*)ie |= cpu_to_le16(cap_ShortPremble);
+		*(__le16 *)ie |= cpu_to_le16(cap_ShortPremble);
 
 	if (pdev_network->Privacy)
-		*(__le16*)ie |= cpu_to_le16(cap_Privacy);
+		*(__le16 *)ie |= cpu_to_le16(cap_Privacy);
 
 	sz += 2;
 	ie += 2;
@@ -831,7 +831,7 @@ u8 *rtw_get_wps_ie(u8 *in_ie, uint in_len, u8 *wps_ie, uint *wps_ielen)
 u8 *rtw_get_wps_attr(u8 *wps_ie, uint wps_ielen, u16 target_attr_id, u8 *buf_attr, u32 *len_attr)
 {
 	u8 *attr_ptr = NULL;
-	u8 * target_attr_ptr = NULL;
+	u8 *target_attr_ptr = NULL;
 	u8 wps_oui[4] = {0x00, 0x50, 0xF2, 0x04};
 
 	if (len_attr)
@@ -1302,7 +1302,7 @@ void rtw_get_bcn_info(struct wlan_network *pnetwork)
 }
 
 /* show MCS rate, unit: 100Kbps */
-u16 rtw_mcs_rate(u8 rf_type, u8 bw_40MHz, u8 short_GI, unsigned char * MCS_rate)
+u16 rtw_mcs_rate(u8 rf_type, u8 bw_40MHz, u8 short_GI, unsigned char *MCS_rate)
 {
 	u16 max_rate = 0;
 
