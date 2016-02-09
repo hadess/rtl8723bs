@@ -830,18 +830,18 @@ u8 rtw_joinbss_cmd(struct adapter  *padapter, struct wlan_network *pnetwork)
 	/* for hidden ap to set fw_state here */
 	if (check_fwstate(pmlmepriv, WIFI_STATION_STATE|WIFI_ADHOC_STATE) != true) {
 		switch (ndis_network_mode) {
-			case Ndis802_11IBSS:
-				set_fwstate(pmlmepriv, WIFI_ADHOC_STATE);
-				break;
+		case Ndis802_11IBSS:
+			set_fwstate(pmlmepriv, WIFI_ADHOC_STATE);
+			break;
 
-			case Ndis802_11Infrastructure:
-				set_fwstate(pmlmepriv, WIFI_STATION_STATE);
-				break;
+		case Ndis802_11Infrastructure:
+			set_fwstate(pmlmepriv, WIFI_STATION_STATE);
+			break;
 
-			case Ndis802_11APMode:
-			case Ndis802_11AutoUnknown:
-			case Ndis802_11InfrastructureMax:
-				break;
+		case Ndis802_11APMode:
+		case Ndis802_11AutoUnknown:
+		case Ndis802_11InfrastructureMax:
+			break;
 
 		}
 	}
@@ -1516,48 +1516,48 @@ void lps_ctrl_wk_hdl(struct adapter *padapter, u8 lps_ctrl_type)
 	}
 
 	switch (lps_ctrl_type) {
-		case LPS_CTRL_SCAN:
-			/* DBG_871X("LPS_CTRL_SCAN\n"); */
-			rtw_btcoex_ScanNotify(padapter, true);
+	case LPS_CTRL_SCAN:
+		/* DBG_871X("LPS_CTRL_SCAN\n"); */
+		rtw_btcoex_ScanNotify(padapter, true);
 
-			if (check_fwstate(pmlmepriv, _FW_LINKED) == true) {
-				/*  connect */
-				LPS_Leave(padapter, "LPS_CTRL_SCAN");
-			}
-			break;
-		case LPS_CTRL_JOINBSS:
-			/* DBG_871X("LPS_CTRL_JOINBSS\n"); */
-			LPS_Leave(padapter, "LPS_CTRL_JOINBSS");
-			break;
-		case LPS_CTRL_CONNECT:
-			/* DBG_871X("LPS_CTRL_CONNECT\n"); */
-			mstatus = 1;/* connect */
-			/*  Reset LPS Setting */
-			pwrpriv->LpsIdleCount = 0;
-			rtw_hal_set_hwreg(padapter, HW_VAR_H2C_FW_JOINBSSRPT, (u8 *)(&mstatus));
-			rtw_btcoex_MediaStatusNotify(padapter, mstatus);
-			break;
-		case LPS_CTRL_DISCONNECT:
-			/* DBG_871X("LPS_CTRL_DISCONNECT\n"); */
-			mstatus = 0;/* disconnect */
-			rtw_btcoex_MediaStatusNotify(padapter, mstatus);
-			LPS_Leave(padapter, "LPS_CTRL_DISCONNECT");
-			rtw_hal_set_hwreg(padapter, HW_VAR_H2C_FW_JOINBSSRPT, (u8 *)(&mstatus));
-			break;
-		case LPS_CTRL_SPECIAL_PACKET:
-			/* DBG_871X("LPS_CTRL_SPECIAL_PACKET\n"); */
-			pwrpriv->DelayLPSLastTimeStamp = jiffies;
-			rtw_btcoex_SpecialPacketNotify(padapter, PACKET_DHCP);
-			LPS_Leave(padapter, "LPS_CTRL_SPECIAL_PACKET");
-			break;
-		case LPS_CTRL_LEAVE:
-			/* DBG_871X("LPS_CTRL_LEAVE\n"); */
-			LPS_Leave(padapter, "LPS_CTRL_LEAVE");
-			break;
-		case LPS_CTRL_TRAFFIC_BUSY:
-			LPS_Leave(padapter, "LPS_CTRL_TRAFFIC_BUSY");
-		default:
-			break;
+		if (check_fwstate(pmlmepriv, _FW_LINKED) == true) {
+			/*  connect */
+			LPS_Leave(padapter, "LPS_CTRL_SCAN");
+		}
+		break;
+	case LPS_CTRL_JOINBSS:
+		/* DBG_871X("LPS_CTRL_JOINBSS\n"); */
+		LPS_Leave(padapter, "LPS_CTRL_JOINBSS");
+		break;
+	case LPS_CTRL_CONNECT:
+		/* DBG_871X("LPS_CTRL_CONNECT\n"); */
+		mstatus = 1;/* connect */
+		/*  Reset LPS Setting */
+		pwrpriv->LpsIdleCount = 0;
+		rtw_hal_set_hwreg(padapter, HW_VAR_H2C_FW_JOINBSSRPT, (u8 *)(&mstatus));
+		rtw_btcoex_MediaStatusNotify(padapter, mstatus);
+		break;
+	case LPS_CTRL_DISCONNECT:
+		/* DBG_871X("LPS_CTRL_DISCONNECT\n"); */
+		mstatus = 0;/* disconnect */
+		rtw_btcoex_MediaStatusNotify(padapter, mstatus);
+		LPS_Leave(padapter, "LPS_CTRL_DISCONNECT");
+		rtw_hal_set_hwreg(padapter, HW_VAR_H2C_FW_JOINBSSRPT, (u8 *)(&mstatus));
+		break;
+	case LPS_CTRL_SPECIAL_PACKET:
+		/* DBG_871X("LPS_CTRL_SPECIAL_PACKET\n"); */
+		pwrpriv->DelayLPSLastTimeStamp = jiffies;
+		rtw_btcoex_SpecialPacketNotify(padapter, PACKET_DHCP);
+		LPS_Leave(padapter, "LPS_CTRL_SPECIAL_PACKET");
+		break;
+	case LPS_CTRL_LEAVE:
+		/* DBG_871X("LPS_CTRL_LEAVE\n"); */
+		LPS_Leave(padapter, "LPS_CTRL_LEAVE");
+		break;
+	case LPS_CTRL_TRAFFIC_BUSY:
+		LPS_Leave(padapter, "LPS_CTRL_TRAFFIC_BUSY");
+	default:
+		break;
 	}
 }
 
@@ -2027,47 +2027,47 @@ u8 rtw_drvextra_cmd_hdl(struct adapter *padapter, unsigned char *pbuf)
 	pdrvextra_cmd = (struct drvextra_cmd_parm *)pbuf;
 
 	switch (pdrvextra_cmd->ec_id) {
-		case DYNAMIC_CHK_WK_CID:/* only  primary padapter go to this cmd, but execute dynamic_chk_wk_hdl() for two interfaces */
-			dynamic_chk_wk_hdl(padapter);
-			break;
-		case POWER_SAVING_CTRL_WK_CID:
-			power_saving_wk_hdl(padapter);
-			break;
-		case LPS_CTRL_WK_CID:
-			lps_ctrl_wk_hdl(padapter, (u8)pdrvextra_cmd->type);
-			break;
-		case DM_IN_LPS_WK_CID:
-			rtw_dm_in_lps_hdl(padapter);
-			break;
-		case LPS_CHANGE_DTIM_CID:
-			rtw_lps_change_dtim_hdl(padapter, (u8)pdrvextra_cmd->type);
-			break;
-		case CHECK_HIQ_WK_CID:
-			rtw_chk_hi_queue_hdl(padapter);
-			break;
+	case DYNAMIC_CHK_WK_CID:/* only  primary padapter go to this cmd, but execute dynamic_chk_wk_hdl() for two interfaces */
+		dynamic_chk_wk_hdl(padapter);
+		break;
+	case POWER_SAVING_CTRL_WK_CID:
+		power_saving_wk_hdl(padapter);
+		break;
+	case LPS_CTRL_WK_CID:
+		lps_ctrl_wk_hdl(padapter, (u8)pdrvextra_cmd->type);
+		break;
+	case DM_IN_LPS_WK_CID:
+		rtw_dm_in_lps_hdl(padapter);
+		break;
+	case LPS_CHANGE_DTIM_CID:
+		rtw_lps_change_dtim_hdl(padapter, (u8)pdrvextra_cmd->type);
+		break;
+	case CHECK_HIQ_WK_CID:
+		rtw_chk_hi_queue_hdl(padapter);
+		break;
 #ifdef CONFIG_INTEL_WIDI
-		case INTEl_WIDI_WK_CID:
-			intel_widi_wk_hdl(padapter, pdrvextra_cmd->type, pdrvextra_cmd->pbuf);
-			break;
+	case INTEl_WIDI_WK_CID:
+		intel_widi_wk_hdl(padapter, pdrvextra_cmd->type, pdrvextra_cmd->pbuf);
+		break;
 #endif /* CONFIG_INTEL_WIDI */
-		/* add for CONFIG_IEEE80211W, none 11w can use it */
-		case RESET_SECURITYPRIV:
-			reset_securitypriv_hdl(padapter);
-			break;
-		case FREE_ASSOC_RESOURCES:
-			free_assoc_resources_hdl(padapter);
-			break;
-		case C2H_WK_CID:
-			rtw_hal_set_hwreg_with_buf(padapter, HW_VAR_C2H_HANDLE, pdrvextra_cmd->pbuf, pdrvextra_cmd->size);
-			break;
-		case DM_RA_MSK_WK_CID:
-			rtw_dm_ra_mask_hdl(padapter, (struct sta_info *)pdrvextra_cmd->pbuf);
-			break;
-		case BTINFO_WK_CID:
-			rtw_btinfo_hdl(padapter, pdrvextra_cmd->pbuf, pdrvextra_cmd->size);
-			break;
-		default:
-			break;
+	/* add for CONFIG_IEEE80211W, none 11w can use it */
+	case RESET_SECURITYPRIV:
+		reset_securitypriv_hdl(padapter);
+		break;
+	case FREE_ASSOC_RESOURCES:
+		free_assoc_resources_hdl(padapter);
+		break;
+	case C2H_WK_CID:
+		rtw_hal_set_hwreg_with_buf(padapter, HW_VAR_C2H_HANDLE, pdrvextra_cmd->pbuf, pdrvextra_cmd->size);
+		break;
+	case DM_RA_MSK_WK_CID:
+		rtw_dm_ra_mask_hdl(padapter, (struct sta_info *)pdrvextra_cmd->pbuf);
+		break;
+	case BTINFO_WK_CID:
+		rtw_btinfo_hdl(padapter, pdrvextra_cmd->pbuf, pdrvextra_cmd->size);
+		break;
+	default:
+		break;
 	}
 
 	if (pdrvextra_cmd->pbuf && pdrvextra_cmd->size > 0) {
