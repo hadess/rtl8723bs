@@ -433,8 +433,7 @@ static u8 init_channel_set(struct adapter *padapter, u8 ChannelPlan, RT_CHANNEL_
 					channel_set[chanset_size].ScanType = SCAN_ACTIVE;
 				else if ((channel_set[chanset_size].ChannelNum  >= 12 && channel_set[chanset_size].ChannelNum  <= 14))
 					channel_set[chanset_size].ScanType  = SCAN_PASSIVE;
-			}
-			else if (RT_CHANNEL_DOMAIN_WORLD_WIDE_13 == ChannelPlan ||
+			} else if (RT_CHANNEL_DOMAIN_WORLD_WIDE_13 == ChannelPlan ||
 				RT_CHANNEL_DOMAIN_WORLD_WIDE_5G == ChannelPlan ||
 				RT_CHANNEL_DOMAIN_2G_WORLD == Index2G) { /*  channel 12~13, passive scan */
 				if (channel_set[chanset_size].ChannelNum <= 11)
@@ -1511,8 +1510,7 @@ unsigned int OnAssocReq(struct adapter *padapter, union recv_frame *precv_frame)
 
 					break;
 				}
-			}
-			else {
+			} else {
 				break;
 			}
 			p = p + ie_len + 2;
@@ -4464,12 +4462,10 @@ u8 collect_bss_info(struct adapter *padapter, union recv_frame *precv_frame, str
 		if (subtype == WIFI_PROBERSP) {
 			ie_offset = _PROBERSP_IE_OFFSET_;
 			bssid->Reserved[0] = 3;
-		}
-		else if (subtype == WIFI_PROBEREQ) {
+		} else if (subtype == WIFI_PROBEREQ) {
 			ie_offset = _PROBEREQ_IE_OFFSET_;
 			bssid->Reserved[0] = 2;
-		}
-		else {
+		} else {
 			bssid->Reserved[0] = 0;
 			ie_offset = _FIXED_IE_LENGTH_;
 		}
@@ -4500,8 +4496,7 @@ u8 collect_bss_info(struct adapter *padapter, union recv_frame *precv_frame, str
 		}
 		memcpy(bssid->Ssid.Ssid, (p + 2), *(p + 1));
 		bssid->Ssid.SsidLength = *(p + 1);
-	}
-	else
+	} else
 		bssid->Ssid.SsidLength = 0;
 
 	memset(bssid->SupportedRates, 0, NDIS_802_11_LENGTH_RATES_EX);
@@ -5887,8 +5882,7 @@ void link_timer_hdl(struct adapter *padapter)
 		DBG_871X("link_timer_hdl:no beacon while connecting\n");
 		pmlmeinfo->state = WIFI_FW_NULL_STATE;
 		report_join_res(padapter, -3);
-	}
-	else if (pmlmeinfo->state & WIFI_FW_AUTH_STATE) {
+	} else if (pmlmeinfo->state & WIFI_FW_AUTH_STATE) {
 		/* re-auth timer */
 		if (++pmlmeinfo->reauth_count > REAUTH_LIMIT) {
 			/* if (pmlmeinfo->auth_algo != dot11AuthAlgrthm_Auto) */
