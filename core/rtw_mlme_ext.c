@@ -3321,13 +3321,15 @@ void issue_assocreq(struct adapter *padapter)
 	/*  */
 
 	for (i = 0; i < NDIS_802_11_LENGTH_RATES_EX; i++) {
-		if (pmlmeinfo->network.SupportedRates[i] == 0) break;
+		if (pmlmeinfo->network.SupportedRates[i] == 0)
+			break;
 		DBG_871X("network.SupportedRates[%d]=%02X\n", i, pmlmeinfo->network.SupportedRates[i]);
 	}
 
 
 	for (i = 0; i < NDIS_802_11_LENGTH_RATES_EX; i++) {
-		if (pmlmeinfo->network.SupportedRates[i] == 0) break;
+		if (pmlmeinfo->network.SupportedRates[i] == 0)
+			break;
 
 
 		/*  Check if the AP's supported rates are also supported by STA. */
@@ -4811,8 +4813,10 @@ static void process_80211d(struct adapter *padapter, struct wlan_bssid_ex *bssid
 		u8 j, k;
 
 		ie = rtw_get_ie(bssid->IEs + _FIXED_IE_LENGTH_, _COUNTRY_IE_, &len, bssid->IELength - _FIXED_IE_LENGTH_);
-		if (!ie) return;
-		if (len < 6) return;
+		if (!ie)
+			return;
+		if (len < 6)
+			return;
 
 		ie += 2;
 		p = ie;
@@ -4831,8 +4835,10 @@ static void process_80211d(struct adapter *padapter, struct wlan_bssid_ex *bssid
 			p++;
 
 			for (j = 0; j < noc; j++) {
-				if (fcn <= 14) channel = fcn + j; /*  2.4 GHz */
-				else channel = fcn + j*4; /*  5 GHz */
+				if (fcn <= 14)
+					channel = fcn + j; /*  2.4 GHz */
+				else
+					channel = fcn + j*4; /*  5 GHz */
 
 				chplan_ap.Channel[i++] = channel;
 			}
@@ -5795,7 +5801,8 @@ void linked_status_chk(struct adapter *padapter)
 			if (pmlmeinfo->FW_sta_info[i].status == 1) {
 				psta = pmlmeinfo->FW_sta_info[i].psta;
 
-				if (NULL == psta) continue;
+				if (NULL == psta)
+					continue;
 
 				if (pmlmeinfo->FW_sta_info[i].rx_pkt == sta_rx_pkts(psta)) {
 
