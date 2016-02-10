@@ -1717,24 +1717,24 @@ unsigned int OnAssocRsp(struct adapter *padapter, union recv_frame *precv_frame)
 		pIE = (struct ndis_80211_var_ie *)(pframe + i);
 
 		switch (pIE->ElementID) {
-			case _VENDOR_SPECIFIC_IE_:
-				if (!memcmp(pIE->data, WMM_PARA_OUI, 6))	/* WMM */
-					WMM_param_handler(padapter, pIE);
-				break;
+		case _VENDOR_SPECIFIC_IE_:
+			if (!memcmp(pIE->data, WMM_PARA_OUI, 6))	/* WMM */
+				WMM_param_handler(padapter, pIE);
+			break;
 
-			case _HT_CAPABILITY_IE_:	/* HT caps */
-				HT_caps_handler(padapter, pIE);
-				break;
+		case _HT_CAPABILITY_IE_:	/* HT caps */
+			HT_caps_handler(padapter, pIE);
+			break;
 
-			case _HT_EXTRA_INFO_IE_:	/* HT info */
-				HT_info_handler(padapter, pIE);
-				break;
+		case _HT_EXTRA_INFO_IE_:	/* HT info */
+			HT_info_handler(padapter, pIE);
+			break;
 
-			case _ERPINFO_IE_:
-				ERP_IE_handler(padapter, pIE);
+		case _ERPINFO_IE_:
+			ERP_IE_handler(padapter, pIE);
 
-			default:
-				break;
+		default:
+			break;
 		}
 
 		i += (pIE->Length + 2);
@@ -1971,68 +1971,68 @@ unsigned int OnAction_back(struct adapter *padapter, union recv_frame *precv_fra
 		action = frame_body[1];
 		DBG_871X("%s, action =%d\n", __func__, action);
 		switch (action) {
-			case RTW_WLAN_ACTION_ADDBA_REQ: /* ADDBA request */
+		case RTW_WLAN_ACTION_ADDBA_REQ: /* ADDBA request */
 
-				memcpy(&(pmlmeinfo->ADDBA_req), &(frame_body[2]), sizeof(struct ADDBA_request));
-				/* process_addba_req(padapter, (u8 *)&(pmlmeinfo->ADDBA_req), GetAddr3Ptr(pframe)); */
-				process_addba_req(padapter, (u8 *)&(pmlmeinfo->ADDBA_req), addr);
+			memcpy(&(pmlmeinfo->ADDBA_req), &(frame_body[2]), sizeof(struct ADDBA_request));
+			/* process_addba_req(padapter, (u8 *)&(pmlmeinfo->ADDBA_req), GetAddr3Ptr(pframe)); */
+			process_addba_req(padapter, (u8 *)&(pmlmeinfo->ADDBA_req), addr);
 
-				if (pmlmeinfo->bAcceptAddbaReq == true) {
-					issue_action_BA(padapter, addr, RTW_WLAN_ACTION_ADDBA_RESP, 0);
-				} else{
-					issue_action_BA(padapter, addr, RTW_WLAN_ACTION_ADDBA_RESP, 37);/* reject ADDBA Req */
-				}
+			if (pmlmeinfo->bAcceptAddbaReq == true) {
+				issue_action_BA(padapter, addr, RTW_WLAN_ACTION_ADDBA_RESP, 0);
+			} else{
+				issue_action_BA(padapter, addr, RTW_WLAN_ACTION_ADDBA_RESP, 37);/* reject ADDBA Req */
+			}
 
-				break;
+			break;
 
-			case RTW_WLAN_ACTION_ADDBA_RESP: /* ADDBA response */
-				status = RTW_GET_LE16(&frame_body[3]);
-				tid = ((frame_body[5] >> 2) & 0x7);
+		case RTW_WLAN_ACTION_ADDBA_RESP: /* ADDBA response */
+			status = RTW_GET_LE16(&frame_body[3]);
+			tid = ((frame_body[5] >> 2) & 0x7);
 
-				if (status == 0) {
-					/* successful */
-					DBG_871X("agg_enable for TID =%d\n", tid);
-					psta->htpriv.agg_enable_bitmap |= 1 << tid;
-					psta->htpriv.candidate_tid_bitmap &= ~BIT(tid);
-				} else{
-					psta->htpriv.agg_enable_bitmap &= ~BIT(tid);
-				}
+			if (status == 0) {
+				/* successful */
+				DBG_871X("agg_enable for TID =%d\n", tid);
+				psta->htpriv.agg_enable_bitmap |= 1 << tid;
+				psta->htpriv.candidate_tid_bitmap &= ~BIT(tid);
+			} else{
+				psta->htpriv.agg_enable_bitmap &= ~BIT(tid);
+			}
 
-				if (psta->state & WIFI_STA_ALIVE_CHK_STATE) {
-					DBG_871X("%s alive check - rx ADDBA response\n", __func__);
-					psta->htpriv.agg_enable_bitmap &= ~BIT(tid);
-					psta->expire_to = pstapriv->expire_to;
-					psta->state ^= WIFI_STA_ALIVE_CHK_STATE;
-				}
+			if (psta->state & WIFI_STA_ALIVE_CHK_STATE) {
+				DBG_871X("%s alive check - rx ADDBA response\n", __func__);
+				psta->htpriv.agg_enable_bitmap &= ~BIT(tid);
+				psta->expire_to = pstapriv->expire_to;
+				psta->state ^= WIFI_STA_ALIVE_CHK_STATE;
+			}
 
-				/* DBG_871X("marc: ADDBA RSP: %x\n", pmlmeinfo->agg_enable_bitmap); */
-				break;
+			/* DBG_871X("marc: ADDBA RSP: %x\n", pmlmeinfo->agg_enable_bitmap); */
+			break;
 
-			case RTW_WLAN_ACTION_DELBA: /* DELBA */
-				if ((frame_body[3] & BIT(3)) == 0) {
-					psta->htpriv.agg_enable_bitmap &= ~(1 << ((frame_body[3] >> 4) & 0xf));
-					psta->htpriv.candidate_tid_bitmap &= ~(1 << ((frame_body[3] >> 4) & 0xf));
+		case RTW_WLAN_ACTION_DELBA: /* DELBA */
+			if ((frame_body[3] & BIT(3)) == 0) {
+				psta->htpriv.agg_enable_bitmap &= ~(1 << ((frame_body[3] >> 4) & 0xf));
+				psta->htpriv.candidate_tid_bitmap &= ~(1 << ((frame_body[3] >> 4) & 0xf));
 
-					/* reason_code = frame_body[4] | (frame_body[5] << 8); */
-					reason_code = RTW_GET_LE16(&frame_body[4]);
-				} else if ((frame_body[3] & BIT(3)) == BIT(3)) {
-					tid = (frame_body[3] >> 4) & 0x0F;
+				/* reason_code = frame_body[4] | (frame_body[5] << 8); */
+				reason_code = RTW_GET_LE16(&frame_body[4]);
+			} else if ((frame_body[3] & BIT(3)) == BIT(3)) {
+				tid = (frame_body[3] >> 4) & 0x0F;
 
-					preorder_ctrl =  &psta->recvreorder_ctrl[tid];
-					preorder_ctrl->enable = false;
-					preorder_ctrl->indicate_seq = 0xffff;
-					#ifdef DBG_RX_SEQ
-					DBG_871X("DBG_RX_SEQ %s:%d indicate_seq:%u\n", __func__, __LINE__,
-						preorder_ctrl->indicate_seq);
-					#endif
-				}
+				preorder_ctrl =  &psta->recvreorder_ctrl[tid];
+				preorder_ctrl->enable = false;
+				preorder_ctrl->indicate_seq = 0xffff;
+				#ifdef DBG_RX_SEQ
+				DBG_871X("DBG_RX_SEQ %s:%d indicate_seq:%u\n", __func__, __LINE__,
+					preorder_ctrl->indicate_seq);
+				#endif
+			}
 
-				DBG_871X("%s(): DELBA: %x(%x)\n", __func__, pmlmeinfo->agg_enable_bitmap, reason_code);
-				/* todo: how to notify the host while receiving DELETE BA */
-				break;
+			DBG_871X("%s(): DELBA: %x(%x)\n", __func__, pmlmeinfo->agg_enable_bitmap, reason_code);
+			/* todo: how to notify the host while receiving DELETE BA */
+			break;
 
-			default:
-				break;
+		default:
+			break;
 		}
 	}
 	return _SUCCESS;
@@ -2192,18 +2192,18 @@ unsigned int OnAction_sa_query(struct adapter *padapter, union recv_frame *precv
 	DBG_871X("OnAction_sa_query\n");
 
 	switch (pframe[WLAN_HDR_A3_LEN+1]) {
-		case 0: /* SA Query req */
-			memcpy(&tid, &pframe[WLAN_HDR_A3_LEN+2], sizeof(unsigned short));
-			DBG_871X("OnAction_sa_query request, action =%d, tid =%04x\n", pframe[WLAN_HDR_A3_LEN+1], tid);
-			issue_action_SA_Query(padapter, GetAddr2Ptr(pframe), 1, tid);
-			break;
+	case 0: /* SA Query req */
+		memcpy(&tid, &pframe[WLAN_HDR_A3_LEN+2], sizeof(unsigned short));
+		DBG_871X("OnAction_sa_query request, action =%d, tid =%04x\n", pframe[WLAN_HDR_A3_LEN+1], tid);
+		issue_action_SA_Query(padapter, GetAddr2Ptr(pframe), 1, tid);
+		break;
 
-		case 1: /* SA Query rsp */
-			del_timer_sync(&pmlmeext->sa_query_timer);
-			DBG_871X("OnAction_sa_query response, action =%d, tid =%04x, cancel timer\n", pframe[WLAN_HDR_A3_LEN+1], pframe[WLAN_HDR_A3_LEN+2]);
-			break;
-		default:
-			break;
+	case 1: /* SA Query rsp */
+		del_timer_sync(&pmlmeext->sa_query_timer);
+		DBG_871X("OnAction_sa_query response, action =%d, tid =%04x, cancel timer\n", pframe[WLAN_HDR_A3_LEN+1], pframe[WLAN_HDR_A3_LEN+2]);
+		break;
+	default:
+		break;
 	}
 	if (0) {
 		int pp;
@@ -2432,25 +2432,25 @@ static int update_hidden_ssid(u8 *ies, u32 ies_len, u8 hidden_ssid_mode)
 
 	if (ssid_ie && ssid_len_ori > 0) {
 		switch (hidden_ssid_mode) {
-			case 1:
-			{
-				u8 *next_ie = ssid_ie + 2 + ssid_len_ori;
-				u32 remain_len = 0;
+		case 1:
+		{
+			u8 *next_ie = ssid_ie + 2 + ssid_len_ori;
+			u32 remain_len = 0;
 
-				remain_len = ies_len - (next_ie-ies);
+			remain_len = ies_len - (next_ie-ies);
 
-				ssid_ie[1] = 0;
-				memcpy(ssid_ie+2, next_ie, remain_len);
-				len_diff -= ssid_len_ori;
+			ssid_ie[1] = 0;
+			memcpy(ssid_ie+2, next_ie, remain_len);
+			len_diff -= ssid_len_ori;
 
-				break;
-			}
-			case 2:
-				memset(&ssid_ie[2], 0, ssid_len_ori);
-				break;
-			default:
-				break;
+			break;
 		}
+		case 2:
+			memset(&ssid_ie[2], 0, ssid_len_ori);
+			break;
+		default:
+			break;
+	}
 	}
 
 	return len_diff;
@@ -3372,41 +3372,41 @@ void issue_assocreq(struct adapter *padapter)
 		pIE = (struct ndis_80211_var_ie *)(pmlmeinfo->network.IEs + i);
 
 		switch (pIE->ElementID) {
-			case _VENDOR_SPECIFIC_IE_:
-				if ((!memcmp(pIE->data, RTW_WPA_OUI, 4)) ||
-						(!memcmp(pIE->data, WMM_OUI, 4)) ||
-						(!memcmp(pIE->data, WPS_OUI, 4))) {
-					vs_ie_length = pIE->Length;
-					if ((!padapter->registrypriv.wifi_spec) && (!memcmp(pIE->data, WPS_OUI, 4))) {
-						/* Commented by Kurt 20110629 */
-						/* In some older APs, WPS handshake */
-						/* would be fail if we append vender extensions informations to AP */
+		case _VENDOR_SPECIFIC_IE_:
+			if ((!memcmp(pIE->data, RTW_WPA_OUI, 4)) ||
+					(!memcmp(pIE->data, WMM_OUI, 4)) ||
+					(!memcmp(pIE->data, WPS_OUI, 4))) {
+				vs_ie_length = pIE->Length;
+				if ((!padapter->registrypriv.wifi_spec) && (!memcmp(pIE->data, WPS_OUI, 4))) {
+					/* Commented by Kurt 20110629 */
+					/* In some older APs, WPS handshake */
+					/* would be fail if we append vender extensions informations to AP */
 
-						vs_ie_length = 14;
-					}
-
-					pframe = rtw_set_ie(pframe, _VENDOR_SPECIFIC_IE_, vs_ie_length, pIE->data, &(pattrib->pktlen));
+					vs_ie_length = 14;
 				}
-				break;
 
-			case EID_WPA2:
-				pframe = rtw_set_ie(pframe, EID_WPA2, pIE->Length, pIE->data, &(pattrib->pktlen));
-				break;
-			case EID_HTCapability:
-				if (padapter->mlmepriv.htpriv.ht_option == true) {
-					if (!(is_ap_in_tkip(padapter))) {
-						memcpy(&(pmlmeinfo->HT_caps), pIE->data, sizeof(struct HT_caps_element));
-						pframe = rtw_set_ie(pframe, EID_HTCapability, pIE->Length, (u8 *)(&(pmlmeinfo->HT_caps)), &(pattrib->pktlen));
-					}
+				pframe = rtw_set_ie(pframe, _VENDOR_SPECIFIC_IE_, vs_ie_length, pIE->data, &(pattrib->pktlen));
+			}
+			break;
+
+		case EID_WPA2:
+			pframe = rtw_set_ie(pframe, EID_WPA2, pIE->Length, pIE->data, &(pattrib->pktlen));
+			break;
+		case EID_HTCapability:
+			if (padapter->mlmepriv.htpriv.ht_option == true) {
+				if (!(is_ap_in_tkip(padapter))) {
+					memcpy(&(pmlmeinfo->HT_caps), pIE->data, sizeof(struct HT_caps_element));
+					pframe = rtw_set_ie(pframe, EID_HTCapability, pIE->Length, (u8 *)(&(pmlmeinfo->HT_caps)), &(pattrib->pktlen));
 				}
-				break;
+			}
+			break;
 
-			case EID_EXTCapability:
-				if (padapter->mlmepriv.htpriv.ht_option == true)
-					pframe = rtw_set_ie(pframe, EID_EXTCapability, pIE->Length, pIE->data, &(pattrib->pktlen));
-				break;
-			default:
-				break;
+		case EID_EXTCapability:
+			if (padapter->mlmepriv.htpriv.ht_option == true)
+				pframe = rtw_set_ie(pframe, EID_EXTCapability, pIE->Length, pIE->data, &(pattrib->pktlen));
+			break;
+		default:
+			break;
 		}
 
 		i += (pIE->Length + 2);
