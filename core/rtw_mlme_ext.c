@@ -1847,7 +1847,7 @@ unsigned int OnDisassoc(struct adapter *padapter, union recv_frame *precv_frame)
 
 	reason = le16_to_cpu(*(__le16 *)(pframe + WLAN_HDR_A3_LEN));
 
-        DBG_871X("%s Reason code(%d)\n", __func__, reason);
+  DBG_871X("%s Reason code(%d)\n", __func__, reason);
 
 	if (check_fwstate(pmlmepriv, WIFI_AP_STATE) == true) {
 		struct sta_info *psta;
@@ -4522,7 +4522,7 @@ u8 collect_bss_info(struct adapter *padapter, union recv_frame *precv_frame, str
 		memcpy(bssid->SupportedRates + i, (p + 2), len);
 	}
 
-        bssid->NetworkTypeInUse = Ndis802_11OFDM24;
+  bssid->NetworkTypeInUse = Ndis802_11OFDM24;
 
 	if (bssid->IELength < 12)
 		return _FAIL;
