@@ -941,7 +941,8 @@ void rtw_surveydone_event_callback(struct adapter	*adapter, u8 *pbuf)
 			int s_ret;
 			set_fwstate(pmlmepriv, _FW_UNDER_LINKING);
 			pmlmepriv->to_join = false;
-			if (_SUCCESS == (s_ret =rtw_select_and_join_from_scanned_queue(pmlmepriv))) {
+			s_ret = rtw_select_and_join_from_scanned_queue(pmlmepriv);
+			if (_SUCCESS == s_ret) {
 			     _set_timer(&pmlmepriv->assoc_timer, MAX_JOIN_TIMEOUT);
 			} else if (s_ret == 2) {/* there is no need to wait for join */
 				_clr_fwstate_(pmlmepriv, _FW_UNDER_LINKING);
@@ -1837,7 +1838,8 @@ void _rtw_join_timeout_handler (struct adapter *adapter)
 			if (rtw_to_roam(adapter) != 0) { /* try another */
 				int do_join_r;
 				DBG_871X("%s try another roaming\n", __func__);
-				if (_SUCCESS!=(do_join_r =rtw_do_join(adapter))) {
+				do_join_r = rtw_do_join(adapter);
+				if (_SUCCESS != do_join_r) {
 					DBG_871X("%s roaming do_join return %d\n", __func__ , do_join_r);
 					continue;
 				}
@@ -3117,7 +3119,8 @@ void _rtw_roaming(struct adapter *padapter, struct wlan_network *tgt_network)
 		pmlmepriv->assoc_by_bssid = false;
 
 		while (1) {
-			if (_SUCCESS ==(do_join_r =rtw_do_join(padapter))) {
+			do_join_r =rtw_do_join(padapter);
+			if (_SUCCESS == do_join_r) {
 				break;
 			} else {
 				DBG_871X("roaming do_join return %d\n", do_join_r);
