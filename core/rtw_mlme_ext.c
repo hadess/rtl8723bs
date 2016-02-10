@@ -850,7 +850,8 @@ unsigned int OnBeacon(struct adapter *padapter, union recv_frame *precv_frame)
 		}
 
 		if (((pmlmeinfo->state&0x03) == WIFI_FW_STATION_STATE) && (pmlmeinfo->state & WIFI_FW_ASSOC_SUCCESS)) {
-			if ((psta = rtw_get_stainfo(pstapriv, GetAddr2Ptr(pframe))) != NULL) {
+			psta = rtw_get_stainfo(pstapriv, GetAddr2Ptr(pframe));
+			if (psta != NULL) {
 				ret = rtw_check_bcn_info(padapter, pframe, len);
 				if (!ret) {
 						DBG_871X_LEVEL(_drv_always_, "ap has changed, disconnect now\n ");
@@ -866,7 +867,8 @@ unsigned int OnBeacon(struct adapter *padapter, union recv_frame *precv_frame)
 				adaptive_early_32k(pmlmeext, pframe, len);
 			}
 		} else if ((pmlmeinfo->state&0x03) == WIFI_FW_ADHOC_STATE) {
-			if ((psta = rtw_get_stainfo(pstapriv, GetAddr2Ptr(pframe))) != NULL) {
+			psta = rtw_get_stainfo(pstapriv, GetAddr2Ptr(pframe));
+			if (psta != NULL) {
 				/* update WMM, ERP in the beacon */
 				/* todo: the timer is used instead of the number of the beacon received */
 				if ((sta_rx_pkts(psta) & 0xf) == 0) {
@@ -875,9 +877,9 @@ unsigned int OnBeacon(struct adapter *padapter, union recv_frame *precv_frame)
 				}
 			} else{
 				/* allocate a new CAM entry for IBSS station */
-				if ((cam_idx = allocate_fw_sta_entry(padapter)) == NUM_STA) {
+				cam_idx = allocate_fw_sta_entry(padapter);
+				if (cam_idx == NUM_STA)
 					goto _END_ONBEACON_;
-				}
 
 				/* get supported rate */
 				if (update_sta_support_rate(padapter, (pframe + WLAN_HDR_A3_LEN + _BEACON_IE_OFFSET_), (len - WLAN_HDR_A3_LEN - _BEACON_IE_OFFSET_), cam_idx) == _FAIL) {
@@ -1693,7 +1695,8 @@ unsigned int OnAssocRsp(struct adapter *padapter, union recv_frame *precv_frame)
 	del_timer_sync(&pmlmeext->link_timer);
 
 	/* status */
-	if ((status = le16_to_cpu(*(__le16 *)(pframe + WLAN_HDR_A3_LEN + 2))) > 0) {
+	status = le16_to_cpu(*(__le16 *)(pframe + WLAN_HDR_A3_LEN + 2));
+	if (status > 0) {
 		DBG_871X("assoc reject, status code: %d\n", status);
 		pmlmeinfo->state = WIFI_FW_NULL_STATE;
 		res = -4;
@@ -2261,7 +2264,8 @@ static struct xmit_frame *_alloc_mgtxmitframe(struct xmit_priv *pxmitpriv, bool 
 		goto exit;
 	}
 
-	if ((pxmitbuf = rtw_alloc_xmitbuf_ext(pxmitpriv)) == NULL) {
+	pxmitbuf = rtw_alloc_xmitbuf_ext(pxmitpriv);
+	if (pxmitbuf == NULL) {
 		DBG_871X(FUNC_ADPT_FMT" alloc xmitbuf fail\n", FUNC_ADPT_ARG(pxmitpriv->adapter));
 		rtw_free_xmitframe(pxmitpriv, pmgntframe);
 		pmgntframe = NULL;
@@ -2471,7 +2475,8 @@ void issue_beacon(struct adapter *padapter, int timeout_ms)
 
 	/* DBG_871X("%s\n", __func__); */
 
-	if ((pmgntframe = alloc_mgtxmitframe(pxmitpriv)) == NULL) {
+	pmgntframe = alloc_mgtxmitframe(pxmitpriv);
+	if (pmgntframe == NULL) {
 		DBG_871X("%s, alloc mgnt frame fail\n", __func__);
 		return;
 	}
@@ -2632,7 +2637,8 @@ void issue_probersp(struct adapter *padapter, unsigned char *da, u8 is_valid_p2p
 	if (da == NULL)
 		return;
 
-	if ((pmgntframe = alloc_mgtxmitframe(pxmitpriv)) == NULL) {
+	pmgntframe = alloc_mgtxmitframe(pxmitpriv);
+	if (pmgntframe == NULL) {
 		DBG_871X("%s, alloc mgnt frame fail\n", __func__);
 		return;
 	}
@@ -2848,9 +2854,9 @@ static int _issue_probereq(struct adapter *padapter, struct ndis_802_11_ssid *ps
 
 	RT_TRACE(_module_rtl871x_mlme_c_, _drv_notice_, ("+issue_probereq\n"));
 
-	if ((pmgntframe = alloc_mgtxmitframe(pxmitpriv)) == NULL) {
+	pmgntframe = alloc_mgtxmitframe(pxmitpriv);
+	if (pmgntframe == NULL)
 		goto exit;
-	}
 
 	/* update attribute */
 	pattrib = &pmgntframe->attrib;
@@ -2988,7 +2994,8 @@ void issue_auth(struct adapter *padapter, struct sta_info *psta, unsigned short 
 	struct mlme_ext_info *pmlmeinfo = &(pmlmeext->mlmext_info);
 	__le16 le_tmp;
 
-	if ((pmgntframe = alloc_mgtxmitframe(pxmitpriv)) == NULL)
+	pmgntframe = alloc_mgtxmitframe(pxmitpriv);
+	if (pmgntframe == NULL)
 		return;
 
 	/* update attribute */
@@ -3125,7 +3132,8 @@ void issue_asocrsp(struct adapter *padapter, unsigned short status, struct sta_i
 
 	DBG_871X("%s\n", __func__);
 
-	if ((pmgntframe = alloc_mgtxmitframe(pxmitpriv)) == NULL)
+	pmgntframe = alloc_mgtxmitframe(pxmitpriv);
+	if (pmgntframe == NULL)
 		return;
 
 	/* update attribute */
@@ -3257,7 +3265,8 @@ void issue_assocreq(struct adapter *padapter)
 	int	bssrate_len = 0, sta_bssrate_len = 0;
 	u8 vs_ie_length = 0;
 
-	if ((pmgntframe = alloc_mgtxmitframe(pxmitpriv)) == NULL)
+	pmgntframe = alloc_mgtxmitframe(pxmitpriv);
+	if (pmgntframe == NULL)
 		goto exit;
 
 	/* update attribute */
@@ -3445,7 +3454,8 @@ static int _issue_nulldata(struct adapter *padapter, unsigned char *da, unsigned
 	pmlmeext = &(padapter->mlmeextpriv);
 	pmlmeinfo = &(pmlmeext->mlmext_info);
 
-	if ((pmgntframe = alloc_mgtxmitframe(pxmitpriv)) == NULL)
+	pmgntframe = alloc_mgtxmitframe(pxmitpriv);
+	if (pmgntframe == NULL)
 		goto exit;
 
 	/* update attribute */
@@ -3599,7 +3609,8 @@ static int _issue_qos_nulldata(struct adapter *padapter, unsigned char *da, u16 
 
 	DBG_871X("%s\n", __func__);
 
-	if ((pmgntframe = alloc_mgtxmitframe(pxmitpriv)) == NULL)
+	pmgntframe = alloc_mgtxmitframe(pxmitpriv);
+	if (pmgntframe == NULL)
 		goto exit;
 
 	/* update attribute */
@@ -3722,7 +3733,8 @@ static int _issue_deauth(struct adapter *padapter, unsigned char *da, unsigned s
 
 	/* DBG_871X("%s to "MAC_FMT"\n", __func__, MAC_ARG(da)); */
 
-	if ((pmgntframe = alloc_mgtxmitframe(pxmitpriv)) == NULL) {
+	pmgntframe = alloc_mgtxmitframe(pxmitpriv);
+	if (pmgntframe == NULL) {
 		goto exit;
 	}
 
@@ -3828,7 +3840,8 @@ void issue_action_SA_Query(struct adapter *padapter, unsigned char *raddr, unsig
 
 	DBG_871X("%s\n", __func__);
 
-	if ((pmgntframe = alloc_mgtxmitframe(pxmitpriv)) == NULL) {
+	pmgntframe = alloc_mgtxmitframe(pxmitpriv);
+	if (pmgntframe == NULL) {
 		DBG_871X("%s: alloc_mgtxmitframe fail\n", __func__);
 		return;
 	}
@@ -3907,7 +3920,8 @@ void issue_action_BA(struct adapter *padapter, unsigned char *raddr, unsigned ch
 
 	DBG_871X("%s, category =%d, action =%d, status =%d\n", __func__, category, action, status);
 
-	if ((pmgntframe = alloc_mgtxmitframe(pxmitpriv)) == NULL)
+	pmgntframe = alloc_mgtxmitframe(pxmitpriv);
+	if (pmgntframe == NULL)
 		return;
 
 	/* update attribute */
@@ -3965,7 +3979,8 @@ void issue_action_BA(struct adapter *padapter, unsigned char *raddr, unsigned ch
 			pframe = rtw_set_fixed_ie(pframe, 2, (unsigned char *)(&(le_tmp)), &(pattrib->pktlen));
 
 			/* if ((psta = rtw_get_stainfo(pstapriv, pmlmeinfo->network.MacAddress)) != NULL) */
-			if ((psta = rtw_get_stainfo(pstapriv, raddr)) != NULL) {
+			psta = rtw_get_stainfo(pstapriv, raddr);
+			if (psta != NULL) {
 				start_seq = (psta->sta_xmitpriv.txseq_tid[status & 0x07]&0xfff) + 1;
 
 				DBG_871X("BA_starting_seqctrl = %d for TID =%d\n", start_seq, status & 0x07);
@@ -4067,7 +4082,8 @@ static void issue_action_BSSCoexistPacket(struct adapter *padapter)
 	category = RTW_WLAN_CATEGORY_PUBLIC;
 	action = ACT_PUBLIC_BSSCOEXIST;
 
-	if ((pmgntframe = alloc_mgtxmitframe(pxmitpriv)) == NULL) {
+	pmgntframe = alloc_mgtxmitframe(pxmitpriv);
+	if (pmgntframe == NULL) {
 		return;
 	}
 
@@ -4471,7 +4487,8 @@ u8 collect_bss_info(struct adapter *padapter, union recv_frame *precv_frame, str
 	bssid->PhyInfo.SignalStrength = precv_frame->u.hdr.attrib.phy_info.SignalStrength;/* in percentage */
 
 	/*  checking SSID */
-	if ((p = rtw_get_ie(bssid->IEs + ie_offset, _SSID_IE_, &len, bssid->IELength - ie_offset)) == NULL) {
+	p = rtw_get_ie(bssid->IEs + ie_offset, _SSID_IE_, &len, bssid->IELength - ie_offset);
+	if (p == NULL) {
 		DBG_871X("marc: cannot find SSID for survey event\n");
 		return _FAIL;
 	}
@@ -5032,12 +5049,13 @@ void report_survey_event(struct adapter *padapter, union recv_frame *precv_frame
 	pmlmeext = &padapter->mlmeextpriv;
 	pcmdpriv = &padapter->cmdpriv;
 
-
-	if ((pcmd_obj = (struct cmd_obj *)rtw_zmalloc(sizeof(struct cmd_obj))) == NULL)
+	pcmd_obj = (struct cmd_obj *)rtw_zmalloc(sizeof(struct cmd_obj));
+	if (pcmd_obj == NULL)
 		return;
 
 	cmdsz = (sizeof(struct survey_event) + sizeof(struct C2HEvent_Header));
-	if ((pevtcmd = (u8 *)rtw_zmalloc(cmdsz)) == NULL) {
+	pevtcmd = (u8 *)rtw_zmalloc(cmdsz);
+	if (pevtcmd == NULL) {
 		kfree((u8 *)pcmd_obj);
 		return;
 	}
@@ -5084,11 +5102,13 @@ void report_surveydone_event(struct adapter *padapter)
 	struct mlme_ext_priv 	*pmlmeext = &padapter->mlmeextpriv;
 	struct cmd_priv *pcmdpriv = &padapter->cmdpriv;
 
-	if ((pcmd_obj = (struct cmd_obj *)rtw_zmalloc(sizeof(struct cmd_obj))) == NULL)
+	pcmd_obj = (struct cmd_obj *)rtw_zmalloc(sizeof(struct cmd_obj));
+	if (pcmd_obj == NULL)
 		return;
 
 	cmdsz = (sizeof(struct surveydone_event) + sizeof(struct C2HEvent_Header));
-	if ((pevtcmd = (u8 *)rtw_zmalloc(cmdsz)) == NULL) {
+	pevtcmd = (u8 *)rtw_zmalloc(cmdsz);
+	if (pevtcmd == NULL) {
 		kfree((u8 *)pcmd_obj);
 		return;
 	}
@@ -5129,11 +5149,13 @@ void report_join_res(struct adapter *padapter, int res)
 	struct mlme_ext_info *pmlmeinfo = &(pmlmeext->mlmext_info);
 	struct cmd_priv *pcmdpriv = &padapter->cmdpriv;
 
-	if ((pcmd_obj = (struct cmd_obj *)rtw_zmalloc(sizeof(struct cmd_obj))) == NULL)
+	pcmd_obj = (struct cmd_obj *)rtw_zmalloc(sizeof(struct cmd_obj));
+	if (pcmd_obj == NULL)
 		return;
 
 	cmdsz = (sizeof(struct joinbss_event) + sizeof(struct C2HEvent_Header));
-	if ((pevtcmd = (u8 *)rtw_zmalloc(cmdsz)) == NULL) {
+	pevtcmd = (u8 *)rtw_zmalloc(cmdsz);
+	if (pevtcmd == NULL) {
 		kfree((u8 *)pcmd_obj);
 		return;
 	}
@@ -5178,11 +5200,13 @@ void report_wmm_edca_update(struct adapter *padapter)
 	struct mlme_ext_priv 	*pmlmeext = &padapter->mlmeextpriv;
 	struct cmd_priv *pcmdpriv = &padapter->cmdpriv;
 
-	if ((pcmd_obj = (struct cmd_obj *)rtw_zmalloc(sizeof(struct cmd_obj))) == NULL)
+	pcmd_obj = (struct cmd_obj *)rtw_zmalloc(sizeof(struct cmd_obj));
+	if (pcmd_obj == NULL)
 		return;
 
 	cmdsz = (sizeof(struct wmm_event) + sizeof(struct C2HEvent_Header));
-	if ((pevtcmd = (u8 *)rtw_zmalloc(cmdsz)) == NULL) {
+	pevtcmd = (u8 *)rtw_zmalloc(cmdsz);
+	if (pevtcmd == NULL) {
 		kfree((u8 *)pcmd_obj);
 		return;
 	}
@@ -5222,12 +5246,14 @@ void report_del_sta_event(struct adapter *padapter, unsigned char *MacAddr, unsi
 	struct mlme_ext_priv 	*pmlmeext = &padapter->mlmeextpriv;
 	struct cmd_priv *pcmdpriv = &padapter->cmdpriv;
 
-	if ((pcmd_obj = (struct cmd_obj *)rtw_zmalloc(sizeof(struct cmd_obj))) == NULL) {
+	pcmd_obj = (struct cmd_obj *)rtw_zmalloc(sizeof(struct cmd_obj));
+	if (pcmd_obj == NULL) {
 		return;
 	}
 
 	cmdsz = (sizeof(struct stadel_event) + sizeof(struct C2HEvent_Header));
-	if ((pevtcmd = (u8 *)rtw_zmalloc(cmdsz)) == NULL) {
+	pevtcmd = (u8 *)rtw_zmalloc(cmdsz);
+	if (pevtcmd == NULL) {
 		kfree((u8 *)pcmd_obj);
 		return;
 	}
@@ -5276,11 +5302,13 @@ void report_add_sta_event(struct adapter *padapter, unsigned char *MacAddr, int 
 	struct mlme_ext_priv 	*pmlmeext = &padapter->mlmeextpriv;
 	struct cmd_priv *pcmdpriv = &padapter->cmdpriv;
 
-	if ((pcmd_obj = (struct cmd_obj *)rtw_zmalloc(sizeof(struct cmd_obj))) == NULL)
+	pcmd_obj = (struct cmd_obj *)rtw_zmalloc(sizeof(struct cmd_obj));
+	if (pcmd_obj == NULL)
 		return;
 
 	cmdsz = (sizeof(struct stassoc_event) + sizeof(struct C2HEvent_Header));
-	if ((pevtcmd = (u8 *)rtw_zmalloc(cmdsz)) == NULL) {
+	pevtcmd = (u8 *)rtw_zmalloc(cmdsz);
+	if (pevtcmd == NULL) {
 		kfree((u8 *)pcmd_obj);
 		return;
 	}
@@ -5716,7 +5744,8 @@ void linked_status_chk(struct adapter *padapter)
 		/* 	rx_chk_limit = 1; */
 		/* endif */
 
-		if ((psta = rtw_get_stainfo(pstapriv, pmlmeinfo->network.MacAddress)) != NULL) {
+		psta = rtw_get_stainfo(pstapriv, pmlmeinfo->network.MacAddress);
+		if (psta != NULL) {
 			if (chk_ap_is_alive(padapter, psta) == false)
 				rx_chk = _FAIL;
 
@@ -5823,11 +5852,13 @@ void survey_timer_hdl(struct adapter *padapter)
 			pmlmeext->scan_abort = false;/* reset */
 		}
 
-		if ((ph2c = (struct cmd_obj *)rtw_zmalloc(sizeof(struct cmd_obj))) == NULL) {
+		ph2c = (struct cmd_obj *)rtw_zmalloc(sizeof(struct cmd_obj));
+		if (ph2c == NULL) {
 			goto exit_survey_timer_hdl;
 		}
 
-		if ((psurveyPara = (struct sitesurvey_parm *)rtw_zmalloc(sizeof(struct sitesurvey_parm))) == NULL) {
+		psurveyPara = (struct sitesurvey_parm *)rtw_zmalloc(sizeof(struct sitesurvey_parm));
+		if (psurveyPara == NULL) {
 			kfree((unsigned char *)ph2c);
 			goto exit_survey_timer_hdl;
 		}
@@ -6324,8 +6355,9 @@ static int rtw_scan_ch_decision(struct adapter *padapter, struct rtw_ieee80211_c
 
 		DBG_871X(FUNC_ADPT_FMT" "CHAN_FMT"\n", FUNC_ADPT_ARG(padapter), CHAN_ARG(&in[i]));
 
+		set_idx = rtw_ch_set_search_ch(pmlmeext->channel_set, in[i].hw_value);
 		if (in[i].hw_value && !(in[i].flags & RTW_IEEE80211_CHAN_DISABLED)
-			&& (set_idx = rtw_ch_set_search_ch(pmlmeext->channel_set, in[i].hw_value)) >= 0
+			&& set_idx >= 0
 			&& rtw_mlme_band_check(padapter, in[i].hw_value) == true
 		) {
 			if (j >= out_num) {
@@ -6570,7 +6602,8 @@ u8 chk_bmc_sleepq_cmd(struct adapter *padapter)
 	struct cmd_priv *pcmdpriv = &(padapter->cmdpriv);
 	u8 res = _SUCCESS;
 
-	if ((ph2c = (struct cmd_obj *)rtw_zmalloc(sizeof(struct cmd_obj))) == NULL) {
+	ph2c = (struct cmd_obj *)rtw_zmalloc(sizeof(struct cmd_obj));
+	if (ph2c == NULL) {
 		res = _FAIL;
 		goto exit;
 	}
@@ -6593,12 +6626,14 @@ u8 set_tx_beacon_cmd(struct adapter *padapter)
 	u8 res = _SUCCESS;
 	int len_diff = 0;
 
-	if ((ph2c = (struct cmd_obj *)rtw_zmalloc(sizeof(struct cmd_obj))) == NULL) {
+	ph2c = (struct cmd_obj *)rtw_zmalloc(sizeof(struct cmd_obj));
+	if (ph2c == NULL) {
 		res = _FAIL;
 		goto exit;
 	}
 
-	if ((ptxBeacon_parm = (struct Tx_Beacon_param *)rtw_zmalloc(sizeof(struct Tx_Beacon_param))) == NULL) {
+	ptxBeacon_parm = (struct Tx_Beacon_param *)rtw_zmalloc(sizeof(struct Tx_Beacon_param));
+	if (ptxBeacon_parm == NULL) {
 		kfree((unsigned char *)ph2c);
 		res = _FAIL;
 		goto exit;
