@@ -35,7 +35,7 @@ sint	_rtw_init_mlme_priv(struct adapter *padapter)
 
 	pmlmepriv->pscanned = NULL;
 	pmlmepriv->fw_state = WIFI_STATION_STATE; /*  Must sync with rtw_wdev_alloc() */
-	                                          /*  wdev->iftype = NL80211_IFTYPE_STATION */
+	/*  wdev->iftype = NL80211_IFTYPE_STATION */
 	pmlmepriv->cur_network.network.InfrastructureMode = Ndis802_11AutoUnknown;
 	pmlmepriv->scan_mode = SCAN_ACTIVE;/*  1: active, 0: pasive. Maybe someday we should rename this varable to "active_mode" (Jeff) */
 
@@ -271,7 +271,7 @@ struct wlan_network *_rtw_find_network(struct __queue *scanned_queue, u8 *addr)
     pnetwork = LIST_CONTAINOR(plist, struct wlan_network, list);
 
 		if (!memcmp(addr, pnetwork->network.MacAddress, ETH_ALEN))
-                        break;
+			break;
 
 		plist = get_next(plist);
   }
@@ -783,7 +783,7 @@ int rtw_is_desired_network(struct adapter *adapter, struct wlan_network *pnetwor
 		uint ie_len = 0;
 
 		if ((desired_encmode == Ndis802_11EncryptionDisabled) && (privacy != 0))
-	            bselected = false;
+	    bselected = false;
 
 		if (psecuritypriv->ndisauthtype == Ndis802_11AuthModeWPA2PSK) {
 			p = rtw_get_ie(pnetwork->network.IEs + _BEACON_IE_OFFSET_, _RSN_IE_2_, &ie_len, (pnetwork->network.IELength - _BEACON_IE_OFFSET_));
@@ -1149,7 +1149,7 @@ void rtw_indicate_disconnect(struct adapter *padapter)
 
 	_clr_fwstate_(pmlmepriv, _FW_UNDER_LINKING|WIFI_UNDER_WPS);
 
-        /* DBG_871X("clear wps when %s\n", __func__); */
+  /* DBG_871X("clear wps when %s\n", __func__); */
 
 	if (rtw_to_roam(padapter) > 0)
 		_clr_fwstate_(pmlmepriv, _FW_LINKED);
@@ -2255,9 +2255,9 @@ candidate_exist:
 	if (check_fwstate(pmlmepriv, _FW_LINKED) == true) {
 		DBG_871X("%s: _FW_LINKED while ask_for_joinbss!!!\n", __func__);
 
-                rtw_disassoc_cmd(adapter, 0, true);
-                rtw_indicate_disconnect(adapter);
-                rtw_free_assoc_resources(adapter, 0);
+    rtw_disassoc_cmd(adapter, 0, true);
+    rtw_indicate_disconnect(adapter);
+    rtw_free_assoc_resources(adapter, 0);
 	}
 
 	set_fwstate(pmlmepriv, _FW_UNDER_LINKING);
@@ -2407,13 +2407,13 @@ int rtw_restruct_wmm_ie(struct adapter *adapter, u8 *in_ie, u8 *out_ie, uint in_
 		ielength = initial_out_len;
 
 		if (in_ie[i] == 0xDD && in_ie[i+2] == 0x00 && in_ie[i+3] == 0x50  && in_ie[i+4] == 0xF2 && in_ie[i+5] == 0x02 && i+5 < in_len) { /* WMM element ID and OUI */
-                        for (j = i; j < i + 9; j++) {
-                            out_ie[ielength] = in_ie[j];
-                            ielength++;
-                        }
-                        out_ie[initial_out_len + 1] = 0x07;
-                        out_ie[initial_out_len + 6] = 0x00;
-                        out_ie[initial_out_len + 8] = 0x00;
+      for (j = i; j < i + 9; j++) {
+					out_ie[ielength] = in_ie[j];
+					ielength++;
+      }
+      out_ie[initial_out_len + 1] = 0x07;
+      out_ie[initial_out_len + 6] = 0x00;
+      out_ie[initial_out_len + 8] = 0x00;
 
 			break;
 		}
@@ -2444,7 +2444,7 @@ static int SecIsInPMKIDList(struct adapter *Adapter, u8 *bssid)
 
 	do {
 		if ((psecuritypriv->PMKIDList[i].bUsed) &&
-                    (!memcmp(psecuritypriv->PMKIDList[i].Bssid, bssid, ETH_ALEN))) {
+				(!memcmp(psecuritypriv->PMKIDList[i].Bssid, bssid, ETH_ALEN))) {
 			break;
 		} else{
 			i++;
@@ -2824,7 +2824,7 @@ unsigned int rtw_restructure_ht_ie(struct adapter *padapter, u8 *in_ie, u8 *out_
 		if (stbc_rx_enable)
 			ht_capie.cap_info |= cpu_to_le16(IEEE80211_HT_CAP_RX_STBC_1R);/* RX STBC One spatial stream */
 
-	                set_mcs_rate_by_mask(ht_capie.supp_mcs_set, MCS_RATE_1R);
+	    set_mcs_rate_by_mask(ht_capie.supp_mcs_set, MCS_RATE_1R);
 			break;
 
 	case RF_2T2R:
