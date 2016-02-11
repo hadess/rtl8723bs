@@ -69,9 +69,9 @@ sint	_rtw_init_mlme_priv(struct adapter *padapter)
 
 	rtw_clear_scan_deny(padapter);
 
-	#define RTW_ROAM_SCAN_RESULT_EXP_MS 5*1000
+	#define RTW_ROAM_SCAN_RESULT_EXP_MS 5000
 	#define RTW_ROAM_RSSI_DIFF_TH 10
-	#define RTW_ROAM_SCAN_INTERVAL_MS 10*1000
+	#define RTW_ROAM_SCAN_INTERVAL_MS 10000
 
 	pmlmepriv->roam_flags = 0
 		| RTW_ROAM_ON_EXPIRED
