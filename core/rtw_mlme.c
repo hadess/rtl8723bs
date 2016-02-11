@@ -2457,7 +2457,7 @@ static int SecIsInPMKIDList(struct adapter *Adapter, u8 *bssid)
 		/*  There is one Pre-Authentication Key for the specific BSSID. */
 	}
 
-	return (i);
+	return i;
 
 }
 
@@ -2485,7 +2485,7 @@ static int rtw_append_pmkid(struct adapter *Adapter, int iEntry, u8 *ie, uint ie
 			ie[13] += 18;/* PMKID length = 2+16 */
 
 	}
-	return (ie_len);
+	return ie_len;
 }
 
 sint rtw_restruct_sec_ie(struct adapter *adapter, u8 *in_ie, u8 *out_ie, uint in_len)
@@ -2876,7 +2876,7 @@ unsigned int rtw_restructure_ht_ie(struct adapter *padapter, u8 *in_ie, u8 *out_
 		}
 	}
 
-	return (phtpriv->ht_option);
+	return phtpriv->ht_option;
 
 }
 
