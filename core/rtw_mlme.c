@@ -2985,17 +2985,17 @@ void rtw_update_ht_cap(struct adapter *padapter, u8 *pie, uint ie_len, u8 channe
 	/* switch to the 40M Hz mode accoring to the AP */
 	/* pmlmeext->cur_bwmode = CHANNEL_WIDTH_40; */
 	switch ((pmlmeinfo->HT_info.infos[0] & 0x3)) {
-		case EXTCHNL_OFFSET_UPPER:
-			pmlmeext->cur_ch_offset = HAL_PRIME_CHNL_OFFSET_LOWER;
-			break;
+	case EXTCHNL_OFFSET_UPPER:
+		pmlmeext->cur_ch_offset = HAL_PRIME_CHNL_OFFSET_LOWER;
+		break;
 
-		case EXTCHNL_OFFSET_LOWER:
-			pmlmeext->cur_ch_offset = HAL_PRIME_CHNL_OFFSET_UPPER;
-			break;
+	case EXTCHNL_OFFSET_LOWER:
+		pmlmeext->cur_ch_offset = HAL_PRIME_CHNL_OFFSET_UPPER;
+		break;
 
-		default:
-			pmlmeext->cur_ch_offset = HAL_PRIME_CHNL_OFFSET_DONT_CARE;
-			break;
+	default:
+		pmlmeext->cur_ch_offset = HAL_PRIME_CHNL_OFFSET_DONT_CARE;
+		break;
 		}
 	}
 
