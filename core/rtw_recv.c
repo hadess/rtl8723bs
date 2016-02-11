@@ -703,7 +703,8 @@ void process_wmmps_data(struct adapter *padapter, union recv_frame *precv_frame)
 
 	psta = rtw_get_stainfo(pstapriv, pattrib->src);
 
-	if (!psta) return;
+	if (!psta)
+		return;
 
 	if (!psta->qos_option)
 		return;
