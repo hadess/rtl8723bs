@@ -573,8 +573,7 @@ void LPS_Enter(struct adapter *padapter, const char *msg)
 				pwrpriv->bpower_saving = true;
 				rtw_set_ps_mode(padapter, pwrpriv->power_mgnt, padapter->registrypriv.smart_ps, 0, buf);
 			}
-		}
-		else
+		} else
 			pwrpriv->LpsIdleCount++;
 	}
 
@@ -1343,16 +1342,14 @@ int rtw_pm_set_ips(struct adapter *padapter, u8 mode)
 		rtw_ips_mode_req(pwrctrlpriv, mode);
 		DBG_871X("%s %s\n", __func__, mode == IPS_NORMAL?"IPS_NORMAL":"IPS_LEVEL_2");
 		return 0;
-	}
-	else if (mode ==IPS_NONE) {
+	} else if (mode ==IPS_NONE) {
 		rtw_ips_mode_req(pwrctrlpriv, mode);
 		DBG_871X("%s %s\n", __func__, "IPS_NONE");
 		if ((padapter->bSurpriseRemoved == 0) && (_FAIL == rtw_pwr_wakeup(padapter)))
 			return -EFAULT;
-	}
-	else {
+	} else
 		return -EINVAL;
-	}
+
 	return 0;
 }
 
