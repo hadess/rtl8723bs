@@ -544,8 +544,7 @@ union recv_frame *decryptor(struct adapter *padapter, union recv_frame *precv_fr
 	if (res == _FAIL) {
 		rtw_free_recvframe(return_packet, &padapter->recvpriv.free_recv_queue);
 		return_packet = NULL;
-	}
-	else
+	} else
 		prxattrib->bdecrypted = true;
 
 	return return_packet;
@@ -1590,8 +1589,7 @@ sint validate_recv_frame(struct adapter *adapter, union recv_frame *precv_frame)
 			/* RT_TRACE(_module_rtl871x_recv_c_, _drv_err_, ("validate_recv_data_frame fail\n")); */
 			precvpriv->rx_drop++;
 			DBG_COUNTER(adapter->rx_logs.core_rx_pre_data_err);
-		}
-		else if (retval == _SUCCESS) {
+		} else if (retval == _SUCCESS) {
 #ifdef DBG_RX_DUMP_EAP
 			u8 bDumpRxPkt;
 			u16 eth_type;
@@ -1604,8 +1602,7 @@ sint validate_recv_frame(struct adapter *adapter, union recv_frame *precv_frame)
 			if ((bDumpRxPkt == 4) && (eth_type == 0x888e))
 				dump_rx_packet(ptr);
 #endif
-		}
-		else
+		} else
 			DBG_COUNTER(adapter->rx_logs.core_rx_pre_data_handled);
 		break;
 	default:
