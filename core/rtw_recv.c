@@ -2358,8 +2358,7 @@ int recv_indicatepkt_reorder(struct adapter *padapter, union recv_frame *prframe
 	return _SUCCESS;
 
 _err_exit:
-
-        spin_unlock_bh(&ppending_recvframe_queue->lock);
+	spin_unlock_bh(&ppending_recvframe_queue->lock);
 
 	return _FAIL;
 }
