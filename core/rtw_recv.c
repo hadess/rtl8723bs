@@ -71,7 +71,7 @@ sint _rtw_init_recv_priv(struct recv_priv *precvpriv, struct adapter *padapter)
 	/* precvpriv->precv_frame_buf = precvpriv->pallocated_frame_buf + RXFRAME_ALIGN_SZ - */
 	/* 						((SIZE_PTR) (precvpriv->pallocated_frame_buf) &(RXFRAME_ALIGN_SZ-1)); */
 
-	precvframe = (union recv_frame*) precvpriv->precv_frame_buf;
+	precvframe = (union recv_frame *) precvpriv->precv_frame_buf;
 
 
 	for (i = 0; i < NR_RECVFRAME; i++) {
@@ -450,8 +450,8 @@ exit:
 }
 
 /* decrypt and set the ivlen, icvlen of the recv_frame */
-union recv_frame * decryptor(struct adapter *padapter, union recv_frame *precv_frame);
-union recv_frame * decryptor(struct adapter *padapter, union recv_frame *precv_frame)
+union recv_frame *decryptor(struct adapter *padapter, union recv_frame *precv_frame);
+union recv_frame *decryptor(struct adapter *padapter, union recv_frame *precv_frame)
 {
 
 	struct rx_pkt_attrib *prxattrib = &precv_frame->u.hdr.attrib;
@@ -552,8 +552,8 @@ union recv_frame * decryptor(struct adapter *padapter, union recv_frame *precv_f
 }
 
 /* set the security information in the recv_frame */
-union recv_frame * portctrl(struct adapter *adapter, union recv_frame * precv_frame);
-union recv_frame * portctrl(struct adapter *adapter, union recv_frame * precv_frame)
+union recv_frame *portctrl(struct adapter *adapter, union recv_frame *precv_frame);
+union recv_frame *portctrl(struct adapter *adapter, union recv_frame *precv_frame)
 {
 	u8 *psta_addr = NULL;
 	u8 *ptr;
@@ -746,8 +746,8 @@ void process_wmmps_data(struct adapter *padapter, union recv_frame *precv_frame)
 	}
 }
 
-void count_rx_stats(struct adapter *padapter, union recv_frame *prframe, struct sta_info*sta);
-void count_rx_stats(struct adapter *padapter, union recv_frame *prframe, struct sta_info*sta)
+void count_rx_stats(struct adapter *padapter, union recv_frame *prframe, struct sta_info *sta);
+void count_rx_stats(struct adapter *padapter, union recv_frame *prframe, struct sta_info *sta)
 {
 	int	sz;
 	struct sta_info 	*psta = NULL;
@@ -782,12 +782,12 @@ void count_rx_stats(struct adapter *padapter, union recv_frame *prframe, struct 
 sint sta2sta_data_frame(
 	struct adapter *adapter,
 	union recv_frame *precv_frame,
-	struct sta_info**psta
+	struct sta_info **psta
 );
 sint sta2sta_data_frame(
 	struct adapter *adapter,
 	union recv_frame *precv_frame,
-	struct sta_info**psta
+	struct sta_info **psta
 )
 {
 	u8 *ptr = precv_frame->u.hdr.rx_data;
@@ -797,7 +797,7 @@ sint sta2sta_data_frame(
 	struct	mlme_priv *pmlmepriv = &adapter->mlmepriv;
 	u8 *mybssid  = get_bssid(pmlmepriv);
 	u8 *myhwaddr = myid(&adapter->eeprompriv);
-	u8 * sta_addr = NULL;
+	u8 *sta_addr = NULL;
 	sint bmcast = IS_MCAST(pattrib->dst);
 
 	/* DBG_871X("[%s] %d, seqnum:%d\n", __func__, __LINE__, pattrib->seq_num); */
@@ -886,11 +886,11 @@ exit:
 sint ap2sta_data_frame(
 	struct adapter *adapter,
 	union recv_frame *precv_frame,
-	struct sta_info**psta);
+	struct sta_info **psta);
 sint ap2sta_data_frame(
 	struct adapter *adapter,
 	union recv_frame *precv_frame,
-	struct sta_info**psta)
+	struct sta_info **psta)
 {
 	u8 *ptr = precv_frame->u.hdr.rx_data;
 	struct rx_pkt_attrib *pattrib = &precv_frame->u.hdr.attrib;
@@ -1035,11 +1035,11 @@ exit:
 sint sta2ap_data_frame(
 	struct adapter *adapter,
 	union recv_frame *precv_frame,
-	struct sta_info**psta);
+	struct sta_info **psta);
 sint sta2ap_data_frame(
 	struct adapter *adapter,
 	union recv_frame *precv_frame,
-	struct sta_info**psta)
+	struct sta_info **psta)
 {
 	u8 *ptr = precv_frame->u.hdr.rx_data;
 	struct rx_pkt_attrib *pattrib = &precv_frame->u.hdr.attrib;
@@ -1231,7 +1231,7 @@ sint validate_recv_ctrl_frame(struct adapter *padapter, union recv_frame *precv_
 
 }
 
-union recv_frame* recvframe_chk_defrag(struct adapter *padapter, union recv_frame *precv_frame);
+union recv_frame *recvframe_chk_defrag(struct adapter *padapter, union recv_frame *precv_frame);
 sint validate_recv_mgnt_frame(struct adapter *padapter, union recv_frame *precv_frame);
 sint validate_recv_mgnt_frame(struct adapter *padapter, union recv_frame *precv_frame)
 {
@@ -1676,14 +1676,14 @@ sint wlanhdr_to_ethhdr(union recv_frame *precvframe)
 		if (psta && psta->isrc && psta->pid > 0) {
 			u16 rx_pid;
 
-			rx_pid = *(u16*)(ptr+rmv_len+2);
+			rx_pid = *(u16 *)(ptr+rmv_len+2);
 
 			DBG_871X("wlan rx(pid = 0x%x): sta("MAC_FMT") pid = 0x%x\n",
 				rx_pid, MAC_ARG(psta->hwaddr), psta->pid);
 
 			if (rx_pid == psta->pid) {
 				int i;
-				u16 len = *(u16*)(ptr+rmv_len+4);
+				u16 len = *(u16 *)(ptr+rmv_len+4);
 				/* u16 ctrl_type = *(u16*)(ptr+rmv_len+6); */
 
 				/* DBG_871X("RC: len = 0x%x, ctrl_type = 0x%x\n", len, ctrl_type); */
@@ -1724,13 +1724,13 @@ sint wlanhdr_to_ethhdr(union recv_frame *precvframe)
 }
 
 /* perform defrag */
-union recv_frame * recvframe_defrag(struct adapter *adapter, struct __queue *defrag_q)
+union recv_frame *recvframe_defrag(struct adapter *adapter, struct __queue *defrag_q)
 {
 	struct list_head	 *plist, *phead;
 	u8 *data, wlanhdr_offset;
 	u8 curfragnum;
 	struct recv_frame_hdr *pfhdr, *pnfhdr;
-	union recv_frame* prframe, *pnextrframe;
+	union recv_frame *prframe, *pnextrframe;
 	struct __queue	*pfree_recv_queue;
 
 	curfragnum = 0;
@@ -1805,7 +1805,7 @@ union recv_frame * recvframe_defrag(struct adapter *adapter, struct __queue *def
 }
 
 /* check if need to defrag, if needed queue the frame to defrag_q */
-union recv_frame* recvframe_chk_defrag(struct adapter *padapter, union recv_frame *precv_frame)
+union recv_frame *recvframe_chk_defrag(struct adapter *padapter, union recv_frame *precv_frame)
 {
 	u8 ismfrag;
 	u8 fragnum;
