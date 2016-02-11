@@ -612,9 +612,9 @@ void LPS_Leave(struct adapter *padapter, const char *msg)
 
 }
 
-void LeaveAllPowerSaveModeDirect(struct adapter * Adapter)
+void LeaveAllPowerSaveModeDirect(struct adapter *Adapter)
 {
-	struct adapter * pri_padapter = GET_PRIMARY_ADAPTER(Adapter);
+	struct adapter *pri_padapter = GET_PRIMARY_ADAPTER(Adapter);
 	struct mlme_priv *pmlmepriv = &(Adapter->mlmepriv);
 	struct pwrctrl_priv *pwrpriv = adapter_to_pwrctl(Adapter);
 
@@ -651,7 +651,7 @@ void LeaveAllPowerSaveModeDirect(struct adapter * Adapter)
 /*  Description: Leave all power save mode: LPS, FwLPS, IPS if needed. */
 /*  Move code to function by tynli. 2010.03.26. */
 /*  */
-void LeaveAllPowerSaveMode(struct adapter * Adapter)
+void LeaveAllPowerSaveMode(struct adapter *Adapter)
 {
 	struct dvobj_priv *dvobj = adapter_to_dvobj(Adapter);
 	u8 enqueue = 0;
@@ -1190,7 +1190,7 @@ void rtw_init_pwrctrl_priv(struct adapter *padapter)
 }
 
 
-void rtw_free_pwrctrl_priv(struct adapter * adapter)
+void rtw_free_pwrctrl_priv(struct adapter *adapter)
 {
 	/* memset((unsigned char *)pwrctrlpriv, 0, sizeof(struct pwrctrl_priv)); */
 
