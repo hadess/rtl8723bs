@@ -69,7 +69,8 @@ int _ips_leave(struct adapter *padapter)
 		pwrpriv->ips_leave_cnts++;
 		DBG_871X("==>ips_leave cnts:%d\n", pwrpriv->ips_leave_cnts);
 
-		if ((result = rtw_ips_pwr_up(padapter)) == _SUCCESS) {
+		result = rtw_ips_pwr_up(padapter);
+		if (result == _SUCCESS) {
 			pwrpriv->rf_pwrstate = rf_on;
 		}
 		DBG_871X_LEVEL(_drv_always_, "nolinked power save leave\n");
