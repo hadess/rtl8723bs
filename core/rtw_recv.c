@@ -2590,8 +2590,8 @@ s32 rtw_recv_entry(union recv_frame *precvframe)
 
 	precvpriv = &padapter->recvpriv;
 
-
-	if ((ret = recv_func(padapter, precvframe)) == _FAIL) {
+	ret = recv_func(padapter, precvframe);
+	if (ret == _FAIL) {
 		RT_TRACE(_module_rtl871x_recv_c_, _drv_info_, ("rtw_recv_entry: recv_func return fail!!!\n"));
 		goto _recv_entry_drop;
 	}
