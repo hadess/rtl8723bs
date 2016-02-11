@@ -1435,7 +1435,8 @@ void rtw_joinbss_event_prehandle(struct adapter *adapter, u8 *pbuf)
 					ptarget_wlan = rtw_find_network(&pmlmepriv->scanned_queue, cur_network->network.MacAddress);
 				} else{
 					pcur_wlan = rtw_find_network(&pmlmepriv->scanned_queue, cur_network->network.MacAddress);
-					if (pcur_wlan)	pcur_wlan->fixed = false;
+					if (pcur_wlan)
+						pcur_wlan->fixed = false;
 
 					pcur_sta = rtw_get_stainfo(pstapriv, cur_network->network.MacAddress);
 					if (pcur_sta)
@@ -1443,14 +1444,16 @@ void rtw_joinbss_event_prehandle(struct adapter *adapter, u8 *pbuf)
 
 					ptarget_wlan = rtw_find_network(&pmlmepriv->scanned_queue, pnetwork->network.MacAddress);
 					if (check_fwstate(pmlmepriv, WIFI_STATION_STATE) == true) {
-						if (ptarget_wlan)	ptarget_wlan->fixed = true;
+						if (ptarget_wlan)
+							ptarget_wlan->fixed = true;
 					}
 				}
 
 			} else{
 				ptarget_wlan = _rtw_find_same_network(&pmlmepriv->scanned_queue, pnetwork);
 				if (check_fwstate(pmlmepriv, WIFI_STATION_STATE) == true) {
-					if (ptarget_wlan)	ptarget_wlan->fixed = true;
+					if (ptarget_wlan)
+						ptarget_wlan->fixed = true;
 				}
 			}
 
@@ -1653,7 +1656,8 @@ void rtw_stassoc_event_callback(struct adapter *adapter, u8 *pbuf)
 			spin_lock_bh(&(pmlmepriv->scanned_queue.lock));
 			ptarget_wlan = rtw_find_network(&pmlmepriv->scanned_queue, cur_network->network.MacAddress);
 			pmlmepriv->cur_network_scanned = ptarget_wlan;
-			if (ptarget_wlan)	ptarget_wlan->fixed = true;
+			if (ptarget_wlan)
+				ptarget_wlan->fixed = true;
 			spin_unlock_bh(&(pmlmepriv->scanned_queue.lock));
 			/*  a sta + bc/mc_stainfo (not Ibss_stainfo) */
 			rtw_indicate_connect(adapter);
