@@ -1186,7 +1186,8 @@ u32 rtw_calculate_wlan_pkt_size_by_attribue(struct pkt_attrib *pattrib)
 	len = pattrib->hdrlen + pattrib->iv_len; /*  WLAN Header and IV */
 	len += SNAP_SIZE + sizeof(u16); /*  LLC */
 	len += pattrib->pktlen;
-	if (pattrib->encrypt == _TKIP_) len += 8; /*  MIC */
+	if (pattrib->encrypt == _TKIP_)
+		len += 8; /*  MIC */
 	len += ((pattrib->bswenc) ? pattrib->icv_len : 0); /*  ICV */
 
 	return len;
@@ -1985,7 +1986,9 @@ s32 rtw_free_xmitframe(struct xmit_priv *pxmitpriv, struct xmit_frame *pxmitfram
 		queue = &pxmitpriv->free_xmit_queue;
 	else if (pxmitframe->ext_tag == 1)
 		queue = &pxmitpriv->free_xframe_ext_queue;
-	else {}
+	else {
+
+	}
 
 	spin_lock_bh(&queue->lock);
 
@@ -2210,7 +2213,9 @@ void rtw_alloc_hwxmits(struct adapter *padapter)
 		/* pxmitpriv->bk_txqueue.head = 0; */
 		/* hwxmits[3] .phwtxqueue = &pxmitpriv->bk_txqueue; */
 		hwxmits[3] .sta_queue = &pxmitpriv->bk_pending;
-	} else {}
+	} else {
+
+	}
 
 
 }
@@ -2950,7 +2955,8 @@ struct xmit_buf* dequeue_pending_xmitbuf_under_survey(
 		plist = phead;
 		do {
 			plist = get_next(plist);
-				if (plist == phead) break;
+			if (plist == phead)
+				break;
 
 			pxmitbuf = LIST_CONTAINOR(plist, struct xmit_buf, list);
 
