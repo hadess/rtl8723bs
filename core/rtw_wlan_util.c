@@ -781,7 +781,8 @@ s16 rtw_camid_alloc(struct adapter *adapter, struct sta_info *sta, u8 kid)
 			addr = get_bssid(&adapter->mlmepriv);
 		}
 
-		if ((i = _rtw_camid_search(adapter, addr, kid)) >= 0) {
+		i = _rtw_camid_search(adapter, addr, kid);
+		if (i >= 0) {
 			/* Fix issue that pairwise and group key have same key id. Pairwise key first, group key can overwirte group only(ex: rekey) */
 			if (sta || _rtw_camid_is_gk(adapter, i) == true)
 				cam_id = i;
@@ -1429,7 +1430,8 @@ int rtw_check_bcn_info(struct adapter *Adapter, u8 *pframe, u32 packet_len)
 	}
 
 	/* checking SSID */
-	if ((p = rtw_get_ie(bssid->IEs + _FIXED_IE_LENGTH_, _SSID_IE_, &len, bssid->IELength - _FIXED_IE_LENGTH_)) == NULL) {
+	p = rtw_get_ie(bssid->IEs + _FIXED_IE_LENGTH_, _SSID_IE_, &len, bssid->IELength - _FIXED_IE_LENGTH_);
+	if (p == NULL) {
 		DBG_871X("%s marc: cannot find SSID for survey event\n", __func__);
 		hidden_ssid = true;
 	} else {
