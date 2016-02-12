@@ -97,7 +97,7 @@ s32	_rtw_init_xmit_priv(struct xmit_priv *pxmitpriv, struct adapter *padapter)
 	/* pxmitpriv->pxmit_frame_buf = pxmitpriv->pallocated_frame_buf + 4 - */
 	/* 						((SIZE_PTR) (pxmitpriv->pallocated_frame_buf) &3); */
 
-	pxframe = (struct xmit_frame*) pxmitpriv->pxmit_frame_buf;
+	pxframe = (struct xmit_frame *) pxmitpriv->pxmit_frame_buf;
 
 	for (i = 0; i < NR_XMITFRAME; i++) {
 		INIT_LIST_HEAD(&(pxframe->list));
@@ -136,7 +136,7 @@ s32	_rtw_init_xmit_priv(struct xmit_priv *pxmitpriv, struct adapter *padapter)
 	/* pxmitpriv->pxmitbuf = pxmitpriv->pallocated_xmitbuf + 4 - */
 	/* 						((SIZE_PTR) (pxmitpriv->pallocated_xmitbuf) &3); */
 
-	pxmitbuf = (struct xmit_buf*)pxmitpriv->pxmitbuf;
+	pxmitbuf = (struct xmit_buf *)pxmitpriv->pxmitbuf;
 
 	for (i = 0; i < NR_XMITBUFF; i++) {
 		INIT_LIST_HEAD(&pxmitbuf->list);
@@ -184,7 +184,7 @@ s32	_rtw_init_xmit_priv(struct xmit_priv *pxmitpriv, struct adapter *padapter)
 		goto exit;
 	}
 	pxmitpriv->xframe_ext = (u8 *)N_BYTE_ALIGMENT((SIZE_PTR)(pxmitpriv->xframe_ext_alloc_addr), 4);
-	pxframe = (struct xmit_frame*)pxmitpriv->xframe_ext;
+	pxframe = (struct xmit_frame *)pxmitpriv->xframe_ext;
 
 	for (i = 0; i < NR_XMIT_EXTBUFF; i++) {
 		INIT_LIST_HEAD(&(pxframe->list));
@@ -218,7 +218,7 @@ s32	_rtw_init_xmit_priv(struct xmit_priv *pxmitpriv, struct adapter *padapter)
 
 	pxmitpriv->pxmit_extbuf = (u8 *)N_BYTE_ALIGMENT((SIZE_PTR)(pxmitpriv->pallocated_xmit_extbuf), 4);
 
-	pxmitbuf = (struct xmit_buf*)pxmitpriv->pxmit_extbuf;
+	pxmitbuf = (struct xmit_buf *)pxmitpriv->pxmit_extbuf;
 
 	for (i = 0; i < NR_XMIT_EXTBUFF; i++) {
 		INIT_LIST_HEAD(&pxmitbuf->list);
@@ -292,7 +292,7 @@ void _rtw_free_xmit_priv(struct xmit_priv *pxmitpriv)
 {
        int i;
       struct adapter *padapter = pxmitpriv->adapter;
-	struct xmit_frame	*pxmitframe = (struct xmit_frame*) pxmitpriv->pxmit_frame_buf;
+	struct xmit_frame	*pxmitframe = (struct xmit_frame *) pxmitpriv->pxmit_frame_buf;
 	struct xmit_buf *pxmitbuf = (struct xmit_buf *)pxmitpriv->pxmitbuf;
 
 	rtw_hal_free_xmit_priv(padapter);
@@ -320,7 +320,7 @@ void _rtw_free_xmit_priv(struct xmit_priv *pxmitpriv)
 		vfree(pxmitpriv->pallocated_xmitbuf);
 
 	/* free xframe_ext queue,  the same count as extbuf  */
-	pxmitframe = (struct xmit_frame*)pxmitpriv->xframe_ext;
+	pxmitframe = (struct xmit_frame *)pxmitpriv->xframe_ext;
 	if (pxmitframe) {
 		for (i = 0; i < NR_XMIT_EXTBUFF; i++) {
 			rtw_os_xmit_complete(padapter, pxmitframe);
@@ -671,7 +671,7 @@ static void set_qos(struct pkt_file *ppktfile, struct pkt_attrib *pattrib)
 
 
 	_rtw_open_pktfile(ppktfile->pkt, ppktfile);
-	_rtw_pktfile_read(ppktfile, (unsigned char*)&etherhdr, ETH_HLEN);
+	_rtw_pktfile_read(ppktfile, (unsigned char *)&etherhdr, ETH_HLEN);
 
 	/*  get UserPriority from IP hdr */
 	if (pattrib->ether_type == 0x0800) {
@@ -2909,7 +2909,7 @@ void enqueue_pending_xmitbuf_to_head(
 	spin_unlock_bh(&pqueue->lock);
 }
 
-struct xmit_buf* dequeue_pending_xmitbuf(
+struct xmit_buf *dequeue_pending_xmitbuf(
 	struct xmit_priv *pxmitpriv)
 {
 	struct xmit_buf *pxmitbuf;
@@ -2935,7 +2935,7 @@ struct xmit_buf* dequeue_pending_xmitbuf(
 	return pxmitbuf;
 }
 
-struct xmit_buf* dequeue_pending_xmitbuf_under_survey(
+struct xmit_buf *dequeue_pending_xmitbuf_under_survey(
 	struct xmit_priv *pxmitpriv)
 {
 	struct xmit_buf *pxmitbuf;
