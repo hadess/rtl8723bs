@@ -498,7 +498,7 @@ void rtw_free_all_stainfo(struct adapter *padapter)
 	s32	index;
 	struct sta_info *psta = NULL;
 	struct	sta_priv *pstapriv = &padapter->stapriv;
-	struct sta_info* pbcmc_stainfo = rtw_get_bcmc_stainfo(padapter);
+	struct sta_info *pbcmc_stainfo = rtw_get_bcmc_stainfo(padapter);
 
 	if (pstapriv->asoc_sta_count == 1)
 		return;
@@ -592,7 +592,7 @@ exit:
 }
 
 
-struct sta_info* rtw_get_bcmc_stainfo(struct adapter *padapter)
+struct sta_info *rtw_get_bcmc_stainfo(struct adapter *padapter)
 {
 	struct sta_info 	*psta;
 	struct sta_priv 	*pstapriv = &padapter->stapriv;
