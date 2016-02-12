@@ -1033,9 +1033,11 @@ static void bwmode_update_check(struct adapter *padapter, struct ndis_80211_var_
 	if (!pIE)
 		return;
 
-	if (phtpriv->ht_option == false)	return;
+	if (phtpriv->ht_option == false)
+		return;
 
-	if (pmlmeext->cur_bwmode >= CHANNEL_WIDTH_80)	return;
+	if (pmlmeext->cur_bwmode >= CHANNEL_WIDTH_80)
+		return;
 
 	if (pIE->Length > sizeof(struct HT_info_element))
 		return;
@@ -1205,9 +1207,11 @@ void HT_info_handler(struct adapter *padapter, struct ndis_80211_var_ie *pIE)
 	struct mlme_priv 	*pmlmepriv = &padapter->mlmepriv;
 	struct ht_priv 		*phtpriv = &pmlmepriv->htpriv;
 
-	if (pIE == NULL) return;
+	if (pIE == NULL)
+		return;
 
-	if (phtpriv->ht_option == false)	return;
+	if (phtpriv->ht_option == false)
+		return;
 
 
 	if (pIE->Length > sizeof(struct HT_info_element))
