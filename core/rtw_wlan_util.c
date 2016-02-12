@@ -495,7 +495,7 @@ void set_channel_bwmode(struct adapter *padapter, unsigned char channel, unsigne
 
 __inline u8 *get_my_bssid(struct wlan_bssid_ex *pnetwork)
 {
-	return (pnetwork->MacAddress);
+	return pnetwork->MacAddress;
 }
 
 u16 get_beacon_interval(struct wlan_bssid_ex *bss)
