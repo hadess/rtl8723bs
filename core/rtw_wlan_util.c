@@ -2296,16 +2296,16 @@ void rtw_get_sec_iv(struct adapter *padapter, u8 *pcur_dot11txpn, u8 *StaAddr)
 }
 void rtw_set_sec_pn(struct adapter *padapter)
 {
-    struct sta_info         *psta;
-    struct mlme_ext_priv    *pmlmeext = &(padapter->mlmeextpriv);
-    struct mlme_ext_info    *pmlmeinfo = &(pmlmeext->mlmext_info);
-    struct pwrctrl_priv *pwrpriv = adapter_to_pwrctl(padapter);
+		struct sta_info         *psta;
+		struct mlme_ext_priv    *pmlmeext = &(padapter->mlmeextpriv);
+		struct mlme_ext_info    *pmlmeinfo = &(pmlmeext->mlmext_info);
+		struct pwrctrl_priv *pwrpriv = adapter_to_pwrctl(padapter);
 		struct security_priv *psecpriv = &padapter->securitypriv;
 
-    psta = rtw_get_stainfo(&padapter->stapriv,
+		psta = rtw_get_stainfo(&padapter->stapriv,
 		get_my_bssid(&pmlmeinfo->network));
 
-    if (psta) {
+		if (psta) {
 			if (pwrpriv->wowlan_fw_iv > psta->dot11txpn.val) {
 				if (psecpriv->dot11PrivacyAlgrthm != _NO_PRIVACY_)
 					psta->dot11txpn.val = pwrpriv->wowlan_fw_iv + 2;
@@ -2314,7 +2314,7 @@ void rtw_set_sec_pn(struct adapter *padapter)
 				psta->dot11txpn.val += 2;
 			}
 			DBG_871X("%s: dot11txpn: 0x%016llx\n", __func__, psta->dot11txpn.val);
-    }
+		}
 }
 #endif /* CONFIG_WOWLAN */
 
