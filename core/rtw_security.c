@@ -104,12 +104,12 @@ struct arc4context {
 };
 
 
-static void arcfour_init(struct arc4context	*parc4ctx, u8 * key, u32 key_len)
+static void arcfour_init(struct arc4context	*parc4ctx, u8 *key, u32 key_len)
 {
 	u32 t, u;
 	u32 keyindex;
 	u32 stateindex;
-	u8 * state;
+	u8 *state;
 	u32 counter;
 
 	state = parc4ctx->state;
@@ -135,7 +135,7 @@ static u32 arcfour_byte(struct arc4context	*parc4ctx)
 	u32 x;
 	u32 y;
 	u32 sx, sy;
-	u8 * state;
+	u8 *state;
 
 	state = parc4ctx->state;
 	x = (parc4ctx->x + 1) & 0xff;
@@ -149,10 +149,12 @@ static u32 arcfour_byte(struct arc4context	*parc4ctx)
 	return state[(sx + sy) & 0xff];
 }
 
-static void arcfour_encrypt(struct arc4context	*parc4ctx,
-	u8 * dest,
-	u8 * src,
-	u32 len)
+static void arcfour_encrypt(
+	struct arc4context *parc4ctx,
+	u8 *dest,
+	u8 *src,
+	u32 len
+)
 {
 	u32 i;
 
@@ -229,15 +231,15 @@ void rtw_wep_encrypt(struct adapter *padapter, u8 *pxmitframe)
 	u8 *pframe, *payload, *iv;    /* wepkey */
 	u8 wepkey[16];
 	u8   hw_hdr_offset = 0;
-	struct	pkt_attrib	 *pattrib = &((struct xmit_frame*)pxmitframe)->attrib;
+	struct	pkt_attrib	 *pattrib = &((struct xmit_frame *)pxmitframe)->attrib;
 	struct	security_priv *psecuritypriv = &padapter->securitypriv;
 	struct	xmit_priv 	*pxmitpriv = &padapter->xmitpriv;
 
-	if (((struct xmit_frame*)pxmitframe)->buf_addr == NULL)
+	if (((struct xmit_frame *)pxmitframe)->buf_addr == NULL)
 		return;
 
 	hw_hdr_offset = TXDESC_OFFSET;
-	pframe = ((struct xmit_frame*)pxmitframe)->buf_addr + hw_hdr_offset;
+	pframe = ((struct xmit_frame *)pxmitframe)->buf_addr + hw_hdr_offset;
 
 	/* start to encrypt each fragment */
 	if ((pattrib->encrypt == _WEP40_) || (pattrib->encrypt == _WEP104_)) {
@@ -286,10 +288,10 @@ void rtw_wep_decrypt(struct adapter  *padapter, u8 *precvframe)
 	u32 keylength;
 	u8 *pframe, *payload, *iv, wepkey[16];
 	u8  keyindex;
-	struct	rx_pkt_attrib	 *prxattrib = &(((union recv_frame*)precvframe)->u.hdr.attrib);
+	struct	rx_pkt_attrib	 *prxattrib = &(((union recv_frame *)precvframe)->u.hdr.attrib);
 	struct	security_priv *psecuritypriv = &padapter->securitypriv;
 
-	pframe = (unsigned char *)((union recv_frame*)precvframe)->u.hdr.rx_data;
+	pframe = (unsigned char *)((union recv_frame *)precvframe)->u.hdr.rx_data;
 
 	/* start to decrypt recvframe */
 	if ((prxattrib->encrypt == _WEP40_) || (prxattrib->encrypt == _WEP104_)) {
@@ -323,7 +325,7 @@ void rtw_wep_decrypt(struct adapter  *padapter, u8 *precvframe)
 
 /* 3		=====TKIP related ===== */
 
-static u32 secmicgetuint32(u8 * p)
+static u32 secmicgetuint32(u8 *p)
 /*  Convert from Byte[] to Us3232 in a portable way */
 {
 	s32 i;
@@ -336,7 +338,7 @@ static u32 secmicgetuint32(u8 * p)
 	return res;
 }
 
-static void secmicputuint32(u8 * p, u32 val)
+static void secmicputuint32(u8 *p, u32 val)
 /*  Convert from Us3232 to Byte[] in a portable way */
 {
 	long i;
@@ -356,7 +358,7 @@ static void secmicclear(struct mic_data *pmicdata)
 	pmicdata->M = 0;
 }
 
-void rtw_secmicsetkey(struct mic_data *pmicdata, u8 * key)
+void rtw_secmicsetkey(struct mic_data *pmicdata, u8 *key)
 {
 	/*  Set the key */
 	pmicdata->K0 = secmicgetuint32(key);
@@ -387,7 +389,7 @@ void rtw_secmicappendbyte(struct mic_data *pmicdata, u8 b)
 	}
 }
 
-void rtw_secmicappend(struct mic_data *pmicdata, u8 * src, u32 nbytes)
+void rtw_secmicappend(struct mic_data *pmicdata, u8 *src, u32 nbytes)
 {
 	/*  This is simple */
 	while (nbytes > 0) {
@@ -396,7 +398,7 @@ void rtw_secmicappend(struct mic_data *pmicdata, u8 * src, u32 nbytes)
 	}
 }
 
-void rtw_secgetmic(struct mic_data *pmicdata, u8 * dst)
+void rtw_secgetmic(struct mic_data *pmicdata, u8 *dst)
 {
 	/*  Append the minimum padding */
 	rtw_secmicappendbyte(pmicdata, 0x5a);
@@ -416,7 +418,7 @@ void rtw_secgetmic(struct mic_data *pmicdata, u8 * dst)
 }
 
 
-void rtw_seccalctkipmic(u8 * key, u8 *header, u8 *data, u32 data_len, u8 *mic_code, u8 pri)
+void rtw_seccalctkipmic(u8 *key, u8 *header, u8 *data, u32 data_len, u8 *mic_code, u8 pri)
 {
 
 	struct mic_data	micdata;
@@ -676,11 +678,11 @@ u32 rtw_tkip_encrypt(struct adapter *padapter, u8 *pxmitframe)
 	struct	xmit_priv 	*pxmitpriv = &padapter->xmitpriv;
 	u32 res = _SUCCESS;
 
-	if (((struct xmit_frame*)pxmitframe)->buf_addr == NULL)
+	if (((struct xmit_frame *)pxmitframe)->buf_addr == NULL)
 		return _FAIL;
 
 	hw_hdr_offset = TXDESC_OFFSET;
-	pframe = ((struct xmit_frame*)pxmitframe)->buf_addr + hw_hdr_offset;
+	pframe = ((struct xmit_frame *)pxmitframe)->buf_addr + hw_hdr_offset;
 
 	/* 4 start to encrypt each fragment */
 	if (pattrib->encrypt == _TKIP_) {
@@ -785,7 +787,7 @@ u32 rtw_tkip_decrypt(struct adapter *padapter, u8 *precvframe)
 /* 	struct	recv_priv 	*precvpriv =&padapter->recvpriv; */
 	u32 	res = _SUCCESS;
 
-	pframe = (unsigned char *)((union recv_frame*)precvframe)->u.hdr.rx_data;
+	pframe = (unsigned char *)((union recv_frame *)precvframe)->u.hdr.rx_data;
 
 	/* 4 start to decrypt recvframe */
 	if (prxattrib->encrypt == _TKIP_) {
@@ -931,7 +933,7 @@ static void construct_mic_iv(
   sint a4_exists,
   u8 *mpdu,
   uint payload_length,
-  u8 * pn_vector,
+  u8 *pn_vector,
   uint frtype
 );/*  add for CONFIG_IEEE80211W, none 11w also can use */
 static void construct_mic_header1(
@@ -1880,7 +1882,7 @@ u32 rtw_aes_decrypt(struct adapter *padapter, u8 *precvframe)
 /* 	struct	recv_priv 	*precvpriv =&padapter->recvpriv; */
 	u32 res = _SUCCESS;
 
-	pframe = (unsigned char *)((union recv_frame*)precvframe)->u.hdr.rx_data;
+	pframe = (unsigned char *)((union recv_frame *)precvframe)->u.hdr.rx_data;
 	/* 4 start to encrypt each fragment */
 	if ((prxattrib->encrypt == _AES_)) {
 
@@ -1973,7 +1975,7 @@ u32 rtw_BIP_verify(struct adapter *padapter, u8 *precvframe)
 		return _FAIL;
 	}
 	/* PKT start */
-	pframe = (unsigned char *)((union recv_frame*)precvframe)->u.hdr.rx_data;
+	pframe = (unsigned char *)((union recv_frame *)precvframe)->u.hdr.rx_data;
 	/* mapping to wlan header */
 	pwlanhdr = (struct ieee80211_hdr *)pframe;
 	/* save the frame body + MME */
@@ -2279,7 +2281,7 @@ static void *aes_encrypt_init(u8 *key, size_t len)
 	u32 *rk;
 	if (len != 16)
 		return NULL;
-	rk = (u32*)rtw_malloc(AES_PRIV_SIZE);
+	rk = (u32 *)rtw_malloc(AES_PRIV_SIZE);
 	if (rk == NULL)
 		return NULL;
 	rijndaelKeySetupEnc(rk, key);
