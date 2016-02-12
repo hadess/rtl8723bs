@@ -787,8 +787,7 @@ static s32 update_attrib(struct adapter *padapter, _pkt *pkt, struct pkt_attrib 
 			#endif
 			res = _FAIL;
 			goto exit;
-		}
-		else if ((check_fwstate(pmlmepriv, WIFI_AP_STATE) ==true) && (!(psta->state & _FW_LINKED))) {
+		} else if ((check_fwstate(pmlmepriv, WIFI_AP_STATE) ==true) && (!(psta->state & _FW_LINKED))) {
 			DBG_COUNTER(padapter->tx_logs.core_tx_upd_attrib_err_ucast_ap_link);
 			res = _FAIL;
 			goto exit;
@@ -1440,8 +1439,7 @@ s32 rtw_mgmt_xmitframe_coalesce(struct adapter *padapter, _pkt *pkt, struct xmit
 
 		/* copy right BIP mic value, total is 128bits, we use the 0~63 bits */
 		memcpy(pframe-8, mic, 8);
-	}
-	else { /* unicast mgmt frame TX */
+	} else { /* unicast mgmt frame TX */
 		/* start to encrypt mgmt frame */
 		if (subtype == WIFI_DEAUTH || subtype == WIFI_DISASSOC ||
 			subtype == WIFI_REASSOCREQ || subtype == WIFI_ACTION) {
@@ -1587,8 +1585,7 @@ void rtw_update_protection(struct adapter *padapter, u8 *ie, uint ie_len)
 					pxmitpriv->vcs = RTS_CTS;
 				else
 					pxmitpriv->vcs = CTS_TO_SELF;
-			}
-			else
+			} else
 				pxmitpriv->vcs = NONE_VCS;
 		}
 
@@ -2207,11 +2204,7 @@ void rtw_alloc_hwxmits(struct adapter *padapter)
 		/* pxmitpriv->bk_txqueue.head = 0; */
 		/* hwxmits[3] .phwtxqueue = &pxmitpriv->bk_txqueue; */
 		hwxmits[3] .sta_queue = &pxmitpriv->bk_pending;
-	}
-	else {
-
-
-	}
+	} else {}
 
 
 }
@@ -2377,12 +2370,10 @@ inline bool xmitframe_hiq_filter(struct xmit_frame *xmitframe)
 				, attrib->ether_type, attrib->dhcp_pkt?" DHCP":"");
 			allow = true;
 		}
-	}
-	else if (registry->hiq_filter == RTW_HIQ_FILTER_ALLOW_ALL)
+	} else if (registry->hiq_filter == RTW_HIQ_FILTER_ALLOW_ALL)
 		allow = true;
 	else if (registry->hiq_filter == RTW_HIQ_FILTER_DENY_ALL) {
-	}
-	else
+	} else
 		rtw_warn_on(1);
 
 	return allow;
@@ -2587,8 +2578,7 @@ static void dequeue_xmitframes_to_sleeping_queue(struct adapter *padapter, struc
 
 			ptxservq->qcnt--;
 			phwxmits[ac_index].accnt--;
-		}
-		else {
+		} else {
 			/* DBG_871X("xmitframe_enqueue_for_sleeping_sta return false\n"); */
 		}
 
