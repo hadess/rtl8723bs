@@ -864,8 +864,7 @@ u32 rtw_tkip_decrypt(struct adapter *padapter, u8 *precvframe)
 			}
 
 			TKIP_SW_DEC_CNT_INC(psecuritypriv, prxattrib->ra);
-		}
-		else {
+		} else {
 			RT_TRACE(_module_rtl871x_security_c_, _drv_err_, ("rtw_tkip_decrypt: stainfo == NULL!!!\n"));
 			res = _FAIL;
 		}
@@ -2001,12 +2000,10 @@ u32 rtw_BIP_verify(struct adapter *padapter, u8 *precvframe)
 		if (!memcmp(mic, pframe+pattrib->pkt_len-8, 8)) {
 			pmlmeext->mgnt_80211w_IPN_rx = temp_ipn;
 			res = _SUCCESS;
-		}
-		else
+		} else
 			DBG_871X("BIP MIC error!\n");
 
-	}
-	else
+	} else
 		res = RTW_RX_HANDLED;
 BIP_exit:
 
