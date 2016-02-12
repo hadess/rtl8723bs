@@ -430,8 +430,7 @@ u8 rtw_get_center_ch(u8 channel, u8 chnl_bw, u8 chnl_offset)
 			center_ch = 155;
 		else if (channel <= 14)
 			center_ch = 7;
-	}
-	else if (chnl_bw == CHANNEL_WIDTH_40) {
+	} else if (chnl_bw == CHANNEL_WIDTH_40) {
 		if (chnl_offset == HAL_PRIME_CHNL_OFFSET_LOWER)
 			center_ch = channel + 2;
 		else
@@ -769,8 +768,7 @@ s16 rtw_camid_alloc(struct adapter *adapter, struct sta_info *sta, u8 kid)
 		}
 
 		cam_id = kid;
-	}
-	else {
+	} else {
 		int i;
 		u8 *addr = sta?sta->hwaddr:NULL;
 
@@ -991,8 +989,7 @@ void WMMOnAssocRsp(struct adapter *padapter)
 					/* compare CW and AIFS */
 					if ((edca[j] & 0xFFFF) < (edca[i] & 0xFFFF)) {
 						change_inx = true;
-					}
-					else if ((edca[j] & 0xFFFF) == (edca[i] & 0xFFFF)) {
+					} else if ((edca[j] & 0xFFFF) == (edca[i] & 0xFFFF)) {
 						/* compare TXOP */
 						if ((edca[j] >> 16) > (edca[i] >> 16))
 							change_inx = true;
@@ -1082,8 +1079,7 @@ static void bwmode_update_check(struct adapter *padapter, struct ndis_80211_var_
 
 		/* update HT info also */
 		HT_info_handler(padapter, pIE);
-	}
-	else
+	} else
 		pmlmeinfo->bwmode_updated = false;
 
 
@@ -1688,8 +1684,7 @@ unsigned char check_assoc_AP(u8 *pframe, uint len)
 			if ((!memcmp(pIE->data, ARTHEROS_OUI1, 3)) || (!memcmp(pIE->data, ARTHEROS_OUI2, 3))) {
 				DBG_871X("link to Artheros AP\n");
 				return HT_IOT_PEER_ATHEROS;
-			}
-			else if ((!memcmp(pIE->data, BROADCOM_OUI1, 3))
+			} else if ((!memcmp(pIE->data, BROADCOM_OUI1, 3))
 						|| (!memcmp(pIE->data, BROADCOM_OUI2, 3))
 						|| (!memcmp(pIE->data, BROADCOM_OUI3, 3))) {
 				DBG_871X("link to Broadcom AP\n");
@@ -1734,8 +1729,7 @@ unsigned char check_assoc_AP(u8 *pframe, uint len)
 			} else if (!memcmp(pIE->data, AIRGOCAP_OUI, 3)) {
 				DBG_871X("link to Airgo Cap\n");
 				return HT_IOT_PEER_AIRGO;
-			}
-			else
+			} else
 				break;
 
 		default:
