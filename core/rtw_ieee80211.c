@@ -44,21 +44,21 @@ u8 RSN_CIPHER_SUITE_WEP104[] = { 0x00, 0x0f, 0xac, 5 };
 /*  */
 
 static u8 WIFI_CCKRATES[] = {
- (IEEE80211_CCK_RATE_1MB | IEEE80211_BASIC_RATE_MASK),
- (IEEE80211_CCK_RATE_2MB | IEEE80211_BASIC_RATE_MASK),
- (IEEE80211_CCK_RATE_5MB | IEEE80211_BASIC_RATE_MASK),
- (IEEE80211_CCK_RATE_11MB | IEEE80211_BASIC_RATE_MASK)
+		(IEEE80211_CCK_RATE_1MB | IEEE80211_BASIC_RATE_MASK),
+		(IEEE80211_CCK_RATE_2MB | IEEE80211_BASIC_RATE_MASK),
+		(IEEE80211_CCK_RATE_5MB | IEEE80211_BASIC_RATE_MASK),
+		(IEEE80211_CCK_RATE_11MB | IEEE80211_BASIC_RATE_MASK)
 };
 
 static u8 WIFI_OFDMRATES[] = {
- (IEEE80211_OFDM_RATE_6MB),
- (IEEE80211_OFDM_RATE_9MB),
- (IEEE80211_OFDM_RATE_12MB),
- (IEEE80211_OFDM_RATE_18MB),
- (IEEE80211_OFDM_RATE_24MB),
- IEEE80211_OFDM_RATE_36MB,
- IEEE80211_OFDM_RATE_48MB,
- IEEE80211_OFDM_RATE_54MB
+		(IEEE80211_OFDM_RATE_6MB),
+		(IEEE80211_OFDM_RATE_9MB),
+		(IEEE80211_OFDM_RATE_12MB),
+		(IEEE80211_OFDM_RATE_18MB),
+		(IEEE80211_OFDM_RATE_24MB),
+		IEEE80211_OFDM_RATE_36MB,
+		IEEE80211_OFDM_RATE_48MB,
+		IEEE80211_OFDM_RATE_54MB
 };
 
 
@@ -537,7 +537,7 @@ int rtw_parse_wpa_ie(u8 *wpa_ie, int wpa_ie_len, int *group_cipher, int *pairwis
 
 	/* pairwise_cipher */
 	if (left >= 2) {
-    /* count = le16_to_cpu(*(u16*)pos); */
+		/* count = le16_to_cpu(*(u16*)pos); */
 		count = RTW_GET_LE16(pos);
 		pos += 2;
 		left -= 2;
@@ -759,7 +759,7 @@ u8 rtw_is_wps_ie(u8 *ie_ptr, uint *wps_ielen)
 	u8 eid, wps_oui[4] = {0x0, 0x50, 0xf2, 0x04};
 
 	if (ie_ptr == NULL)
-    return match;
+		return match;
 
 	eid = ie_ptr[0];
 
@@ -1151,27 +1151,27 @@ ParseRes rtw_ieee802_11_parse_elems(u8 *start, uint len,
 static u8 key_char2num(u8 ch);
 static u8 key_char2num(u8 ch)
 {
-    if ((ch >= '0') && (ch <= '9'))
-      return ch - '0';
-    else if ((ch >= 'a') && (ch <= 'f'))
-      return ch - 'a' + 10;
-    else if ((ch >= 'A') && (ch <= 'F'))
-      return ch - 'A' + 10;
-    else
-      return 0xff;
+		if ((ch >= '0') && (ch <= '9'))
+			return ch - '0';
+		else if ((ch >= 'a') && (ch <= 'f'))
+			return ch - 'a' + 10;
+		else if ((ch >= 'A') && (ch <= 'F'))
+			return ch - 'A' + 10;
+		else
+			return 0xff;
 }
 
 u8 key_2char2num(u8 hch, u8 lch);
 u8 key_2char2num(u8 hch, u8 lch)
 {
-    return ((key_char2num(hch) << 4) | key_char2num(lch));
+		return ((key_char2num(hch) << 4) | key_char2num(lch));
 }
 
 void rtw_macaddr_cfg(u8 *mac_addr)
 {
 	u8 mac[ETH_ALEN];
 	if (mac_addr == NULL)
-    return;
+		return;
 
 	if (rtw_initmac) {	/* 	Users specify the mac address */
 		int jj, kk;
