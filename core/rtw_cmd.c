@@ -1036,7 +1036,7 @@ u8 rtw_setstakey_cmd(struct adapter *padapter, struct sta_info *sta, u8 unicast_
 		memcpy(&psetstakey_para->key, &sta->dot118021x_UncstKey, 16);
 	} else{
 		memcpy(&psetstakey_para->key, &psecuritypriv->dot118021XGrpKey[psecuritypriv->dot118021XGrpKeyid].skey, 16);
-  }
+	}
 
 	/* jeff: set this becasue at least sw key is ready */
 	padapter->securitypriv.busetkipkey = true;
