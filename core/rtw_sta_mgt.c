@@ -567,7 +567,7 @@ struct sta_info *rtw_get_stainfo(struct sta_priv *pstapriv, u8 *hwaddr)
 u32 rtw_init_bcmc_stainfo(struct adapter *padapter)
 {
 
-	struct sta_info 	*psta;
+	struct sta_info *psta;
 	struct tx_servq	*ptxservq;
 	u32 res = _SUCCESS;
 	NDIS_802_11_MAC_ADDRESS	bcast_addr = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
@@ -594,8 +594,8 @@ exit:
 
 struct sta_info *rtw_get_bcmc_stainfo(struct adapter *padapter)
 {
-	struct sta_info 	*psta;
-	struct sta_priv 	*pstapriv = &padapter->stapriv;
+	struct sta_info *psta;
+	struct sta_priv *pstapriv = &padapter->stapriv;
 	u8 bc_addr[ETH_ALEN] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
 
 	psta = rtw_get_stainfo(pstapriv, bc_addr);
