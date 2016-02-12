@@ -146,7 +146,8 @@ s32	_rtw_init_xmit_priv(struct xmit_priv *pxmitpriv, struct adapter *padapter)
 		pxmitbuf->buf_tag = XMITBUF_DATA;
 
 		/* Tx buf allocation may fail sometimes, so sleep and retry. */
-		if ((res =rtw_os_xmit_resource_alloc(padapter, pxmitbuf, (MAX_XMITBUF_SZ + XMITBUF_ALIGN_SZ), true)) == _FAIL) {
+		res = rtw_os_xmit_resource_alloc(padapter, pxmitbuf, (MAX_XMITBUF_SZ + XMITBUF_ALIGN_SZ), true);
+		if (res == _FAIL) {
 			msleep(10);
 			res = rtw_os_xmit_resource_alloc(padapter, pxmitbuf, (MAX_XMITBUF_SZ + XMITBUF_ALIGN_SZ), true);
 			if (res == _FAIL)
@@ -226,7 +227,8 @@ s32	_rtw_init_xmit_priv(struct xmit_priv *pxmitpriv, struct adapter *padapter)
 		pxmitbuf->padapter = padapter;
 		pxmitbuf->buf_tag = XMITBUF_MGNT;
 
-		if ((res =rtw_os_xmit_resource_alloc(padapter, pxmitbuf, MAX_XMIT_EXTBUF_SZ + XMITBUF_ALIGN_SZ, true)) == _FAIL) {
+		res = rtw_os_xmit_resource_alloc(padapter, pxmitbuf, MAX_XMIT_EXTBUF_SZ + XMITBUF_ALIGN_SZ, true);
+		if (res == _FAIL) {
 			res = _FAIL;
 			goto exit;
 		}
@@ -255,7 +257,8 @@ s32	_rtw_init_xmit_priv(struct xmit_priv *pxmitpriv, struct adapter *padapter)
 			pxmitbuf->padapter = padapter;
 			pxmitbuf->buf_tag = XMITBUF_CMD;
 
-			if ((res =rtw_os_xmit_resource_alloc(padapter, pxmitbuf, MAX_CMDBUF_SZ+XMITBUF_ALIGN_SZ, true)) == _FAIL) {
+			res = rtw_os_xmit_resource_alloc(padapter, pxmitbuf, MAX_CMDBUF_SZ+XMITBUF_ALIGN_SZ, true);
+			if (res == _FAIL) {
 				res = _FAIL;
 				goto exit;
 			}
@@ -317,7 +320,8 @@ void _rtw_free_xmit_priv (struct xmit_priv *pxmitpriv)
 		vfree(pxmitpriv->pallocated_xmitbuf);
 
 	/* free xframe_ext queue,  the same count as extbuf  */
-	if ((pxmitframe = (struct xmit_frame*)pxmitpriv->xframe_ext)) {
+	pxmitframe = (struct xmit_frame*)pxmitpriv->xframe_ext;
+	if (pxmitframe) {
 		for (i = 0; i < NR_XMIT_EXTBUFF; i++) {
 			rtw_os_xmit_complete(padapter, pxmitframe);
 			pxmitframe++;
@@ -1652,12 +1656,14 @@ struct xmit_frame *__rtw_alloc_cmdxmitframe(struct xmit_priv *pxmitpriv,
 	struct xmit_frame		*pcmdframe;
 	struct xmit_buf		*pxmitbuf;
 
-	if ((pcmdframe = rtw_alloc_xmitframe(pxmitpriv)) == NULL) {
+	pcmdframe = rtw_alloc_xmitframe(pxmitpriv);
+	if (pcmdframe == NULL) {
 		DBG_871X("%s, alloc xmitframe fail\n", __func__);
 		return NULL;
 	}
 
-	if ((pxmitbuf = __rtw_alloc_cmd_xmitbuf(pxmitpriv, buf_type)) == NULL) {
+	pxmitbuf = __rtw_alloc_cmd_xmitbuf(pxmitpriv, buf_type);
+	if (pxmitbuf == NULL) {
 		DBG_871X("%s, alloc xmitbuf fail\n", __func__);
 		rtw_free_xmitframe(pxmitpriv, pcmdframe);
 		return NULL;
