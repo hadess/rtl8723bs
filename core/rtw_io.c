@@ -171,7 +171,7 @@ int rtw_init_io_priv(struct adapter *padapter, void (*set_intf_ops)(struct adapt
 	pintf->padapter = padapter;
 	pintf->pintf_dev = adapter_to_dvobj(padapter);
 
-	set_intf_ops(padapter,&pintf->io_ops);
+	set_intf_ops(padapter, &pintf->io_ops);
 
 	return _SUCCESS;
 }
@@ -184,8 +184,8 @@ int rtw_init_io_priv(struct adapter *padapter, void (*set_intf_ops)(struct adapt
 int rtw_inc_and_chk_continual_io_error(struct dvobj_priv *dvobj)
 {
 	int ret = false;
-	int value;
-	if ((value =atomic_inc_return(&dvobj->continual_io_error)) > MAX_CONTINUAL_IO_ERR) {
+	int value = atomic_inc_return(&dvobj->continual_io_error);
+	if (value > MAX_CONTINUAL_IO_ERR) {
 		DBG_871X("[dvobj:%p][ERROR] continual_io_error:%d > %d\n", dvobj, value, MAX_CONTINUAL_IO_ERR);
 		ret = true;
 	} else {

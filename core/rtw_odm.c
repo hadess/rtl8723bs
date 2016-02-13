@@ -105,7 +105,7 @@ void rtw_odm_dbg_comp_msg(void *sel, struct adapter *adapter)
 
 	rtw_hal_get_def_var(adapter, HW_DEF_ODM_DBG_FLAG, &dbg_comp);
 	DBG_871X_SEL_NL(sel, "odm.DebugComponents = 0x%016llx\n", dbg_comp);
-	for (i = 0;i<RTW_ODM_COMP_MAX;i++) {
+	for (i = 0; i < RTW_ODM_COMP_MAX; i++) {
 		if (odm_comp_str[i])
 		DBG_871X_SEL_NL(sel, "%cBIT%-2d %s\n",
 			(BIT0 << i) & dbg_comp ? '+' : ' ', i, odm_comp_str[i]);
@@ -124,7 +124,7 @@ void rtw_odm_dbg_level_msg(void *sel, struct adapter *adapter)
 
 	rtw_hal_get_def_var(adapter, HW_DEF_ODM_DBG_LEVEL, &dbg_level);
 	DBG_871X_SEL_NL(sel, "odm.DebugLevel = %u\n", dbg_level);
-	for (i = 0;i<RTW_ODM_DBG_LEVEL_NUM;i++) {
+	for (i = 0; i < RTW_ODM_DBG_LEVEL_NUM; i++) {
 		if (odm_dbg_level_str[i])
 			DBG_871X_SEL_NL(sel, "%u %s\n", i, odm_dbg_level_str[i]);
 	}
@@ -142,7 +142,7 @@ void rtw_odm_ability_msg(void *sel, struct adapter *adapter)
 
 	rtw_hal_get_hwreg(adapter, HW_VAR_DM_FLAG, (u8 *)&ability);
 	DBG_871X_SEL_NL(sel, "odm.SupportAbility = 0x%08x\n", ability);
-	for (i = 0;i<RTW_ODM_ABILITY_MAX;i++) {
+	for (i = 0; i < RTW_ODM_ABILITY_MAX; i++) {
 		if (odm_ability_str[i])
 		DBG_871X_SEL_NL(sel, "%cBIT%-2d %s\n",
 			(BIT0 << i) & ability ? '+' : ' ', i, odm_ability_str[i]);
@@ -190,6 +190,6 @@ void rtw_odm_get_perpkt_rssi(void *sel, struct adapter *adapter)
 	struct hal_com_data *hal_data = GET_HAL_DATA(adapter);
 	DM_ODM_T *odm = &(hal_data->odmpriv);
 
-	DBG_871X_SEL_NL(sel,"RxRate = %s, RSSI_A = %d(%%), RSSI_B = %d(%%)\n",
+	DBG_871X_SEL_NL(sel, "RxRate = %s, RSSI_A = %d(%%), RSSI_B = %d(%%)\n",
 	HDATA_RATE(odm->RxRate), odm->RSSI_A, odm->RSSI_B);
 }
