@@ -56,8 +56,7 @@ void rtw_btcoex_ConnectNotify(struct adapter *padapter, u8 action)
 void rtw_btcoex_MediaStatusNotify(struct adapter *padapter, u8 mediaStatus)
 {
 	if ((RT_MEDIA_CONNECT == mediaStatus)
-		&& (check_fwstate(&padapter->mlmepriv, WIFI_AP_STATE) == true))
-	{
+		&& (check_fwstate(&padapter->mlmepriv, WIFI_AP_STATE) == true)) {
 		rtw_hal_set_hwreg(padapter, HW_VAR_DL_RSVD_PAGE, NULL);
 	}
 
@@ -86,16 +85,14 @@ void rtw_btcoex_SuspendNotify(struct adapter *padapter, u8 state)
 
 void rtw_btcoex_HaltNotify(struct adapter *padapter)
 {
-	if (false == padapter->bup)
-	{
+	if (false == padapter->bup) {
 		DBG_871X(FUNC_ADPT_FMT ": bup =%d Skip!\n",
 			FUNC_ADPT_ARG(padapter), padapter->bup);
 
 		return;
 	}
 
-	if (true == padapter->bSurpriseRemoved)
-	{
+	if (true == padapter->bSurpriseRemoved) {
 		DBG_871X(FUNC_ADPT_FMT ": bSurpriseRemoved =%d Skip!\n",
 			FUNC_ADPT_ARG(padapter), padapter->bSurpriseRemoved);
 
@@ -126,12 +123,9 @@ s32 rtw_btcoex_IsBTCoexCtrlAMPDUSize(struct adapter *padapter)
 
 void rtw_btcoex_SetManualControl(struct adapter *padapter, u8 manual)
 {
-	if (true == manual)
-	{
+	if (true == manual) {
 		hal_btcoex_SetManualControl(padapter, true);
-	}
-	else
-	{
+	} else{
 		hal_btcoex_SetManualControl(padapter, false);
 	}
 }
@@ -212,14 +206,11 @@ void rtw_btcoex_RejectApAggregatedPacket(struct adapter *padapter, u8 enable)
 	pmlmeinfo = &padapter->mlmeextpriv.mlmext_info;
 	psta = rtw_get_stainfo(&padapter->stapriv, get_bssid(&padapter->mlmepriv));
 
-	if (true == enable)
-	{
+	if (true == enable) {
 		pmlmeinfo->bAcceptAddbaReq = false;
 		if (psta)
 			send_delba(padapter, 0, psta->hwaddr);
-	}
-	else
-	{
+	} else{
 		pmlmeinfo->bAcceptAddbaReq = true;
 	}
 }
@@ -244,8 +235,7 @@ void rtw_btcoex_LPS_Leave(struct adapter *padapter)
 
 	pwrpriv = adapter_to_pwrctl(padapter);
 
-	if (pwrpriv->pwr_mode != PS_MODE_ACTIVE)
-	{
+	if (pwrpriv->pwr_mode != PS_MODE_ACTIVE) {
 		rtw_set_ps_mode(padapter, PS_MODE_ACTIVE, 0, 0, "BTCOEX");
 		LPS_RF_ON_check(padapter, 100);
 		pwrpriv->bpower_saving = false;

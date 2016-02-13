@@ -20,7 +20,7 @@
 void _rtw_init_stainfo(struct sta_info *psta);
 void _rtw_init_stainfo(struct sta_info *psta)
 {
-	memset((u8 *)psta, 0, sizeof (struct sta_info));
+	memset((u8 *)psta, 0, sizeof(struct sta_info));
 
 	 spin_lock_init(&psta->lock);
 	INIT_LIST_HEAD(&psta->list);
@@ -64,7 +64,7 @@ u32 _rtw_init_sta_priv(struct	sta_priv *pstapriv)
 	struct sta_info *psta;
 	s32 i;
 
-	pstapriv->pallocated_stainfo_buf = vzalloc (sizeof(struct sta_info) * NUM_STA+ 4);
+	pstapriv->pallocated_stainfo_buf = vzalloc(sizeof(struct sta_info) * NUM_STA+4);
 
 	if (!pstapriv->pallocated_stainfo_buf)
 		return _FAIL;
@@ -84,8 +84,7 @@ u32 _rtw_init_sta_priv(struct	sta_priv *pstapriv)
 	psta = (struct sta_info *)(pstapriv->pstainfo_buf);
 
 
-	for (i = 0; i < NUM_STA; i++)
-	{
+	for (i = 0; i < NUM_STA; i++) {
 		_rtw_init_stainfo(psta);
 
 		INIT_LIST_HEAD(&(pstapriv->sta_hash[i]));
@@ -142,9 +141,8 @@ void kfree_all_stainfo(struct sta_priv *pstapriv)
 	phead = get_list_head(&pstapriv->free_sta_queue);
 	plist = get_next(phead);
 
-	while (phead != plist)
-	{
-		psta = LIST_CONTAINOR(plist, struct sta_info , list);
+	while (phead != plist) {
+		psta = LIST_CONTAINOR(plist, struct sta_info, list);
 		plist = get_next(plist);
 	}
 
@@ -168,19 +166,16 @@ u32 _rtw_free_sta_priv(struct	sta_priv *pstapriv)
 
 		/*delete all reordering_ctrl_timer		*/
 		spin_lock_bh(&pstapriv->sta_hash_lock);
-		for (index = 0; index < NUM_STA; index++)
-		{
+		for (index = 0; index < NUM_STA; index++) {
 			phead = &(pstapriv->sta_hash[index]);
 			plist = get_next(phead);
 
-			while (phead != plist)
-			{
+			while (phead != plist) {
 				int i;
-				psta = LIST_CONTAINOR(plist, struct sta_info , hash_list);
+				psta = LIST_CONTAINOR(plist, struct sta_info, hash_list);
 				plist = get_next(plist);
 
-				for (i = 0; i < 16 ; i++)
-				{
+				for (i = 0; i < 16 ; i++) {
 					preorder_ctrl = &psta->recvreorder_ctrl[i];
 					del_timer_sync(&preorder_ctrl->reordering_ctrl_timer);
 				}
@@ -191,9 +186,9 @@ u32 _rtw_free_sta_priv(struct	sta_priv *pstapriv)
 
 		kfree_sta_priv_lock(pstapriv);
 
-		if (pstapriv->pallocated_stainfo_buf) {
+		if (pstapriv->pallocated_stainfo_buf)
 			vfree(pstapriv->pallocated_stainfo_buf);
-		}
+
 	}
 	return _SUCCESS;
 }
@@ -214,15 +209,12 @@ struct	sta_info *rtw_alloc_stainfo(struct	sta_priv *pstapriv, u8 *hwaddr)
 
 	/* spin_lock_bh(&(pfree_sta_queue->lock)); */
 	spin_lock_bh(&(pstapriv->sta_hash_lock));
-	if (list_empty(&pfree_sta_queue->queue))
-	{
+	if (list_empty(&pfree_sta_queue->queue)) {
 		/* spin_unlock_bh(&(pfree_sta_queue->lock)); */
 		spin_unlock_bh(&(pstapriv->sta_hash_lock));
 		psta = NULL;
 		return psta;
-	}
-	else
-	{
+	} else{
 		psta = LIST_CONTAINOR(get_next(&pfree_sta_queue->queue), struct sta_info, list);
 
 		list_del_init(&(psta->list));
@@ -253,7 +245,7 @@ struct	sta_info *rtw_alloc_stainfo(struct	sta_priv *pstapriv, u8 *hwaddr)
 
 		list_add_tail(&psta->hash_list, phash_list);
 
-		pstapriv->asoc_sta_count ++ ;
+		pstapriv->asoc_sta_count++;
 
 		/* spin_unlock_bh(&(pstapriv->sta_hash_lock)); */
 
@@ -262,19 +254,28 @@ struct	sta_info *rtw_alloc_stainfo(struct	sta_priv *pstapriv, u8 *hwaddr)
 /*  In this case, this packet will be dropped by recv_decache function if we use the 0x00 as the default value for tid_rxseq variable. */
 /*  So, we initialize the tid_rxseq variable as the 0xffff. */
 
-		for (i = 0; i < 16; i++)
-		{
-                     memcpy(&psta->sta_recvpriv.rxcache.tid_rxseq[ i ], &wRxSeqInitialValue, 2);
+		for (i = 0; i < 16; i++) {
+			memcpy(&psta->sta_recvpriv.rxcache.tid_rxseq[i], &wRxSeqInitialValue, 2);
 		}
 
-		RT_TRACE(_module_rtl871x_sta_mgt_c_, _drv_info_, ("alloc number_%d stainfo  with hwaddr = %x %x %x %x %x %x \n",
-		pstapriv->asoc_sta_count , hwaddr[0], hwaddr[1], hwaddr[2], hwaddr[3], hwaddr[4], hwaddr[5]));
+		RT_TRACE(
+			_module_rtl871x_sta_mgt_c_,
+			_drv_info_, (
+				"alloc number_%d stainfo  with hwaddr = %x %x %x %x %x %x \n",
+				pstapriv->asoc_sta_count,
+				hwaddr[0],
+				hwaddr[1],
+				hwaddr[2],
+				hwaddr[3],
+				hwaddr[4],
+				hwaddr[5]
+			)
+		);
 
 		init_addba_retry_timer(pstapriv->padapter, psta);
 
 		/* for A-MPDU Rx reordering buffer control */
-		for (i = 0; i < 16 ; i++)
-		{
+		for (i = 0; i < 16 ; i++) {
 			preorder_ctrl = &psta->recvreorder_ctrl[i];
 
 			preorder_ctrl->padapter = pstapriv->padapter;
@@ -315,7 +316,7 @@ exit:
 }
 
 /*  using pstapriv->sta_hash_lock to protect */
-u32 rtw_free_stainfo(struct adapter *padapter , struct sta_info *psta)
+u32 rtw_free_stainfo(struct adapter *padapter, struct sta_info *psta)
 {
 	int i;
 	struct __queue *pfree_sta_queue;
@@ -386,8 +387,20 @@ u32 rtw_free_stainfo(struct adapter *padapter , struct sta_info *psta)
 	spin_unlock_bh(&pxmitpriv->lock);
 
 	list_del_init(&psta->hash_list);
-	RT_TRACE(_module_rtl871x_sta_mgt_c_, _drv_err_, ("\n free number_%d stainfo  with hwaddr = 0x%.2x 0x%.2x 0x%.2x 0x%.2x 0x%.2x 0x%.2x \n", pstapriv->asoc_sta_count , psta->hwaddr[0], psta->hwaddr[1], psta->hwaddr[2], psta->hwaddr[3], psta->hwaddr[4], psta->hwaddr[5]));
-	pstapriv->asoc_sta_count --;
+	RT_TRACE(
+		_module_rtl871x_sta_mgt_c_,
+		_drv_err_, (
+			"\n free number_%d stainfo  with hwaddr = 0x%.2x 0x%.2x 0x%.2x 0x%.2x 0x%.2x 0x%.2x \n",
+			pstapriv->asoc_sta_count,
+			psta->hwaddr[0],
+			psta->hwaddr[1],
+			psta->hwaddr[2],
+			psta->hwaddr[3],
+			psta->hwaddr[4],
+			psta->hwaddr[5]
+		)
+	);
+	pstapriv->asoc_sta_count--;
 
 
 	/*  re-init sta_info; 20061114 will be init in alloc_stainfo */
@@ -397,8 +410,7 @@ u32 rtw_free_stainfo(struct adapter *padapter , struct sta_info *psta)
 	del_timer_sync(&psta->addba_retry_timer);
 
 	/* for A-MPDU Rx reordering buffer control, cancel reordering_ctrl_timer */
-	for (i = 0; i < 16 ; i++)
-	{
+	for (i = 0; i < 16 ; i++) {
 		struct list_head	*phead, *plist;
 		union recv_frame *prframe;
 		struct __queue *ppending_recvframe_queue;
@@ -416,8 +428,7 @@ u32 rtw_free_stainfo(struct adapter *padapter , struct sta_info *psta)
 		phead =		get_list_head(ppending_recvframe_queue);
 		plist = get_next(phead);
 
-		while (!list_empty(phead))
-		{
+		while (!list_empty(phead)) {
 			prframe = LIST_CONTAINOR(plist, union recv_frame, u);
 
 			plist = get_next(plist);
@@ -462,11 +473,10 @@ u32 rtw_free_stainfo(struct adapter *padapter , struct sta_info *psta)
 
 	psta->has_legacy_ac = 0;
 
-	pstapriv->sta_dz_bitmap &=~BIT(psta->aid);
-	pstapriv->tim_bitmap &=~BIT(psta->aid);
+	pstapriv->sta_dz_bitmap &= ~BIT(psta->aid);
+	pstapriv->tim_bitmap &= ~BIT(psta->aid);
 
-	if ((psta->aid >0) && (pstapriv->sta_aid[psta->aid - 1] == psta))
-	{
+	if ((psta->aid > 0) && (pstapriv->sta_aid[psta->aid - 1] == psta)) {
 		pstapriv->sta_aid[psta->aid - 1] = NULL;
 		psta->aid = 0;
 	}
@@ -488,26 +498,24 @@ void rtw_free_all_stainfo(struct adapter *padapter)
 	s32	index;
 	struct sta_info *psta = NULL;
 	struct	sta_priv *pstapriv = &padapter->stapriv;
-	struct sta_info* pbcmc_stainfo =rtw_get_bcmc_stainfo(padapter);
+	struct sta_info *pbcmc_stainfo = rtw_get_bcmc_stainfo(padapter);
 
 	if (pstapriv->asoc_sta_count == 1)
 		return;
 
 	spin_lock_bh(&pstapriv->sta_hash_lock);
 
-	for (index = 0; index< NUM_STA; index++)
-	{
+	for (index = 0; index < NUM_STA; index++) {
 		phead = &(pstapriv->sta_hash[index]);
 		plist = get_next(phead);
 
-		while (phead != plist)
-		{
-			psta = LIST_CONTAINOR(plist, struct sta_info , hash_list);
+		while (phead != plist) {
+			psta = LIST_CONTAINOR(plist, struct sta_info, hash_list);
 
 			plist = get_next(plist);
 
-			if (pbcmc_stainfo!=psta)
-				rtw_free_stainfo(padapter , psta);
+			if (pbcmc_stainfo != psta)
+				rtw_free_stainfo(padapter, psta);
 
 		}
 	}
@@ -528,13 +536,9 @@ struct sta_info *rtw_get_stainfo(struct sta_priv *pstapriv, u8 *hwaddr)
 		return NULL;
 
 	if (IS_MCAST(hwaddr))
-	{
 		addr = bc_addr;
-	}
 	else
-	{
 		addr = hwaddr;
-	}
 
 	index = wifi_mac_hash(addr);
 
@@ -544,15 +548,14 @@ struct sta_info *rtw_get_stainfo(struct sta_priv *pstapriv, u8 *hwaddr)
 	plist = get_next(phead);
 
 
-	while (phead != plist)
-	{
+	while (phead != plist) {
 
 		psta = LIST_CONTAINOR(plist, struct sta_info, hash_list);
 
 		if ((!memcmp(psta->hwaddr, addr, ETH_ALEN)))
-		{ /*  if found the matched address */
+		 /*  if found the matched address */
 			break;
-		}
+
 		psta = NULL;
 		plist = get_next(plist);
 	}
@@ -564,7 +567,7 @@ struct sta_info *rtw_get_stainfo(struct sta_priv *pstapriv, u8 *hwaddr)
 u32 rtw_init_bcmc_stainfo(struct adapter *padapter)
 {
 
-	struct sta_info 	*psta;
+	struct sta_info *psta;
 	struct tx_servq	*ptxservq;
 	u32 res = _SUCCESS;
 	NDIS_802_11_MAC_ADDRESS	bcast_addr = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
@@ -589,10 +592,10 @@ exit:
 }
 
 
-struct sta_info* rtw_get_bcmc_stainfo(struct adapter *padapter)
+struct sta_info *rtw_get_bcmc_stainfo(struct adapter *padapter)
 {
-	struct sta_info 	*psta;
-	struct sta_priv 	*pstapriv = &padapter->stapriv;
+	struct sta_info *psta;
+	struct sta_priv *pstapriv = &padapter->stapriv;
 	u8 bc_addr[ETH_ALEN] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
 
 	psta = rtw_get_stainfo(pstapriv, bc_addr);
@@ -607,40 +610,32 @@ u8 rtw_access_ctrl(struct adapter *padapter, u8 *mac_addr)
 	u8 match = false;
 	struct sta_priv *pstapriv = &padapter->stapriv;
 	struct wlan_acl_pool *pacl_list = &pstapriv->acl_list;
-	struct __queue	*pacl_node_q =&pacl_list->acl_node_q;
+	struct __queue	*pacl_node_q = &pacl_list->acl_node_q;
 
 	spin_lock_bh(&(pacl_node_q->lock));
 	phead = get_list_head(pacl_node_q);
 	plist = get_next(phead);
-	while (phead != plist)
-	{
+	while (phead != plist) {
 		paclnode = LIST_CONTAINOR(plist, struct rtw_wlan_acl_node, list);
 		plist = get_next(plist);
 
 		if (!memcmp(paclnode->addr, mac_addr, ETH_ALEN))
-		{
-			if (paclnode->valid == true)
-			{
+			if (paclnode->valid == true) {
 				match = true;
 				break;
 			}
-		}
+
 	}
 	spin_unlock_bh(&(pacl_node_q->lock));
 
 
-	if (pacl_list->mode == 1)/* accept unless in deny list */
-	{
+	if (pacl_list->mode == 1) /* accept unless in deny list */
 		res = (match == true) ?  false:true;
-	}
+
 	else if (pacl_list->mode == 2)/* deny unless in accept list */
-	{
 		res = (match == true) ?  true:false;
-	}
 	else
-	{
 		 res = true;
-	}
 
 	return res;
 }
