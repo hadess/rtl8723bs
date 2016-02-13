@@ -942,8 +942,8 @@ static s32 xmitframe_addmic(struct adapter *padapter, struct xmit_frame *pxmitfr
 
 			}
 
-                    /* if (pqospriv->qos_option == 1) */
-                    if (pattrib->qos_en)
+      /* if (pqospriv->qos_option == 1) */
+      if (pattrib->qos_en)
 				priority[0] = (u8)pxmitframe->attrib.priority;
 
 
@@ -1239,7 +1239,7 @@ s32 rtw_xmitframe_coalesce(struct adapter *padapter, _pkt *pkt, struct xmit_fram
 	}
 
 	if (psta == NULL)
-        {
+  {
 
 		DBG_871X("%s, psta ==NUL\n", __func__);
 		return _FAIL;
