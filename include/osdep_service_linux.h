@@ -74,50 +74,23 @@
 	typedef struct work_struct _workitem;
 
 #define SPIN_LOCK_IRQSAVE(_LOCK, IRQL)			\
-	_LOCK##_set = jiffies;				\
-	spin_lock_irqsave(&_LOCK, IRQL);		\
-	if (jiffies - _LOCK##_set > 10) {		\
-		pr_info("Delay for " #_LOCK "is %d\n", (int)(jiffies - _LOCK##_set)); \
-		dump_stack();				\
-	}
+	spin_lock_irqsave(&_LOCK, IRQL);
 
 #define SPIN_UNLOCK_IRQRESTORE(_LOCK, IRQL)		\
-	spin_unlock_irqrestore(&_LOCK, IRQL);	\
-	if (jiffies - _LOCK##_set > 10) {		\
-		pr_info("Delay till unlock for " #_LOCK "is %d\n", (int)(jiffies - _LOCK##_set)); \
-		dump_stack();				\
-	}
+	spin_unlock_irqrestore(&_LOCK, IRQL);
 
 #define SPIN_LOCK(_LOCK)				\
-	_LOCK##_set = jiffies;				\
-	spin_lock(&_LOCK);				\
-	if (jiffies - _LOCK##_set > 10) {		\
-		pr_info("Delay for " #_LOCK "is %d\n", (int)(jiffies - _LOCK##_set)); \
-		dump_stack();				\
-	}
+	spin_lock(&_LOCK);
 
 #define SPIN_UNLOCK(_LOCK)				\
-	spin_unlock(&_LOCK);				\
-	if (jiffies - _LOCK##_set > 10) {		\
-		pr_info("Delay itill unlock for " #_LOCK "is %d\n", (int)(jiffies - _LOCK##_set)); \
-		dump_stack();				\
-	}
+	spin_unlock(&_LOCK);
 
-#define	SPIN_LOCK_BH(_LOCK, SET)				\
-	_LOCK##_set = jiffies;				\
+#define	SPIN_LOCK_BH(_LOCK, SET)			\
 	SET = false;					\
-	spin_lock_bh(&_LOCK);				\
-	if (jiffies - _LOCK##_set > 10) {		\
-		pr_info("Delay for " #_LOCK "is %d\n", (int)(jiffies - _LOCK##_set)); \
-		dump_stack();				\
-	}
+	spin_lock_bh(&_LOCK);
 
-#define SPIN_UNLOCK_BH(_LOCK, SET)				\
-	spin_unlock_bh(&_LOCK);			\
-	if (jiffies - _LOCK##_set > 10) {		\
-		pr_info("Delay till unlock for " #_LOCK "is %d\n", (int)(jiffies - _LOCK##_set)); \
-		dump_stack();				\
-	}
+#define SPIN_UNLOCK_BH(_LOCK, SET)			\
+	spin_unlock_bh(&_LOCK);
 
 __inline static struct list_head *get_next(struct list_head	*list)
 {
