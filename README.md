@@ -1,12 +1,13 @@
 # rtl8723bs
 Realtek SDIO Wi-Fi driver
 
-Tested on: 
+Tested on:
 - Onda v975w
 - Teclast 3G
 - HP Stream 7
 - Dell Venue 8 3000
 - WinBook TW100 and TW700
+- Acer Aspire Switch 10E
 
 Do verify that the device is listed under ```/sys/bus/sdio/```
 
