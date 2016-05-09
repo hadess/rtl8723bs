@@ -1295,31 +1295,33 @@ static void construct_ctr_preload(
 	uint frtype /*  add for CONFIG_IEEE80211W, none 11w also can use */
 )
 {
-		sint i = 0;
+	sint i = 0;
 
-		for (i = 0; i < 16; i++)
-			ctr_preload[i] = 0x00;
-		i = 0;
+	for (i = 0; i < 16; i++)
+		ctr_preload[i] = 0x00;
+	i = 0;
 
-		ctr_preload[0] = 0x01;                                  /* flag */
-		if (qc_exists && a4_exists)
-			ctr_preload[1] = mpdu[30] & 0x0f;   /* QoC_Control */
-		if (qc_exists && !a4_exists)
-			ctr_preload[1] = mpdu[24] & 0x0f;
+	ctr_preload[0] = 0x01;                                  /* flag */
+	if (qc_exists && a4_exists)
+		ctr_preload[1] = mpdu[30] & 0x0f;   /* QoC_Control */
+	if (qc_exists && !a4_exists)
+		ctr_preload[1] = mpdu[24] & 0x0f;
+
 	/* 802.11w management frame should set management bit(4) */
 	if (frtype == WIFI_MGT_TYPE)
 		ctr_preload[1] |= BIT(4);
-		for (i = 2; i < 8; i++)
-			ctr_preload[i] = mpdu[i + 8];                       /* ctr_preload[2:7] = A2[0:5] = mpdu[10:15] */
-		#ifdef CONSISTENT_PN_ORDER
-		for (i = 8; i < 14; i++)
-			ctr_preload[i] =    pn_vector[i - 8];           /* ctr_preload[8:13] = PN[0:5] */
-		#else
-		for (i = 8; i < 14; i++)
-			ctr_preload[i] =    pn_vector[13 - i];          /* ctr_preload[8:13] = PN[5:0] */
-		#endif
-		ctr_preload[14] =  (unsigned char) (c / 256); /* Ctr */
-		ctr_preload[15] =  (unsigned char) (c % 256);
+
+	for (i = 2; i < 8; i++)
+		ctr_preload[i] = mpdu[i + 8];                       /* ctr_preload[2:7] = A2[0:5] = mpdu[10:15] */
+#ifdef CONSISTENT_PN_ORDER
+	for (i = 8; i < 14; i++)
+		ctr_preload[i] =    pn_vector[i - 8];           /* ctr_preload[8:13] = PN[0:5] */
+#else
+	for (i = 8; i < 14; i++)
+		ctr_preload[i] =    pn_vector[13 - i];          /* ctr_preload[8:13] = PN[5:0] */
+#endif
+	ctr_preload[14] =  (unsigned char) (c / 256); /* Ctr */
+	ctr_preload[15] =  (unsigned char) (c % 256);
 }
 
 
