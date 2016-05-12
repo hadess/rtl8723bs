@@ -46,60 +46,6 @@ static const struct ieee80211_regdomain rtw_regdom_rd = {
 		      }
 };
 
-static const struct ieee80211_regdomain rtw_regdom_11 = {
-	.n_reg_rules = 1,
-	.alpha2 = "99",
-	.reg_rules = {
-		      RTW_2GHZ_CH01_11,
-		      }
-};
-
-static const struct ieee80211_regdomain rtw_regdom_12_13 = {
-	.n_reg_rules = 2,
-	.alpha2 = "99",
-	.reg_rules = {
-		      RTW_2GHZ_CH01_11,
-		      RTW_2GHZ_CH12_13,
-		      }
-};
-
-static const struct ieee80211_regdomain rtw_regdom_no_midband = {
-	.n_reg_rules = 3,
-	.alpha2 = "99",
-	.reg_rules = {
-		      RTW_2GHZ_CH01_11,
-		      }
-};
-
-static const struct ieee80211_regdomain rtw_regdom_60_64 = {
-	.n_reg_rules = 3,
-	.alpha2 = "99",
-	.reg_rules = {
-		      RTW_2GHZ_CH01_11,
-		      RTW_2GHZ_CH12_13,
-		      }
-};
-
-static const struct ieee80211_regdomain rtw_regdom_14_60_64 = {
-	.n_reg_rules = 4,
-	.alpha2 = "99",
-	.reg_rules = {
-		      RTW_2GHZ_CH01_11,
-		      RTW_2GHZ_CH12_13,
-		      RTW_2GHZ_CH14,
-		      }
-};
-
-static const struct ieee80211_regdomain rtw_regdom_14 = {
-	.n_reg_rules = 3,
-	.alpha2 = "99",
-	.reg_rules = {
-		      RTW_2GHZ_CH01_11,
-		      RTW_2GHZ_CH12_13,
-		      RTW_2GHZ_CH14,
-		      }
-};
-
 static int rtw_ieee80211_channel_to_frequency(int chan, int band)
 {
 	/* see 802.11 17.3.8.3.2 and Annex J
