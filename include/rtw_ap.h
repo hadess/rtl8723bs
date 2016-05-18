@@ -15,11 +15,18 @@
 #ifndef __RTW_AP_H_
 #define __RTW_AP_H_
 
+extern unsigned char RTW_WPA_OUI[];
+extern unsigned char WMM_OUI[];
+extern unsigned char WPS_OUI[];
+extern unsigned char P2P_OUI[];
+extern unsigned char WFD_OUI[];
+
 void init_mlme_ap_info(struct adapter *padapter);
 void free_mlme_ap_info(struct adapter *padapter);
 /* void update_BCNTIM(struct adapter *padapter); */
 void update_beacon(struct adapter *padapter, u8 ie_id, u8 *oui, u8 tx);
 void add_RATid(struct adapter *padapter, struct sta_info *psta, u8 rssi_level);
+u8 chk_sta_is_alive(struct sta_info *psta);
 void expire_timeout_chk(struct adapter *padapter);
 void update_sta_info_apmode(struct adapter *padapter, struct sta_info *psta);
 void start_bss_network(struct adapter *padapter, u8 *pbuf);

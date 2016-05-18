@@ -16,6 +16,7 @@
 void output_bin(FILE *outb, const u8 *array, int len)
 {
 	int i;
+
 	for (i = 0; i < len; i++)
 		fwrite(&array[i], 1, 1, outb);
 }
