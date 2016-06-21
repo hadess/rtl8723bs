@@ -2662,7 +2662,10 @@ void Hal_EfuseParseBTCoexistInfo_8723B(
 			pHalData->ant_path = (tempval & BIT(6))?ODM_RF_PATH_B:ODM_RF_PATH_A;
 		} else {
 			pHalData->EEPROMBluetoothAntNum = Ant_x1;
-			pHalData->ant_path = ODM_RF_PATH_A;
+			if (pHalData->PackageType == PACKAGE_QFN68)
+				pHalData->ant_path = ODM_RF_PATH_B;
+			else
+				pHalData->ant_path = ODM_RF_PATH_A;
 		}
 	} else {
 		pHalData->EEPROMBluetoothCoexist = false;
