@@ -329,6 +329,7 @@ static struct adapter *rtw_sdio_if1_init(struct dvobj_priv *dvobj, const struct 
 	int status = _FAIL;
 	struct net_device *pnetdev;
 	struct adapter *padapter = NULL;
+	PSDIO_DATA psdio = &dvobj->intf_data;
 
 	if ((padapter = (struct adapter *)vzalloc(sizeof(*padapter))) == NULL) {
 		goto exit;
@@ -393,7 +394,7 @@ static struct adapter *rtw_sdio_if1_init(struct dvobj_priv *dvobj, const struct 
 
 	/* 3 8. get WLan MAC address */
 	/*  set mac addr */
-	rtw_macaddr_cfg(padapter->eeprompriv.mac_addr);
+	rtw_macaddr_cfg(&psdio->func->dev, padapter->eeprompriv.mac_addr);
 
 	rtw_hal_disable_interrupt(padapter);
 
