@@ -9,6 +9,7 @@ Tested on:
 - WinBook TW100 and TW700
 - Acer Aspire Switch 10E
 - Lenovo Miix 3-830
+- Medion Akoya S2217
 
 Do verify that the device is listed under ```/sys/bus/sdio/```
 
