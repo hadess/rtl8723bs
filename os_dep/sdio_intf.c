@@ -480,11 +480,12 @@ static int rtw_drv_init(
 		switch (func->device) {
 		case 0x0523:
 		case 0x0623:
+		case 0x0626:
 		case 0xb723:
 			break;
 		default:
-			pr_info("RTL8723BS: Found unrecognized vendor 0x%x, device 0x%x\n",
-				func->vendor, func->device);
+			pr_info("RTL8723BS: Found unrecognized device 0x%x for vendor 0x%x\n",
+				func->device, func->vendor);
 			goto exit;
 		}
 		break;
