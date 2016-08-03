@@ -436,8 +436,8 @@ static u8 halbtcoutsrc_Get(void *pBtcContext, u8 getType, void *pOutBuf)
 	pHalData = GET_HAL_DATA(padapter);
 	mlmeext = &padapter->mlmeextpriv;
 	pu8 = (u8 *)pOutBuf;
-	pS4Tmp = (s32*)pOutBuf;
-	pU4Tmp = (u32*)pOutBuf;
+	pS4Tmp = (s32 *)pOutBuf;
+	pU4Tmp = (u32 *)pOutBuf;
 	pU1Tmp = (u8 *)pOutBuf;
 	ret = true;
 
@@ -604,7 +604,7 @@ static u8 halbtcoutsrc_Set(void *pBtcContext, u8 setType, void *pInBuf)
 	pHalData = GET_HAL_DATA(padapter);
 	pu8 = (u8 *)pInBuf;
 	pU1Tmp = (u8 *)pInBuf;
-	pU4Tmp = (u32*)pInBuf;
+	pU4Tmp = (u32 *)pInBuf;
 	ret = true;
 
 	if (!halbtcoutsrc_IsBtCoexistAvailable(pBtCoexist))
@@ -700,7 +700,7 @@ static u8 halbtcoutsrc_Set(void *pBtcContext, u8 setType, void *pInBuf)
 			if (check_fwstate(&padapter->mlmepriv, WIFI_ASOC_STATE) == true)
 			{
 				struct sta_info *psta;
-				struct wlan_bssid_ex * cur_network;
+				struct wlan_bssid_ex *cur_network;
 
 				cur_network = &padapter->mlmeextpriv.mlmext_info.network;
 				psta = rtw_get_stainfo(&padapter->stapriv, cur_network->MacAddress);
@@ -850,7 +850,7 @@ static void halbtcoutsrc_Write4Byte(void *pBtcContext, u32 RegAddr, u32 Data)
 static void halbtcoutsrc_WriteLocalReg1Byte(void *pBtcContext, u32 RegAddr, u8 Data)
 {
 	PBTC_COEXIST		pBtCoexist = (PBTC_COEXIST)pBtcContext;
-	struct adapter *		Adapter = pBtCoexist->Adapter;
+	struct adapter *Adapter = pBtCoexist->Adapter;
 
 	if (BTC_INTF_SDIO == pBtCoexist->chipInterface)
 	{
@@ -1450,7 +1450,7 @@ u8 hal_btcoex_Initialize(struct adapter *padapter)
 
 
 	memset(&GLBtCoexist, 0, sizeof(GLBtCoexist));
-	ret1 = EXhalbtcoutsrc_InitlizeVariables((void*)padapter);
+	ret1 = EXhalbtcoutsrc_InitlizeVariables((void *)padapter);
 	ret2 = (ret1 == true) ? true : false;
 
 	return ret2;
