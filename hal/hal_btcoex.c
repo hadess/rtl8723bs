@@ -425,146 +425,146 @@ static u8 halbtcoutsrc_Get(void *pBtcContext, u8 getType, void *pOutBuf)
 	ret = true;
 
 	switch (getType) {
-		case BTC_GET_BL_HS_OPERATION:
+	case BTC_GET_BL_HS_OPERATION:
+		*pu8 = false;
+		ret = false;
+		break;
+
+	case BTC_GET_BL_HS_CONNECTING:
+		*pu8 = false;
+		ret = false;
+		break;
+
+	case BTC_GET_BL_WIFI_CONNECTED:
+		*pu8 = check_fwstate(&padapter->mlmepriv, WIFI_ASOC_STATE);
+		break;
+
+	case BTC_GET_BL_WIFI_BUSY:
+		*pu8 = halbtcoutsrc_IsWifiBusy(padapter);
+		break;
+
+	case BTC_GET_BL_WIFI_SCAN:
+		/* Use the value of the new variable GLBtcWiFiInScanState to judge whether WiFi is in scan state or not, since the originally used flag
+			WIFI_SITE_MONITOR in fwstate may not be cleared in time */
+		*pu8 = GLBtcWiFiInScanState;
+		break;
+
+	case BTC_GET_BL_WIFI_LINK:
+		*pu8 = check_fwstate(&padapter->mlmepriv, WIFI_UNDER_LINKING);
+		break;
+
+	case BTC_GET_BL_WIFI_ROAM:
+		*pu8 = check_fwstate(&padapter->mlmepriv, WIFI_UNDER_LINKING);
+		break;
+
+	case BTC_GET_BL_WIFI_4_WAY_PROGRESS:
+		*pu8 = false;
+		break;
+
+	case BTC_GET_BL_WIFI_UNDER_5G:
+		*pu8 = (pHalData->CurrentBandType == 1) ? true : false;
+		break;
+
+	case BTC_GET_BL_WIFI_AP_MODE_ENABLE:
+		*pu8 = check_fwstate(&padapter->mlmepriv, WIFI_AP_STATE);
+		break;
+
+	case BTC_GET_BL_WIFI_ENABLE_ENCRYPTION:
+		*pu8 = padapter->securitypriv.dot11PrivacyAlgrthm == 0 ? false : true;
+		break;
+
+	case BTC_GET_BL_WIFI_UNDER_B_MODE:
+		if (mlmeext->cur_wireless_mode == WIRELESS_11B)
+			*pu8 = true;
+		else
 			*pu8 = false;
-			ret = false;
-			break;
+		break;
 
-		case BTC_GET_BL_HS_CONNECTING:
-			*pu8 = false;
-			ret = false;
-			break;
+	case BTC_GET_BL_WIFI_IS_IN_MP_MODE:
+		*pu8 = false;
+		break;
 
-		case BTC_GET_BL_WIFI_CONNECTED:
-			*pu8 = check_fwstate(&padapter->mlmepriv, WIFI_ASOC_STATE);
-			break;
+	case BTC_GET_BL_EXT_SWITCH:
+		*pu8 = false;
+		break;
 
-		case BTC_GET_BL_WIFI_BUSY:
-			*pu8 = halbtcoutsrc_IsWifiBusy(padapter);
-			break;
+	case BTC_GET_S4_WIFI_RSSI:
+		*pS4Tmp = halbtcoutsrc_GetWifiRssi(padapter);
+		break;
 
-		case BTC_GET_BL_WIFI_SCAN:
-			/* Use the value of the new variable GLBtcWiFiInScanState to judge whether WiFi is in scan state or not, since the originally used flag
-				WIFI_SITE_MONITOR in fwstate may not be cleared in time */
-			*pu8 = GLBtcWiFiInScanState;
-			break;
+	case BTC_GET_S4_HS_RSSI:
+		*pS4Tmp = 0;
+		ret = false;
+		break;
 
-		case BTC_GET_BL_WIFI_LINK:
-			*pu8 = check_fwstate(&padapter->mlmepriv, WIFI_UNDER_LINKING);
-			break;
+	case BTC_GET_U4_WIFI_BW:
+		if (IsLegacyOnly(mlmeext->cur_wireless_mode))
+			*pU4Tmp = BTC_WIFI_BW_LEGACY;
+		else if (pHalData->CurrentChannelBW == CHANNEL_WIDTH_20)
+			*pU4Tmp = BTC_WIFI_BW_HT20;
+		else if (pHalData->CurrentChannelBW == CHANNEL_WIDTH_40)
+			*pU4Tmp = BTC_WIFI_BW_HT40;
+		else
+			*pU4Tmp = BTC_WIFI_BW_HT40; /* todo */
+		break;
 
-		case BTC_GET_BL_WIFI_ROAM:
-			*pu8 = check_fwstate(&padapter->mlmepriv, WIFI_UNDER_LINKING);
-			break;
+	case BTC_GET_U4_WIFI_TRAFFIC_DIRECTION:
+		{
+			PRT_LINK_DETECT_T plinkinfo;
+			plinkinfo = &padapter->mlmepriv.LinkDetectInfo;
 
-		case BTC_GET_BL_WIFI_4_WAY_PROGRESS:
-			*pu8 = false;
-			break;
-
-		case BTC_GET_BL_WIFI_UNDER_5G:
-			*pu8 = (pHalData->CurrentBandType == 1) ? true : false;
-			break;
-
-		case BTC_GET_BL_WIFI_AP_MODE_ENABLE:
-			*pu8 = check_fwstate(&padapter->mlmepriv, WIFI_AP_STATE);
-			break;
-
-		case BTC_GET_BL_WIFI_ENABLE_ENCRYPTION:
-			*pu8 = padapter->securitypriv.dot11PrivacyAlgrthm == 0 ? false : true;
-			break;
-
-		case BTC_GET_BL_WIFI_UNDER_B_MODE:
-			if (mlmeext->cur_wireless_mode == WIRELESS_11B)
-				*pu8 = true;
+			if (plinkinfo->NumTxOkInPeriod > plinkinfo->NumRxOkInPeriod)
+				*pU4Tmp = BTC_WIFI_TRAFFIC_TX;
 			else
-				*pu8 = false;
-			break;
+				*pU4Tmp = BTC_WIFI_TRAFFIC_RX;
+		}
+		break;
 
-		case BTC_GET_BL_WIFI_IS_IN_MP_MODE:
-			*pu8 = false;
-			break;
+	case BTC_GET_U4_WIFI_FW_VER:
+		*pU4Tmp = pHalData->FirmwareVersion << 16;
+		*pU4Tmp |= pHalData->FirmwareSubVersion;
+		break;
 
-		case BTC_GET_BL_EXT_SWITCH:
-			*pu8 = false;
-			break;
+	case BTC_GET_U4_WIFI_LINK_STATUS:
+		*pU4Tmp = halbtcoutsrc_GetWifiLinkStatus(pBtCoexist);
+		break;
 
-		case BTC_GET_S4_WIFI_RSSI:
-			*pS4Tmp = halbtcoutsrc_GetWifiRssi(padapter);
-			break;
+	case BTC_GET_U4_BT_PATCH_VER:
+		*pU4Tmp = halbtcoutsrc_GetBtPatchVer(pBtCoexist);
+		break;
 
-		case BTC_GET_S4_HS_RSSI:
-			*pS4Tmp = 0;
-			ret = false;
-			break;
+	case BTC_GET_U1_WIFI_DOT11_CHNL:
+		*pU1Tmp = padapter->mlmeextpriv.cur_channel;
+		break;
 
-		case BTC_GET_U4_WIFI_BW:
-			if (IsLegacyOnly(mlmeext->cur_wireless_mode))
-				*pU4Tmp = BTC_WIFI_BW_LEGACY;
-			else if (pHalData->CurrentChannelBW == CHANNEL_WIDTH_20)
-				*pU4Tmp = BTC_WIFI_BW_HT20;
-			else if (pHalData->CurrentChannelBW == CHANNEL_WIDTH_40)
-				*pU4Tmp = BTC_WIFI_BW_HT40;
-			else
-				*pU4Tmp = BTC_WIFI_BW_HT40; /* todo */
-			break;
+	case BTC_GET_U1_WIFI_CENTRAL_CHNL:
+		*pU1Tmp = pHalData->CurrentChannel;
+		break;
 
-		case BTC_GET_U4_WIFI_TRAFFIC_DIRECTION:
-			{
-				PRT_LINK_DETECT_T plinkinfo;
-				plinkinfo = &padapter->mlmepriv.LinkDetectInfo;
+	case BTC_GET_U1_WIFI_HS_CHNL:
+		*pU1Tmp = 0;
+		ret = false;
+		break;
 
-				if (plinkinfo->NumTxOkInPeriod > plinkinfo->NumRxOkInPeriod)
-					*pU4Tmp = BTC_WIFI_TRAFFIC_TX;
-				else
-					*pU4Tmp = BTC_WIFI_TRAFFIC_RX;
-			}
-			break;
-
-		case BTC_GET_U4_WIFI_FW_VER:
-			*pU4Tmp = pHalData->FirmwareVersion << 16;
-			*pU4Tmp |= pHalData->FirmwareSubVersion;
-			break;
-
-		case BTC_GET_U4_WIFI_LINK_STATUS:
-			*pU4Tmp = halbtcoutsrc_GetWifiLinkStatus(pBtCoexist);
-			break;
-
-		case BTC_GET_U4_BT_PATCH_VER:
-			*pU4Tmp = halbtcoutsrc_GetBtPatchVer(pBtCoexist);
-			break;
-
-		case BTC_GET_U1_WIFI_DOT11_CHNL:
-			*pU1Tmp = padapter->mlmeextpriv.cur_channel;
-			break;
-
-		case BTC_GET_U1_WIFI_CENTRAL_CHNL:
-			*pU1Tmp = pHalData->CurrentChannel;
-			break;
-
-		case BTC_GET_U1_WIFI_HS_CHNL:
-			*pU1Tmp = 0;
-			ret = false;
-			break;
-
-		case BTC_GET_U1_MAC_PHY_MODE:
-			*pU1Tmp = BTC_SMSP;
+	case BTC_GET_U1_MAC_PHY_MODE:
+		*pU1Tmp = BTC_SMSP;
 /* 			*pU1Tmp = BTC_DMSP; */
 /* 			*pU1Tmp = BTC_DMDP; */
 /* 			*pU1Tmp = BTC_MP_UNKNOWN; */
-			break;
+		break;
 
-		case BTC_GET_U1_AP_NUM:
-			*pU1Tmp = halbtcoutsrc_GetWifiScanAPNum(padapter);
-			break;
+	case BTC_GET_U1_AP_NUM:
+		*pU1Tmp = halbtcoutsrc_GetWifiScanAPNum(padapter);
+		break;
 
-		/* 1Ant =========== */
-		case BTC_GET_U1_LPS_MODE:
-			*pU1Tmp = padapter->dvobj->pwrctl_priv.pwr_mode;
-			break;
+	/* 1Ant =========== */
+	case BTC_GET_U1_LPS_MODE:
+		*pU1Tmp = padapter->dvobj->pwrctl_priv.pwr_mode;
+		break;
 
-		default:
-			ret = false;
-			break;
+	default:
+		ret = false;
+		break;
 	}
 
 	return ret;
@@ -593,119 +593,119 @@ static u8 halbtcoutsrc_Set(void *pBtcContext, u8 setType, void *pInBuf)
 		return false;
 
 	switch (setType) {
-		/*  set some u8 type variables. */
-		case BTC_SET_BL_BT_DISABLE:
-			pBtCoexist->btInfo.bBtDisabled = *pu8;
-			break;
+	/*  set some u8 type variables. */
+	case BTC_SET_BL_BT_DISABLE:
+		pBtCoexist->btInfo.bBtDisabled = *pu8;
+		break;
 
-		case BTC_SET_BL_BT_TRAFFIC_BUSY:
-			pBtCoexist->btInfo.bBtBusy = *pu8;
-			break;
+	case BTC_SET_BL_BT_TRAFFIC_BUSY:
+		pBtCoexist->btInfo.bBtBusy = *pu8;
+		break;
 
-		case BTC_SET_BL_BT_LIMITED_DIG:
-			pBtCoexist->btInfo.bLimitedDig = *pu8;
-			break;
+	case BTC_SET_BL_BT_LIMITED_DIG:
+		pBtCoexist->btInfo.bLimitedDig = *pu8;
+		break;
 
-		case BTC_SET_BL_FORCE_TO_ROAM:
-			pBtCoexist->btInfo.bForceToRoam = *pu8;
-			break;
+	case BTC_SET_BL_FORCE_TO_ROAM:
+		pBtCoexist->btInfo.bForceToRoam = *pu8;
+		break;
 
-		case BTC_SET_BL_TO_REJ_AP_AGG_PKT:
-			pBtCoexist->btInfo.bRejectAggPkt = *pu8;
-			break;
+	case BTC_SET_BL_TO_REJ_AP_AGG_PKT:
+		pBtCoexist->btInfo.bRejectAggPkt = *pu8;
+		break;
 
-		case BTC_SET_BL_BT_CTRL_AGG_SIZE:
-			pBtCoexist->btInfo.bBtCtrlAggBufSize = *pu8;
-			break;
+	case BTC_SET_BL_BT_CTRL_AGG_SIZE:
+		pBtCoexist->btInfo.bBtCtrlAggBufSize = *pu8;
+		break;
 
-		case BTC_SET_BL_INC_SCAN_DEV_NUM:
-			pBtCoexist->btInfo.bIncreaseScanDevNum = *pu8;
-			break;
+	case BTC_SET_BL_INC_SCAN_DEV_NUM:
+		pBtCoexist->btInfo.bIncreaseScanDevNum = *pu8;
+		break;
 
-		case BTC_SET_BL_BT_TX_RX_MASK:
-			pBtCoexist->btInfo.bBtTxRxMask = *pu8;
-			break;
+	case BTC_SET_BL_BT_TX_RX_MASK:
+		pBtCoexist->btInfo.bBtTxRxMask = *pu8;
+		break;
 
-		/*  set some u8 type variables. */
-		case BTC_SET_U1_RSSI_ADJ_VAL_FOR_AGC_TABLE_ON:
-			pBtCoexist->btInfo.rssiAdjustForAgcTableOn = *pU1Tmp;
-			break;
+	/*  set some u8 type variables. */
+	case BTC_SET_U1_RSSI_ADJ_VAL_FOR_AGC_TABLE_ON:
+		pBtCoexist->btInfo.rssiAdjustForAgcTableOn = *pU1Tmp;
+		break;
 
-		case BTC_SET_U1_AGG_BUF_SIZE:
-			pBtCoexist->btInfo.aggBufSize = *pU1Tmp;
-			break;
+	case BTC_SET_U1_AGG_BUF_SIZE:
+		pBtCoexist->btInfo.aggBufSize = *pU1Tmp;
+		break;
 
-		/*  the following are some action which will be triggered */
-		case BTC_SET_ACT_GET_BT_RSSI:
-			ret = false;
-			break;
+	/*  the following are some action which will be triggered */
+	case BTC_SET_ACT_GET_BT_RSSI:
+		ret = false;
+		break;
 
-		case BTC_SET_ACT_AGGREGATE_CTRL:
-			halbtcoutsrc_AggregationCheck(pBtCoexist);
-			break;
+	case BTC_SET_ACT_AGGREGATE_CTRL:
+		halbtcoutsrc_AggregationCheck(pBtCoexist);
+		break;
 
-		/* 1Ant =========== */
-		/*  set some u8 type variables. */
-		case BTC_SET_U1_RSSI_ADJ_VAL_FOR_1ANT_COEX_TYPE:
-			pBtCoexist->btInfo.rssiAdjustFor1AntCoexType = *pU1Tmp;
-			break;
+	/* 1Ant =========== */
+	/*  set some u8 type variables. */
+	case BTC_SET_U1_RSSI_ADJ_VAL_FOR_1ANT_COEX_TYPE:
+		pBtCoexist->btInfo.rssiAdjustFor1AntCoexType = *pU1Tmp;
+		break;
 
-		case BTC_SET_U1_LPS_VAL:
-			pBtCoexist->btInfo.lpsVal = *pU1Tmp;
-			break;
+	case BTC_SET_U1_LPS_VAL:
+		pBtCoexist->btInfo.lpsVal = *pU1Tmp;
+		break;
 
-		case BTC_SET_U1_RPWM_VAL:
-			pBtCoexist->btInfo.rpwmVal = *pU1Tmp;
-			break;
+	case BTC_SET_U1_RPWM_VAL:
+		pBtCoexist->btInfo.rpwmVal = *pU1Tmp;
+		break;
 
-		/*  the following are some action which will be triggered */
-		case BTC_SET_ACT_LEAVE_LPS:
-			halbtcoutsrc_LeaveLps(pBtCoexist);
-			break;
+	/*  the following are some action which will be triggered */
+	case BTC_SET_ACT_LEAVE_LPS:
+		halbtcoutsrc_LeaveLps(pBtCoexist);
+		break;
 
-		case BTC_SET_ACT_ENTER_LPS:
-			halbtcoutsrc_EnterLps(pBtCoexist);
-			break;
+	case BTC_SET_ACT_ENTER_LPS:
+		halbtcoutsrc_EnterLps(pBtCoexist);
+		break;
 
-		case BTC_SET_ACT_NORMAL_LPS:
-			halbtcoutsrc_NormalLps(pBtCoexist);
-			break;
+	case BTC_SET_ACT_NORMAL_LPS:
+		halbtcoutsrc_NormalLps(pBtCoexist);
+		break;
 
-		case BTC_SET_ACT_DISABLE_LOW_POWER:
-			halbtcoutsrc_DisableLowPower(pBtCoexist, *pu8);
-			break;
+	case BTC_SET_ACT_DISABLE_LOW_POWER:
+		halbtcoutsrc_DisableLowPower(pBtCoexist, *pu8);
+		break;
 
-		case BTC_SET_ACT_UPDATE_RAMASK:
-			pBtCoexist->btInfo.raMask = *pU4Tmp;
+	case BTC_SET_ACT_UPDATE_RAMASK:
+		pBtCoexist->btInfo.raMask = *pU4Tmp;
 
-			if (check_fwstate(&padapter->mlmepriv, WIFI_ASOC_STATE) == true) {
-				struct sta_info *psta;
-				struct wlan_bssid_ex *cur_network;
+		if (check_fwstate(&padapter->mlmepriv, WIFI_ASOC_STATE) == true) {
+			struct sta_info *psta;
+			struct wlan_bssid_ex *cur_network;
 
-				cur_network = &padapter->mlmeextpriv.mlmext_info.network;
-				psta = rtw_get_stainfo(&padapter->stapriv, cur_network->MacAddress);
-				rtw_hal_update_ra_mask(psta, 0);
-			}
-			break;
+			cur_network = &padapter->mlmeextpriv.mlmext_info.network;
+			psta = rtw_get_stainfo(&padapter->stapriv, cur_network->MacAddress);
+			rtw_hal_update_ra_mask(psta, 0);
+		}
+		break;
 
-		case BTC_SET_ACT_SEND_MIMO_PS:
-			ret = false;
-			break;
+	case BTC_SET_ACT_SEND_MIMO_PS:
+		ret = false;
+		break;
 
-		case BTC_SET_ACT_CTRL_BT_INFO:
-			ret = false;
-			break;
+	case BTC_SET_ACT_CTRL_BT_INFO:
+		ret = false;
+		break;
 
-		case BTC_SET_ACT_CTRL_BT_COEX:
-			ret = false;
-			break;
-		case BTC_SET_ACT_CTRL_8723B_ANT:
-			ret = false;
-			break;
-		/*  */
-		default:
-			ret = false;
-			break;
+	case BTC_SET_ACT_CTRL_BT_COEX:
+		ret = false;
+		break;
+	case BTC_SET_ACT_CTRL_8723B_ANT:
+		ret = false;
+		break;
+	/*  */
+	default:
+		ret = false;
+		break;
 	}
 
 	return ret;
@@ -941,15 +941,15 @@ static void halbtcoutsrc_DisplayDbgMsg(void *pBtcContext, u8 dispType)
 
 	pBtCoexist = (PBTC_COEXIST)pBtcContext;
 	switch (dispType) {
-		case BTC_DBG_DISP_COEX_STATISTICS:
-			break;
-		case BTC_DBG_DISP_BT_LINK_INFO:
-			break;
-		case BTC_DBG_DISP_FW_PWR_MODE_CMD:
-			halbtcoutsrc_DisplayFwPwrModeCmd(pBtCoexist);
-			break;
-		default:
-			break;
+	case BTC_DBG_DISP_COEX_STATISTICS:
+		break;
+	case BTC_DBG_DISP_BT_LINK_INFO:
+		break;
+	case BTC_DBG_DISP_FW_PWR_MODE_CMD:
+		halbtcoutsrc_DisplayFwPwrModeCmd(pBtCoexist);
+		break;
+	default:
+		break;
 	}
 }
 
