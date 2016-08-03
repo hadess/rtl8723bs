@@ -83,7 +83,8 @@ static BTCDBGINFO GLBtcDbgInfo;
 
 static void DBG_BT_INFO_INIT(PBTCDBGINFO pinfo, u8 *pbuf, u32 size)
 {
-	if (NULL == pinfo) return;
+	if (NULL == pinfo)
+		return;
 
 	memset(pinfo, 0, sizeof(BTCDBGINFO));
 
