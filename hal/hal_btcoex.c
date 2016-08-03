@@ -137,7 +137,7 @@ static void halbtcoutsrc_DbgInit(void)
 {
 	u8 i;
 
-	for (i = 0; i<BTC_MSG_MAX; i++)
+	for (i = 0; i < BTC_MSG_MAX; i++)
 		GLBtcDbgType[i] = 0;
 
 	GLBtcDbgType[BTC_MSG_INTERFACE]			=	\
@@ -480,7 +480,7 @@ static u8 halbtcoutsrc_Get(void *pBtcContext, u8 getType, void *pOutBuf)
 			break;
 
 		case BTC_GET_BL_WIFI_UNDER_5G:
-			*pu8 = (pHalData->CurrentBandType == 1)? true : false;
+			*pu8 = (pHalData->CurrentBandType == 1) ? true : false;
 			break;
 
 		case BTC_GET_BL_WIFI_AP_MODE_ENABLE:
@@ -488,7 +488,7 @@ static u8 halbtcoutsrc_Get(void *pBtcContext, u8 getType, void *pOutBuf)
 			break;
 
 		case BTC_GET_BL_WIFI_ENABLE_ENCRYPTION:
-			*pu8 = padapter->securitypriv.dot11PrivacyAlgrthm == 0? false: true;
+			*pu8 = padapter->securitypriv.dot11PrivacyAlgrthm == 0 ? false : true;
 			break;
 
 		case BTC_GET_BL_WIFI_UNDER_B_MODE:
@@ -810,7 +810,7 @@ static void halbtcoutsrc_BitMaskWrite1Byte(void *pBtcContext, u32 regAddr, u8 bi
 	{
 		originalValue = rtw_read8(padapter, regAddr);
 
-		for (i = 0; i<=7; i++)
+		for (i = 0; i <= 7; i++)
 		{
 			if ((bitMask>>i)&0x1)
 				break;
@@ -849,8 +849,8 @@ static void halbtcoutsrc_Write4Byte(void *pBtcContext, u32 RegAddr, u32 Data)
 
 static void halbtcoutsrc_WriteLocalReg1Byte(void *pBtcContext, u32 RegAddr, u8 Data)
 {
-	PBTC_COEXIST		pBtCoexist =(PBTC_COEXIST)pBtcContext;
-	struct adapter *		Adapter =pBtCoexist->Adapter;
+	PBTC_COEXIST		pBtCoexist = (PBTC_COEXIST)pBtcContext;
+	struct adapter *		Adapter = pBtCoexist->Adapter;
 
 	if (BTC_INTF_SDIO == pBtCoexist->chipInterface)
 	{
@@ -984,7 +984,7 @@ static void halbtcoutsrc_DisplayDbgMsg(void *pBtcContext, u8 dispType)
 /*  */
 static u8 EXhalbtcoutsrc_BindBtCoexWithAdapter(void *padapter)
 {
-	PBTC_COEXIST		pBtCoexist =&GLBtCoexist;
+	PBTC_COEXIST		pBtCoexist = &GLBtCoexist;
 
 	if (pBtCoexist->bBinded)
 		return false;
@@ -1451,7 +1451,7 @@ u8 hal_btcoex_Initialize(struct adapter *padapter)
 
 	memset(&GLBtCoexist, 0, sizeof(GLBtCoexist));
 	ret1 = EXhalbtcoutsrc_InitlizeVariables((void*)padapter);
-	ret2 = (ret1 ==true) ? true : false;
+	ret2 = (ret1 == true) ? true : false;
 
 	return ret2;
 }
@@ -1623,7 +1623,7 @@ void hal_btcoex_SetDBG(struct adapter *padapter, u32 *pDbgModule)
 	if (NULL == pDbgModule)
 		return;
 
-	for (i = 0; i<BTC_MSG_MAX; i++)
+	for (i = 0; i < BTC_MSG_MAX; i++)
 		GLBtcDbgType[i] = pDbgModule[i];
 }
 
