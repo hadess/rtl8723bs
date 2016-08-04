@@ -273,22 +273,25 @@ struct adapter *padapter
 	/* DBG_871X("<===%s\n", __func__); */
 }
 
-u8
-PHY_GetRateSectionIndexOfTxPowerByRate(
-struct adapter *padapter,
-u32		RegAddr,
-u32		BitMask
-	)
+u8 PHY_GetRateSectionIndexOfTxPowerByRate(
+	struct adapter *padapter, u32 RegAddr, u32 BitMask
+)
 {
 	struct hal_com_data	*pHalData = GET_HAL_DATA(padapter);
-	PDM_ODM_T		pDM_Odm = &pHalData->odmpriv;
+	PDM_ODM_T pDM_Odm = &pHalData->odmpriv;
 	u8	index = 0;
 
 	if (pDM_Odm->PhyRegPgVersion == 0) {
 		switch (RegAddr) {
-		case rTxAGC_A_Rate18_06:	 index = 0;		break;
-		case rTxAGC_A_Rate54_24:	 index = 1;		break;
-		case rTxAGC_A_CCK1_Mcs32:	 index = 6;		break;
+		case rTxAGC_A_Rate18_06:
+			index = 0;
+			break;
+		case rTxAGC_A_Rate54_24:
+			index = 1;
+			break;
+		case rTxAGC_A_CCK1_Mcs32:
+			index = 6;
+			break;
 		case rTxAGC_B_CCK11_A_CCK2_11:
 			if (BitMask == bMaskH3Bytes)
 				index = 7;
@@ -296,17 +299,39 @@ u32		BitMask
 				index = 15;
 			break;
 
-		case rTxAGC_A_Mcs03_Mcs00:	 index = 2;		break;
-		case rTxAGC_A_Mcs07_Mcs04:	 index = 3;		break;
-		case rTxAGC_A_Mcs11_Mcs08:	 index = 4;		break;
-		case rTxAGC_A_Mcs15_Mcs12:	 index = 5;		break;
-		case rTxAGC_B_Rate18_06:	 index = 8;		break;
-		case rTxAGC_B_Rate54_24:	 index = 9;		break;
-		case rTxAGC_B_CCK1_55_Mcs32: index = 14;	break;
-		case rTxAGC_B_Mcs03_Mcs00:	 index = 10;	break;
-		case rTxAGC_B_Mcs07_Mcs04:	 index = 11;	break;
-		case rTxAGC_B_Mcs11_Mcs08:	 index = 12;	break;
-		case rTxAGC_B_Mcs15_Mcs12:	 index = 13;	break;
+		case rTxAGC_A_Mcs03_Mcs00:
+			index = 2;
+			break;
+		case rTxAGC_A_Mcs07_Mcs04:
+			index = 3;
+			break;
+		case rTxAGC_A_Mcs11_Mcs08:
+			index = 4;
+			break;
+		case rTxAGC_A_Mcs15_Mcs12:
+			index = 5;
+			break;
+		case rTxAGC_B_Rate18_06:
+			index = 8;
+			break;
+		case rTxAGC_B_Rate54_24:
+			index = 9;
+			break;
+		case rTxAGC_B_CCK1_55_Mcs32:
+			index = 14;
+			break;
+		case rTxAGC_B_Mcs03_Mcs00:
+			index = 10;
+			break;
+		case rTxAGC_B_Mcs07_Mcs04:
+			index = 11;
+			break;
+		case rTxAGC_B_Mcs11_Mcs08:
+			index = 12;
+			break;
+		case rTxAGC_B_Mcs15_Mcs12:
+			index = 13;
+			break;
 		default:
 			DBG_871X("Invalid RegAddr 0x3%x in PHY_GetRateSectionIndexOfTxPowerByRate()", RegAddr);
 			break;
@@ -1173,90 +1198,258 @@ u8 PHY_GetRateIndexOfTxPowerByRate(u8 Rate)
 {
 	u8 index = 0;
 	switch (Rate) {
-	case MGN_1M: index = 0; break;
-	case MGN_2M: index = 1; break;
-	case MGN_5_5M: index = 2; break;
-	case MGN_11M: index = 3; break;
-	case MGN_6M: index = 4; break;
-	case MGN_9M: index = 5; break;
-	case MGN_12M: index = 6; break;
-	case MGN_18M: index = 7; break;
-	case MGN_24M: index = 8; break;
-	case MGN_36M: index = 9; break;
-	case MGN_48M: index = 10; break;
-	case MGN_54M: index = 11; break;
-	case MGN_MCS0: index = 12; break;
-	case MGN_MCS1: index = 13; break;
-	case MGN_MCS2: index = 14; break;
-	case MGN_MCS3: index = 15; break;
-	case MGN_MCS4: index = 16; break;
-	case MGN_MCS5: index = 17; break;
-	case MGN_MCS6: index = 18; break;
-	case MGN_MCS7: index = 19; break;
-	case MGN_MCS8: index = 20; break;
-	case MGN_MCS9: index = 21; break;
-	case MGN_MCS10: index = 22; break;
-	case MGN_MCS11: index = 23; break;
-	case MGN_MCS12: index = 24; break;
-	case MGN_MCS13: index = 25; break;
-	case MGN_MCS14: index = 26; break;
-	case MGN_MCS15: index = 27; break;
-	case MGN_MCS16: index = 28; break;
-	case MGN_MCS17: index = 29; break;
-	case MGN_MCS18: index = 30; break;
-	case MGN_MCS19: index = 31; break;
-	case MGN_MCS20: index = 32; break;
-	case MGN_MCS21: index = 33; break;
-	case MGN_MCS22: index = 34; break;
-	case MGN_MCS23: index = 35; break;
-	case MGN_MCS24: index = 36; break;
-	case MGN_MCS25: index = 37; break;
-	case MGN_MCS26: index = 38; break;
-	case MGN_MCS27: index = 39; break;
-	case MGN_MCS28: index = 40; break;
-	case MGN_MCS29: index = 41; break;
-	case MGN_MCS30: index = 42; break;
-	case MGN_MCS31: index = 43; break;
-	case MGN_VHT1SS_MCS0: index = 44; break;
-	case MGN_VHT1SS_MCS1: index = 45; break;
-	case MGN_VHT1SS_MCS2: index = 46; break;
-	case MGN_VHT1SS_MCS3: index = 47; break;
-	case MGN_VHT1SS_MCS4: index = 48; break;
-	case MGN_VHT1SS_MCS5: index = 49; break;
-	case MGN_VHT1SS_MCS6: index = 50; break;
-	case MGN_VHT1SS_MCS7: index = 51; break;
-	case MGN_VHT1SS_MCS8: index = 52; break;
-	case MGN_VHT1SS_MCS9: index = 53; break;
-	case MGN_VHT2SS_MCS0: index = 54; break;
-	case MGN_VHT2SS_MCS1: index = 55; break;
-	case MGN_VHT2SS_MCS2: index = 56; break;
-	case MGN_VHT2SS_MCS3: index = 57; break;
-	case MGN_VHT2SS_MCS4: index = 58; break;
-	case MGN_VHT2SS_MCS5: index = 59; break;
-	case MGN_VHT2SS_MCS6: index = 60; break;
-	case MGN_VHT2SS_MCS7: index = 61; break;
-	case MGN_VHT2SS_MCS8: index = 62; break;
-	case MGN_VHT2SS_MCS9: index = 63; break;
-	case MGN_VHT3SS_MCS0: index = 64; break;
-	case MGN_VHT3SS_MCS1: index = 65; break;
-	case MGN_VHT3SS_MCS2: index = 66; break;
-	case MGN_VHT3SS_MCS3: index = 67; break;
-	case MGN_VHT3SS_MCS4: index = 68; break;
-	case MGN_VHT3SS_MCS5: index = 69; break;
-	case MGN_VHT3SS_MCS6: index = 70; break;
-	case MGN_VHT3SS_MCS7: index = 71; break;
-	case MGN_VHT3SS_MCS8: index = 72; break;
-	case MGN_VHT3SS_MCS9: index = 73; break;
-	case MGN_VHT4SS_MCS0: index = 74; break;
-	case MGN_VHT4SS_MCS1: index = 75; break;
-	case MGN_VHT4SS_MCS2: index = 76; break;
-	case MGN_VHT4SS_MCS3: index = 77; break;
-	case MGN_VHT4SS_MCS4: index = 78; break;
-	case MGN_VHT4SS_MCS5: index = 79; break;
-	case MGN_VHT4SS_MCS6: index = 80; break;
-	case MGN_VHT4SS_MCS7: index = 81; break;
-	case MGN_VHT4SS_MCS8: index = 82; break;
-	case MGN_VHT4SS_MCS9: index = 83; break;
+	case MGN_1M:
+		index = 0;
+		break;
+	case MGN_2M:
+		index = 1;
+		break;
+	case MGN_5_5M:
+		index = 2;
+		break;
+	case MGN_11M:
+		index = 3;
+		break;
+	case MGN_6M:
+		index = 4;
+		break;
+	case MGN_9M:
+		index = 5;
+		break;
+	case MGN_12M:
+		index = 6;
+		break;
+	case MGN_18M:
+		index = 7;
+		break;
+	case MGN_24M:
+		index = 8;
+		break;
+	case MGN_36M:
+		index = 9;
+		break;
+	case MGN_48M:
+		index = 10;
+		break;
+	case MGN_54M:
+		index = 11;
+		break;
+	case MGN_MCS0:
+		index = 12;
+		break;
+	case MGN_MCS1:
+		index = 13;
+		break;
+	case MGN_MCS2:
+		index = 14;
+		break;
+	case MGN_MCS3:
+		index = 15;
+		break;
+	case MGN_MCS4:
+		index = 16;
+		break;
+	case MGN_MCS5:
+		index = 17;
+		break;
+	case MGN_MCS6:
+		index = 18;
+		break;
+	case MGN_MCS7:
+		index = 19;
+		break;
+	case MGN_MCS8:
+		index = 20;
+		break;
+	case MGN_MCS9:
+		index = 21;
+		break;
+	case MGN_MCS10:
+		index = 22;
+		break;
+	case MGN_MCS11:
+		index = 23;
+		break;
+	case MGN_MCS12:
+		index = 24;
+		break;
+	case MGN_MCS13:
+		index = 25;
+		break;
+	case MGN_MCS14:
+		index = 26;
+		break;
+	case MGN_MCS15:
+		index = 27;
+		break;
+	case MGN_MCS16:
+		index = 28;
+		break;
+	case MGN_MCS17:
+		index = 29;
+		break;
+	case MGN_MCS18:
+		index = 30;
+		break;
+	case MGN_MCS19:
+		index = 31;
+		break;
+	case MGN_MCS20:
+		index = 32;
+		break;
+	case MGN_MCS21:
+		index = 33;
+		break;
+	case MGN_MCS22:
+		index = 34;
+		break;
+	case MGN_MCS23:
+		index = 35;
+		break;
+	case MGN_MCS24:
+		index = 36;
+		break;
+	case MGN_MCS25:
+		index = 37;
+		break;
+	case MGN_MCS26:
+		index = 38;
+		break;
+	case MGN_MCS27:
+		index = 39;
+		break;
+	case MGN_MCS28:
+		index = 40;
+		break;
+	case MGN_MCS29:
+		index = 41;
+		break;
+	case MGN_MCS30:
+		index = 42;
+		break;
+	case MGN_MCS31:
+		index = 43;
+		break;
+	case MGN_VHT1SS_MCS0:
+		index = 44;
+		break;
+	case MGN_VHT1SS_MCS1:
+		index = 45;
+		break;
+	case MGN_VHT1SS_MCS2:
+		index = 46;
+		break;
+	case MGN_VHT1SS_MCS3:
+		index = 47;
+		break;
+	case MGN_VHT1SS_MCS4:
+		index = 48;
+		break;
+	case MGN_VHT1SS_MCS5:
+		index = 49;
+		break;
+	case MGN_VHT1SS_MCS6:
+		index = 50;
+		break;
+	case MGN_VHT1SS_MCS7:
+		index = 51;
+		break;
+	case MGN_VHT1SS_MCS8:
+		index = 52;
+		break;
+	case MGN_VHT1SS_MCS9:
+		index = 53;
+		break;
+	case MGN_VHT2SS_MCS0:
+		index = 54;
+		break;
+	case MGN_VHT2SS_MCS1:
+		index = 55;
+		break;
+	case MGN_VHT2SS_MCS2:
+		index = 56;
+		break;
+	case MGN_VHT2SS_MCS3:
+		index = 57;
+		break;
+	case MGN_VHT2SS_MCS4:
+		index = 58;
+		break;
+	case MGN_VHT2SS_MCS5:
+		index = 59;
+		break;
+	case MGN_VHT2SS_MCS6:
+		index = 60;
+		break;
+	case MGN_VHT2SS_MCS7:
+		index = 61;
+		break;
+	case MGN_VHT2SS_MCS8:
+		index = 62;
+		break;
+	case MGN_VHT2SS_MCS9:
+		index = 63;
+		break;
+	case MGN_VHT3SS_MCS0:
+		index = 64;
+		break;
+	case MGN_VHT3SS_MCS1:
+		index = 65;
+		break;
+	case MGN_VHT3SS_MCS2:
+		index = 66;
+		break;
+	case MGN_VHT3SS_MCS3:
+		index = 67;
+		break;
+	case MGN_VHT3SS_MCS4:
+		index = 68;
+		break;
+	case MGN_VHT3SS_MCS5:
+		index = 69;
+		break;
+	case MGN_VHT3SS_MCS6:
+		index = 70;
+		break;
+	case MGN_VHT3SS_MCS7:
+		index = 71;
+		break;
+	case MGN_VHT3SS_MCS8:
+		index = 72;
+		break;
+	case MGN_VHT3SS_MCS9:
+		index = 73;
+		break;
+	case MGN_VHT4SS_MCS0:
+		index = 74;
+		break;
+	case MGN_VHT4SS_MCS1:
+		index = 75;
+		break;
+	case MGN_VHT4SS_MCS2:
+		index = 76;
+		break;
+	case MGN_VHT4SS_MCS3:
+		index = 77;
+		break;
+	case MGN_VHT4SS_MCS4:
+		index = 78;
+		break;
+	case MGN_VHT4SS_MCS5:
+		index = 79;
+		break;
+	case MGN_VHT4SS_MCS6:
+		index = 80;
+		break;
+	case MGN_VHT4SS_MCS7:
+		index = 81;
+		break;
+	case MGN_VHT4SS_MCS8:
+		index = 82;
+		break;
+	case MGN_VHT4SS_MCS9:
+		index = 83;
+		break;
 	default:
 		DBG_871X("Invalid rate 0x%x in %s\n", Rate, __func__);
 		break;
@@ -2299,7 +2492,8 @@ static int phy_ParseBBPgParaFile(struct adapter *Adapter, char *buffer)
 							return _FAIL;
 
 						integer *= 2;
-						if (fraction == 5) integer += 1;
+						if (fraction == 5)
+							integer += 1;
 						combineValue |= (((integer / 10) << 4) + (integer % 10));
 						/* DBG_871X(" %d", integer); */
 
@@ -2309,7 +2503,8 @@ static int phy_ParseBBPgParaFile(struct adapter *Adapter, char *buffer)
 							return _FAIL;
 
 						integer *= 2;
-						if (fraction == 5) integer += 1;
+						if (fraction == 5)
+							integer += 1;
 						combineValue <<= 8;
 						combineValue |= (((integer / 10) << 4) + (integer % 10));
 						/* DBG_871X(" %d", integer); */
@@ -2320,7 +2515,8 @@ static int phy_ParseBBPgParaFile(struct adapter *Adapter, char *buffer)
 							return _FAIL;
 
 						integer *= 2;
-						if (fraction == 5) integer += 1;
+						if (fraction == 5)
+							integer += 1;
 						combineValue <<= 8;
 						combineValue |= (((integer / 10) << 4) + (integer % 10));
 						/* DBG_871X(" %d", integer); */
@@ -2331,7 +2527,8 @@ static int phy_ParseBBPgParaFile(struct adapter *Adapter, char *buffer)
 							return _FAIL;
 
 						integer *= 2;
-						if (fraction == 5) integer += 1;
+						if (fraction == 5)
+							integer += 1;
 						combineValue <<= 8;
 						combineValue |= (((integer / 10) << 4) + (integer % 10));
 						/* DBG_871X(" %d", integer); */
@@ -2411,7 +2608,8 @@ static int phy_ParseBBPgParaFile(struct adapter *Adapter, char *buffer)
 								return _FAIL;
 
 							integer *= 2;
-							if (fraction == 5) integer += 1;
+							if (fraction == 5)
+								integer += 1;
 							combineValue |= (((integer / 10) << 4) + (integer % 10));
 							/* DBG_871X(" %d", integer); */
 
@@ -2421,7 +2619,8 @@ static int phy_ParseBBPgParaFile(struct adapter *Adapter, char *buffer)
 								return _FAIL;
 
 							integer *= 2;
-							if (fraction == 5) integer += 1;
+							if (fraction == 5)
+								integer += 1;
 							combineValue <<= 8;
 							combineValue |= (((integer / 10) << 4) + (integer % 10));
 							/* DBG_871X(" %d", integer); */
@@ -2432,7 +2631,8 @@ static int phy_ParseBBPgParaFile(struct adapter *Adapter, char *buffer)
 								return _FAIL;
 
 							integer *= 2;
-							if (fraction == 5) integer += 1;
+							if (fraction == 5)
+								integer += 1;
 							combineValue <<= 8;
 							combineValue |= (((integer / 10) << 4) + (integer % 10));
 							/* DBG_871X(" %d", integer); */
@@ -2443,7 +2643,8 @@ static int phy_ParseBBPgParaFile(struct adapter *Adapter, char *buffer)
 								return _FAIL;
 
 							integer *= 2;
-							if (fraction == 5) integer += 1;
+							if (fraction == 5)
+								integer += 1;
 							combineValue <<= 8;
 							combineValue |= (((integer / 10) << 4) + (integer % 10));
 							/* DBG_871X(" %d", integer); */
