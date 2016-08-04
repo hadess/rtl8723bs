@@ -375,8 +375,7 @@ u32		Value,
 			*RateNum = 3;
 		} else if (BitMask == 0x000000ff) {
 			RateIndex[0] = PHY_GetRateIndexOfTxPowerByRate(MGN_11M);
-			PwrByRateVal[0] = (s8) ((((Value >> 4) & 0xF)) * 10 +
-										        (Value & 0xF));
+			PwrByRateVal[0] = (s8) ((((Value >> 4) & 0xF)) * 10 + (Value & 0xF));
 			*RateNum = 1;
 		}
 		break;
@@ -1493,8 +1492,7 @@ u8			Channel
 			break;
 
 	default:
-			regulation = (Band == BAND_ON_2_4G) ? pHalData->Regulation2_4G
-				                                  : pHalData->Regulation5G;
+			regulation = (Band == BAND_ON_2_4G) ? pHalData->Regulation2_4G : pHalData->Regulation5G;
 			break;
 	}
 
@@ -1619,7 +1617,7 @@ u8			Channel
 			limits[i] = pHalData->TxPwrLimit_2_4G[i][bandwidth][rateSection][channel][RfPath];
 
 		powerLimit = (regulation == TXPWR_LMT_WW) ? phy_GetWorldWideLimit(limits) :
-			          pHalData->TxPwrLimit_2_4G[regulation][bandwidth][rateSection][channel][RfPath];
+			pHalData->TxPwrLimit_2_4G[regulation][bandwidth][rateSection][channel][RfPath];
 
 	} else if (Band == BAND_ON_5G) {
 		s8 limits[10] = {0}; u8 i = 0;
@@ -1627,7 +1625,7 @@ u8			Channel
 			limits[i] = pHalData->TxPwrLimit_5G[i][bandwidth][rateSection][channel][RfPath];
 
 		powerLimit = (regulation == TXPWR_LMT_WW) ? phy_GetWorldWideLimit(limits) :
-					  pHalData->TxPwrLimit_5G[regulation][bandwidth][rateSection][channel][RfPath];
+			pHalData->TxPwrLimit_5G[regulation][bandwidth][rateSection][channel][RfPath];
 	} else
 		DBG_871X("No power limit table of the specified band\n");
 
@@ -2974,8 +2972,10 @@ phy_ParsePowerLimitTableFile(
 				return _FAIL;
 
 			if (colNum > TXPWR_LMT_MAX_REGULATION_NUM) {
-				DBG_871X("unvalid col number %d (greater than max %d)\n",
-				          colNum, TXPWR_LMT_MAX_REGULATION_NUM);
+				DBG_871X(
+					"unvalid col number %d (greater than max %d)\n",
+					colNum, TXPWR_LMT_MAX_REGULATION_NUM
+				);
 				return _FAIL;
 			}
 
