@@ -371,7 +371,7 @@ void rtw_hal_dm_watchdog(struct adapter *padapter)
 
 void rtw_hal_dm_watchdog_in_lps(struct adapter *padapter)
 {
-	if (adapter_to_pwrctl(padapter)->bFwCurrentInPSMode ==true) {
+	if (adapter_to_pwrctl(padapter)->bFwCurrentInPSMode == true) {
 		if (padapter->HalFunc.hal_dm_watchdog_in_lps)
 			padapter->HalFunc.hal_dm_watchdog_in_lps(padapter); /* this fuction caller is in interrupt context */
 	}
@@ -397,7 +397,7 @@ void rtw_hal_notch_filter(struct adapter *adapter, bool enable)
 		adapter->HalFunc.hal_notch_filter(adapter, enable);
 }
 
-void rtw_hal_reset_security_engine(struct adapter * adapter)
+void rtw_hal_reset_security_engine(struct adapter *adapter)
 {
 	if (adapter->HalFunc.hal_reset_security_engine)
 		adapter->HalFunc.hal_reset_security_engine(adapter);
@@ -405,7 +405,7 @@ void rtw_hal_reset_security_engine(struct adapter * adapter)
 
 bool rtw_hal_c2h_valid(struct adapter *adapter, u8 *buf)
 {
-	return c2h_evt_valid((struct c2h_evt_hdr_88xx*)buf);
+	return c2h_evt_valid((struct c2h_evt_hdr_88xx *)buf);
 }
 
 s32 rtw_hal_c2h_evt_read(struct adapter *adapter, u8 *buf)
