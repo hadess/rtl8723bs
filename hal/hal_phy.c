@@ -31,8 +31,8 @@ u32 PHY_CalculateBitShift(u32 BitMask)
 {
 	u32 i;
 
-	for(i=0; i <= 31; i++) {
-		if (((BitMask>>i) &  0x1 ) == 1)
+	for (i = 0; i <= 31; i++) {
+		if (((BitMask>>i) &  0x1) == 1)
 			break;
 	}
 
@@ -99,7 +99,7 @@ bool PHY_RFShadowCompare(IN PADAPTER Adapter, IN u8 eRFPath, IN u32 Offset)
 			/* PHY_RFShadowCompare RF-%d Addr%02lx Err = %05lx\n", */
 			/* eRFPath, Offset, reg)); */
 		}
-		return RF_Shadow[eRFPath][Offset].ErrorOrNot ;
+		return RF_Shadow[eRFPath][Offset].ErrorOrNot;
 	}
 	return false;
 }	/* PHY_RFShadowCompare */
@@ -125,7 +125,7 @@ void PHY_RFShadowRecorver(IN PADAPTER Adapter, IN u8 eRFPath, IN u32 Offset)
 void PHY_RFShadowCompareAll(IN PADAPTER Adapter)
 {
 	u8 eRFPath = 0;
-	u32 Offset = 0, maxReg= GET_RF6052_REAL_MAX_REG(Adapter);
+	u32 Offset = 0, maxReg = GET_RF6052_REAL_MAX_REG(Adapter);
 
 	for (eRFPath = 0; eRFPath < RF6052_MAX_PATH; eRFPath++) {
 		for (Offset = 0; Offset < maxReg; Offset++) {
@@ -139,7 +139,7 @@ void PHY_RFShadowCompareAll(IN PADAPTER Adapter)
 void PHY_RFShadowRecorverAll(IN PADAPTER Adapter)
 {
 	u8 eRFPath = 0;
-	u32 Offset = 0, maxReg= GET_RF6052_REAL_MAX_REG(Adapter);
+	u32 Offset = 0, maxReg = GET_RF6052_REAL_MAX_REG(Adapter);
 
 	for (eRFPath = 0; eRFPath < RF6052_MAX_PATH; eRFPath++) {
 		for (Offset = 0; Offset < maxReg; Offset++) {
@@ -166,7 +166,7 @@ void PHY_RFShadowRecorverFlagSet(
 )
 {
 	/*  Set True or False!!! */
-	RF_Shadow[eRFPath][Offset].Recorver= Type;
+	RF_Shadow[eRFPath][Offset].Recorver = Type;
 
 }	/* PHY_RFShadowRecorverFlagSet */
 
@@ -174,7 +174,7 @@ void PHY_RFShadowRecorverFlagSet(
 void PHY_RFShadowCompareFlagSetAll(IN PADAPTER Adapter)
 {
 	u8 eRFPath = 0;
-	u32 Offset = 0, maxReg= GET_RF6052_REAL_MAX_REG(Adapter);
+	u32 Offset = 0, maxReg = GET_RF6052_REAL_MAX_REG(Adapter);
 
 	for (eRFPath = 0; eRFPath < RF6052_MAX_PATH; eRFPath++) {
 		for (Offset = 0; Offset < maxReg; Offset++) {
@@ -192,7 +192,7 @@ void PHY_RFShadowCompareFlagSetAll(IN PADAPTER Adapter)
 void PHY_RFShadowRecorverFlagSetAll(IN PADAPTER Adapter)
 {
 	u8 eRFPath = 0;
-	u32 Offset = 0, maxReg= GET_RF6052_REAL_MAX_REG(Adapter);
+	u32 Offset = 0, maxReg = GET_RF6052_REAL_MAX_REG(Adapter);
 
 	for (eRFPath = 0; eRFPath < RF6052_MAX_PATH; eRFPath++) {
 		for (Offset = 0; Offset < maxReg; Offset++) {
@@ -209,7 +209,7 @@ void PHY_RFShadowRecorverFlagSetAll(IN PADAPTER Adapter)
 void PHY_RFShadowRefresh(IN PADAPTER Adapter)
 {
 	u8 eRFPath = 0;
-	u32 Offset = 0, maxReg= GET_RF6052_REAL_MAX_REG(Adapter);
+	u32 Offset = 0, maxReg = GET_RF6052_REAL_MAX_REG(Adapter);
 
 	for (eRFPath = 0; eRFPath < RF6052_MAX_PATH; eRFPath++) {
 		for (Offset = 0; Offset < maxReg; Offset++) {
