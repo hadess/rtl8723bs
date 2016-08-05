@@ -185,9 +185,9 @@ void EXhalbtc8723b1ant_ConnectNotify(PBTC_COEXIST pBtCoexist, u8 type);
 void EXhalbtc8723b1ant_MediaStatusNotify(PBTC_COEXIST pBtCoexist, u8 type);
 void EXhalbtc8723b1ant_SpecialPacketNotify(PBTC_COEXIST pBtCoexist, u8 type);
 void EXhalbtc8723b1ant_BtInfoNotify(
-	PBTC_COEXIS pBtCoexist, u8 *tmpBuf, u8 length
+	PBTC_COEXIST pBtCoexist, u8 *tmpBuf, u8 length
 );
 void EXhalbtc8723b1ant_HaltNotify(PBTC_COEXIST pBtCoexist);
 void EXhalbtc8723b1ant_PnpNotify(PBTC_COEXIST pBtCoexist, u8 pnpState);
 void EXhalbtc8723b1ant_Periodical(PBTC_COEXIST pBtCoexist);
-void EXhalbtc8723b1ant_DisplayCoexInfo(PBTC_COEXIS pBtCoexist);
+void EXhalbtc8723b1ant_DisplayCoexInfo(PBTC_COEXIST pBtCoexist);
