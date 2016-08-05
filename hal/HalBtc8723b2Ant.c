@@ -274,7 +274,7 @@ static void halbtc8723b2ant_QueryBtInfo(PBTC_COEXIST pBtCoexist)
 	BTC_PRINT(
 		BTC_MSG_ALGORITHM,
 		ALGO_TRACE_FW_EXEC,
-		("[BTCoex], Query Bt Info, FW write 0x61 = 0x%x\n",H2C_Parameter[0])
+		("[BTCoex], Query Bt Info, FW write 0x61 = 0x%x\n", H2C_Parameter[0])
 	);
 
 	pBtCoexist->fBtcFillH2c(pBtCoexist, 0x61, 1, H2C_Parameter);
@@ -1100,7 +1100,7 @@ static void halbtc8723b2ant_SetFwIgnoreWlanAct(
 	PBTC_COEXIST pBtCoexist, bool bEnable
 )
 {
-	u8 	H2C_Parameter[1] ={0};
+	u8 	H2C_Parameter[1] = {0};
 
 	if (bEnable)
 		H2C_Parameter[0] |= BIT0;		/*  function enable */
@@ -1154,7 +1154,7 @@ static void halbtc8723b2ant_SetFwPstdma(
 	u8 byte5
 )
 {
-	u8 	H2C_Parameter[5] ={0};
+	u8 	H2C_Parameter[5] = {0};
 
 	H2C_Parameter[0] = byte1;
 	H2C_Parameter[1] = byte2;
@@ -1286,7 +1286,7 @@ static void halbtc8723b2ant_SetAntPath(
 			/*  0x4c[23]= 0, 0x4c[24]= 1  Antenna control by WL/BT */
 			u4Tmp = pBtCoexist->fBtcRead4Byte(pBtCoexist, 0x4c);
 			u4Tmp |= BIT23;
-			u4Tmp &=~BIT24;
+			u4Tmp &= ~BIT24;
 			pBtCoexist->fBtcWrite4Byte(pBtCoexist, 0x4c, u4Tmp);
 		}
 
@@ -1683,7 +1683,7 @@ static void halbtc8723b2ant_TdmaDurationAdjust(
 			ALGO_TRACE_FW_DETAIL,
 			(
 				"[BTCoex], up =%d, dn =%d, m =%d, n =%d, WaitCount =%d\n",
-				up,dn, m, n, WaitCount
+				up, dn, m, n, WaitCount
 			)
 		);
 		result = 0;
@@ -2849,7 +2849,7 @@ static void halbtc8723b2ant_RunCoexistMechanism(PBTC_COEXIST pBtCoexist)
 	}
 
 	algorithm = halbtc8723b2ant_ActionAlgorithm(pBtCoexist);
-	if (pCoexSta->bC2hBtInquiryPage && (BT_8723B_2ANT_COEX_ALGO_PANHS!=algorithm)) {
+	if (pCoexSta->bC2hBtInquiryPage && (BT_8723B_2ANT_COEX_ALGO_PANHS != algorithm)) {
 		BTC_PRINT(BTC_MSG_ALGORITHM, ALGO_TRACE, ("[BTCoex], BT is under inquiry/page scan !!\n"));
 		halbtc8723b2ant_ActionBtInquiry(pBtCoexist);
 		return;
@@ -3161,8 +3161,8 @@ void EXhalbtc8723b2ant_DisplayCoexInfo(PBTC_COEXIST pBtCoexist)
 		cliBuf,
 		BT_TMP_BUF_SIZE,
 		"\r\n %-35s = %s / %s/ %s ", "Wifi status", \
-		(bWifiUnder5G? "5G":"2.4G"),
-		((BTC_WIFI_BW_LEGACY == wifiBw) ? "Legacy" : (((BTC_WIFI_BW_HT40 ==wifiBw) ? "HT40" : "HT20"))),
+		(bWifiUnder5G ? "5G" : "2.4G"),
+		((BTC_WIFI_BW_LEGACY == wifiBw) ? "Legacy" : (((BTC_WIFI_BW_HT40 == wifiBw) ? "HT40" : "HT20"))),
 		((!bWifiBusy) ? "idle" : ((BTC_WIFI_TRAFFIC_TX == wifiTrafficDir) ? "uplink" : "downlink"))
 	);
 	CL_PRINTF(cliBuf);
@@ -3172,7 +3172,7 @@ void EXhalbtc8723b2ant_DisplayCoexInfo(PBTC_COEXIST pBtCoexist)
 		BT_TMP_BUF_SIZE,
 		"\r\n %-35s = [%s/ %d/ %d] ", "BT [status/ rssi/ retryCnt]", \
 		((pBtCoexist->btInfo.bBtDisabled) ? ("disabled") : ((pCoexSta->bC2hBtInquiryPage) ? ("inquiry/page scan") : ((BT_8723B_2ANT_BT_STATUS_NON_CONNECTED_IDLE == pCoexDm->btStatus) ? "non-connected idle" :
-		((BT_8723B_2ANT_BT_STATUS_CONNECTED_IDLE == pCoexDm->btStatus)? "connected-idle":"busy")))),
+		((BT_8723B_2ANT_BT_STATUS_CONNECTED_IDLE == pCoexDm->btStatus) ? "connected-idle" : "busy")))),
 		pCoexSta->btRssi,
 		pCoexSta->btRetryCnt
 	);
@@ -3315,7 +3315,7 @@ void EXhalbtc8723b2ant_DisplayCoexInfo(PBTC_COEXIST pBtCoexist)
 		BT_TMP_BUF_SIZE,
 		"\r\n %-35s = 0x%x/ 0x%x/ 0x%x", "0x948/ 0x67[5] / 0x765", \
 		u4Tmp[0],
-		((u1Tmp[0]&0x20)>> 5),
+		((u1Tmp[0]&0x20)>>5),
 		u1Tmp[1]
 	);
 	CL_PRINTF(cliBuf);
