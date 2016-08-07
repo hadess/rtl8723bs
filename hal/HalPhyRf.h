@@ -38,38 +38,26 @@ typedef struct _TXPWRTRACK_CFG {
 	u8 Threshold_IQK;
 	u8 AverageThermalNum;
 	u8 RfPathCount;
-	u32 	ThermalRegAddr;
-	FuncSetPwr	ODM_TxPwrTrackSetPwr;
-	FuncIQK		DoIQK;
-	FuncLCK		PHY_LCCalibrate;
-	FuncSwing	GetDeltaSwingTable;
+	u32 ThermalRegAddr;
+	FuncSetPwr ODM_TxPwrTrackSetPwr;
+	FuncIQK DoIQK;
+	FuncLCK PHY_LCCalibrate;
+	FuncSwing GetDeltaSwingTable;
 } TXPWRTRACK_CFG, *PTXPWRTRACK_CFG;
 
-void ConfigureTxpowerTrack(
-	PDM_ODM_T		pDM_Odm,
-	PTXPWRTRACK_CFG	pConfig
-	);
+void ConfigureTxpowerTrack(PDM_ODM_T pDM_Odm, PTXPWRTRACK_CFG pConfig);
 
 
-void
-ODM_ClearTxPowerTrackingState(
-	PDM_ODM_T		pDM_Odm
-	);
+void ODM_ClearTxPowerTrackingState(PDM_ODM_T pDM_Odm);
 
-void
-ODM_TXPowerTrackingCallback_ThermalMeter(
-	struct adapter *Adapter
-	);
+void ODM_TXPowerTrackingCallback_ThermalMeter(struct adapter *Adapter);
 
 
 
-#define ODM_TARGET_CHNL_NUM_2G_5G	59
+#define ODM_TARGET_CHNL_NUM_2G_5G 59
 
 
-u8
-ODM_GetRightChnlPlaceforIQK(
-    u8 chnl
-);
+u8 ODM_GetRightChnlPlaceforIQK(u8 chnl);
 
 
 #endif	/*  #ifndef __HAL_PHY_RF_H__ */
