@@ -102,7 +102,7 @@ static void setIqkMatrix_8723B(
 			break;
 		case ODM_RF_PATH_B:
 			/* wirte new elements A, C, D to regC88 and regC9C, element B is always 0 */
-			value32 =(ele_D<<22)|((ele_C&0x3F)<<16) |ele_A;
+			value32 = (ele_D<<22)|((ele_C&0x3F)<<16)|ele_A;
 			PHY_SetBBReg(pDM_Odm->Adapter, rOFDM0_XBTxIQImbalance, bMaskDWord, value32);
 
 			value32 = (ele_C&0x000003C0)>>6;
@@ -240,7 +240,7 @@ void ODM_TxPwrTrackSetPwr_8723B(
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("TxRate = 0x%x, PwrTrackingLimit =%d\n", TxRate, PwrTrackingLimit_OFDM));
 
 	if (Method == TXAGC) {
-		struct adapter * Adapter = pDM_Odm->Adapter;
+		struct adapter *Adapter = pDM_Odm->Adapter;
 
 		ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("odm_TxPwrTrackSetPwr8723B CH =%d\n", *(pDM_Odm->pChannel)));
 
@@ -389,7 +389,7 @@ static void GetDeltaSwingTable_8723B(
 			*TemperatureUP_B   = pRFCalibrateInfo->DeltaSwingTableIdx_2GB_P;
 			*TemperatureDOWN_B = pRFCalibrateInfo->DeltaSwingTableIdx_2GB_N;
 		}
-	}/*else if (36 <= channel && channel <= 64) {
+	} /*else if (36 <= channel && channel <= 64) {
 		*TemperatureUP_A   = pRFCalibrateInfo->DeltaSwingTableIdx_5GA_P[0];
 		*TemperatureDOWN_A = pRFCalibrateInfo->DeltaSwingTableIdx_5GA_N[0];
 		*TemperatureUP_B   = pRFCalibrateInfo->DeltaSwingTableIdx_5GB_P[0];
@@ -527,7 +527,7 @@ static u8 phy_PathA_IQK_8723B(
 
 
 	/* Allen 20131125 */
-	tmp =(regE9C & 0x03FF0000)>>16;
+	tmp = (regE9C & 0x03FF0000)>>16;
 	if ((tmp & 0x200) > 0)
 		tmp = 0x400 - tmp;
 
@@ -639,7 +639,7 @@ static u8 phy_PathA_RxIQK8723B(
 	PHY_QueryBBReg(pDM_Odm->Adapter, 0xe90, bMaskDWord), PHY_QueryBBReg(pDM_Odm->Adapter, 0xe98, bMaskDWord)));
 
 	/* Allen 20131125 */
-	tmp =(regE9C & 0x03FF0000)>>16;
+	tmp = (regE9C & 0x03FF0000)>>16;
 	if ((tmp & 0x200) > 0)
 		tmp = 0x400 - tmp;
 
@@ -744,8 +744,8 @@ static u8 phy_PathA_RxIQK8723B(
 	PHY_SetRFReg(pDM_Odm->Adapter, ODM_RF_PATH_A, 0xdf, bRFRegOffsetMask, 0x780);
 
 	/* Allen 20131125 */
-	tmp =(regEAC & 0x03FF0000)>>16;
-	if ((tmp & 0x200)> 0)
+	tmp = (regEAC & 0x03FF0000)>>16;
+	if ((tmp & 0x200) > 0)
 		tmp = 0x400 - tmp;
 
 	if (
@@ -852,7 +852,7 @@ static u8 phy_PathB_IQK_8723B(struct adapter *padapter)
 	PHY_QueryBBReg(pDM_Odm->Adapter, 0xe90, bMaskDWord), PHY_QueryBBReg(pDM_Odm->Adapter, 0xe98, bMaskDWord)));
 
 	/* Allen 20131125 */
-	tmp =(regE9C & 0x03FF0000)>>16;
+	tmp = (regE9C & 0x03FF0000)>>16;
 	if ((tmp & 0x200) > 0)
 		tmp = 0x400 - tmp;
 
@@ -961,9 +961,9 @@ static u8 phy_PathB_RxIQK8723B(struct adapter *padapter, bool configPathB)
 		PHY_QueryBBReg(pDM_Odm->Adapter, 0xe90, bMaskDWord), PHY_QueryBBReg(pDM_Odm->Adapter, 0xe98, bMaskDWord)));
 
 	/* Allen 20131125 */
-	tmp =(regE9C & 0x03FF0000)>>16;
+	tmp = (regE9C & 0x03FF0000)>>16;
 /* 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD,  ("tmp1 = 0x%x\n", tmp)); */
-	if ((tmp & 0x200)> 0)
+	if ((tmp & 0x200) > 0)
 		tmp = 0x400 - tmp;
 /* 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD,  ("tmp2 = 0x%x\n", tmp)); */
 
@@ -971,9 +971,9 @@ static u8 phy_PathB_RxIQK8723B(struct adapter *padapter, bool configPathB)
 		!(regEAC & BIT28) &&
 		(((regE94 & 0x03FF0000)>>16) != 0x142) &&
 		(((regE9C & 0x03FF0000)>>16) != 0x42)  &&
-		(((regE94 & 0x03FF0000)>>16) <0x110) &&
-		(((regE94 & 0x03FF0000)>>16) >0xf0) &&
-		(tmp <0xf)
+		(((regE94 & 0x03FF0000)>>16) < 0x110) &&
+		(((regE94 & 0x03FF0000)>>16) > 0xf0) &&
+		(tmp < 0xf)
 	)
 			result |= 0x01;
 	else	/* if Tx not OK, ignore Rx */
@@ -1068,7 +1068,7 @@ static u8 phy_PathB_RxIQK8723B(struct adapter *padapter, bool configPathB)
 
 
 	/* Allen 20131125 */
-	tmp =(regEAC & 0x03FF0000)>>16;
+	tmp = (regEAC & 0x03FF0000)>>16;
 	if ((tmp & 0x200) > 0)
 		tmp = 0x400 - tmp;
 
@@ -1117,7 +1117,7 @@ static void _PHY_PathAFillIQKMatrix8723B(
 		ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD,  ("X = 0x%x, TX0_A = 0x%x, Oldval_0 0x%x\n", X, TX0_A, Oldval_0));
 		PHY_SetBBReg(pDM_Odm->Adapter, rOFDM0_XATxIQImbalance, 0x3FF, TX0_A);
 
-		PHY_SetBBReg(pDM_Odm->Adapter, rOFDM0_ECCAThreshold, BIT(31), ((X* Oldval_0>>7) & 0x1));
+		PHY_SetBBReg(pDM_Odm->Adapter, rOFDM0_ECCAThreshold, BIT(31), ((X*Oldval_0>>7) & 0x1));
 
 		Y = result[final_candidate][1];
 		if ((Y & 0x00000200) != 0)
@@ -1134,7 +1134,7 @@ static void _PHY_PathAFillIQKMatrix8723B(
 		pRFCalibrateInfo->TxIQC_8723B[PATH_S1][IDX_0xC80][KEY] = rOFDM0_XATxIQImbalance;
 		pRFCalibrateInfo->TxIQC_8723B[PATH_S1][IDX_0xC80][VAL] = PHY_QueryBBReg(pDM_Odm->Adapter, rOFDM0_XATxIQImbalance, bMaskDWord);
 
-		PHY_SetBBReg(pDM_Odm->Adapter, rOFDM0_ECCAThreshold, BIT(29), ((Y* Oldval_0>>7) & 0x1));
+		PHY_SetBBReg(pDM_Odm->Adapter, rOFDM0_ECCAThreshold, BIT(29), ((Y*Oldval_0>>7) & 0x1));
 		pRFCalibrateInfo->TxIQC_8723B[PATH_S1][IDX_0xC4C][KEY] = rOFDM0_ECCAThreshold;
 		pRFCalibrateInfo->TxIQC_8723B[PATH_S1][IDX_0xC4C][VAL] = PHY_QueryBBReg(pDM_Odm->Adapter, rOFDM0_ECCAThreshold, bMaskDWord);
 
@@ -1198,7 +1198,7 @@ static void _PHY_PathBFillIQKMatrix8723B(
 
 		PHY_SetBBReg(pDM_Odm->Adapter, rOFDM0_XBTxIQImbalance, 0x3FF, TX1_A);
 
-		PHY_SetBBReg(pDM_Odm->Adapter, rOFDM0_ECCAThreshold, BIT(27), ((X* Oldval_1>>7) & 0x1));
+		PHY_SetBBReg(pDM_Odm->Adapter, rOFDM0_ECCAThreshold, BIT(27), ((X*Oldval_1>>7) & 0x1));
 
 		Y = result[final_candidate][5];
 		if ((Y & 0x00000200) != 0)
@@ -1218,7 +1218,7 @@ static void _PHY_PathBFillIQKMatrix8723B(
 		pRFCalibrateInfo->TxIQC_8723B[PATH_S0][IDX_0xC80][KEY] = rOFDM0_XATxIQImbalance;
 		pRFCalibrateInfo->TxIQC_8723B[PATH_S0][IDX_0xC80][VAL] = PHY_QueryBBReg(pDM_Odm->Adapter, rOFDM0_XBTxIQImbalance, bMaskDWord);
 
-		PHY_SetBBReg(pDM_Odm->Adapter, rOFDM0_ECCAThreshold, BIT(25), ((Y* Oldval_1>>7) & 0x1));
+		PHY_SetBBReg(pDM_Odm->Adapter, rOFDM0_ECCAThreshold, BIT(25), ((Y*Oldval_1>>7) & 0x1));
 		pRFCalibrateInfo->TxIQC_8723B[PATH_S0][IDX_0xC4C][KEY] = rOFDM0_ECCAThreshold;
 		pRFCalibrateInfo->TxIQC_8723B[PATH_S0][IDX_0xC4C][VAL] = PHY_QueryBBReg(pDM_Odm->Adapter, rOFDM0_ECCAThreshold, bMaskDWord);
 
@@ -1244,7 +1244,7 @@ static void _PHY_PathBFillIQKMatrix8723B(
 		reg = (result[final_candidate][7] >> 6) & 0xF;
 /* 		PHY_SetBBReg(pDM_Odm->Adapter, rOFDM0_AGCRSSITable, 0x0000F000, reg); */
 		pRFCalibrateInfo->RxIQC_8723B[PATH_S0][IDX_0xCA0][KEY] = rOFDM0_RxIQExtAnta;
-		pRFCalibrateInfo->RxIQC_8723B[PATH_S0][IDX_0xCA0][VAL] = (reg << 28)|(PHY_QueryBBReg(pDM_Odm->Adapter, rOFDM0_RxIQExtAnta, bMaskDWord)& 0x0fffffff);
+		pRFCalibrateInfo->RxIQC_8723B[PATH_S0][IDX_0xCA0][VAL] = (reg << 28)|(PHY_QueryBBReg(pDM_Odm->Adapter, rOFDM0_RxIQExtAnta, bMaskDWord)&0x0fffffff);
 	}
 }
 
@@ -1412,7 +1412,7 @@ static bool phy_SimularityCompare_8723B(
 )
 {
 	u32 i, j, diff, SimularityBitMap, bound = 0;
-	u8 final_candidate[2] = {0xFF, 0xFF};	/* for path A and path B */
+	u8 final_candidate[2] = {0xFF, 0xFF}; /* for path A and path B */
 	bool bResult = true;
 	bool is2T = true;
 	s32 tmp1 = 0, tmp2 = 0;
@@ -1426,13 +1426,13 @@ static bool phy_SimularityCompare_8723B(
 
 	for (i = 0; i < bound; i++) {
 
-		if ((i == 1) || (i ==3) || (i ==5) || (i ==7)) {
-			if ((result[c1][i]& 0x00000200) != 0)
+		if ((i == 1) || (i == 3) || (i == 5) || (i == 7)) {
+			if ((result[c1][i] & 0x00000200) != 0)
 				tmp1 = result[c1][i] | 0xFFFFFC00;
 			else
 				tmp1 = result[c1][i];
 
-			if ((result[c2][i]& 0x00000200) != 0)
+			if ((result[c2][i] & 0x00000200) != 0)
 				tmp2 = result[c2][i] | 0xFFFFFC00;
 			else
 				tmp2 = result[c2][i];
@@ -1851,7 +1851,11 @@ void PHY_IQCalibrate_8723B(
 			offset = pRFCalibrateInfo->TxIQC_8723B[path][i][0];
 			data = pRFCalibrateInfo->TxIQC_8723B[path][i][1];
 			if ((offset == 0) || (data == 0)) {
-				DBG_871X("%s =>path:%s Restore TX IQK result failed\n", __func__, (path ==ODM_RF_PATH_A)?"A":"B");
+				DBG_871X(
+					"%s =>path:%s Restore TX IQK result failed\n",
+					__func__,
+					(path == ODM_RF_PATH_A)?"A":"B"
+				);
 				bResult = FAIL;
 				break;
 			}
@@ -1864,7 +1868,11 @@ void PHY_IQCalibrate_8723B(
 			offset = pRFCalibrateInfo->RxIQC_8723B[path][i][0];
 			data = pRFCalibrateInfo->RxIQC_8723B[path][i][1];
 			if ((offset == 0) || (data == 0)) {
-				DBG_871X("%s =>path:%s  Restore RX IQK result failed\n", __func__, (path ==ODM_RF_PATH_A)?"A":"B");
+				DBG_871X(
+					"%s =>path:%s  Restore RX IQK result failed\n",
+					__func__,
+					(path == ODM_RF_PATH_A)?"A":"B"
+				);
 				bResult = FAIL;
 				break;
 			}
@@ -1956,7 +1964,7 @@ void PHY_IQCalibrate_8723B(
 	}
 /* 	RT_TRACE(COMP_INIT, DBG_LOUD, ("Release Mutex in IQCalibrate\n")); */
 
-	for (i = 0; i<4; i++) {
+	for (i = 0; i < 4; i++) {
 		RegE94 = result[i][0];
 		RegE9C = result[i][1];
 		RegEA4 = result[i][2];
