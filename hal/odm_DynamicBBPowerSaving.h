@@ -16,31 +16,24 @@
 #ifndef	__ODMDYNAMICBBPOWERSAVING_H__
 #define    __ODMDYNAMICBBPOWERSAVING_H__
 
-typedef struct _Dynamic_Power_Saving_
-{
+typedef struct _Dynamic_Power_Saving_ {
 	u8 PreCCAState;
 	u8 CurCCAState;
 
 	u8 PreRFState;
 	u8 CurRFState;
 
-	int		    Rssi_val_min;
+	int Rssi_val_min;
 
 	u8 initialize;
-	u32 	Reg874, RegC70, Reg85C, RegA74;
+	u32 Reg874, RegC70, Reg85C, RegA74;
 
-}PS_T,*pPS_T;
+} PS_T, *pPS_T;
 
-#define dm_RF_Saving	ODM_RF_Saving
+#define dm_RF_Saving ODM_RF_Saving
 
-void ODM_RF_Saving(
-	void *				pDM_VOID,
-u8 bForceInNormal
-	);
+void ODM_RF_Saving(void *pDM_VOID, u8 bForceInNormal);
 
-void
-odm_DynamicBBPowerSavingInit(
-	void *				pDM_VOID
-	);
+void odm_DynamicBBPowerSavingInit(void *pDM_VOID);
 
 #endif
