@@ -13,22 +13,21 @@
  *
  ******************************************************************************/
 
-#ifndef	__ODMDIG_H__
-#define    __ODMDIG_H__
+#ifndef __ODMDIG_H__
+#define __ODMDIG_H__
 
-typedef struct _Dynamic_Initial_Gain_Threshold_
-{
-	bool		bStopDIG;
-	bool		bPSDInProgress;
+typedef struct _Dynamic_Initial_Gain_Threshold_ {
+	bool bStopDIG;
+	bool bPSDInProgress;
 
 	u8 Dig_Enable_Flag;
 	u8 Dig_Ext_Port_Stage;
 
-	int			RssiLowThresh;
-	int			RssiHighThresh;
+	int RssiLowThresh;
+	int RssiHighThresh;
 
-	u32 	FALowThresh;
-	u32 	FAHighThresh;
+	u32 FALowThresh;
+	u32 FAHighThresh;
 
 	u8 CurSTAConnectState;
 	u8 PreSTAConnectState;
@@ -40,9 +39,9 @@ typedef struct _Dynamic_Initial_Gain_Threshold_
 	u8 BT30_CurIGI;
 	u8 IGIBackup;
 
-	s8		BackoffVal;
-	s8		BackoffVal_range_max;
-	s8		BackoffVal_range_min;
+	s8 BackoffVal;
+	s8 BackoffVal_range_max;
+	s8 BackoffVal_range_min;
 	u8 rx_gain_range_max;
 	u8 rx_gain_range_min;
 	u8 Rssi_val_min;
@@ -55,26 +54,26 @@ typedef struct _Dynamic_Initial_Gain_Threshold_
 
 	u8 LargeFAHit;
 	u8 ForbiddenIGI;
-	u32 	Recover_cnt;
+	u32 Recover_cnt;
 
 	u8 DIG_Dynamic_MIN_0;
 	u8 DIG_Dynamic_MIN_1;
-	bool		bMediaConnect_0;
-	bool		bMediaConnect_1;
+	bool bMediaConnect_0;
+	bool bMediaConnect_1;
 
-	u32 	AntDiv_RSSI_max;
-	u32 	RSSI_max;
+	u32 AntDiv_RSSI_max;
+	u32 RSSI_max;
 
 	u8 *pbP2pLinkInProgress;
-}DIG_T,*pDIG_T;
+} DIG_T, *pDIG_T;
 
-typedef struct false_ALARM_STATISTICS{
+typedef struct false_ALARM_STATISTICS {
 	u32 Cnt_Parity_Fail;
 	u32 Cnt_Rate_Illegal;
 	u32 Cnt_Crc8_fail;
 	u32 Cnt_Mcs_fail;
 	u32 Cnt_Ofdm_fail;
-	u32 Cnt_Ofdm_fail_pre;	/* For RTL8881A */
+	u32 Cnt_Ofdm_fail_pre; /* For RTL8881A */
 	u32 Cnt_Cck_fail;
 	u32 Cnt_all;
 	u32 Cnt_Fast_Fsync;
@@ -82,30 +81,29 @@ typedef struct false_ALARM_STATISTICS{
 	u32 Cnt_OFDM_CCA;
 	u32 Cnt_CCK_CCA;
 	u32 Cnt_CCA_all;
-	u32 Cnt_BW_USC;	/* Gary */
-	u32 Cnt_BW_LSC;	/* Gary */
-}false_ALARM_STATISTICS, *Pfalse_ALARM_STATISTICS;
+	u32 Cnt_BW_USC; /* Gary */
+	u32 Cnt_BW_LSC; /* Gary */
+} false_ALARM_STATISTICS, *Pfalse_ALARM_STATISTICS;
 
-typedef enum tag_Dynamic_Init_Gain_Operation_Type_Definition
-{
-	DIG_TYPE_THRESH_HIGH	= 0,
-	DIG_TYPE_THRESH_LOW	= 1,
-	DIG_TYPE_BACKOFF		= 2,
-	DIG_TYPE_RX_GAIN_MIN	= 3,
-	DIG_TYPE_RX_GAIN_MAX	= 4,
-	DIG_TYPE_ENABLE			= 5,
-	DIG_TYPE_DISABLE		= 6,
+typedef enum tag_Dynamic_Init_Gain_Operation_Type_Definition {
+	DIG_TYPE_THRESH_HIGH = 0,
+	DIG_TYPE_THRESH_LOW = 1,
+	DIG_TYPE_BACKOFF = 2,
+	DIG_TYPE_RX_GAIN_MIN = 3,
+	DIG_TYPE_RX_GAIN_MAX = 4,
+	DIG_TYPE_ENABLE = 5,
+	DIG_TYPE_DISABLE = 6,
 	DIG_OP_TYPE_MAX
-}DM_DIG_OP_E;
+} DM_DIG_OP_E;
 
 typedef enum tag_ODM_PauseDIG_Type {
-	ODM_PAUSE_DIG			=	BIT0,
-	ODM_RESUME_DIG			=	BIT1
+	ODM_PAUSE_DIG = BIT0,
+	ODM_RESUME_DIG = BIT1
 } ODM_Pause_DIG_TYPE;
 
 typedef enum tag_ODM_PauseCCKPD_Type {
-	ODM_PAUSE_CCKPD		=	BIT0,
-	ODM_RESUME_CCKPD	=	BIT1
+	ODM_PAUSE_CCKPD = BIT0,
+	ODM_RESUME_CCKPD = BIT1
 } ODM_Pause_CCKPD_TYPE;
 
 #define		DM_DIG_THRESH_HIGH			40
@@ -147,117 +145,51 @@ typedef enum tag_ODM_PauseCCKPD_Type {
 #define			DM_DIG_FA_TH2_LPS				30 /*  30 lps */
 #define			RSSI_OFFSET_DIG				0x05
 
-void
-odm_NHMCounterStatisticsInit(
-	void *				pDM_VOID
-	);
+void odm_NHMCounterStatisticsInit(void *pDM_VOID);
 
-void
-odm_NHMCounterStatistics(
-	void *				pDM_VOID
-	);
+void odm_NHMCounterStatistics(void *pDM_VOID);
 
-void
-odm_NHMBBInit(
-	void *				pDM_VOID
+void odm_NHMBBInit(void *pDM_VOID);
+
+void odm_NHMBB(void *pDM_VOID);
+
+void odm_NHMCounterStatisticsReset(void *pDM_VOID);
+
+void odm_GetNHMCounterStatistics(void *pDM_VOID);
+
+void odm_SearchPwdBLowerBound(void *pDM_VOID, u8 IGI_target);
+
+void odm_AdaptivityInit(void *pDM_VOID);
+
+void odm_Adaptivity(void *pDM_VOID, u8 IGI);
+
+void ODM_Write_DIG(void *pDM_VOID, u8 CurrentIGI);
+
+void odm_PauseDIG(void *pDM_VOID, ODM_Pause_DIG_TYPE PauseType, u8 IGIValue);
+
+void odm_DIGInit(void *pDM_VOID);
+
+void odm_DIG(void *pDM_VOID);
+
+void odm_DIGbyRSSI_LPS(void *pDM_VOID);
+
+void odm_FalseAlarmCounterStatistics(void *pDM_VOID);
+
+void odm_FAThresholdCheck(
+	void *pDM_VOID,
+	bool bDFSBand,
+	bool bPerformance,
+	u32 RxTp,
+	u32 TxTp,
+	u32 *dm_FA_thres
 );
 
-void
-odm_NHMBB(
-	void *				pDM_VOID
-);
+u8 odm_ForbiddenIGICheck(void *pDM_VOID, u8 DIG_Dynamic_MIN, u8 CurrentIGI);
 
-void
-odm_NHMCounterStatisticsReset(
-	void *		pDM_VOID
-);
+bool odm_DigAbort(void *pDM_VOID);
 
-void
-odm_GetNHMCounterStatistics(
-	void *		pDM_VOID
-);
+void odm_CCKPacketDetectionThresh(void *pDM_VOID);
 
-void
-odm_SearchPwdBLowerBound(
-	void *				pDM_VOID,
-	u8 			IGI_target
-);
-
-void
-odm_AdaptivityInit(
-	void *				pDM_VOID
-	);
-
-void
-odm_Adaptivity(
-	void *				pDM_VOID,
-	u8 			IGI
-	);
-
-void
-ODM_Write_DIG(
-	void *				pDM_VOID,
-	u8 			CurrentIGI
-	);
-
-void
-odm_PauseDIG(
-	void *				pDM_VOID,
-	ODM_Pause_DIG_TYPE		PauseType,
-	u8 			IGIValue
-	);
-
-void
-odm_DIGInit(
-	void *				pDM_VOID
-	);
-
-void
-odm_DIG(
-	void *				pDM_VOID
-	);
-
-void
-odm_DIGbyRSSI_LPS(
-	void *				pDM_VOID
-	);
-
-void
-odm_FalseAlarmCounterStatistics(
-	void *				pDM_VOID
-	);
-
-void
-odm_FAThresholdCheck(
-	void *				pDM_VOID,
-	bool					bDFSBand,
-	bool					bPerformance,
-	u32 				RxTp,
-	u32 				TxTp,
-	u32*				dm_FA_thres
-	);
-
-u8
-odm_ForbiddenIGICheck(
-	void *				pDM_VOID,
-	u8 			DIG_Dynamic_MIN,
-	u8 			CurrentIGI
-	);
-
-bool
-odm_DigAbort(
-	void *				pDM_VOID
-	);
-
-void
-odm_CCKPacketDetectionThresh(
-	void *				pDM_VOID
-	);
-
-void
-ODM_Write_CCK_CCA_Thres(
-	void *				pDM_VOID,
-	u8 			CurCCK_CCAThres
-	);
+void ODM_Write_CCK_CCA_Thres(void *pDM_VOID, u8 CurCCK_CCAThres);
 
 #endif
