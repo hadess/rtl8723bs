@@ -20,20 +20,19 @@
 #define		CFO_TH_XTAL_LOW			10		/*  kHz */
 #define		CFO_TH_ATC			80		/*  kHz */
 
-typedef struct _CFO_TRACKING_
-{
-	bool			bATCStatus;
-	bool			largeCFOHit;
-	bool			bAdjust;
-	u8 	CrystalCap;
-	u8 	DefXCap;
-	int				CFO_tail[2];
-	int				CFO_ave_pre;
-	u32 		packetCount;
-	u32 		packetCount_pre;
+typedef struct _CFO_TRACKING_ {
+	bool bATCStatus;
+	bool largeCFOHit;
+	bool bAdjust;
+	u8 CrystalCap;
+	u8 DefXCap;
+	int CFO_tail[2];
+	int CFO_ave_pre;
+	u32 packetCount;
+	u32 packetCount_pre;
 
-	bool			bForceXtalCap;
-	bool			bReset;
+	bool bForceXtalCap;
+	bool bReset;
 } CFO_TRACKING, *PCFO_TRACKING;
 
 void ODM_CfoTrackingReset(void *pDM_VOID
