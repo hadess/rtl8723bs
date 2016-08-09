@@ -3887,18 +3887,18 @@ void SetHwReg8723B(struct adapter *padapter, u8 variable, u8 *val)
 		hw_var_set_mlme_join(padapter, variable, val);
 
 		switch (*val) {
-			case 0:
-				/*  prepare to join */
-				rtw_btcoex_ConnectNotify(padapter, true);
-				break;
-			case 1:
-				/*  joinbss_event callback when join res < 0 */
-				rtw_btcoex_ConnectNotify(padapter, false);
-				break;
-			case 2:
-				/*  sta add event callback */
+		case 0:
+			/*  prepare to join */
+			rtw_btcoex_ConnectNotify(padapter, true);
+			break;
+		case 1:
+			/*  joinbss_event callback when join res < 0 */
+			rtw_btcoex_ConnectNotify(padapter, false);
+			break;
+		case 2:
+			/*  sta add event callback */
 /* 				rtw_btcoex_MediaStatusNotify(padapter, RT_MEDIA_CONNECT); */
-				break;
+			break;
 		}
 		break;
 
