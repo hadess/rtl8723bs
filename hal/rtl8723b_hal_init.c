@@ -634,99 +634,98 @@ static void Hal_GetEfuseDefinition(
 	bool bPseudoTest
 )
 {
-	switch (type)
-	{
-		case TYPE_EFUSE_MAX_SECTION:
-			{
-				u8 *pMax_section;
-				pMax_section = (u8 *)pOut;
+	switch (type) {
+	case TYPE_EFUSE_MAX_SECTION:
+		{
+			u8 *pMax_section;
+			pMax_section = (u8 *)pOut;
 
-				if (efuseType == EFUSE_WIFI)
-					*pMax_section = EFUSE_MAX_SECTION_8723B;
-				else
-					*pMax_section = EFUSE_BT_MAX_SECTION;
-			}
-			break;
+			if (efuseType == EFUSE_WIFI)
+				*pMax_section = EFUSE_MAX_SECTION_8723B;
+			else
+				*pMax_section = EFUSE_BT_MAX_SECTION;
+		}
+		break;
 
-		case TYPE_EFUSE_REAL_CONTENT_LEN:
-			{
-				u16 *pu2Tmp;
-				pu2Tmp = (u16 *)pOut;
+	case TYPE_EFUSE_REAL_CONTENT_LEN:
+		{
+			u16 *pu2Tmp;
+			pu2Tmp = (u16 *)pOut;
 
-				if (efuseType == EFUSE_WIFI)
-					*pu2Tmp = EFUSE_REAL_CONTENT_LEN_8723B;
-				else
-					*pu2Tmp = EFUSE_BT_REAL_CONTENT_LEN;
-			}
-			break;
+			if (efuseType == EFUSE_WIFI)
+				*pu2Tmp = EFUSE_REAL_CONTENT_LEN_8723B;
+			else
+				*pu2Tmp = EFUSE_BT_REAL_CONTENT_LEN;
+		}
+		break;
 
-		case TYPE_AVAILABLE_EFUSE_BYTES_BANK:
-			{
-				u16 *pu2Tmp;
-				pu2Tmp = (u16 *)pOut;
+	case TYPE_AVAILABLE_EFUSE_BYTES_BANK:
+		{
+			u16 *pu2Tmp;
+			pu2Tmp = (u16 *)pOut;
 
-				if (efuseType == EFUSE_WIFI)
-					*pu2Tmp = (EFUSE_REAL_CONTENT_LEN_8723B-EFUSE_OOB_PROTECT_BYTES);
-				else
-					*pu2Tmp = (EFUSE_BT_REAL_BANK_CONTENT_LEN-EFUSE_PROTECT_BYTES_BANK);
-			}
-			break;
+			if (efuseType == EFUSE_WIFI)
+				*pu2Tmp = (EFUSE_REAL_CONTENT_LEN_8723B-EFUSE_OOB_PROTECT_BYTES);
+			else
+				*pu2Tmp = (EFUSE_BT_REAL_BANK_CONTENT_LEN-EFUSE_PROTECT_BYTES_BANK);
+		}
+		break;
 
-		case TYPE_AVAILABLE_EFUSE_BYTES_TOTAL:
-			{
-				u16 *pu2Tmp;
-				pu2Tmp = (u16 *)pOut;
+	case TYPE_AVAILABLE_EFUSE_BYTES_TOTAL:
+		{
+			u16 *pu2Tmp;
+			pu2Tmp = (u16 *)pOut;
 
-				if (efuseType == EFUSE_WIFI)
-					*pu2Tmp = (EFUSE_REAL_CONTENT_LEN_8723B-EFUSE_OOB_PROTECT_BYTES);
-				else
-					*pu2Tmp = (EFUSE_BT_REAL_CONTENT_LEN-(EFUSE_PROTECT_BYTES_BANK*3));
-			}
-			break;
+			if (efuseType == EFUSE_WIFI)
+				*pu2Tmp = (EFUSE_REAL_CONTENT_LEN_8723B-EFUSE_OOB_PROTECT_BYTES);
+			else
+				*pu2Tmp = (EFUSE_BT_REAL_CONTENT_LEN-(EFUSE_PROTECT_BYTES_BANK*3));
+		}
+		break;
 
-		case TYPE_EFUSE_MAP_LEN:
-			{
-				u16 *pu2Tmp;
-				pu2Tmp = (u16 *)pOut;
+	case TYPE_EFUSE_MAP_LEN:
+		{
+			u16 *pu2Tmp;
+			pu2Tmp = (u16 *)pOut;
 
-				if (efuseType == EFUSE_WIFI)
-					*pu2Tmp = EFUSE_MAX_MAP_LEN;
-				else
-					*pu2Tmp = EFUSE_BT_MAP_LEN;
-			}
-			break;
+			if (efuseType == EFUSE_WIFI)
+				*pu2Tmp = EFUSE_MAX_MAP_LEN;
+			else
+				*pu2Tmp = EFUSE_BT_MAP_LEN;
+		}
+		break;
 
-		case TYPE_EFUSE_PROTECT_BYTES_BANK:
-			{
-				u8 *pu1Tmp;
-				pu1Tmp = (u8 *)pOut;
+	case TYPE_EFUSE_PROTECT_BYTES_BANK:
+		{
+			u8 *pu1Tmp;
+			pu1Tmp = (u8 *)pOut;
 
-				if (efuseType == EFUSE_WIFI)
-					*pu1Tmp = EFUSE_OOB_PROTECT_BYTES;
-				else
-					*pu1Tmp = EFUSE_PROTECT_BYTES_BANK;
-			}
-			break;
+			if (efuseType == EFUSE_WIFI)
+				*pu1Tmp = EFUSE_OOB_PROTECT_BYTES;
+			else
+				*pu1Tmp = EFUSE_PROTECT_BYTES_BANK;
+		}
+		break;
 
-		case TYPE_EFUSE_CONTENT_LEN_BANK:
-			{
-				u16 *pu2Tmp;
-				pu2Tmp = (u16 *)pOut;
+	case TYPE_EFUSE_CONTENT_LEN_BANK:
+		{
+			u16 *pu2Tmp;
+			pu2Tmp = (u16 *)pOut;
 
-				if (efuseType == EFUSE_WIFI)
-					*pu2Tmp = EFUSE_REAL_CONTENT_LEN_8723B;
-				else
-					*pu2Tmp = EFUSE_BT_REAL_BANK_CONTENT_LEN;
-			}
-			break;
+			if (efuseType == EFUSE_WIFI)
+				*pu2Tmp = EFUSE_REAL_CONTENT_LEN_8723B;
+			else
+				*pu2Tmp = EFUSE_BT_REAL_BANK_CONTENT_LEN;
+		}
+		break;
 
-		default:
-			{
-				u8 *pu1Tmp;
-				pu1Tmp = (u8 *)pOut;
-				*pu1Tmp = 0;
-			}
-			break;
+	default:
+		{
+			u8 *pu1Tmp;
+			pu1Tmp = (u8 *)pOut;
+			*pu1Tmp = 0;
+		}
+		break;
 	}
 }
 
@@ -1325,41 +1324,32 @@ static u16 hal_EfuseGetCurrentSize_BT(struct adapter *padapter, u8 bPseudoTest)
 			efuse_addr += (word_cnts*2)+1;
 		}
 #else
-	while (bContinual &&
-			efuse_OneByteRead(padapter, efuse_addr, &efuse_data, bPseudoTest) &&
-			AVAILABLE_EFUSE_ADDR(efuse_addr))
-		{
-			if (efuse_data != 0xFF)
-			{
-				if ((efuse_data&0x1F) == 0x0F)		/* extended header */
-				{
+	while (
+		bContinual &&
+		efuse_OneByteRead(padapter, efuse_addr, &efuse_data, bPseudoTest) &&
+		AVAILABLE_EFUSE_ADDR(efuse_addr)
+	) {
+			if (efuse_data != 0xFF) {
+				if ((efuse_data&0x1F) == 0x0F) { /* extended header */
 					hoffset = efuse_data;
 					efuse_addr++;
 					efuse_OneByteRead(padapter, efuse_addr, &efuse_data, bPseudoTest);
-					if ((efuse_data & 0x0F) == 0x0F)
-					{
+					if ((efuse_data & 0x0F) == 0x0F) {
 						efuse_addr++;
 						continue;
-					}
-					else
-					{
+					} else {
 						hoffset = ((hoffset & 0xE0) >> 5) | ((efuse_data & 0xF0) >> 1);
 						hworden = efuse_data & 0x0F;
 					}
-				}
-				else
-				{
+				} else {
 					hoffset = (efuse_data>>4) & 0x0F;
 					hworden =  efuse_data & 0x0F;
 				}
 				word_cnts = Efuse_CalculateWordCnts(hworden);
 				/* read next header */
 				efuse_addr = efuse_addr + (word_cnts*2)+1;
-			}
-			else
-			{
+			} else
 				bContinual = false;
-			}
 		}
 #endif
 
@@ -1626,25 +1616,19 @@ static u8 hal_EfusePartialWriteCheck(
 				__func__, startAddr, efuse_data);
 			break;
 #else
-			if (EXT_HEADER(efuse_data))
-			{
+			if (EXT_HEADER(efuse_data)) {
 				cur_header = efuse_data;
 				startAddr++;
 				efuse_OneByteRead(padapter, startAddr, &efuse_data, bPseudoTest);
-				if (ALL_WORDS_DISABLED(efuse_data))
-				{
+				if (ALL_WORDS_DISABLED(efuse_data)) {
 					DBG_8192C("%s: Error condition, all words disabled!", __func__);
 					bRet = false;
 					break;
-				}
-				else
-				{
+				} else {
 					curPkt.offset = ((cur_header & 0xE0) >> 5) | ((efuse_data & 0xF0) >> 1);
 					curPkt.word_en = efuse_data & 0x0F;
 				}
-			}
-			else
-			{
+			} else {
 				cur_header  =  efuse_data;
 				curPkt.offset = (cur_header>>4) & 0x0F;
 				curPkt.word_en = cur_header & 0x0F;
@@ -1653,15 +1637,15 @@ static u8 hal_EfusePartialWriteCheck(
 			curPkt.word_cnts = Efuse_CalculateWordCnts(curPkt.word_en);
 			/*  if same header is found but no data followed */
 			/*  write some part of data followed by the header. */
-			if ((curPkt.offset == pTargetPkt->offset) &&
+			if (
+				(curPkt.offset == pTargetPkt->offset) &&
 				(hal_EfuseCheckIfDatafollowed(padapter, curPkt.word_cnts, startAddr+1, bPseudoTest) == false) &&
-				wordEnMatched(pTargetPkt, &curPkt, &matched_wden) == true)
-			{
+				wordEnMatched(pTargetPkt, &curPkt, &matched_wden) == true
+			) {
 				DBG_8192C("%s: Need to partial write data by the previous wrote header\n", __func__);
 				/*  Here to write partial data */
 				badworden = Efuse_WordEnableDataWrite(padapter, startAddr+1, matched_wden, pTargetPkt->data, bPseudoTest);
-				if (badworden != 0x0F)
-				{
+				if (badworden != 0x0F) {
 					u32 PgWriteSuccess = 0;
 					/*  if write fail on some words, write these bad words again */
 					if (efuseType == EFUSE_WIFI)
@@ -1669,17 +1653,14 @@ static u8 hal_EfusePartialWriteCheck(
 					else
 						PgWriteSuccess = Efuse_PgPacketWrite_BT(padapter, pTargetPkt->offset, badworden, pTargetPkt->data, bPseudoTest);
 
-					if (!PgWriteSuccess)
-					{
+					if (!PgWriteSuccess) {
 						bRet = false;	/*  write fail, return */
 						break;
 					}
 				}
 				/*  partial write ok, update the target packet for later use */
-				for (i = 0; i < 4; i++)
-				{
-					if ((matched_wden & (0x1<<i)) == 0)	/*  this word has been written */
-					{
+				for (i = 0; i < 4; i++) {
+					if ((matched_wden & (0x1<<i)) == 0) { /*  this word has been written */
 						pTargetPkt->word_en |= (0x1<<i);	/*  disable the word */
 					}
 				}
@@ -2188,8 +2169,7 @@ static void UpdateHalRAMask8723B(struct adapter *padapter, u32 mac_id, u8 rssi_l
 	}
 #endif
 
-	if (pHalData->fw_ractrl == true)
-	{
+	if (pHalData->fw_ractrl == true) {
 		rtl8723b_set_FwMacIdConfig_cmd(padapter, mac_id, psta->raid, psta->bw_mode, shortGIrate, mask);
 	}
 
@@ -4475,12 +4455,9 @@ u8 GetHalDefVar8723B(struct adapter *padapter, enum HAL_DEF_VARIABLE variable, v
 		break;
 
 	case HAL_DEF_TX_PAGE_BOUNDARY:
-		if (!padapter->registrypriv.wifi_spec)
-		{
+		if (!padapter->registrypriv.wifi_spec) {
 			*(u8 *)pval = TX_PAGE_BOUNDARY_8723B;
-		}
-		else
-		{
+		} else {
 			*(u8 *)pval = WMM_NORMAL_TX_PAGE_BOUNDARY_8723B;
 		}
 		break;
