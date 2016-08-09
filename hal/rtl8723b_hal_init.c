@@ -1047,7 +1047,8 @@ static void hal_ReadEFuse_BT(
 
 		while (AVAILABLE_EFUSE_ADDR(eFuse_Addr)) {
 			efuse_OneByteRead(padapter, eFuse_Addr++, &efuseHeader, bPseudoTest);
-			if (efuseHeader == 0xFF) break;
+			if (efuseHeader == 0xFF)
+				break;
 			DBG_8192C("%s: efuse[%#X]= 0x%02x (header)\n", __func__, (((bank-1)*EFUSE_REAL_CONTENT_LEN_8723B)+eFuse_Addr-1), efuseHeader);
 
 			/*  Check PG header for section num. */
@@ -1491,7 +1492,8 @@ static s32 Hal_EfusePgPacketRead(
 			break;
 		}
 
-		if (efuse_data == 0xFF) break;
+		if (efuse_data == 0xFF)
+			break;
 
 		if (EXT_HEADER(efuse_data)) {
 			hoffset = GET_HDR_OFFSET_2_0(efuse_data);
@@ -3940,7 +3942,8 @@ void SetHwReg8723B(struct adapter *padapter, u8 variable, u8 *val)
 			/*  Joseph marked out for Netgear 3500 TKIP channel 7 issue.(Temporarily) */
 			/* regTmp = (pHalData->nCur40MhzPrimeSC)<<5; */
 			regTmp = 0;
-			if (bShortPreamble) regTmp |= 0x80;
+			if (bShortPreamble)
+				regTmp |= 0x80;
 			rtw_write8(padapter, REG_RRSR+2, regTmp);
 		}
 		break;
