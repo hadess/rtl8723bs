@@ -23,7 +23,7 @@
 
 #define GET_ODM(__padapter)	((PDM_ODM_T)(&((GET_HAL_DATA(__padapter))->odmpriv)))
 
-typedef enum _HAL_STATUS{
+typedef enum _HAL_STATUS {
 	HAL_STATUS_SUCCESS,
 	HAL_STATUS_FAILURE,
 	/*RT_STATUS_PENDING,
@@ -32,13 +32,13 @@ typedef enum _HAL_STATUS{
 	RT_STATUS_INVALID_PARAMETER,
 	RT_STATUS_NOT_SUPPORT,
 	RT_STATUS_OS_API_FAILED,*/
-}HAL_STATUS,*PHAL_STATUS;
+} HAL_STATUS, *PHAL_STATUS;
 
 
 /*  */
 /*  Declare for ODM spin lock defintion temporarily fro compile pass. */
 /*  */
-typedef enum _RT_SPINLOCK_TYPE{
+typedef enum _RT_SPINLOCK_TYPE {
 	RT_TX_SPINLOCK = 1,
 	RT_RX_SPINLOCK = 2,
 	RT_RM_SPINLOCK = 3,
@@ -54,12 +54,12 @@ typedef enum _RT_SPINLOCK_TYPE{
 	RT_PORT_SPINLOCK = 16,
 	RT_H2C_SPINLOCK = 20, /*  For H2C cmd. Added by tynli. 2009.11.09. */
 
-	RT_BTData_SPINLOCK =25,
+	RT_BTData_SPINLOCK = 25,
 
-	RT_WAPI_OPTION_SPINLOCK =26,
-	RT_WAPI_RX_SPINLOCK =27,
+	RT_WAPI_OPTION_SPINLOCK = 26,
+	RT_WAPI_RX_SPINLOCK = 27,
 
-      /*  add for 92D CCK control issue */
+	/*  add for 92D CCK control issue */
 	RT_CCK_PAGEA_SPINLOCK = 28,
 	RT_BUFFER_SPINLOCK = 29,
 	RT_CHANNEL_AND_BANDWIDTH_SPINLOCK = 30,
@@ -74,7 +74,7 @@ typedef enum _RT_SPINLOCK_TYPE{
 	RT_PENDED_OID_SPINLOCK = 39,
 	RT_CHNLLIST_SPINLOCK = 40,
 	RT_INDIC_SPINLOCK = 41,	/* protect indication */
-}RT_SPINLOCK_TYPE;
+} RT_SPINLOCK_TYPE;
 
 	#if defined(__LITTLE_ENDIAN)
 		#define	ODM_ENDIAN_TYPE			ODM_ENDIAN_LITTLE
@@ -83,7 +83,7 @@ typedef enum _RT_SPINLOCK_TYPE{
 	#endif
 
 	typedef struct timer_list		RT_TIMER, *PRT_TIMER;
-	typedef  void *			RT_TIMER_CALL_BACK;
+	typedef  void *RT_TIMER_CALL_BACK;
 	#define	STA_INFO_T			struct sta_info
 	#define	PSTA_INFO_T		struct sta_info *
 

@@ -43,6 +43,7 @@ void rtw_hal_def_value_init(struct adapter *padapter)
 		if (padapter->HalFunc.init_default_value)
 			padapter->HalFunc.init_default_value(padapter);
 }
+
 void rtw_hal_free_data(struct adapter *padapter)
 {
 	/* free HAL Data */
@@ -52,12 +53,14 @@ void rtw_hal_free_data(struct adapter *padapter)
 		if (padapter->HalFunc.free_hal_data)
 			padapter->HalFunc.free_hal_data(padapter);
 }
+
 void rtw_hal_dm_init(struct adapter *padapter)
 {
 	if (is_primary_adapter(padapter))
 		if (padapter->HalFunc.dm_init)
 			padapter->HalFunc.dm_init(padapter);
 }
+
 void rtw_hal_dm_deinit(struct adapter *padapter)
 {
 	/*  cancel dm  timer */
@@ -86,9 +89,9 @@ static void rtw_hal_init_opmode(struct adapter *padapter)
 	rtw_setopmode_cmd(padapter, networkType, false);
 }
 
-uint	 rtw_hal_init(struct adapter *padapter)
+uint rtw_hal_init(struct adapter *padapter)
 {
-	uint	status;
+	uint status;
 	struct dvobj_priv *dvobj = adapter_to_dvobj(padapter);
 
 	status = padapter->HalFunc.hal_init(padapter);
@@ -159,6 +162,7 @@ u8 rtw_hal_set_def_var(struct adapter *padapter, enum HAL_DEF_VARIABLE eVariable
 		return padapter->HalFunc.SetHalDefVarHandler(padapter, eVariable, pValue);
 	return _FAIL;
 }
+
 u8 rtw_hal_get_def_var(struct adapter *padapter, enum HAL_DEF_VARIABLE eVariable, void *pValue)
 {
 	if (padapter->HalFunc.GetHalDefVarHandler)
@@ -171,6 +175,7 @@ void rtw_hal_set_odm_var(struct adapter *padapter, enum HAL_ODM_VARIABLE eVariab
 	if (padapter->HalFunc.SetHalODMVarHandler)
 		padapter->HalFunc.SetHalODMVarHandler(padapter, eVariable, pValue1, bSet);
 }
+
 void rtw_hal_get_odm_var(struct adapter *padapter, enum HAL_ODM_VARIABLE eVariable, void *pValue1, void *pValue2)
 {
 	if (padapter->HalFunc.GetHalODMVarHandler)
@@ -185,6 +190,7 @@ void rtw_hal_enable_interrupt(struct adapter *padapter)
 		DBG_871X("%s: HalFunc.enable_interrupt is NULL!\n", __func__);
 
 }
+
 void rtw_hal_disable_interrupt(struct adapter *padapter)
 {
 	if (padapter->HalFunc.disable_interrupt)
@@ -232,15 +238,11 @@ s32	rtw_hal_mgnt_xmit(struct adapter *padapter, struct xmit_frame *pmgntframe)
 	/* pwlanhdr = (struct rtw_ieee80211_hdr *)pframe; */
 	/* memcpy(pmgntframe->attrib.ra, pwlanhdr->addr1, ETH_ALEN); */
 
-	if (padapter->securitypriv.binstallBIPkey == true)
-	{
-		if (IS_MCAST(pmgntframe->attrib.ra))
-		{
+	if (padapter->securitypriv.binstallBIPkey == true) {
+		if (IS_MCAST(pmgntframe->attrib.ra)) {
 			pmgntframe->attrib.encrypt = _BIP_;
 			/* pmgntframe->attrib.bswenc = true; */
-		}
-		else
-		{
+		} else {
 			pmgntframe->attrib.encrypt = _AES_;
 			pmgntframe->attrib.bswenc = true;
 		}
@@ -258,6 +260,7 @@ s32	rtw_hal_init_xmit_priv(struct adapter *padapter)
 		return padapter->HalFunc.init_xmit_priv(padapter);
 	return _FAIL;
 }
+
 void rtw_hal_free_xmit_priv(struct adapter *padapter)
 {
 	if (padapter->HalFunc.free_xmit_priv != NULL)
@@ -271,6 +274,7 @@ s32	rtw_hal_init_recv_priv(struct adapter *padapter)
 
 	return _FAIL;
 }
+
 void rtw_hal_free_recv_priv(struct adapter *padapter)
 {
 
@@ -291,11 +295,8 @@ void rtw_hal_update_ra_mask(struct sta_info *psta, u8 rssi_level)
 	pmlmepriv = &(padapter->mlmepriv);
 
 	if (check_fwstate(pmlmepriv, WIFI_AP_STATE) == true)
-	{
 		add_RATid(padapter, psta, rssi_level);
-	}
-	else
-	{
+	else {
 		if (padapter->HalFunc.UpdateRAMaskHandler)
 			padapter->HalFunc.UpdateRAMaskHandler(padapter, psta->mac_id, rssi_level);
 	}
@@ -370,12 +371,9 @@ void rtw_hal_dm_watchdog(struct adapter *padapter)
 
 void rtw_hal_dm_watchdog_in_lps(struct adapter *padapter)
 {
-	if (adapter_to_pwrctl(padapter)->bFwCurrentInPSMode ==true)
-	{
+	if (adapter_to_pwrctl(padapter)->bFwCurrentInPSMode == true) {
 		if (padapter->HalFunc.hal_dm_watchdog_in_lps)
-		{
-			padapter->HalFunc.hal_dm_watchdog_in_lps(padapter);/* this fuction caller is in interrupt context */
-		}
+			padapter->HalFunc.hal_dm_watchdog_in_lps(padapter); /* this fuction caller is in interrupt context */
 	}
 }
 
@@ -399,7 +397,7 @@ void rtw_hal_notch_filter(struct adapter *adapter, bool enable)
 		adapter->HalFunc.hal_notch_filter(adapter, enable);
 }
 
-void rtw_hal_reset_security_engine(struct adapter * adapter)
+void rtw_hal_reset_security_engine(struct adapter *adapter)
 {
 	if (adapter->HalFunc.hal_reset_security_engine)
 		adapter->HalFunc.hal_reset_security_engine(adapter);
@@ -407,7 +405,7 @@ void rtw_hal_reset_security_engine(struct adapter * adapter)
 
 bool rtw_hal_c2h_valid(struct adapter *adapter, u8 *buf)
 {
-	return c2h_evt_valid((struct c2h_evt_hdr_88xx*)buf);
+	return c2h_evt_valid((struct c2h_evt_hdr_88xx *)buf);
 }
 
 s32 rtw_hal_c2h_evt_read(struct adapter *adapter, u8 *buf)
@@ -470,9 +468,7 @@ s32 rtw_hal_fill_h2c_cmd(struct adapter *padapter, u8 ElementID, u32 CmdLen, u8 
 	if (padapter->HalFunc.fill_h2c_cmd)
 		ret = padapter->HalFunc.fill_h2c_cmd(padapter, ElementID, CmdLen, pCmdBuffer);
 	else
-	{
 		DBG_871X("%s:  func[fill_h2c_cmd] not defined!\n", __func__);
-	}
 
 	return ret;
 }

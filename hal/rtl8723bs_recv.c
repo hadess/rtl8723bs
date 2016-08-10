@@ -30,12 +30,11 @@ static s32 initrecvbuf(struct recv_buf *precvbuf, struct adapter *padapter)
 }
 
 static void update_recvframe_attrib(
-	struct adapter *padapter,
-	union recv_frame *precvframe,
-	struct recv_stat *prxstat)
+	struct adapter *padapter, union recv_frame *precvframe, struct recv_stat *prxstat
+)
 {
-	struct rx_pkt_attrib	*pattrib;
-	struct recv_stat	report;
+	struct rx_pkt_attrib *pattrib;
+	struct recv_stat report;
 	PRXREPORT prxreport = (PRXREPORT)&report;
 
 	report.rxdw0 = prxstat->rxdw0;
@@ -52,8 +51,7 @@ static void update_recvframe_attrib(
 	pattrib->pkt_rpt_type = prxreport->c2h_ind?C2H_PACKET:NORMAL_RX;
 /* 	DBG_871X("%s: pkt_rpt_type =%d\n", __func__, pattrib->pkt_rpt_type); */
 
-	if (pattrib->pkt_rpt_type == NORMAL_RX)
-	{
+	if (pattrib->pkt_rpt_type == NORMAL_RX) {
 		/*  Normal rx packet */
 		/*  update rx report to recv_frame attribute */
 		pattrib->pkt_len = (u16)prxreport->pktlen;
@@ -77,11 +75,8 @@ static void update_recvframe_attrib(
 		pattrib->mdata = (u8)prxreport->md;
 
 		pattrib->data_rate = (u8)prxreport->rx_rate;
-	}
-	else
-	{
+	} else
 		pattrib->pkt_len = (u16)prxreport->pktlen;
-	}
 }
 
 /*
@@ -90,22 +85,22 @@ static void update_recvframe_attrib(
  *precvframe->u.hdr.rx_data should be ready!
  */
 static void update_recvframe_phyinfo(
-	union recv_frame	*precvframe,
-	struct phy_stat *pphy_status)
+	union recv_frame *precvframe, struct phy_stat *pphy_status
+)
 {
-	struct adapter *		padapter = precvframe->u.hdr.adapter;
-	struct rx_pkt_attrib	*pattrib = &precvframe->u.hdr.attrib;
-	struct hal_com_data		*pHalData = GET_HAL_DATA(padapter);
-	PODM_PHY_INFO_T		pPHYInfo = (PODM_PHY_INFO_T)(&pattrib->phy_info);
+	struct adapter *padapter = precvframe->u.hdr.adapter;
+	struct rx_pkt_attrib *pattrib = &precvframe->u.hdr.attrib;
+	struct hal_com_data *pHalData = GET_HAL_DATA(padapter);
+	PODM_PHY_INFO_T pPHYInfo = (PODM_PHY_INFO_T)(&pattrib->phy_info);
 
-	u8 	*wlanhdr;
-	ODM_PACKET_INFO_T	pkt_info;
+	u8 *wlanhdr;
+	ODM_PACKET_INFO_T pkt_info;
 	u8 *sa = NULL;
 	/* _irqL		irqL; */
 	struct sta_priv *pstapriv;
 	struct sta_info *psta;
 
-	pkt_info.bPacketMatchBSSID =false;
+	pkt_info.bPacketMatchBSSID = false;
 	pkt_info.bPacketToSelf = false;
 	pkt_info.bPacketBeacon = false;
 
@@ -126,8 +121,7 @@ static void update_recvframe_phyinfo(
 
 	pstapriv = &padapter->stapriv;
 	psta = rtw_get_stainfo(pstapriv, sa);
-	if (psta)
-	{
+	if (psta) {
 		pkt_info.StationID = psta->mac_id;
 		/* DBG_8192C("%s ==> StationID(%d)\n", __func__, pkt_info.StationID); */
 	}
@@ -135,28 +129,23 @@ static void update_recvframe_phyinfo(
 
 	/* rtl8723b_query_rx_phy_status(precvframe, pphy_status); */
 	/* spin_lock_bh(&pHalData->odm_stainfo_lock); */
-	ODM_PhyStatusQuery(&pHalData->odmpriv, pPHYInfo, (u8 *)pphy_status,&(pkt_info));
-	if (psta) psta->rssi = pattrib->phy_info.RecvSignalPower;
+	ODM_PhyStatusQuery(&pHalData->odmpriv, pPHYInfo, (u8 *)pphy_status, &(pkt_info));
+	if (psta)
+		psta->rssi = pattrib->phy_info.RecvSignalPower;
 	/* spin_unlock_bh(&pHalData->odm_stainfo_lock); */
 	precvframe->u.hdr.psta = NULL;
-	if (pkt_info.bPacketMatchBSSID &&
-		(check_fwstate(&padapter->mlmepriv, WIFI_AP_STATE) == true))
-	{
-		if (psta)
-		{
+	if (
+		pkt_info.bPacketMatchBSSID &&
+		(check_fwstate(&padapter->mlmepriv, WIFI_AP_STATE) == true)
+	) {
+		if (psta) {
 			precvframe->u.hdr.psta = psta;
 			rtl8723b_process_phy_info(padapter, precvframe);
-              }
-	}
-	else if (pkt_info.bPacketToSelf || pkt_info.bPacketBeacon)
-	{
-		if (check_fwstate(&padapter->mlmepriv, WIFI_ADHOC_STATE|WIFI_ADHOC_MASTER_STATE) == true)
-		{
-			if (psta)
-			{
-				precvframe->u.hdr.psta = psta;
-			}
 		}
+	} else if (pkt_info.bPacketToSelf || pkt_info.bPacketBeacon) {
+		if (check_fwstate(&padapter->mlmepriv, WIFI_ADHOC_STATE|WIFI_ADHOC_MASTER_STATE) == true)
+			if (psta)
+				precvframe->u.hdr.psta = psta;
 		rtl8723b_process_phy_info(padapter, precvframe);
 	}
 }
@@ -189,15 +178,15 @@ static void rtl8723bs_c2h_packet_handler(struct adapter *padapter, u8 *pbuf, u16
 
 static void rtl8723bs_recv_tasklet(void *priv)
 {
-	struct adapter *		padapter;
-	struct hal_com_data *	pHalData;
-	struct recv_priv 	*precvpriv;
-	struct recv_buf		*precvbuf;
-	union recv_frame		*precvframe;
-	struct rx_pkt_attrib	*pattrib;
+	struct adapter *padapter;
+	struct hal_com_data *pHalData;
+	struct recv_priv *precvpriv;
+	struct recv_buf *precvbuf;
+	union recv_frame *precvframe;
+	struct rx_pkt_attrib *pattrib;
 	u8 *ptr;
 	u32 pkt_offset, skb_len, alloc_sz;
-	_pkt		*pkt_copy = NULL;
+	_pkt *pkt_copy = NULL;
 	u8 shift_sz = 0, rx_report_sz = 0;
 
 
@@ -207,15 +196,14 @@ static void rtl8723bs_recv_tasklet(void *priv)
 
 	do {
 		precvbuf = rtw_dequeue_recvbuf(&precvpriv->recv_buf_pending_queue);
-		if (NULL == precvbuf) break;
+		if (NULL == precvbuf)
+			break;
 
 		ptr = precvbuf->pdata;
 
-		while (ptr < precvbuf->ptail)
-		{
+		while (ptr < precvbuf->ptail) {
 			precvframe = rtw_alloc_recvframe(&precvpriv->free_recv_queue);
-			if (precvframe == NULL)
-			{
+			if (precvframe == NULL) {
 				DBG_8192C("%s: no enough recv frame!\n", __func__);
 				rtw_enqueue_recvbuf_to_head(precvbuf, &precvpriv->recv_buf_pending_queue);
 
@@ -226,13 +214,12 @@ static void rtl8723bs_recv_tasklet(void *priv)
 			}
 
 			/* rx desc parsing */
-			update_recvframe_attrib(padapter, precvframe, (struct recv_stat*)ptr);
+			update_recvframe_attrib(padapter, precvframe, (struct recv_stat *)ptr);
 
 			pattrib = &precvframe->u.hdr.attrib;
 
 			/*  fix Hardware RX data error, drop whole recv_buffer */
-			if ((!(pHalData->ReceiveConfig & RCR_ACRC32)) && pattrib->crc_err)
-			{
+			if ((!(pHalData->ReceiveConfig & RCR_ACRC32)) && pattrib->crc_err) {
 				DBG_8192C("%s()-%d: RX Warning! rx CRC ERROR !!\n", __func__, __LINE__);
 				rtw_free_recvframe(precvframe, &precvpriv->free_recv_queue);
 				break;
@@ -247,25 +234,18 @@ static void rtl8723bs_recv_tasklet(void *priv)
 				break;
 			}
 
-			if ((pattrib->crc_err) || (pattrib->icv_err))
-			{
+			if ((pattrib->crc_err) || (pattrib->icv_err)) {
 				{
 					DBG_8192C("%s: crc_err =%d icv_err =%d, skip!\n", __func__, pattrib->crc_err, pattrib->icv_err);
 				}
 				rtw_free_recvframe(precvframe, &precvpriv->free_recv_queue);
-			}
-			else
-			{
+			} else {
 				/* 	Modified by Albert 20101213 */
 				/* 	For 8 bytes IP header alignment. */
 				if (pattrib->qos)	/* 	Qos data, wireless lan header length is 26 */
-				{
 					shift_sz = 6;
-				}
 				else
-				{
 					shift_sz = 0;
-				}
 
 				skb_len = pattrib->pkt_len;
 
@@ -276,8 +256,7 @@ static void rtl8723bs_recv_tasklet(void *priv)
 						alloc_sz = 1664;
 					else
 						alloc_sz = skb_len + 14;
-				}
-				else {
+				} else {
 					alloc_sz = skb_len;
 					/* 	6 is for IP header 8 bytes alignment in QoS packet case. */
 					/* 	8 is for skb->data 4 bytes alignment. */
@@ -286,8 +265,7 @@ static void rtl8723bs_recv_tasklet(void *priv)
 
 				pkt_copy = rtw_skb_alloc(alloc_sz);
 
-				if (pkt_copy)
-				{
+				if (pkt_copy) {
 					pkt_copy->dev = padapter->pnetdev;
 					precvframe->u.hdr.pkt = pkt_copy;
 					skb_reserve(pkt_copy, 8 - ((SIZE_PTR)(pkt_copy->data) & 7));/* force pkt_copy->data at 8-byte alignment address */
@@ -296,29 +274,23 @@ static void rtl8723bs_recv_tasklet(void *priv)
 					precvframe->u.hdr.rx_head = pkt_copy->head;
 					precvframe->u.hdr.rx_data = precvframe->u.hdr.rx_tail = pkt_copy->data;
 					precvframe->u.hdr.rx_end = skb_end_pointer(pkt_copy);
-				}
-				else
-				{
-					if ((pattrib->mfrag == 1) && (pattrib->frag_num == 0))
-					{
+				} else {
+					if ((pattrib->mfrag == 1) && (pattrib->frag_num == 0)) {
 						DBG_8192C("%s: alloc_skb fail, drop frag frame\n", __func__);
 						rtw_free_recvframe(precvframe, &precvpriv->free_recv_queue);
 						break;
 					}
 
 					precvframe->u.hdr.pkt = rtw_skb_clone(precvbuf->pskb);
-					if (precvframe->u.hdr.pkt)
-					{
-						_pkt	*pkt_clone = precvframe->u.hdr.pkt;
+					if (precvframe->u.hdr.pkt) {
+						_pkt *pkt_clone = precvframe->u.hdr.pkt;
 
 						pkt_clone->data = ptr + rx_report_sz + pattrib->shift_sz;
 						skb_reset_tail_pointer(pkt_clone);
 						precvframe->u.hdr.rx_head = precvframe->u.hdr.rx_data = precvframe->u.hdr.rx_tail
 							= pkt_clone->data;
 						precvframe->u.hdr.rx_end =	pkt_clone->data + skb_len;
-					}
-					else
-					{
+					} else {
 						DBG_8192C("%s: rtw_skb_clone fail\n", __func__);
 						rtw_free_recvframe(precvframe, &precvpriv->free_recv_queue);
 						break;
@@ -340,18 +312,14 @@ static void rtl8723bs_recv_tasklet(void *priv)
 					ptr += 4;
 				}
 
-				if (pattrib->pkt_rpt_type == NORMAL_RX)/* Normal rx packet */
-				{
+				if (pattrib->pkt_rpt_type == NORMAL_RX) { /* Normal rx packet */
 					if (pattrib->physt)
-						update_recvframe_phyinfo(precvframe, (struct phy_stat*)ptr);
+						update_recvframe_phyinfo(precvframe, (struct phy_stat *)ptr);
 
-					if (rtw_recv_entry(precvframe) != _SUCCESS)
-					{
+					if (rtw_recv_entry(precvframe) != _SUCCESS) {
 						RT_TRACE(_module_rtl871x_recv_c_, _drv_dump_, ("%s: rtw_recv_entry(precvframe) != _SUCCESS\n", __func__));
 					}
-				}
-				else if (pattrib->pkt_rpt_type == C2H_PACKET)
-				{
+				} else if (pattrib->pkt_rpt_type == C2H_PACKET) {
 					C2H_EVT_HDR	C2hEvent;
 
 					u16 len_c2h = pattrib->pkt_len;
@@ -360,17 +328,13 @@ static void rtl8723bs_recv_tasklet(void *priv)
 
 					C2hEvent.CmdID = pbuf_c2h[0];
 					C2hEvent.CmdSeq = pbuf_c2h[1];
-					C2hEvent.CmdLen = (len_c2h -2);
+					C2hEvent.CmdLen = (len_c2h-2);
 					pdata_c2h = pbuf_c2h+2;
 
 					if (C2hEvent.CmdID == C2H_CCX_TX_RPT)
-					{
 						CCX_FwC2HTxRpt_8723b(padapter, pdata_c2h, C2hEvent.CmdLen);
-					}
 					else
-					{
 						rtl8723bs_c2h_packet_handler(padapter, precvframe->u.hdr.rx_data, pattrib->pkt_len);
-					}
 
 					rtw_free_recvframe(precvframe, &precvpriv->free_recv_queue);
 
@@ -397,10 +361,10 @@ static void rtl8723bs_recv_tasklet(void *priv)
  */
 s32 rtl8723bs_init_recv_priv(struct adapter *padapter)
 {
-	s32			res;
-	u32 		i, n;
+	s32 res;
+	u32 i, n;
 	struct recv_priv *precvpriv;
-	struct recv_buf		*precvbuf;
+	struct recv_buf *precvbuf;
 
 
 	res = _SUCCESS;
@@ -421,9 +385,8 @@ s32 rtl8723bs_init_recv_priv(struct adapter *padapter)
 	precvpriv->precv_buf = (u8 *)N_BYTE_ALIGMENT((SIZE_PTR)(precvpriv->pallocated_recv_buf), 4);
 
 	/*  init each recv buffer */
-	precvbuf = (struct recv_buf*)precvpriv->precv_buf;
-	for (i = 0; i < NR_RECVBUFF; i++)
-	{
+	precvbuf = (struct recv_buf *)precvpriv->precv_buf;
+	for (i = 0; i < NR_RECVBUFF; i++) {
 		res = initrecvbuf(precvbuf, padapter);
 		if (res == _FAIL)
 			break;
@@ -434,8 +397,7 @@ s32 rtl8723bs_init_recv_priv(struct adapter *padapter)
 
 			precvbuf->pskb = rtw_skb_alloc(MAX_RECVBUF_SZ + RECVBUFF_ALIGN_SZ);
 
-			if (precvbuf->pskb)
-			{
+			if (precvbuf->pskb) {
 				precvbuf->pskb->dev = padapter->pnetdev;
 
 				tmpaddr = (SIZE_PTR)precvbuf->pskb->data;
@@ -458,19 +420,20 @@ s32 rtl8723bs_init_recv_priv(struct adapter *padapter)
 		goto initbuferror;
 
 	/* 3 2. init tasklet */
-	tasklet_init(&precvpriv->recv_tasklet,
-	     (void(*)(unsigned long))rtl8723bs_recv_tasklet,
-	     (unsigned long)padapter);
+	tasklet_init(
+		&precvpriv->recv_tasklet,
+		(void(*)(unsigned long))rtl8723bs_recv_tasklet,
+		(unsigned long)padapter
+	);
 
 	goto exit;
 
 initbuferror:
-	precvbuf = (struct recv_buf*)precvpriv->precv_buf;
+	precvbuf = (struct recv_buf *)precvpriv->precv_buf;
 	if (precvbuf) {
 		n = precvpriv->free_recv_buf_queue_cnt;
 		precvpriv->free_recv_buf_queue_cnt = 0;
-		for (i = 0; i < n ; i++)
-		{
+		for (i = 0; i < n ; i++) {
 			list_del_init(&precvbuf->list);
 			rtw_os_recvbuf_resource_free(padapter, precvbuf);
 			precvbuf++;
@@ -496,9 +459,9 @@ exit:
  */
 void rtl8723bs_free_recv_priv(struct adapter *padapter)
 {
-	u32 		i, n;
+	u32 i, n;
 	struct recv_priv *precvpriv;
-	struct recv_buf		*precvbuf;
+	struct recv_buf *precvbuf;
 
 
 	precvpriv = &padapter->recvpriv;
@@ -507,12 +470,11 @@ void rtl8723bs_free_recv_priv(struct adapter *padapter)
 	tasklet_kill(&precvpriv->recv_tasklet);
 
 	/* 3 2. free all recv buffers */
-	precvbuf = (struct recv_buf*)precvpriv->precv_buf;
+	precvbuf = (struct recv_buf *)precvpriv->precv_buf;
 	if (precvbuf) {
 		n = NR_RECVBUFF;
 		precvpriv->free_recv_buf_queue_cnt = 0;
-		for (i = 0; i < n ; i++)
-		{
+		for (i = 0; i < n ; i++) {
 			list_del_init(&precvbuf->list);
 			rtw_os_recvbuf_resource_free(padapter, precvbuf);
 			precvbuf++;

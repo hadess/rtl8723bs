@@ -32,9 +32,6 @@
 #define		TxHighPwrLevel_70			8
 #define		TxHighPwrLevel_100			9
 
-void
-odm_DynamicTxPowerInit(
-	void *				pDM_VOID
-	);
+void odm_DynamicTxPowerInit(void *pDM_VOID);
 
 #endif

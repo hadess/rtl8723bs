@@ -23,10 +23,7 @@
 
 /*  Global var */
 
-static void
-dm_CheckStatistics(
-struct adapter *Adapter
-	)
+static void dm_CheckStatistics(struct adapter *Adapter)
 {
 }
 /*  */
@@ -36,7 +33,7 @@ static void Init_ODM_ComInfo_8723b(struct adapter *Adapter)
 {
 
 	struct hal_com_data *pHalData = GET_HAL_DATA(Adapter);
-	PDM_ODM_T		pDM_Odm = &(pHalData->odmpriv);
+	PDM_ODM_T pDM_Odm = &(pHalData->odmpriv);
 	struct dm_priv *pdmpriv = &pHalData->dmpriv;
 	u8 cut_ver, fab_ver;
 
@@ -67,17 +64,13 @@ static void Init_ODM_ComInfo_8723b(struct adapter *Adapter)
 
 	if (pHalData->rf_type == RF_1T1R) {
 		ODM_CmnInfoUpdate(pDM_Odm, ODM_CMNINFO_RF_TYPE, ODM_1T1R);
-	}
-	else if (pHalData->rf_type == RF_2T2R) {
+	} else if (pHalData->rf_type == RF_2T2R) {
 		ODM_CmnInfoUpdate(pDM_Odm, ODM_CMNINFO_RF_TYPE, ODM_2T2R);
-	}
-	else if (pHalData->rf_type == RF_1T2R) {
+	} else if (pHalData->rf_type == RF_1T2R) {
 		ODM_CmnInfoUpdate(pDM_Odm, ODM_CMNINFO_RF_TYPE, ODM_1T2R);
 	}
 
-	pdmpriv->InitODMFlag =	ODM_RF_CALIBRATION		|
-							ODM_RF_TX_PWR_TRACK	/*  */
-							;
+	pdmpriv->InitODMFlag = ODM_RF_CALIBRATION|ODM_RF_TX_PWR_TRACK;
 
 	ODM_CmnInfoUpdate(pDM_Odm, ODM_CMNINFO_ABILITY, pdmpriv->InitODMFlag);
 }
@@ -85,11 +78,11 @@ static void Init_ODM_ComInfo_8723b(struct adapter *Adapter)
 static void Update_ODM_ComInfo_8723b(struct adapter *Adapter)
 {
 	struct mlme_ext_priv *pmlmeext = &Adapter->mlmeextpriv;
-	struct mlme_priv 	*pmlmepriv = &Adapter->mlmepriv;
+	struct mlme_priv *pmlmepriv = &Adapter->mlmepriv;
 	struct dvobj_priv *dvobj = adapter_to_dvobj(Adapter);
 	struct pwrctrl_priv *pwrctrlpriv = adapter_to_pwrctl(Adapter);
 	struct hal_com_data *pHalData = GET_HAL_DATA(Adapter);
-	PDM_ODM_T		pDM_Odm = &(pHalData->odmpriv);
+	PDM_ODM_T pDM_Odm = &(pHalData->odmpriv);
 	struct dm_priv *pdmpriv = &pHalData->dmpriv;
 	int i;
 	u8 zero = 0;
@@ -119,35 +112,32 @@ static void Update_ODM_ComInfo_8723b(struct adapter *Adapter)
 
 	ODM_CmnInfoUpdate(pDM_Odm, ODM_CMNINFO_ABILITY, pdmpriv->InitODMFlag);
 
-	ODM_CmnInfoHook(pDM_Odm, ODM_CMNINFO_TX_UNI,&(dvobj->traffic_stat.tx_bytes));
-	ODM_CmnInfoHook(pDM_Odm, ODM_CMNINFO_RX_UNI,&(dvobj->traffic_stat.rx_bytes));
-	ODM_CmnInfoHook(pDM_Odm, ODM_CMNINFO_WM_MODE,&(pmlmeext->cur_wireless_mode));
-	ODM_CmnInfoHook(pDM_Odm, ODM_CMNINFO_SEC_CHNL_OFFSET,&(pHalData->nCur40MhzPrimeSC));
-	ODM_CmnInfoHook(pDM_Odm, ODM_CMNINFO_SEC_MODE,&(Adapter->securitypriv.dot11PrivacyAlgrthm));
-	ODM_CmnInfoHook(pDM_Odm, ODM_CMNINFO_BW,&(pHalData->CurrentChannelBW));
-	ODM_CmnInfoHook(pDM_Odm, ODM_CMNINFO_CHNL,&(pHalData->CurrentChannel));
-	ODM_CmnInfoHook(pDM_Odm, ODM_CMNINFO_NET_CLOSED,&(Adapter->net_closed));
+	ODM_CmnInfoHook(pDM_Odm, ODM_CMNINFO_TX_UNI, &(dvobj->traffic_stat.tx_bytes));
+	ODM_CmnInfoHook(pDM_Odm, ODM_CMNINFO_RX_UNI, &(dvobj->traffic_stat.rx_bytes));
+	ODM_CmnInfoHook(pDM_Odm, ODM_CMNINFO_WM_MODE, &(pmlmeext->cur_wireless_mode));
+	ODM_CmnInfoHook(pDM_Odm, ODM_CMNINFO_SEC_CHNL_OFFSET, &(pHalData->nCur40MhzPrimeSC));
+	ODM_CmnInfoHook(pDM_Odm, ODM_CMNINFO_SEC_MODE, &(Adapter->securitypriv.dot11PrivacyAlgrthm));
+	ODM_CmnInfoHook(pDM_Odm, ODM_CMNINFO_BW, &(pHalData->CurrentChannelBW));
+	ODM_CmnInfoHook(pDM_Odm, ODM_CMNINFO_CHNL, &(pHalData->CurrentChannel));
+	ODM_CmnInfoHook(pDM_Odm, ODM_CMNINFO_NET_CLOSED, &(Adapter->net_closed));
 	ODM_CmnInfoHook(pDM_Odm, ODM_CMNINFO_MP_MODE, &zero);
-	ODM_CmnInfoHook(pDM_Odm, ODM_CMNINFO_BAND,&(pHalData->CurrentBandType));
-	ODM_CmnInfoHook(pDM_Odm, ODM_CMNINFO_FORCED_IGI_LB,&(pHalData->u1ForcedIgiLb));
-	ODM_CmnInfoHook(pDM_Odm, ODM_CMNINFO_FORCED_RATE,&(pHalData->ForcedDataRate));
+	ODM_CmnInfoHook(pDM_Odm, ODM_CMNINFO_BAND, &(pHalData->CurrentBandType));
+	ODM_CmnInfoHook(pDM_Odm, ODM_CMNINFO_FORCED_IGI_LB, &(pHalData->u1ForcedIgiLb));
+	ODM_CmnInfoHook(pDM_Odm, ODM_CMNINFO_FORCED_RATE, &(pHalData->ForcedDataRate));
 
-	ODM_CmnInfoHook(pDM_Odm, ODM_CMNINFO_SCAN,&(pmlmepriv->bScanInProcess));
-	ODM_CmnInfoHook(pDM_Odm, ODM_CMNINFO_POWER_SAVING,&(pwrctrlpriv->bpower_saving));
+	ODM_CmnInfoHook(pDM_Odm, ODM_CMNINFO_SCAN, &(pmlmepriv->bScanInProcess));
+	ODM_CmnInfoHook(pDM_Odm, ODM_CMNINFO_POWER_SAVING, &(pwrctrlpriv->bpower_saving));
 
 
 	for (i = 0; i < NUM_STA; i++)
 		ODM_CmnInfoPtrArrayHook(pDM_Odm, ODM_CMNINFO_STA_STATUS, i, NULL);
 }
 
-void
-rtl8723b_InitHalDm(
-struct adapter *Adapter
-	)
+void rtl8723b_InitHalDm(struct adapter *Adapter)
 {
 	struct hal_com_data *pHalData = GET_HAL_DATA(Adapter);
 	struct dm_priv *pdmpriv = &pHalData->dmpriv;
-	PDM_ODM_T		pDM_Odm = &(pHalData->odmpriv);
+	PDM_ODM_T pDM_Odm = &(pHalData->odmpriv);
 
 	pdmpriv->DM_Type = DM_Type_ByDriver;
 	pdmpriv->DMFlag = DYNAMIC_FUNC_DISABLE;
@@ -161,13 +151,10 @@ struct adapter *Adapter
 	ODM_DMInit(pDM_Odm);
 }
 
-void
-rtl8723b_HalDmWatchDog(
-struct adapter *Adapter
-	)
+void rtl8723b_HalDmWatchDog(struct adapter *Adapter)
 {
-	bool		bFwCurrentInPSMode = false;
-	bool		bFwPSAwake = true;
+	bool bFwCurrentInPSMode = false;
+	bool bFwPSAwake = true;
 	u8 hw_init_completed = false;
 	struct hal_com_data *pHalData = GET_HAL_DATA(Adapter);
 
@@ -179,9 +166,10 @@ struct adapter *Adapter
 	bFwCurrentInPSMode = adapter_to_pwrctl(Adapter)->bFwCurrentInPSMode;
 	rtw_hal_get_hwreg(Adapter, HW_VAR_FWLPS_RF_ON, (u8 *)(&bFwPSAwake));
 
-	if ((hw_init_completed == true)
-		&& ((!bFwCurrentInPSMode) && bFwPSAwake))
-	{
+	if (
+		(hw_init_completed == true) &&
+		((!bFwCurrentInPSMode) && bFwPSAwake)
+	) {
 		/*  */
 		/*  Calculate Tx/Rx statistics. */
 		/*  */
@@ -190,10 +178,9 @@ struct adapter *Adapter
 	}
 
 	/* ODM */
-	if (hw_init_completed == true)
-	{
-		u8 bLinked =false;
-		u8 bsta_state =false;
+	if (hw_init_completed == true) {
+		u8 bLinked = false;
+		u8 bsta_state = false;
 		u8 bBtDisabled = true;
 
 		if (rtw_linked_check(Adapter)) {
@@ -202,8 +189,8 @@ struct adapter *Adapter
 				bsta_state = true;
 		}
 
-		ODM_CmnInfoUpdate(&pHalData->odmpriv , ODM_CMNINFO_LINK, bLinked);
-		ODM_CmnInfoUpdate(&pHalData->odmpriv , ODM_CMNINFO_STATION_STATE, bsta_state);
+		ODM_CmnInfoUpdate(&pHalData->odmpriv, ODM_CMNINFO_LINK, bLinked);
+		ODM_CmnInfoUpdate(&pHalData->odmpriv, ODM_CMNINFO_STATION_STATE, bsta_state);
 
 		/* ODM_CmnInfoUpdate(&pHalData->odmpriv , ODM_CMNINFO_RSSI_MIN, pdmpriv->MinUndecoratedPWDBForDM); */
 
@@ -223,7 +210,7 @@ void rtl8723b_hal_dm_in_lps(struct adapter *padapter)
 	u32 PWDB_rssi = 0;
 	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
 	struct hal_com_data *pHalData = GET_HAL_DATA(padapter);
-	PDM_ODM_T		pDM_Odm = &pHalData->odmpriv;
+	PDM_ODM_T pDM_Odm = &pHalData->odmpriv;
 	struct sta_priv *pstapriv = &padapter->stapriv;
 	struct sta_info *psta = NULL;
 
@@ -235,8 +222,7 @@ void rtl8723b_hal_dm_in_lps(struct adapter *padapter)
 
 	/* set rssi to fw */
 	psta = rtw_get_stainfo(pstapriv, get_bssid(pmlmepriv));
-	if (psta && (psta->rssi_stat.UndecoratedSmoothedPWDB > 0))
-	{
+	if (psta && (psta->rssi_stat.UndecoratedSmoothedPWDB > 0)) {
 		PWDB_rssi = (psta->mac_id | (psta->rssi_stat.UndecoratedSmoothedPWDB<<16));
 
 		rtl8723b_set_rssi_cmd(padapter, (u8 *)&PWDB_rssi);
@@ -246,12 +232,12 @@ void rtl8723b_hal_dm_in_lps(struct adapter *padapter)
 
 void rtl8723b_HalDmWatchDog_in_LPS(struct adapter *Adapter)
 {
-	u8 bLinked =false;
+	u8 bLinked = false;
 	struct hal_com_data *pHalData = GET_HAL_DATA(Adapter);
 	struct mlme_priv *pmlmepriv = &Adapter->mlmepriv;
 	struct dm_priv *pdmpriv = &pHalData->dmpriv;
-	PDM_ODM_T		pDM_Odm = &pHalData->odmpriv;
-	pDIG_T	pDM_DigTable = &pDM_Odm->DM_DigTable;
+	PDM_ODM_T pDM_Odm = &pHalData->odmpriv;
+	pDIG_T pDM_DigTable = &pDM_Odm->DM_DigTable;
 	struct sta_priv *pstapriv = &Adapter->stapriv;
 	struct sta_info *psta = NULL;
 
@@ -262,7 +248,7 @@ void rtl8723b_HalDmWatchDog_in_LPS(struct adapter *Adapter)
 	if (rtw_linked_check(Adapter))
 		bLinked = true;
 
-	ODM_CmnInfoUpdate(&pHalData->odmpriv , ODM_CMNINFO_LINK, bLinked);
+	ODM_CmnInfoUpdate(&pHalData->odmpriv, ODM_CMNINFO_LINK, bLinked);
 
 	if (bLinked == false)
 		goto skip_lps_dm;
@@ -291,12 +277,11 @@ void rtl8723b_HalDmWatchDog_in_LPS(struct adapter *Adapter)
 	pDM_Odm->RSSI_Min = pdmpriv->MinUndecoratedPWDBForDM;
 
 	/* if (pDM_DigTable->CurIGValue != pDM_Odm->RSSI_Min) */
-	if ((pDM_DigTable->CurIGValue > pDM_Odm->RSSI_Min + 5) ||
-             (pDM_DigTable->CurIGValue < pDM_Odm->RSSI_Min - 5))
-
-	{
+	if (
+		(pDM_DigTable->CurIGValue > pDM_Odm->RSSI_Min + 5) ||
+		(pDM_DigTable->CurIGValue < pDM_Odm->RSSI_Min - 5)
+	)
 		rtw_dm_in_lps_wk_cmd(Adapter);
-	}
 
 
 skip_lps_dm:
@@ -305,10 +290,11 @@ skip_lps_dm:
 
 }
 
-void rtl8723b_init_dm_priv(struct adapter * Adapter)
+void rtl8723b_init_dm_priv(struct adapter *Adapter)
 {
 	struct hal_com_data *pHalData = GET_HAL_DATA(Adapter);
 	struct dm_priv *pdmpriv = &pHalData->dmpriv;
+
 	memset(pdmpriv, 0, sizeof(struct dm_priv));
 	Init_ODM_ComInfo_8723b(Adapter);
 }
