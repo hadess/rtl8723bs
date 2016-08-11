@@ -1335,7 +1335,7 @@ int rtw_check_network_type(unsigned char *rate, int ratelen, int channel);
 
 void rtw_get_bcn_info(struct wlan_network *pnetwork);
 
-void rtw_macaddr_cfg(u8 *mac_addr);
+void rtw_macaddr_cfg(struct device *dev, u8 *mac_addr);
 
 u16 rtw_mcs_rate(u8 rf_type, u8 bw_40MHz, u8 short_GI, unsigned char * MCS_rate);
 
