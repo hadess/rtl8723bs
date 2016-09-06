@@ -20,6 +20,6 @@ For older kernel than 4.3, you might also need this patch applied:
 https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/commit/?id=d31911b9374a76560d2c8ea4aa6ce5781621e81d
 
 You can find these patches in the following directories:
-- `patches/` for Kernels <4.5
-  - Patch #4a is to be used for kernels <4.4.0, #4b for 4.4.0 and later.
-- `patches_4.5/` for kernels >=4.5
+- `patches/` for kernels before 4.5
+  - Patch #4a is to be used for kernels before 4.4.0, #4b for 4.4.0 and later.
+- `patches_4.5/` for kernels 4.5 and newer
