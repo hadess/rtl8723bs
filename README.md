@@ -12,6 +12,7 @@ Tested on:
 - Medion Akoya S2217
 - Chuwi Hi12
 - Intel Compute Stick STCK1A32WFC
+- Lark Ultimate 7i WIN
 
 Do verify that the device is listed under ```/sys/bus/sdio/```
 
