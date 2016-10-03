@@ -11,6 +11,7 @@ Tested on:
 - Lenovo Miix 3-830
 - Medion Akoya S2217
 - Chuwi Hi12
+- Intel Compute Stick STCK1A32WFC
 
 Do verify that the device is listed under ```/sys/bus/sdio/```
 
