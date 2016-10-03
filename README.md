@@ -8,7 +8,7 @@ Tested on:
 - Dell Venue 8 3000
 - WinBook TW100 and TW700
 - Acer Aspire Switch 10E
-- Lenovo Miix 3-830
+- Lenovo Miix 3-830 and 3-1030
 - Medion Akoya S2217
 - Chuwi Hi12
 - Intel Compute Stick STCK1A32WFC
