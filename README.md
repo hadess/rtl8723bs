@@ -3,7 +3,7 @@ Realtek SDIO Wi-Fi driver
 
 Tested on:
 - Onda v975w
-- Teclast 3G
+- Teclast 3G, X16 Pro / Power
 - HP Stream 7
 - Dell Venue 8 3000
 - WinBook TW100 and TW700
