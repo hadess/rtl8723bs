@@ -1,0 +1,42 @@
+From a06174ecaa8d7c3eb68d608de2789a4182dbb518 Mon Sep 17 00:00:00 2001
+From: Laszlo Fiat <Laszlo.Fiat@gmail.com>
+Date: Sat, 23 Jul 2016 09:51:19 +0200
+Subject: [PATCH] My changes for 4.7.0-rc7 for Baytrail-T. On branch
+ my-drm-intel-nightly-2016-07-18
+
+Changes to be committed:
+	modified:   sound/soc/intel/atom/sst/sst_acpi.c
+	modified:   sound/soc/intel/common/sst-acpi.c
+---
+ sound/soc/intel/atom/sst/sst_acpi.c |  2 +-
+ sound/soc/intel/common/sst-acpi.c   |  2 +-
+
+diff --git a/sound/soc/intel/atom/sst/sst_acpi.c b/sound/soc/intel/atom/sst/sst_acpi.c
+index 3bc4b63..b98a134 100644
+--- a/sound/soc/intel/atom/sst/sst_acpi.c
++++ b/sound/soc/intel/atom/sst/sst_acpi.c
+@@ -109,7 +109,7 @@ static const struct sst_res_info byt_rvp_res_info = {
+ 	.mbox_size = 0x1000,
+ 	.acpi_lpe_res_index = 0,
+ 	.acpi_ddr_index = 2,
+-	.acpi_ipc_irq_index = 5,
++	.acpi_ipc_irq_index = 0,
+ };
+ 
+ static struct sst_platform_info byt_rvp_platform_data = {
+diff --git a/sound/soc/intel/common/sst-acpi.c b/sound/soc/intel/common/sst-acpi.c
+index 2c5eda1..b4597a6 100644
+--- a/sound/soc/intel/common/sst-acpi.c
++++ b/sound/soc/intel/common/sst-acpi.c
+@@ -228,7 +228,7 @@ static struct sst_acpi_desc sst_acpi_baytrail_desc = {
+ 	.resindex_lpe_base = 0,
+ 	.resindex_pcicfg_base = 1,
+ 	.resindex_fw_base = 2,
+-	.irqindex_host_ipc = 5,
++	.irqindex_host_ipc = 0,
+ 	.sst_id = SST_DEV_ID_BYT,
+ 	.resindex_dma_base = -1,
+ };
+-- 
+2.8.1
+
