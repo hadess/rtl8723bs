@@ -27,3 +27,4 @@ You can find these patches in the following directories:
 - `patches/` for Kernels < 4.5
   - Patch #4a is to be used for kernels < 4.4.0, #4b for kernels >= 4.4.0.
 - `patches_4.5/` for kernels >= 4.5
+- `patches_4.7/` for kernels 4.7 and 4.8
