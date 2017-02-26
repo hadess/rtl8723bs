@@ -552,6 +552,7 @@ struct net_device *rtw_init_netdev(struct adapter *old_padapter)
 	else
 		pnetdev = rtw_alloc_etherdev(sizeof(struct adapter));
 
+	pr_info("pnetdev = %p\n", pnetdev);
 	if (!pnetdev)
 		return NULL;
 
