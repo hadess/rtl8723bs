@@ -530,9 +530,10 @@ static const struct net_device_ops rtw_netdev_ops = {
 
 int rtw_init_netdev_name(struct net_device *pnetdev, const char *ifname)
 {
-	if (dev_alloc_name(pnetdev, ifname) < 0)
-		RT_TRACE(_module_os_intfs_c_, _drv_err_, ("dev_alloc_name, fail!\n"));
-
+	if (dev_alloc_name(pnetdev, ifname) < 0) {
+		pr_err("dev_alloc_name, fail for %s\n", ifname);
+		return 1;
+	}
 	netif_carrier_off(pnetdev);
 	/* rtw_netif_stop_queue(pnetdev); */
 
@@ -551,6 +552,7 @@ struct net_device *rtw_init_netdev(struct adapter *old_padapter)
 	else
 		pnetdev = rtw_alloc_etherdev(sizeof(struct adapter));
 
+	pr_info("pnetdev = %p\n", pnetdev);
 	if (!pnetdev)
 		return NULL;
 
@@ -925,7 +927,8 @@ static int _rtw_drv_register_netdev(struct adapter *padapter, char *name)
 	struct net_device *pnetdev = padapter->pnetdev;
 
 	/* alloc netdev name */
-	rtw_init_netdev_name(pnetdev, name);
+	if (rtw_init_netdev_name(pnetdev, name))
+		return _FAIL;
 
 	memcpy(pnetdev->dev_addr, padapter->eeprompriv.mac_addr, ETH_ALEN);
 
