@@ -44,6 +44,7 @@
 	#include <linux/kthread.h>
 	#include <linux/list.h>
 	#include <linux/vmalloc.h>
+	#include <linux/signal.h>
 
 /* 	#include <linux/ieee80211.h> */
         #include <net/ieee80211_radiotap.h>
