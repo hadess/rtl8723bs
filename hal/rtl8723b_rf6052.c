@@ -144,18 +144,14 @@ static int phy_RF6052_Config_ParaFile(struct adapter *Adapter)
 		/*----Initialize RF fom connfiguration file----*/
 		switch (eRFPath) {
 		case RF_PATH_A:
-#ifdef CONFIG_LOAD_PHY_PARA_FROM_FILE
 			if (PHY_ConfigRFWithParaFile(Adapter, pszRadioAFile, eRFPath) == _FAIL)
-#endif
 			{
 				if (HAL_STATUS_FAILURE == ODM_ConfigRFWithHeaderFile(&pHalData->odmpriv, CONFIG_RF_RADIO, (ODM_RF_RADIO_PATH_E)eRFPath))
 					rtStatus = _FAIL;
 			}
 			break;
 		case RF_PATH_B:
-#ifdef CONFIG_LOAD_PHY_PARA_FROM_FILE
 			if (PHY_ConfigRFWithParaFile(Adapter, pszRadioBFile, eRFPath) == _FAIL)
-#endif
 			{
 				if (HAL_STATUS_FAILURE == ODM_ConfigRFWithHeaderFile(&pHalData->odmpriv, CONFIG_RF_RADIO, (ODM_RF_RADIO_PATH_E)eRFPath))
 					rtStatus = _FAIL;
@@ -190,9 +186,7 @@ static int phy_RF6052_Config_ParaFile(struct adapter *Adapter)
 	/* 3 Configuration of Tx Power Tracking */
 	/* 3 ----------------------------------------------------------------- */
 
-#ifdef CONFIG_LOAD_PHY_PARA_FROM_FILE
 	if (PHY_ConfigRFWithTxPwrTrackParaFile(Adapter, pszTxPwrTrackFile) == _FAIL)
-#endif
 	{
 		ODM_ConfigRFWithTxPwrTrackHeaderFile(&pHalData->odmpriv);
 	}

@@ -211,7 +211,6 @@ MODULE_PARM_DESC(rtw_tx_pwr_lmt_enable,"0:Disable, 1:Enable, 2: Depend on efuse"
 module_param(rtw_tx_pwr_by_rate, int, 0644);
 MODULE_PARM_DESC(rtw_tx_pwr_by_rate,"0:Disable, 1:Enable, 2: Depend on efuse");
 
-#ifdef CONFIG_LOAD_PHY_PARA_FROM_FILE
 char *rtw_phy_file_path = "";
 module_param(rtw_phy_file_path, charp, 0644);
 MODULE_PARM_DESC(rtw_phy_file_path, "The path of phy parameter");
@@ -229,7 +228,6 @@ MODULE_PARM_DESC(rtw_load_phy_file,"PHY File Bit Map");
 static int rtw_decrypt_phy_file = 0;
 module_param(rtw_decrypt_phy_file, int, 0644);
 MODULE_PARM_DESC(rtw_decrypt_phy_file,"Enable Decrypt PHY File");
-#endif
 
 int _netdev_open(struct net_device *pnetdev);
 int netdev_open (struct net_device *pnetdev);
@@ -340,10 +338,8 @@ static uint loadparam(struct adapter *padapter, _nic_hdl pnetdev)
 	registry_par->bEn_RFE = 1;
 	registry_par->RFE_Type = 64;
 
-#ifdef CONFIG_LOAD_PHY_PARA_FROM_FILE
 	registry_par->load_phy_file = (u8)rtw_load_phy_file;
 	registry_par->RegDecryptCustomFile = (u8)rtw_decrypt_phy_file;
-#endif
 	registry_par->qos_opt_enable = (u8)rtw_qos_opt_enable;
 
 	registry_par->hiq_filter = (u8)rtw_hiq_filter;

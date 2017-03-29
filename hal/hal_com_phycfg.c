@@ -2209,7 +2209,6 @@ void Hal_ChannelPlanToRegulation(struct adapter *Adapter, u16 ChannelPlan)
 	}
 }
 
-#ifdef CONFIG_LOAD_PHY_PARA_FROM_FILE
 
 static char file_path_bs[PATH_MAX];
 
@@ -3285,4 +3284,3 @@ void phy_free_filebuf(struct adapter *padapter)
 
 }
 
-#endif
