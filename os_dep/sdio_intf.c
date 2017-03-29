@@ -24,10 +24,10 @@
 
 static const struct sdio_device_id sdio_ids[] =
 {
-//	{ SDIO_DEVICE(0x024c, 0xB723), },
-//	{ SDIO_DEVICE(0x024c, 0x0523), },
-//	{ SDIO_DEVICE(0x024c, 0x0623), },
-	{ SDIO_DEVICE_CLASS(SDIO_CLASS_WLAN) },
+	{ SDIO_DEVICE(0x024c, 0x0523), },
+	{ SDIO_DEVICE(0x024c, 0x0623), },
+	{ SDIO_DEVICE(0x024c, 0x0626), },
+	{ SDIO_DEVICE(0x024c, 0xb723), },
 	{ /* end: all zeroes */				},
 };
 static const struct acpi_device_id acpi_ids[] = {
@@ -481,25 +481,6 @@ static int rtw_drv_init(
 	struct adapter *if1 = NULL, *if2 = NULL;
 	struct dvobj_priv *dvobj;
 
-	switch (func->vendor) {
-	case 0x024c:
-		switch (func->device) {
-		case 0x0523:
-		case 0x0623:
-		case 0x0626:
-		case 0xb723:
-			break;
-		default:
-			pr_info("RTL8723BS: Found unrecognized device 0x%x for vendor 0x%x\n",
-				func->device, func->vendor);
-			goto exit;
-		}
-		break;
-	default:
-		pr_info("RTL8723BS: Found unrecognized vendor 0x%x, device 0x%x\n",
-			func->vendor, func->device);
-		goto exit;
-	}
 	if ((dvobj = sdio_dvobj_init(func)) == NULL) {
 		RT_TRACE(_module_hci_intfs_c_, _drv_err_, ("initialize device object priv Failed!\n"));
 		goto exit;
