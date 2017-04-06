@@ -1,0 +1,90 @@
+From a06174ecaa8d7c3eb68d608de2789a4182dbb518 Mon Sep 17 00:00:00 2001
+From: Laszlo Fiat <Laszlo.Fiat@gmail.com>
+Date: Sat, 23 Jul 2016 09:51:19 +0200
+Subject: [PATCH] My changes for 4.7.0-rc7 for Baytrail-T. On branch
+ my-drm-intel-nightly-2016-07-18
+
+Changes to be committed:
+	modified:   drivers/mmc/host/sdhci.c
+	modified:   net/rfkill/rfkill-gpio.c
+---
+ drivers/mmc/host/sdhci.c            | 30 ++++++++++++++++++++++++++++++
+ net/rfkill/rfkill-gpio.c            |  1 +
+
+diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
+index 0e3d7c0..7384d8e 100644
+--- a/drivers/mmc/host/sdhci.c
++++ b/drivers/mmc/host/sdhci.c
+@@ -50,6 +50,19 @@ static int sdhci_execute_tuning(struct mmc_host *mmc, u32 opcode);
+ static void sdhci_enable_preset_value(struct sdhci_host *host, bool enable);
+ static int sdhci_get_cd(struct mmc_host *mmc);
+ 
++#ifdef CONFIG_PM
++static int sdhci_runtime_pm_get(struct sdhci_host *host);
++static int sdhci_runtime_pm_put(struct sdhci_host *host);
++#else
++static inline int sdhci_runtime_pm_get(struct sdhci_host *host)
++{
++	return 0;
++}
++static inline int sdhci_runtime_pm_put(struct sdhci_host *host)
++{
++	return 0;
++}
++#endif
+ static void sdhci_dumpregs(struct sdhci_host *host)
+ {
+ 	pr_debug(DRIVER_NAME ": =========== REGISTER DUMP (%s)===========\n",
+@@ -1705,6 +1718,9 @@ static void sdhci_enable_sdio_irq(struct mmc_host *mmc, int enable)
+ 	struct sdhci_host *host = mmc_priv(mmc);
+ 	unsigned long flags;
+ 
++	if (enable)
++		sdhci_runtime_pm_get(host);
++
+ 	spin_lock_irqsave(&host->lock, flags);
+ 	if (enable)
+ 		host->flags |= SDHCI_SDIO_IRQ_ENABLED;
+@@ -1713,6 +1729,9 @@ static void sdhci_enable_sdio_irq(struct mmc_host *mmc, int enable)
+ 
+ 	sdhci_enable_sdio_irq_nolock(host, enable);
+ 	spin_unlock_irqrestore(&host->lock, flags);
++
++	if (!enable)
++		sdhci_runtime_pm_put(host);
+ }
+ 
+ static int sdhci_start_signal_voltage_switch(struct mmc_host *mmc,
+@@ -2691,6 +2710,17 @@ int sdhci_resume_host(struct sdhci_host *host)
+ 
+ EXPORT_SYMBOL_GPL(sdhci_resume_host);
+ 
++static int sdhci_runtime_pm_get(struct sdhci_host *host)
++{
++	return pm_runtime_get_sync(host->mmc->parent);
++}
++
++static int sdhci_runtime_pm_put(struct sdhci_host *host)
++{
++	pm_runtime_mark_last_busy(host->mmc->parent);
++	return pm_runtime_put_autosuspend(host->mmc->parent);
++}
++
+ int sdhci_runtime_suspend_host(struct sdhci_host *host)
+ {
+ 	unsigned long flags;
+diff --git a/net/rfkill/rfkill-gpio.c b/net/rfkill/rfkill-gpio.c
+index 76c01cb..6e7e0ca 100644
+--- a/net/rfkill/rfkill-gpio.c
++++ b/net/rfkill/rfkill-gpio.c
+@@ -161,6 +161,7 @@ static int rfkill_gpio_remove(struct platform_device *pdev)
+ 
+ #ifdef CONFIG_ACPI
+ static const struct acpi_device_id rfkill_acpi_match[] = {
++	{ "OBDA8723",RFKILL_TYPE_BLUETOOTH },
+ 	{ "BCM4752", RFKILL_TYPE_GPS },
+ 	{ "LNV4752", RFKILL_TYPE_GPS },
+ 	{ },
+-- 
+2.8.1
+
