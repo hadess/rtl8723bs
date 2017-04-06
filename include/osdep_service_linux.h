@@ -44,6 +44,11 @@
 	#include <linux/kthread.h>
 	#include <linux/list.h>
 	#include <linux/vmalloc.h>
+	#include <linux/signal.h>
+	#include <linux/version.h>
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(4, 11, 0))
+	#include <linux/sched/signal.h>
+#endif
 
 /* 	#include <linux/ieee80211.h> */
         #include <net/ieee80211_radiotap.h>
