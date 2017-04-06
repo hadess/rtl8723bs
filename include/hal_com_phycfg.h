@@ -244,7 +244,6 @@ struct adapter *	Adapter,
 u16 			ChannelPlan
 	);
 
-#ifdef CONFIG_LOAD_PHY_PARA_FROM_FILE
 #define MAX_PARA_FILE_BUF_LEN	25600
 
 #define LOAD_MAC_PARA_FILE				BIT0
@@ -270,6 +269,5 @@ int PHY_ConfigRFWithTxPwrTrackParaFile(struct adapter *Adapter, char*pFileName);
 int PHY_ConfigRFWithPowerLimitTableParaFile(struct adapter *Adapter, char*pFileName);
 
 void phy_free_filebuf(struct adapter *padapter);
-#endif /* CONFIG_LOAD_PHY_PARA_FROM_FILE */
 
 #endif /* __HAL_COMMON_H__ */
