@@ -1,6 +1,27 @@
 # rtl8723bs
 Realtek SDIO Wi-Fi driver
 
+## History
+
+This repository originally contained a vendor driver provided by Realtek:
+`rtl8723BS_WiFi_linux_v4.3.5.5_12290.20140916_BTCOEX20140507-4E40`
+
+It was then tidied up and had huge chunks of unused code removed by a number
+of contributors (see the git history for details), and eventually merged into
+the kernel staging tree in time for kernel 4.12-rc1.
+
+## Getting the code
+
+This repository contains the history of the driver cleanup, which is not
+available in the upstream-merged driver. Compiling or running the
+driver on older kernels is not supported, please ask your distribution to
+provide updated kernel packages.
+
+For support running the upstreamed staging driver, please refer to the
+[MAINTAINERS](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/MAINTAINERS) file to find where to send requests.
+
+## Tested list (old)
+
 Tested on:
 - Onda v975w
 - Teclast 3G
@@ -14,26 +35,4 @@ Tested on:
 - Intel Compute Stick STCK1A32WFC
 - Lark Ultimate 7i WIN
 
-Do verify that the device is listed under ```/sys/bus/sdio/```
-
-Note that on all those tablets, you will need to apply a few patches because
-to the BayTrail SDIO drivers:
-http://thread.gmane.org/gmane.linux.kernel.mmc/25081/focus=25087
-http://thread.gmane.org/gmane.linux.kernel.mmc/31583
-For older kernel than 4.3, you might also need this patch applied:
-https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/commit/?id=d31911b9374a76560d2c8ea4aa6ce5781621e81d
-
-You can find these patches in the following directories:
-- `patches/` for Kernels < 4.5
-  - Patch #4a is to be used for kernels < 4.4.0, #4b for kernels >= 4.4.0.
-- `patches_4.5/` for kernels >= 4.5
-
-## Install
-
-```
- make 
- sudo make install                          
- sudo depmod -a
- sudo modprobe r8723bs
- 
- ```
+And many others.
