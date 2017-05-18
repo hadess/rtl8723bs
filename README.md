@@ -18,7 +18,10 @@ driver on older kernels is not supported, please ask your distribution to
 provide updated kernel packages.
 
 For support running the upstreamed staging driver, please refer to the
+`NETWORKING [WIRELESS]` section of
 [MAINTAINERS](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/MAINTAINERS) file to find where to send requests.
+
+To provide patches, see the [driver TODO](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/staging/rtl8723bs/TODO).
 
 ## Tested list (old)
 
