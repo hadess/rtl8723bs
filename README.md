@@ -23,6 +23,10 @@ For support running the upstreamed staging driver, please refer to the
 
 To provide patches, see the [driver TODO](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/staging/rtl8723bs/TODO).
 
+## Getting the firmware
+
+The various firmwares were added to the [linux-firmware](https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/) repository [in February 2017](https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/commit/?id=28b9f21e555c6c0d28e954c76ec3e22ba487b1c7)
+
 ## Tested list (old)
 
 Tested on:
